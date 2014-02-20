@@ -16,6 +16,10 @@ class Custom_Service_Relation_Relation extends Phpfox_Service
 	 */
 	public function getAll()
 	{
+		if (Phpfox::getParam('user.enable_relationship_status') != true)
+		{
+			return array();
+		}
 		$aStatuses = $this->database()->select('*')
 				->from($this->_sTable)
 				->order('relation_id ASC')
@@ -71,6 +75,17 @@ class Custom_Service_Relation_Relation extends Phpfox_Service
 	 */
 	public function getLatestForUser($iUserId, $iBeforeId = null, $bStarted = false)
 	{
+		if (Phpfox::getParam('user.enable_relationship_status') != true)
+		{
+			return array();
+		}
+		
+		$sCacheId = $this->cache()->set(array('reluser', $iUserId));
+		if (($aRelation = $this->cache()->get($sCacheId)))
+		{
+			return $aRelation;
+		}
+		
 		$sWhere ='';
 		if ($iBeforeId != null)
 		{
@@ -94,25 +109,27 @@ class Custom_Service_Relation_Relation extends Phpfox_Service
 				->execute('getSlaveRow');
 
 		/* we dont need the phrase or do we...? */
-		if (empty($aRelation))
-		{
-			return array();
+		if (!empty($aRelation))
+		{			
+			/* get the other user's full_name and image */
+			$this->database()->select(Phpfox::getUserField())
+					->from(Phpfox::getT('user'), 'u');
+			if ($aRelation['with_user_id'] == $iUserId)
+			{
+				
+				$this->database()->where('user_id = ' . $aRelation['user_id']);
+			}
+			else
+			{
+				$this->database()->where('user_id = ' . $aRelation['with_user_id']);
+			}
+			
+			$aWith = $this->database()->execute('getSlaveRow');
+			$aRelation['with_user'] = array_merge($aRelation, $aWith);
 		}
-		/* get the other user's full_name and image */
-		$this->database()->select(Phpfox::getUserField())
-				->from(Phpfox::getT('user'), 'u');
-		if ($aRelation['with_user_id'] == $iUserId)
-		{
-			$this->database()->where('user_id = ' . $aRelation['user_id']);
-		}
-		else
-		{
-			$this->database()->where('user_id = ' . $aRelation['with_user_id']);
-		}
+
+		$this->cache()->save($sCacheId, $aRelation);
 		
-		$aWith = $this->database()->execute('getSlaveRow');
-		$aRelation['with_user'] = array_merge($aRelation, $aWith);
-					
 		return $aRelation;
 	}
 

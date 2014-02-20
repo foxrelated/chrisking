@@ -13,7 +13,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: memcache.class.php 4961 2012-10-29 07:11:34Z Raymond_Benc $
+ * @version 		$Id: memcache.class.php 6363 2013-07-25 09:14:30Z Raymond_Benc $
  */
 class Phpfox_Cache_Storage_Memcache extends Phpfox_Cache_Abstract
 {
@@ -86,6 +86,10 @@ class Phpfox_Cache_Storage_Memcache extends Phpfox_Cache_Abstract
 	{		
 		if (is_array($sName))
 		{
+			if ($sName[0] == 'feeds')
+			{
+				$sName[0] = $sName[0] . Phpfox::getLib('locale')->getLangId();
+			}
 			$sName = $sName[0] . $sName[1];	
 		}
 		
@@ -181,6 +185,7 @@ class Phpfox_Cache_Storage_Memcache extends Phpfox_Cache_Abstract
 		
 		if ($this->_bSkipClose === false)
 		{
+			$this->_bSkipClose = false;
 			$this->close($sId);		
 		}
 
@@ -227,13 +232,13 @@ class Phpfox_Cache_Storage_Memcache extends Phpfox_Cache_Abstract
 		
 		// Cache the data only for the first time, Memcache will take over after	
 		$this->_aCached[$sId] = $mContent;		
-		
+		/*
 		if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
 		{
 			$aCacheData = $this->_oDb->get(md5('grouplysite' . PHPFOX_IS_HOSTED_SCRIPT));
 			$this->_oDb->set(md5('grouplysite' . PHPFOX_IS_HOSTED_SCRIPT), array_merge((array) $aCacheData , array($this->_getName($this->_aName[$sId]))));
 		}		
-		
+		*/
 		return $this->_oDb->set($this->_getName($this->_aName[$sId]), $mContent, MEMCACHE_COMPRESSED, 0);
 	}
 	
@@ -265,7 +270,9 @@ class Phpfox_Cache_Storage_Memcache extends Phpfox_Cache_Abstract
 		if ($sName === null)
 		{
 			if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
-			{				
+			{		
+				$this->_oDb->delete(md5('oncloudsite' . PHPFOX_IS_HOSTED_SCRIPT));
+				/*
 				$aCacheData = $this->_oDb->get(md5('grouplysite' . PHPFOX_IS_HOSTED_SCRIPT));
 				if (is_array($aCacheData))
 				{
@@ -279,6 +286,7 @@ class Phpfox_Cache_Storage_Memcache extends Phpfox_Cache_Abstract
 						$this->_oDb->delete($sCacheId);
 					}
 				}
+				*/
 			}
 			else
 			{
@@ -305,7 +313,15 @@ class Phpfox_Cache_Storage_Memcache extends Phpfox_Cache_Abstract
 			return true;
 		}		
 		else
-		{
+		{			
+			if (is_array($sName))
+			{
+				if ($sName[0] == 'feeds')
+				{
+					$sName[0] = $sName[0] . Phpfox::getLib('locale')->getLangId();
+				}
+				$sName = $sName[0] . $sName[1];
+			}			
 			$this->_oDb->delete($this->_getName($sName));
 		}
 		
@@ -380,10 +396,23 @@ class Phpfox_Cache_Storage_Memcache extends Phpfox_Cache_Abstract
 	{
 		if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
 		{
-			$sFile = md5(PHPFOX_IS_HOSTED_SCRIPT . $sFile);						
+			$sFile = md5($this->_getHashId() . $sFile);
 		}		
 		
 		return $sFile;
+	}
+
+	private function _getHashId()
+	{
+		$sName = md5('oncloudsite' . PHPFOX_IS_HOSTED_SCRIPT);
+		$sHashKey = $this->_oDb->get($sName);
+		if (empty($sHashKey))
+		{
+			$sHashKey = PHPFOX_IS_HOSTED_SCRIPT . uniqid();
+			$this->_oDb->set(md5('oncloudsite' . PHPFOX_IS_HOSTED_SCRIPT), $sHashKey);
+		}
+
+		return $sHashKey;
 	}
 }
 

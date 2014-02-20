@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: browse.class.php 4579 2012-07-31 14:13:31Z Miguel_Espinoza $
+ * @version 		$Id: browse.class.php 7059 2014-01-22 14:20:10Z Fern $
  */
 class Event_Service_Browse extends Phpfox_Service 
 {	
@@ -70,7 +70,8 @@ class Event_Service_Browse extends Phpfox_Service
 		
 		if (Phpfox::isUser() && Phpfox::isModule('like'))
 		{
-			$this->database()->select('lik.like_id AS is_liked, ')->leftJoin(Phpfox::getT('like'), 'lik', 'lik.type_id = \'event\' AND lik.item_id = m.event_id AND lik.user_id = ' . Phpfox::getUserId());
+			$this->database()->select('lik.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'lik', 'lik.type_id = \'event\' AND lik.item_id = m.event_id AND lik.user_id = ' . Phpfox::getUserId());
 		}			
 	}	
 	
@@ -81,7 +82,7 @@ class Event_Service_Browse extends Phpfox_Service
 		$aRows = array();
 		foreach ($aNewRows as $aListing)
 		{
-			$aEvent['start_time'] = Phpfox::getLib('date')->convertFromGmt($aListing['start_time'], $aListing['start_gmt_offset']);
+			$aEvent['start_time'] = Phpfox::getLib('date')->convertFromGmt($aListing['start_time'], $aListing['start_gmt_offset']);			
 			
 			$iDate = Phpfox::getTime('dmy', $aListing['start_time']);		
 				
@@ -100,6 +101,7 @@ class Event_Service_Browse extends Phpfox_Service
 				
 			$aListing['start_time_phrase'] = Phpfox::getTime(Phpfox::getParam('event.event_browse_time_stamp'), $aListing['start_time']);
 			$aListing['start_time_phrase_stamp'] = Phpfox::getTime(Phpfox::getParam('event.event_basic_information_time_short'), $aListing['start_time']);
+			$aListing['start_time_micro'] = Phpfox::getTime('Y-m-d', $aEvent['start_time']);
 				
 			$aListing['aFeed'] = array(			
 				'feed_display' => 'mini',	

@@ -22,8 +22,14 @@ if (Phpfox::getParam('core.default_music_player') == 'flowplayer' && empty($aVid
 	{
 		if ($aVideo['server_id'] && Phpfox::getParam('core.allow_cdn'))
 		{
-			$sConfig .= '\'baseUrl\': \'' . Phpfox::getLib('cdn')->getUrl(Phpfox::getParam('video.url'), $aVideo['server_id'], true) . '\',';
-		}
+			$sBaseUrl = Phpfox::getLib('cdn')->getUrl(Phpfox::getParam('video.url'), $aVideo['server_id'], true);
+			if (Phpfox::getParam('core.enable_amazon_expire_urls') && Phpfox::getParam('core.amazon_s3_expire_url_timeout') > 0)
+			{
+				$sBaseUrl = preg_replace('/?.+/', '', Phpfox::getLib('cdn')->getUrl(Phpfox::getParam('video.url'), $aVideo['server_id'], true));
+			}
+		
+			$sConfig .= '\'baseUrl\': \'' . $sBaseUrl . '\',';
+		}		
 		else
 		{
 			$sConfig .= '\'baseUrl\': \'' . Phpfox::getParam('video.url') . '\',';

@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: browse.html.php 4570 2012-07-31 08:39:23Z Raymond_Benc $
+ * @version 		$Id: browse.html.php 5538 2013-03-25 13:20:22Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -88,7 +88,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		tb_remove();
 	}	
 	
-	$(function()
+	$Behavior.user_browse_check_browser = function()
 	{
 		if ($.browser.mozilla) 
 		{
@@ -98,7 +98,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		{
 			$('.js_is_enter').keydown(checkForEnter);
 		}
-	});	
+	};	
 	
 	function checkForEnter(event)
 	{

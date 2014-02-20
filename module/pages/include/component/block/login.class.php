@@ -20,9 +20,31 @@ class Pages_Component_Block_Login extends Phpfox_Component
 	 */
 	public function process()
 	{
+		// Get the current page. Zero if it's the first page
+        $iPage = $this->getParam('page', 1);
+		// Get the amount of pages to be shown by page
+		$iPageSize = 15;
+		// get the total pages, and the pages
+		list($iTotal, $aPages) = Phpfox::getService('pages')->getMyLoginPages($iPage, $iPageSize);
+
+		if($iTotal > $iPageSize)
+		{
+			Phpfox::getLib('pager')->set(
+				array(
+					'page' => $iPage, 
+					'size' => $iPageSize, 
+					'count' => $iTotal, 
+				)
+			);
+		}
+
 		$this->template()->assign(array(
-				'aPages' => Phpfox::getService('pages')->getMyAdminPages(),
-				'sLink' => $this->url()->makeUrl('pages.add')
+				'aPages' => $aPages,
+				'sLink' => $this->url()->makeUrl('pages.add'),
+				// http://www.phpfox.com/tracker/view/14665
+	            'iCurrentPage' => $iPage,
+		        'iTotalPages' => ($iTotal/$iPageSize)+1,
+		        'iTotal' => $iTotal,
 			)
 		);
 	}

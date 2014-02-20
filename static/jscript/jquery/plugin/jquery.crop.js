@@ -1,14 +1,16 @@
 
+/*
+These files should be loaded from the controller that is going to call them. Or we should allow for the block controller to load them so they get cached
 $Core.loadStaticFile(getParam('sJsStatic') + 'jscript/jquery/plugin/imgnotes/jquery.imgareaselect.js');
 $Core.loadStaticFile(getParam('sJsStatic') + 'jscript/jquery/plugin/imgnotes/imgareaselect/imgareaselect-default.css');
-
+*/
 $Core.photo_crop = 
 {
 	aParams: {},
 	
 	init: function(aParams)
 	{
-		this.aParams = aParams;		
+		this.aParams = aParams;	
 	},
 	
 	save: function(oObj)

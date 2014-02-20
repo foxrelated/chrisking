@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: profile.class.php 4208 2012-06-04 14:37:39Z Miguel_Espinoza $
+ * @version 		$Id: profile.class.php 5491 2013-03-12 08:12:07Z Miguel_Espinoza $
  */
 class User_Component_Controller_Profile extends Phpfox_Component
 {
@@ -55,10 +55,12 @@ class User_Component_Controller_Profile extends Phpfox_Component
 		foreach ($aCustomFields as $aFields)
 		{			
 			$aGroupCache[$aFields['group_id']] = true;
-		}		
-		
+		}	
+        
+		if ($sPlugin = Phpfox_Plugin::get('user.component_controller_profile__1')){eval($sPlugin);if (isset($aPluginReturn)){return $aPluginReturn;}}
 		foreach ($aCustomGroups as $iKey => $aCustomGroup)
 		{
+            if ($sPlugin = Phpfox_Plugin::get('user.component_controller_profile__2')){eval($sPlugin);if (isset($aPluginReturn)){return $aPluginReturn;}}
 			if (!isset($aGroupCache[$aCustomGroup['group_id']]))
 			{
 				unset($aCustomGroups[$iKey]);
@@ -114,6 +116,9 @@ class User_Component_Controller_Profile extends Phpfox_Component
 		{
 			$this->template()->setPhrase(array('friend.show_more_results_for_search_term'));
 		}
+        
+        if ($sPlugin = Phpfox_Plugin::get('user.component_controller_profile__3')){eval($sPlugin);if (isset($aPluginReturn)){return $aPluginReturn;}}
+        
 		$this->template()->setTitle(Phpfox::getPhrase('user.edit_profile'))
 			->setBreadcrumb(Phpfox::getPhrase('user.edit_profile'))
 			->setFullSite()

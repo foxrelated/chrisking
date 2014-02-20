@@ -11,8 +11,7 @@
 defined('PHPFOX') or exit('NO DICE!'); 
 
 ?>{if !PHPFOX_IS_AJAX_PAGE}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" dir="{$sLocaleDirection}" lang="{$sLocaleCode}">
 	<head>
 		<title>{title}</title>	
@@ -105,7 +104,7 @@ defined('PHPFOX') or exit('NO DICE!');
 							{module name='profile.logo'}
 
 							{if !$bUseFullSite && (count($aBlocks1) || count($aAdBlocks1)) || (isset($aFilterMenus) && is_array($aFilterMenus) && count($aFilterMenus))}					
-							<div id="left">
+							<div id="left" class="content_column">
 								{menu_sub}
 								{block location='1'}					
 							</div>					
@@ -117,16 +116,17 @@ defined('PHPFOX') or exit('NO DICE!');
 								{/if}
 								<div id="main_content_padding">
 
-									{if defined('PHPFOX_IS_USER_PROFILE')}
-									{module name='profile.header'}							
+									{if defined('PHPFOX_IS_USER_PROFILE') || defined('PHPFOX_IS_PAGES_VIEW') || (isset($aPage) && isset($aPage.use_timeline) && $aPage.use_timeline)}
+									{if $bLoadedProfileHeader = true}{/if}
+									{module name='profile.header'}
 									{/if}
-									{if defined('PHPFOX_IS_PAGES_VIEW')}
-									{module name='pages.header'}							
-									{/if}							
+									{if defined('PHPFOX_IS_PAGES_VIEW') && !isset($bLoadedProfileHeader)}
+									{block location='12'}
+									{module name='pages.header'}
+									{/if}
 
 									<div id="content_load_data">
 										{if isset($bIsAjaxLoader) || defined('PHPFOX_IS_USER_PROFILE') || defined('PHPFOX_IS_PAGES_VIEW')}
-										{block location='7'}															
 										{search}
 										{/if}								
 
@@ -142,7 +142,7 @@ defined('PHPFOX') or exit('NO DICE!');
 										</div>
 
 										{if !$bUseFullSite && (count($aBlocks3) || count($aAdBlocks3))}
-										<div id="right">								
+										<div id="right" class="content_column">								
 											{block location='3'}
 										</div>
 										{/if}
@@ -173,7 +173,8 @@ defined('PHPFOX') or exit('NO DICE!');
 				</div>			
 
 			{if !PHPFOX_IS_AJAX_PAGE}
-			</div>			
+			</div>
+                        
 			{footer}		
 		</div>
 	</body>

@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: format.class.php 1879 2010-09-30 09:56:12Z Raymond_Benc $
+ * @version 		$Id: format.class.php 5538 2013-03-25 13:20:22Z Miguel_Espinoza $
  */
 class Phpfox_Parse_Format
 {
@@ -150,7 +150,7 @@ class Phpfox_Parse_Format
 	 */
 	public function hideEmail($sEmail)
 	{
-		if (!strpos($sEmail, '@'))
+		if (strpos($sEmail, '@') === false)
 		{
 			return $sEmail;
 		}
@@ -206,7 +206,150 @@ class Phpfox_Parse_Format
 			return '';
 		}
 		return '1';
+	}
+	
+	/**
+	 * Checks JS code to add a semi colon so its ok to minify
+	 * @param string $sJS
+	 */ 
+	public function helpJS($sJS)
+	{
+		// $sJS = str_replace("\n",'', $sJS);
+		
+		// function a(){} = 14 characters
+		$iMinLength = 14;
+		if (strlen($sJS) < $iMinLength) { return $sJS; }
+		
+		// 1. store the current position of cursor
+		$iPos = 0;
+		
+		// 2. find the keyword "function"		
+		while ( ($iPos < strlen($sJS)) )
+		{
+			$iPos = strpos($sJS, 'function', $iPos);
+			if ($iPos === false)
+			{
+				//echo "\n\n\n\n\n\n\n\nNo more functions, im out!";
+				break;
+			}
+			 
+			// 3. get the previous character (ignoring white-spaces and line breaks)
+			$iPosPrev = $iPos - 1;
+			$bNeedsClosing = false;
+			
+            $iMaxBacktrack = 0;
+			while( ($iPosPrev > 0) && ($iPosPrev <= $iPos) && $iMaxBacktrack < 7)
+			{
+				$cPrev = substr($sJS, $iPosPrev, 1);
+				//d($iPosPrev . ',' . $iPos . ' = ' . $cPrev);
+				switch( $cPrev )
+				{
+					// 4. If the previous character is a , or : this is an anonymous function and we skip it					
+					case ' ':
+					case "\n":
+					case '(':
+					case ';':		
+						break;
+					case ',':
+					case ':':
+							
+						//d('1. Previous character "' . $cPrev . '"');
+						break(2);
+					case '=':						
+					default:
+						//d('2. Previous character"' . $cPrev . '"');
+						$bNeedsClosing = true;
+						$iMaxBacktrack = 8;
+				}
+				$iPosPrev--;
+                $iMaxBacktrack++;
+			}
+			
+			if ($bNeedsClosing == true)
+			{
+				// 5. if the previous character is a = then this function must end with a ; after the }
+				// find where this function has the very first {
+				$iBrackCnt = 0;
+				
+				// Move the pointer to the first {, at this moment iPos points to the keyword function
+				$iPos = strpos($sJS, '{', $iPos); 
+								
+				// We will now count brackets 
+				while ( ($iPos <= strlen($sJS) ) )
+				{
+					$cBracket = substr($sJS, $iPos, 1);
+					//d('iBrackCnt: ' . $iBrackCnt . ' = "' . $cBracket . '"');
+					if ($cBracket == '{') 
+					{
+						$iBrackCnt++;
+						//echo '<span style="color:yellow;">'. $cBracket . '</span>';
+					}
+					else if ($cBracket == '}') 
+					{
+						$iBrackCnt--;						
+					}
+					else if ($iBrackCnt == 0)
+					{
+						// it closed the last bracket, we are at the end of the function
+						// Check if the next character is a semicolon						
+						if ($cBracket == ';') 
+						{
+							// All good
+						}
+						else
+						{
+							$sJS = substr($sJS, 0, $iPos) .';' .substr($sJS, $iPos);							
+							break;
+						}						
+					}					
+					$iPos++;
+				}
+			}
+			else
+			{
+				$iPos++;
+			}	
+		}
+		$sJS = str_replace('};)', '})', $sJS);
+		return $sJS;
 	}	
+
+/*
+	public function helpJS2($sJS)
+	{
+		$iMinLength = 14;
+		$iLength = strlen($sJS);
+		if ($iLengthh < $iMinLength) { die('returning at 1'); }
+		$iPos = 0;
+		
+		$sOut = '';
+		for ($iPos; $iPos < $iLength; $iPos++)
+		{
+			$cCurrent = substr($sJs, $iPos, 1);
+			$sOut .= $cCurrent;
+			
+			// Check if the last word was function
+			if (substr($sOut, (strlen($sOut) - strlen('function'))) == 'function')
+			{
+				$iLastFunctionPos = strrpos($sOut, 'function');
+				$bFix = false;
+				for ($iLastFunctionPos; $iLastFunctionPos > 0; $iLastFunctionPos--)
+				{
+					$cCheck = substr($sOut, $iLastFunctionPos, 1);
+					if ( ($cCheck == '=') )
+					{
+						$bFix = true;
+						break;
+					}
+				}
+				if ($bFix == true)
+				{
+					// Now we search forward for the brackets and count them
+					
+				}
+			}
+		}
+	}*/
 }
 
 ?>

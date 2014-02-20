@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: browse.html.php 5045 2012-11-26 09:10:27Z Raymond_Benc $
+ * @version 		$Id: browse.html.php 6960 2013-12-02 16:17:27Z Miguel_Espinoza $
  * {* *}
  */
 
@@ -125,9 +125,9 @@ defined('PHPFOX') or exit('NO DICE!');
 
 	<div class="table_clear">
 		<div class="table_clear_more_options">
-			<a href="#" onclick="$('#js_admincp_search_options').toggle(); return false;">View More Search Options</a>	
+			<a href="#" onclick="$('#js_admincp_search_options').toggle(); return false;">{phrase var='user.view_more_search_options'}</a>
 		</div>
-		<input type="submit" value="Search" class="button" name="search[submit]" />		
+		<input type="submit" value="{phrase var='user.search'}" class="button" name="search[submit]" />		
 	</div>
 </form>
 
@@ -205,14 +205,17 @@ defined('PHPFOX') or exit('NO DICE!');
 						</li>
 						{/if}
 						{if Phpfox::getUserParam('user.can_delete_others_account')}
-						{if $aUser.user_group_id == ADMIN_USER_ID && Phpfox::getUserBy('user_group_id') != ADMIN_USER_ID}
+						    {if $aUser.user_group_id == ADMIN_USER_ID && Phpfox::getUserBy('user_group_id') != ADMIN_USER_ID}
 
-						{else}
-						<li><div class="user_delete"><a href="#" onclick="tb_show('{phrase var='user.delete_user' phpfox_squote=true}', $.ajaxBox('user.deleteUser', 'height=240&amp;width=400&amp;iUser={$aUser.user_id}'));return false;" title="{phrase var='user.delete_user_full_name' full_name=$aUser.full_name|clean}">{phrase var='user.delete_user'}</a></div></li>
+						    {else}
+						    <li>
+							<div class="user_delete">
+							    <a href="#" onclick="tb_show('{phrase var='user.delete_user' phpfox_squote=true}', $.ajaxBox('user.deleteUser', 'height=240&amp;width=400&amp;iUser={$aUser.user_id}'));return false;" title="{phrase var='user.delete_user_full_name' full_name=$aUser.full_name|clean}">{phrase var='user.delete_user'}</a></div></li>
+						    {/if}
+						
 						{/if}
 						{if Phpfox::getUserParam('user.can_member_snoop')}
 							<li><div class="user_delete"><a href="{url link='admincp.user.snoop' user=$aUser.user_id}" >{phrase var='user.log_in_as_this_user'}</a></div></li>
-						{/if}
 						{/if}
 					</ul>
 				</div>
@@ -275,97 +278,101 @@ defined('PHPFOX') or exit('NO DICE!');
 
 {if count($aUsers)}
 {foreach from=$aUsers name=users item=aUser}
-{if Phpfox::getParam('user.user_browse_display_results_default') == 'name_photo_detail'}
-	<div class="{if is_int($phpfox.iteration.users/2)}row1{else}row2{/if}{if $phpfox.iteration.users == 1} row_first{/if}" style="position:relative; height:110px;" id="js_parent_user_{$aUser.user_id}">
-		<div class="user_browse_info">
-				<div class="user_tooltip_info_user">{$aUser|user:'':'':50|split:20}</div>
-				{if !empty($aUser.gender) && Phpfox::getUserGroupParam('' . $aUser.user_group_id . '', 'user.can_edit_gender_setting')}
-				{$aUser.gender|gender} <br />
-				{/if}
-				{if Phpfox::getUserGroupParam('' . $aUser.user_group_id . '', 'user.can_edit_dob')}
-				{if !empty($aUser.birthday) && $aUser.dob_setting != '3'}
-				{if $aUser.dob_setting == '4'}
-					{$aUser.month} {$aUser.day}, {$aUser.year} <br />
-				{else}			
-				{if $aUser.dob_setting == '1'}
-					{$aUser.month} {$aUser.day}
-				{elseif $aUser.dob_setting == '2'}
-					{$aUser.birthday|age}
-				{else}
-					{$aUser.month} {$aUser.day}, {$aUser.year}
-				{/if}
-				<br />
-				{/if}
-
-				{/if}
-				{/if}
-				{if !empty($aUser.country_iso)}
-				{if !empty($aUser.city_location)}{$aUser.city_location|clean} &raquo; {/if}{if !empty($aUser.country_child_id)}{$aUser.country_child_id|location_child} &raquo; {/if}{$aUser.country_iso|location} <br />
-				{/if}
-				{if Phpfox::isModule('rate') && Phpfox::getParam('profile.can_rate_on_users_profile') && $aUser.total_score > 0}
-				{phrase var='user.total_score_out_of_10' total_score=$aUser.total_score|round}
-				{/if}
-				
-			{if Phpfox::isModule('friend')}
-			{if $aUser.mutual_friends > 0}
-			<div class="user_browse_mutual_friend">
-				<a href="#" onclick="$Core.box('friend.getMutualFriends', 300, 'user_id={$aUser.user_id}'); return false;">{if $aUser.mutual_friends == 1}
-				{phrase var='user.1_mutual_friend'}
-				{else}
-				{phrase var='user.total_mutual_friends' total=$aUser.mutual_friends}
-				{/if}</a>
-			</div>
-			{/if}
-				{if Phpfox::isUser() && Phpfox::isModule('friend') && !$aUser.is_friend && $aUser.is_friend_request}
-				<span class="extra_info">{phrase var='profile.pending_friend_request'}</span>
-				{else}
-				{if Phpfox::isUser() && Phpfox::isModule('friend') && !$aUser.is_friend && Phpfox::getUserId() != $aUser.user_id && (!isset($aUser.user_is_blocked) )}
-					<div class="user_browse_add_friend">
-						{img theme='misc/friend_added.png' class='v_middle'} <a href="#" onclick="return $Core.addAsFriend('{$aUser.user_id}');">{phrase var='user.add_friend'}</a>
-					</div>
-				{/if}
-				{/if}
-			{/if}				
-		</div>		
-		<div class="user_browse_image">
-			{img user=$aUser suffix='_100_square' max_width=100 max_height=100 class='js_mp_fix_width'}	
-		</div>
-		<div class="clear"></div>
-	</div>
-{else}
-	<div class="go_left js_parent_user" style="{if Phpfox::isMobile()}width:44%;{else}width:100px;{/if} margin-bottom:10px;"  id="js_parent_user_{$aUser.user_id}">
-		{img user=$aUser suffix='_100_square' max_width=100 max_height=100 class='js_mp_fix_width'}			
-		<div class="user_browse_user">
-			{$aUser|user:'':'':50}
-			{if Phpfox::isModule('friend')}
-			{if $aUser.mutual_friends > 0}
-			<div class="user_browse_mutual_friend">
-				<a href="#" onclick="$Core.box('friend.getMutualFriends', 300, 'user_id={$aUser.user_id}'); return false;">{if $aUser.mutual_friends == 1}
-				{phrase var='user.1_mutual_friend'}
-				  {else}
-				{phrase var='user.total_mutual_friends' total=$aUser.mutual_friends}
-				{/if}</a>
-			</div>
-			{/if}
-			{if Phpfox::isUser() && Phpfox::isModule('friend') && !$aUser.is_friend && $aUser.is_friend_request}
-			<div class="user_browse_add_friend">
-				<span class="extra_info">{phrase var='profile.pending_friend_request'}</span>
-			</div>
-			{else}
-			{if Phpfox::isUser() && Phpfox::isModule('friend') && !$aUser.is_friend && Phpfox::getUserId() != $aUser.user_id}
-			<div class="user_browse_add_friend">
-				{img theme='misc/friend_added.png' class='v_middle'} <a href="#" onclick="return $Core.addAsFriend('{$aUser.user_id}');">{phrase var='user.add_friend'}</a>
-			</div>
-			{/if}
-			{/if}
-			{/if}
-		</div>
-	</div>
+<div itemscope itemtype="http://schema.org/Person">
+	<meta itemprop="url" content="{url link=$aUser.user_name}" />
 	
-	{if (!Phpfox::isMobile() && is_int($phpfox.iteration.users / 4)) || (Phpfox::isMobile() && is_int($phpfox.iteration.users / 2))}
-	<div class="clear{if !Phpfox::isMobile()} js_parent_user_clear{/if}"></div>
+	{if Phpfox::getParam('user.user_browse_display_results_default') == 'name_photo_detail'}
+		<div class="{if is_int($phpfox.iteration.users/2)}row1{else}row2{/if}{if $phpfox.iteration.users == 1} row_first{/if}" style="position:relative; height:110px;" id="js_parent_user_{$aUser.user_id}">
+			<div class="user_browse_info">
+					<div class="user_tooltip_info_user" itemprop="name">{$aUser|user:'':'':50|split:20}</div>
+					{if !empty($aUser.gender) && Phpfox::getUserGroupParam('' . $aUser.user_group_id . '', 'user.can_edit_gender_setting')}
+					{$aUser.gender|gender} <br />
+					{/if}
+					{if Phpfox::getUserGroupParam('' . $aUser.user_group_id . '', 'user.can_edit_dob')}
+					{if !empty($aUser.birthday) && $aUser.dob_setting != '3'}
+					{if $aUser.dob_setting == '4'}
+						{$aUser.month} {$aUser.day}, {$aUser.year} <br />
+					{else}			
+					{if $aUser.dob_setting == '1'}
+						{$aUser.month} {$aUser.day}
+					{elseif $aUser.dob_setting == '2'}
+						{$aUser.birthday|age}
+					{else}
+						{$aUser.month} {$aUser.day}, {$aUser.year}
+					{/if}
+					<br />
+					{/if}
+	
+					{/if}
+					{/if}
+					{if !empty($aUser.country_iso)}
+					{if !empty($aUser.city_location)}{$aUser.city_location|clean} &raquo; {/if}{if !empty($aUser.country_child_id)}{$aUser.country_child_id|location_child} &raquo; {/if}{$aUser.country_iso|location} <br />
+					{/if}
+					{if Phpfox::isModule('rate') && Phpfox::getParam('profile.can_rate_on_users_profile') && $aUser.total_score > 0}
+					{phrase var='user.total_score_out_of_10' total_score=$aUser.total_score|round}
+					{/if}
+					
+				{if Phpfox::isModule('friend')}
+				{if $aUser.mutual_friends > 0}
+				<div class="user_browse_mutual_friend">
+					<a href="#" onclick="$Core.box('friend.getMutualFriends', 300, 'user_id={$aUser.user_id}'); return false;">{if $aUser.mutual_friends == 1}
+					{phrase var='user.1_mutual_friend'}
+					{else}
+					{phrase var='user.total_mutual_friends' total=$aUser.mutual_friends}
+					{/if}</a>
+				</div>
+				{/if}
+					{if Phpfox::isUser() && Phpfox::isModule('friend') && !$aUser.is_friend && $aUser.is_friend_request}
+					<span class="extra_info">{phrase var='profile.pending_friend_request'}</span>
+					{else}
+					{if Phpfox::isUser() && Phpfox::isModule('friend') && !$aUser.is_friend && Phpfox::getUserId() != $aUser.user_id && (!isset($aUser.user_is_blocked) )}
+						<div class="user_browse_add_friend">
+							{img theme='misc/friend_added.png' class='v_middle'} <a href="#" onclick="return $Core.addAsFriend('{$aUser.user_id}');">{phrase var='user.add_friend'}</a>
+						</div>
+					{/if}
+					{/if}
+				{/if}				
+			</div>		
+			<div class="user_browse_image">
+				{img user=$aUser suffix='_120_square' max_width=100 max_height=100 class='js_mp_fix_width'}	
+			</div>
+			<div class="clear"></div>
+		</div>
+	{else}
+		<div class="go_left js_parent_user" style="{if Phpfox::isMobile()}width:44%;{else}width:100px;{/if} margin-bottom:10px;"  id="js_parent_user_{$aUser.user_id}">
+			{img user=$aUser suffix='_120_square' max_width=100 max_height=100 class='js_mp_fix_width'}			
+			<div class="user_browse_user">
+				{$aUser|user:'':'':50}
+				{if Phpfox::isModule('friend')}
+				{if $aUser.mutual_friends > 0}
+				<div class="user_browse_mutual_friend">
+					<a href="#" onclick="$Core.box('friend.getMutualFriends', 300, 'user_id={$aUser.user_id}'); return false;">{if $aUser.mutual_friends == 1}
+					{phrase var='user.1_mutual_friend'}
+					  {else}
+					{phrase var='user.total_mutual_friends' total=$aUser.mutual_friends}
+					{/if}</a>
+				</div>
+				{/if}
+				{if Phpfox::isUser() && Phpfox::isModule('friend') && !$aUser.is_friend && $aUser.is_friend_request}
+				<div class="user_browse_add_friend">
+					<span class="extra_info">{phrase var='profile.pending_friend_request'}</span>
+				</div>
+				{else}
+				{if Phpfox::isUser() && Phpfox::isModule('friend') && !$aUser.is_friend && Phpfox::getUserId() != $aUser.user_id}
+				<div class="user_browse_add_friend">
+					{img theme='misc/friend_added.png' class='v_middle'} <a href="#" onclick="return $Core.addAsFriend('{$aUser.user_id}');">{phrase var='user.add_friend'}</a>
+				</div>
+				{/if}
+				{/if}
+				{/if}
+			</div>
+		</div>
+		
+		{if (!Phpfox::isMobile() && is_int($phpfox.iteration.users / 4)) || (Phpfox::isMobile() && is_int($phpfox.iteration.users / 2))}
+		<div class="clear{if !Phpfox::isMobile()} js_parent_user_clear{/if}"></div>
+		{/if}
 	{/if}
-{/if}
+</div>
 {/foreach}
 <div class="clear"></div>
 

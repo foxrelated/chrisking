@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: common.sett.php 2880 2011-08-23 10:31:43Z Miguel_Espinoza $
+ * @version 		$Id: common.sett.php 5024 2012-11-14 16:02:47Z Miguel_Espinoza $
  */
 
 defined('PHPFOX') or exit('NO DICE!');
@@ -92,6 +92,9 @@ $_CONF['core.url_watermark'] = $_CONF['core.url_pic'] . 'watermark/';
 
 $_CONF['core.dir_icon'] = $_CONF['core.dir_pic'] . 'icon' . PHPFOX_DS;
 $_CONF['core.url_icon'] = $_CONF['core.url_pic'] . 'icon/';
+
+$_CONF['user.dir_user_spam'] = $_CONF['core.dir_pic'] . 'user' . PHPFOX_DS . 'spam_question' . PHPFOX_DS;
+
 
 /* Static URLS */
 $_CONF['core.dir_static'] = PHPFOX_DIR . 'static/';

@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: add.html.php 4031 2012-03-20 15:08:25Z Raymond_Benc $
+ * @version 		$Id: add.html.php 7027 2014-01-08 13:10:22Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -112,14 +112,16 @@ defined('PHPFOX') or exit('NO DICE!');
 	</div>
 	{/if}
 	
+	{if Phpfox::isModule('mobile')}
 	<div class="table">
 		<div class="table_left">
-			Mobile Icon:
+			{phrase var='mobile.mobile_icon'}:
 		</div>
 		<div class="table_right">
 			<input type="text" name="val[mobile_icon]" value="{value type='input' id='mobile_icon'}" />
 		</div>
 	</div>
+	{/if}
 	
 	<div class="table_header">
 		{phrase var='admincp.language_package_details'}

@@ -13,7 +13,7 @@ define('PHPFOX_IS_EVENT_VIEW', true);
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: view.class.php 4943 2012-10-23 13:37:12Z Miguel_Espinoza $
+ * @version 		$Id: view.class.php 5844 2013-05-09 08:00:59Z Raymond_Benc $
  */
 class Event_Component_Controller_View extends Phpfox_Component
 {
@@ -67,28 +67,25 @@ class Event_Component_Controller_View extends Phpfox_Component
 		{
 			switch ($aEvent['privacy_comment'])
 			{
-				case 1:					
-					if ((int) $aEvent['r'] <= 0)
-					{
-						$bCanPostComment = false;						
-					}
-					break;
-				case 2:
-					if ((int) $aEvent['r'] > 0)
-					{
-						$bCanPostComment = true;
-					}
-					else 
-					{
-						if (!Phpfox::getService('friend')->isFriendOfFriend($aEvent['user_id']))
-						{
-							$bCanPostComment = false;	
-						}
-					}
-					break;
-				case 3:
-					$bCanPostComment = false;
-					break;
+			    // Everyone is case 0. Skipped.
+			    // Friends only
+			    case 1:
+			        if(!Phpfox::getService('friend')->isFriend(Phpfox::getUserId(), $aEvent['user_id']))
+			        {
+			            $bCanPostComment = false;
+			        }
+			        break;
+			    // Friend of friends
+			    case 2:
+			        if (!Phpfox::getService('friend')->isFriendOfFriend($aEvent['user_id']))
+			        {
+			            $bCanPostComment = false;    
+			        }
+			        break;
+			    // Only me
+			    case 3:
+			        $bCanPostComment = false;
+			        break;
 			}
 		}
 		
@@ -143,7 +140,7 @@ class Event_Component_Controller_View extends Phpfox_Component
 			->setBreadcrumb(Phpfox::getPhrase('event.events'), ($aCallback === false ? $this->url()->makeUrl('event') : $this->url()->makeUrl($aCallback['url_home_pages'])))
 			->setBreadcrumb($aEvent['title'], $this->url()->permalink('event', $aEvent['event_id'], $aEvent['title']), true)
 			->setEditor(array(
-					'load' => 'simple'					
+					'load' => 'simple'
 				)
 			)
 			->setHeader('cache', array(
@@ -157,7 +154,8 @@ class Event_Component_Controller_View extends Phpfox_Component
 			)
 			->assign(array(
 					'aEvent' => $aEvent,
-					'aCallback' => $aCallback
+					'aCallback' => $aCallback,
+					'sMicroPropType' => 'Event'
 				)
 			);			
 	}

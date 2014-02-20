@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Core
- * @version 		$Id: index-visitor.class.php 2970 2011-09-03 14:48:53Z Raymond_Benc $
+ * @version 		$Id: index-visitor.class.php 6754 2013-10-09 10:17:09Z Miguel_Espinoza $
  */
 class Core_Component_Controller_Index_Visitor extends Phpfox_Component
 {
@@ -36,7 +36,7 @@ class Core_Component_Controller_Index_Visitor extends Phpfox_Component
 					'user.continue'
 				)
 			)			
-			->setHeader(array(				
+			->setHeader('head',array(				
 				"<!--[if IE ]>\n\t\t\t<script type=\"text/javascript\" src=\"" . Phpfox::getParam('core.url_static_script') . "jquery/plugin/excanvas.js\"></script>\n\t<![endif]-->",				
 			)
 		)->assign(array(

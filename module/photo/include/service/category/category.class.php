@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: category.class.php 4532 2012-07-19 10:03:18Z Miguel_Espinoza $
+ * @version 		$Id: category.class.php 6000 2013-06-05 09:41:07Z Miguel_Espinoza $
  */
 class Photo_Service_Category_Category extends Phpfox_Service 
 {
@@ -35,6 +35,13 @@ class Photo_Service_Category_Category extends Phpfox_Service
 			->leftJoin($this->_sTable, 'pc2', 'pc2.category_id = pc.parent_id')
 			->where('pc.category_id = ' . (int) $iId)
 			->execute('getRow');
+	}
+	public function getCategoryId($sName)
+	{
+		return $this->database()->select('category_id')
+			->from($this->_sTable)
+			->where('name_url = "' . $this->database()->escape($sName) . '"')
+			->execute('getSlaveField');
 	}
 	
 	public function getPhotos($sCategory, $mConditions = array(), $sOrder = 'p.time_stamp DESC', $iPage = '', $iPageSize = '', $aCallback = null)
@@ -454,6 +461,26 @@ class Photo_Service_Category_Category extends Phpfox_Service
 		return $sCategories;
 	}	
 
+	/**
+	 * Given an array of categories (which may have sub-categories) this function
+	 * returns a one-dimensional array with the category_ids of the child 
+	 * elements.
+	 * @param array $aCats
+	 * @return array 
+	 */ 
+	public function extractCategories($aCats)
+	{
+		$aOut = array();
+		
+		foreach ($aCats as $aCategory)
+		{
+			$aOut[] = $aCategory['category_id'];
+			if (!empty($aCategory['sub']))
+			$aOut = array_merge($aOut, array_values($this->extractCategories($aCategory['sub'])));
+		}
+		return $aOut;
+	}
+	
 	/**
 	 * If a call is made to an unknown method attempt to connect
 	 * it to a specific plug-in with the same name thus allowing 

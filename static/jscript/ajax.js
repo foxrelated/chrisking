@@ -19,7 +19,7 @@ $.ajaxBox = function(sCall, sExtra)
 	}	
 	
 	return sParams;
-}
+};
 
 var oCacheAjaxRequest = null;
 var aCacheAjaxLastCall = {};
@@ -30,7 +30,7 @@ window.onbeforeunload = function()
 	{
 		oCacheAjaxRequest.abort();
 	}	
-}
+};
 
 /**
  * Create AJAX Call
@@ -92,12 +92,12 @@ $.fn.ajaxCall = function(sCall, sExtra, bNoForm, sType)
 		}
 	);
 	return oCacheAjaxRequest;
-}
+};
 
 $.ajaxCall = function(sCall, sExtra, sType)
 {
     return $.fn.ajaxCall(sCall, sExtra, true, sType);
-}
+};
 
 /**
  * Get form details
@@ -174,4 +174,4 @@ $.fn.getForm = function()
 	}	
 	
 	return sXml;
-}
+};

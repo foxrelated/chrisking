@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Core
- * @version 		$Id: country.class.php 4607 2012-08-27 07:23:45Z Miguel_Espinoza $
+ * @version 		$Id: country.class.php 7031 2014-01-08 17:53:30Z Fern $
  */
 class Core_Service_Country_Country extends Phpfox_Service 
 {
@@ -149,14 +149,23 @@ class Core_Service_Country_Country extends Phpfox_Service
 			$aAll = $this->database()->select('cc.child_id, cc.name as child_name, c.country_iso, c.name as country_name')
 				->from(Phpfox::getT('country'), 'c')
 				->leftjoin(Phpfox::getT('country_child'), 'cc', 'cc.country_iso = c.country_iso')
+				->order('c.name ASC')
 				->execute('getSlaveRows');
 			$aCountries = array();
 			foreach ($aAll as $aItem)
 			{
 				if (!isset($aCountries[$aItem['country_iso']]))
 				{
+					// http://www.phpfox.com/tracker/view/14982/
+					if(!preg_match('/&#[A-F0-9]+/i', $aItem['country_name']))
+					{
+						// Means, it does not contains unicode, therefore, it was not processed or added through PHPFox
+						$aItem['country_name'] = htmlentities($aItem['country_name'], ENT_QUOTES);
+					}
+					// END
+					
 					$aCountries[$aItem['country_iso']] =  array(
-						'name' => htmlentities($aItem['country_name'], ENT_QUOTES),
+						'name' => $aItem['country_name'], //htmlentities($aItem['country_name'], ENT_QUOTES),
 						'country_iso' => $aItem['country_iso'],
 						'children' => array()
 					);
@@ -164,9 +173,18 @@ class Core_Service_Country_Country extends Phpfox_Service
 				
 				if (isset($aItem['child_id']) && !empty($aItem['child_id']))
 				{
+					// http://www.phpfox.com/tracker/view/14982/
+					$aItem['child_name_decoded'] = $aItem['child_name'];
+					if(!preg_match('/&#[A-F0-9]+/i', $aItem['child_name']))
+					{
+						// Means, it does not contains unicode, therefore, it was not processed or added through PHPFox
+						$aItem['child_name'] = htmlentities($aItem['child_name'], ENT_QUOTES);
+					}
+					// END
+					
 					$aCountries[$aItem['country_iso']]['children'][$aItem['child_id']] = array(
-						'name' => htmlentities($aItem['child_name'], ENT_QUOTES),
-						'name_decoded' => $aItem['child_name'],
+						'name' => $aItem['child_name'], // htmlentities($aItem['child_name'], ENT_QUOTES),
+						'name_decoded' => $aItem['child_name_decoded'],
 						'child_id' => $aItem['child_id']
 					);
 				}
@@ -174,6 +192,7 @@ class Core_Service_Country_Country extends Phpfox_Service
 			
 			$this->cache()->save($sCacheId, $aCountries);
 		}
+		
 		return $aCountries;
 	}
 	

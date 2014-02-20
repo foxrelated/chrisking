@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Error
- * @version 		$Id: 404.class.php 2766 2011-07-29 11:58:31Z Raymond_Benc $
+ * @version 		$Id: 404.class.php 5846 2013-05-09 10:47:40Z Raymond_Benc $
  */
 class Error_Component_Controller_404 extends Phpfox_Component 
 {
@@ -21,6 +21,9 @@ class Error_Component_Controller_404 extends Phpfox_Component
 	public function process()
 	{
 		$aRequests = Phpfox::getLib('request')->getRequests();
+        
+        if ($sPlugin = Phpfox_Plugin::get('error.component_controller_notfound_1')){eval($sPlugin); if (isset($mReturnPlugin)){ return $mReturnPlugin;}}
+        
 		$aNewRequests = array();
 		$iCnt = 0;
 		foreach ($aRequests as $sKey => $sValue)
@@ -71,7 +74,7 @@ class Error_Component_Controller_404 extends Phpfox_Component
 			$sRedirect = Phpfox::callback($aNewRequests['req1'] . '.legacyRedirect', $aNewRequests);	
 		}
 		
-		if (isset($sRedirect) && $sRedirect !== false)
+		if (isset($sRedirect) && $sRedirect !== false && !defined('PHPFOX_IS_FORCED_404'))
 		{
 			header('HTTP/1.1 301 Moved Permanently');
 			
@@ -149,6 +152,11 @@ class Error_Component_Controller_404 extends Phpfox_Component
 				exit;		
 			}	
 		}
+		
+		$this->template()->errorClearAll();
+		$this->template()->setTitle('Page Not Found');	
+		$this->template()->setBreadcrumb('Page Not Found');
+		$this->template()->assign('aFilterMenus', array());		
 	}
 }
 

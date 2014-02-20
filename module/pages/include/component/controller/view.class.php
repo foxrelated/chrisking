@@ -93,7 +93,7 @@ class Pages_Component_Controller_View extends Phpfox_Component
 		
 		(($sPlugin = Phpfox_Plugin::get('pages.component_controller_view_build')) ? eval($sPlugin) : false);
 		
-		$this->setParam('aPage', $aPage);
+		
 		$this->setParam('aParentModule', array(			
 				'module_id' => 'pages',
 				'item_id' => $aPage['page_id'],
@@ -107,15 +107,37 @@ class Pages_Component_Controller_View extends Phpfox_Component
 		}
 		
 		$sModule = $this->request()->get(($this->request()->get('req1') == 'pages' ? 'req3' : 'req2'));
-		if (empty($sModule) && !empty($aPage['landing_page']))
+		
+		if (empty($sModule) && !empty($aPage['landing_page'])/* && $this->request()->getInt('comment-id') < 1*/)
 		{
 			$sModule = $aPage['landing_page'];
 			$sCurrentModule = $aPage['landing_page'];
-		}		
+		}
 		
 		(($sPlugin = Phpfox_Plugin::get('pages.component_controller_view_assign')) ? eval($sPlugin) : false);
 		
-		$this->template()->assign(array(
+		if (isset($aPage['use_timeline']) && $aPage['use_timeline'])
+		{
+			$aPageMenus = Phpfox::getService('pages')->getMenu($aPage);
+			if (!defined('PAGE_TIME_LINE'))
+			{
+				define('PAGE_TIME_LINE', true);
+			}
+			$aPage['user_name'] = $aPage['title'];
+
+			$this->template()->setFullSite()
+				->assign(array(
+				    'aUser' => $aPage,
+				    'aProfileLinks' => $aPageMenus))
+				->setHeader(array(
+					'<script type="text/javascript">oParams["keepContent4"] = false;</script>'
+					));
+		}
+		
+		$this->setParam('aPage', $aPage);
+		
+		$this->template()			
+			->assign(array(
 					'aPage' => $aPage,
 					'sCurrentModule' => $sCurrentModule,
 					'bCanViewPage' => $bCanViewPage,
@@ -126,7 +148,8 @@ class Pages_Component_Controller_View extends Phpfox_Component
 			->setHeader('cache', array(				
 				'profile.css' => 'style_css',
 				'pages.css' => 'style_css',
-				'pages.js' => 'module_pages'
+				'pages.js' => 'module_pages',
+                'player/flowplayer/flowplayer.js' => 'static_script'
 			)
 		);
 		
@@ -156,13 +179,14 @@ class Pages_Component_Controller_View extends Phpfox_Component
 		}
 		elseif ($bCanViewPage && $sModule && Phpfox::getService('pages')->isWidget($sModule) && !$this->request()->getInt('comment-id'))
 		{
+			define('PHPFOX_IS_PAGES_WIDGET', true);
 			$this->template()->assign(array(
 					'aWidget' => Phpfox::getService('pages')->getWidget($sModule)
 				)
 			);
 		}
 		else
-		{			
+		{
 			$bCanPostComment = true;
 			if ($sCurrentModule == 'pending')
 			{
@@ -197,6 +221,8 @@ class Pages_Component_Controller_View extends Phpfox_Component
 					$bCanPostComment = false;
 				}
 			}			
+			
+			define('PHPFOX_IS_PAGES_IS_INDEX', true);
 
 			$this->setParam('aFeedCallback', array(
 					'module' => 'pages',
@@ -207,7 +233,10 @@ class Pages_Component_Controller_View extends Phpfox_Component
 					'feed_comment' => 'pages_comment'				
 				)
 			);			
-
+			if (isset($aPage['text']) && !empty($aPage['text']))
+			{
+				$this->template()->setMeta('description', $aPage['text']);
+			}
 			$this->template()->setTitle($aPage['title'])
 				->setEditor()
 				->setHeader('cache', array(
@@ -219,8 +248,13 @@ class Pages_Component_Controller_View extends Phpfox_Component
 						'index.css' => 'module_pages',
 						'feed.js' => 'module_feed'						
 					)
-				);		
-			
+				);
+
+			if (Phpfox::getParam('video.convert_servers_enable'))
+			{
+				$this->template()->setHeader('<script type="text/javascript">document.domain = "' . Phpfox::getParam('video.convert_js_parent') . '";</script>');
+			}
+
 			if ($sModule == 'designer' && $aPage['is_admin'])
 			{
 				Phpfox::getUserParam('pages.can_design_pages', true);
@@ -256,14 +290,14 @@ class Pages_Component_Controller_View extends Phpfox_Component
 							)					
 						)
 						->setHeader(array(
-							'<script type="text/javascript">function designOnUpdate() { $Core.design.updateSorting(); }</script>',		
-							'<script type="text/javascript">$Core.design.init({type_id: \'pages\', item_id: \'' . $aPage['page_id'] . '\'});</script>'
+							'<script type="text/javascript">$Behavior.pages_controller_view_designonuptade = function() { function designOnUpdate() { $Core.design.updateSorting(); } };</script>',		
+							'<script type="text/javascript">$Behavior.pages_controller_view_design_init = function() { $Core.design.init({type_id: \'pages\', item_id: \'' . $aPage['page_id'] . '\'}); };</script>'
 							)
 						)
 						->assign('sCustomDesignId', $aPage['page_id']
-					);				
+					);
 			}				
-		}	
+		}
 	}
 	
 	/**

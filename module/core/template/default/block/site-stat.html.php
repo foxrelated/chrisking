@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: site-stat.html.php 2826 2011-08-11 19:41:03Z Raymond_Benc $
+ * @version 		$Id: site-stat.html.php 5291 2013-01-31 12:29:06Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 

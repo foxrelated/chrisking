@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: stream.html.php 1528 2010-03-16 19:16:56Z Miguel_Espinoza $
+ * @version 		$Id: stream.html.php 5616 2013-04-10 07:54:55Z Miguel_Espinoza $
  */
 
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -22,7 +22,7 @@ defined('PHPFOX') or exit('NO DICE!');
 			$aPreviousPhoto.mature == 0 ||
 			(Phpfox::getUserId() && Phpfox::getUserParam('photo.photo_mature_age_limit') <= Phpfox::getUserBy('age'))}
 		<a href="{$aPreviousPhoto.link}" title="{phrase var='photo.title_by_full_name' title=$aPreviousPhoto.title full_name=$aPreviousPhoto.full_name|clean}">
-			{img server_id=$aPreviousPhoto.server_id path='photo.url_photo' file=$aPreviousPhoto.destination suffix='_75' max_width=75 max_height=75 title=$aPreviousPhoto.title}
+			{img server_id=$aPreviousPhoto.server_id path='photo.url_photo' file=$aPreviousPhoto.destination suffix='_50' max_width=75 max_height=75 title=$aPreviousPhoto.title}
 		</a>
 
 		{elseif $aPreviousPhoto.mature == 1}
@@ -45,7 +45,7 @@ defined('PHPFOX') or exit('NO DICE!');
 	</div>
 	<div style="float:left; width:20%;">
 	    <div class="photo_stream_photo photo_stream_photo_active">
-			{img server_id=$aForms.server_id path='photo.url_photo' file=$aForms.destination suffix='_75' max_width=75 max_height=75 title=$aForms.title}
+			{img server_id=$aForms.server_id path='photo.url_photo' file=$aForms.destination suffix='_50' max_width=75 max_height=75 title=$aForms.title}
 	    </div>
 	</div>
 	<div style="float:left; width:40%;">
@@ -56,7 +56,7 @@ defined('PHPFOX') or exit('NO DICE!');
 			$aNextPhoto.mature == 0 ||
 			(Phpfox::getUserId() && Phpfox::getUserParam('photo.photo_mature_age_limit') <= Phpfox::getUserBy('age'))}
 		<a href="{$aNextPhoto.link}" title="{phrase var='photo.title_by_full_name' title=$aNextPhoto.title full_name=$aNextPhoto.full_name|clean}">
-			{img server_id=$aNextPhoto.server_id path='photo.url_photo' file=$aNextPhoto.destination suffix='_75' max_width=75 max_height=75 title=$aNextPhoto.title}
+			{img server_id=$aNextPhoto.server_id path='photo.url_photo' file=$aNextPhoto.destination suffix='_50' max_width=75 max_height=75 title=$aNextPhoto.title}
 		</a>
 
 		{elseif $aNextPhoto.mature == 1}

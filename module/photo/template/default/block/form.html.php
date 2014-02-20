@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: form.html.php 4418 2012-06-29 07:32:51Z Raymond_Benc $
+ * @version 		$Id: form.html.php 5477 2013-03-11 07:15:40Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -15,6 +15,9 @@ defined('PHPFOX') or exit('NO DICE!');
 		<div class="message" style="width:85%;">
 			{phrase var='photo.image_is_pending_approval'}
 		</div>
+		{/if}
+		{if isset($aForms.server_id)}
+		<div><input type="hidden" name="val{if isset($aForms.photo_id)}[{$aForms.photo_id}]{/if}[server_id]" value="{$aForms.server_id}" /></div>
 		{/if}
 		<div class="table">
 			<div class="table_left">

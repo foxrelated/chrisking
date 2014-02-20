@@ -1,5 +1,5 @@
-var $Core = {};
-var $Behavior = {};
+// var $Core = {};
+// var $Behavior = {};
 var $Cache = {};
 var $oEventHistory = {};
 var $oStaticHistory = {};
@@ -32,7 +32,7 @@ $.fn.message = function(sMessage, sType)
 	this.html(this.html() + '<div class="' + sClass + '">' + sMessage + '</\div>');
 	
 	return this;
-}
+};
 
 $.getParams = function(sUrl)
 {
@@ -42,15 +42,15 @@ $.getParams = function(sUrl)
 	
 	var aUrlParams = Array();
 
-	for (i = 0; i < aFinal.length; i++)
+	for (count = 0; count < aFinal.length; count++)
 	{
-		var aArg = aFinal[i].split('=');	
+		var aArg = aFinal[count].split('=');	
 		
 		aUrlParams[aArg[0]] = aArg[1];
 	}
 	
 	return aUrlParams;
-}
+};
 
 $.ajaxProcess = function(sMessage, sSize)
 {
@@ -62,7 +62,7 @@ $.ajaxProcess = function(sMessage, sSize)
 	}	
 	
 	return '<span style="margin-left:4px; margin-right:4px; font-size:9pt; font-weight:normal;"><img src="' + eval('oJsImages.ajax_' + sSize + '') + '" class="v_middle" /> ' + (sMessage === 'no_message' ? '' : sMessage + '...') + '</span>';
-}
+};
 
 $Behavior.imageHoverHolder = function()
 {
@@ -121,7 +121,7 @@ $Behavior.imageHoverHolder = function()
 		
 		return false;
 	});
-}
+};
 
 $Behavior.targetBlank = function()
 {
@@ -130,7 +130,7 @@ $Behavior.targetBlank = function()
 		window.open($(this).get(0).href);
 		return false;
 	});
-}
+};
 
 var bCacheIsHover = false;
 $Behavior.dropDown = function()
@@ -169,12 +169,12 @@ $Behavior.dropDown = function()
 			$('.dropContent').hide();
 			$('.sub_menu_bar li a').each(function(){
 				if ($(this).hasClass('is_already_open')){
-					$(this).removeClass('is_already_open')
+					$(this).removeClass('is_already_open');
 				}
 			});
 		}
 	});
-}
+};
 
 /**
  * Drop down auto jump
@@ -198,7 +198,7 @@ $Behavior.goJump = function()
 		// All set lets send them to the new page
 		window.location.href = $(this).get(0).value;
 	});
-}
+};
 
 $Behavior.inlinePopup = function()
 {
@@ -216,7 +216,7 @@ $Behavior.inlinePopup = function()
 		
 		return false;
 	});
-}
+};
 
 $Behavior.blockClick = function()
 {
@@ -231,9 +231,9 @@ $Behavior.blockClick = function()
 			var aParams = explode('?', aParts[1]);
 			var aParamParts = explode('&', aParams[1]);
 			var aRequest = Array();
-			for (i in aParamParts)
+			for (count in aParamParts)
 			{
-				var aPart = explode('=', aParamParts[i]);
+				var aPart = explode('=', aParamParts[count]);
 				
 				aRequest[aPart[0]] = aPart[1];
 			}			
@@ -245,7 +245,7 @@ $Behavior.blockClick = function()
 		
 		return false;
 	});
-}
+};
 
 $Behavior.deleteLink = function()
 {
@@ -266,7 +266,7 @@ $Behavior.deleteLink = function()
 				
 		return false;			
 	});	
-}
+};
 
 $Behavior.globalToolTip = function()
 {
@@ -316,7 +316,7 @@ $Behavior.globalToolTip = function()
 			.css('top', '0px')
 			.css('left', '0px');
 	});
-}
+};
 
 $Behavior.clearTextareaValue = function()
 {
@@ -327,7 +327,7 @@ $Behavior.clearTextareaValue = function()
 			$(this).val('');
 		}
 	});
-}
+};
 
 $Behavior.loadEditor = function()
 {
@@ -335,38 +335,52 @@ $Behavior.loadEditor = function()
 	{
 		Editor.getEditors();
 	}	
-}
+};
 
 var sMoreFeedIds = {};
-$Core.loadMoreFeeds = function(){
-    $.ajaxCall('feed.appendMore', 'ids=' + sMoreFeedIds, 'GET');
-    
+$Core.loadMoreFeeds = function()
+{
+	$Core.bRebuiltActivityFeed = false;
+    $.ajaxCall('feed.appendMore', 'ids=' + sMoreFeedIds, 'GET');    
     return false;
-}
+};
 
-$Core.rebuildActivityFeedCount = function(iTotal, sIds){
+/* This controls when to show the "X More Feeds" sign. */
+$Core.bRebuiltActivityFeed = false;
+
+$Core.rebuildActivityFeedCount = function(iTotal, sIds)
+{
 	
 	sMoreFeedIds = sIds;
 	
     $('.activity_feed_updates_link').hide();    
-    if (iTotal){
+    if (iTotal && $Core.bRebuiltActivityFeed == true)
+    {
         $('#activity_feed_updates_link_holder').show();
-        if (iTotal == 1){
+        if (iTotal == 1)
+        {
             $('#activity_feed_updates_link_single').show();
         }
-        else{
+        else
+        {
             $('#activity_feed_updates_link_plural').show();
             $('#js_new_update_view').html(iTotal);            
         }        
     }  
-	else{
+	else
+	{
 		$('#activity_feed_updates_link_holder').hide();
+		$Core.bRebuiltActivityFeed = true;
 	}
-}
+};
 
 $Core.reloadActivityFeed = function(){
-	setTimeout("$.ajaxCall('feed.reloadActivityFeed', 'reload-ids=' + $Core.getCurrentFeedIds(), 'GET');", 2000);
-}
+	/* Enable ajax reload only if not checking a hashtag */
+	if ($('#sHashTagValue').length < 1)
+	{
+		setTimeout("$.ajaxCall('feed.reloadActivityFeed', 'reload-ids=' + $Core.getCurrentFeedIds(), 'GET');", 2000);
+	}
+};
 
 $Core.getCurrentFeedIds = function()
 {
@@ -376,7 +390,7 @@ $Core.getCurrentFeedIds = function()
 	});	
 	
 	return sMoreFeedIds;
-}
+};
 
 $Core.processForm = function(sSelector, bReset)
 {
@@ -390,12 +404,12 @@ $Core.processForm = function(sSelector, bReset)
 		$(sSelector).find('.button:first').addClass('button_off').attr('disabled', true);
 		$(sSelector).find('.table_clear_ajax').show();
 	}
-}
+};
 
 $Core.exists = function(sSelector)
 {
 	return ($(sSelector).length > 0 ? true : false);
-}
+};
 
 $Core.searchFriends = function($aParams)
 {	
@@ -403,16 +417,16 @@ $Core.searchFriends = function($aParams)
 		return;
 	}
 	$Core.searchFriendsInput.init($aParams);
-}
+};
 
 $Core.loadStaticFile = function($aFiles)
 {
 	$Core.loadStaticFiles($aFiles);	
-}
+};
 
 var sCustomHistoryUrl = '';
 $Core.loadStaticFiles = function($aFiles)
-{	
+{
 	if (typeof($aFiles) == 'string')
 	{
 		$aFiles = new Array($aFiles);	
@@ -430,14 +444,42 @@ $Core.loadStaticFiles = function($aFiles)
 		return;
 	}		
 	
+	/* $Core.loadInit is triggered before this function finishes loading all the JS files we use this counter to control loadInit and make it wait for all JS files*/
+	$Core.dynamic_js_files = 0;
+	$($aFiles).each(function($sKey, $sFile){
+		if (substr($sFile, -3) == '.js' && !isset($oStaticHistory[$sFile]))
+		{
+			$Core.dynamic_js_files++;
+		}
+	});
+	
 	$($aFiles).each(function($sKey, $sFile)
-	{		
+	{
 		if (!isset($oStaticHistory[$sFile]))
 		{
 			$oStaticHistory[$sFile] = true;
 			if (substr($sFile, -3) == '.js')
 			{
-				$('head').append('<script type="text/javascript" src="' + $sFile + '?v=' + getParam('sStaticVersion') + '"></script>');
+				// $('head').append('<script type="text/javascript" src="' + $sFile + '?v=' + getParam('sStaticVersion') + '"></script>');
+				/*var d = document;
+				var js, id = $sFile; 
+				if (d.getElementById(id)) {return;}
+				js = d.createElement('script'); 
+				js.id = id; 
+				js.async = true;
+				js.src = $sFile;
+				js.onreadystatechange= function () 
+				{
+					console.log('State for ' + $sFile + ' is ' + this.readyState);
+					if (this.readyState == 'complete')
+					{
+						$Core.dynamic_js_files--;
+					}
+				}
+				d.getElementsByTagName('head')[0].appendChild(js);*/
+				$.ajax($sFile).always(function(){
+					$Core.dynamic_js_files--;
+				});
 			}
 			else if (substr($sFile, -4) == '.css')
 			{				
@@ -453,10 +495,11 @@ $Core.loadStaticFiles = function($aFiles)
 				eval($sFile);				
 			}
 		}
-		else{
+		else
+		{
 			if (substr($sFile, -10) == 'custom.css'){
 				sCustomHistoryUrl = $sFile;
-			}			
+			}
 		}
 	});	
 
@@ -464,7 +507,8 @@ $Core.loadStaticFiles = function($aFiles)
 		$('#js_custom_css_loader').remove();
 		$('head').append('<link id="js_custom_css_loader" rel="stylesheet" type="text/css" href="' + sCustomHistoryUrl + '?v=' + getParam('sStaticVersion') + '" />');			
 	}
-}
+};
+
 
 $Behavior.globalInit = function()
 {
@@ -699,10 +743,10 @@ $Behavior.globalInit = function()
 		return false;
 	});
 
-	if ($.browser.msie && parseInt($.browser.version, 10) < 8 && !getParam('bJsIsMobile')){
+	if (typeof $.browser != 'undefined' && $.browser.msie && parseInt($.browser.version, 10) < 8 && !getParam('bJsIsMobile')){
 		$('#js_update_internet_explorer').show();
 	}
-}
+};
 
 $Core.pageSectionMenuShow = function(sId)
 {
@@ -718,7 +762,7 @@ $Core.pageSectionMenuShow = function(sId)
 			return false;
 		}
 	});
-}
+};
 
 $Core.moderationLinkClear = function()
 {
@@ -740,7 +784,7 @@ $Core.moderationLinkClear = function()
 	$('.moderation_holder ul').hide();
 	$('.moderation_action_unselect').hide();
 	$('.moderation_action_select').show();	
-}
+};
 
 $Core.moderationLinkClick = function(oObj, sType)
 {
@@ -777,7 +821,7 @@ $Core.moderationLinkClick = function(oObj, sType)
 	}
 	
 	return false;	
-}
+};
 
 $Behavior.privacySettingDropDown = function()
 {	
@@ -852,7 +896,7 @@ $Behavior.privacySettingDropDown = function()
 		
 		return false;
 	});	
-}
+};
 
 var cacheShadownInfo = false;
 var shadow = null;
@@ -884,7 +928,7 @@ $Core.resizeTextarea = function(oObj)
                 
 		shadow.html(val);
 		oObj.css('height', Math.max(shadow.height() + 20, minHeight));              
-}
+};
 
 $Core.getObjectPosition = function(sId) 
 {
@@ -906,17 +950,17 @@ $Core.getObjectPosition = function(sId)
 	}
     
 	return {left: curleft, top: curtop};
-}
+};
 
 $Core.getFriends = function(aParams)
 {
 	tb_show('', $.ajaxBox('friend.search', 'height=410&width=600&input=' + aParams['input'] + '&type=' + (isset(aParams['type']) ? aParams['type'] : '') + ''));
-}
+};
 
 $Core.browseUsers = function(aParams)
 {
 	tb_show('', $.ajaxBox('user.browse', 'height=410&width=600&input=' + aParams['input'] + ''));
-}
+};
 
 $Core.composeMessage = function(aParams)
 {
@@ -926,31 +970,31 @@ $Core.composeMessage = function(aParams)
 	}
 	
 	tb_show('', $.ajaxBox('mail.compose', 'height=300&width=500' + (!isset(aParams['user_id']) ? '' : '&id=' + aParams['user_id']) + '&no_remove_box=true'));
-}
+};
 
 $Core.addAsFriend = function(iUserId)
 {
 	tb_show('', $.ajaxBox('friend.request', 'width=420&user_id=' + iUserId + ''));
 	
 	return false;
-}
+};
 
 $Core.getParams = function(sHref)
 {
 	var aParams = new Array();
 	var aUrlParts = explode('/', sHref);
 	var iRequest = 0;
-	for (i in aUrlParts)
+	for (count in aUrlParts)
 	{
-		if (empty(aUrlParts[i]))
+		if (empty(aUrlParts[count]))
 		{
 			continue;
 		}
 			
-		aUrlParts[i] = aUrlParts[i].replace('#', '');
-		if (aUrlParts[i].match(/_/i))
+		aUrlParts[count] = aUrlParts[count].replace('#', '');
+		if (aUrlParts[count].match(/_/i))
 		{
-			var aUrlParams = explode('_', aUrlParts[i]);
+			var aUrlParams = explode('_', aUrlParts[count]);
 				
 			aParams[aUrlParams[0]] = aUrlParams[1];
 		}
@@ -958,12 +1002,12 @@ $Core.getParams = function(sHref)
 		{
 			iRequest++;			
 
-			aParams['req' + iRequest] = aUrlParts[i];		
+			aParams['req' + iRequest] = aUrlParts[count];		
 		}	
 	}	
 	
 	return aParams;	
-}
+};
 
 $Core.getRequests = function(sHref, bReturnPath)
 {
@@ -974,12 +1018,17 @@ $Core.getRequests = function(sHref, bReturnPath)
 	switch (oCore['core.url_rewrite'])
 	{
 		case '1':
-			var oReq = new RegExp("" + getParam('sJsHome') + "(.*?)$","i");
-			var aMatches = oReq.exec(sHref);
-			var aParts = explode('/', aMatches[1]);
-									
-			sUrlString = '/' + aMatches[1];			
-					
+			if (getParam('sHostedVersionId') == ''){
+				var oReq = new RegExp("" + getParam('sJsHome') + "(.*?)$","i");
+				var aMatches = oReq.exec(sHref + (getParam('sHostedVersionId') == '' ? '' : getParam('sHostedVersionId') + '/'));
+				var aParts = explode('/', aMatches[1]);
+										
+				sUrlString = '/' + aMatches[1];				
+			}
+			else {						
+				var aParts = explode('/', ltrim(sHref.pathname, '/'));										
+				sUrlString = sHref.pathname;				
+			}					
 			break;
 		case '3':
 			if (oCore['profile.is_user_profile'])
@@ -1012,7 +1061,7 @@ $Core.getRequests = function(sHref, bReturnPath)
 	}	
 	
 	return $Core.parseUrlString(sUrlString);
-}
+};
 
 $Core.parseUrlString = function(sUrlString)
 {
@@ -1021,18 +1070,18 @@ $Core.parseUrlString = function(sUrlString)
 	var iRequest = 0;
 	var iLoadCount = 0;
 	
-	for (i in aUrlParts)
+	for (count in aUrlParts)
 	{
-		if (empty(aUrlParts[i]) || aUrlParts[i] == '#')
+		if (empty(aUrlParts[count]) || aUrlParts[count] == '#')
 		{
 			continue;
 		}		
 		
 		iLoadCount++;
 		
-		if (iLoadCount != 1 && aUrlParts[i].match(/_/i))
+		if (iLoadCount != 1 && aUrlParts[count].match(/_/i))
 		{
-			var aUrlParams = explode('_', aUrlParts[i]);
+			var aUrlParams = explode('_', aUrlParts[count]);
 				
 			sParams += '&' + aUrlParams[0] + '=' + aUrlParams[1];	
 		}
@@ -1040,20 +1089,20 @@ $Core.parseUrlString = function(sUrlString)
 		{
 			iRequest++;
 			
-			sParams += '&req' + iRequest + '=' + aUrlParts[i];						
+			sParams += '&req' + iRequest + '=' + aUrlParts[count];						
 		}	
 	}	
 	
 	return sParams;
-}
+};
 
 $Core.reverseUrl = function(sForm, aSkip)
 {	
 	var aForms = explode('&', sForm);	
 	var sUrlParam = '';	
-	for (i in aForms)
+	for (count in aForms)
 	{			
-		var aFormParts = aForms[i].match(/(.*?)=(.*?)$/i);
+		var aFormParts = aForms[count].match(/(.*?)=(.*?)$/i);
 		if (aFormParts !== null)
 		{			
 			if (isset(aSkip))
@@ -1069,7 +1118,7 @@ $Core.reverseUrl = function(sForm, aSkip)
 	}		
 		
 	return sUrlParam;
-}
+};
 
 $Core.getHashParam = function(sHref)
 {
@@ -1083,14 +1132,14 @@ $Core.getHashParam = function(sHref)
 	sParams = ltrim(sParams, '&');
 	
 	return sParams;
-}
+};
 
 $Core.box = function($sRequest, $sWidth, $sParams)
 {
 	tb_show('', $.ajaxBox($sRequest, 'width=' + $sWidth + ($sParams ? '&' + $sParams : '')));	
 	
 	return false;
-}
+};
 
 $Core.ajax = function(sCall, $oParams)
 {
@@ -1124,7 +1173,7 @@ $Core.ajax = function(sCall, $oParams)
 		data: sParams,
 		success: $oParams['success']
 	});	
-}
+};
 
 $Core.popup = function(sUrl, aParams)
 {
@@ -1133,9 +1182,9 @@ $Core.popup = function(sUrl, aParams)
 	var sParams = '';
 	var iCount = 0;
 	var bCenter = false;
-	for (i in aParams)
+	for (count in aParams)
 	{
-		if (i == 'center')
+		if (count == 'center')
 		{
 			bCenter = true;
 			continue;
@@ -1147,7 +1196,7 @@ $Core.popup = function(sUrl, aParams)
 			sParams += ',';
 		}	
 		
-		sParams += i + '=' + aParams[i];
+		sParams += count + '=' + aParams[count];
 	}
 	
 	if (bCenter === true)
@@ -1156,12 +1205,12 @@ $Core.popup = function(sUrl, aParams)
 	}
 	
 	window.open(sUrl, iId, sParams);
-}
+};
 
 $Core.ajaxMessage = function()
 {
 	$('#global_ajax_message').html(getPhrase('core.saving')).animate({opacity: 0.9}).slideDown();
-}
+};
 
 /**
  * Used for the accordion effect on sections with many categories
@@ -1171,7 +1220,7 @@ $Core.toggleCategory = function(sName, iId)
     $('.' + sName).toggle();
     $('#show_more_' + iId).toggle();
     $('#show_less_' + iId).toggle();  	
-}
+};
 
 if (substr(window.location.hash, 0, 2) == '#!')
 {
@@ -1209,6 +1258,7 @@ $Core.page = function($aParams)
 	
 	$('#js_user_profile_css').remove();
 	
+	
 	if (isset($aParams['profilecss'])){
 		$('body').append($aParams['profilecss']);
 	}		
@@ -1227,6 +1277,22 @@ $Core.page = function($aParams)
 		if (!empty(sCustomCss)){
 			// $('body').append()
 		}
+	}
+
+    if (isset($aParams['nebula_current_menu'])){
+        $('#nb_features_holder .menu_is_selected').removeClass('menu_is_selected');
+        $('a[href="' + $aParams['nebula_current_menu'] + '"]').addClass('menu_is_selected');
+
+        $('#nb_features_link').removeClass('nb_is_clicked');
+        $('#nb_features_holder').slideUp('fast');
+    }
+    else
+    {
+		$('#nb_features_holder .menu_is_selected').removeClass('menu_is_selected');
+        $('a[href="' + oParams['sJsHome'] + '"]').addClass('menu_is_selected');
+
+        $('#nb_features_link').removeClass('nb_is_clicked');
+        $('#nb_features_holder').slideUp('fast');
 	}
 	
 	document.title = $aParams['title'];
@@ -1249,7 +1315,7 @@ $Core.page = function($aParams)
 	scroll(0,0);
 	
 	$Behavior.loadTinymceEditor = function () {};
-}
+};
 
 $Core.updatePageHistory = function()
 {	
@@ -1260,6 +1326,28 @@ $Core.updatePageHistory = function()
 	}
 		
 	$oEventHistory[$sLocation] = $('#main_content_holder').html();
+};
+
+$Behavior.janRainLoader = function(){	
+	if (!getParam('bJsIsMobile') && $('#janrainEngageEmbedHolder').length < 1)
+	{
+		$('body').prepend('<div style="position:absolute; z-index:5000; display:none;" id="janrainEngageEmbedHolder"><a href="#" style="position:absolute; bottom:5px; right:5px; z-index:1000000;" onclick="$(this).parent().hide(); return false;">Close</a><div id="janrainEngageEmbed"></div></div>');
+	}
+	$('.rpxnow').click(function(){
+		
+		if (getParam('bJsIsMobile')){
+			$.ajaxCall('janrain.login');
+			return false;
+		}
+		janrain.engage.signin.widget.init();
+		$('#janrainEngageEmbedHolder').show();
+		$('#janrainEngageEmbedHolder').css({
+				top: getPageScroll()[1] + (getPageHeight() / 5),
+				left: '50%',
+				'margin-left': '-' + (($('#janrainEngageEmbed').width() / 2) + 12) + 'px'		        
+			});	
+		return false;
+	});
 }
 
 var bAjaxLinkIsClicked = false;
@@ -1267,7 +1355,7 @@ var bCanByPassClick = false;
 var sClickProfileName = '';
 $Behavior.linkClickAll = function()
 {	
-	if ($.browser.msie && $.browser.version == '7.0')
+	if (typeof $.browser != 'undefined' && $.browser.msie && $.browser.version == '7.0')
 	{
 		return false;
 	}
@@ -1286,7 +1374,7 @@ $Behavior.linkClickAll = function()
 			return;
 		}				
 		
-		if (substr($sLink, 0, 7) != 'http://' || substr($sLink, -1) == '#')
+		if ((substr($sLink, 0, 7) != 'http://' && substr($sLink, 0, 8) != 'https://') || substr($sLink, -1) == '#')
 		{
 			return;
 		}
@@ -1367,25 +1455,37 @@ $Behavior.linkClickAll = function()
 		
 		if (typeof BehaviorlinkClickAllAClick == 'function')
 		{
-			BehaviorlinkClickAllAClick($aUrlParts);
+			var bReturn = BehaviorlinkClickAllAClick($aUrlParts);
+			if (bReturn == true)
+			{
+				return false;
+			}
 		}
 		$.ajaxCall('core.page', 'ajax_page_display=true' + $Core.getRequests(this) + '&do=' + $Core.getRequests(this, true), 'GET');
 					
 		return false;
 	});
-}
+};
 
 $Core.loadInit = function()
 {
+	if ($Core.dynamic_js_files > 0)
+	{
+		setTimeout(function(){ 
+			$Core.loadInit();
+		}, 20);
+		return false;
+	}
+	
 	debug('$Core.loadInit() Loaded');		
 	
-	$('*').unbind();
+	$('*:not(.star-rating, .dont-unbind)').unbind();
 	
 	$.each($Behavior, function() 
 	{		
 		this(this);
 	});	
-}
+};
 
 $Core.init = function()
 {	
@@ -1395,7 +1495,7 @@ $Core.init = function()
 	}	
 	
 	$bDocumentIsLoaded = true;
-	
+		
 	$(document).ready(function()
 	{	
 		$.each($Behavior, function() 
@@ -1495,11 +1595,11 @@ $Core.init = function()
 			}
     	}
     }
-}
+};
 
 $Core.hasPushState = function(){
 	return (typeof(window.history.pushState) == 'function' ? true : false);
-}
+};
 
 /**
  * Adds a hash to the URL string, which is used to emulate a AJAX page
@@ -1514,7 +1614,7 @@ $Core.addUrlPager = function(oObject, bShort)
 	else{
 		window.location = '#!' + (bShort ? oObject.href : $Core.getRequests(oObject.href, true));	
 	}
-}
+};
 
 $Core.changeHistoryState = function(event){
 				$('.js_box').each(function()
@@ -1582,22 +1682,46 @@ $Core.changeHistoryState = function(event){
 				{
 					bAjaxLinkIsClicked = false;
 				}	
-}
+};
+
+$Core.reloadPage = function()
+{
+	/* which is why we have these fallbacks*/
+	if (typeof window.location.reload == 'function') window.location.reload();
+	else if (typeof history != 'undefined' && history.go == 'function') history.go(0);	
+};
 
 $Behavior.addModerationListener = function()
 {	
+	
 	$(window).on('moderation_ended', function(){
 		/* Search for moderation rows */
 		if ($('.moderation_row:visible').length < 1)
 		{
-			/* Check if we have a pager */
-			if ( $('a.pager_next_link').length > 0)
-			{
-				window.location.href = $('a.pager_next_link:first').attr('href');
-			}
-			else if ($('a.pager_previous_link').length > 0)
+			if ($('a.pager_previous_link').length > 0 && $('a.pager_previous_link:first').attr('href') != '#')
 			{
 				window.location.href = $('a.pager_previous_link:first').attr('href');
+				return;
+			}
+			
+			if ( window.location.href.indexOf('page_1') > (-1) )
+			{
+				window.location.href = window.location.href.replace('/page_1','');
+				return;
+			}
+			
+			return $Core.reloadPage();
+			
+			/* Check if we have a pager */
+						
+			if ( $('a.pager_next_link').length > 0)
+			{
+				if (isset($Core.Pager) && isset($Core.Pager.count) && ($Core.Pager.count - $Core.Pager.size ) > 20)
+				{
+					window.location.href = $('a.pager_next_link:first').attr('href');
+					return;
+				}
+				window.location.href = $('a.pager_next_link:first').attr('href');
 			}
 			else
 			{
@@ -1613,4 +1737,140 @@ $Behavior.addModerationListener = function()
 			/* console.log('Moderation_rows still exist and are not being animated');*/
 		}
 	});
+};
+
+/* We use the block core.delayed-block as placeholder */
+$Behavior.loadDelayedBlocks = function()
+{
+	if (isset($Core.delayedBlocks) && Object.prototype.toString.call($Core.delayedBlocks).indexOf('Array') > (-1) )
+	{
+		// we could issue several ajax calls (one per location)
+		$.ajaxCall('core.loadDelayedBlocks', 'locations=' + $Core.delayedBlocks.join(','));
+	}
+	
+	/* We load the main content (the middle column) here */
+	if ($('#delayed_block').length > 0)
+	{	
+		if ( //oCore['profile.is_user_profile'] == true || 
+			(oParams['sController'] == 'core.index-member') ||
+			(oCore['sController'] == 'pages.view'))
+		{
+			console.log('Behavior.loadDelayedBlock, Dont load the content');			
+		}
+		else
+		{
+			var sContent = $('#delayed_block').html();
+			// $('#delayed_block').show();
+			// Get the params from the url
+			// console.log('Behavior.loadDelayedBlock, load ' + sContent);
+			var sUrl = $Core.getRequests(window.location.href, true);
+			var aUrl = sUrl.split('/');
+			var oUrlParams = {};
+			var aTemp = [];
+			
+			for (var count in aUrl)
+			{
+				if (aUrl[count].indexOf('_') > (-1) )
+				{
+					aTemp = aUrl[count].split('_');
+					oUrlParams[aTemp[0]] = aTemp[1];
+				}
+				oUrlParams['req' + j] = aUrl[count];
+			}
+			var sParams = $.param({params: oUrlParams});
+			
+			//setTimeout(function(){	/* Uncomment to test */
+				$.ajaxCall('core.loadDelayedBlocks', 'loadContent=' + sContent + '&' + sParams, 'GET');
+			// }, 2000);
+		}
+	}
+	/* Any extra delayed loading is done here, for example with the comments */
+	if ($('.load_delayed'). length > 0)
+	{
+		var oGet = {};
+		$('.load_delayed').each(function(){
+			if ($(this).attr('id') == undefined || $(this).attr('id').length < 1)
+			{
+				$(this).attr('id', 'load_delayed_' + Math.floor(Math.random() * 999));
+			}
+			oGet[$(this).find('.block_id').html()] = {
+				block_id: $(this).find('.block_id').html(),
+				block_name: $(this).find('.block_name').html(), 
+				block_param: $(this).find('.block_param').html()
+			};
+		});
+		var sParams = encodeURIComponent(JSON.stringify(oGet));
+		console.log(sParams);
+		//setTimeout(function(){	/* Uncomment to test */
+			$.ajaxCall('core.loadDelayedBlocks', 'delayedTemplates=' + sParams, 'GET');
+		// }, 2000);
+	}	
+};
+
+		/************************ Compatibility Features (Mostly due to IE8) *******************************/
+/* Production steps of ECMA-262, Edition 5, 15.4.4.19
+   Reference: http://es5.github.com/#x15.4.4.19
+   Taken from https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
+*/
+if (!Array.prototype.map) {
+  Array.prototype.map = function(callback, thisArg) {
+ 
+    var T, A, k;
+ 
+    if (this == null) {
+      throw new TypeError(" this is null or not defined");
+    }
+    var O = Object(this);
+    var len = O.length >>> 0;
+    if (typeof callback !== "function") {
+      throw new TypeError(callback + " is not a function");
+    }
+    if (thisArg) {
+      T = thisArg;
+    }
+    A = new Array(len);
+    k = 0;
+    while(k < len) {
+ 
+      var kValue, mappedValue;
+      if (k in O) {
+ 
+        kValue = O[ k ];
+        mappedValue = callback.call(T, kValue, k, O);
+        A[ k ] = mappedValue;
+      }
+      k++;
+    }
+    return A;
+  };      
+}
+/* Taken from https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/filter */
+if (!Array.prototype.filter)
+{
+  Array.prototype.filter = function(fun /*, thisp */)
+  {
+    "use strict";
+ 
+    if (this == null)
+      throw new TypeError();
+ 
+    var t = Object(this);
+    var len = t.length >>> 0;
+    if (typeof fun != "function")
+      throw new TypeError();
+ 
+    var res = [];
+    var thisp = arguments[1];
+    for (var count = 0; count < len; count++)
+    {
+      if (count in t)
+      {
+        var val = t[count];
+        if (fun.call(thisp, val, j, t))
+          res.push(val);
+      }
+    }
+ 
+    return res;
+  };
 }

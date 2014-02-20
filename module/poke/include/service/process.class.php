@@ -28,12 +28,17 @@ class Poke_Service_Process extends Phpfox_Service
 	 * `status_id` tells if the poke has been seen:
 	 *			1: not seen
 	 *			2: seen
-	 * 
+	 * We have 2 cache files for this because they may have hundreds of pokes.
+     *  The _ajax stores a smaller data set.
 	 * @param int $iUserId 
 	 * @return boolean true if we added a poke.
 	 */
 	public function sendPoke($iUserId)
 	{
+		if ($iUserId == Phpfox::getUserId())
+		{
+			return false; 
+		}
 		/* if the other user has not seen a poke then we do not add it */
 		$iExists = $this->database()->select('poke_id')
 				->from($this->_sTable)
@@ -52,6 +57,9 @@ class Poke_Service_Process extends Phpfox_Service
 		/* Ignore all pokes from $iUserId to us */
 		$this->ignore($iUserId);
 		
+        $this->cache()->remove(array('pokes', $iUserId . '_ajax'));
+        $this->cache()->remove(array('pokes', $iUserId));
+        
 		if (Phpfox::getParam('poke.add_to_feed') && Phpfox::isModule('feed'))
 		{
 			Phpfox::getService('feed.process')->add('poke', $iPokeId);
@@ -72,6 +80,9 @@ class Poke_Service_Process extends Phpfox_Service
 		$this->database()->update($this->_sTable,
 				array('status_id' => 2), 
 				'user_id = ' . (int)$iUserId . ' AND to_user_id = ' . Phpfox::getUserId() . ' AND status_id = 1');
+        
+        $this->cache()->remove(array('pokes', Phpfox::getUserId() . '_ajax'));
+        $this->cache()->remove(array('pokes', Phpfox::getUserId()));
 	}
 	/**
 	 * If a call is made to an unknown method attempt to connect

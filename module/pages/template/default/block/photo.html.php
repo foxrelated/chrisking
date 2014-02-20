@@ -14,10 +14,21 @@ defined('PHPFOX') or exit('NO DICE!');
 <div class="profile_image">
     <div class="profile_image_holder">
 		{if $aPage.is_app}
-		{img server_id=0 path='app.url_image' file=$aPage.aApp.image_path suffix='_200' max_width='175' max_height='300' title=$aPage.aApp.app_title}
+		{img server_id=$aPage.image_server_id path='app.url_image' file=$aPage.aApp.image_path suffix='_120' max_width='175' max_height='300' title=$aPage.aApp.app_title}
 		{else}
-		{img thickbox=true server_id=$aPage.image_server_id title=$aPage.title path='pages.url_image' file=$aPage.image_path suffix='_200' max_width='175' max_height='300'}
+			{if Phpfox::getParam('core.keep_non_square_images')}
+				{img thickbox=true server_id=$aPage.image_server_id title=$aPage.title path='core.url_user' file=$aPage.image_path suffix='_120' max_width='175' max_height='300'}
+			{else}
+				{img thickbox=true server_id=$aPage.image_server_id title=$aPage.title path='core.url_user' file=$aPage.image_path suffix='_120_square' max_width='175' max_height='300'}
+			{/if}
 		{/if}
+	</div>
+	<div class="profile_no_timeline">
+
+		{if isset($aPage.title)}
+		{template file='pages.block.joinpage'}
+		{/if}
+
 	</div>
 </div>
 {if $bCanViewPage}

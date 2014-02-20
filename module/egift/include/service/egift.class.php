@@ -121,6 +121,16 @@ class Egift_Service_Egift extends Phpfox_Service
 
 			foreach ($aEgifts as $aGift)
 			{
+				// http://www.phpfox.com/tracker/view/14742/
+				if(Phpfox::getParam('core.allow_cdn'))
+				{
+					$aGift['server_id'] = Phpfox::getLib('cdn')->getServerId();
+				}
+				else
+				{
+					$aGift['server_id'] = 0;
+				}
+				
 				$aGift['price'] = unserialize($aGift['price']);
 				$aOut[Phpfox::getPhrase($aGift['phrase'])][] = $aGift;
 			}
@@ -274,7 +284,7 @@ class Egift_Service_Egift extends Phpfox_Service
 					$aInvoices[$sKey]['to'][str_replace('to_', '', $sField)] = $sValue;
 					unset($aInvoices[$sKey][$sField]);
 				}
-				//$aInvoices[$sKey]['invoice_status'] = 'purefan';
+				
 			}
 		}
 

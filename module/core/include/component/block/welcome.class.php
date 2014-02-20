@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Core
- * @version 		$Id: welcome.class.php 4330 2012-06-25 13:59:19Z Miguel_Espinoza $
+ * @version 		$Id: welcome.class.php 5345 2013-02-13 09:44:03Z Raymond_Benc $
  */
 class Core_Component_Block_Welcome extends Phpfox_Component
 {
@@ -21,6 +21,11 @@ class Core_Component_Block_Welcome extends Phpfox_Component
 	 */
 	public function process()
 	{
+		if ($this->template()->getThemeFolder() == 'nebula')
+		{
+			return false;
+		}
+		
 		// If the user is not a member don't display this block
 		if (!Phpfox::isUser())
 		{

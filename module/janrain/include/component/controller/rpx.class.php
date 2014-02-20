@@ -13,7 +13,7 @@ define('PHPFOX_SKIP_POST_PROTECTION', true);
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: rpx.class.php 3642 2011-12-02 10:01:15Z Miguel_Espinoza $
+ * @version 		$Id: rpx.class.php 6578 2013-09-05 09:27:59Z Miguel_Espinoza $
  */
 class Janrain_Component_Controller_Rpx extends Phpfox_Component
 {
@@ -44,7 +44,7 @@ class Janrain_Component_Controller_Rpx extends Phpfox_Component
 					list($bIsLoggedIn, $aPostUserInfo) = Phpfox::getService('user.auth')->login($aUser['user_name'], null, false, 'user_name', true);
 					if ($bIsLoggedIn)
 					{
-						$this->url()->send('');	
+						$this->url()->send(Phpfox::getParam('user.redirect_after_login'));
 					}
 				}
 				else 
@@ -52,7 +52,14 @@ class Janrain_Component_Controller_Rpx extends Phpfox_Component
 					if (Phpfox::getService('janrain.process')->add($aUserInfo))					
 					{						
 						$aUser = Phpfox::getService('janrain')->getUser($aUserInfo);
-						
+						if (($sPlugin = Phpfox_Plugin::get('janrain.component_controller_rpx_1')))
+						{
+							eval($sPlugin);
+							if (isset($mReturnFromPlugin))
+							{
+								return $mReturnFromPlugin;
+							}
+						}
 						list($bIsLoggedIn, $aPostUserInfo) = Phpfox::getService('user.auth')->login($aUser['user_name'], null, false, 'user_name', true);
 						if ($bIsLoggedIn)
 						{							

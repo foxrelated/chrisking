@@ -80,7 +80,7 @@ $Core.search =
 	}
 }
 
-$(function()
+$Behavior.search_search_1 = function()
 {
 	$('#js_view_more_results').click(function()
 	{
@@ -96,4 +96,4 @@ $(function()
 		
 		$Core.search.show(sModule);		
 	});
-});
+};

@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: add.html.php 3066 2011-09-12 08:10:37Z Raymond_Benc $
+ * @version 		$Id: add.html.php 7023 2014-01-06 20:22:55Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -75,6 +75,20 @@ defined('PHPFOX') or exit('NO DICE!');
 		</div>
 		<div class="table_right">
 			<input type="text" name="val[version]" value="{value id='version' type='input'}" size="10" />
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="table">
+		<div class="table_left">
+			Columns:
+		</div>
+		<div class="table_right">
+			<select name="val[total_column]" id="total_column">
+				<option value="">{phrase var='theme.select'}</option>
+				<option value="2" {value id='total_column' type='select' default='2'}>2</option>
+				<option value="3" {value id='total_column' type='select' default='3'}>3</option>
+				<option value="4" {value id='total_column' type='select' default='4'}>4</option>
+			</select> 
 		</div>
 		<div class="clear"></div>
 	</div>		

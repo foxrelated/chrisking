@@ -193,7 +193,7 @@
 				$(this).removeClass('colorpicker_focus');
 			},
 			clickSubmit = function (ev) {
-				//debug('clickSutmit (purefan)');
+				
 				var cal = $(this).parent();
 				var col = cal.data('colorpicker').color;
 				cal.data('colorpicker').origColor = col;
@@ -455,4 +455,4 @@
 		ColorPickerShow: ColorPicker.show,
 		ColorPickerSetColor: ColorPicker.setColor
 	});
-})(jQuery)
+})(jQuery);

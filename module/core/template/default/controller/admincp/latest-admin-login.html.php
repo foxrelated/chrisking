@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: latest-admin-login.html.php 1298 2009-12-05 16:19:23Z Raymond_Benc $
+ * @version 		$Id: latest-admin-login.html.php 6189 2013-06-29 08:45:09Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -34,7 +34,7 @@ defined('PHPFOX') or exit('NO DICE!');
 			{/if}
 			</a>	
 		</td>
-		<td>{$aUser.time_stamp|date:'mail.mail_time_stamp'}</td>		
+		<td>{$aUser.time_stamp|date:'core.extended_global_time_stamp'}</td>
 	</tr>
 {/foreach}
 </table>

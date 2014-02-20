@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Track
- * @version 		$Id: track.class.php 1496 2010-03-05 17:15:05Z Raymond_Benc $
+ * @version 		$Id: track.class.php 5914 2013-05-13 08:38:15Z Raymond_Benc $
  */
 class Track_Service_Track extends Phpfox_Service 
 {	
@@ -24,7 +24,26 @@ class Track_Service_Track extends Phpfox_Service
 	}	
 	
 	public function getLatestUsers($sType, $iId, $iUserId)
-	{		
+	{			
+		if (Phpfox::getParam('track.cache_recently_viewed_by_timeout') > 0)
+		{
+			$sCacheId = $this->cache()->set(array('track', $sType . '_' . $iId));
+			
+			if (!($aTracks = $this->cache()->get($sCacheId, Phpfox::getParam('track.cache_recently_viewed_by_timeout') * 60))) // Cache is in minutes 
+			{
+				$aTracks = Phpfox::callback($sType . '.getLatestTrackUsers', $iId, $iUserId);
+				
+				$this->cache()->save($sCacheId, $aTracks);				
+			}
+
+			if (is_bool($aTracks))
+			{
+				$aTracks = array();
+			}
+			
+			return $aTracks;
+		}
+		
 		return Phpfox::callback($sType . '.getLatestTrackUsers', $iId, $iUserId);
 	}
 

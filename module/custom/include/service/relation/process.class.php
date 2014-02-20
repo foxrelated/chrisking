@@ -201,6 +201,12 @@ class Custom_Service_Relation_Process extends Phpfox_Service
 	{
 		$iUser = ($iUser == null) ? Phpfox::getUserId() : (int) $iUser;
 
+		$this->cache()->remove(array('relations', $iUser));
+		$this->cache()->remove(array('relations', $iWith));
+
+		$this->cache()->remove(array('reluser', $iUser));
+		$this->cache()->remove(array('reluser', $iWith));		
+		
 		$aAllRelations = Phpfox::getService('custom.relation')->getAll();
 		foreach ($aAllRelations as $aRelation)
 		{
@@ -324,7 +330,7 @@ class Custom_Service_Relation_Process extends Phpfox_Service
 			    'status_id' => 0
 				), 'user_id = ' . $iUser . ' OR with_user_id = ' . $iUser
 			);*/
-			$this->cache()->remove('relationship_phrase_' . $aExisting['user_id'], 'substr');
+			// $this->cache()->remove('relationship_phrase_' . $aExisting['user_id'], 'substr');
 		}
 		/* We delete all previous relationships of this same type */
 		$this->database()->delete(Phpfox::getT('custom_relation_data'), '(user_id = ' . $iUser . ' OR with_user_id = ' . $iUser . ') AND status_id = 1');
@@ -394,7 +400,7 @@ class Custom_Service_Relation_Process extends Phpfox_Service
 		/* Add the feed */
 		// Phpfox::getService('feed.process')->add('custom_relation', $aExisting['relation_data_id'], 0, 0, $iWith, $iUser);
 		Phpfox::getService('feed.process')->add('custom_relation', $aExisting['relation_data_id'], 0, 0, 0, $iUser);
-
+				
 		return true;
 	}
 

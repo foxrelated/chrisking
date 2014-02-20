@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Mail
- * @version 		$Id: process.class.php 4857 2012-10-09 06:32:38Z Raymond_Benc $
+ * @version 		$Id: process.class.php 7091 2014-02-05 15:10:47Z Fern $
  */
 class Mail_Service_Process extends Phpfox_Service 
 {
@@ -110,7 +110,7 @@ class Mail_Service_Process extends Phpfox_Service
 					
 					// Make sure we found a user
 					if (($iTemp = $this->add($aVals, true)) && is_numeric($iTemp))
-					{
+					{						
 						$aCache[] = $iTemp;	
 					}
 				}
@@ -125,6 +125,11 @@ class Mail_Service_Process extends Phpfox_Service
 				{
 					$this->database()->update($this->_sTable, array('mass_id' => $aLastCache[0]), 'mail_id = ' . (int) $iMailId);	
 				}
+			}
+
+			if (empty($aCache))
+			{
+				return false;
 			}
 			
 			return $aCache;	
@@ -149,20 +154,23 @@ class Mail_Service_Process extends Phpfox_Service
 			{
 				return Phpfox_Error::set(Phpfox::getPhrase('mail.unable_to_send_a_private_message_to_full_name_as_they_have_disabled_this_option_for_the_moment', array('full_name' => $aDetails['full_name'])));
 			}		
-
+			
 			// Check if user is allowed to receive messages: http://forums.phpfox.com/project.php?issueid=2216
 			if (Phpfox::getService('user.group.setting')->getGroupParam($aDetails['user_group_id'], 'mail.override_mail_box_limit') == false)
 			{
-				$iMailBoxLimit = Phpfox::getService('user.group.setting')->getGroupParam($aDetails['user_group_id'], 'mail.mail_box_limit');			
-				$iCurrentMessages = $this->database()
-					->select('COUNT(viewer_user_id)')
-					->from($this->_sTable)
-					->where('viewer_user_id = ' . (int)$aVals['to'] . ' AND viewer_type_id != 3 AND viewer_type_id != 1')
-					->execute('getSlaveField');
-
-				if ($iCurrentMessages >= $iMailBoxLimit)
+				if (!Phpfox::getParam('mail.threaded_mail_conversation'))
 				{
-					return Phpfox_Error::set(Phpfox::getPhrase('mail.user_has_reached_their_inbox_limit'));
+					$iMailBoxLimit = Phpfox::getService('user.group.setting')->getGroupParam($aDetails['user_group_id'], 'mail.mail_box_limit');			
+					$iCurrentMessages = $this->database()
+						->select('COUNT(viewer_user_id)')
+						->from($this->_sTable)
+						->where('viewer_user_id = ' . (int)$aVals['to'] . ' AND viewer_type_id != 3 AND viewer_type_id != 1')
+						->execute('getSlaveField');
+	
+					if ($iCurrentMessages >= $iMailBoxLimit)
+					{
+						return Phpfox_Error::set(Phpfox::getPhrase('mail.user_has_reached_their_inbox_limit'));
+					}
 				}
 			}
 
@@ -170,6 +178,7 @@ class Mail_Service_Process extends Phpfox_Service
 			{
 				return Phpfox_Error::set(Phpfox::getPhrase('mail.you_cannot_message_yourself'));
 			}
+			
 			// check if user can send message to non friends: http://forums.phpfox.com/project.php?issueid=2216
 			if (Phpfox::getUserParam('mail.restrict_message_to_friends') && !(Phpfox::getService('user.group.setting')->getGroupParam($aDetails['user_group_id'],'mail.override_restrict_message_to_friends')))
 			{
@@ -296,6 +305,12 @@ class Mail_Service_Process extends Phpfox_Service
 					continue;
 				}
 				
+				(($sPlugin = Phpfox_Plugin::get('mail.service_process_add_2')) ? eval($sPlugin) : false);	
+				if (isset($bPluginSkip) && $bPluginSkip === true)
+				{
+					continue;
+				}
+				
 				Phpfox::getLib('mail')->to($aThreadUser['user_id'])
 					->subject(array('mail.full_name_sent_you_a_message_on_site_title', array('full_name' => Phpfox::getUserBy('full_name'), 'site_title' => Phpfox::getParam('core.site_title')), false, null, $aThreadUser['language_id']))
 					->message(array('mail.full_name_sent_you_a_message_no_subject', array(
@@ -406,10 +421,17 @@ class Mail_Service_Process extends Phpfox_Service
 		(($sPlugin = Phpfox_Plugin::get('mail.service_process_cronDeleteMessages_start')) ? eval($sPlugin) : false);
 		
 		$iTime = (Phpfox::getTime() - (Phpfox::getParam('mail.message_age_to_delete') * CRON_ONE_DAY));
+		
 		// delete from trashcan the ones already deleted
 		$this->database()->update($this->_sTable, array('viewer_type_id' => 3), 'time_updated < ' . $iTime . ' AND viewer_type_id = 1');
 		$this->database()->update($this->_sTable, array('owner_type_id' => 3), 'time_updated < ' . $iTime. ' AND owner_type_id = 1');
 		
+		// delete from inbox the message that are old than the time above
+		// Inbox
+		$this->database()->update($this->_sTable, array('viewer_type_id' => 1), 'time_updated < ' . $iTime . ' AND viewer_type_id = 0');
+		// Sentbox
+		
+		$this->database()->update($this->_sTable, array('owner_type_id' => 1), 'time_updated < ' . $iTime. ' AND owner_type_id = 0');		
 		(($sPlugin = Phpfox_Plugin::get('mail.service_process_cronDeleteMessages_end')) ? eval($sPlugin) : false);		
 	}
 	
@@ -425,10 +447,12 @@ class Mail_Service_Process extends Phpfox_Service
 	public function delete($iId, $bSent = false)
 	{
 		$aMail = Phpfox::getService('mail')->getMail($iId);
+		
 		if ($aMail['viewer_user_id'] == $aMail['owner_user_id'])
 		{
 			$this->database()->update($this->_sTable, array(($bSent === false ? 'owner_type_id' : 'viewer_type_id') => 1), 'mail_id = ' . (int) $iId . ' AND ' . ($bSent === false ? 'viewer_user_id' : 'owner_user_id') . ' = ' . Phpfox::getUserId());
 		}
+				
 		$this->database()->update($this->_sTable, array(($bSent === false ? 'viewer_type_id' : 'owner_type_id') => 1), 'mail_id = ' . (int) $iId . ' AND ' . ($bSent === false ? 'viewer_user_id' : 'owner_user_id') . ' = ' . Phpfox::getUserId());		
 
 		(($sPlugin = Phpfox_Plugin::get('mail.service_process_delete')) ? eval($sPlugin) : false);
@@ -554,9 +578,37 @@ class Mail_Service_Process extends Phpfox_Service
 	
 	public function archiveThread($iThreadId, $iArchive = 1)
 	{		 
-		 $this->database()->update(Phpfox::getT('mail_thread_user'), array('is_archive' => (int) $iArchive), 'thread_id = ' . (int) $iThreadId . ' AND user_id = ' . Phpfox::getUserId());
+		 $this->database()->update(Phpfox::getT('mail_thread_user'), array('is_read' => '1', 'is_archive' => (int) $iArchive), 'thread_id = ' . (int) $iThreadId . ' AND user_id = ' . Phpfox::getUserId());
 	}	
 
+	
+	public function markAllRead()
+	{
+		$aMessages = $this->database()->select('mail_id')
+			->from(Phpfox::getT('mail'))
+			->where('viewer_user_id = ' . Phpfox::getUserId())
+			->execute('getSlaveRows');
+		
+		$aMailId = array();
+		foreach ($aMessages as $aMessage)
+		{
+			$aMailId[] = $aMessage['mail_id'];
+		}
+		
+		$this->database()->update(Phpfox::getT('mail'), array('viewer_is_new' => '0'), 'mail_id IN (' . implode(',', $aMailId) . ')');
+		
+		
+		$aMessages = $this->database()->select('thread_id')
+			->from(Phpfox::getT('mail_thread_user'))
+			->where('user_id = ' . Phpfox::getUserId())
+			->execute('getSlaveRows');
+		$aMailId = array();
+		foreach ($aMessages as $aMessage)
+		{
+			$aMailId[] = $aMessage['thread_id'];
+		}
+		$this->database()->update(Phpfox::getT('mail_thread_user'), array('is_read' => '1'), 'thread_id IN (' . implode(',', $aMailId) . ')');
+	}
 	/**
 	 * If a call is made to an unknown method attempt to connect
 	 * it to a specific plug-in with the same name thus allowing 

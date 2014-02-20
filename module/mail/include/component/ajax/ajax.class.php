@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Mail
- * @version 		$Id: ajax.class.php 4255 2012-06-13 07:24:53Z Raymond_Benc $
+ * @version 		$Id: ajax.class.php 6749 2013-10-08 13:04:25Z Miguel_Espinoza $
  */
 class Mail_Component_Ajax_Ajax extends Phpfox_Ajax
 {	
@@ -187,7 +187,7 @@ class Mail_Component_Ajax_Ajax extends Phpfox_Ajax
 				'bIsAjax' => true
 			));			
 			
-			$this->call("$('#js_mail_box_folders').parent().html('" . $this->getContent() . "').show(); $('#js_block_bottom_link_1').html('" . Phpfox::getPhrase('mail.edit_folders', array('phpfox_squote' => true)) . "'); $Core.loadInit();");
+			$this->call("$('#js_mail_box_folders').parent().html('" . $this->getContent() . "').show(); $('#js_block_bottom_link_1').html('" . Phpfox::getPhrase('mail.edit_folders', array('phpfox_squote' => true)) . "'); \$Core.loadInit();");
 		}
 	}
 	
@@ -214,7 +214,7 @@ class Mail_Component_Ajax_Ajax extends Phpfox_Ajax
 		
 		(($sPlugin = Phpfox_Plugin::get('mail.component_ajax_compose')) ? eval($sPlugin) : false);
 		
-		echo '<script type="text/javascript">$Core.loadInit();</script>';
+		echo '<script type="text/javascript">$Core.loadInit();$Core.loadInit();</script>';
 	}
 	
 	public function composeProcess()
@@ -332,6 +332,12 @@ class Mail_Component_Ajax_Ajax extends Phpfox_Ajax
 		$this->setTitle(Phpfox::getPhrase('mail.select_folder'));		
 		
 		Phpfox::getBlock('mail.box.select');
+	}
+	
+	public function markAllRead()
+	{
+		Phpfox::getService('mail.process')->markAllRead();
+		$this->call('window.location.href=window.location.href');
 	}
 }
 

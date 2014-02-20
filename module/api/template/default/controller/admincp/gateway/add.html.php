@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: add.html.php 979 2009-09-14 14:05:38Z Raymond_Benc $
+ * @version 		$Id: add.html.php 7121 2014-02-18 13:57:28Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -65,7 +65,11 @@ defined('PHPFOX') or exit('NO DICE!');
 			{$aCustom.phrase}:
 		</div>
 		<div class="table_right">
-			<input type="text" name="val[setting][{$sFormField}]" id="title" value="{$aCustom.value|clean}" size="40" />
+			{if (isset($aCustom.type) && $aCustom.type == 'textarea')}
+				<textarea name="val[setting][{$sFormField}]" cols="50" rows="8">{$aCustom.value|clean}</textarea>
+			{else}
+				<input type="text" name="val[setting][{$sFormField}]" id="title" value="{$aCustom.value|clean}" size="40" />
+			{/if}
 			{if !empty($aCustom.phrase_info)}
 			<div class="extra_info">
 				{$aCustom.phrase_info}

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Miguel Espinoza
  * @package  		Module_User
- * @version 		$Id: process.class.php 3828 2011-12-16 12:57:41Z Miguel_Espinoza $
+ * @version 		$Id: process.class.php 6476 2013-08-20 09:23:21Z Miguel_Espinoza $
  */
 class User_Service_Cancellations_Process extends Phpfox_Service
 {	
@@ -118,7 +118,7 @@ class User_Service_Cancellations_Process extends Phpfox_Service
 	{
 		Phpfox::isUser(true);
 		define('PHPFOX_CANCEL_ACCOUNT', true);
-		if (!isset($aVal['password']) && !Phpfox::getUserBy('fb_user_id'))
+		if (!isset($aVal['password']) && !Phpfox::getUserBy('fb_user_id') && !Phpfox::getUserBy('janrain_user_id'))
 		{
 			return Phpfox_Error::set(Phpfox::getPhrase('user.please_enter_your_password'));
 		}
@@ -133,7 +133,8 @@ class User_Service_Cancellations_Process extends Phpfox_Service
 			->from(Phpfox::getT('user'))
 			->where('user_id = ' . Phpfox::getUserId())
 			->execute('getSlaveRow');
-		if (!Phpfox::getUserBy('fb_user_id') && Phpfox::getLib('hash')->setHash($aVal['password'], $aRow['password_salt']) != $aRow['password'])
+		
+		if (!Phpfox::getUserBy('fb_user_id') && !Phpfox::getUserBy('janrain_user_id') && Phpfox::getLib('hash')->setHash($aVal['password'], $aRow['password_salt']) != $aRow['password'])
 		{
 			if ($sPlugin = Phpfox_Plugin::get('user.service_cancellations_process_cancelaccount_invalid_password')){eval($sPlugin);}
 			return Phpfox_Error::set(Phpfox::getPhrase('user.invalid_password'));

@@ -14,7 +14,7 @@ require_once(PHPFOX_DIR_LIB . 'twitter' . PHPFOX_DS . 'EpiTwitter.php');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: twitter.class.php 2806 2011-08-05 09:38:55Z Raymond_Benc $
+ * @version 		$Id: twitter.class.php 7049 2014-01-16 14:29:05Z Fern $
  */
 class Phpfox_Twitter
 {
@@ -33,8 +33,11 @@ class Phpfox_Twitter
 		
 		if (!empty($aTwitter['token']))
 		{
+			// http://www.phpfox.com/tracker/view/15012/
+			$this->_oTwitter->useSSL(true);
+			
 			$this->_oTwitter->setToken($aTwitter['token'], $aTwitter['secret']);
-			$update_status = $this->_oTwitter->post_statusesUpdate(array('status'  => $sMessage));	
+			$update_status = $this->_oTwitter->post_statusesUpdate(array('status'  => $sMessage));
 			$temp = $update_status->response;			
 		}		
 	}
@@ -53,7 +56,10 @@ class Phpfox_Twitter
 	{
 		$this->_oTwitter->setToken($sToken);
 		$token = $this->_oTwitter->getAccessToken();
-		$this->_oTwitter->setToken($token->oauth_token, $token->oauth_token_secret);		
+		$this->_oTwitter->setToken($token->oauth_token, $token->oauth_token_secret);	
+		
+		// http://www.phpfox.com/tracker/view/15012/
+		$this->_oTwitter->useSSL(true);
 		
 		$mReturn = $this->_oTwitter->get_accountVerify_credentials();
 		

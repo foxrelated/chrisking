@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Share
- * @version 		$Id: process.class.php 4786 2012-09-27 10:40:14Z Miguel_Espinoza $
+ * @version 		$Id: process.class.php 6970 2013-12-04 17:11:50Z Fern $
  */
 class Share_Service_Process extends Phpfox_Service 
 {
@@ -200,6 +200,13 @@ class Share_Service_Process extends Phpfox_Service
 			$aInsert['secret'] = $sSecret;
 		}
 		$this->database()->insert(Phpfox::getT('share_connect'), $aInsert);
+	}
+	
+	public function deleteConnect($sConnectType)
+	{
+        $this->database()->delete(Phpfox::getT('share_connect'), "connect_id = '" . $sConnectType . "' AND user_id = " . Phpfox::getUserId());
+               
+        return "App Authorization not found. Connection to " . ucfirst($sConnectType) . " removed!";
 	}
 	
 	/**

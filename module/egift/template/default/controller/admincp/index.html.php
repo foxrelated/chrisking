@@ -107,7 +107,7 @@ defined('PHPFOX') or exit('NO DICE!');
 					</span>
 				</div>
 				<div class="gift_image">
-					{img id='js_photo_view_image' thickbox=true path='egift.url_egift' file=$aGift.file_path suffix='_120' max_width=120 max_height=120 title=$aGift.title time_stamp=true}
+					{img id='js_photo_view_image' server_id=$aGift.server_id thickbox=true path='egift.url_egift' file=$aGift.file_path suffix='_120' max_width=120 max_height=120 title=$aGift.title time_stamp=true}
 				</div>
 				<div class="gift_prices">
 					{foreach from=$aGift.price key=sCurrency item=iPrice}

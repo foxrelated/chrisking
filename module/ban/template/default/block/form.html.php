@@ -37,7 +37,7 @@ defined('PHPFOX') or exit('NO DICE!');
 
 	<div class="table">
 		<div class="table_left">
-		Reason:
+		{phrase var='user.reason'}:
 		</div>
 		<div class="table_right">
 			<textarea name="aBan[reason]" cols="30" rows="3" ></textarea>
@@ -68,7 +68,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		<div class="table_right">
 			<select name="aBan[return_user_group]">
 				{foreach from=$aUserGroups item=aGroup}
-					<option value="{$aGroup.user_group_id}">{$aGroup.title}</option>
+					<option value="{$aGroup.user_group_id}">{$aGroup.title|convert}</option>
 				{/foreach}
 			</select>
 		</div>

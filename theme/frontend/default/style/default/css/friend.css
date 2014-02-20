@@ -1,4 +1,16 @@
 
+.row_unfriend
+{
+	padding-top:5px;
+	font-size:11px;
+	display:none;
+}
+
+.row_friend_browse:hover .row_unfriend
+{
+	display:block;
+}
+
 .friend_row_holder
 {
 	position:relative;

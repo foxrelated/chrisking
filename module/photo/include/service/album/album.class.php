@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: album.class.php 4451 2012-07-02 13:53:30Z Raymond_Benc $
+ * @version 		$Id: album.class.php 7059 2014-01-22 14:20:10Z Fern $
  */
 class Photo_Service_Album_Album extends Phpfox_Service 
 {
@@ -92,7 +92,7 @@ class Photo_Service_Album_Album extends Phpfox_Service
 		
 		return $this->database()->select('COUNT(*)')
 			->from($this->_sTable)
-			->where('user_id = ' . (int) $iUserId)
+			->where('view_id = 0 AND group_id = 0 AND user_id = ' . (int) $iUserId)
 			->execute('getField');		
 	}
 	
@@ -125,7 +125,8 @@ class Photo_Service_Album_Album extends Phpfox_Service
 		
 		if (Phpfox::isModule('like'))
 		{
-			$this->database()->select('l.like_id AS is_liked, ')->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'photo_album\' AND l.item_id = pa.album_id AND l.user_id = ' . Phpfox::getUserId());
+			$this->database()->select('l.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'photo_album\' AND l.item_id = pa.album_id AND l.user_id = ' . Phpfox::getUserId());
 		}		
 		
 		$aAlbum = $this->database()->select('pa.*, pai.*, ' . Phpfox::getUserField())
@@ -248,11 +249,17 @@ class Photo_Service_Album_Album extends Phpfox_Service
 				{
 					$oImage->addMark(Phpfox::getParam('photo.dir_photo') . sprintf($sFileName, ''));
 				}
+				
+				Phpfox::getService('user.activity')->update($aUser['user_id'], 'photo');
 			}
 			
 			$aAlbum = $this->getForView($iProfileId, true);
 		}
 		
+		if($bForceCreation)
+		{
+			$aAlbum['photo_id'] = $iPhotoInsert;
+		}
 		return $aAlbum;
 	}
 	

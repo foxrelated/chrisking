@@ -16,7 +16,7 @@ $Behavior.switchLabelMenu = function()
 		$(this).switchMenu('label_flow_menu_active', aArgsFinal[0], aArgsFinal[1]);		
 		return false;
 	});
-}
+};
 
 $.fn.switchMenu = function(sMenu, sAjaxCall, sParams)
 {
@@ -33,4 +33,4 @@ $.fn.switchMenu = function(sMenu, sAjaxCall, sParams)
 	}
 	
 	return this;
-}
+};

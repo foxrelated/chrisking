@@ -25,7 +25,7 @@ defined('PHPFOX') or exit('NO DICE!');
 				{else}
 				<li class="item_delete"><a href="{url link='mail' action='archive' id=$aThread.thread_id}" onclick="return confirm('{phrase var='mail.are_you_sure' phpfox_squote=true}')">{phrase var='mail.archive'}</a></li>
 				{/if}
-				<li class="item_delete"><a href="{url link='mail' action='forcedelete' id=$aThread.thread_id}" onclick="return confirm('{phrase var='mail.are_you_sure' phpfox_squote=true}')">Delete Conversation</a></li>
+				<li class="item_delete"><a href="{url link='mail' action='forcedelete' id=$aThread.thread_id}" onclick="return confirm('{phrase var='mail.are_you_sure' phpfox_squote=true}')">{phrase var='mail.delete_conversation'}</a></li>
 			</ul>				
 		</div>		
 	</div>	

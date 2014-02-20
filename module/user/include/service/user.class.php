@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: user.class.php 4654 2012-09-18 06:11:52Z Raymond_Benc $
+ * @version 		$Id: user.class.php 6977 2013-12-09 12:05:23Z Miguel_Espinoza $
  */
 class User_Service_User extends Phpfox_Service 
 {	
@@ -23,7 +23,74 @@ class User_Service_User extends Phpfox_Service
 	public function __construct()
 	{
 		$this->_sTable = Phpfox::getT('user');
-	}	
+	}
+	
+	public function getData($sSaveData, $iUserId = null)
+	{
+		static $aCache = array();
+		
+		if ($iUserId === null)
+		{
+			if (!Phpfox::isUser())
+			{
+				return false;
+			}
+		
+			$iUserId = Phpfox::getUserId();
+		}
+		
+		if (!isset($aCache[$iUserId]))
+		{
+			$aCache[$iUserId] = array();
+			
+			$sCacheId = $this->cache()->set(array('userdata', $iUserId));	
+			$aCache[$iUserId] = (array) $this->cache()->get($sCacheId);			
+		}
+		
+		if (isset($aCache[$iUserId][$sSaveData]))
+		{
+			return $aCache[$iUserId][$sSaveData];
+		}
+		
+		return false;
+	}
+	
+	public function getStaticInfo($iUserId)
+	{
+		static $aCachedUserInfo = array();
+		
+		if (isset($aCachedUserInfo[$iUserId]))
+		{
+			return $aCachedUserInfo[$iUserId];
+		}
+		
+		$sInnerJoinCacheId = Phpfox::getLib('cache')->set(array('userjoin', $iUserId));
+		$aCachedUserInfo[$iUserId] = Phpfox::getLib('cache')->get($sInnerJoinCacheId);
+		if (!empty($aCachedUserInfo[$iUserId]))
+		{
+			return $aCachedUserInfo[$iUserId];
+		}
+		
+		$aCachedUserInfo[$iUserId] = false;
+		
+		return false;
+	}
+	
+	public function getCurrentName($iUserId, $sName)
+	{
+		static $aCachedUserInfo = array();
+		if (Phpfox::getParam('user.cache_user_inner_joins'))
+		{
+			$aUser = $this->getStaticInfo($iUserId);
+			if ($aUser !== false)
+			{
+				return $aUser['full_name'];
+			}
+			
+			return $sName;
+		}
+		return $sName;
+	}
 	
 	public function getByUserName($sUser)
 	{	
@@ -63,6 +130,7 @@ class User_Service_User extends Phpfox_Service
 		return $aRow;
 	}
 	
+	
 	public function get($mName = null, $bUseId = true)
 	{		
 		static $aUser = array();
@@ -72,40 +140,91 @@ class User_Service_User extends Phpfox_Service
 			return $aUser[$mName];
 		}
 		
+		/*
+		 * For this super caching we need to clear the profile cache when:
+		 * 	- [Y] The admin changes anything related to the theme.
+		 * 	- [Y] In designer the user changes the style
+		 * 	- [Y] Updates the cover photo
+		 * 	- [Tradeoff] User changes does any activity OR query here for `user_activity` 
+		 */ 
+		 
+		if (Phpfox::getParam('profile.profile_caches_user') && Phpfox::getLib('request')->get('req2') == '')
+		{
+			// Any way to avoid this query?
+			if ($bUseId != true)
+			{
+				if ($mName != Phpfox::getUserBy('user_name'))
+				{
+					$mName = $this->database()->select('user_id')->from(Phpfox::getT('user'))->where('user_name = "' . $this->database()->escape( $mName ) . '"')->execute('getSlaveField');
+				}
+				else
+				{
+					$mName = Phpfox::getUserId();
+				}
+				$bUseId = true;
+			}
+			$sCacheId = $this->cache()->set(array('profile',  'user_id_'  . $mName));
+			if ( ($aCachedUser = $this->cache()->get($sCacheId)) && is_array($aCachedUser))
+			{
+				$aUser[$mName] = $aCachedUser;
+				if (!isset($this->_aUser[ $aCachedUser['user_id'] ]))
+				{
+					$this->_aUser[ $aCachedUser['user_id'] ] = $aCachedUser;
+				}
+				return $aCachedUser;
+			}
+		}
+		
 		(($sPlugin = Phpfox_Plugin::get('user.service_user_get_start')) ? eval($sPlugin) : false);
 		
-		if (Phpfox::isUser())
+		if (Phpfox::isUser() && Phpfox::getParam('profile.profile_caches') != true)
 		{
+			// Try to cache this one
 			$this->database()->select('ut.item_id AS is_viewed, ')->leftJoin(Phpfox::getT('user_track'), 'ut', 'ut.item_id = u.user_id AND ut.user_id = ' . Phpfox::getUserId());
 		}
 		
-		$this->database()->select('ur.rate_id AS has_rated, ')->leftJoin(Phpfox::getT('user_rating'), 'ur', 'ur.item_id = u.user_id AND ur.user_id = ' . Phpfox::getUserId());
-		
-		if (Phpfox::getUserParam('user.can_feature'))
-		{
-			$this->database()
-				->select('uf.user_id as is_featured, uf.ordering as featured_order, ')
-				->leftjoin(Phpfox::getT('user_featured'), 'uf', 'uf.user_id = u.user_id');					
+		// This is only needed in the info page		
+		if (Phpfox::getLib('request')->get('req2') == 'info')//&& Phpfox::getParam('rate.cache_rate_profiles'))
+		{			
+			// Implement later, we're on the profile.index right now. Lets do profile.info tomorrow			
+			$this->database()->select('ur.rate_id AS has_rated, ')->leftJoin(Phpfox::getT('user_rating'), 'ur', 'ur.item_id = u.user_id AND ur.user_id = ' . Phpfox::getUserId());
 		}
-		
-		$aRow = $this->database()->select('u.*, user_space.*, user_field.*, user_activity.*, ls.user_id AS is_online, ts.style_id AS designer_style_id, ts.folder AS designer_style_folder, t.folder AS designer_theme_folder, t.total_column, ts.l_width, ts.c_width, ts.r_width, t.parent_id AS theme_parent_id, ug.prefix, ug.suffix, ug.icon_ext, ug.title')
-			->from($this->_sTable, 'u')
-			->join(Phpfox::getT('user_group'), 'ug', 'ug.user_group_id = u.user_group_id')
+
+
+		$this->database()->join(Phpfox::getT('user_group'), 'ug', 'ug.user_group_id = u.user_group_id')
 			->join(Phpfox::getT('user_space'), 'user_space', 'user_space.user_id = u.user_id')
 			->join(Phpfox::getT('user_field'), 'user_field', 'user_field.user_id = u.user_id')
 			->join(Phpfox::getT('user_activity'), 'user_activity', 'user_activity.user_id = u.user_id')
 			->leftJoin(Phpfox::getT('theme_style'), 'ts', 'ts.style_id = user_field.designer_style_id AND ts.is_active = 1')
 			->leftJoin(Phpfox::getT('theme'), 't', 't.theme_id = ts.theme_id')
 			->leftJoin(Phpfox::getT('log_session'), 'ls', 'ls.user_id = u.user_id AND ls.im_hide = 0')
+			->leftJoin(Phpfox::getT('user_featured'), 'uf', 'uf.user_id = u.user_id');
+
+		if (Phpfox::isModule('photo'))
+		{
+			$this->database()->select('p.photo_id as cover_photo_exists, ')->leftJoin(Phpfox::getT('photo'), 'p', 'p.photo_id = user_field.cover_photo');
+		}
+
+		$aRow = $this->database()->select('u.*, user_space.*, user_field.*, user_activity.*, ls.user_id AS is_online, ts.style_id AS designer_style_id, ts.folder AS designer_style_folder, t.folder AS designer_theme_folder, t.total_column, ts.l_width, ts.c_width, ts.r_width, t.parent_id AS theme_parent_id, ug.prefix, ug.suffix, ug.icon_ext, ug.title, uf.user_id as is_featured')
+			->from($this->_sTable, 'u')
 			->where(($bUseId ? "u.user_id = " . (int) $mName . "" : "u.user_name = '" . $this->database()->escape($mName) . "'"))
 			->execute('getSlaveRow');
 		
+        
 		(($sPlugin = Phpfox_Plugin::get('user.service_user_get_end')) ? eval($sPlugin) : false);
 		if (isset($aRow['is_invisible']) && $aRow['is_invisible'])
 		{
 			$aRow['is_online'] = '0';
 		}
-		
+		if (isset($aRow['cover_photo']) && ((int)$aRow['cover_photo'] > 0) && 
+                (
+                    (isset($aRow['cover_photo_exists']) && $aRow['cover_photo_exists'] != $aRow['cover_photo']) ||
+                    (!isset($aRow['cover_photo_exists']))
+                ))
+        {
+            $aRow['cover_photo'] = null;
+        }
+        
 		$aUser[$mName] =& $aRow;			
 			
 		if (!isset($aUser[$mName]['user_name']))
@@ -117,22 +236,29 @@ class User_Service_User extends Phpfox_Service
 		
 		$aUser[$mName]['is_friend'] = false;
 		$aUser[$mName]['is_friend_of_friend'] = false;
+		$aUser[$mName]['is_friend_request'] = false;
 		if (Phpfox::isUser() && Phpfox::isModule('friend') && Phpfox::getUserId() != $aUser[$mName]['user_id'])
 		{
-			$aUser[$mName]['is_friend'] = Phpfox::getService('friend')->isFriend(Phpfox::getUserId(), $aUser[$mName]['user_id']);				
-			$aUser[$mName]['is_friend_of_friend'] = Phpfox::getService('friend')->isFriendOfFriend($aUser[$mName]['user_id']);
+			$aUser[$mName]['is_friend'] = (Phpfox::getService('friend')->isFriend(Phpfox::getUserId(), $aUser[$mName]['user_id']) ? true : false);				
+			$aUser[$mName]['is_friend_of_friend'] = (Phpfox::getService('friend')->isFriendOfFriend($aUser[$mName]['user_id']) ? true : false);
 			if (!$aUser[$mName]['is_friend'])
 			{
-				$aUser[$mName]['is_friend'] = (Phpfox::getService('friend.request')->isRequested(Phpfox::getUserId(), $aUser[$mName]['user_id']) ? 2 : false);
-				if (!$aUser[$mName]['is_friend'])
+				$aUser[$mName]['is_friend_request'] = (Phpfox::getService('friend.request')->isRequested(Phpfox::getUserId(), $aUser[$mName]['user_id']) ? 2 : false);
+				if (!$aUser[$mName]['is_friend_request'])
 				{
-					$aUser[$mName]['is_friend'] = (Phpfox::getService('friend.request')->isRequested($aUser[$mName]['user_id'], Phpfox::getUserId()) ? 3 : false);
+					$aUser[$mName]['is_friend_request'] = (Phpfox::getService('friend.request')->isRequested($aUser[$mName]['user_id'], Phpfox::getUserId()) ? 3 : false);
 				}
 			}			
 		}				
 		
 		$this->_aUser[$aRow['user_id']] = $aUser[$mName];
-	
+		
+		if (Phpfox::getParam('core.super_cache_system') )
+		{
+			$sCacheId = $this->cache()->set(array('profile', ($bUseId ? 'user_id_' : 'user_name_') . $mName));
+			$this->cache()->save($sCacheId, $aUser[$mName]);
+		}
+		
 		return $aUser[$mName];
 	}	
 	
@@ -473,16 +599,31 @@ class User_Service_User extends Phpfox_Service
 	public function getCurrency()
 	{
 		static $sCredit = null;
-		
+		if ($sPlugin = Phpfox_Plugin::get('user.service_user_getcurrency__1')){eval($sPlugin); if (isset($mReturnFromPlugin)){ return $mReturnFromPlugin; }}
+        
 		if ($sCredit === null)
 		{
 			if (Phpfox::getUserId())
 			{
-				$sCredit = $this->database()->select('uf.default_currency')
-					->from(Phpfox::getT('user'), 'u')
-					->join(Phpfox::getT('user_field'), 'uf', 'uf.user_id = u.user_id')
-					->where('u.user_id = ' . Phpfox::getUserId())
-					->execute('getSlaveField');
+				$sCacheId = $this->cache()->set(array('currency', Phpfox::getUserId()));
+				if (!($sCredit = $this->cache()->get($sCacheId)))
+				{
+					$sCredit = $this->database()->select('uf.default_currency')
+						->from(Phpfox::getT('user'), 'u')
+						->join(Phpfox::getT('user_field'), 'uf', 'uf.user_id = u.user_id')
+						->where('u.user_id = ' . Phpfox::getUserId())
+						->execute('getSlaveField');
+					
+					if ($sCredit === null)
+					{
+						$sCredit = $this->database()->select('currency_id')
+							->from(Phpfox::getT('currency'))
+							->where('is_active = 1 AND is_default = 1')
+							->execute('getField');
+					}
+					
+					$this->cache()->save($sCacheId, $sCredit);
+				}
 			}
 			else 
 			{
@@ -609,6 +750,38 @@ class User_Service_User extends Phpfox_Service
 		}
 		
 		return $aRows;
+	}
+	
+	public function getSpamQuestions()
+	{
+		$aQuestions = $this->database()->select('*')
+			->from(Phpfox::getT('user_spam'))
+			->execute('getSlaveRows');
+		
+		
+		foreach ($aQuestions as $iKey => $aQuestion)
+		{			
+			$aQuestions[$iKey]['answers_phrases'] = json_decode($aQuestion['answers_phrases']);
+		}
+		
+		
+		return $aQuestions;
+	}
+	
+	public function getInfoForAction($aItem)
+	{
+		if (is_numeric($aItem))
+		{
+			$aItem = array('item_id' => $aItem);
+		}
+		$aRow = $this->database()->select('us.status_id, us.content as title, us.user_id, u.gender, u.user_name, u.full_name')	
+			->from(Phpfox::getT('user_status'), 'us')
+			->join(Phpfox::getT('user'), 'u', 'u.user_id = us.user_id')
+			->where('us.status_id = ' . (int) $aItem['item_id'])
+			->execute('getSlaveRow');
+						
+		$aRow['link'] = Phpfox::getLib('url')->makeUrl($aRow['user_name'], array('status_id' => $aRow['status_id']));
+		return $aRow;
 	}
 	
 	/**

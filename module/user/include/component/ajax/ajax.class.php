@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: ajax.class.php 4929 2012-10-23 06:42:40Z Miguel_Espinoza $
+ * @version 		$Id: ajax.class.php 6792 2013-10-16 10:19:49Z Fern $
  */
 class User_Component_Ajax_Ajax extends Phpfox_Ajax
 {
@@ -220,6 +220,7 @@ class User_Component_Ajax_Ajax extends Phpfox_Ajax
 		Phpfox::getComponent('user.browse', array(), 'controller');
 		
 		$this->remove('.js_pager_view_more_link');
+		$this->call("if($('#js_view_more_users').length == 0) { $('#delayed_block').append('<div id=\"js_view_more_users\"></div>'); } ");
 		$this->append('#js_view_more_users', $this->getContent(false));
 		$this->call('$Core.loadInit();');				
 	}
@@ -658,7 +659,10 @@ class User_Component_Ajax_Ajax extends Phpfox_Ajax
 					continue;
 				}
 				
-				$oImage->createThumbnail(Phpfox::getParam('core.dir_user') . sprintf($sFileName, ''), Phpfox::getParam('core.dir_user') . sprintf($sFileName, '_' . $iSize), $iSize, $iSize);
+				if (Phpfox::getParam('core.keep_non_square_images'))
+				{
+					$oImage->createThumbnail(Phpfox::getParam('core.dir_user') . sprintf($sFileName, ''), Phpfox::getParam('core.dir_user') . sprintf($sFileName, '_' . $iSize), $iSize, $iSize);
+				}
 				$oImage->createThumbnail(Phpfox::getParam('core.dir_user') . sprintf($sFileName, ''), Phpfox::getParam('core.dir_user') . sprintf($sFileName, '_' . $iSize . '_square'), $iSize, $iSize, false);
 				
 				$aImages[sprintf($sFileName, '_' . $iSize)] = true;
@@ -716,6 +720,10 @@ class User_Component_Ajax_Ajax extends Phpfox_Ajax
 				(Phpfox::isModule('feed') ? Phpfox::getService('feed.process')->add('user_photo', Phpfox::getUserId(), serialize(array('destination' => $sFileName, 'server_id' => $iServerId))) : null);				
 				
 				$this->call('$.ajaxCall(\'user.cropPhoto\', \'crop=true&js_disable_ajax_restart=true' . $sValues . '\');');
+				if (Phpfox::isModule('photo'))
+				{
+					Phpfox::getService('photo.album')->getForProfileView(Phpfox::getUserId(), true);
+				}
 			}
 			
 			return;
@@ -959,6 +967,12 @@ class User_Component_Ajax_Ajax extends Phpfox_Ajax
 		
 		$this->html('#js_user_tool_tip_cache_' . $this->get('user_name'), $this->getContent(false));
 		$this->call('$Core.loadUserToolTip(\'' . $this->get('user_name') . '\');');
+		if (Phpfox::getParam('core.defer_loading_user_images'))
+		{
+			// http://www.phpfox.com/tracker/view/14632/
+			$this->call('$Behavior.defer_images();');
+			// $this->call('$Core.loadInit();');
+		}
 	}
 	
 	public function addInactiveJob()
@@ -995,6 +1009,25 @@ class User_Component_Ajax_Ajax extends Phpfox_Ajax
 		$iCount = Phpfox::getService('user')->getInactiveMembersCount($this->get('iDays'));
 		$this->html('#progress', Phpfox::getPhrase('user.there_are_a_total_of_icount_inactive_members', array('iCount' => $iCount)));
 	}	
+	
+	
+	public function deleteSpamQuestion()
+	{
+		if (Phpfox::getService('user.process')->deleteSpamQuestion($this->get('iQuestionId')) )
+		{
+			$this->softNotice(Phpfox::getPhrase('user.question_deleted_succesfully'));
+			$this->remove('#tr_new_question_' . $this->get('iQuestionId'));
+		}
+	}
+	
+	public function saveMyLatLng()
+	{
+		if ($this->get('lat') == '0' && $this->get('lng') == '0')
+		{
+			return;
+		}
+		Phpfox::getService('user.process')->saveMyLatLng(array('latitude' => $this->get('lat'), 'longitude' => $this->get('lng') ) );
+	}
 }
 
 ?>

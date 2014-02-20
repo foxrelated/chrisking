@@ -12,7 +12,6 @@ defined('PHPFOX') or exit('NO DICE!');
 
 ?>
 
-
 {if $aPage.view_id == '1'}
 	<div class="message js_moderation_off" id="js_approve_message">
 		{phrase var='pages.this_page_is_pending_an_admins_approval_before_it_can_be_displayed_publicly'}
@@ -69,7 +68,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		{/if}
 	{else}
 		{if $bHasPermToViewPageFeed}
-			{module name='feed.display'}
+			
 		{else}
 			{phrase var='pages.unable_to_view_this_section_due_to_privacy_settings'}
 		{/if}
@@ -86,3 +85,4 @@ defined('PHPFOX') or exit('NO DICE!');
 		{/if}
 	</div>
 {/if}
+

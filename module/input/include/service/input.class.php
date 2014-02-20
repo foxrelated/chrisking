@@ -388,15 +388,30 @@ class Input_Service_Input extends Phpfox_Service
 	*/
 	public function getInputsForSearch($sModule)
 	{
-		$aInputsPerModule = $this->database()->select('i.*, io.phrase_var as option_phrase_var')
-			->from(Phpfox::getT('input_field'), 'i')
-			->leftjoin(Phpfox::getT('input_option'),' io', 'io.field_id = i.field_id')
-			->where('module_id = "'. $sModule .'"')// AND type_id NOT IN ("shorttext", "longtext")')
-			->execute('getSlaveRows');
+		if (!Phpfox::isModule($sModule))
+		{
+			return array();
+		}
+		
+		$sCacheId = $this->cache()->set(array('inputs', $sModule));
+		if (!($aInputsPerModule = $this->cache()->get($sCacheId)))
+		{
+			$aInputsPerModule = $this->database()->select('i.*, io.phrase_var as option_phrase_var')
+				->from(Phpfox::getT('input_field'), 'i')
+				->leftjoin(Phpfox::getT('input_option'),' io', 'io.field_id = i.field_id')
+				->where('module_id = "'. $this->database()->escape($sModule) .'"')// AND type_id NOT IN ("shorttext", "longtext")')
+				->execute('getSlaveRows');
+
+			$this->cache()->save($sCacheId, $aInputsPerModule);
+		}
 		
 		$aOut = array();
-		foreach ($aInputsPerModule as $aInput)
+		foreach ((array) $aInputsPerModule as $aInput)
 		{
+			if (empty($aInput['phrase_var']))
+			{
+				continue;
+			}
 			$sPhrase = Phpfox::getPhrase($aInput['phrase_var']);
 			if (!isset($aOut[$sPhrase]))
 			{

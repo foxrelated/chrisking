@@ -68,10 +68,18 @@ class Apps_Component_Ajax_Ajax extends Phpfox_Ajax
 	public function install()
 	{
 		$aFunctions = explode(',', $this->get('disallow'));
+		
 		if (Phpfox::getService('apps.process')->install($this->get('iId'), $aFunctions))
 		{
-			/* can we set/schedule a message for when they land */
-			$this->call('location.reload(true);');
+			$aApp = Phpfox::getService('apps')->getAppById($this->get('iId'));			
+
+			if (!empty($aApp['return_url']))
+			{
+				$sKey = Phpfox::getService('apps')->getKey($aApp['app_id']);
+				$this->call('window.location.href = \'' . Phpfox::getService('apps')->buildUrl($aApp['return_url'], $sKey) . '\';');				
+				return;
+			}
+			$this->call('window.location.href = \'' . Phpfox::getLib('url')->permalink('apps', $aApp['app_id'], $aApp['app_title']) . '\';');
 		}
 		else
 		{

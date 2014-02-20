@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: callback.class.php 4920 2012-10-22 11:01:42Z Miguel_Espinoza $
+ * @version 		$Id: callback.class.php 7133 2014-02-19 14:19:07Z Fern $
  */
 class Friend_Service_Callback extends Phpfox_Service 
 {
@@ -28,7 +28,23 @@ class Friend_Service_Callback extends Phpfox_Service
 			'icon' => Phpfox::getLib('image.helper')->display(array('theme' => 'mobile/small_friends.png')),
 			'total' => Phpfox::getService('friend.request')->getUnseenTotal()
 		);
-	}	
+	}
+	
+	// This function solves bug http://www.phpfox.com/tracker/view/14597/
+	public function addLike($iItemId, $bDoNotSendEmail = false)
+	{
+		// No count to update here. Table friend do not use total_like
+		// $this->database()->updateCount('like', 'type_id = \'friend\' AND item_id = ' . (int) $iItemId . '', 'total_like', 'friend', 'friend_id = ' . (int) $iItemId);	
+		return true;
+	}
+	
+	// This function also solves bug http://www.phpfox.com/tracker/view/14597/
+	public function deleteLike($iItemId, $bDoNotSendEmail = false)
+	{
+		// No count to update here. Table friend do not use total_like
+		// $this->database()->updateCount('like', 'type_id = \'friend\' AND item_id = ' . (int) $iItemId . '', 'total_like', 'friend', 'friend_id = ' . (int) $iItemId);	
+		return true;
+	}
 	
 	/** This function is called by the api when an App is trying to access user information 
 	 * to make sure that its allowed to do so
@@ -79,10 +95,39 @@ class Friend_Service_Callback extends Phpfox_Service
 			}
 		}		
 		
+		// http://www.phpfox.com/tracker/view/14915/
+		$iDestinationUserId = 0;
+		if(isset($aUser['user_id']) && $aFeed['parent_user_id'] == $aUser['user_id'])
+		{
+			$iDestinationUserId = $aFeed['user_id'];
+		}
+		else
+		{
+			$iDestinationUserId = $aFeed['parent_user_id'];
+		}
+		
+		// http://www.phpfox.com/tracker/view/15149/
+		if(defined('PHPFOX_CURRENT_USER_PROFILE') && $aFeed['parent_user_id'] == PHPFOX_CURRENT_USER_PROFILE)
+		{
+			$iDestinationUserId = $aFeed['parent_user_id'];
+		}
+
 		$aRow = $this->database()->select(Phpfox::getUserField())
 			->from(Phpfox::getT('user'), 'u')
-			->where('u.user_id = ' . (int) $aFeed['item_id'])
+			->where('u.user_id = ' . (int) $iDestinationUserId) // http://www.phpfox.com/tracker/view/14915/
 			->execute('getSlaveRow');
+		
+		// http://www.phpfox.com/tracker/view/14671/
+		$iTotalLikes = $this->database()->select('COUNT(*)')
+			->from(Phpfox::getT('like'))
+			->where('item_id = ' . $aFeed['item_id'] . " AND type_id = 'friend'")
+			->execute('getSlaveField');
+			
+		// http://www.phpfox.com/tracker/view/14671/
+		$iIsLiked = $this->database()->select('COUNT(*)')
+			->from(Phpfox::getT('like'))
+			->where('item_id = ' . $aFeed['item_id'] . ' AND user_id = ' . Phpfox::getUserId())
+			->execute('getSlaveField');
 		
 		if (!isset($aRow['user_id']))
 		{
@@ -93,8 +138,7 @@ class Friend_Service_Callback extends Phpfox_Service
 			'user' => $aRow,
 			'suffix' => '_50_square',
 			'max_width' => '50',
-			'max_height' => '50',
-			'js_hover_title' => true
+			'max_height' => '50'
 		);
 		
 		$sImage = Phpfox::getLib('image.helper')->display($aParams);			
@@ -105,6 +149,10 @@ class Friend_Service_Callback extends Phpfox_Service
 			'feed_info' => Phpfox::getPhrase('feed.is_now_friends_with'),
 			'feed_link' => Phpfox::getLib('url')->makeUrl($aRow['user_name']),
 			'feed_icon' => Phpfox::getLib('image.helper')->display(array('theme' => 'misc/friend_added.png', 'return_url' => true)),
+			// http://www.phpfox.com/tracker/view/14671/
+			'feed_total_like' => $iTotalLikes,
+			// http://www.phpfox.com/tracker/view/14671/
+			'feed_is_liked' => ((int)$iIsLiked > 0 ? true : false),
 			'time_stamp' => $aFeed['time_stamp'],			
 			'enable_like' => false,		
 			'feed_image' => $sImage			
@@ -113,6 +161,7 @@ class Friend_Service_Callback extends Phpfox_Service
 		if ($bForceUser)
 		{
 			$aReturn['force_user'] = $aUser;
+			$aReturn['gender'] = $aUser['gender']; // bug report 13368
 		}
 		(($sPlugin = Phpfox_Plugin::get('friend.component_service_callback_getactivityfeed__1')) ? eval($sPlugin) : false); 
 		return $aReturn;
@@ -362,7 +411,7 @@ class Friend_Service_Callback extends Phpfox_Service
 		$aList = array();		
 		
 		$aList[] =	array(
-			'name' => Phpfox::getPhrase('photo.update_friend_count'),
+			'name' => (Phpfox::isModule('photo') ? Phpfox::getPhrase('photo.update_friend_count') : 'Update friend count'),
 			'id' => 'video-friend-count'
 		);	
 

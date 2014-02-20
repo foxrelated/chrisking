@@ -1,7 +1,7 @@
 
 
-$(function()
-{	
+$Behavior.theme_select = function()
+{
 	$('.style_box').hover(function()
 	{
 		$(this).addClass('style_box_hover');
@@ -144,7 +144,7 @@ $(function()
 		
 		return false;
 	});
-});
+};
 
 function full_height_textarea()
 {

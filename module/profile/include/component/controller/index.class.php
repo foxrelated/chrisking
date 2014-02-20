@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Profile
- * @version 		$Id: index.class.php 5056 2012-11-30 10:39:19Z Raymond_Benc $
+ * @version 		$Id: index.class.php 6215 2013-07-08 08:19:18Z Raymond_Benc $
  */
 class Profile_Component_Controller_Index extends Phpfox_Component 
 {
@@ -251,9 +251,17 @@ class Profile_Component_Controller_Index extends Phpfox_Component
 		
 		Phpfox::getService('profile')->setUserId($aRow['user_id']);
 		
-		(($sPlugin = Phpfox_Plugin::get('profile.component_controller_index_process_start')) ? eval($sPlugin) : false);		
-		
-		if (Phpfox::isUser() && Phpfox::getUserId() != $aRow['user_id'] && !$aRow['is_viewed'] && !Phpfox::getUserBy('is_invisible'))
+		(($sPlugin = Phpfox_Plugin::get('profile.component_controller_index_process_start')) ? eval($sPlugin) : false);
+
+		if (!isset($aRow['is_viewed']))
+		{
+			$aRow['is_viewed'] = 0;
+		}
+
+		if ( Phpfox::getParam('profile.profile_caches') != true &&
+			(Phpfox::isUser() && Phpfox::getUserId() != $aRow['user_id'] &&
+			(!$aRow['is_viewed']) &&
+			!Phpfox::getUserBy('is_invisible')))
 		{
 			if (Phpfox::isModule('track'))
 			{
@@ -262,9 +270,9 @@ class Profile_Component_Controller_Index extends Phpfox_Component
 			Phpfox::getService('user.field.process')->update($aRow['user_id'], 'total_view', ($aRow['total_view'] + 1));
 		}
 		
-		if (Phpfox::isUser() && Phpfox::isModule('track') && Phpfox::getUserId() != $aRow['user_id'] && $aRow['is_viewed'] && !Phpfox::getUserBy('is_invisible'))
+		if (Phpfox::getParam('profile.profile_caches') != true && isset($aRow['is_viewed']) && Phpfox::isUser() && Phpfox::isModule('track') && Phpfox::getUserId() != $aRow['user_id'] && $aRow['is_viewed'] && !Phpfox::getUserBy('is_invisible'))
 		{
-			Phpfox::getService('track.process')->update('user_track', $aRow['user_id']);	
+			Phpfox::getService('track.process')->update('user_track', $aRow['user_id']);
 		}
 		
 		$this->setParam(array(
@@ -291,7 +299,7 @@ class Profile_Component_Controller_Index extends Phpfox_Component
 		{
 			$this->template()->setHeader('<link rel="alternate" type="application/rss+xml" title="' . Phpfox::getPhrase('profile.updates_from') . ': ' . Phpfox::getLib('parse.output')->clean($aRow['full_name']) . '" href="' . $this->url()->makeUrl($aRow['user_name'], array('rss')) . '" />');
 			$this->template()->assign('bShowRssFeedForUser', true);
-		}		
+		}
 		
 		(($sPlugin = Phpfox_Plugin::get('profile.component_controller_index_process_section')) ? eval($sPlugin) : false);				
 
@@ -370,7 +378,8 @@ class Profile_Component_Controller_Index extends Phpfox_Component
 					'pager.css' => 'style_css',
 					'jquery/plugin/jquery.scrollTo.js' => 'static_script',
 					'quick_edit.js' => 'static_script',
-					'jquery/plugin/jquery.highlightFade.js' => 'static_script'
+					'jquery/plugin/jquery.highlightFade.js' => 'static_script',
+					'player/flowplayer/flowplayer.js' => 'static_script'
 				)
 			);		
 			
@@ -412,12 +421,15 @@ class Profile_Component_Controller_Index extends Phpfox_Component
 				
 				(($sCmd = Phpfox::getLib('template')->getXml('design_css')) ? eval($sCmd) : null);
 				
-				Phpfox::getService('theme')->getDesignValues($aAdvanced, array(
+				if (isset($aAdvanced))
+				{
+				    Phpfox::getService('theme')->getDesignValues($aAdvanced, array(
 						'table' => 'user_css',
 						'field' => 'user_id',
 						'value' => $aRow['user_id']						
-					)
-				);				
+					    )
+				    );
+				}								
 				
 				
 				$this->template()
@@ -430,14 +442,17 @@ class Profile_Component_Controller_Index extends Phpfox_Component
 							)
 						)
 						->setHeader('cache', array(
-							'jquery/plugin/jquery.bgiframe.js' => 'static_script',
+							// 'jquery/plugin/jquery.bgiframe.js' => 'static_script',
 							'jquery/ui.js' => 'static_script',							
 							'style.css' => 'style_css',
 							'select.js' => 'module_theme',
 							'design.js' => 'module_theme',										
 							'colorpicker.js' => 'static_script',
+							'colorpicker.css' => 'style_css',
+							'colorpicker/js/colorpicker.js' => 'static_script',
 							'switch_legend.js' => 'static_script',
-							'switch_menu.js' => 'static_script'
+							'switch_menu.js' => 'static_script',
+							'designer.js' => 'module_profile'
 						)
 					)
 					->setHeader('cache', array(
@@ -446,14 +461,19 @@ class Profile_Component_Controller_Index extends Phpfox_Component
 					)
 					->setHeader(array(
 							Phpfox::getLib('parse.css')->getJavaScript(),
-							'<script type="text/javascript">function designOnUpdate() { $Core.design.updateSorting(); }</script>',		
-							'<script type="text/javascript">$Core.design.init({type_id: \'profile\'});</script>'					
+							//'<script type="text/javascript">$Behavior.profile_controller_designon_update_2 = function(){ console.log("Creating designOnUpdate");function designOnUpdate() { $Core.design.updateSorting(); } };</script>',		
+							//'<script type="text/javascript">$Behavior.profile_design_init_2 = function() { $Core.design.init({type_id: \'profile\'}); };</script>'
 						)
 					)
-					->assign(array(
+					;			
+				
+				if (isset($aAdvanced))
+				{
+				    $this->template()->assign(array(
 						'aAdvanced' => $aAdvanced				
 					)		
-				);			
+				    );
+				}
 				
 				if (Phpfox::getParam('profile.can_drag_drop_blocks_on_profile'))
 				{					
@@ -472,8 +492,8 @@ class Profile_Component_Controller_Index extends Phpfox_Component
 						'jquery/ui.js' => 'static_script',
 						'sort.js' => 'module_theme',
 						'design.js' => 'module_theme',				
-						'<script type="text/javascript">function designOnUpdate() { $Core.design.updateSorting(); }</script>',
-						'<script type="text/javascript">$Core.design.init({type_id: \'profile\'});</script>'
+						'<script type="text/javascript">$Behavior.profile_controller_designonupdate_3 = function() { function designOnUpdate() { $Core.design.updateSorting(); } };</script>',
+						'<script type="text/javascript">$Behavior.profile_controller_init_3 = function() { $Core.design.init({type_id: \'profile\'}); };</script>'
 					)
 				);	
 			}			
@@ -483,10 +503,15 @@ class Profile_Component_Controller_Index extends Phpfox_Component
 		{
 			$this->template()->setHeader(array(
 					'player/' . Phpfox::getParam('core.default_music_player') . '/core.js' => 'static_script',					
-					'<script type="text/javascript">$(function() { $Core.player.load({id: \'js_music_player\', type: \'music\'}); $Core.player.load({id: \'js_music_favorite_player\', type: \'music\'}); });</script>'
+					'<script type="text/javascript">$Behavior.profile_index_load_player = function() { $Core.player.load({id: \'js_music_player\', type: \'music\'}); $Core.player.load({id: \'js_music_favorite_player\', type: \'music\'}); };</script>'
 				)
 			);
-		}	
+		}
+
+		if (Phpfox::getParam('video.convert_servers_enable'))
+		{
+			$this->template()->setHeader('<script type="text/javascript">document.domain = "' . Phpfox::getParam('video.convert_js_parent') . '";</script>');
+		}
 	}
 	
 	/**

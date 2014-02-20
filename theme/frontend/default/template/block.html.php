@@ -5,14 +5,15 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: block.html.php 3952 2012-02-28 14:15:08Z Raymond_Benc $
+ * @version 		$Id: block.html.php 6820 2013-10-22 13:05:35Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
 
 ?>
 {if (isset($sHeader) && (!PHPFOX_IS_AJAX || isset($bPassOverAjaxCall) || isset($bIsAjaxLoader))) || (defined("PHPFOX_IN_DESIGN_MODE") && PHPFOX_IN_DESIGN_MODE) || (Phpfox::getService('theme')->isInDnDMode())}
-<div class="block{if defined('PHPFOX_IN_DESIGN_MODE') || Phpfox::getService('theme')->isInDnDMode()} js_sortable{/if}{if isset($sCustomClassName)} {$sCustomClassName}{/if}"{if isset($sBlockBorderJsId)} id="js_block_border_{$sBlockBorderJsId}"{/if}{if defined('PHPFOX_IN_DESIGN_MODE') && Phpfox::getLib('module')->blockIsHidden('js_block_border_' . $sBlockBorderJsId . '')} style="display:none;"{/if}>
+
+<div class="block{if (defined('PHPFOX_IN_DESIGN_MODE') || Phpfox::getService('theme')->isInDnDMode()) && (!isset($bCanMove) || (isset($bCanMove) && $bCanMove == true ) )} js_sortable{/if}{if isset($sCustomClassName)} {$sCustomClassName}{/if}"{if isset($sBlockBorderJsId)} id="js_block_border_{$sBlockBorderJsId}"{/if}{if defined('PHPFOX_IN_DESIGN_MODE') && Phpfox::getLib('module')->blockIsHidden('js_block_border_' . $sBlockBorderJsId . '')} style="display:none;"{/if}>
 	{if !empty($sHeader) || (defined("PHPFOX_IN_DESIGN_MODE") && PHPFOX_IN_DESIGN_MODE) || (Phpfox::getService('theme')->isInDnDMode())}
 		<div class="title {if defined('PHPFOX_IN_DESIGN_MODE') || Phpfox::getService('theme')->isInDnDMode()}js_sortable_header{/if}">		
 		{if isset($sBlockTitleBar)}
@@ -25,17 +26,19 @@ defined('PHPFOX') or exit('NO DICE!');
 		{/if}
 		{if true || isset($sDeleteBlock)}
 			<div class="js_edit_header_bar js_edit_header_hover" style="display:none;">
-				{if Phpfox::getService('theme')->isInDnDMode() }
+				{if Phpfox::getService('theme')->isInDnDMode() && ( (isset($bCanMove) && $bCanMove) || !isset($bCanMove) )}
 					<a href="#" onclick="if (confirm('{phrase var='core.are_you_sure' phpfox_squote=true}')){left_curly}
 					$(this).parents('.block:first').remove(); $.ajaxCall('core.removeBlockDnD', 'sController=' + oParams['sController'] 
 					+ '&amp;block_id={if isset($sDeleteBlock)}{$sDeleteBlock}{else} {$sBlockBorderJsId}{/if}');{right_curly} return false;"title="{phrase var='core.remove_this_block'}">
 						{img theme='misc/application_delete.png' alt='' class='v_middle'}
 					</a>
 				{else}				
-					<a href="#" onclick="if (confirm('{phrase var='core.are_you_sure' phpfox_squote=true}')) {left_curly} $(this).parents('.block:first').remove();
-					$.ajaxCall('core.hideBlock', '{if isset($sCustomDesignId)}custom_item_id={$sCustomDesignId}&amp;{/if}sController=' + oParams['sController'] + '&amp;type_id={if isset($sDeleteBlock)}{$sDeleteBlock}{else} {$sBlockBorderJsId}{/if}&amp;block_id=' + $(this).parents('.block:first').attr('id')); {right_curly} return false;" title="{phrase var='core.remove_this_block'}">
-						{img theme='misc/application_delete.png' alt='' class='v_middle'}
-					</a>				
+					{if ( (isset($bCanMove) && $bCanMove) || !isset($bCanMove) ) }
+						<a href="#" onclick="if (confirm('{phrase var='core.are_you_sure' phpfox_squote=true}')) {left_curly} $(this).parents('.block:first').remove();
+						$.ajaxCall('core.hideBlock', '{if isset($sCustomDesignId)}custom_item_id={$sCustomDesignId}&amp;{/if}sController=' + oParams['sController'] + '&amp;type_id={if isset($sDeleteBlock)}{$sDeleteBlock}{else} {$sBlockBorderJsId}{/if}&amp;block_id=' + $(this).parents('.block:first').attr('id')); {right_curly} return false;" title="{phrase var='core.remove_this_block'}">
+							{img theme='misc/application_delete.png' alt='' class='v_middle'}
+						</a>				
+					{/if}
 				{/if}
 			</div>
 			
@@ -84,7 +87,9 @@ defined('PHPFOX') or exit('NO DICE!');
 	</div>
 	{/if}	
 </div>
-{unset var=$sHeader var1=$sModule var2=$sComponent var3=$aFooter var4=$sBlockBorderJsId var5=$bBlockDisableSort var6=$bBlockCanMove var7=$aEditBar var8=$sDeleteBlock var9=$sBlockTitleBar var10=$sBlockJsId var11=$sCustomClassName}
 {/if}
+{unset var=$sHeader var2=$sComponent var3=$aFooter var4=$sBlockBorderJsId var5=$bBlockDisableSort var6=$bBlockCanMove var7=$aEditBar var8=$sDeleteBlock var9=$sBlockTitleBar var10=$sBlockJsId var11=$sCustomClassName var12=$aMenu}
 
-{module name='ad.inner' sClass=$sClass}
+{if isset($sClass)}
+    {module name='ad.inner' sClass=$sClass}
+{/if}

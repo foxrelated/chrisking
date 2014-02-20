@@ -15,7 +15,7 @@ $Core.loadProfileInfo = function()
 	// $('.js_profile_block_view_data').hide();		
 	$('.js_custom_block_entry').show();	
 	$('#js_block_border_profile_info').show();		
-}
+};
 
 $Core.profileAjaxSection = function(sBlockName)
 {
@@ -52,10 +52,10 @@ $Core.profileAjaxSection = function(sBlockName)
 	$('.sub_section_menu ul').find('.js_hash_' + (empty(sBlockName) ? 'profile' : sBlockName)).addClass('active');		
 	
 	sCurrentAjaxSection = sBlockName;
-}
+};
 
-$(function()
-{	
+$Behavior.theme_default_profile_init_2 = function()
+{
 	var bIsCreated = false;
 	$('.sub_section_menu ul li a').click(function()
 	{	
@@ -91,4 +91,4 @@ $(function()
 	{
 		$Core.profileAjaxSection($.address.path().replace('/', ''));
 	}
-});
+};

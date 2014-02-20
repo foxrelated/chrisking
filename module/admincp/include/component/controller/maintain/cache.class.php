@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: cache.class.php 1405 2010-01-20 21:02:10Z Miguel_Espinoza $
+ * @version 		$Id: cache.class.php 6584 2013-09-05 09:59:17Z Miguel_Espinoza $
  */
 class Admincp_Component_Controller_Maintain_Cache extends Phpfox_Component 
 {
@@ -35,7 +35,13 @@ class Admincp_Component_Controller_Maintain_Cache extends Phpfox_Component
 			Phpfox::getLib('template.cache')->remove();
 			Phpfox::getLib('cache')->removeStatic();
 			
-			$this->url()->send('admincp', array('maintain', 'cache', 'clear' => 'done'), Phpfox::getPhrase('admincp.cached_cleared'));
+			$aParams = array('maintain', 'cache', 'clear' => 'done');
+			if ($sPlugin = Phpfox_Plugin::get('admincp.component_controller_maintain_1'))
+			{
+				eval($sPlugin);
+			}
+			
+			$this->url()->send('admincp', $aParams, Phpfox::getPhrase('admincp.cached_cleared'));
 		}
 		
 		if ($aIds = $this->request()->getArray('id'))

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Service
- * @version 		$Id: process.class.php 4486 2012-07-09 13:42:26Z Miguel_Espinoza $
+ * @version 		$Id: process.class.php 6496 2013-08-23 11:34:09Z Fern $
  */
 class Link_Service_Process extends Phpfox_Service 
 {
@@ -117,6 +117,11 @@ class Link_Service_Process extends Phpfox_Service
 		{
 			$this->database()->delete(Phpfox::getT('link'), 'link_id = ' . (int) $aLink['link_id']);
 			Phpfox::getService('attachment.process')->updateItemCount($aLink['category_id'], $aLink['attachment_id'], '-');			
+                        
+                        if(!empty($aLink['attachment_id']))
+                        {
+                            $this->database()->delete(Phpfox::getT('attachment'), 'attachment_id = ' . (int) $aLink['attachment_id']);
+                        }
 		}
 		
 		return false;

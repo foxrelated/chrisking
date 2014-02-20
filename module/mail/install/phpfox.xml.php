@@ -100,6 +100,7 @@
 		<hook module_id="mail" hook_type="service" module="mail" call_name="mail.service_process_add_1" added="1319729453" version_id="3.0.0rc1" />
 		<hook module_id="mail" hook_type="template" module="mail" call_name="mail.template_controller_compose_ajax_onsubmit" added="1319729453" version_id="3.0.0rc1" />
 		<hook module_id="mail" hook_type="controller" module="mail" call_name="mail.component_controller_thread_clean" added="1334069444" version_id="3.2.0beta1" />
+		<hook module_id="mail" hook_type="service" module="mail" call_name="mail.service_process_add_2" added="1384774431" version_id="3.7.3" />
 	</hooks>
 	<components>
 		<component module_id="mail" component="compose" m_connection="mail.compose" module="mail" is_controller="1" is_block="0" is_active="1" />
@@ -186,7 +187,9 @@ Note that this adds extra queries to your database.</phrase>
 
 <b>Notice:</b> This will add an extra SQL query.</info>]]></phrase>
 		<phrase module_id="mail" version_id="2.0.0alpha2" var_name="user_setting_can_add_attachment_on_mail" added="1237813579">Can add attachments?</phrase>
-		<phrase module_id="mail" version_id="2.0.0beta5" var_name="user_setting_mail_box_limit" added="1245750405">This setting tells how many messages can be stored based on the user group. It is complemented by the setting override_mail_box_limit to allow administrators and staff members to store any number of messages.</phrase>
+		<phrase module_id="mail" version_id="2.0.0beta5" var_name="user_setting_mail_box_limit" added="1245750405">This setting tells how many messages can be stored based on the user group. It is complemented by the setting override_mail_box_limit to allow administrators and staff members to store any number of messages.
+
+This setting does not work with threaded mail.</phrase>
 		<phrase module_id="mail" version_id="2.0.0beta5" var_name="user_setting_override_mail_box_limit" added="1245750539">This setting tells if members of this user group can overcome the limit imposed by the setting mail_box_limit.
 
 By default only administrators and staff members can have unlimited messages stored.</phrase>
@@ -229,7 +232,7 @@ This affects the other user's received messages list and is enabled by default.<
 
 Notice: X & Y are settings that can be changed.</info>]]></phrase>
 		<phrase module_id="mail" version_id="2.0.0rc1" var_name="setting_total_mail_messages_to_check" added="1251278379"><![CDATA[<title>PM Messages to Check</title><info>If the setting to check if PM's are identical you can see here how many messages in the past should be checked.</info>]]></phrase>
-		<phrase module_id="mail" version_id="2.0.0rc1" var_name="setting_total_minutes_to_wait_for_pm" added="1251278493"><![CDATA[<title>PM Minutes to Wait Unilt Next Check</title><info>If the setting to check if PM's are identical you can set here how far back we should check in minutes.</info>]]></phrase>
+		<phrase module_id="mail" version_id="2.0.0rc1" var_name="setting_total_minutes_to_wait_for_pm" added="1251278493"><![CDATA[<title>PM Minutes to Wait Until Next Check</title><info>If the setting to check if PM's are identical you can set here how far back we should check in minutes.</info>]]></phrase>
 		<phrase module_id="mail" version_id="2.0.0rc3" var_name="setting_show_preview_message" added="1254749315"><![CDATA[<title>Show Preview Message</title><info>If enabled, users will see a short version of their messages.</info>]]></phrase>
 		<phrase module_id="mail" version_id="2.0.0rc3" var_name="user_setting_send_message_to_max_users_each_time" added="1254829395">This value restricts sending private messages.
 It sets the maximum number of recipients when sending private messages, avoiding users to select way too many users and potentially spamming.
@@ -399,6 +402,11 @@ To reply to this message, follow the link below:
 		<phrase module_id="mail" version_id="3.4.0rc1" var_name="legacy_inbox" added="1349866285">Legacy Inbox</phrase>
 		<phrase module_id="mail" version_id="3.4.0" var_name="page_claim_message" added="1350911604"><![CDATA[Hello, I hereby claim the page "{title}" (URL: {url}) as my own and request your attention to the matter. I am able to provide any documentation that you may require.]]></phrase>
 		<phrase module_id="mail" version_id="3.4.0" var_name="claiming_page_title" added="1350912704"><![CDATA[Claiming Page &#039;{title}&#039;]]></phrase>
+		<phrase module_id="mail" version_id="3.5.0beta2" var_name="delete_conversation" added="1359462488">Delete Conversation</phrase>
+		<phrase module_id="mail" version_id="3.5.1" var_name="conversation_successfully_deleted" added="1366631869">Conversation successfully deleted.</phrase>
+		<phrase module_id="mail" version_id="3.5.1" var_name="who_can_share_blogs" added="1366632035">Who can share blogs</phrase>
+		<phrase module_id="mail" version_id="3.5.1" var_name="who_can_view_blogs" added="1366632054">Who can view blogs</phrase>
+		<phrase module_id="mail" version_id="3.7.1" var_name="mark_all_read" added="1381234465">Mark All As Read</phrase>
 	</phrases>
 	<user_group_settings>
 		<setting is_admin_setting="0" module_id="mail" type="integer" admin="10" user="10" guest="0" staff="10" module="mail" ordering="0">total_folders</setting>

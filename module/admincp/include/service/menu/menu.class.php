@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: menu.class.php 4602 2012-08-18 18:48:02Z Raymond_Benc $
+ * @version 		$Id: menu.class.php 6739 2013-10-07 14:14:51Z Fern $
  */
 class Admincp_Service_Menu_Menu extends Phpfox_Service 
 {
@@ -61,7 +61,10 @@ class Admincp_Service_Menu_Menu extends Phpfox_Service
 		
 		foreach ($aRows as $iKey => $aRow)
 		{
-			$aRows[$iKey]['name'] = Phpfox::getPhrase($aRow['module_name'] . '.' . $aRow['var_name']);
+			if(Phpfox::isModule($aRow['module_id']))
+			{
+				$aRows[$iKey]['name'] = Phpfox::getPhrase($aRow['module_name'] . '.' . $aRow['var_name']);
+			}
 		}		
 		
 		(($sPlugin = Phpfox_Plugin::get('admincp.service_menu_menu_get_end')) ? eval($sPlugin) : false);

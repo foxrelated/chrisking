@@ -11,12 +11,12 @@ $Core.userInfoLog = function(sLog){
 	if (bUserInfoLogDebug){
 		p(sLog);
 	}	
-}
+};
 
 $Core.loadUserToolTip = function($sUserName)
 {	   
 	setTimeout('$Core.showUserToolTip(\'' + $sUserName + '\');', $iUserToolTipWaitTime);
-}
+};
 
 $Core.closeUserToolTip = function(sUser)
 {	
@@ -30,7 +30,7 @@ $Core.closeUserToolTip = function(sUser)
 	$Core.userInfoLog('CLOSE: ' + sUser);
 	
 	$('#js_user_tool_tip_cache_' + sUser + '').parent().parent().hide();
-}
+};
 
 $Core.showUserToolTip = function(sUser)
 {
@@ -61,7 +61,7 @@ $Core.showUserToolTip = function(sUser)
 	$('#js_user_tool_tip_cache_' + sUser + '').parent().parent().css('display', 'block')		
 		.css('top', ($oOffset.top + 16) + 'px')
 		.css('left', $oOffset.left + 'px');
-}
+};
 
 $Behavior.userHoverToolTip = function()
 {	
@@ -120,4 +120,4 @@ $Behavior.userHoverToolTip = function()
 		
 		setTimeout('$Core.closeUserToolTip(\'' + oCloseObject + '\');', $iUserToolTipWaitTime);
 	});	
-}
+};

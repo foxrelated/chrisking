@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: request.class.php 3832 2011-12-19 14:44:03Z Miguel_Espinoza $
+ * @version 		$Id: request.class.php 5382 2013-02-18 09:48:39Z Miguel_Espinoza $
  */
 class Friend_Service_Request_Request extends Phpfox_Service 
 {
@@ -35,8 +35,8 @@ class Friend_Service_Request_Request extends Phpfox_Service
 			->where('user_id = ' . (int) $iFriendId . ' AND friend_user_id = ' . (int) $iUserId)
 			->limit(1)
 			->execute('getSlaveRow');
-		
-		if (isset($aRow['request_id']) && $aRow['is_ignore'] == '0')
+				
+		if (isset($aRow['request_id']))
 		{
 			return true;
 		}
@@ -79,6 +79,7 @@ class Friend_Service_Request_Request extends Phpfox_Service
 			list($iTotal, $aMutual) = Phpfox::getService('friend')->getMutualFriends($aRow['friend_user_id'], 5);
 			
 			$aRows[$iKey]['mutual_friends'] = array('total' => $iTotal, 'friends' => $aMutual);
+            if ($sPlugin = Phpfox_Plugin::get('friend.service_request_get__2')){eval($sPlugin);}
 		}
 		$sIds = rtrim($sIds, ',');
 		
@@ -87,6 +88,8 @@ class Friend_Service_Request_Request extends Phpfox_Service
 			$this->database()->update(Phpfox::getT('friend_request'), array('is_seen' => '1'), 'request_id IN(' . $sIds . ')');
 		}
 				
+        if ($sPlugin = Phpfox_Plugin::get('friend.service_request_get__3')){eval($sPlugin);}
+        
 		return array($iCnt, $aRows);
 	}
 	

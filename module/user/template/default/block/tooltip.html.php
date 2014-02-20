@@ -39,7 +39,9 @@ defined('PHPFOX') or exit('NO DICE!');
 			{if $aUser.dob_setting == '2'}
 				{phrase var='user.age_years_old' age=$sBirthDisplay}
 			{else}
-				{$sBirthDisplay}
+				{if $aUser.dob_setting != '3'}
+					{$sBirthDisplay}
+				{/if}
 			{/if}
 		{/foreach}	
 		<br />

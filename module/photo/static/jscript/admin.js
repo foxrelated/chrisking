@@ -1,5 +1,3 @@
-
-
 $Behavior.photoCategoryDropDown = function()
 {
 	$('.js_photo_category').click(function()

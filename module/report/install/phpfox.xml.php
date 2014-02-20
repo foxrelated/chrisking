@@ -29,6 +29,7 @@
 		<hook module_id="report" hook_type="component" module="report" call_name="report.component_block_profile_clean" added="1244973584" version_id="2.0.0beta4" />
 		<hook module_id="report" hook_type="component" module="report" call_name="report.component_block_browse_clean" added="1258389334" version_id="2.0.0rc8" />
 		<hook module_id="report" hook_type="service" module="report" call_name="report.service_data_data__call" added="1258389334" version_id="2.0.0rc8" />
+		<hook module_id="report" hook_type="component" module="report" call_name="report.component_block_profile_process" added="1358258443" version_id="3.5.0beta1" />
 	</hooks>
 	<components>
 		<component module_id="report" component="ajax" m_connection="" module="report" is_controller="0" is_block="0" is_active="1" />

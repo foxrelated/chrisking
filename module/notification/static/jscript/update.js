@@ -46,9 +46,14 @@ $Core.notification =
 			setTimeout('$.ajaxCall("notification.update", "", "GET");', (this.bDebug ? 10000 : (getParam('notification.notify_ajax_refresh') * 60000)));
 		}
 	}
-}
+};
 
-$(function()
+var bRunNotificationUpdate = true;
+$Behavior.notification_update_begin = function()
 {
+	if (!bRunNotificationUpdate){
+		return;
+	}
 	$Core.notification.update();
-});
+	bRunNotificationUpdate = false;
+};

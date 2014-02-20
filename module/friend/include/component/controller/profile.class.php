@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: profile.class.php 3388 2011-10-31 13:31:22Z Raymond_Benc $
+ * @version 		$Id: profile.class.php 5224 2013-01-28 13:05:21Z Raymond_Benc $
  */
 class Friend_Component_Controller_Profile extends Phpfox_Component
 {
@@ -120,7 +120,8 @@ class Friend_Component_Controller_Profile extends Phpfox_Component
 		$this->template()->setTitle(Phpfox::getPhrase('friend.full_name_s_friends', array('full_name' => $aUser['full_name'])))
 			->setBreadcrumb(Phpfox::getPhrase('friend.friends'))
 			->setHeader('cache', array(
-					'pager.css' => 'style_css'
+					'pager.css' => 'style_css',
+					'friend.css' => 'style_css'
 				)
 			)
 			->assign(array(

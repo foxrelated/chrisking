@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Ajax
- * @version 		$Id: ajax.class.php 4165 2012-05-14 10:43:25Z Raymond_Benc $
+ * @version 		$Id: ajax.class.php 6950 2013-11-29 11:18:06Z Miguel_Espinoza $
  */
 class Admincp_Component_Ajax_Ajax extends Phpfox_Ajax
 {
@@ -37,7 +37,7 @@ class Admincp_Component_Ajax_Ajax extends Phpfox_Ajax
 			
 			$sHtml = '<tr class="js_nofollow_row is_new_row" id="js_id_row_' . $iId. '">';
 			$sHtml .= '<td><input type="checkbox" name="id[]" class="checkbox" value="' . $iId. '" id="js_id_row' . $iId. '" /></td>';
-			$sHtml .= '<td>' . ($aVals['type_id'] ? Phpfox::getPhrase('admincp.description') : Phpfox::getPhrase('admincp.keyword')) . '</td>';
+			$sHtml .= '<td>' . ($aVals['type_id'] == '1' ? Phpfox::getPhrase('admincp.description') : ($aVals['type_id'] == '2' ? 'Title' : Phpfox::getPhrase('admincp.keyword'))) . '</td>';
 			$sHtml .= '<td>' . Phpfox::getService('admincp.seo')->getUrl($aVals['url']) . '</td>';
 			$sHtml .= '<td><textarea name="val[' . $iId. '][content]" cols="30" rows="4" style="height:30px;">' . $aVals['content'] . '</textarea></td>';
 			$sHtml .= '<td>' . Phpfox::getLib('date')->convertTime(PHPFOX_TIME) . '</td>';
@@ -48,7 +48,7 @@ class Admincp_Component_Ajax_Ajax extends Phpfox_Ajax
 			$this->append('#js_meta_holder_table', $sHtml);
 			$this->call('var bHasTrClass = false; $(\'.js_nofollow_row\').each(function(){ if ($(this).hasClass(\'is_new_row\')) { $(this).removeClass(\'is_new_row\'); return false; } if ($(this).hasClass(\'tr\')) { bHasTrClass = true; } else { bHasTrClass = false; } }); if (!bHasTrClass) { $(\'#js_id_row_' . $iId. '\').addClass(\'tr\'); }');
 			
-			$this->alert(Phpfox::getPhrase('admincp.successfully_added_a_new_meta_tag'));
+			$this->alert('Successfully added a new custom element.');
 		}		
 	}
 	
@@ -93,6 +93,7 @@ class Admincp_Component_Ajax_Ajax extends Phpfox_Ajax
 		Phpfox::getUserParam('admincp.has_admin_access', true);		
 		
 		$this->call('aAdminCPSearchValues = ' . json_encode(Phpfox::getService('admincp.setting')->getForSearch()) . ';');
+		$this->call('$("#admincp_search_input").keyup();');
 	}
 	
 	public function updateBlockActivity()

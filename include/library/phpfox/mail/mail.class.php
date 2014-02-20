@@ -22,7 +22,7 @@ Phpfox::getLibClass('phpfox.mail.interface');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: mail.class.php 4974 2012-10-31 07:30:42Z Raymond_Benc $
+ * @version 		$Id: mail.class.php 7079 2014-01-29 17:27:22Z Fern $
  */
 class Phpfox_Mail
 {
@@ -116,7 +116,7 @@ class Phpfox_Mail
 	public function __construct($sMethod = null)
     {    	
     	$this->_oMail = Phpfox::getLib('mail.driver.phpmailer.' . ($sMethod === null ? Phpfox::getParam('core.method') : $sMethod));
-		$this->_sArray = 'array("site_name" => "'.Phpfox::getParam('core.site_title').'","site_email" => "'.Phpfox::getParam('core.email_from_email').'")';
+		$this->_sArray = 'array("site_name" => "'.str_replace('"', '&quot;',Phpfox::getParam('core.site_title')).'","site_email" => "'.Phpfox::getParam('core.email_from_email').'")';
     }    
     
     /**
@@ -466,6 +466,7 @@ class Phpfox_Mail
 						$sSubject = preg_replace('/\{setting var=\'(.*)\'\}/ise', "'' . Phpfox::getParam('\\1') . ''", $sSubject);
 						$sSubject = preg_replace('/\{phrase var=\'(.*)\'\}/ise', "'' . Phpfox::getPhrase('\\1',{$this->_sArray}, false, null, '".$aUser['language_id']."') . ''", $sSubject);
 						$sSubject = html_entity_decode($sSubject, null, 'UTF-8'); // http://www.phpfox.com/tracker/view/10392/
+						$sSubject = str_replace(array('&#039;', '&#0039;'), "'", $sSubject); // http://www.phpfox.com/tracker/view/15051/
 						$sEmailSig = preg_replace('/\{phrase var=\'(.*)\'\}/ise', "'' . Phpfox::getPhrase('\\1',{$this->_sArray}, false, null, '".$aUser['language_id']."') . ''", Phpfox::getParam('core.mail_signature'));
 				
 						// Load plain text template
@@ -511,6 +512,11 @@ class Phpfox_Mail
 			}	
 		}
 		
+		
+		if ($sPlugin = Phpfox_Plugin::get('mail_send_call_2'))
+		{
+			eval($sPlugin);
+		}
 		
 		if (!empty($sEmails))
 		{			
@@ -567,6 +573,11 @@ class Phpfox_Mail
 					)
 				)->getLayout('email', true);	
 				
+				if ($sPlugin = Phpfox_Plugin::get('mail_send_call_3'))
+				{
+					eval($sPlugin);
+				}
+		
 				if (empty($sEmail))
 				{
 					continue;
@@ -576,6 +587,12 @@ class Phpfox_Mail
 			}
 		}
 		$this->_aUsers = null;
+		
+		if ($sPlugin = Phpfox_Plugin::get('mail_send_call_4'))
+		{
+			eval($sPlugin);
+		}
+		
 		return $bIsSent;
     }
     

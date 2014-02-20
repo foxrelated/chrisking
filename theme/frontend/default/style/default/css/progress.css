@@ -58,3 +58,36 @@
 {	
 	position: relative;
 }
+
+.js_tmp_upload_bar
+{
+    width:300px;
+    height:30px;
+    line-height:30px;
+    border:1px #008C00 solid;
+    position:relative;
+    margin-bottom:5px;
+}
+
+.js_tmp_upload_bar_content
+{
+    position:absolute;
+    height:30px;
+    line-height:30px;
+    top:0px;
+    left:10px;
+    z-index:2;
+}
+
+.js_tmp_upload_bar_upload
+{
+    position:absolute;
+    height:30px;
+    line-height:30px;
+    top:0px;
+    left:0px;
+    background:#CDEB8B;
+    display:none;
+    z-index:1;
+    width:0%;
+}

@@ -40,7 +40,6 @@
 		<phrase module_id="egift" version_id="2.0.8" var_name="no_gifts_have_been_added" added="1299594277">No gifts have been added</phrase>
 		<phrase module_id="egift" version_id="2.0.8" var_name="thank_you_for_your_purchase" added="1299594330">Thank you for your purchase.</phrase>
 		<phrase module_id="egift" version_id="2.0.8" var_name="admin_menu_invoices" added="1299599121">Invoices</phrase>
-		<phrase module_id="egift" version_id="3.0.0beta1" var_name="egift_category_1" added="1313582355">test 1</phrase>
 		<phrase module_id="egift" version_id="3.0.0" var_name="category_added_successfully" added="1323088136">Category added successfully</phrase>
 		<phrase module_id="egift" version_id="3.0.0" var_name="update_successfully" added="1323088147">Update successfully</phrase>
 		<phrase module_id="egift" version_id="3.0.0" var_name="delete_successfully" added="1323088160">Delete successfully</phrase>

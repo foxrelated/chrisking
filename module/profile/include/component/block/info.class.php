@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Profile
- * @version 		$Id: info.class.php 4469 2012-07-05 08:05:05Z Raymond_Benc $
+ * @version 		$Id: info.class.php 6905 2013-11-19 11:36:20Z Miguel_Espinoza $
  */
 class Profile_Component_Block_Info extends Phpfox_Component
 {
@@ -96,13 +96,13 @@ class Profile_Component_Block_Info extends Phpfox_Component
 			$sEditLink .= '</a>';			
 			$sEditLink .= '</div>';
 		}	
-                // Get the Smoker and Drinker details
-                $aUserPanel = Phpfox::getService('custom')->getUserPanelForUser($aUser['user_id']);
+		// Get the Smoker and Drinker details
+		$aUserPanel = Phpfox::getService('custom')->getUserPanelForUser($aUser['user_id']);
                 
-                foreach ($aUserPanel as $sName => $aField)
-                {
-                    //$aUserDetails[Phpfox::getPhrase($aField['phrase_var_name'])] = Phpfox::getPhrase($aField['phrase_chosen']);
-                }
+		foreach ($aUserPanel as $sName => $aField)
+		{
+			//$aUserDetails[Phpfox::getPhrase($aField['phrase_var_name'])] = Phpfox::getPhrase($aField['phrase_chosen']);
+		}
 		$this->template()->assign(array(				
 				'aUserDetails' => $aUserDetails,
 				'sBlockJsId' => 'profile_basic_info',

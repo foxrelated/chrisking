@@ -13,7 +13,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: module.class.php 4961 2012-10-29 07:11:34Z Raymond_Benc $
+ * @version 		$Id: module.class.php 7075 2014-01-28 16:04:34Z Fern $
  */
 class Phpfox_Module
 {	
@@ -175,6 +175,8 @@ class Phpfox_Module
 	 */
 	private $_aCacheBlockId = array();
 	
+	public $sFinalModuleCallback = '';
+	
 	/**
 	 * Class constructor that caches all the modules, components (blocks/controllers) and drag/drop information.
 	 *
@@ -306,7 +308,7 @@ class Phpfox_Module
 		
 		if ($oReq->get('req1') == 'admincp' && Phpfox::getParam('admincp.admin_cp') != 'admincp')
 		{
-			Phpfox::getLib('url')->send(Phpfox::getParam('admincp.admin_cp'));		
+			Phpfox::getLib('url')->send('error.404');					
 		}		
 		
 		if ($oReq->get('req2') && file_exists($sDir . PHPFOX_DIR_MODULE_COMPONENT . PHPFOX_DS . 'controller' . PHPFOX_DS . strtolower($oReq->get('req2')) . '.class.php'))
@@ -356,13 +358,13 @@ class Phpfox_Module
 		{
 			$this->_sModule = 'admincp';			
 		}	
-
+/*
 		if (Phpfox::isUser() && Phpfox::getParam('core.is_auto_hosted') && Phpfox::getService('log.session')->getOnlineMembers() > Phpfox::getParam('core.phpfox_max_users_online'))
 		{
 			$this->_sModule = 'core';
 			$this->_sController = 'full';
 		}		
-		
+*/
 		(($sPlugin = Phpfox_Plugin::get('module_setcontroller_end')) ? eval($sPlugin) : false);
 		
 		// Set the language pack cache
@@ -370,7 +372,7 @@ class Phpfox_Module
 		{			
 			Phpfox::getLib('locale')->setCache();
 		}		
-		$bCookie = Phpfox::getCookie('page_login');
+		$bCookie = (Phpfox::getCookie('page_login') && Phpfox::getUserBy('profile_page_id') > 0);
 		
 		if (Phpfox::isUser() && $bCookie != 1 && Phpfox::getUserParam('user.require_profile_image') && Phpfox::getUserBy('user_image') == '' && 
 			!(
@@ -385,11 +387,27 @@ class Phpfox_Module
 		
 		if (Phpfox::getParam('core.force_https_secure_pages'))
 		{
+			$sController = str_replace('mobile.', '', $this->getFullControllerName());
+			if ($sController == 'core.index-member' || $sController == 'core.index-visitor')
+			{
+				// fixes 14276
+				$sController = '';
+			}
 			if (in_array(str_replace('mobile.', '', $this->getFullControllerName()), Phpfox::getService('core')->getSecurePages()))
 			{
 				if (!isset($_SERVER['HTTPS']))
 				{
-					Phpfox::getLib('url')->send(str_replace('mobile.', '', $this->getFullControllerName()));
+					Phpfox::getLib('url')->send($sController);
+				}
+			}
+			else
+			{
+				if (Phpfox::getParam('core.force_secure_site'))// && Phpfox::isUser())
+				{
+					if (!isset($_SERVER['HTTPS']))
+					{
+						Phpfox::getLib('url')->send($sController);
+					}
 				}
 			}
 		}
@@ -463,10 +481,11 @@ class Phpfox_Module
 	 */
 	public function getModuleBlocks($iId, $bForce = false)
 	{
+		// edited the tempalte.cache instead easier for DnD
 		static $aBlocks = array();	
 		static $bIsOrdered = false;
 		
-		if (Phpfox::getService('profile')->timeline() && $iId == '1')
+		if (Phpfox::getService('profile')->timeline() && $iId == '1' && !defined('PAGE_TIME_LINE'))
 		{
 			$aBlocks[$iId] = array();
 			
@@ -486,7 +505,7 @@ class Phpfox_Module
 		$sController = strtolower($this->_sModule . '.' . str_replace(array('\\', '/'), '.' , $this->_sController));
 		
 		if (isset($this->_aModuleBlocks[$sController][$iId]) || isset($this->_aModuleBlocks[str_replace('.index','',$sController)][$iId]) || isset($this->_aModuleBlocks[$this->_sModule][$iId]) || isset($this->_aModuleBlocks[''][$iId]))
-		{		
+		{
 			$aCachedBlocks = array();			
 			if (isset($this->_aModuleBlocks[$sController][$iId]))
 			{
@@ -580,6 +599,7 @@ class Phpfox_Module
 				else 
 				{				
 					$aBlocks[$iId][] = $sKey;
+					if ($sPlugin = Phpfox_Plugin::get('library_module_getmoduleblocks_1')){eval($sPlugin);if (isset($bReturnFromPlugin)) return $bReturnFromPlugin;}
 				}			
 			}	
 		}		
@@ -627,6 +647,7 @@ class Phpfox_Module
 	 */
 	public function getService($sClass, $aParams = array())
 	{	
+		(($sPlugin = Phpfox_Plugin::get('get_service_1')) ? eval($sPlugin) : false);
 		if (isset($this->_aServices[$sClass]))
 		{
 			return $this->_aServices[$sClass];	
@@ -692,6 +713,8 @@ class Phpfox_Module
 		
 		if (!file_exists($sFile))
 		{
+            (($sPlugin = Phpfox_Plugin::get('library_module_getservice_1')) ? eval($sPlugin) : false);if(isset($mPluginReturn)){return $mPluginReturn;}
+            
 			Phpfox_Error::trigger('Unable to load service class: ' . $sFile, E_USER_ERROR);
 		}
 
@@ -716,7 +739,7 @@ class Phpfox_Module
 	{
 		(($sPlugin = Phpfox_Plugin::get('module_getcomponent_start')) ? eval($sPlugin) : false);
 
-		if ($sType == 'ajax' && !strpos($sClass, '.'))
+		if ($sType == 'ajax' && strpos($sClass, '.') === false)
 		{
 			$sClass = $sClass . '.ajax';
 		}	
@@ -736,6 +759,7 @@ class Phpfox_Module
 			$this->_sController = substr_replace(str_replace('.', PHPFOX_DS, $sClass), '', 0, strlen($sModule . PHPFOX_DS));
 		}
 		static $sBlockName = '';
+		
 		if ($sModule == 'custom')
 		{
 			if (preg_match('/block\\' . PHPFOX_DS . 'cf_(.*)/i', $sComponent, $aCustomMatch))
@@ -780,6 +804,7 @@ class Phpfox_Module
 		}
 		else 
 		{	
+			
 			$sClassFile = PHPFOX_DIR_MODULE . $sModule . PHPFOX_DS . PHPFOX_DIR_MODULE_COMPONENT . PHPFOX_DS . $sComponent . '.class.php';	
 	
 			if (!file_exists($sClassFile) && isset($aParts[1]))
@@ -787,9 +812,11 @@ class Phpfox_Module
 				$sClassFile = PHPFOX_DIR_MODULE . $sModule . PHPFOX_DS . PHPFOX_DIR_MODULE_COMPONENT . PHPFOX_DS . $sComponent . PHPFOX_DS . $aParts[1] . '.class.php';				
 			}			
 			
+            (($sPlugin = Phpfox_Plugin::get('library_module_getcomponent_1')) ? eval($sPlugin) : false);if(isset($mPluginReturn)){return $mPluginReturn;}
 			// Lets check if there is such a component
 			if (!file_exists($sClassFile))
 			{
+                (($sPlugin = Phpfox_Plugin::get('library_module_getcomponent_2')) ? eval($sPlugin) : false);if(isset($mPluginReturn)){return $mPluginReturn;}
 				// Opps, for some reason we have loaded an invalid component. Lets send back info to the dev.
 				Phpfox_Error::trigger('Failed to load component: ' . $sClassFile, E_USER_ERROR);
 			}
@@ -834,9 +861,17 @@ class Phpfox_Module
 		{			
 			if ($mReturn && is_string($mReturn))
 			{		
+				$sBlockShowName = ($sModule == 'custom' && !empty($sBlockName)) ? $sBlockName : ucwords(str_replace('.', ' ', $sClass));
+				$sBlockBorderJsId = ($sModule == 'custom' && !empty($sBlockName)) ? $sBlockName : str_replace('.', '_', $sClass);
+				
+				$sBlockPath = $sModule . '.' . str_replace( 'block' . PHPFOX_DS, '', $sComponent);
+				
+				$bCanMove = (!isset($this->_aMoveBlocks[ $this->_sModule . '.' . $this->_sController][$sBlockPath] )) || (isset($this->_aMoveBlocks[ $this->_sModule . '.' . $this->_sController][$sBlockPath] ) && $this->_aMoveBlocks[ $this->_sModule . '.' . $this->_sController][$sBlockPath] == true);
+				
 				Phpfox::getLib('template')->assign(array(
-						'sBlockShowName' => ($sModule == 'custom' && !empty($sBlockName)) ? $sBlockName : ucwords(str_replace('.', ' ', $sClass)),
-						'sBlockBorderJsId' => ($sModule == 'custom' && !empty($sBlockName)) ? $sBlockName : str_replace('.', '_', $sClass),
+						'sBlockShowName' => $sBlockShowName,
+						'sBlockBorderJsId' => $sBlockBorderJsId,
+						'bCanMove' => $bCanMove,
 						'sClass' => $sClass
 					)
 				)->setLayout($mReturn);
@@ -878,14 +913,46 @@ class Phpfox_Module
 		{
 			return;
 		}
-	
-		$aCustomOrder = Phpfox::getLib('database')
-			->select('*')
-			->from(Phpfox::getT($aCacheBlockData['table']))
-			->where($aCacheBlockData['field'] .' = ' . $aCacheBlockData['item_id'])
-			->order('ordering ASC')
-			->execute('getSlaveRows');
-	
+		
+		if (Phpfox::getParam('profile.cache_blocks_design'))
+		{
+			$sCacheTable = 'user_design';
+			$oCache = Phpfox::getLib('cache');
+			if ($aCacheBlockData['table'] == 'pages_design_order')
+			{
+				$sCacheTable = 'pages_design';
+			}
+			else if ($aCacheBlockData['table'] == 'user_dashboard')
+			{
+				$sCacheTable = 'user_dashboard';
+			}
+			$sCacheId = $oCache->set(array($sCacheTable, $aCacheBlockData['item_id']));
+			
+			if ( ($aCache = $oCache->get($sCacheId)))
+			{
+				if (!is_array($aCache))
+				{
+					$aCache = array();
+				}
+				$aCustomOrder = $aCache;
+			}		
+					
+		}
+		if (!isset($aCustomOrder))
+		{
+			$aCustomOrder = Phpfox::getLib('database')
+				->select('*')
+				->from(Phpfox::getT($aCacheBlockData['table']))
+				->where($aCacheBlockData['field'] .' = ' . $aCacheBlockData['item_id'])
+				->order('ordering ASC')
+				->execute('getSlaveRows');
+			
+			if (Phpfox::getParam('profile.cache_blocks_design') && (isset($sCacheTable)))
+			{
+				$sCacheId = $oCache->set(array($sCacheTable, $aCacheBlockData['item_id']));
+				$oCache->save($sCacheId, $aCustomOrder);
+			}
+		}
 	
 		$aNewVar = $this->_aModuleBlocks[$aCacheBlockData['controller']];
 		$aNewestVar = array();
@@ -901,7 +968,7 @@ class Phpfox_Module
 			{
 				$aNewestVar[] = $sName;
 				$aTemp[$sName] = $iLocation;
-			}			
+			}
 		}
 
 		if (count($aCustomOrder))
@@ -910,8 +977,6 @@ class Phpfox_Module
 			$this->_aModuleBlocks[$aCacheBlockData['controller']][2] = array();
 			$this->_aModuleBlocks[$aCacheBlockData['controller']][3] = array();
 		}
-			
-		// d($aNewestVar);
 		
 		foreach ($aCustomOrder as $iKey => $aBlock)
 		{
@@ -1103,8 +1168,11 @@ class Phpfox_Module
 			// Make sure its a valid/enabled module
 			if (!Phpfox::isModule($sModule))
 			{
-				return Phpfox_Error::trigger('Invalid module: ' . $sModule, E_USER_ERROR);
+				// return Phpfox_Error::trigger('Invalid module: ' . $sModule, E_USER_ERROR);
+				return false;
 			}
+			
+			$this->sFinalModuleCallback = $sModule;
 			
 			// Cache the object and get the callback service
 			$aModules[$sModule] = $this->getService($sModule . '.callback');
@@ -1337,18 +1405,34 @@ class Phpfox_Module
 		
 		if ($aSettings === null)
 		{
-			$aRows = Phpfox::getLib('database')->select('var_name, user_value')
-				->from(Phpfox::getT('component_setting'))
-				->where('user_id = ' . (int) $iUserId)
-				->execute('getSlaveRows');
-
+			$sCacheId = Phpfox::getLib('cache')->set(array('csetting', $iUserId));
+			
 			$aSettings = array();
-			foreach ($aRows as $aRow)
+			if (!($aSettings = Phpfox::getLib('cache')->get($sCacheId)))
 			{
-				$aSettings[$aRow['var_name']] = $aRow['user_value'];
+				$aRows = Phpfox::getLib('database')->select('var_name, user_value')
+					->from(Phpfox::getT('component_setting'))
+					->where('user_id = ' . (int) $iUserId)
+					->execute('getSlaveRows');
+				
+				foreach ($aRows as $aRow)
+				{
+					$aSettings[$aRow['var_name']] = $aRow['user_value'];
+				}
+				
+				Phpfox::getLib('cache')->save($sCacheId, $aRows);
 			}
 		}
-		
+		if(is_array($aSettings))
+		{
+			foreach ($aSettings as $aSetting)
+			{
+				if (isset($aSetting['var_name']) && $aSetting['var_name'] == $sVarName && isset($aSetting['user_value']) )
+				{
+					return $aSetting['user_value'];
+				}
+			}
+		}
 		return (isset($aSettings[$sVarName]) ? $aSettings[$sVarName] : $mDefaultValue);
 	}
 	
@@ -1356,7 +1440,7 @@ class Phpfox_Module
 	 * Cache all the active modules based on the package the client is using.
 	 *
 	 */
-	private function _cacheModules()
+	public function _cacheModules()
 	{
 		$oCache = Phpfox::getLib('cache');
 		$iCachedId = $oCache->set('module');		
@@ -1380,6 +1464,10 @@ class Phpfox_Module
 						case 'music':
 						case 'shoutbox':
 						case 'rss':
+						case 'quiz':
+						case 'marketplace':
+						case 'blog':
+						case 'poll':
 							Phpfox::getLib('database')->update(Phpfox::getT('module'), array('is_active' => '0'), 'module_id = \'' . $aRow['module_id'] . '\'');
 							continue 2;
 							break;
@@ -1490,7 +1578,10 @@ class Phpfox_Module
 					{
 						$this->_aMoveBlocks[$aRow['m_connection']][$sArrayName] = true;
 					}				
-					
+					else
+					{
+						$this->_aMoveBlocks[$aRow['m_connection']][$sArrayName] = false;
+					}
 					$iCacheId = $oCache->set(array('block', 'file_' . $aRow['block_id']));
 					$oCache->save($iCacheId, $aRow);
 					$oCache->close($iCacheId);
@@ -1534,6 +1625,11 @@ class Phpfox_Module
 			}
 		}		
 	}	
+	
+	public function getMoveBlocks()
+	{
+		return $this->_aMoveBlocks[ $this->_sModule . '.' . $this->_sController ];
+	}
 }
 
 ?>

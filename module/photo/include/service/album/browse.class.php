@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Service
- * @version 		$Id: browse.class.php 3533 2011-11-21 14:07:21Z Raymond_Benc $
+ * @version 		$Id: browse.class.php 6927 2013-11-22 12:32:11Z Raymond_Benc $
  */
 class Photo_Service_Album_Browse extends Phpfox_Service 
 {
@@ -41,6 +41,15 @@ class Photo_Service_Album_Browse extends Phpfox_Service
 	
 	public function query()
 	{
+		// http://www.phpfox.com/tracker/view/14733/
+		/*
+		if (Phpfox::isModule('like'))
+		{
+			$this->database()->select('l.like_id as is_liked, ');
+		}
+		*/
+		// END
+		
 		$this->database()->select('p.destination, p.server_id, ')->leftJoin(Phpfox::getT('photo'), 'p', 'p.album_id = pa.album_id AND pa.view_id = 0 AND p.is_cover = 1');
 	}
 	
@@ -50,6 +59,13 @@ class Photo_Service_Album_Browse extends Phpfox_Service
 		{
 			$this->database()->join(Phpfox::getT('friend'), 'friends', 'friends.user_id = pa.user_id AND friends.friend_user_id = ' . Phpfox::getUserId());	
 		}
+		
+		// http://www.phpfox.com/tracker/view/14733/
+		if (Phpfox::isModule('like'))
+		{
+			$this->database()->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = "photo_album" AND l.item_id = pa.album_id AND l.user_id = ' . Phpfox::getUserId() . '');				
+		}
+		// END
 	}
 	
 	/**

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: info.class.php 4421 2012-06-29 08:09:50Z Raymond_Benc $
+ * @version 		$Id: info.class.php 6058 2013-06-13 13:54:02Z Miguel_Espinoza $
  */
 class Profile_Component_Controller_Info extends Phpfox_Component
 {
@@ -20,7 +20,15 @@ class Profile_Component_Controller_Info extends Phpfox_Component
 	 */
 	public function process()
 	{		
-		$aRow = $this->getParam('aUser');		
+		$aRow = $this->getParam('aUser');
+		if (!isset($aRow['user_id']))
+		{
+			return false;
+		}	
+		if (!isset($aRow['has_rated']))
+		{
+			$aRow['has_rated'] = false;
+		}
 
 		if ($this->request()->get('req3') == 'design')
 		{
@@ -30,8 +38,8 @@ class Profile_Component_Controller_Info extends Phpfox_Component
 				'sort.js' => 'module_theme',
 				'design.js' => 'module_theme',
 				'<script type="text/javascript">
-				$Core.design.init({type_id: "profile", special: "user_info"});
-				function designOnUpdate() {$Core.design.updateSorting();} </script>'
+				$Behavior.profile_controller_design_init = function() { $Core.design.init({type_id: "profile", special: "user_info"});
+				function designOnUpdate() {$Core.design.updateSorting();} };</script>'
 			));						
 		}
 		

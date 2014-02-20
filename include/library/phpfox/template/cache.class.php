@@ -15,7 +15,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @author			Raymond Benc
  * @package 		Phpfox
  * @subpackage 		Template
- * @version 		$Id: cache.class.php 4899 2012-10-16 09:02:56Z Raymond_Benc $
+ * @version 		$Id: cache.class.php 6361 2013-07-25 08:37:06Z Raymond_Benc $
  */
 class Phpfox_Template_Cache extends Phpfox_Template
 {
@@ -182,6 +182,8 @@ class Phpfox_Template_Cache extends Phpfox_Template
 		$sContent = preg_replace("/defined\('PHPFOX'\) or exit\('NO DICE!'\);/is", "", $sContent);
 		$sContent = "<?php defined('PHPFOX') or exit('NO DICE!'); ?>\n" . $sContent;
 
+        if ($sPlugin = Phpfox_Plugin::get('library_template_cache_compile__1')){eval($sPlugin);if (isset($aPluginReturn)){return $aPluginReturn;}}
+        
 		if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
 		{
 			$oCache = Phpfox::getLib('cache');
@@ -289,6 +291,8 @@ class Phpfox_Template_Cache extends Phpfox_Template
 	 */
 	private function _parse($sData, $bRemoveHeader = false)
 	{
+        if ($sPlugin = Phpfox_Plugin::get('library_template_cache_parse__1')){eval($sPlugin);if (isset($aPluginReturn)){return $aPluginReturn;}}
+        
 		$sLdq = preg_quote($this->sLeftDelim);
 		$sRdq = preg_quote($this->sRightDelim);
 		$aText = array();
@@ -302,7 +306,7 @@ class Phpfox_Template_Cache extends Phpfox_Template
 		$sData = preg_replace_callback("/<form(.*?)>(.*?)<\/form>/is", array($this, '_parseForm'), $sData);
 
 		// remove all comments
-		$sData = preg_replace("/{$sLdq}\*(.*?)\*{$sRdq}/se", "", $sData);
+		$sData = preg_replace("/{$sLdq}\*(.*?)\*{$sRdq}/s", "", $sData);
 
 		// remove literal blocks
 		preg_match_all("!{$sLdq}\s*literal\s*{$sRdq}(.*?){$sLdq}\s*/literal\s*{$sRdq}!s", $sData, $aMatches);
@@ -361,7 +365,7 @@ class Phpfox_Template_Cache extends Phpfox_Template
 		$sData = $aMatches[2];
 		
 		$sForm = '<form' . stripslashes($sForm) . ">";
-		if (!strpos($sData, '{token}'))
+		if (strpos($sData, '{token}') === false)
 		{
 			$sForm .= "\n" . '<?php echo \'<div><input type="hidden" name="\' . Phpfox::getTokenName() . \'[security_token]" value="\' . Phpfox::getService(\'log.session\')->getToken() . \'" /></div>\'; ?>';
 		}
@@ -415,7 +419,7 @@ class Phpfox_Template_Cache extends Phpfox_Template
 				break;
 			case 'rdelim':
 				return $this->sRightDelim;
-				break;
+				break;	
 			case 'php':
 				if (!Phpfox::getParam('core.is_auto_hosted'))
 				{
@@ -425,7 +429,11 @@ class Phpfox_Template_Cache extends Phpfox_Template
 				else
 				{
 					return '';
-				}
+				}		
+				break;
+			case 'iterate':
+				$aArgs = $this->_parseArgs($sArguments);
+				return '<?php ' . $aArgs['int'] . '++; ?>';
 				break;
 			case 'for':
 				$sArguments = preg_replace("/\\$([A-Za-z0-9]+)/ise", "'' . \$this->_parseVariable('\$$1') . ''", $sArguments);
@@ -551,6 +559,9 @@ class Phpfox_Template_Cache extends Phpfox_Template
 			case 'header':
 				return '<?php echo $this->getHeader(); ?>';
 				break;
+			case 'loadjs':
+				return '<?php echo $this->_sFooter; ?>';
+				break;
 			case 'block':
 				$aArgs = $this->_parseArgs($sArguments);				
 				
@@ -572,20 +583,25 @@ class Phpfox_Template_Cache extends Phpfox_Template
 				$sContent .= '<?php $aUrl = Phpfox::getLib(\'url\')->getParams(); ?>';
 				$sContent .= '<?php $bDesigning = Phpfox::getService("theme")->isInDnDMode(); ?>';				
 				
-				$sContent .= '<?php if (!Phpfox::isAdminPanel() && (PHPFOX_DESIGN_DND || $bDesigning || (defined("PHPFOX_IN_DESIGN_MODE") && PHPFOX_IN_DESIGN_MODE && in_array(' . $aArgs['location'] . ', array(1, 2, 3))))):?> <div class="js_can_move_blocks js_sortable_empty" id="js_can_move_blocks_'. str_replace("'",'',$aArgs['location']).'"> <div class="block js_sortable dnd_block_info">Position '. $aArgs['location'] .'</div></div><?php endif; ?>';
+				$sContent .= '<?php if (!Phpfox::isAdminPanel() && ( (defined(\'PHPFOX_DESIGN_DND\') && PHPFOX_DESIGN_DND) || $bDesigning || (defined("PHPFOX_IN_DESIGN_MODE") && PHPFOX_IN_DESIGN_MODE && in_array(' . $aArgs['location'] . ', array(1, 2, 3))))):?> <div class="js_can_move_blocks js_sortable_empty" id="js_can_move_blocks_'. str_replace("'",'',$aArgs['location']).'"> <div class="block js_sortable dnd_block_info">Position '. $aArgs['location'] .'</div></div><?php endif; ?>' . "\n";
 				$sContent .= '<?php foreach ((array)$aBlocks as $sBlock): ?>' . "\n";
 				
-				$sContent .= '<?php if (!Phpfox::isAdminPanel() && (PHPFOX_DESIGN_DND || $bDesigning || (defined("PHPFOX_IN_DESIGN_MODE") && PHPFOX_IN_DESIGN_MODE && in_array(' . $aArgs['location'] . ', array(1, 2, 3))))):?>';
-				$sContent .= '<div class="js_can_move_blocks" id="js_can_move_blocks_'. str_replace("'",'',$aArgs['location']).'">';
+				$sContent .= '<?php if (!Phpfox::isAdminPanel() && ( (defined(\'PHPFOX_DESIGN_DND\') && PHPFOX_DESIGN_DND) || $bDesigning || (defined("PHPFOX_IN_DESIGN_MODE") && PHPFOX_IN_DESIGN_MODE && in_array(' . $aArgs['location'] . ', array(1, 2, 3))))):?>' . "\n";
+				$sContent .= '<div class="js_can_move_blocks" id="js_can_move_blocks_'. str_replace("'",'',$aArgs['location']).'">' . "\n";
 				$sContent .= '<?php endif; ?>' . "\n";	
 				
-				$sContent .= '<?php if (is_array($sBlock) && (!defined(\'PHPFOX_CAN_MOVE_BLOCKS\') || !in_array(' . $aArgs['location'] . ', array(1, 2, 3, 4)))): ?>';
-				$sContent .= '<?php eval(\' ?>\' . $sBlock[0] . \'<?php \'); ?>';
-				$sContent .= '<?php else: ?>';
-				$sContent .= '<?php Phpfox::getBlock($sBlock); ?>';
+				$sContent .= '<?php if (is_array($sBlock) && (!defined(\'PHPFOX_CAN_MOVE_BLOCKS\') || !in_array(' . $aArgs['location'] . ', array(1, 2, 3, 4)))): ?>' . "\n";
+				$sContent .= '<?php eval(\' ?>\' . $sBlock[0] . \'<?php \'); ?>' . "\n";
+				$sContent .= '<?php else: ?>' . "\n";
+					// Load blocks after onLoad
+					/*//$sContent .= '<?php if (in_array('. $aArgs['location'] . ', array(2)) && Phpfox::getParam(\'feed.force_ajax_on_load\')): ?>'. "\n";
+					//	$sContent .= '<div id="delayed_block_'. str_replace("'",'',$aArgs['location']) . '"><script type="text/javascript">if (typeof $Core.delayedBlocks == \'undefined\') $Core.delayedBlocks = [];$Core.delayedBlocks.push(' . str_replace("'", '',$aArgs['location']) . ');</script></div>'. "\n";
+					//$sContent .= '<?php else: ?>'. "\n";*/
+						$sContent .= '<?php Phpfox::getBlock($sBlock, array(\'location\' => ' . $aArgs['location'] . ')); ?>'. "\n";
+					/*$sContent .= '<?php endif; ?>'. "\n";*/
 				$sContent .= '<?php endif; ?>' . "\n";	
 				
-				$sContent .= '<?php if (!Phpfox::isAdminPanel() && (PHPFOX_DESIGN_DND || $bDesigning || (defined("PHPFOX_IN_DESIGN_MODE") && PHPFOX_IN_DESIGN_MODE && in_array(' . $aArgs['location'] . ', array(1, 2, 3))))):?>';				
+				$sContent .= '<?php if (!Phpfox::isAdminPanel() && ( (defined(\'PHPFOX_DESIGN_DND\') && PHPFOX_DESIGN_DND) || $bDesigning || (defined("PHPFOX_IN_DESIGN_MODE") && PHPFOX_IN_DESIGN_MODE && in_array(' . $aArgs['location'] . ', array(1, 2, 3))))):?>';				
 				$sContent .= '</div>';		
 				$sContent .= '<?php endif; ?>' . "\n";	
 				
@@ -697,7 +713,14 @@ class Phpfox_Template_Cache extends Phpfox_Template
 				$sContent .= '<?php if (isset($this->_aVars[\'bSearchFailed\'])): ?>';
 				$sContent .= '<div class="message">Unable to find anything with your search criteria.</div>';
 				$sContent .= '<?php else: ?>';
-				$sContent .= '<?php Phpfox::getLib(\'phpfox.module\')->getControllerTemplate(); ?>';
+					// Dont do this for profiles/pages or core.index-member because those load the feed and there is a separate routine for this block
+					$sContent .= '<?php $sController = "'. Phpfox::getLib('phpfox.module')->getFullControllerName() .'"; ?>';
+					$sContent .= '<?php if ( Phpfox::getLib("template")->shouldLoadDelayed("'. Phpfox::getLib('phpfox.module')->getFullControllerName() .'") == true ): ?>'. "\n";
+					$sContent .= '<div id="delayed_block_image" style="text-align:center; padding-top:20px;"><img src="' . Phpfox::getLib('template')->getStyle('image', 'ajax/add.gif') . '" alt="" /></div>'."\n";
+					$sContent .= '<div id="delayed_block" style="display:none;"><?php echo Phpfox::getLib(\'phpfox.module\')->getFullControllerName(); ?></div>'."\n";
+					$sContent .= '<?php else: ?>'. "\n";
+						$sContent .= '<?php Phpfox::getLib(\'phpfox.module\')->getControllerTemplate(); ?>';
+					$sContent .= '<?php endif; ?>';
 				$sContent .= '<?php endif; ?></div>';
 				$sContent .= '<?php endif; ?>';
 				return $sContent;
@@ -737,6 +760,12 @@ class Phpfox_Template_Cache extends Phpfox_Template
 				return '<?php (($sPlugin = Phpfox_Plugin::get(\'' . $this->_removeQuote($aArgs['call']) . '\')) ? eval($sPlugin) : false); ?>';
 				break;
 			case 'template':
+				$aArgs = $this->_parseArgs($sArguments);
+				$sFile = $this->_removeQuote($aArgs['file']);
+				return '<?php
+						Phpfox::getLib(\'template\')->getBuiltFile(\'' . $sFile . '\');						
+						?>';
+				/*
 				$aArgs = $this->_parseArgs($sArguments);				
 				$mContent = Phpfox::getLib('template')->getTemplateFile($this->_removeQuote($aArgs['file']), true);
 				if (is_array($mContent))
@@ -773,6 +802,7 @@ class Phpfox_Template_Cache extends Phpfox_Template
 				{
 					return $mContent;
 				}
+				*/
 				break;
 			case 'parse_image':
 				$aArgs = $this->_parseArgs($sArguments);
@@ -788,6 +818,13 @@ class Phpfox_Template_Cache extends Phpfox_Template
 				$sModule = $aArgs['name'];
 				unset($aArgs['name']);
 				$sArray = '';
+				
+				/*if (strpos($sModule,'feed.comment') !== false)
+				{
+					$aArgs['delay']
+					//return '<?php echo "<div class=\'load_delayed\'>feed.comment<span class=\'load_delayed_param\'>feed: ".print_r($this->_aVars, true) . $this->_aVars[\'aItem\'][\'aFeed\'][\'feed_id\']. "</span></div>"; ?>';
+				}*/
+				
 				foreach ($aArgs as $sKey => $sValue)
 				{
 					if (substr($sValue, 0, 1) != '$' && $sValue !== 'true' && $sValue !== 'false')
@@ -796,6 +833,7 @@ class Phpfox_Template_Cache extends Phpfox_Template
 					}
 					$sArray .= '\'' . $sKey . '\' => ' . $sValue . ',';
 				}
+				
 				return '<?php Phpfox::getBlock(' . $sModule . ', array(' . rtrim($sArray, ',') . ')); ?>';
 				break;
 			case 'editor':
@@ -866,7 +904,7 @@ class Phpfox_Template_Cache extends Phpfox_Template
 						break;
 					case 'checkbox':					
 					case 'multiselect':
-					case 'select':
+					case 'select':						
 						$bIsCheckbox = ($aArgs['type'] == 'checkbox' ? 'checked="checked"' : 'selected="selected"');
 						$aArgs['default'] = $this->_removeQuote($aArgs['default']);
 						if (substr($aArgs['default'], 0, 1) == '$')
@@ -935,7 +973,7 @@ class Phpfox_Template_Cache extends Phpfox_Template
 				break;
 			case 'request':
 				$aArgs = $this->_parseArgs($sArguments);
-				return '<?php echo Phpfox::getLib(\'request\')->get(\'' . $this->_removeQuote($aArgs['var']) . '\'); ?>';
+				return '<?php echo urlencode(Phpfox::getLib(\'request\')->get(\'' . $this->_removeQuote($aArgs['var']) . '\')); ?>';
 				break;				
 			case 'required':
 				return '<?php if (Phpfox::getParam(\'core.display_required\')): ?><span class="required"><?php echo Phpfox::getParam(\'core.required_symbol\'); ?></span><?php endif; ?>';
@@ -1153,14 +1191,22 @@ class Phpfox_Template_Cache extends Phpfox_Template
 				}
 				$bIsMultiple = isset($aArgs['multiple']) && !empty($aArgs['multiple']);
 				
-				$sContries = '<select '. ( $bIsMultiple ? 'multiple="multiple" ' : '') .'name="val[' . (isset($aArgs['name']) ? $this->_removeQuote($aArgs['name']) : 'country_iso') . ']'. ($bIsMultiple ? '[]':'') .'" id="' . (isset($aArgs['name']) ? $this->_removeQuote($aArgs['name']) : 'country_iso') . '"' . (isset($aArgs['style']) ? ' style=' . $aArgs['style'] . '' : '') . '>' . "\n";
-				$sContries .= "\t\t" . '<option value="">' . (isset($aArgs['value_title']) ? $this->_removeQuote($aArgs['value_title']) : '<?php echo Phpfox::getPhrase(\'core.select\'); ?>:') . '</option>' . "\n";
+				$sCountries = '<select '. ( $bIsMultiple ? 'multiple="multiple" ' : '') .'name="val[' . (isset($aArgs['name']) ? $this->_removeQuote($aArgs['name']) : 'country_iso') . ']'. ($bIsMultiple ? '[]':'') .'" id="' . (isset($aArgs['name']) ? $this->_removeQuote($aArgs['name']) : 'country_iso') . '"' . (isset($aArgs['style']) ? ' style=' . $aArgs['style'] . '' : '') . '>' . "\n";
+				$sCountries .= "\t\t" . '<option value="">' . (isset($aArgs['value_title']) ? $this->_removeQuote($aArgs['value_title']) : '<?php echo Phpfox::getPhrase(\'core.select\'); ?>:') . '</option>' . "\n";
 				foreach (Phpfox::getService('core.country')->get() as $sIso => $sCountry)
 				{
-					$sContries .= "\t\t\t" . '<option class="js_country_option" id="js_country_iso_option_' . $sIso . '" value="' . $sIso . '"' . $this->_parseFunction('value', '', "type='select' id='" . (isset($aArgs['name']) ? $this->_removeQuote($aArgs['name']) : 'country_iso') . "' default='{$sIso}'") . '><?php echo (Phpfox::getLib(\'locale\')->isPhrase(\'core.translate_country_iso_' . strtolower($sIso) . '\') ? Phpfox::getPhrase(\'core.translate_country_iso_' . strtolower($sIso) . '\') : \'' . str_replace("'", "\'", $sCountry) . '\'); ?></option>' . "\n";
+					/*
+                    $sCountries .= "\t\t\t" . '<option class="js_country_option" id="js_country_iso_option_' . $sIso . '" value="' . $sIso . '"' . $this->_parseFunction('value', '', "type='select' id='" . (isset($aArgs['name']) ? $this->_removeQuote($aArgs['name']) : 'country_iso') . "' default='{$sIso}'") . '><?php echo (Phpfox::getLib(\'locale\')->isPhrase(\'core.translate_country_iso_' . strtolower($sIso) . '\') ? Phpfox::getPhrase(\'core.translate_country_iso_' . strtolower($sIso) . '\') : \'' . str_replace("'", "\'", $sCountry) . '\'); ?></option>' . "\n";
+                     */
+                    $sCountries .= "\t\t\t" . '<option class="js_country_option" id="js_country_iso_option_'. $sIso . '" value="' . $sIso . '"'. '><?php echo (Phpfox::getLib(\'locale\')->isPhrase(\'core.translate_country_iso_' . strtolower($sIso) . '\') ? Phpfox::getPhrase(\'core.translate_country_iso_' . strtolower($sIso) . '\') : \'' . str_replace("'", "\'", $sCountry) . '\'); ?></option>' . "\n";
 				}
-				$sContries .= "\t\t" . '</select>';
-				return $sContries;
+				$sCountries .= "\t\t" . '</select>';
+                $sCountries .= "\n" . '<?php if (isset($this->_aVars[\'aForms\'][\'country_iso\']))';
+                $sCountries .= "\n" .'{ ';
+                $sCountries .= "\n" . 'echo \'<script type="text/javascript"> $Behavior.setCountry = function() {';
+                $sCountries .= '$("#js_country_iso_option_\' . $this->_aVars[\'aForms\'][\'country_iso\'] . \'").attr("selected","selected"); } </script>\';  }';
+                $sCountries .= "\n" . '?>';
+				return $sCountries;
 				break;
 			case 'select_gender':
 				$aArgs = $this->_parseArgs($sArguments);
@@ -1249,6 +1295,13 @@ class Phpfox_Template_Cache extends Phpfox_Template
 				break;				
 			case 'is_page_view':
 				return '<?php echo (defined(\'PHPFOX_IS_PAGES_VIEW\') ? \'id="js_is_page"\' : \'\'); ?>';
+				break;
+			case 'item':
+				$aArgs = $this->_parseArgs($sArguments);
+				return '<article itemscope itemtype="http://schema.org/' . $this->_removeQuote($aArgs['name']) . '">';
+				break;
+			case '/item':			
+				return '</article>';
 				break;				
 			default:				
 				if ($this->_compileCustomFunction($sFunction, $sModifiers, $sArguments, $sResult))
@@ -1540,7 +1593,14 @@ class Phpfox_Template_Cache extends Phpfox_Template
 						$sVariable = 'Phpfox::getLib(\'phpfox.file\')->filesize(' . $sVariable . ')';
 						break;
 					case 'clean':
-						$sVariable = 'Phpfox::getLib(\'phpfox.parse.output\')->clean(' . $sVariable . ')';
+						if (isset($aArgs[0]) )
+						{
+							$sVariable = 'Phpfox::getLib(\'phpfox.parse.output\')->clean(' . $sVariable . ',' . $aArgs[0].')';
+						}
+						else
+						{
+							$sVariable = 'Phpfox::getLib(\'phpfox.parse.output\')->clean(' . $sVariable . ')';
+						}
 						break;
 					case 'clean_phrase':
 						$sVariable = 'md5('.$sVariable . ')';
@@ -1559,7 +1619,10 @@ class Phpfox_Template_Cache extends Phpfox_Template
 						break;
 					case 'feed_strip':
 						$sVariable = 'Phpfox::getLib(\'parse.output\')->feedStrip(' . $sVariable . ')';
-						break;						
+						break;	
+					case 'max_line':
+						$sVariable = 'Phpfox::getLib(\'parse.output\')->maxLine(' . $sVariable . ')';
+						break;
 					case 'translate':
 						$sPrefix = (isset($aArgs[0]) ? ', ' . $aArgs[0] : '');
 						$sVariable = 'Phpfox::getLib(\'phpfox.locale\')->translate(' . $sVariable . $sPrefix . ')';
@@ -1599,6 +1662,9 @@ class Phpfox_Template_Cache extends Phpfox_Template
 					case 'convert_time':
 						$sVariable = 'Phpfox::getLib(\'date\')->convertTime(' . $sVariable . '' . $sArg . ')';
 						break;
+					case 'micro_time':
+						$sVariable = 'date(\'Y-d-m\', ' . $sVariable . ')';
+						break;						
 					case 'convert':
 						$sVariable = 'Phpfox::getLib(\'locale\')->convert(' . $sVariable . ')';
 						break;
@@ -1614,7 +1680,8 @@ class Phpfox_Template_Cache extends Phpfox_Template
 							}
 						}
 
-						$sValue = '\' . Phpfox::getLib(\'phpfox.parse.output\')->shorten(' . $sVariable . '[\'' . $sSuffix . 'full_name\'], Phpfox::getParam(\'user.maximum_length_for_full_name\')) . \'';
+						$bAuthor = false;
+						$sValue = '\' . Phpfox::getLib(\'phpfox.parse.output\')->shorten(Phpfox::getService(\'user\')->getCurrentName(' . $sVariable . '[\'' . $sSuffix . 'user_id\'], ' . $sVariable . '[\'' . $sSuffix . 'full_name\']), Phpfox::getParam(\'user.maximum_length_for_full_name\')) . \'';
 						if (count($aArgs))
 						{
 							if (!empty($aArgs[1]))
@@ -1628,15 +1695,29 @@ class Phpfox_Template_Cache extends Phpfox_Template
 								{
 									$aArgs[2] = Phpfox::getParam($this->_removeQuote($aArgs[2]));
 								}
-								$sValue = '\' . Phpfox::getLib(\'phpfox.parse.output\')->shorten(' . $sVariable . '[\'' . $sSuffix . 'full_name\'], ' . $this->_removeQuote($aArgs[2]) . ', \'...\') . \'';
+								$sValue = '\' . Phpfox::getLib(\'phpfox.parse.output\')->shorten(Phpfox::getService(\'user\')->getCurrentName(' . $sVariable . '[\'' . $sSuffix . 'user_id\'], ' . $sVariable . '[\'' . $sSuffix . 'full_name\']), ' . $this->_removeQuote($aArgs[2]) . ', \'...\') . \'';
 							}
 
+							if (isset($aArgs[3]))
+							{
+								$aArgs[3] = $this->_removeQuote($aArgs[3]);
+							}
 							if (!empty($aArgs[3]))
 							{
-								$sValue = '\' . Phpfox::getLib(\'phpfox.parse.output\')->shorten(Phpfox::getLib(\'phpfox.parse.output\')->split(' . $sVariable . '[\'' . $sSuffix . 'full_name\'], ' . $this->_removeQuote($aArgs[3]) . '' . (empty($aArgs[3]) ? '' : ', true') . '), Phpfox::getParam(\'user.maximum_length_for_full_name\')) . \'';
+								$sValue = '\' . Phpfox::getLib(\'phpfox.parse.output\')->shorten(Phpfox::getLib(\'phpfox.parse.output\')->split(Phpfox::getService(\'user\')->getCurrentName(' . $sVariable . '[\'' . $sSuffix . 'user_id\'], ' . $sVariable . '[\'' . $sSuffix . 'full_name\']), ' . $this->_removeQuote($aArgs[3]) . '' . (empty($aArgs[3]) ? '' : ', true') . '), Phpfox::getParam(\'user.maximum_length_for_full_name\')) . \'';
 							}
+							
+							if (isset($aArgs[4]))
+							{
+								$aArgs[4] = $this->_removeQuote($aArgs[4]);
+								if (!empty($aArgs[4]))
+								{
+									$bAuthor = true;
+									$sExtra .= ' rel="author" ';
+								}
+							}							
 						}
-						$sVariable = '\'<span class="user_profile_link_span" id="js_user_name_link_\' . ' . $sVariable . '[\'' . $sSuffix . 'user_name\'] . \'"><a href="\' . Phpfox::getLib(\'phpfox.url\')->makeUrl(\'profile\', array(' . $sVariable . '[\'' . $sSuffix . 'user_name\'], ((empty(' . $sVariable . '[\'' . $sSuffix . 'user_name\']) && isset(' . $sVariable . '[\'' . $sSuffix . 'profile_page_id\'])) ? ' . $sVariable . '[\'' . $sSuffix . 'profile_page_id\'] : null))) . \'"' . $sExtra . '>' . $sValue . '</a></span>\'';
+						$sVariable = '\'<span class="user_profile_link_span" id="js_user_name_link_\' . ' . $sVariable . '[\'' . $sSuffix . 'user_name\'] . \'"' . ($bAuthor ? ' itemprop="author"' : '') . '><a href="\' . Phpfox::getLib(\'phpfox.url\')->makeUrl(\'profile\', array(' . $sVariable . '[\'' . $sSuffix . 'user_name\'], ((empty(' . $sVariable . '[\'' . $sSuffix . 'user_name\']) && isset(' . $sVariable . '[\'' . $sSuffix . 'profile_page_id\'])) ? ' . $sVariable . '[\'' . $sSuffix . 'profile_page_id\'] : null))) . \'"' . $sExtra . '>' . $sValue . '</a></span>\'';
 						break;
 					case 'gender':
 						$sVariable = 'Phpfox::getService(\'user\')->gender(' . $sVariable . $sArg . ')';

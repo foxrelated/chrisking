@@ -5,45 +5,70 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Profile
- * @version 		$Id: pic.html.php 4710 2012-09-21 08:59:25Z Raymond_Benc $
+ * @version 		$Id: pic.html.php 6083 2013-06-17 15:48:53Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
 
 ?>
 {if Phpfox::getService('profile')->timeline()}
-{if !empty($sProfileImage)}
-	<div class="profile_timeline_profile_photo">
-		<div class="profile_image">
-	        {if Phpfox::isModule('photo')}
-				<a href="{permalink module='photo.album.profile' id=$aUser.user_id title=$aUser.user_name}">{$sProfileImage}</a>
+    {if !empty($sProfileImage)}
+	    <div class="profile_timeline_profile_photo">
+		    <div class="profile_image">
+			{if Phpfox::isModule('photo')}
+				{if isset($aUser.user_name)}
+				    <a href="{permalink module='photo.album.profile' id=$aUser.user_id title=$aUser.user_name}">{$sProfileImage}</a>
+				{else}
+				    <a href="{permalink module='photo.album.profile' id=$aUser.user_id}">{$sProfileImage}</a>
+				{/if}
 			{else}
 				{$sProfileImage}
 			{/if}
 			{if Phpfox::getUserId() == $aUser.user_id}
-			<div class="p_4">
-				<a href="{url link='user.photo'}">{phrase var='profile.change_picture'}</a>
+			    <div class="p_4">
+				    <a href="{if isset($aPage) && isset($aPage.page_id)}{url link='pages.add' id=$aPage.page_id}#photo{else}{url link='user.photo'}{/if}">{phrase var='profile.change_picture'}</a>
+			    </div>
+			{/if}
+
+		    </div>
+
+			<div style="position:absolute; bottom:0px; z-index:100; width:100%;">
+				{if isset($aUser.user_name)}
+				{if isset($aPage.title)}
+
+				{template file='pages.block.joinpage'}
+
+				{/if}
+				{/if}
 			</div>
-			{/if}		
-		</div>
-	</div>
-{/if}
+
+	    </div>
+    {/if}
+
 {else}
 {if !empty($sProfileImage)}
-<div class="profile_image">
-    <div class="profile_image_holder">
-        {if Phpfox::isModule('photo')}
-			<a href="{permalink module='photo.album.profile' id=$aUser.user_id title=$aUser.user_name}">{$sProfileImage}</a>
+    <div class="profile_image">
+	<div class="profile_image_holder">
+	    {if Phpfox::isModule('photo')}
+		{if isset($aUser.user_name)}
+		    <a href="{permalink module='photo.album.profile' id=$aUser.user_id title=$aUser.user_name}">{$sProfileImage}</a>
 		{else}
-			{$sProfileImage}
+		    <a href="{permalink module='photo.album.profile' id=$aUser.user_id}">{$sProfileImage}</a>
 		{/if}
-    </div>
-	{if Phpfox::getUserId() == $aUser.user_id}
-	<div class="p_4">
-		<a href="{url link='user.photo'}">{phrase var='profile.change_picture'}</a>
+	    {else}
+		    {$sProfileImage}
+	    {/if}
 	</div>
-	{/if}
-</div>
+	    {if Phpfox::getUserId() == $aUser.user_id}
+	    <div class="p_4">
+		    <a href="{url link='user.photo'}">{phrase var='profile.change_picture'}</a>
+	    </div>
+	    {/if}
+
+
+
+    </div>
+
 {/if}
 <div class="sub_section_menu">
 	<ul>		
@@ -66,4 +91,4 @@ defined('PHPFOX') or exit('NO DICE!');
     <div class="clear"></div>
     <div class="js_cache_check_on_content_block" style="display:none;"></div>
     <div class="js_cache_profile_id" style="display:none;">{$aUser.user_id}</div>
-    <div class="js_cache_profile_user_name" style="display:none;">{$aUser.user_name}</div>
+    <div class="js_cache_profile_user_name" style="display:none;">{if isset($aUser.user_name)}{$aUser.user_name}{/if}</div>

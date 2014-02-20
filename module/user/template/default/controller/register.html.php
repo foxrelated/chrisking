@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: register.html.php 5064 2012-12-04 06:51:24Z Raymond_Benc $
+ * @version 		$Id: register.html.php 5143 2013-01-15 14:16:21Z Miguel_Espinoza $
  */
 
 defined('PHPFOX') or exit('NO DICE!');
@@ -121,7 +121,7 @@ $Behavior.termsAndPrivacy = function()
 							{template file='user.block.register.step1'}			
 						{/if}
 					</div>		
-			
+					{plugin call='user.template_controller_register_pre_captcha'}
 					{if Phpfox::isModule('captcha') && Phpfox::getParam('user.captcha_on_signup')}
 					<div id="js_register_capthca_image"{if Phpfox::getParam('user.multi_step_registration_form') && !isset($bIsPosted)} style="display:none;"{/if}>
 						{module name='captcha.form'}

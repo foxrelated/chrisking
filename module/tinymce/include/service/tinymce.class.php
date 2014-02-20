@@ -127,6 +127,7 @@ class Tinymce_Service_Tinymce extends Phpfox_Service
 				    	
 				    if (sName.match(/js_feed_comment_form_textarea_/g) || sEditorType == \'comment\'){
 						sButton1 = sButton1.replace("fontsizeselect,", "");
+				    	sButton1 = sButton1.replace("fontselect,", "");
 				    }		
 				    		
 					tinyMCE.init({
@@ -145,7 +146,7 @@ class Tinymce_Service_Tinymce extends Phpfox_Service
 					    theme_advanced_resize_horizontal : false,
 					    theme_advanced_more_colors : false,
 						convert_urls : false,
-						relative_urls : true
+						relative_urls : true					    
 					});	
 					
 					$Behavior.loadTinymceEditor = function() {}

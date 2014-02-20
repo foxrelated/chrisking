@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: add.html.php 3468 2011-11-07 15:59:47Z Miguel_Espinoza $
+ * @version 		$Id: add.html.php 6642 2013-09-13 09:35:50Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -25,7 +25,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		</div>
 		<div class="table_right">
 			<select name="val[theme_id]">
-				<option value="0">{phrase var='theme.select'}:</option>
+				<option value="">{phrase var='theme.select'}:</option>
 			{foreach from=$aThemes item=aTheme}
 				<option value="{$aTheme.theme_id}"{value type='select' id='theme_id' default=$aTheme.theme_id}>{$aTheme.name}</option>
 			{/foreach}

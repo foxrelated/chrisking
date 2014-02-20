@@ -23,4 +23,4 @@ $Core.Search.checkDefaultValue = function(oObj, sDefText)
 		$(oObj).parents('.header_bar_search').find('.txt_input').val('');
 	}
 	
-}
+};

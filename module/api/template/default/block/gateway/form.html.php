@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: form.html.php 4620 2012-09-09 12:55:15Z Raymond_Benc $
+ * @version 		$Id: form.html.php 7119 2014-02-18 13:55:48Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -14,7 +14,8 @@ defined('PHPFOX') or exit('NO DICE!');
 {plugin call='api.template_block_gateway_form_start'}
 {if count($aGateways)}
 {foreach from=$aGateways name=gateways item=aGateway}
-<form method="post" action="{$aGateway.form.url}"{if $aGateway.gateway_id == 'activitypoints'} onsubmit="$(this).ajaxCall('api.processActivityPayment'); return false;"{/if}>
+<form method="post" action="{$aGateway.form.url}"{if $aGateway.gateway_id == 'activitypoints'} onsubmit="$(this).ajaxCall('api.processActivityPayment'); return false;"{/if}
+	{if $bIsThickBox}style="max-height: 400px; overflow: auto;"{/if}>
 {foreach from=$aGateway.form.param key=sField item=sValue}
 	<div><input type="hidden" name="{$sField}" value="{$sValue}" /></div>
 {/foreach}

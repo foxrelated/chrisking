@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Event
- * @version 		$Id: process.class.php 4786 2012-09-27 10:40:14Z Miguel_Espinoza $
+ * @version 		$Id: process.class.php 6938 2013-11-25 09:48:57Z Miguel_Espinoza $
  */
 class Event_Service_Process extends Phpfox_Service 
 {
@@ -27,7 +27,7 @@ class Event_Service_Process extends Phpfox_Service
 	 * Class constructor
 	 */	
 	public function __construct()
-	{	
+	{
 		$this->_sTable = Phpfox::getT('event');
 	}
 	
@@ -120,13 +120,15 @@ class Event_Service_Process extends Phpfox_Service
 		
 		if ($bAddFeed === true)
 		{
-			if ($sModule == 'event')
+			if ($sModule == 'event' && Phpfox::isModule('feed'))
 			{
-				(Phpfox::isModule('feed') ? Phpfox::getService('feed.process')->add('event', $iId, $aVals['privacy'], (isset($aVals['privacy_comment']) ? (int) $aVals['privacy_comment'] : 0)) : null);
+				Phpfox::getService('feed.process')->add('event', $iId, $aVals['privacy'], (isset($aVals['privacy_comment']) ? (int) $aVals['privacy_comment'] : 0));
 			}
-			else
+			else if (Phpfox::isModule('feed'))
 			{
-				(Phpfox::isModule('feed') ? Phpfox::getService('feed.process')->callback(Phpfox::callback($sModule . '.getFeedDetails', $iItem))->add('event', $iId, $aVals['privacy'], (isset($aVals['privacy_comment']) ? (int) $aVals['privacy_comment'] : 0), $iItem) : null);
+				Phpfox::getService('feed.process')
+                        ->callback(Phpfox::callback($sModule . '.getFeedDetails', $iItem))
+                        ->add('event', $iId, $aVals['privacy'], (isset($aVals['privacy_comment']) ? (int) $aVals['privacy_comment'] : 0), $iItem);
 			}			
 			
 			Phpfox::getService('user.activity')->update(Phpfox::getUserId(), 'event');
@@ -134,6 +136,19 @@ class Event_Service_Process extends Phpfox_Service
 		
 		$this->addRsvp($iId, 1, Phpfox::getUserId());
 
+		$sCacheId = $this->cache()->set(array('events', Phpfox::getUserId()));
+		$this->cache()->remove($sCacheId);
+		if (Phpfox::getParam('event.cache_events_per_user'))
+		{
+			$sCacheId = $this->cache()->set(array('events_by_user', Phpfox::getUserId()));
+			$this->cache()->remove($sCacheId);
+		}
+
+		if (Phpfox::isModule('tag') && Phpfox::getParam('tag.enable_hashtag_support'))
+		{
+			Phpfox::getService('tag.process')->add('event', $iId, Phpfox::getUserId(), $aVals['description'], true);
+		}
+		
         // Plugin call
 		if ($sPlugin = Phpfox_Plugin::get('event.service_process_add__end')){eval($sPlugin);}
 
@@ -384,14 +399,28 @@ class Event_Service_Process extends Phpfox_Service
 		foreach ($this->_aCategories as $iCategoryId)
 		{
 			$this->database()->insert(Phpfox::getT('event_category_data'), array('event_id' => $iId, 'category_id' => $iCategoryId));
-		}		
+		}
 				
 		if (empty($aEvent['module_id']))
 		{
 			(Phpfox::isModule('feed') ? Phpfox::getService('feed.process')->update('event', $iId, $aVals['privacy'], $aVals['privacy_comment'], 0, $aEvent['user_id']) : null);
 		}
 		
+		Phpfox::getService('feed.process')->clearCache('event', $iId);
+		
 		(($sPlugin = Phpfox_Plugin::get('event.service_process_update__end')) ? eval($sPlugin) : false);
+		
+		if (Phpfox::getParam('event.cache_events_per_user'))
+		{
+			$sCacheId = $this->cache()->set(array('events_by_user', $aEvent['user_id']));
+			$this->cache()->remove($sCacheId);
+		}
+
+		if (Phpfox::isModule('tag') && Phpfox::getParam('tag.enable_hashtag_support'))
+		{
+			Phpfox::getService('tag.process')->update('event', $aEvent['event_id'], $aEvent['user_id'], $aVals['description'], true);
+		}
+		
 		return true;
 	}
 	
@@ -602,6 +631,16 @@ class Event_Service_Process extends Phpfox_Service
 		}
 		if ($sPlugin = Phpfox_Plugin::get('event.service_process_delete__end')){return eval($sPlugin);}
 		
+		
+		$sCacheId = $this->cache()->set(array('events', Phpfox::getUserId()));
+		$this->cache()->remove($sCacheId);
+		
+		if (Phpfox::getParam('event.cache_events_per_user'))
+		{
+			$sCacheId = $this->cache()->set(array('events_by_user', $aEvent['user_id']));
+			$this->cache()->remove($sCacheId);
+		}
+		
 		return $mReturn;
 	}
 
@@ -708,10 +747,10 @@ class Event_Service_Process extends Phpfox_Service
 		
 		$sLink = Phpfox::getLib('url')->permalink('event' , $aEvent['event_id'], $aEvent['title']);
 		
-		$sText = '##<br />
+		$sText = '<br />
 		' . Phpfox::getPhrase('event.notice_this_is_a_newsletter_sent_from_the_event') . ': ' . $aEvent['title'] . '<br />
 		<a href="' . $sLink . '">' . $sLink . '</a>
-		##<br />
+		<br /><br />
 		' . $sText;
 		
 		foreach ($aGuests as $aGuest)

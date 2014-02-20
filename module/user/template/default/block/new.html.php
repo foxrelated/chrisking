@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: new.html.php 1179 2009-10-12 13:56:40Z Raymond_Benc $
+ * @version 		$Id: new.html.php 5616 2013-04-10 07:54:55Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -18,7 +18,7 @@ defined('PHPFOX') or exit('NO DICE!');
 <div class="t_center p_bottom_10" style="width:32%; float:left;">		
 {/if}
 	{if Phpfox::getLib('module')->getBlockLocation('core.new') == 'content'}
-	{img user=$aUser suffix='_75_square' max_width=75 max_height=75}
+	{img user=$aUser suffix='_50_square' max_width=75 max_height=75}
 	{else}
 	{img user=$aUser suffix='_50_square' max_width=50 max_height=50}
 	{/if}	

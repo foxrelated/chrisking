@@ -14,7 +14,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: css.class.php 1974 2010-10-28 10:14:20Z Raymond_Benc $
+ * @version 		$Id: css.class.php 5086 2013-01-05 13:23:21Z Miguel_Espinoza $
  */
 class Phpfox_Parse_Css
 {
@@ -717,15 +717,18 @@ class Phpfox_Parse_Css
 		(($sCmd = Phpfox::getLib('template')->getXml('design_css')) ? eval($sCmd) : null);
 		
 		$aWidths = array();
-		foreach ($aAdvanced as $aCss)
+		if (isset($aAdvanced))
 		{
-			if (isset($aCss['design']['width']) && isset($aCss['id']) && $aCss['id'] = 'page_width')
-			{
-				$aWidths = array_values($aCss['design']['width']);
-				
-				break;
-			}
-		}
+		    foreach ($aAdvanced as $aCss)
+		    {
+			    if (isset($aCss['design']['width']) && isset($aCss['id']) && $aCss['id'] = 'page_width')
+			    {
+				    $aWidths = array_values($aCss['design']['width']);
+
+				    break;
+			    }
+		    }
+		}		
 				
 		$sJs .= '\'width\': ' . $this->_build($aWidths) . ',';
 		$sJs .= '\'font-family\': ' . $this->_build($this->getFonts()) . ',';

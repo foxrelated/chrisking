@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: process.class.php 4980 2012-11-01 11:47:16Z Raymond_Benc $
+ * @version 		$Id: process.class.php 5612 2013-04-05 07:46:26Z Miguel_Espinoza $
  */
 class Theme_Service_Style_Process extends Phpfox_Service 
 {
@@ -396,7 +396,12 @@ class Theme_Service_Style_Process extends Phpfox_Service
 				Phpfox::getLib('session')->remove(Phpfox::getParam('core.theme_session_prefix') . 'theme');
 			}			
 			
-			$this->database()->update(Phpfox::getT('theme_style'), $aVals, 'style_id = ' . (int) $iEditId);		
+			$this->database()->update(Phpfox::getT('theme_style'), $aVals, 'style_id = ' . (int) $iEditId);	
+			if (Phpfox::getParam('core.super_cache_system'))
+			{
+				// The function get() in the user service queries the table theme_style
+				$this->cache()->remove('profile', 'substr');
+			}	
 			$iId = $iEditId;	
 		}
 		
@@ -658,6 +663,11 @@ class Theme_Service_Style_Process extends Phpfox_Service
 		
 		$this->database()->update(Phpfox::getT('user'), array('style_id' => '0'), 'style_id = ' . (int) $iId);
 		$this->database()->update(Phpfox::getT('user_field'), array('designer_style_id' => '0'), 'designer_style_id = ' . (int) $iId);	
+		
+		if (Phpfox::getParam('core.super_cache_system'))
+		{
+			$this->cache()->remove('profile', 'substr');
+		}
 		
 		if (Phpfox::getParam('core.ftp_enabled'))
 		{

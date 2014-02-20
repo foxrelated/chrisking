@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Invite
- * @version 		$Id: invite.class.php 4321 2012-06-21 14:26:07Z Raymond_Benc $
+ * @version 		$Id: invite.class.php 6880 2013-11-12 13:56:55Z Miguel_Espinoza $
  */
 class Invite_Service_Invite extends Phpfox_Service 
 {
@@ -57,11 +57,23 @@ class Invite_Service_Invite extends Phpfox_Service
 		$sDbCheck = rtrim($sDbCheck, ',');
 		
 		$aCacheUsers = array();
-		$aUsers = $this->database()->select(Phpfox::getUserField() . ', u.email, f.friend_id')
-			->from(Phpfox::getT('user'), 'u')
-			->leftJoin(Phpfox::getT('friend'), 'f', 'f.user_id = ' . Phpfox::getUserId() . ' AND f.friend_user_id = u.user_id')
-			->where('u.email IN(' . $sDbCheck . ')')
-			->execute('getSlaveRows');
+
+		if(Phpfox::isModule('friend'))
+		{
+			$aUsers = $this->database()->select(Phpfox::getUserField() . ', u.email, f.friend_id')
+				->from(Phpfox::getT('user'), 'u')
+				->leftJoin(Phpfox::getT('friend'), 'f', 'f.user_id = ' . Phpfox::getUserId() . ' AND f.friend_user_id = u.user_id')
+				->where('u.email IN(' . $sDbCheck . ')')
+				->execute('getSlaveRows');
+		}
+		else
+		{
+			$aUsers = $this->database()->select(Phpfox::getUserField() . ', u.email')
+				->from(Phpfox::getT('user'), 'u')
+				->where('u.email IN(' . $sDbCheck . ')')
+				->execute('getSlaveRows');
+		}
+		
 		foreach ($aUsers as $aUser)
 		{
 			$aCacheUsers[strtolower($aUser['email'])] = $aUser;
@@ -78,11 +90,25 @@ class Invite_Service_Invite extends Phpfox_Service
 		// should we check for duplicate invites by this user
 		if (Phpfox::getParam('invite.check_duplicate_invites') && !empty($sDbCheck))
 		{			
-			// get the invites that he is trying to resend
-			$aDuplicate = $this->database()->select('email')
-				->from($this->_sTable)
-				->where('user_id = ' . (int) $iUser . ' AND email IN(' . $sDbCheck . ')')
-				->execute('getSlaveRows');		
+			$aDuplicate = array();
+			if (!empty($sDbCheck))
+			{
+				// get the invites that he is trying to resend
+				$aDuplicate = $this->database()->select('email')
+					->from($this->_sTable)
+					->where('user_id = ' . (int) $iUser . ' AND email IN(' . $sDbCheck . ')')
+					->execute('getSlaveRows');
+					
+				// Check invited users
+				$aInvited = $this->database()->select('user_id, email')
+					->from(Phpfox::getT('invite'))
+					->where('email IN(' . $sDbCheck . ')')
+					->execute('getSlaveRows');
+				foreach ($aInvited as $aInvite)
+				{
+					$aDuplicate = array_merge($aDuplicate, $aInvited);
+				}
+			}	
 				
 			if (empty($aDuplicate))
 			{
@@ -99,7 +125,7 @@ class Invite_Service_Invite extends Phpfox_Service
 					if ($aDupl['email'] == $sIndex)
 					{						
 						// if it has, add to the invalid
-						array_push($aInvalid, $aDupl['email'] . ' - ' . Phpfox::getPhrase('invite.you_have_already_invited'));
+						array_push($aInvalid, $aDupl['email'] . ' - ' . (isset($aDupl['user_id']) && $aDupl['user_id'] != $iUser ? 'Already invited' : Phpfox::getPhrase('invite.you_have_already_invited')));
 						// and remove from the valid ones
 						unset($aValid[$iKey]);
 					}

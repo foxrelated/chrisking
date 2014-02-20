@@ -20,21 +20,9 @@ defined('PHPFOX') or exit('NO DICE!');
 <div class="block_event_form">
 	<form method="post" action="{url link='event.add'}">
 		<div id="js_quick_event_default" style="display:none;">{phrase var='event.what_s_the_event'}</div>
-		<div><input class="block_event_form_input block_event_form_input_off" type="text" name="val[title]" value="{phrase var='event.what_s_the_event'}" onfocus="if (this.value == $('#js_quick_event_default').html()) {l} $('.block_event_sub_holder').show(); this.value = ''; $(this).removeClass('block_event_form_input_off'); {r}" /></div>
-		<div style="display:none;">{select_date prefix='end_' start_year='current_year' end_year='+1' field_separator=' / ' field_order='MDY' default_all=true add_time=true start_hour='+4' time_separator='event.time_separator'}</div>
-		<div class="block_event_sub_holder">			
-			<div class="block_event_sub">
-				{select_date prefix='start_' start_year='current_year' end_year='+1' field_separator=' / ' field_order='MDY' default_all=true add_time=true start_hour='+1' time_separator='event.time_separator'}
-			</div>
-
-			<div class="block_event_sub">
-				<div id="js_quick_event_default_where" style="display:none;">{phrase var='event.where'}</div>
-				<input class="block_event_form_input block_event_form_input_off" type="text" name="val[location]" value="{phrase var='event.where'}" onfocus="if (this.value == $('#js_quick_event_default_where').html()) {l} this.value = ''; $(this).removeClass('block_event_form_input_off'); {r}" />
-			</div>
-
-			<div class="block_event_sub">
-				<input type="submit" class="button" value="{phrase var='event.create_event'}" />
-			</div>
+		<div><input class="block_event_form_input block_event_form_input_off" type="text" name="val[title]" value="{phrase var='event.what_s_the_event'}" onfocus="if (this.value == $('#js_quick_event_default').html()) {l} $('.block_event_sub_holder').show(); this.value = ''; $(this).removeClass('block_event_form_input_off'); $.ajaxCall('event.loadMiniForm', '', 'GET'); {r}" /></div>
+		<div class="block_event_sub_holder">
+			<div class="t_center p_top_8">{img theme='ajax/add.gif'}</div>
 		</div>		
 	</form>
 </div>

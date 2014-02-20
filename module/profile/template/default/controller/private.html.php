@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: private.html.php 5041 2012-11-26 07:58:53Z Raymond_Benc $
+ * @version 		$Id: private.html.php 5074 2012-12-06 10:37:26Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 

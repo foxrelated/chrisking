@@ -9,9 +9,9 @@ defined('PHPFOX') or exit('NO DICE!');
  * 2checkout Payment Gateway API
  * 
  * @copyright		[PHPFOX_COPYRIGHT]
- * @author			Raymond Benc
+ * @author			Raymond Benc and Fernando Gutierrez
  * @package 		Phpfox
- * @version 		$Id: 2checkout.class.php 2228 2010-12-02 21:02:59Z Raymond_Benc $
+ * @version 		$Id: 2checkout.class.php 7131 2014-02-19 13:55:19Z Fern $
  */
 class Phpfox_Gateway_Api_2checkout implements Phpfox_Gateway_Interface
 {
@@ -27,7 +27,7 @@ class Phpfox_Gateway_Api_2checkout implements Phpfox_Gateway_Interface
 	 *
 	 * @var array
 	 */	
-	private $_aCurrency = array('USD');
+	private $_aCurrency = array('ARS', 'AUD', 'BRL', 'GBP', 'CAD', 'DKK', 'EUR', 'HKD', 'INR', 'ILS', 'JPY', 'LTL', 'MYR', 'MXN', 'NZD', 'NOK', 'PHP', 'RON', 'RUB', 'SGD', 'ZAR', 'SEK', 'CHF', 'TRY', 'AED', 'USD');
 	
 	/**
 	 * Class constructor
@@ -67,11 +67,11 @@ class Phpfox_Gateway_Api_2checkout implements Phpfox_Gateway_Interface
 				'phrase_info' => Phpfox::getPhrase('core.your_numerical_vendor_id'),
 				'value' => (isset($this->_aParam['setting']['2co_id']) ? $this->_aParam['setting']['2co_id'] : '')
 			),
-			'2co_secret' => array(
+			/*'2co_secret' => array(
 				'phrase' => Phpfox::getPhrase('core.2checkout_secret_word'),
 				'phrase_info' => Phpfox::getPhrase('core.the_secret_word_as_set_within_the_look_and_feel_page_of_your_2checkout_account'),
 				'value' => (isset($this->_aParam['setting']['2co_secret']) ? $this->_aParam['setting']['2co_secret'] : '')
-			)
+			)*/
 		);
 	}	
 	
@@ -83,62 +83,128 @@ class Phpfox_Gateway_Api_2checkout implements Phpfox_Gateway_Interface
 	 */	
 	public function getForm()
 	{
-		if ($this->_aParam['recurring'] > 0)
-		{
-			return false;	
-		}
-		
+		$bCurrencySupported = true;
+				
 		if (!in_array($this->_aParam['currency_code'], $this->_aCurrency))
 		{
 			if (!empty($this->_aParam['alternative_cost']))
 			{
 				$aCosts = unserialize($this->_aParam['alternative_cost']);
-				
-				if (isset($aCosts['USD']))
+				foreach ($aCosts as $aCost)
 				{
-					$this->_aParam['amount'] = $aCosts['USD'];
+					$sCode = key($aCost);
+					$iPrice = $aCost[key($aCost)];
+					
+					if (in_array($sCode, $this->_aCurrency))
+					{
+						$this->_aParam['amount'] = $iPrice;
+						$this->_aParam['currency_code'] = $sCode;
+						$bCurrencySupported = false;
+						break;
+					}
 				}
-				else 
-				{				
+			   
+				if ($bCurrencySupported === true)
+				{
 					return false;
 				}
 			}
-			else 
+			else
 			{
-				/*
-				 $sAmount = file_get_contents('http://www.exchangerate-api.com/' . $this->_aParam['currency_code'] . '/USD/' . $this->_aParam['amount'] . '?k=');
-				 if ($sAmount > '0')
-				 {
-					$this->_aParam['amount'] = $sAmount;
-				 }
-				 else 
-				 {				
-					return false;
-				 }
-				 */
 				return false;
 			}
 		}
-		
+	   
 		$aForm = array(
-			'url' => 'https://www.2checkout.com/2co/buyer/purchase',
+			'url' => 'https://www.2checkout.com/checkout/purchase',
 			'param' => array(
 				'sid' => $this->_aParam['setting']['2co_id'],
-				'total' => $this->_aParam['amount'],
-				'cart_order_id' => $this->_aParam['item_number'],
-				'merchant_order_id' => $this->_aParam['item_number'],
-				'x_receipt_link_url' => Phpfox::getLib('gateway')->url('2checkout'),
-				'c_prod' => $this->_aParam['item_number'],
-				'id_type' => '2',
-				'c_name' => $this->_aParam['item_name'],
-				'c_price' => $this->_aParam['amount'],
-				'c_tangible' => 'N'					
+				'mode' => '2CO',
+				'li_0_type' => 'product',
+				'li_0_name' => $this->_aParam['item_name'],
+				'li_0_price' => $this->_aParam['amount'],
+				'li_0_tangible' => 'N',
+				'li_0_product_id' => $this->_aParam['item_number'],
+				'currency_code' => $this->_aParam['currency_code'],
+				'demo' => ($this->_aParam['is_test'] ? 'Y' : '')
 			)
-		);		
-		
-		if ($this->_aParam['is_test'])
+		);     
+	   
+		if ($this->_aParam['recurring'] > 0)
 		{
-			$aForm['param']['demo'] = 'Y';
+			switch ($this->_aParam['recurring'])
+			{
+				case '1':
+					$sPeriod = 'Month';
+					$iEach = 1;
+					break;
+				case '2':
+					$sPeriod = 'Month';
+					$iEach = 3;
+					break;
+				case '3':
+					$sPeriod = 'Month';
+					$iEach = 6;
+					break;
+				case '4':
+					$sPeriod = 'Year';
+					$iEach = 1;
+					break;              
+			}
+			
+			if ((!isset($this->_aParam['recurring_cost']) || empty($this->_aParam['recurring_cost'])) 
+				&& !empty($this->_aParam['alternative_recurring_cost']))
+			{
+				$aCosts = unserialize($this->_aParam['alternative_recurring_cost']);d($aCosts);
+				$bPassed = false;
+				foreach ($aCosts as $aCost)
+				{
+					foreach($aCost as $sKey => $iCost)
+					{
+						if (in_array($sKey, $this->_aCurrency))
+						{
+							// Make all in the same currency
+							$this->_aParam['currency_code'] = $sKey;
+							$this->_aParam['amount'] = unserialize($this->_aParam['alternative_cost']);
+							$this->_aParam['amount'] = $this->_aParam['amount'][0][$sKey];
+							
+							$this->_aParam['recurring_cost'] = $iCost;
+							if (is_array($this->_aParam['recurring_cost']))
+							{
+								$aRec = array_values($this->_aParam['recurring_cost']);
+								$this->_aParam['recurring_cost'] = array_shift($aRec);
+							}
+							$bPassed = true;
+							break;
+						}
+					}
+					
+					if($bPassed)
+					{
+						break;
+					}
+				}
+			   
+				if ($bPassed === false)
+				{
+					return false;
+				}
+			}
+			
+			$aForm['param']['li_0_recurrence'] = $iEach . " " . $sPeriod;
+			
+			if($this->_aParam['amount'] > 0)
+			{
+				$aForm['param']['li_0_startup_fee'] = $this->_aParam['amount'];
+				$aForm['param']['li_0_price'] = $this->_aParam['recurring_cost'];
+				$aForm['param']['li_1_name'] = Phpfox::getPhrase('subscribe.recurring_price');
+				$aForm['param']['li_1_type'] = 'coupon';
+				$aForm['param']['li_1_price'] = $this->_aParam['recurring_cost'];
+			}
+			else
+			{
+				$aForm['param']['li_0_price'] = $this->_aParam['recurring_cost'];
+			}
 		}
 		
 		return $aForm;
@@ -154,38 +220,41 @@ class Phpfox_Gateway_Api_2checkout implements Phpfox_Gateway_Interface
 	{
 		Phpfox::log('Starting 2checkout callback');
 		Phpfox::log('Creating MD5 hash');
-		
-		$bIsRefund = false;				
-		if ($this->_aParam['is_test'])
+
+		$bIsRefund = false;                            
+		if (isset($this->_aParam['is_test']) && $this->_aParam['is_test'])
 		{
-			$sHash = $this->_aParam['key'];
+			$sHash = $this->_aParam['md5_hash'];
 			Phpfox::log('Test hash.');
 		}
-		else 
+		else
 		{
-			if (isset($this->_aParam['message_type']) && isset($this->_aParam['md5_hash']))			
+			if (isset($this->_aParam['message_type']) && isset($this->_aParam['md5_hash']))                
 			{
-				// sale_id + vendor_id + invoice_id + secret word	
+				if(isset($this->_aParam['item_type_1']) && $this->_aParam['item_type_1'] == 'refund')
+				{
+					$bIsRefund = true;
+				}
+				// sale_id + vendor_id + invoice_id + secret word      
 				$sHash = strtoupper(md5($this->_aParam['sale_id'] . $this->_aParam['setting']['2co_id'] . $this->_aParam['invoice_id'] . $this->_aParam['setting']['2co_secret']));
-				$bIsRefund = true;
 				Phpfox::log('Refund hash.');
 			}
-			else 
+			else
 			{
 				$sHash = strtoupper(md5($this->_aParam['setting']['2co_secret'] . $this->_aParam['setting']['2co_id'] . $this->_aParam['order_number'] . $this->_aParam['total']));
 				Phpfox::log('Purchase hash.');
-			}			
+			}                      
 		}
 		Phpfox::log('Hash created: ' . $sHash);
-		
-		if (($bIsRefund && $sHash == $this->_aParam['md5_hash']) || (!$bIsRefund && $sHash == $this->_aParam['key']))
+	   
+		if (($bIsRefund && $sHash == $this->_aParam['md5_hash']) || (!$bIsRefund && $sHash == $this->_aParam['md5_hash']))
 		{
 			Phpfox::log('Hash is valid');
-			
-			$aParts = explode('|', ($bIsRefund ? $this->_aParam['vendor_order_id'] : $this->_aParam['merchant_order_id']));
-			
-			Phpfox::log('Attempting to load module: ' . $aParts[0]);			
-			
+		   
+			$aParts = explode('|', $this->_aParam['vendor_order_id']);
+		   
+			Phpfox::log('Attempting to load module: ' . $aParts[0]);                       
+		   
 			if (Phpfox::isModule($aParts[0]))
 			{
 				Phpfox::log('Module is valid.');
@@ -193,28 +262,28 @@ class Phpfox_Gateway_Api_2checkout implements Phpfox_Gateway_Interface
 				if (Phpfox::hasCallback($aParts[0], 'paymentApiCallback'))
 				{
 					Phpfox::log('Module callback is valid.');
-					Phpfox::log('Building payment status: ' . (isset($this->_aParam['credit_card_processed']) ? $this->_aParam['credit_card_processed'] : $this->_aParam['message_description']));
-			
-					$sStatus = null;	
+					Phpfox::log('Building payment status: ' . $this->_aParam['message_description']);
+   
+					$sStatus = null;
 					if ($bIsRefund)
 					{
-						$sStatus = 'cancel';	
+						$sStatus = 'cancel';   
 					}
-					else 
+					else
 					{
-						switch ($this->_aParam['credit_card_processed'])
+						switch (strtolower($this->_aParam['payment_type']))
 						{
-							case 'Y':
+							case 'credit card':
 								$sStatus = 'completed';
 								break;
-							case 'K':
+							default:
 								$sStatus = 'pending';
 								break;
 						}
 					}
-					
+				   
 					Phpfox::log('Status built: ' . $sStatus);
-					
+				   
 					if ($sStatus !== null)
 					{
 						Phpfox::log('Executing module callback');
@@ -223,30 +292,30 @@ class Phpfox_Gateway_Api_2checkout implements Phpfox_Gateway_Interface
 								'ref' => ($bIsRefund ? $this->_aParam['sale_id'] : $this->_aParam['order_number']),
 								'status' => $sStatus,
 								'item_number' => $aParts[1],
-								'total_paid' => ($bIsRefund ? '0' : $this->_aParam['total'])
+								'total_paid' => ($bIsRefund ? '0' : $this->_aParam['item_list_amount_1'])
 							)
 						);
 					}
-					else 
+					else
 					{
 						Phpfox::log('Status is NULL. Nothing to do');
-					}					
+					}                                      
 				}
-				else 
+				else
 				{
 					Phpfox::log('Module callback is not valid.');
 				}
 			}
-			else 
+			else
 			{
 				Phpfox::log('Module is not valid.');
 			}
 		}
-		else 
+		else
 		{
 			Phpfox::log('Hash is invalid');
-		}						
-		
+		}                                              
+	   
 		return 'redirect';
 	}
 }

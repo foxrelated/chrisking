@@ -34,6 +34,17 @@
 			</div>			
 		</div>		
 	{/if}
+	{if Phpfox::getParam('core.city_in_registration')}
+		<div class="table">
+			<div class="table_left">
+				<label for="city_location">{phrase var='user.city'}:</label>
+			</div>
+			<div class="table_right">
+				<input type="text" name="val[city_location]" id="city_location" value="{value type='input' id='city_location'}" size="30" />
+			</div>			
+		</div>		
+	{/if}
+	
 	{if Phpfox::getParam('core.registration_enable_timezone')}
 		<div class="table">
 			<div class="table_left">
@@ -42,7 +53,7 @@
 			<div class="table_right">
 				<select name="val[time_zone]">
 				{foreach from=$aTimeZones key=sTimeZoneKey item=sTimeZone}
-					<option value="{$sTimeZoneKey}"{if (Phpfox::getTimeZone() == $sTimeZoneKey && !isset($iTimeZonePosted)) || (isset($iTimeZonePosted) && $iTimeZonePosted == $sTimeZoneKey)} selected="selected"{/if}>{$sTimeZone}</option>
+					<option value="{$sTimeZoneKey}"{if (Phpfox::getTimeZone() == $sTimeZoneKey && !isset($iTimeZonePosted)) || (isset($iTimeZonePosted) && $iTimeZonePosted == $sTimeZoneKey) || (Phpfox::getParam('core.default_time_zone_offset') == $sTimeZoneKey)} selected="selected"{/if}>{$sTimeZone}</option>
 				{/foreach}
 				</select>
 			</div>
@@ -77,6 +88,9 @@
 		</div>				
 		{/if}
 	</div>
+	
+	{module name='user.showspamquestion'}
+	
 	{if Phpfox::getParam('user.force_user_to_upload_on_sign_up')}
 		<div class="separate"></div>
 		<div class="table">
@@ -90,4 +104,6 @@
 				</div>
 			</div>			
 		</div>
-		{/if}
+	{/if}
+	
+	

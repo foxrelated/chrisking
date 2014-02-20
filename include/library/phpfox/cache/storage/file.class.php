@@ -14,7 +14,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: file.class.php 4906 2012-10-22 04:52:14Z Raymond_Benc $
+ * @version 		$Id: file.class.php 6363 2013-07-25 09:14:30Z Raymond_Benc $
  */
 class Phpfox_Cache_Storage_File extends Phpfox_Cache_Abstract
 {
@@ -66,6 +66,10 @@ class Phpfox_Cache_Storage_File extends Phpfox_Cache_Abstract
 			}
 			else
 			{
+				if ($sName[0] == 'feeds')
+				{
+					$sName[0] = $sName[0] . Phpfox::getLib('locale')->getLangId();
+				}
 				$sNewDirectory = PHPFOX_DIR_CACHE . $sName[0];
 				if (!is_dir($sNewDirectory))
 				{
@@ -145,6 +149,7 @@ class Phpfox_Cache_Storage_File extends Phpfox_Cache_Abstract
 		
 		if ($this->_bSkipClose === false)
 		{
+			$this->_bSkipClose = false;
 			$this->close($sId);		
 		}
 		
@@ -303,7 +308,12 @@ class Phpfox_Cache_Storage_File extends Phpfox_Cache_Abstract
 			default:
 				if (is_array($sName))
 				{
-					$sName = rtrim($sName[0], '/') . PHPFOX_DS . $sName[1];	
+					$sName[0] = rtrim($sName[0], '/');
+					if ($sName[0] == 'feeds')
+					{
+						$sName[0] = $sName[0] . Phpfox::getLib('locale')->getLangId();
+					}
+					$sName = $sName[0] . PHPFOX_DS . $sName[1];
 				}				
 				$sName = $this->_getName($sName);
 				if (file_exists($sName))

@@ -4,14 +4,14 @@
  */
 
 defined('PHPFOX') or exit('NO DICE!');
-
+define('PHPFOX_IS_PAGES_ADD', true);
 /**
  * 
  * 
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: add.class.php 4595 2012-08-16 07:30:32Z Raymond_Benc $
+ * @version 		$Id: add.class.php 7101 2014-02-11 13:47:16Z Fern $
  */
 class Pages_Component_Controller_Add extends Phpfox_Component
 {
@@ -35,7 +35,7 @@ class Pages_Component_Controller_Add extends Phpfox_Component
 			
 			$aMenus = array(
 				'detail' => Phpfox::getPhrase('pages.details'),
-				'info' => Phpfox::getPhrase('pages.information')
+				'info' => Phpfox::getPhrase('pages.information')				
 			);
 			
 			if (!$aPage['is_app'])
@@ -43,7 +43,7 @@ class Pages_Component_Controller_Add extends Phpfox_Component
 				$aMenus['photo'] = Phpfox::getPhrase('pages.photo');
 			}
 			$aMenus['permissions'] = Phpfox::getPhrase('pages.permissions');
-			if (Phpfox::isModule('friend'))
+			if (Phpfox::isModule('friend') && Phpfox::getUserBy('profile_page_id') == 0)
 			{
 				$aMenus['invite'] = Phpfox::getPhrase('pages.invite');
 			}			
@@ -51,7 +51,12 @@ class Pages_Component_Controller_Add extends Phpfox_Component
 			{
 				$aMenus['url'] = Phpfox::getPhrase('pages.url');
 				$aMenus['admins'] = Phpfox::getPhrase('pages.admins');
-				$aMenus['widget'] = Phpfox::getPhrase('pages.widgets');			
+				$aMenus['widget'] = Phpfox::getPhrase('pages.widgets');
+			}
+			
+			if (Phpfox::getParam('core.google_api_key'))
+			{
+			    $aMenus['location'] = Phpfox::getPhrase('pages.location');
 			}
 			
 			if ($bIsNewPage)
@@ -63,6 +68,7 @@ class Pages_Component_Controller_Add extends Phpfox_Component
 					$aMenus[$sMenuName] = Phpfox::getPhrase('pages.step_count', array('count' => $iCnt)) . ': ' . $sMenuValue;
 				}
 			}
+			
 			
 			$this->template()->buildPageMenu('js_pages_block', 
 				$aMenus,
@@ -107,6 +113,22 @@ class Pages_Component_Controller_Add extends Phpfox_Component
 				}
 			}
 		}		
+		
+		
+		if (Phpfox::getParam('core.google_api_key') != '' && $this->request()->get('id') != '')
+		{
+			$this->template()->setHeader(array(
+				'<script type="text/javascript">oParams["core.google_api_key"] = "'.Phpfox::getParam('core.google_api_key') .'";</script>',
+				'places.js' => 'module_pages',				
+			));
+			//d($aPage);
+			if (isset($aPage['location']) && ( (int)$aPage['location_latitude'] != 0 || (int)$aPage['location_longitude'] != 0))
+			{
+				$this->template()->setHeader(array(
+					'<script type="text/javascript">$Behavior.setLocation = function(){ $Core.PagesLocation.setLocation("'. $aPage['location_latitude'] .'","' . $aPage['location_longitude'] .'","'. $aPage['location']['name'] . '");};</script>'
+				));
+			}
+		}
 		
 		$this->template()->setTitle(($bIsEdit ? '' . Phpfox::getPhrase('pages.editing_page') . ': ' . $aPage['title']: Phpfox::getPhrase('pages.creating_a_page')))
 			->setBreadcrumb(Phpfox::getPhrase('pages.pages'), $this->url()->makeUrl('pages'))

@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: list.html.php 1821 2010-09-20 16:11:48Z Miguel_Espinoza $
+ * @version 		$Id: list.html.php 6532 2013-08-29 11:15:56Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -31,9 +31,9 @@ defined('PHPFOX') or exit('NO DICE!');
 				</div>
 				{/if}
 				{if !$aInvite.invited_user_id}
-				{img file='' suffix='_75' max_width=75 max_height=75 class='js_mp_fix_width'}
+				{img file='' suffix='_50_square' max_width=75 max_height=75 class='js_mp_fix_width'}
 				{else}
-				{img user=$aInvite suffix='_75' max_width=75 max_height=75 class='js_mp_fix_width'}
+				{img user=$aInvite suffix='_50_square' max_width=75 max_height=75 class='js_mp_fix_width'}
 				{/if}
 			</div>
 		</div>

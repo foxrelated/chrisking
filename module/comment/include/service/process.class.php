@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Comment
- * @version 		$Id: process.class.php 4621 2012-09-12 05:34:34Z Raymond_Benc $
+ * @version 		$Id: process.class.php 6890 2013-11-14 16:18:37Z Miguel_Espinoza $
  */
 class Comment_Service_Process extends Phpfox_Service
 {
@@ -113,6 +113,7 @@ class Comment_Service_Process extends Phpfox_Service
 		{
 			$aInsert['view_id'] = '1';
 			$bIsSpam = true;
+			Phpfox::getLib('ajax')->sPopupMessage = Phpfox::getPhrase('core.notice');
 			Phpfox_Error::set(Phpfox::getPhrase('comment.your_comment_has_successfully_been_added_however_it_is_pending_an_admins_approval'));
 		}
 
@@ -130,6 +131,14 @@ class Comment_Service_Process extends Phpfox_Service
 				'text_parsed' => $aVals['text_parsed']
 			)
 		);
+		
+		// http://www.phpfox.com/tracker/view/14660/
+		$sComment = Phpfox::getLib('parse.input')->clean($aVals['text']);
+		if (Phpfox::isModule('tag') && Phpfox::getParam('tag.enable_hashtag_support'))
+		{
+			Phpfox::getService('tag.process')->add($aInsert['type_id'], $aInsert['item_id'], Phpfox::getUserId(), $sComment, true);
+		}
+		
 		$aVals['comment_id'] = $iId;
 		
 		if (!empty($aVals['parent_id']))
@@ -178,6 +187,8 @@ class Comment_Service_Process extends Phpfox_Service
 		p('type_id = \'' . $this->database()->escape($aVals['type']) . '\' AND item_id = ' . (int) $aVals['item_id']);
 		exit;
 		*/
+		
+		Phpfox::getService('feed.process')->clearCache($aVals['type'], $aVals['item_id']);
 		
 		$this->database()->update(Phpfox::getT($sFeedPrefix . 'feed'), array('time_update' => PHPFOX_TIME), 'type_id = \'' . $this->database()->escape($sNewTypeId) . '\' AND item_id = ' . (int) $aVals['item_id']);
 		
@@ -271,7 +282,8 @@ class Comment_Service_Process extends Phpfox_Service
 			$bCanDeleteOnProfile = ($bCanDeleteComment && Phpfox::getUserParam('comment.can_delete_comments_posted_on_own_profile'));			
 		}		
 		
-		if (Phpfox::isModule('pages'))
+		
+		if (Phpfox::isModule('pages') && Phpfox::getLib('request')->get('type_id') == 'pages')
 		{
 			$aPagesParent = $this->database()->select('c1.*, pf.parent_user_id')
 				->from(Phpfox::getT('comment'), 'c1')
@@ -292,20 +304,28 @@ class Comment_Service_Process extends Phpfox_Service
 
 		if ((($iUserId = Phpfox::getService('comment')->hasAccess($iId, 'delete_own_comment', 'delete_user_comment')) !== false) || $bCanDeleteOnProfile == true)
 		{
-			$iItemId = $this->database()->select('item_id')
+			$aCommentRow = $this->database()->select('*')
 				->from($this->_sTable)
 				->where('comment_id = ' . (int) $iId)
-				->execute('getField');				
+				->execute('getRow');				
 			
 			$this->delete($iId);
 			
-			Phpfox::callback($iTypeId . '.deleteComment', $iItemId);		
+			if (empty($aCommentRow['parent_id']))
+			{
+				Phpfox::callback($iTypeId . '.deleteComment', $aCommentRow['item_id']);
+			}		
 
 			// Update user activity
 			Phpfox::getService('user.activity')->update($iUserId, 'comment', '-');
 
 			(($sPlugin = Phpfox_Plugin::get('comment.service_process_deleteinline')) ? eval($sPlugin) : false);
 
+			if (Phpfox::getParam('feed.cache_each_feed_entry'))
+			{
+				Phpfox::getService('feed.process')->clearCache($iTypeId, $iId);	
+			}
+			
 			return true;
 		}
 
@@ -532,7 +552,7 @@ class Comment_Service_Process extends Phpfox_Service
 			if (($bIsAdmin && $aVals['comment_view_id'] == 2))
 			{
 				
-			}
+			}			
 			else 
 			{
 				Phpfox::getService('user.activity')->update($aComment['user_id'], 'comment');
@@ -550,6 +570,8 @@ class Comment_Service_Process extends Phpfox_Service
 			if ($bIsAdmin)
 			{
 				$this->database()->updateCounter('user', 'total_spam', 'user_id', $aComment['user_id'], true);
+				
+				define('FEED_FORCE_USER_ID', $aComment['user_id']);
 				
 				// Callback this action to other modules
 				Phpfox::callback($aVals['type'] . '.addComment', $aVals, $aComment['user_id'], $aComment['full_name']);

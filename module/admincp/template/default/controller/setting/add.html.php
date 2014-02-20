@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: add.html.php 1299 2009-12-06 18:06:19Z Raymond_Benc $
+ * @version 		$Id: add.html.php 6092 2013-06-20 13:24:17Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -181,8 +181,8 @@ function changeFormValue(sValue)
 	</div>
 </form>
 <script type="text/javascript">
-<!--
+$Behavior.loadCustomFormValues = function(){l}
 	var oSelected = document.getElementById('js_form_value_actual');	
 	changeFormValue(oSelected.options[oSelected.selectedIndex].value);
--->
+{r}
 </script>

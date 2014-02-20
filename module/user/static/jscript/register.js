@@ -41,7 +41,7 @@ $Core.registration =
 	}
 }
 
-$(function()
+$Behavior.user_register_init = function()
 {
 	$('#js_submit_register_form').click(function()
 	{	
@@ -72,4 +72,4 @@ $(function()
 		shadowOffsetY: 4,
 		shrinkToFit: true
 	});*/
-});
+};

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: admincp.class.php 4873 2012-10-10 06:45:05Z Raymond_Benc $
+ * @version 		$Id: admincp.class.php 6668 2013-09-24 13:05:06Z Fern $
  */
 class Core_Service_Admincp_Admincp extends Phpfox_Service 
 {
@@ -48,17 +48,45 @@ class Core_Service_Admincp_Admincp extends Phpfox_Service
 	{
 		$iActiveAdminCp = (PHPFOX_TIME - (Phpfox::getParam('core.admincp_timeout') * 60));	
 		
-		$aUsers = $this->database()->select('uf.in_admincp, ls.location, ls.ip_address, ' . Phpfox::getUserField())
-			->from(Phpfox::getT('user_field'), 'uf')
-			->join(Phpfox::getT('user'), 'u', 'u.user_id = uf.user_id')
-			->join(Phpfox::getT('log_session'), 'ls', 'ls.user_id = u.user_id')
-			->where('uf.in_admincp > \'' . $iActiveAdminCp . '\'')
-			->group('u.user_id')
-			->execute('getRows');
+		$aUsers = array();
+			
+		if(Phpfox::getParam('core.store_only_users_in_session'))
+		{
+			$aUsers = $this->database()->select('uf.in_admincp, u.last_ip_address as ip_address, ' . Phpfox::getUserField())
+				->from(Phpfox::getT('user_field'), 'uf')
+				->join(Phpfox::getT('user'), 'u', 'u.user_id = uf.user_id')
+				->join(Phpfox::getT('session'), 'ls', 'ls.user_id = u.user_id')
+				->where('uf.in_admincp > \'' . $iActiveAdminCp . '\'')
+				->group('u.user_id')
+				->execute('getRows');
+		}
+		else
+		{
+			$aUsers = $this->database()->select('uf.in_admincp, ls.location, ls.ip_address, ' . Phpfox::getUserField())
+				->from(Phpfox::getT('user_field'), 'uf')
+				->join(Phpfox::getT('user'), 'u', 'u.user_id = uf.user_id')
+				->join(Phpfox::getT('log_session'), 'ls', 'ls.user_id = u.user_id')
+				->where('uf.in_admincp > \'' . $iActiveAdminCp . '\'')
+				->group('u.user_id')
+				->execute('getRows');
+		}
 			
 		foreach ($aUsers as $iKey => $aUser)
 		{
+			if(!isset($aUser['location']))
+			{
+				if($aUser['user_id'] == Phpfox::getUserId())
+				{
+					$aUser['location'] = 'admincp';
+				}
+				else
+				{
+					$aUser['location'] = '';
+				}
+			}
+				
 			$aUsers[$iKey]['location'] = Phpfox::getService('log.session')->getActiveLocation($aUser['location']);	
+				
 		}
 			
 		return $aUsers;

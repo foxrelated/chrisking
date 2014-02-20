@@ -5,17 +5,18 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: completed.html.php 2825 2011-08-09 20:14:13Z Raymond_Benc $
+ * @version 		$Id: completed.html.php 5350 2013-02-13 10:59:22Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
 
 ?>
-{if $bIsUpgrade}
-Successfully upgraded to phpFox version {$sUpgradeVersion}.
-{else}
-Successfully installed phpFox {$sUpgradeVersion}.
-{/if}
-<ul class="action">
-	<li><a href="../index.php">View Your Site</a></li>
-</ul>
+<div class="completed_message">
+	{if $bIsUpgrade}
+	Successfully upgraded to phpFox version {$sUpgradeVersion}.
+	{else}
+	Successfully installed phpFox {$sUpgradeVersion}.
+	{/if}
+</div>
+
+<a href="../index.php" class="installed_link">View Your Site</a>

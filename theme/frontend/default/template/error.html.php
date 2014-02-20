@@ -13,12 +13,15 @@
 {/if}
 {section_menu_js}
 
-{if $sPublicMessage}
+{if $sPublicMessage && !is_bool($sPublicMessage)}
 <div class="public_message" id="public_message">
 	{$sPublicMessage}
 </div>
 <script type="text/javascript">
-	$('#public_message').show();
+	$Behavior.template_error = function()
+	{l}
+		$('#public_message').show();
+	{r};
 </script>
 {/if}
 {if !Phpfox::getParam('core.disable_ie_warning')}
@@ -30,7 +33,7 @@
 	{/if}
 </div>
 {/if}
-<div id="pem"><a name="pem"></a></div>
+<div id="pem"><a href="#"></a></div>
 <div id="core_js_messages">
 {if count($aErrors)}
 {foreach from=$aErrors item=sErrorMessage}

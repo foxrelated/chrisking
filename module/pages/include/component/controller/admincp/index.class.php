@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: index.class.php 3144 2011-09-20 20:39:58Z Raymond_Benc $
+ * @version 		$Id: index.class.php 6113 2013-06-21 13:58:40Z Raymond_Benc $
  */
 class Pages_Component_Controller_Admincp_Index extends Phpfox_Component
 {
@@ -47,7 +47,7 @@ class Pages_Component_Controller_Admincp_Index extends Phpfox_Component
 			->setBreadcrumb(($bSubCategory ?  Phpfox::getPhrase('pages.manage_sub_categories') : Phpfox::getPhrase('pages.manage_categories')))
 			->setHeader(array(
 					'drag.js' => 'static_script',
-					'<script type="text/javascript">Core_drag.init({table: \'#js_drag_drop\', ajax: \'' . ($bSubCategory ? 'pages.categorySubOrdering' : 'pages.categoryOrdering' ) . '\'});</script>'		
+					'<script type="text/javascript">$Behavior.coreDragInit = function() { Core_drag.init({table: \'#js_drag_drop\', ajax: \'' . ($bSubCategory ? 'pages.categorySubOrdering' : 'pages.categoryOrdering' ) . '\'}); }</script>'
 				)
 			)			
 			->assign(array(

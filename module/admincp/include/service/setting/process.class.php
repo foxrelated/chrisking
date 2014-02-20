@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: process.class.php 4597 2012-08-17 07:27:46Z Raymond_Benc $
+ * @version 		$Id: process.class.php 7129 2014-02-19 13:27:09Z Fern $
  */
 class Admincp_Service_Setting_Process extends Phpfox_Service 
 {
@@ -104,6 +104,7 @@ class Admincp_Service_Setting_Process extends Phpfox_Service
 	
 	public function update($aVals)
 	{		
+		
 		if (isset($aVals['order']))
 		{
 			foreach ($aVals['order'] as $sVar => $iOrder)
@@ -244,11 +245,11 @@ class Admincp_Service_Setting_Process extends Phpfox_Service
 							$aSub[] = $sPart;
 						}
 						
-						if ($sKey == 'admin_debug_mode' && $mValue['value'] != 'Level 0')
+						if ($sKey == 'admin_debug_mode' && $mValue['value'] != 'level_0')
 						{
 							if ($hFile = @fopen(PHPFOX_DIR . 'file' . PHPFOX_DS . 'log' . PHPFOX_DS . 'debug.php', 'w+'))
 							{			
-								fwrite($hFile, '<?php define(\'PHPFOX_DEBUG\', true); define(\'PHPFOX_DEBUG_LEVEL\', ' . trim(str_replace('Level', '', $mValue['value'])) . '); ?>');
+								fwrite($hFile, '<?php define(\'PHPFOX_DEBUG\', true); define(\'PHPFOX_DEBUG_LEVEL\', ' . trim(preg_replace('/Level(_)/i', '', $mValue['value'])) . '); ?>');
 								fclose($hFile);		
 							}							
 						}
@@ -307,7 +308,7 @@ class Admincp_Service_Setting_Process extends Phpfox_Service
 				
 				if ($sKey == 'admin_cp' && $mValue != 'admincp')
 				{
-					if (!Phpfox::getLib('parse.input')->allowTitle($mValue, Phpfox::getPhrase('admincp.admincp_name_not_allowed') . ': ' . strip_tags($mValue)))
+					if (empty($mValue) || !Phpfox::getLib('parse.input')->allowTitle($mValue, Phpfox::getPhrase('admincp.admincp_name_not_allowed') . ': ' . strip_tags($mValue)))
 					{
 						return false;
 					}					
@@ -333,6 +334,11 @@ class Admincp_Service_Setting_Process extends Phpfox_Service
 					{
 						$this->database()->update(Phpfox::getT('user'), array('user_name' => 'profile-' . $aUser['user_id']), 'user_id = ' . $aUser['user_id']);
 					}
+				}
+				
+				if ($sKey == 'cron_delete_messages_delay')
+				{
+					$this->database()->update(Phpfox::getT('cron'), array('every' => $mValue), "module_id = 'mail'");
 				}
 			}						
 	

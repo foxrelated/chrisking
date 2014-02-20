@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: index.class.php 1284 2009-11-27 23:44:31Z Raymond_Benc $
+ * @version 		$Id: index.class.php 5180 2013-01-22 14:58:13Z Miguel_Espinoza $
  */
 class Admincp_Component_Controller_Product_Index extends Phpfox_Component 
 {
@@ -28,6 +28,7 @@ class Admincp_Component_Controller_Product_Index extends Phpfox_Component
 			}			
 		}				
 		
+		if ($sPlugin = Phpfox_Plugin::get('admincp.component_controller_product_index_3')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
 		if ($sDeleteProduct = $this->request()->get('delete'))
 		{
 			if (Phpfox::getService('admincp.product.process')->delete($sDeleteProduct))
@@ -38,8 +39,11 @@ class Admincp_Component_Controller_Product_Index extends Phpfox_Component
 		
 		if (($sUpgrade = $this->request()->get('upgrade')))
 		{
+			if ($sPlugin = Phpfox_Plugin::get('admincp.component_controller_product_index_1')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
 			if (Phpfox::getService('admincp.product.process')->upgrade($sUpgrade))
 			{
+				Phpfox_Plugin::set();
+				if ($sPlugin = Phpfox_Plugin::get('admincp.component_controller_product_index_2')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
 				$this->url()->send('admincp.product', null, Phpfox::getPhrase('admincp.product_successfully_upgraded'));				
 			}
 		}

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Theme
- * @version 		$Id: ajax.class.php 3661 2011-12-05 15:42:26Z Miguel_Espinoza $
+ * @version 		$Id: ajax.class.php 5345 2013-02-13 09:44:03Z Raymond_Benc $
  */
 class Theme_Component_Ajax_Ajax extends Phpfox_Ajax
 {
@@ -33,6 +33,12 @@ class Theme_Component_Ajax_Ajax extends Phpfox_Ajax
 		Phpfox::getBlock('theme.addBlockDnD', array(		
 			)
 		);
+	}
+	
+	public function deleteMenu()
+	{
+		Phpfox::isUser(true);
+		Phpfox::getService('theme.process')->deleteUserMenu($this->get('id'), ($this->get('add') ? true : false));
 	}
 	
 	public function sample()

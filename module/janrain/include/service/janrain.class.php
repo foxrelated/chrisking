@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Service
- * @version 		$Id: janrain.class.php 2628 2011-05-25 13:06:52Z Raymond_Benc $
+ * @version 		$Id: janrain.class.php 6053 2013-06-11 14:09:37Z Raymond_Benc $
  */
 class Janrain_Service_Janrain extends Phpfox_Service 
 {
@@ -23,8 +23,21 @@ class Janrain_Service_Janrain extends Phpfox_Service
 		
 	}
 	
+	public function getName()
+	{
+		$sDomain = Phpfox::getParam('janrain.janrain_application_domain');
+		if (preg_match('/^https:\/\/(.*)\.rpxnow\.com\/$/i', $sDomain, $aMatches))
+		{
+			$sDomain = $aMatches[1];
+		}
+		
+		return $sDomain;
+	}
+	
 	public function getUrl()
 	{
+		return '#';
+
 		$sDomain = Phpfox::getParam('janrain.janrain_application_domain');
 		
 		return rtrim($sDomain, '/') . '/openid/v2/signin?token_url=' . urlencode(Phpfox::getLib('url')->makeUrl('janrain.rpx'));

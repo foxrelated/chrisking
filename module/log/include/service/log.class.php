@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: log.class.php 2536 2011-04-14 19:37:29Z Raymond_Benc $
+ * @version 		$Id: log.class.php 6897 2013-11-18 11:49:24Z Miguel_Espinoza $
  */
 class Log_Service_Log extends Phpfox_Service 
 {
@@ -25,33 +25,57 @@ class Log_Service_Log extends Phpfox_Service
 	
 	public function getRecentLoggedInUsers()
 	{
-		$iFriendsOnly = (int) Phpfox::getComponentSetting(Phpfox::getUserId(), 'log.user_login_display_limit', 0);
-		$iLimit = 10;
-		if ($iFriendsOnly === 1)
+		if (Phpfox::getParam('user.cache_recent_logged_in') > 0)
 		{
-			$aUsers = $this->database()->select(Phpfox::getUserField())
-				->from(Phpfox::getT('friend'), 'f')
-				->join(Phpfox::getT('user'), 'u', 'u.user_id = f.friend_user_id')
-				->where('f.user_id = ' . Phpfox::getUserId() . ' AND is_invisible != 1')
-				->order('u.last_login DESC')
-				->limit($iLimit)
-				->execute('getSlaveRows');
+			$sCacheId = $this->cache()->set(array('user', 'recentloggedin'));
 		}
-		else 
+		
+		if (Phpfox::getParam('user.cache_recent_logged_in') > 0 && ($aUsers = $this->cache()->get($sCacheId, Phpfox::getParam('user.cache_recent_logged_in'))))
 		{
-			$aUsers = $this->database()->select(Phpfox::getUserField())
-				->from(Phpfox::getT('user'), 'u')
-				->order('u.last_login DESC')
-				->where('u.user_id != ' . Phpfox::getUserId() .' AND is_invisible != 1 AND u.status_id = 0 AND u.view_id = 0')
-				->limit($iLimit)
-				->execute('getSlaveRows');
+						
+		}
+		else
+		{
+			$iFriendsOnly = (int) Phpfox::getComponentSetting(Phpfox::getUserId(), 'log.user_login_display_limit', 0);
+			$iLimit = 10;
+			(($sPlugin = Phpfox_Plugin::get('log.service_log_getrecentloggedinusers_1')) ? eval($sPlugin) : false);
+			
+			if ($iFriendsOnly === 1)
+			{
+				$aUsers = $this->database()->select(Phpfox::getUserField())
+					->from(Phpfox::getT('friend'), 'f')
+					->join(Phpfox::getT('user'), 'u', 'u.user_id = f.friend_user_id')
+					->where('f.user_id = ' . Phpfox::getUserId() . ' AND is_invisible != 1')
+					->order('u.last_login DESC')
+					->limit($iLimit)
+					->execute('getSlaveRows');
+			}
+			else 
+			{
+				$aUsers = $this->database()->select(Phpfox::getUserField())
+					->from(Phpfox::getT('user'), 'u')
+					->order('u.last_login DESC')
+					->where('u.user_id != ' . Phpfox::getUserId() .' AND is_invisible != 1 AND u.status_id = 0 AND u.view_id = 0')
+					->limit($iLimit)
+					->execute('getSlaveRows');
+			}
+			
+			if (Phpfox::getParam('user.cache_recent_logged_in') > 0)
+			{
+				$this->cache()->save($sCacheId, $aUsers);
+			}
+		}
+
+		if (is_bool($aUsers))
+		{
+			$aUsers = array();
 		}
 			
 		return $aUsers;
 	}
 	
 	public function getOnlineGuests($aConds, $sSort = '', $iPage = '', $iLimit = '')
-	{		
+	{	
 		$iCnt = $this->database()->select('COUNT(*)')
 			->from(Phpfox::getT('log_session'), 'ls')			
 			->where($aConds)
@@ -59,11 +83,12 @@ class Log_Service_Log extends Phpfox_Service
 			->execute('getSlaveField');	
 			
 		$aItems = array();
-		if ($iCnt)
+		if ($iCnt > 0)
 		{		
 			$aItems = $this->database()->select('ls.*, b.ban_id')
 				->from(Phpfox::getT('log_session'), 'ls')
 				->leftJoin(Phpfox::getT('ban'), 'b', 'b.type_id = \'ip\' AND b.find_value = ls.ip_address')
+                ->group('ip_address')
 				->where($aConds)
 				->order($sSort)
 				->limit($iPage, $iLimit, $iCnt)

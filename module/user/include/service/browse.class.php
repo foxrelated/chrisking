@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: browse.class.php 5030 2012-11-19 11:44:53Z Raymond_Benc $
+ * @version 		$Id: browse.class.php 6789 2013-10-15 10:56:15Z Miguel_Espinoza $
  */
 class User_Service_Browse extends Phpfox_Service
 {
@@ -137,49 +137,82 @@ class User_Service_Browse extends Phpfox_Service
 		$this->_sIp = $sIp;
 	}
 	
-	public function get()
-	{
-		$aUsers = array();		
-
-		if ($sPlugin = Phpfox_Plugin::get('user.service_browse_get__start')){return eval($sPlugin);}
-		
-		if (($sPlugin = Phpfox_Plugin::get('user.service_browse_get__start_no_return')))
+    /**
+     * This function returns user_ids for those that match the search by custom fields
+     * if the param $bIsCount is true then it only returns the count and not the user_ids
+     * @param type $bIsCount
+     */
+    public function getCustom($bIsCount = true, $iCount = false, $bAddCondition = true)
+    {
+		if ($bIsCount)
 		{
-			eval($sPlugin);		
+			$aUsers = $this->getCustom(false, false, false);			
+			return count($aUsers);
 		}
-		
-		$aCustomSearch = array();		
-		if (is_array($this->_aCustom))
+        $aCustomSearch = array();	
+        $sSelect = 'u.user_id';
+        if ($bIsCount == true)
+        {
+            $sSelect = ('count(u.user_id)');
+        }
+        
+		if (is_array($this->_aCustom) && !empty($this->_aCustom))
 		{
 			$sCondition = ' AND (';
 			// When searching for more than one custom field searchFields will 
 			// return more than one join instruction
 			$aAlias = array();
 			$aCustomSearch = Phpfox::getService('custom')->searchFields($this->_aCustom);
+            
 			$iCustomCnt = 0;
 			
 			$iJoinsCount = 0;
 			$aUserIds = array();
 			if (count($aCustomSearch) > 0)
 			{			
-				$this->database()->select('u.user_id')->from(Phpfox::getT('user'), 'u');
+				$this->database()->select($sSelect . ($bIsCount ? ' as total' : ''))->from(Phpfox::getT('user'), 'u');
 			}
-			foreach ($aCustomSearch as $aSearchParam)
+			$aAvoidDups = array();
+			
+			foreach($aCustomSearch as $iKey => $aSearch)
+			{
+				if (isset($aAvoidDups[$aSearch['on'] . $aSearch['where']])) 
+				{
+					unset($aCustomSearch[$iKey]);
+					continue;
+				}
+				
+				$aAvoidDups[$aSearch['on'] . $aSearch['where']] = $iKey;
+			}
+			
+			foreach ($aCustomSearch as $iKey => $aSearchParam)
 			{
 				$iCustomCnt++;
+                if ($iCount !== false && is_numeric($iCount) && $iCount > 0)
+                {
+                    $this->database()->order($this->_sSort)
+                        ->limit($this->_iPage, $this->_iLimit, $iCount);
+                }
 				if (is_array($aSearchParam))
 				{
-					$aSearchParam['alias'] = $aSearchParam['alias'] . $iCustomCnt;				
-									
-						$sNewOn = str_replace('mvc',$aSearchParam['alias'], $aSearchParam['on']);
-						$sNewWhere = str_replace('mvc',$aSearchParam['alias'], $aSearchParam['where']);					
-						
-						$sOn = ''.$sNewOn . ' AND ' . $sNewWhere;		
-				
-						$this->database()->join($aSearchParam['table'], $aSearchParam['alias'], $sOn);
-						$iJoinsCount++;					
-						// $sCondition .= $aSearchParam . ' OR ';
-											
+					// The following replacements make sure that the joins are unique by using unique aliases
+					$sOldAlias = $aSearchParam['alias'];
+					
+					$aSearchParam['alias'] = $sNewAlias = $aSearchParam['alias'] . $iCustomCnt;
+					
+					$sOldOn = $aSearchParam['on'];
+					
+					$sNewOn = $aSearchParam['on'] = $aCustomSearch[$iKey]['on'] = str_replace($sOldAlias .'.', $sNewAlias .'.', $aSearchParam['on']);					
+					
+					$aCustomSearch[$iKey]['where'] = str_replace(array('mvc.', $sOldAlias .'.'), $sNewAlias .'.', $aSearchParam['where']);
+					
+					$sNewWhere = $aCustomSearch[$iKey]['where'];
+					
+					$sOn = ''.$sNewOn . ' AND ' . $sNewWhere;
+					
+					$this->database()->join($aSearchParam['table'], $sNewAlias, $sOn);
+					$iJoinsCount++;					
+					
 				} // end of is_array aSearchParam
 				else
 				{
@@ -187,12 +220,12 @@ class User_Service_Browse extends Phpfox_Service
 					$iJoinsCount++;	
 					$sCondition .= ' '.$aSearchParam . ' AND ';					
 				}
-				
-				if ( $iJoinsCount > 2)
+
+				if ( $iJoinsCount > 2 && !$bIsCount)
 				{
 					$aUsers = $this->database()->execute('getSlaveRows');
 					
-					if (empty($aUsers))
+					if (empty($aUsers) || (isset($aUsers[0]['total']) && $aUsers[0]['total'] <= 1))
 					{
 						$aUserIds[0] = 0;
 					}
@@ -204,13 +237,21 @@ class User_Service_Browse extends Phpfox_Service
 						}					
 					}
 					
-					$this->database()->select('u.user_id')->from(Phpfox::getT('user'), 'u')->where('u.user_id IN (' . implode(',',$aUserIds) .')');						
+					$this->database()->select($sSelect)->from(Phpfox::getT('user'), 'u')->where('u.user_id IN (' . implode(',',$aUserIds) .')');						
 					$iJoinsCount = 0;
 				}
 			} // foreach
+            if ($bIsCount == true)
+            {
+                $aCount = $this->database()->execute('getSlaveRows');
+                $aCount = array_pop($aCount);
+
+				return (count($aCustomSearch) ? $aCount['total'] : $aCount[$sSelect]);
+            }
 			if ($iJoinsCount > 0)
 			{				
 				$aUsers = $this->database()->execute('getSlaveRows');
+                
 				foreach ($aUsers as $aUser)
 				{
 					$aUserIds[$aUser['user_id']] = $aUser['user_id'];
@@ -227,19 +268,66 @@ class User_Service_Browse extends Phpfox_Service
 			}
 			$this->database()->clean();
 			
-			if ($sCondition != ' AND (')
+			if ($sCondition != ' AND (' && $bAddCondition)
 			{
 				$this->_aConditions[] = rtrim($sCondition, ' AND ') . ')';
 			}
-		}				
+            
+		}
+		if ($bAddCondition != true && isset($aUsers))
+		{
+			return $aUsers;
+		}
+        return false;
+    }
+    
+	
+	public function get()
+	{
+		$aReturnUsers = array();
+		$aUsers = array();
+        if ($sPlugin = Phpfox_Plugin::get('user.service_browse_get__start')){return eval($sPlugin);}
+		if (!defined('PHPFOX_IS_ADMIN_SEARCH'))
+		{
+			// user groups that should be hidden
+			$aHiddenFromBrowse = Phpfox::getService('user.group.setting')->getUserGroupsBySetting('user.hide_from_browse');
+		}
 		
+		if (($sPlugin = Phpfox_Plugin::get('user.service_browse_get__start_no_return')))
+		{
+			eval($sPlugin);		
+		}
+		
+        // If there are custom fields to look for we need to know how many users satisfy this criteria
+		$iCount = $this->getCustom(true);
+        
+        if ($iCount !== false && $iCount < 1)
+        {
+            $bNoMatches = true;
+        }
+		else
+        {
+            $aUsers = $this->getCustom(false);
+			
+			if ($aUsers !== false)
+			{
+				foreach ($this->_aConditions as $iKey => $sCondition)
+				{
+					if (preg_match('/u.user_id IN (\([0-9]+\))/', $sCondition, $aMatch) > 0)
+					{
+						$this->_aConditions[$iKey] = str_replace($aMatch[1], '(' . implode(',', $aUsers) . ')', $sCondition);
+					}
+				}
+			}
+			
+        }
 		
 		if (!isset($bNoMatches))
 		{
 			if ($this->_bIsOnline === true)
 			{
 				$iActiveSession = PHPFOX_TIME - (Phpfox::getParam('log.active_session') * 60);
-				$this->database()->select('COUNT(DISTINCT u.user_id)')->join(Phpfox::getT('log_session'), 'ls', 'ls.user_id = u.user_id AND ls.last_activity > ' . $iActiveSession . (!defined('PHPFOX_IS_ADMIN_SEARCH') ? ' AND ls.im_hide = 0' : '') . '');
+				$this->database()->select('COUNT(DISTINCT u.user_id)')->join((Phpfox::getParam('core.store_only_users_in_session') ? Phpfox::getT('session') : Phpfox::getT('log_session')), 'ls', 'ls.user_id = u.user_id AND ls.last_activity > ' . $iActiveSession . (!defined('PHPFOX_IS_ADMIN_SEARCH') ? (!Phpfox::getParam('core.store_only_users_in_session') ? ' AND ls.im_hide = 0' : '') : '') . '');
 			}			
 			else 
 			{
@@ -253,7 +341,7 @@ class User_Service_Browse extends Phpfox_Service
 				}
 			}
 			
-			if (count($aCustomSearch))
+			if ($iCount > 0)
 			{
 				$this->database()->leftjoin(Phpfox::getT('user_custom'), 'ucv', 'ucv.user_id = u.user_id');
 			}
@@ -261,7 +349,27 @@ class User_Service_Browse extends Phpfox_Service
 			// one page to display all, one page to display only featured.		
 			if ($this->_mFeatured === true)
 			{
-				$this->database()->join(Phpfox::getT('user_featured'), 'uf', 'uf.user_id = u.user_id');
+				// The purpose of this if is to filter users out, but instead of Joining we can get those users from the cache
+				if (Phpfox::getParam('user.cache_featured_users'))
+				{
+					$sCacheId = $this->cache()->set('featured_users');
+					if ( ($aCache = $this->cache()->get($sCacheId)) && is_array($aCache))
+					{
+						$aFeatured = array();
+						foreach ($aCache as $aCachedUser)
+						{
+							$aFeatured[] = $aCachedUser['user_id'];
+						}
+						if (!empty($aFeatured))
+						{
+							$this->_aConditions[] = 'AND u.user_id IN (' . implode(',', $aFeatured) . ')';
+						}
+					}
+				}
+				else
+				{
+					$this->database()->join(Phpfox::getT('user_featured'), 'uf', 'uf.user_id = u.user_id');
+				}
 			}
 			
 			// check if user is pending mail verification
@@ -279,33 +387,45 @@ class User_Service_Browse extends Phpfox_Service
 			{
 				$this->database()->join(Phpfox::getT('user_ip'), 'uip', 'uip.user_id = u.user_id AND uip.ip_address = \'' . $this->database()->escape($this->_sIp) . '\'');
 			}
-		
+
+			if (!defined('PHPFOX_IS_ADMIN_SEARCH') && isset($aHiddenFromBrowse) && is_array($aHiddenFromBrowse) && !empty($aHiddenFromBrowse))
+			{
+				// skip users in these user groups that are invisible
+				foreach ($aHiddenFromBrowse as $iGroupId => $aGroup)
+				{
+					$this->_aConditions[] = 'AND (u.user_group_id != ' . $iGroupId . ' OR u.is_invisible != 1)';
+				}
+			}
+			
+			if ($sPlugin = Phpfox_Plugin::get('user.service_browse_get_1')){eval($sPlugin);}
+			
 			$iCnt = $this->database()->from($this->_sTable, 'u')
 				->join(Phpfox::getT('user_field'), 'ufield', 'ufield.user_id = u.user_id')
+                ->forceIndex('status_id')
 				->where($this->_aConditions)
 				//->group('u.user_id')
 				->execute('getSlaveField');		
+				
 		}
 		else
 		{
 			$iCnt = 0;
 		}
 		
-		 
-		if ($iCnt)
+		if ($iCnt > 0)
 		{
 			if ($sPlugin = Phpfox_Plugin::get('user.service_browse_get__cnt')){eval($sPlugin);}
 			$aAlias = array();
 			$iCustomCnt = 0;
 			
-			if (count($aCustomSearch))
+			if ($iCount > 0)
 			{
 				$this->database()->leftjoin(Phpfox::getT('user_custom'), 'ucv', 'ucv.user_id = u.user_id');
 			}			
 			
 			if ($this->_bIsOnline === true)
 			{
-				$this->database()->join(Phpfox::getT('log_session'), 'ls', 'ls.user_id = u.user_id AND ls.last_activity > ' . $iActiveSession . (!defined('PHPFOX_IS_ADMIN_SEARCH') ? ' AND ls.im_hide = 0' : '') . '')->group('u.user_id');
+				$this->database()->join((Phpfox::getParam('core.store_only_users_in_session') ? Phpfox::getT('session') : Phpfox::getT('log_session')), 'ls', 'ls.user_id = u.user_id AND ls.last_activity > ' . $iActiveSession . (!defined('PHPFOX_IS_ADMIN_SEARCH') ? (Phpfox::getParam('core.store_only_users_in_session') ? '' : ' AND ls.im_hide = 0') : '') . '')->group('u.user_id');
 			}	
 			
 			if ($this->_aCallback !== false && isset($this->_aCallback['query']))
@@ -315,7 +435,7 @@ class User_Service_Browse extends Phpfox_Service
 			
 			if (defined('PHPFOX_IS_ADMIN_SEARCH'))
 			{
-				$this->database()->select('ug.title AS user_group_title, ')->join(Phpfox::getT('user_group'), 'ug', 'ug.user_group_id = u.user_group_id');
+				$this->database()->select('ug.title AS user_group_title, ')->leftjoin(Phpfox::getT('user_group'), 'ug', 'ug.user_group_id = u.user_group_id');
 				
 				// check if user is pending mail verification
 				if ($this->_bPendingVerify === true)
@@ -334,11 +454,11 @@ class User_Service_Browse extends Phpfox_Service
 			}
 
 			// Users cannot send Friend Requests if they have been blocked by the target user
-			if (!defined('PHPFOX_IS_ADMIN_SEARCH') && Phpfox::getParam('friend.allow_blocked_user_to_friend_request') == false)
+			if (!defined('PHPFOX_IS_ADMIN_SEARCH') && Phpfox::isModule('friend') && Phpfox::getParam('friend.allow_blocked_user_to_friend_request') == false)
 			{
 				$this->database()->select('ub.block_id as user_is_blocked, ')
 					->leftjoin(Phpfox::getT('user_blocked'), 'ub', 'ub.user_id = u.user_id AND block_user_id = ' . Phpfox::getUserId());
-			}		 
+			}
 			
 			// display the Unfeature/Feature option when landing on the Search page.
 			if ($this->_mFeatured === true && !$this->_bIsOnline)
@@ -362,7 +482,7 @@ class User_Service_Browse extends Phpfox_Service
 				$this->database()->join(Phpfox::getT('user_ip'), 'uip', 'uip.user_id = u.user_id AND uip.ip_address = \'' . $this->database()->escape($this->_sIp) . '\'');
 			}
 				
-			$aUsers = $this->database()->select('u.status_id as unverified, ' . ($this->_bExtend ? 'u.*, ufield.*' : Phpfox::getUserField()))
+			$aReturnUsers = $this->database()->select('u.status_id as unverified, ' . ($this->_bExtend ? 'u.*, ufield.*' : Phpfox::getUserField()))
 				->from($this->_sTable, 'u')
 				->join(Phpfox::getT('user_field'), 'ufield', 'ufield.user_id = u.user_id')
 				->where($this->_aConditions)
@@ -370,12 +490,13 @@ class User_Service_Browse extends Phpfox_Service
 				->limit($this->_iPage, $this->_iLimit, $iCnt)
 				->group('u.user_id')
 				->execute('getSlaveRows');
+            
 				
 			if (Phpfox::isModule('friend'))
 			{
-				foreach ($aUsers as $iKey => $aUser)
+				foreach ($aReturnUsers as $iKey => $aUser)
 				{
-					$aUsers[$iKey]['mutual_friends'] = (Phpfox::getUserId() == $aUser['user_id'] ? 0 : $this->database()->select('COUNT(*)')
+					$aReturnUsers[$iKey]['mutual_friends'] = (Phpfox::getUserId() == $aUser['user_id'] ? 0 : $this->database()->select('COUNT(*)')
 						->from(Phpfox::getT('friend'), 'f')
 						->innerJoin('(SELECT friend_user_id FROM ' . Phpfox::getT('friend') . ' WHERE is_page = 0 AND user_id = ' . $aUser['user_id'] . ')', 'sf', 'sf.friend_user_id = f.friend_user_id')
 						->where('f.user_id = ' . Phpfox::getUserId())
@@ -385,16 +506,32 @@ class User_Service_Browse extends Phpfox_Service
 				
 			if ($this->_bExtend)
 			{
-				foreach ($aUsers as $iKey => $aUser)
+				foreach ($aReturnUsers as $iKey => $aUser)
 				{
+					if (empty($aUser['dob_setting']))
+					{
+						switch (Phpfox::getParam('user.default_privacy_brithdate'))
+						{
+							case 'month_day':
+								$aReturnUsers[$iKey]['dob_setting'] =  '1';
+								break;
+							case 'show_age':
+								$aReturnUsers[$iKey]['dob_setting'] =  '2';
+								break;
+							case 'hide':
+								$aReturnUsers[$iKey]['dob_setting'] =  '3';
+								break;
+						}
+					}
+
 					$aBirthDay = Phpfox::getService('user')->getAgeArray($aUser['birthday']);
 					
-					$aUsers[$iKey]['month'] = Phpfox::getLib('date')->getMonth($aBirthDay['month']);
-					$aUsers[$iKey]['day'] = $aBirthDay['day'];
-					$aUsers[$iKey]['year'] = $aBirthDay['year'];
+					$aReturnUsers[$iKey]['month'] = Phpfox::getLib('date')->getMonth($aBirthDay['month']);
+					$aReturnUsers[$iKey]['day'] = $aBirthDay['day'];
+					$aReturnUsers[$iKey]['year'] = $aBirthDay['year'];
 					if (isset($aUser['last_ip_address']))
 					{
-						$aUsers[$iKey]['last_ip_address_search'] = str_replace('.', '-', $aUser['last_ip_address']);
+						$aReturnUsers[$iKey]['last_ip_address_search'] = str_replace('.', '-', $aUser['last_ip_address']);
 					}
 				}
 			}
@@ -402,7 +539,7 @@ class User_Service_Browse extends Phpfox_Service
 				
 		if ($sPlugin = Phpfox_Plugin::get('user.service_browse_get__end')){eval($sPlugin);}
 		
-		return array($iCnt, $aUsers);
+		return array($iCnt, $aReturnUsers);
 	}
 	
 	/**

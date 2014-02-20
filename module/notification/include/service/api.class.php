@@ -26,6 +26,14 @@ class Notification_Service_Api extends Phpfox_Service
 	
 	public function get()
 	{
+		/*
+		@title 
+		@info Get all list of notifications for a user.
+		@method GET
+		@extra
+		@return notification_id=#{Notification ID#|int}&link=#{Link to item|string}&message=#{Notice|string}&icon=#{Notification icon|string}
+		*/		
+		
 		$aNotifications = array();
 		$aRows = Phpfox::getService('notification')->get();
 		foreach ($aRows as $aRow)
@@ -42,6 +50,14 @@ class Notification_Service_Api extends Phpfox_Service
 	
 	public function getNewCount()
 	{
+		/*
+		@title
+		@info Get the total number of new notifications.
+		@method GET
+		@extra
+		@return
+		*/		
+		
 		return (int) Phpfox::getService('notification')->getUnseenTotal();
 	}
 	

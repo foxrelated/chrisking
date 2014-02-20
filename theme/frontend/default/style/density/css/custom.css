@@ -291,13 +291,27 @@ Mobile
 	border-left:4px #000 solid;
 }
 
+#timeline_dates
+{
+	background:#3F3F3F;
+	border-left:0px;
+	border-right:0px;
+	border-top:0px;
+}
+
 #timeline_dates ul li a,
 #timeline_dates ul li a:hover
 {
-	color:#fff;
+	color:#fff;	
 }
 
 .timeline_friendlist_row
 {
 	width:96px;	
+}
+
+/* Fixes bug 13957 and 14307 */
+#js_controller_photo_albums #content_load_data h1
+{
+	position: relative;
 }

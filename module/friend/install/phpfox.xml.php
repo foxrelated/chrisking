@@ -31,6 +31,11 @@
 		<setting group="" module_id="friend" is_hidden="0" type="integer" var_name="friend_cache_limit" phrase_var_name="setting_friend_cache_limit" ordering="1" version_id="3.0.0Beta1">100</setting>
 		<setting group="" module_id="friend" is_hidden="0" type="boolean" var_name="allow_blocked_user_to_friend_request" phrase_var_name="setting_allow_blocked_user_to_friend_request" ordering="1" version_id="2.1.0beta1">1</setting>
 		<setting group="" module_id="friend" is_hidden="0" type="boolean" var_name="friends_only_profile" phrase_var_name="setting_friends_only_profile" ordering="1" version_id="3.0.1">0</setting>
+		<setting group="cache" module_id="friend" is_hidden="0" type="integer" var_name="cache_mutual_friends" phrase_var_name="setting_cache_mutual_friends" ordering="2" version_id="3.6.0rc1">0</setting>
+		<setting group="cache" module_id="friend" is_hidden="0" type="integer" var_name="cache_rand_list_of_friends" phrase_var_name="setting_cache_rand_list_of_friends" ordering="3" version_id="3.6.0rc1">60</setting>
+		<setting group="cache" module_id="friend" is_hidden="0" type="boolean" var_name="cache_is_friend" phrase_var_name="setting_cache_is_friend" ordering="4" version_id="3.6.0rc1">0</setting>
+		<setting group="cache" module_id="friend" is_hidden="0" type="boolean" var_name="cache_friend_list" phrase_var_name="setting_cache_friend_list" ordering="5" version_id="3.6.0rc1">0</setting>
+		<setting group="cache" module_id="friend" is_hidden="0" type="boolean" var_name="load_friends_online_ajax" phrase_var_name="setting_load_friends_online_ajax" ordering="6" version_id="3.6.0rc1">0</setting>
 	</settings>
 	<blocks>
 		<block type_id="0" m_connection="core.index-member" module_id="friend" component="mini" location="1" is_active="1" ordering="2" disallow_access="" can_move="1">
@@ -65,6 +70,11 @@
 		</block>
 		<block type_id="0" m_connection="event.index" module_id="friend" component="birthday" location="3" is_active="1" ordering="1" disallow_access="" can_move="0">
 			<title>Birthdays</title>
+			<source_code />
+			<source_parsed />
+		</block>
+		<block type_id="0" m_connection="profile.index" module_id="friend" component="remove" location="1" is_active="1" ordering="8" disallow_access="" can_move="0">
+			<title>Remove Friend</title>
 			<source_code />
 			<source_parsed />
 		</block>
@@ -118,6 +128,12 @@
 		<hook module_id="friend" hook_type="service" module="friend" call_name="friend.component_service_callback_getactivityfeed__1" added="1335951260" version_id="3.2.0" />
 		<hook module_id="friend" hook_type="service" module="friend" call_name="friend.service_process_add__1" added="1335951260" version_id="3.2.0" />
 		<hook module_id="friend" hook_type="service" module="friend" call_name="friend.service_process_delete__1" added="1335951260" version_id="3.2.0" />
+		<hook module_id="friend" hook_type="service" module="friend" call_name="friend.service_getfromcachequery" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="friend" hook_type="component" module="friend" call_name="friend.component_block_search_get" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="friend" hook_type="component" module="friend" call_name="friend.component_block_mini_process" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="friend" hook_type="service" module="friend" call_name="friend.service_request_get__2" added="1361180401" version_id="3.5.0rc1" />
+		<hook module_id="friend" hook_type="service" module="friend" call_name="friend.service_request_get__3" added="1361180401" version_id="3.5.0rc1" />
+		<hook module_id="friend" hook_type="template" module="friend" call_name="friend.template_block_accept__1" added="1361180401" version_id="3.5.0rc1" />
 	</hooks>
 	<components>
 		<component module_id="friend" component="mini" m_connection="" module="friend" is_controller="0" is_block="1" is_active="1" />
@@ -136,6 +152,7 @@
 		<component module_id="friend" component="mutual-friend" m_connection="" module="friend" is_controller="0" is_block="1" is_active="1" />
 		<component module_id="friend" component="suggestion" m_connection="" module="friend" is_controller="0" is_block="1" is_active="1" />
 		<component module_id="friend" component="birthday-profile" m_connection="" module="friend" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="friend" component="remove" m_connection="" module="friend" is_controller="0" is_block="1" is_active="1" />
 	</components>
 	<phrases>
 		<phrase module_id="friend" version_id="2.0.0alpha1" var_name="menu_core_friends" added="1220960932">Friends</phrase>
@@ -426,6 +443,14 @@ Each search result is cached for X minutes (where you can control X).
 		<phrase module_id="friend" version_id="3.3.0beta2" var_name="see_all" added="1340275664">See All</phrase>
 		<phrase module_id="friend" version_id="3.3.0" var_name="confirmed" added="1343030392">Confirmed</phrase>
 		<phrase module_id="friend" version_id="3.3.0" var_name="denied" added="1343030402">Denied</phrase>
+		<phrase module_id="friend" version_id="3.5.0beta1" var_name="user_setting_link_to_remove_friend_on_profile" added="1352109355"><![CDATA[When enabled, members of this user group will see a link to "Remove Friend" from the profile page of their friends.]]></phrase>
+		<phrase module_id="friend" version_id="3.5.0beta2" var_name="unable_to_send_a_friend_request_to_this_user_at_this_moment" added="1359361600">Unable to send a friend request to this user at this moment.</phrase>
+		<phrase module_id="friend" version_id="3.5.1" var_name="unfriend" added="1366634350">Unfriend</phrase>
+		<phrase module_id="friend" version_id="3.6.0rc1" var_name="setting_cache_mutual_friends" added="1371724056"><![CDATA[<title>Mutual Friends List</title><info>Minutes, 0 = no cache. Caches the list of mutual friends with specific users.</info>]]></phrase>
+		<phrase module_id="friend" version_id="3.6.0rc1" var_name="setting_cache_rand_list_of_friends" added="1371724112"><![CDATA[<title>Friends List</title><info>Minutes. 0 = no cache. Block is friend.small in the profiles, defaults to the left column. It is also called from the timeline block in the friend module.</info>]]></phrase>
+		<phrase module_id="friend" version_id="3.6.0rc1" var_name="setting_cache_is_friend" added="1371724166"><![CDATA[<title>Friends Check</title><info>Cache if a user is friends with another user. Cleared only when adding or removing a friend.</info>]]></phrase>
+		<phrase module_id="friend" version_id="3.6.0rc1" var_name="setting_cache_friend_list" added="1371724202"><![CDATA[<title>Friends List (FULL)</title><info>Cache the users friends list so we don&#039;t query the database all the time.</info>]]></phrase>
+		<phrase module_id="friend" version_id="3.6.0rc1" var_name="setting_load_friends_online_ajax" added="1371731879"><![CDATA[<title>Online Friends via AJAX</title><info>Load the Online Friends only after the site has loaded via AJAX.</info>]]></phrase>
 	</phrases>
 	<user_group_settings>
 		<setting is_admin_setting="0" module_id="friend" type="boolean" admin="1" user="1" guest="0" staff="1" module="friend" ordering="0">can_add_friends</setting>
@@ -433,6 +458,7 @@ Each search result is cached for X minutes (where you can control X).
 		<setting is_admin_setting="0" module_id="friend" type="integer" admin="10" user="10" guest="0" staff="10" module="friend" ordering="0">total_folders</setting>
 		<setting is_admin_setting="0" module_id="friend" type="boolean" admin="1" user="1" guest="0" staff="1" module="friend" ordering="0">can_remove_friends_from_profile</setting>
 		<setting is_admin_setting="0" module_id="friend" type="boolean" admin="1" user="1" guest="0" staff="1" module="friend" ordering="0">can_remove_friends_from_dashboard</setting>
+		<setting is_admin_setting="0" module_id="friend" type="boolean" admin="false" user="false" guest="false" staff="false" module="friend" ordering="0">link_to_remove_friend_on_profile</setting>
 	</user_group_settings>
 	<tables><![CDATA[a:6:{s:13:"phpfox_friend";a:3:{s:7:"COLUMNS";a:8:{s:9:"friend_id";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:14:"auto_increment";i:3;s:2:"NO";}s:7:"is_page";a:4:{i:0;s:6:"TINT:1";i:1;s:1:"0";i:2;s:0:"";i:3;s:2:"NO";}s:7:"list_id";a:4:{i:0;s:7:"UINT:10";i:1;s:1:"0";i:2;s:0:"";i:3;s:2:"NO";}s:7:"user_id";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}s:14:"friend_user_id";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}s:13:"is_top_friend";a:4:{i:0;s:6:"TINT:1";i:1;s:1:"0";i:2;s:0:"";i:3;s:2:"NO";}s:8:"ordering";a:4:{i:0;s:6:"TINT:3";i:1;s:1:"0";i:2;s:0:"";i:3;s:2:"NO";}s:10:"time_stamp";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}}s:11:"PRIMARY_KEY";s:9:"friend_id";s:4:"KEYS";a:8:{s:10:"user_check";a:2:{i:0;s:6:"UNIQUE";i:1;a:2:{i:0;s:7:"user_id";i:1;s:14:"friend_user_id";}}s:7:"user_id";a:2:{i:0;s:5:"INDEX";i:1;s:7:"user_id";}s:10:"top_friend";a:2:{i:0;s:5:"INDEX";i:1;a:2:{i:0;s:7:"user_id";i:1;s:13:"is_top_friend";}}s:9:"friend_id";a:2:{i:0;s:5:"INDEX";i:1;a:2:{i:0;s:9:"friend_id";i:1;s:7:"user_id";}}s:7:"list_id";a:2:{i:0;s:5:"INDEX";i:1;a:2:{i:0;s:7:"list_id";i:1;s:7:"user_id";}}s:14:"friend_user_id";a:2:{i:0;s:5:"INDEX";i:1;s:14:"friend_user_id";}s:7:"is_page";a:2:{i:0;s:5:"INDEX";i:1;a:2:{i:0;s:7:"is_page";i:1;s:7:"user_id";}}s:9:"is_page_2";a:2:{i:0;s:5:"INDEX";i:1;a:3:{i:0;s:7:"is_page";i:1;s:7:"user_id";i:2;s:14:"friend_user_id";}}}}s:18:"phpfox_friend_list";a:3:{s:7:"COLUMNS";a:5:{s:7:"list_id";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:14:"auto_increment";i:3;s:2:"NO";}s:7:"user_id";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}s:10:"is_profile";a:4:{i:0;s:6:"TINT:3";i:1;s:1:"0";i:2;s:0:"";i:3;s:2:"NO";}s:4:"name";a:4:{i:0;s:9:"VCHAR:255";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}s:10:"time_stamp";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}}s:11:"PRIMARY_KEY";s:7:"list_id";s:4:"KEYS";a:3:{s:7:"user_id";a:2:{i:0;s:5:"INDEX";i:1;s:7:"user_id";}s:7:"list_id";a:2:{i:0;s:5:"INDEX";i:1;a:2:{i:0;s:7:"list_id";i:1;s:7:"user_id";}}s:9:"user_id_2";a:2:{i:0;s:5:"INDEX";i:1;a:2:{i:0;s:7:"user_id";i:1;s:10:"is_profile";}}}}s:23:"phpfox_friend_list_data";a:2:{s:7:"COLUMNS";a:3:{s:7:"list_id";a:4:{i:0;s:7:"UINT:10";i:1;s:1:"0";i:2;s:0:"";i:3;s:2:"NO";}s:14:"friend_user_id";a:4:{i:0;s:7:"UINT:10";i:1;s:1:"0";i:2;s:0:"";i:3;s:2:"NO";}s:8:"ordering";a:4:{i:0;s:7:"UINT:10";i:1;s:1:"0";i:2;s:0:"";i:3;s:2:"NO";}}s:4:"KEYS";a:2:{s:7:"list_id";a:2:{i:0;s:6:"UNIQUE";i:1;a:2:{i:0;s:7:"list_id";i:1;s:14:"friend_user_id";}}s:9:"list_id_2";a:2:{i:0;s:5:"INDEX";i:1;s:7:"list_id";}}}s:21:"phpfox_friend_request";a:3:{s:7:"COLUMNS";a:9:{s:10:"request_id";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:14:"auto_increment";i:3;s:2:"NO";}s:7:"user_id";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}s:7:"is_seen";a:4:{i:0;s:6:"TINT:1";i:1;s:1:"0";i:2;s:0:"";i:3;s:2:"NO";}s:14:"friend_user_id";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}s:9:"is_ignore";a:4:{i:0;s:6:"TINT:1";i:1;s:1:"0";i:2;s:0:"";i:3;s:2:"NO";}s:7:"list_id";a:4:{i:0;s:7:"UINT:10";i:1;s:1:"0";i:2;s:0:"";i:3;s:2:"NO";}s:7:"message";a:4:{i:0;s:9:"VCHAR:255";i:1;N;i:2;s:0:"";i:3;s:3:"YES";}s:10:"time_stamp";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}s:16:"relation_data_id";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:3:"YES";}}s:11:"PRIMARY_KEY";s:10:"request_id";s:4:"KEYS";a:5:{s:7:"user_id";a:2:{i:0;s:5:"INDEX";i:1;a:2:{i:0;s:7:"user_id";i:1;s:14:"friend_user_id";}}s:7:"ignored";a:2:{i:0;s:5:"INDEX";i:1;a:2:{i:0;s:7:"user_id";i:1;s:9:"is_ignore";}}s:14:"friend_user_id";a:2:{i:0;s:5:"INDEX";i:1;s:14:"friend_user_id";}s:16:"relation_data_id";a:2:{i:0;s:5:"INDEX";i:1;s:16:"relation_data_id";}s:9:"user_id_2";a:2:{i:0;s:5:"INDEX";i:1;a:3:{i:0;s:7:"user_id";i:1;s:7:"is_seen";i:2;s:9:"is_ignore";}}}}s:22:"phpfox_friend_birthday";a:3:{s:7:"COLUMNS";a:7:{s:11:"birthday_id";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:14:"auto_increment";i:3;s:2:"NO";}s:20:"birthday_user_sender";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}s:22:"birthday_user_receiver";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}s:16:"birthday_message";a:4:{i:0;s:5:"MTEXT";i:1;N;i:2;s:0:"";i:3;s:3:"YES";}s:10:"time_stamp";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}s:8:"egift_id";a:4:{i:0;s:7:"UINT:11";i:1;N;i:2;s:0:"";i:3;s:3:"YES";}s:9:"status_id";a:4:{i:0;s:6:"TINT:1";i:1;s:1:"0";i:2;s:0:"";i:3;s:3:"YES";}}s:11:"PRIMARY_KEY";s:11:"birthday_id";s:4:"KEYS";a:2:{s:20:"birthday_user_sender";a:2:{i:0;s:5:"INDEX";i:1;a:2:{i:0;s:20:"birthday_user_sender";i:1;s:22:"birthday_user_receiver";}}s:11:"birthday_id";a:2:{i:0;s:5:"INDEX";i:1;a:2:{i:0;s:11:"birthday_id";i:1;s:22:"birthday_user_receiver";}}}}s:18:"phpfox_friend_hide";a:3:{s:7:"COLUMNS";a:4:{s:7:"hide_id";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:14:"auto_increment";i:3;s:2:"NO";}s:7:"user_id";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}s:14:"friend_user_id";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}s:10:"time_stamp";a:4:{i:0;s:7:"UINT:10";i:1;N;i:2;s:0:"";i:3;s:2:"NO";}}s:11:"PRIMARY_KEY";s:7:"hide_id";s:4:"KEYS";a:1:{s:7:"user_id";a:2:{i:0;s:5:"INDEX";i:1;s:7:"user_id";}}}}]]></tables>
 </module>

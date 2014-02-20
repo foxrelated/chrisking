@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Captcha
- * @version 		$Id: form.html.php 4074 2012-03-28 14:02:40Z Raymond_Benc $
+ * @version 		$Id: form.html.php 6264 2013-07-15 12:12:21Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -36,7 +36,9 @@ defined('PHPFOX') or exit('NO DICE!');
 				</div>
 			</div>
 			<script type="text/javascript">
-				$('#image_verification').attr('autocomplete','off');
+				$Behavior.loadImageVerification = function(){l}
+					$('#image_verification').attr('autocomplete', 'off');
+				{r}
 			</script>
 		{/if}
 	</div>

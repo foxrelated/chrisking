@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Feed
- * @version 		$Id: process.class.php 4954 2012-10-24 10:07:12Z Miguel_Espinoza $
+ * @version 		$Id: process.class.php 6452 2013-08-12 14:27:50Z Raymond_Benc $
  */
 class Feed_Service_Process extends Phpfox_Service 
 {	
@@ -27,6 +27,78 @@ class Feed_Service_Process extends Phpfox_Service
 	public function __construct()
 	{	
 		$this->_sTable = Phpfox::getT('feed');
+	}
+	
+	public function clearCache($sType, $iItemId)
+	{
+		if (!Phpfox::getParam('feed.cache_each_feed_entry'))
+		{
+			return;
+		}
+				
+		$iParentId = Phpfox::getLib('request')->getInt('parent_id');
+		if ($sType == 'feed_mini' && !empty($iParentId))
+		{
+			$sTable = '';
+			if (Phpfox::getLib('request')->get('pmodule') == 'event')
+			{
+				$sTable = 'event_';
+			}
+			elseif (Phpfox::getLib('request')->get('pmodule') == 'pages')
+			{
+				$sTable = 'pages_';
+			}
+			
+			$aFeed = $this->database()->select('*')
+				->from(Phpfox::getT($sTable . 'feed'))
+				->where('feed_id = ' . (int) $iParentId)
+				->execute('getSlaveRow');		
+			if (isset($aFeed['feed_id']))
+			{
+				$sType = $aFeed['type_id'];
+				$iItemId = $aFeed['item_id'];				
+			}
+		}		
+		elseif ($sType == 'forum_post')
+		{
+			$this->cache()->remove(array('feeds', 'forum_' . $iItemId));
+			/*$sType = 'forum_reply';*/
+		}
+        else if ($sType == 'feed')
+        {
+            $aVal = Phpfox::getLib('request')->getArray('val');
+            
+            if (isset($aVal['is_via_feed']) && $aVal['is_via_feed'] > 0 )
+            {
+                $iItemId = $this->database()->select('item_id')
+                    ->from(Phpfox::getT('feed'))
+                    ->where('feed_id = ' . (int)$aVal['is_via_feed'])
+                    ->execute('getSlaveField');
+                
+                $sType .= '_comment';
+            }
+        }
+        else if ($sType == 'pages')
+        {
+            $aVal = Phpfox::getLib('request')->getArray('val');
+            
+            if (isset($aVal['is_via_feed']) && $aVal['is_via_feed'] > 0)
+            {
+                $aRow = $this->database()->select('type_id, item_id')
+                        ->from(Phpfox::getT('pages_feed'))
+                        ->where('feed_id = ' . (int)$aVal['is_via_feed'])
+                        ->execute('getSlaveRow');
+                
+                if (!empty($aRow) && isset($aRow['item_id']) && $aRow['item_id'] > 0)
+                {
+                    $sType = $aRow['type_id'];
+                    $iItemId = $aRow['item_id'];
+                }
+            }
+        }
+        
+		
+		$this->cache()->remove(array('feeds', $sType . '_' . $iItemId));
 	}
 	
 	public function callback($aCallback)
@@ -97,7 +169,7 @@ class Feed_Service_Process extends Phpfox_Service
 			'privacy' => (int) $iPrivacy,
 			'privacy_comment' => (int) $iPrivacyComment,
 			'type_id' => $sType,
-			'user_id' => ($iOwnerUserId === null ? Phpfox::getUserId() : (int) $iOwnerUserId),
+			'user_id' => (defined('FEED_FORCE_USER_ID') ? FEED_FORCE_USER_ID : ($iOwnerUserId === null ? Phpfox::getUserId() : (int) $iOwnerUserId)),
 			'parent_user_id' => $iParentUserId,
 			'item_id' => $iItemId,
 			'time_stamp' => $iNewTimeStamp,
@@ -138,23 +210,29 @@ class Feed_Service_Process extends Phpfox_Service
 		
 		if ($this->_bIsCallback && $this->_aCallback['module'] == 'pages' && !$this->_bIsNewLoop && $iParentUserId > 0)
 		{			
-			$aUser = $this->database()->select('user_id')
-				->from(Phpfox::getT('user'))
-				->where('profile_page_id = ' . (int) $iParentUserId)
+			$aUser = $this->database()->select('u.user_id, p.view_id')
+				->from(Phpfox::getT('user'), 'u')
+				->join(Phpfox::getT('pages'), 'p', 'p.page_id = u.profile_page_id')
+				->where('u.profile_page_id = ' . (int) $iParentUserId)
 				->execute('getSlaveRow');
-			if (isset($aUser['user_id']) && Phpfox::getUserId() == $aUser['user_id'])
-			{			
-				$this->_bIsNewLoop = true;
-				$this->_bIsCallback  = false;
-				$this->_aCallback = array();
-				$this->add($sType, $iItemId, $iPrivacy, $iPrivacyComment);
-			}
-			else
+
+			if (!$aUser['view_id'])
 			{
-				$this->_bIsNewLoop = true;
-				$this->_bIsCallback  = false;
-				$this->_aCallback = array();				
-				$this->add($sType, $iItemId, $iPrivacy, $iPrivacyComment, $iParentUserId, Phpfox::getUserId());
+				if (isset($aUser['user_id']) && Phpfox::getUserId() == $aUser['user_id'])
+				{
+					$this->_bIsNewLoop = true;
+					$this->_bIsCallback  = false;
+					$this->_aCallback = array();
+					$this->add($sType, $iItemId, $iPrivacy, $iPrivacyComment);
+				}
+				else
+				{
+					$this->_bIsNewLoop = true;
+					$this->_bIsCallback  = false;
+					$this->_aCallback = array();
+					// $this->add($sType, $iItemId, $iPrivacy, $iPrivacyComment, 0, Phpfox::getUserId());
+					$this->add($sType, $iItemId, $iPrivacy, $iPrivacyComment, 0, $iOwnerUserId === null ? Phpfox::getUserId() : $iOwnerUserId);
+				}
 			}
 		}
 		
@@ -258,9 +336,26 @@ class Feed_Service_Process extends Phpfox_Service
 			{
 				$this->database()->delete(Phpfox::getT($aCallback['table_prefix']  . 'feed'), 'feed_id = ' . (int) $iId);				
 			}
-			
+
 			//$this->database()->delete(Phpfox::getT('feed'), 'feed_id = ' . $aFeed['feed_id'] . ' AND user_id = ' . $aFeed['user_id'] .' AND time_stamp = ' . $aFeed['time_stamp']);
-			$this->database()->delete(Phpfox::getT('feed'), 'user_id = ' . $aFeed['user_id'] .' AND time_stamp = ' . $aFeed['time_stamp']);			
+			if ($aFeed['type_id'] == 'feed_comment')
+			{
+				$aCore = Phpfox::getLib('request')->getArray('core');
+				if (isset($aCore['is_user_profile']) && $aCore['profile_user_id'] != Phpfox::getUserId())
+				{
+
+					$this->database()->delete(Phpfox::getT('feed'), 'user_id = ' . $aFeed['user_id'] .' AND time_stamp = ' . $aFeed['time_stamp'] . ' AND parent_user_id = ' . $aCore['profile_user_id']);
+				}
+				elseif (isset($aCore['is_user_profile']) && $aCore['profile_user_id'] == Phpfox::getUserId())
+				{
+					$this->database()->delete(Phpfox::getT('feed'), 'feed_id = ' . (int) $aFeed['feed_id']);
+				}
+				$this->database()->delete(Phpfox::getT('feed'), 'user_id = ' . $aFeed['user_id'] .' AND time_stamp = ' . $aFeed['time_stamp'] . ' AND parent_user_id = ' . Phpfox::getUserId());
+			}
+			else
+			{
+				$this->database()->delete(Phpfox::getT('feed'), 'user_id = ' . $aFeed['user_id'] .' AND time_stamp = ' . $aFeed['time_stamp']);
+			}
 			
 			// Delete likes that belonged to this feed
 			$this->database()->delete(Phpfox::getT('like'), 'type_id = "'. $aFeed['type_id'] .'" AND item_id = ' . $aFeed['item_id']);
@@ -302,7 +397,7 @@ class Feed_Service_Process extends Phpfox_Service
 		{
 			return false;
 		}		
-		
+		        
 		$sStatus = $this->preParse()->prepare($aVals['user_status']);
 		
 		$iStatusId = $this->database()->insert(Phpfox::getT(($this->_bIsCallback ? $this->_aCallback['table_prefix'] : '') . 'feed_comment'), array(
@@ -328,6 +423,7 @@ class Feed_Service_Process extends Phpfox_Service
 				Phpfox::getLib('mail')->to($this->_aCallback['email_user_id'])
 					->subject($this->_aCallback['subject'])
 					->message(sprintf($this->_aCallback['message'], $sLink))
+                    ->notification( ($this->_aCallback['notification'] == 'pages_comment' ? 'comment.add_new_comment' : $this->_aCallback['notification']))
 					->send();			
 				if (Phpfox::isModule('notification'))
 				{

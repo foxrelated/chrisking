@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: index.class.php 1268 2009-11-23 20:45:36Z Raymond_Benc $
+ * @version 		$Id: index.class.php 7084 2014-02-03 14:00:47Z Fern $
  */
 class Admincp_Component_Controller_Sql_Index extends Phpfox_Component
 {
@@ -35,7 +35,7 @@ class Admincp_Component_Controller_Sql_Index extends Phpfox_Component
 			{
 				foreach ($aTables as $sTable)
 				{
-					Phpfox::getLib('database')->optimizeTable($sTable);
+					Phpfox::getLib('database')->repairTable($sTable);
 				}
 				
 				$this->url()->send('admincp.sql', null, Phpfox::getPhrase('admincp.table_s_successfully_repaired'));

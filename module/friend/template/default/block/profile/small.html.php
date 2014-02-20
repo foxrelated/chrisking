@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: small.html.php 4856 2012-10-09 05:58:26Z Raymond_Benc $
+ * @version 		$Id: small.html.php 5844 2013-05-09 08:00:59Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 

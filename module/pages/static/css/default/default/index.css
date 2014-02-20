@@ -3,3 +3,8 @@
 	clear: both;
 	margin-left: 0px;
 }
+
+.profile_header_timeline h1
+{
+    height: 24px;
+}

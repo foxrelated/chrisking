@@ -20,6 +20,11 @@ class Apps_Component_Controller_Install extends Phpfox_Component
 	 */
 	public function process()
 	{		
+		if (!Phpfox::isUser())
+		{
+			Phpfox::getLib('session')->set('appinstall', $this->request()->get('req3'));
+		}
+		
 		Phpfox::isUser(true);
 		/* this shoud not happen*/
 		if ($this->getParam('aApp') == null)
@@ -31,6 +36,7 @@ class Apps_Component_Controller_Install extends Phpfox_Component
 			$aApp = $this->getParam('aApp');
 		}
 		
+				
 		/* if there is no app */
 		if (empty($aApp))
 		{

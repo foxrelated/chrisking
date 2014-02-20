@@ -18,9 +18,9 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: hash.class.php 1666 2010-07-07 08:17:00Z Raymond_Benc $
+ * @version 		$Id: hash.class.php 6599 2013-09-06 08:18:37Z Miguel_Espinoza $
  */
-final class Phpfox_Hash
+class Phpfox_Hash
 {
 	/**
 	 * Class constructor
@@ -46,6 +46,7 @@ final class Phpfox_Hash
 			$sSalt = Phpfox::getParam('core.salt');
 		}
 		if ($sPlugin = Phpfox_Plugin::get('hash_sethash__end')){eval($sPlugin);}
+
 		return md5(md5($sPassword) . md5($sSalt));
 	}
 	
@@ -60,6 +61,11 @@ final class Phpfox_Hash
 	 */
 	public function setRandomHash($sPassword)
 	{
+		if (Phpfox::getParam('core.use_custom_hash_salt'))
+		{
+			$sPassword = $sPassword . Phpfox::getParam('core.custom_hash_salt');
+		}
+
 	   	$sSeed = '';
 		for ($i = 1; $i <= 10; $i++)
 	   	{
@@ -79,6 +85,16 @@ final class Phpfox_Hash
 	 */
 	public function getRandomHash($sPassword, $sStoredValue)
 	{
+		if (Phpfox::getParam('core.use_custom_hash_salt'))
+		{
+			$sCustomSalt = Phpfox::getParam('core.custom_hash_salt');
+			if (defined('PHPFOX_IS_FLASH_UPLOADER'))
+			{
+				$sCustomSalt = str_replace('Shockwave Flash', $_SERVER['HTTP_USER_AGENT'], $sCustomSalt);
+			}
+			$sPassword = $sPassword . $sCustomSalt;
+		}
+
 		if (strlen($sStoredValue) != 50)
 		{
 			return false;

@@ -79,7 +79,7 @@ function fileQueueError(fObject, errorConstant, sMessage)
 		//alert(this.settings.file_size_limit);
 		var iLimit = (this.settings['file_size_limit'].replace(' B',''));
 		iLimit = parseInt(iLimit);
-		iLimit = iLimit / 1024
+		iLimit = iLimit / 1024;
 		iLimit = Math.floor(iLimit);
 		alert(oTranslations['core.upload_failed_your_file_size_is_larger_then_our_limit_file_size'].replace('{size}', fObject.name + ' = ' + Math.floor(fObject.size / 1024) + 'KB').replace('{file_size}', iLimit + ' KB'));
 		$('#js_form').append('<div style="display: none;"><input type="hidden" name="aFailed[\''+errorConstant+'\'][]" value = "'+fObject.name+'"></div>');
@@ -151,7 +151,7 @@ function uploadSuccess(fObject, sData, sResponse)
 
 	if (iQueuedFiles > 0)
 	{
-		debug ('Calling uploadStart from uploadSuccess because iQueuedFiles = ' + iQueuedFiles)
+		debug ('Calling uploadStart from uploadSuccess because iQueuedFiles = ' + iQueuedFiles);
 		this.startUpload();
 	}
 }
@@ -168,12 +168,13 @@ function uploadComplete(fObject)
 		{
 		//d("No images need to be uploaded");
 		}
-		var sImages = "", sFailed = "";
+		var sImages = "", sFailed = "", sTemp='';
 		var iTotalImages = 0;
 		for (var iKey in window.aImagesUrl)
 		{
 			iTotalImages++;
-			sImages += "photos[]=" + window.aImagesUrl[iKey] + "&";
+			sTemp = encodeURIComponent(JSON.stringify( window.aImagesUrl[iKey]));
+			sImages += "photos[]=" + sTemp + "&";
 		}
 		sImages = sImages.substr(0, (sImages.length - 1));
 		
@@ -286,7 +287,7 @@ var aFunction = function()
 		// Debug settings
 		debug: false
 	});
-}
+};
 
 $Behavior.swfUploadLoader = function()
 {
@@ -298,4 +299,4 @@ $Behavior.swfUploadLoader = function()
 	{
 		aFunction();
 	}
-}
+};

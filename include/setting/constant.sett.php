@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: constant.sett.php 4186 2012-05-31 09:19:39Z Miguel_Espinoza $
+ * @version 		$Id: constant.sett.php 6487 2013-08-22 06:57:37Z Fern $
  */
 
 defined('PHPFOX') or exit('NO DICE!');
@@ -134,5 +134,11 @@ if (!defined('E_USER_DEPRECATED'))
 {
 	define('E_USER_DEPRECATED', 16384);
 }
+
+/**
+ * If problems converting non-latin characters to Unicode
+ * Change this to true
+ */
+define('PHPFOX_UNICODE_JSON', false);
 
 ?>

@@ -11,13 +11,32 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: callback.class.php 4645 2012-09-17 11:20:35Z Raymond_Benc $
+ * @version 		$Id: callback.class.php 6925 2013-11-21 14:42:38Z Fern $
  */
 class User_Service_Callback extends Phpfox_Service
 {
 	public function  __construct()
 	{
 		$this->_sTable = Phpfox::getT('user');
+	}
+	
+	public function getActionsStatus()
+	{
+		return $this->getActions();	
+	}
+	
+	// This function solves bug http://www.phpfox.com/tracker/view/14781/
+	public function addLikePhoto($iItemId, $bDoNotSendEmail = false)
+	{
+		$this->database()->updateCount('like', 'type_id = \'user_photo\' AND item_id = ' . (int) $iItemId . '', 'total_like', 'photo', 'photo_id = ' . (int) $iItemId);	
+		return true;
+	}
+	
+	// This function also solves bug http://www.phpfox.com/tracker/view/14781/
+	public function deleteLikePhoto($iItemId, $bDoNotSendEmail = false)
+	{
+		$this->database()->updateCount('like', 'type_id = \'user_photo\' AND item_id = ' . (int) $iItemId . '', 'total_like', 'photo', 'photo_id = ' . (int) $iItemId);	
+		return true;
 	}
 	
 	public function paymentApiCallback($aParams)
@@ -196,7 +215,7 @@ class User_Service_Callback extends Phpfox_Service
 					'title' => $aUser['full_name'],					
 					'image' => Phpfox::getLib('image.helper')->display(array(
 							'user' => $aUser,
-							'suffix' => '_75',
+							'suffix' => '_50',
 							'max_width' => 75,
 							'max_height' => 75
 						)
@@ -243,7 +262,7 @@ class User_Service_Callback extends Phpfox_Service
 					'server_id' => $aImage['server_id'],
 					'path' => 'core.url_user',
 					'file' => $aImage['destination'],
-					'suffix' => '_75',
+					'suffix' => '_50',
 					'max_width' => 75,
 					'max_height' => 75,
 					'style' => 'vertical-align:top; padding-right:5px;'
@@ -379,7 +398,7 @@ class User_Service_Callback extends Phpfox_Service
 		{
 			$aItems[$iKey]['image'] = Phpfox::getLib('image.helper')->display(array(
 					'user' => $aItem,
-					'suffix' => '_75',
+					'suffix' => '_50',
 					'max_width' => 75,
 					'max_height' => 75,					
 				)
@@ -435,7 +454,12 @@ class User_Service_Callback extends Phpfox_Service
 		Phpfox::getService('user.block.process')->delete($iUser);
 		// delete featured entries
 		$this->database()->delete(Phpfox::getT('user_featured'), 'user_id = ' . (int)$iUser);
-		$this->cache()->remove('featured_users');
+		if (Phpfox::getParam('user.cache_featured_users'))
+		{
+			$this->cache()->remove('featured_users');
+		}
+		// This function takes care of all checks and queries if needed.
+		Phpfox::getService('profile.process')->clearProfileCache( (int)$iUser );
 
 		$this->database()->delete(Phpfox::getT('user'), 'user_id = ' . (int)$iUser);
 		$this->database()->delete(Phpfox::getT('user_activity'), 'user_id = ' . (int)$iUser);
@@ -872,9 +896,14 @@ class User_Service_Callback extends Phpfox_Service
 	
 	public function getActivityFeedStatus($aItem)
 	{		
-		$aRow = $this->database()->select('us.*, l.like_id AS is_liked')
-			->from(Phpfox::getT('user_status'), 'us')			
-			->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'user_status\' AND l.item_id = us.status_id AND l.user_id = ' . Phpfox::getUserId())
+		$sSelect = 'us.*';
+		if (Phpfox::isModule('like'))
+		{
+			$sSelect .= ', l.like_id AS is_liked';
+			$this->database()->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'user_status\' AND l.item_id = us.status_id AND l.user_id = ' . Phpfox::getUserId());
+		}
+		$aRow = $this->database()->select($sSelect)
+			->from(Phpfox::getT('user_status'), 'us')
 			->where('us.status_id = ' . (int) $aItem['item_id'])
 			->execute('getSlaveRow');	
 		
@@ -914,21 +943,37 @@ class User_Service_Callback extends Phpfox_Service
 			'feed_link' => $sLink,
 			'total_comment' => $aRow['total_comment'],
 			'feed_total_like' => $aRow['total_like'],
-			'feed_is_liked' => $aRow['is_liked'],
+			'feed_is_liked' => isset($aRow['is_liked']) ? $aRow['is_liked'] : false,
 			'feed_icon' => Phpfox::getLib('image.helper')->display(array('theme' => 'misc/application_add.png', 'return_url' => true)),
 			'time_stamp' => $aRow['time_stamp'],			
 			'enable_like' => true,			
 			'comment_type_id' => 'user_status',
 			'like_type_id' => 'user_status'			
 		);	
+		
+		if (!empty($aRow['location_name']))
+		{
+			$aReturn['location_name'] = $aRow['location_name'];
+		}
+		if (!empty($aRow['location_latlng']))
+		{
+			$aReturn['location_latlng'] = json_decode($aRow['location_latlng'], true);
+		}
+		
 		if (!empty($aItem['app_id']))
 		{
 			$aApp = $this->database()->select('app_title, app_id')->from(Phpfox::getT('app'))
 					->where('app_id = ' . (int)$aItem['app_id'])
 					->execute('getSlaveRow');
+			
+			if (empty($aApp))
+			{
+				return false;
+			}
 			$sLink = '<a href="' . Phpfox::permalink('apps', $aApp['app_id'], $aApp['app_title']) . '">' . $aApp['app_title'] . '</a>';
 			$aReturn['app_link'] = $sLink;
 		}
+		
 		return $aReturn;
 	}
 	
@@ -1170,6 +1215,24 @@ Phpfox::getPhrase('user.full_name_commented_on_gender_status_update_a_href_link_
 				//'anyone' => true,
 				
 				
+			)
+		);
+	}
+	
+	public function getActions()
+	{
+		return array(
+			'dislike' => array(
+				'enabled' => true,
+				'action_type_id' => 2, // 2 = dislike
+				'phrase' => Phpfox::getPhrase('like.dislike'),
+				'phrase_in_past_tense' => 'disliked',
+				'item_phrase' => Phpfox::getPhrase('comment.item_phrase'),
+				'item_type_id' => 'user-status', // used to differentiate between photo albums and photos for example. This is not a phrase
+				'table' => 'comment',
+				'column_update' => 'total_dislike',
+				'column_find' => 'comment_id',
+				'where_to_show' => array('')			
 			)
 		);
 	}

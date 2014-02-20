@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: meta.html.php 4165 2012-05-14 10:43:25Z Raymond_Benc $
+ * @version 		$Id: meta.html.php 6188 2013-06-29 08:36:52Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -13,7 +13,7 @@ defined('PHPFOX') or exit('NO DICE!');
 ?>
 <form method="post" action="#" onsubmit="$(this).ajaxCall('admincp.addMeta'); return false;" id="js_meta_form">
 	<div class="table_header">
-		{phrase var='admincp.add_new_meta'}
+		{phrase var='admincp.add_new_element'}
 	</div>
 	<div class="table">
 		<div class="table_left">
@@ -23,6 +23,7 @@ defined('PHPFOX') or exit('NO DICE!');
 			<select name="val[type_id]">
 				<option value="0">{phrase var='admincp.keyword'}</option>
 				<option value="1">{phrase var='admincp.description'}</option>
+				<option value="2">{phrase var='admincp.title'}</option>
 			</select>
 		</div>
 		<div class="clear"></div>
@@ -35,7 +36,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		<div class="table_right">
 			<input type="input" name="val[url]" value="" size="60" id="js_nofollow_url" />
 			<div class="extra_info">
-				{phrase var='admincp.provide_the_full_url_to_add_your_custom_meta_keywords_or_descriptions'}
+				{phrase var='admincp.provide_the_full_url_to_add_your_custom_element'}
 			</div>
 		</div>
 		<div class="clear"></div>
@@ -48,7 +49,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		<div class="table_right">
 			<textarea name="val[content]" cols="60" rows="6"></textarea>		
 			<div class="extra_info">
-				{phrase var='admincp.separate_keywords_with_commas'}
+				{phrase var='admincp.if_adding_keywords_make_sure_to_separate_them_with_commas'}
 			</div>
 		</div>
 		<div class="clear"></div>
@@ -77,7 +78,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		{foreach from=$aMetas item=aMeta key=iKey}
 			<tr id="js_id_row_{$aMeta.meta_id}" class="js_nofollow_row {if is_int($iKey/2)} tr{else}{/if}">
 				<td><input type="checkbox" name="id[]" class="checkbox" value="{$aMeta.meta_id}" id="js_id_row{$aMeta.meta_id}" /></td>
-				<td>{if $aMeta.type_id}{phrase var='admincp.description'}{else}{phrase var='admincp.keyword'}{/if}</td>
+				<td>{if $aMeta.type_id == '1'}{phrase var='admincp.description'}{elseif $aMeta.type_id == '2'}Title{else}{phrase var='admincp.keyword'}{/if}</td>
 				<td>{$aMeta.url}</td>
 				<td><textarea name="val[{$aMeta.meta_id}][content]" cols="30" rows="4" style="height:30px;">{$aMeta.content|clean}</textarea></td>
 				<td>{$aMeta.time_stamp|convert_time}</td>

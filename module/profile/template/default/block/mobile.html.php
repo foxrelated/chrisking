@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox
- * @version 		$Id: mobile.html.php 4854 2012-10-09 05:20:40Z Raymond_Benc $
+ * @version 		$Id: mobile.html.php 6719 2013-10-03 10:35:48Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -14,11 +14,12 @@ defined('PHPFOX') or exit('NO DICE!');
 <div id="mobile_profile_header">
 	<div id="mobile_profile_photo">
 	
-		{if $aUser.is_online}<span class="profile_online_status">({phrase var='profile.online'})</span>{/if}
+		{if defined('PHPFOX_IS_USER_PROFILE') && $aUser.is_online}<span class="profile_online_status">({phrase var='profile.online'})</span>{/if}
 	
 		<div id="mobile_profile_photo_image">
 			{$sProfileImage}
 		</div>
+		{if defined('PHPFOX_IS_USER_PROFILE')}
 		<div id="mobile_profile_photo_name">
 			{$aUser.full_name|clean|split:50}
 			<ul>
@@ -37,11 +38,40 @@ defined('PHPFOX') or exit('NO DICE!');
 			{/if}
 			</ul>
 			<div class="clear"></div>				
-		</div>			
+		</div>
+		{/if}
+		{if defined('PHPFOX_IS_PAGES_VIEW')}
+		<div id="mobile_profile_photo_name">
+			<ul>
+				{if !isset($aUser.is_liked) && $aUser.is_liked != true}
+					<li>
+						<a href="#" id="pages_like_join" onclick="$(this).parent().hide(); {if $aUser.page_type == '1' && $aUser.reg_method == '1'} $.ajaxCall('pages.signup', 'page_id={$aUser.page_id}'); {else}$.ajaxCall('like.add', 'type_id=pages&amp;item_id={$aUser.page_id}');{/if} return false;">
+							{if $aPage.page_type == '1' }
+								{phrase var='pages.join'}
+							{else}
+								{phrase var='pages.like'}
+							{/if}
+						</a>
+					</li>
+				{/if}
+			</ul>
+			<div class="clear"></div>				
+		</div>
+		{/if}			
 	</div>
 	<ul class="mobile_profile_header_menu">
-		<li><a href="{url link=$aUser.user_name}"{if !$bIsInfo} class="active"{/if}>{phrase var='profile.wall'}</a></li>			
+		{if defined('PHPFOX_IS_USER_PROFILE')}
+		<li><a href="{url link=$aUser.user_name'.wall'}"{if !$bIsInfo} class="active"{/if}>{phrase var='profile.wall'}</a></li>
 		<li><a href="{url link=$aUser.user_name'.info'}"{if $bIsInfo} class="active"{/if}>{phrase var='profile.info'}</a></li>
+		{else}
+			{if !empty($aUser.vanity_url)}
+			<li><a href="{url link=$aUser.vanity_url'.wall'}"{if !$bIsInfo} class="active"{/if}>{phrase var='profile.wall'}</a></li>
+			<li><a href="{url link=$aUser.vanity_url'.info'}"{if $bIsInfo} class="active"{/if}>{phrase var='profile.info'}</a></li>
+			{else}
+			<li><a href="{url link='pages.'$aUser.page_id'.wall'}"{if !$bIsInfo} class="active"{/if}>{phrase var='profile.wall'}</a></li>
+			<li><a href="{url link='pages.'$aUser.page_id'.info'}"{if $bIsInfo} class="active"{/if}>{phrase var='profile.info'}</a></li>
+			{/if}
+		{/if}
 	</ul>
 	<div class="clear"></div>
 </div>

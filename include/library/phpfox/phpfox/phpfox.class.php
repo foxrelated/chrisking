@@ -20,14 +20,14 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: phpfox.class.php 5072 2012-12-06 09:00:33Z Raymond_Benc $
+ * @version 		$Id: phpfox.class.php 7136 2014-02-19 15:26:36Z Fern $
  */
-final class Phpfox
+class Phpfox
 {	
 	/**
  	* Product Version : major.minor.maintenance [alphaX, betaX or rcX]
  	*/
-	const VERSION = '3.4.1';
+	const VERSION = '3.7.5';
 	
 	/**
 	 * Product Code Name
@@ -39,13 +39,13 @@ final class Phpfox
 	 * Browser agent used with API curl requests.
 	 *
 	 */
-	const BROWSER_AGENT = 'phpFox';
+	const BROWSER_AGENT = 'PHPFox';
 	
 	/**
 	 * Product build number.
 	 *
 	 */
-	const PRODUCT_BUILD = '2';
+	const PRODUCT_BUILD = '3';
 	
 	/**
 	 * phpFox API server.
@@ -57,7 +57,7 @@ final class Phpfox
 	 * phpFox package ID.
 	 *
 	 */
-	const PHPFOX_PACKAGE = '1';
+	const PHPFOX_PACKAGE = '3';
 	
 	/**
 	 * ARRAY of objects initiated. Used to keep a static history
@@ -196,7 +196,7 @@ final class Phpfox
 			return '';
 		}
 		
-		return 'Powered By ' . ($bLink ? '<a href="http://www.phpfox.com/">' : '') . 'phpFox' . ($bLink ? '</a>' : '') . ($bVersion ? ' Version ' . PhpFox::getVersion() : '');
+		return 'Powered By ' . ($bLink ? '<a href="http://www.phpfox.com/">' : '') . 'PHPFox' . ($bLink ? '</a>' : '') . ($bVersion ? ' Version ' . PhpFox::getVersion() : '');
 	}
 	
 	/**
@@ -261,6 +261,7 @@ final class Phpfox
 	 */
 	public static function getLibClass($sClass)
 	{
+		( class_exists('Phpfox_Plugin') && ($sPlugin = Phpfox_Plugin::get('library_phpfox_getlibclass_0')) ? eval($sPlugin) : false);
 		if (isset(self::$_aLibs[$sClass]))
 		{
 			return true;
@@ -288,6 +289,7 @@ final class Phpfox
 			}
 		}		
 	
+        (($sPlugin = Phpfox_Plugin::get('library_phpfox_getlibclass_1')) ? eval($sPlugin) : false);if(isset($mPluginReturn)){return $mPluginReturn;}
 		Phpfox_Error::trigger('Unable to load class: ' . $sClass, E_USER_ERROR);
 		
 		return false;
@@ -308,7 +310,8 @@ final class Phpfox
 	 * @return object Object of the library class is returned.
 	 */
 	public static function &getLib($sClass, $aParams = array())
-	{		
+	{	
+		(class_exists('Phpfox_Plugin') && ($sPlugin = Phpfox_Plugin::get('library_phpfox_getlib_0')) ? eval($sPlugin) : false);
 		if ((substr($sClass, 0, 7) != 'phpfox.') || ($sClass == 'phpfox.api' || $sClass == 'phpfox.process'))
 		{
 			$sClass = 'phpfox.' . $sClass;
@@ -456,8 +459,12 @@ final class Phpfox
 	 */
 	public static function getUserId()
 	{
-		if (isset($_REQUEST['custom_pages_post_as_page']) && (int) $_REQUEST['custom_pages_post_as_page'] > 0)
+		//static $bChecked = false;
+
+		if (/*$bChecked === false &&*/ isset($_REQUEST['custom_pages_post_as_page']) && (int) $_REQUEST['custom_pages_post_as_page'] > 0)
 		{
+			//$bChecked = true;
+
 			$aPage = Phpfox::getLib('database')->getRow('
 				SELECT p.page_id, p.user_id AS owner_user_id, u.user_id
 				FROM ' . Phpfox::getT('pages') . ' AS p
@@ -466,7 +473,12 @@ final class Phpfox
 			');
 			
 			$iActualUserId = Phpfox::getService('user.auth')->getUserId();
-			
+
+			if(!defined('PHPFOX_POSTING_AS_PAGE'))
+			{
+				define('PHPFOX_POSTING_AS_PAGE', true);
+			}
+
 			if (isset($aPage['page_id']))
 			{
 				$bPass = false;
@@ -496,6 +508,8 @@ final class Phpfox
 			}
 		}
 		
+        if ($sPlugin = Phpfox_Plugin::get('library_phpfox_phpfox_getuserid__1')){eval($sPlugin);}
+        
 		if (defined('PHPFOX_APP_USER_ID'))
 		{			
 			return PHPFOX_APP_USER_ID;
@@ -517,9 +531,10 @@ final class Phpfox
 	 * @see Phpfox_Request::isMobile()
 	 * @return bool
 	 */
-	public static function isMobile()
+	public static function isMobile($bRedirect = true)
 	{
-		return Phpfox::getLib('request')->isMobile();
+		if ($sPlugin = Phpfox_Plugin::get('library_phpfox_ismobile')){eval($sPlugin);if (isset($bReturnFromPlugin)) return $bReturnFromPlugin;}
+		return Phpfox::getLib('request')->isMobile($bRedirect);
 	}
 	
 	/**
@@ -890,6 +905,25 @@ final class Phpfox
 		else 
 		{
 			$bPass = (Phpfox::getService('user.group.setting')->getParam($sName) ? true : false);
+			if ($sName == 'admincp.has_admin_access' && Phpfox::getParam('core.protect_admincp_with_ips') != '')
+			{
+				$bPass = false;
+				$aIps = explode(',', Phpfox::getParam('core.protect_admincp_with_ips'));
+				foreach ($aIps as $sIp)
+				{
+					$sIp = trim($sIp);
+					if (empty($sIp))
+					{
+						continue;
+					}
+
+					if ($_SERVER['REMOTE_ADDR'] == $sIp)
+					{
+						$bPass = true;
+						break;
+					}
+				}
+			}
 		}
 		
 		if ($bRedirect)
@@ -927,7 +961,7 @@ final class Phpfox
 						{
 							// echo $sJsCall;
 						}						
-						 echo "<script type='text/javascript'>window.location.href = '" . Phpfox::getLib('url')->makeUrl('subscribe.message') . "';</script>";
+						 echo "/*<script type='text/javascript'>*/window.location.href = '" . Phpfox::getLib('url')->makeUrl('subscribe.message') . "';/*</script>*/";
 					}
 				}
 				exit;				
@@ -987,6 +1021,31 @@ final class Phpfox
 	}
 	
 	/**
+	 * Returns an array with the css and js files to be loaded in every controller
+	 */ 
+	public static function getMasterFiles()
+	{
+		$aOut = array(
+			'layout.css' => 'style_css',
+			'common.css' => 'style_css',
+			'thickbox.css' => 'style_css',
+			'jquery.css' => 'style_css',
+			'pager.css' => 'style_css',
+			// 'template.js' => 'static_script',
+			'jquery/jquery.js' => 'static_script',
+			'jquery/ui.js' => 'static_script',
+			'common.js' => 'static_script',
+			'main.js' => 'static_script',
+			'ajax.js' => 'static_script',
+			'thickbox/thickbox.js' => 'static_script',
+			'search.js' => 'module_friend'
+		);
+		
+		(($sPlugin = Phpfox_Plugin::get('get_master_files')) ? eval($sPlugin) : false);
+		return $aOut;
+	}
+	
+	/**
 	 * Starts the phpFox engine. Used to get and display the pages controller.
 	 *
 	 */
@@ -1020,6 +1079,14 @@ final class Phpfox
 		
 		$sImage = Phpfox::getUserBy('user_image');		
 		
+		$bIsAd = false;
+		
+		$oRequest = Phpfox::getLib('request');
+		if ($oRequest->get('id') && $oRequest->get('req1') == 'ad' && $oRequest->get('req2') == 'iframe')
+		{
+			$bIsAd = true;
+		}
+		
 		if (!Phpfox::getService('ban')->check('ip', Phpfox::getIp()))
 		{
 			$oModule->setController('ban.message');
@@ -1029,6 +1096,7 @@ final class Phpfox
 			if (!self::$_bIsAdminCp 
 				&& Phpfox::getParam('core.site_is_offline') 
 				&& !Phpfox::getUserParam('core.can_view_site_offline')
+				&& $bIsAd != true
 			)
 			{
 				if ((Phpfox::getLib('request')->get('req1') == 'user' 
@@ -1076,49 +1144,60 @@ final class Phpfox
 				
 				$oTpl->setHeader(array(
 							'<meta http-equiv="Content-Type" content="text/html; charset=' . $aLocale['charset'] . '" />',
-							'<meta name="keywords" content="' . Phpfox::getLib('locale')->convert(Phpfox::getParam('core.keywords')) . '" />',				
-							'<meta name="description" content="' . Phpfox::getLib('locale')->convert(Phpfox::getParam('core.description')) . '" />',								
-							'<meta name="robots" content="index,follow" />',				
-							'<meta http-equiv="imagetoolbar" content="no" />',						
 							'<meta http-equiv="cache-control" content="no-cache" />',
 							'<meta http-equiv="expires" content="-1" />',
 							'<meta http-equiv="pragma" content="no-cache" />',						
-							'<link rel="shortcut icon" type="image/x-icon" href="' . Phpfox::getParam('core.path') . 'favicon.ico" />'						
+							'<link rel="shortcut icon" type="image/x-icon" href="' . Phpfox::getParam('core.path') . 'favicon.ico?v=' . $oTpl->getStaticVersion() . '" />'						
 						)
 					)
-					->setHeader('cache', array(
-							'layout.css' => 'style_css',
-							'common.css' => 'style_css',
-							'thickbox.css' => 'style_css',
-							'jquery.css' => 'style_css',
-							'pager.css' => 'style_css',
-							'jquery/jquery.js' => 'static_script'							
-						)
-					);
+					->setMeta('keywords', Phpfox::getLib('locale')->convert(Phpfox::getParam('core.keywords')))
+					// ->setMeta('description',  Phpfox::getLib('locale')->convert(Phpfox::getParam('core.description')))
+					->setMeta('robots', 'index,follow');
+				if (Phpfox::getParam('core.include_master_files') && Phpfox::isAdminPanel() != true)
+				{
+					$oTpl->setHeader('master', Phpfox::getMasterFiles());				
+				}
+				else
+				{
+					$oTpl->setHeader('cache', Phpfox::getMasterFiles());
+				}
+				if (!defined('PHPFOX_IS_AD_PREVIEW') && !defined('PHPFOX_IN_DESIGN_MODE') && !defined('PHPFOX_INSTALLER') && Phpfox::getParam('core.site_wide_ajax_browsing'))
+				{
+					$oTpl->setHeader('cache', array('jquery/plugin/jquery.address.js' => 'static_script'));
+				}				
 				
-					//if (!Phpfox::isMobile())
-					{
-						$oTpl->setHeader('cache', array('jquery/ui.js' => 'static_script'));
-					}
-				
-					if (!defined('PHPFOX_IS_AD_PREVIEW') && !defined('PHPFOX_IN_DESIGN_MODE') && !defined('PHPFOX_INSTALLER') && Phpfox::getParam('core.site_wide_ajax_browsing'))
-					{
-						$oTpl->setHeader('cache', array('jquery/plugin/jquery.address.js' => 'static_script'));
-					}				
-				
-					$oTpl->setHeader('cache', array(
-							'common.js' => 'static_script',
-							'main.js' => 'static_script',
-							'ajax.js' => 'static_script',
-							'thickbox/thickbox.js' => 'static_script',
-							'search.js' => 'module_friend'					
-						)
-					);
 					
-					if (Phpfox::isModule('friend'))
-					{
-						$oTpl->setPhrase(array('friend.show_more_results_for_search_term'));		
-					}
+				if (Phpfox::isModule('photo') && Phpfox::getParam('photo.pre_load_header_view'))
+				{
+					$oTpl->setHeader('cache', array(
+							'jquery/plugin/jquery.highlightFade.js' => 'static_script',
+							'jquery/plugin/jquery.scrollTo.js' => 'static_script',
+							'jquery/plugin/imgnotes/jquery.tag.js' => 'static_script',
+							
+							'jquery/plugin/imgnotes/jquery.imgareaselect.js' => 'static_script',
+							'jquery/plugin/imgnotes/jquery.imgnotes.js' => 'static_script',
+							'imgnotes.css' => 'style_css',
+							'imgareaselect-default.css' => 'style_css',
+							
+							'quick_edit.js' => 'static_script',
+							'comment.css' => 'style_css',
+							'pager.css' => 'style_css',
+							'view.js' => 'module_photo',
+							'photo.js' => 'module_photo',
+							'switch_legend.js' => 'static_script',
+							'switch_menu.js' => 'static_script',
+							'view.css' => 'module_photo',
+							'feed.js' => 'module_feed',
+							'edit.css' => 'module_photo',
+							'index.js' => 'module_photo'
+							)
+						);
+				}
+					
+				if (Phpfox::isModule('friend'))
+				{
+					$oTpl->setPhrase(array('friend.show_more_results_for_search_term'));		
+				}
 		
 				if (PHPFOX_DEBUG)
 				{
@@ -1133,22 +1212,19 @@ final class Phpfox
 					);			
 				}
 				
-				if ($aLocale['direction'] == 'rtl')
-				{
-					$oTpl->setHeader('cache', array(
-							'rtl.css' => 'style_css'
-						)
-					);
-				}
-				
 				if (Phpfox::isModule('captcha') && Phpfox::getParam('captcha.recaptcha'))
 				{
-					$oTpl->setHeader('<script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>');
+					// http://www.phpfox.com/tracker/view/14456/
+					$sUrl = (Phpfox::getParam('core.force_https_secure_pages') ? 'https' : 'http' ) . "://www.google.com/recaptcha/api/js/recaptcha_ajax.js";
+					$oTpl->setHeader('<script type="text/javascript" src="' . $sUrl . '"></script>');
 				}
 		}
 			
 		
-		(($sPlugin = Phpfox_Plugin::get('get_controller')) ? eval($sPlugin) : false);
+		if ($sPlugin = Phpfox_Plugin::get('get_controller'))
+		{
+			eval($sPlugin);
+		}
 
 		$oModule->getController();
 		
@@ -1183,7 +1259,7 @@ final class Phpfox
 				$aPageLastLogin = ((Phpfox::isModule('pages') && Phpfox::getUserBy('profile_page_id')) ? Phpfox::getService('pages')->getLastLogin() : false);
 				
 				$oTpl->assign(array(
-						'aMenus' => $oTpl->getMenu('main'),
+						'aMainMenus' => $oTpl->getMenu('main'),
 						'aRightMenus' => $oTpl->getMenu('main_right'),
 						'aAppMenus' => $oTpl->getMenu('explore'),
 						'aSubMenus' => $oTpl->getMenu(),
@@ -1262,7 +1338,7 @@ final class Phpfox
 								)
 								->setHeader(array(
 										'<script type="text/javascript">oCore[\'im.is_hidden\'] = \'' . Phpfox::getUserBy('im_hide') . '\';</script>',
-										 '<script type="text/javascript">$Behavior.loadMusicPlayer = function() { $Core.player.load({id: \'js_im_player\', type: \'music\'}); }</script>'
+										'<script type="text/javascript">$Behavior.loadMusicPlayer = function() { if (typeof $f == \'undefined\') { $Core.loadStaticFile(\'' . $oTpl->getStyle('static_script', 'player/' . Phpfox::getParam('core.default_music_player') . '/' . Phpfox::getParam('core.default_music_player')) . '.js\'); } else { $Core.player.load({id: \'js_im_player\', type: \'music\'}); } $Behavior.loadMusicPlayer = function() {} }</script>'
 									)
 								);
 							}
@@ -1274,11 +1350,30 @@ final class Phpfox
 		
 		if (!PHPFOX_IS_AJAX_PAGE && ($sHeaderFile = $oTpl->getHeaderFile()))
 		{
+			(($sPlugin = Phpfox_Plugin::get('run_get_header_file_1')) ? eval($sPlugin) : false);
         	require_once($sHeaderFile);
 		}
 		
 		list($aBreadCrumbs, $aBreadCrumbTitle) = $oTpl->getBreadCrumb();
 
+		/* Delayed unlink, we now delete all the images */
+		if (Phpfox::getParam('core.keep_files_in_server') == false)
+		{
+			$oSess = Phpfox::getLib('session');
+			$aFiles = $oSess->get('deleteFiles');
+			if (is_array($aFiles))
+			{
+				foreach ($aFiles as $sFile)
+				{
+					if (file_exists($sFile))
+					{
+						unlink($sFile);
+					}
+				}
+			}
+			$oSess->remove('deleteFiles');
+		}
+		
 		$oTpl->assign(array(
 				'aErrors' => (Phpfox_Error::getDisplay() ? Phpfox_Error::get() : array()),
 				'sPublicMessage' => Phpfox::getMessage(),
@@ -1311,37 +1406,14 @@ final class Phpfox
 		{
 			Phpfox::getLib('locale')->cache();
 		}		
-		
-		if (!PHPFOX_IS_AJAX_PAGE && Phpfox::getParam('core.phpfox_is_hosted'))
-		{
-			$iTotalMembersOnline = Phpfox::getService('log.session')->getOnlineMembers();
-	
-			if ($iTotalMembersOnline > Phpfox::getParam('core.phpfox_max_users_online') && $iTotalMembersOnline > (int) Phpfox::getParam('core.phpfox_total_users_online_mark'))
-			{
-				$oDb = Phpfox::getLib('database');
-				$oDb->update(Phpfox::getT('setting'), array('value_actual' => (int) $iTotalMembersOnline), 'var_name = \'phpfox_total_users_online_mark\'');
-				
-				$sPastHistory = Phpfox::getParam('core.phpfox_total_users_online_history');
-				$aPastHistory = array();
-				if (!empty($sPastHistory) && Phpfox::getLib('parse.format')->isSerialized($sPastHistory))
-				{
-					$aPastHistory = unserialize($sPastHistory);	
-				}
-				$oDb->update(Phpfox::getT('setting'), array('value_actual' => serialize(array_merge($aPastHistory, array(array('time_stamp' => PHPFOX_TIME, 'total' => (int) $iTotalMembersOnline))))), 'var_name = \'phpfox_total_users_online_history\'');
-				
-				Phpfox::getLib('cache')->remove('setting');
-				
-				ob_clean();		
-			}
-		}		
-		
+
 		// Use GZIP to output the data if we can		
 		if (Phpfox::getParam('core.use_gzip') && !PHPFOX_IS_AJAX_PAGE)
 		{						
 			$sContent = ob_get_contents();
-			
+
 			ob_clean();
-	
+
 			if (function_exists('gzencode'))
 			{			
 				$sGzipContent = gzencode($sContent, Phpfox::getParam('core.gzip_level'), FORCE_GZIP);
@@ -1359,12 +1431,26 @@ final class Phpfox
 				}		
 			}
 
+			$sOutputContent = (isset($sGzipContent) ? $sGzipContent : $sContent);
+			if (Phpfox::getParam('core.check_body_for_text')
+					&& !defined('PHPFOX_INSTALLER')
+					&& Phpfox::getLib('request')->get('req1') != 'ad'
+				)
+			{
+				if (!preg_match(Phpfox::getParam('core.check_body_regex'), $sContent))
+				{
+					header(Phpfox::getParam('core.check_body_header'));
+					echo Phpfox::getParam('core.check_body_offline_message');
+					exit;
+				}
+			}
+
 			if (isset($sGzipContent))
 			{				
 				header("Content-Encoding: " . (in_array('x-gzip', Phpfox::getParam('core.gzip_encodings')) ? "x-gzip" : "gzip"));
-			}			
-			
-			echo (isset($sGzipContent) ? $sGzipContent : $sContent);			
+			}
+
+			echo $sOutputContent;
 		}	
 	}
 	
@@ -1435,11 +1521,18 @@ final class Phpfox
 	 * @param string $sValue The value of the cookie.
 	 * @param int $iExpire The time the cookie expires. This is a Unix timestamp so is in number of seconds since the epoch.
 	 */
-	public static function setCookie($sName, $sValue, $iExpire = 0)
+	public static function setCookie($sName, $sValue, $iExpire = 0, $bSecure = false, $bHttpOnly = true)
 	{
 		$sName = Phpfox::getParam('core.session_prefix') . $sName;
 
-		setcookie($sName, $sValue, (($iExpire != 0 || $iExpire != -1) ? $iExpire : (PHPFOX_TIME + (60*60*24*$iExpire))), Phpfox::getParam('core.cookie_path'), Phpfox::getParam('core.cookie_domain'));
+		if (version_compare(PHP_VERSION, '5.2.0', '>='))
+		{
+			setcookie($sName, $sValue, (($iExpire != 0 || $iExpire != -1) ? $iExpire : (PHPFOX_TIME + (60*60*24*$iExpire))), Phpfox::getParam('core.cookie_path'), Phpfox::getParam('core.cookie_domain'), $bSecure, $bHttpOnly);
+		}
+		else
+		{
+			setcookie($sName, $sValue, (($iExpire != 0 || $iExpire != -1) ? $iExpire : (PHPFOX_TIME + (60*60*24*$iExpire))), Phpfox::getParam('core.cookie_path'), Phpfox::getParam('core.cookie_domain'), $bSecure);
+		}
 	}
 	
 	/**
@@ -1507,7 +1600,25 @@ final class Phpfox
 	 */
 	public static function getCdnPath()
 	{
-		return 'http://cdn.group.ly/sites/' . self::getVersion() . '/';
+		return 'http://cdn.oncloud.ly/' . self::getVersion() . '/';
+	}
+	
+	/**
+	 * Since we allow urls to be rewritten we use this function to get the original value no matter what
+	 * @param $sSection <string>
+	 * @return <string>
+	 */ 
+	public static function getNonRewritten($sSection)
+	{
+		$aRewrites = Phpfox::getService('core.redirect')->getRewrites();
+		foreach ($aRewrites as $aRewrite)
+		{
+			if ($aRewrite['url'] == $sSection)
+			{
+				return $aRewrite['replacement'];
+			}
+		}
+		return $sSection;
 	}
 }
 

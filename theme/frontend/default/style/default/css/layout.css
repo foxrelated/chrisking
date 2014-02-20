@@ -154,6 +154,7 @@ select
 {
 	background:rgb(51, 51, 51) url('../image/layout/header.png') repeat-x;	
 	color:#fff;	
+	min-width:1000px;
 }
 
 #header_holder
@@ -2241,6 +2242,20 @@ div.info_right
 	text-indent:-1000px;
 	border-right:1px #ccc solid;
 }
+
+#activity_feed_share_this_one ul li div.parent
+{
+	float:left;
+	height:29px;
+	line-height:29px;
+	padding-left:10px;	
+}
+
+#activity_feed_share_this_one ul li div.parent select
+{
+	padding:2px 0px 2px 0px;
+}
+
 /*
 a#activity_feed_share_this_one_link,
 a#activity_feed_share_this_one_link:hover
@@ -2292,6 +2307,19 @@ a#activity_feed_share_this_one_link:hover
 	background:#f1f1f1;
 }
 
+/* Hides the input in the feed, used in check-ins */
+#js_add_location_input
+{
+	display: none;
+}
+
+/* Displays a little map on the feed, used for check-ins*/
+a.feed_share_map,
+a.feed_share_map:hover
+{
+	background:url('../image/layout/feed_map.png') no-repeat center center;	
+}
+
 a.feed_share_site,
 a.feed_share_site:hover
 {
@@ -2330,7 +2358,7 @@ a.feed_share_watch:hover
 {
 	position:absolute;
 	left:5px;
-	top:-4px;
+	top:-4px;	
 }
 
 .activity_feed_pages_post_as_page select
@@ -2779,6 +2807,11 @@ a.activity_feed_content_view_more:hover
 	font-weight:normal;
 }
 
+.activity_like_holder
+{
+	height:25px;
+}
+
 .item_view .js_feed_comment_border,
 .item_view .item_tag_holder,
 .item_view .attachment_holder_view
@@ -2821,6 +2854,13 @@ a.activity_feed_content_view_more:hover
 .js_like_link_holder a:hover
 {
 	background:url('../image/layout/like_small.png') no-repeat;
+	padding-left:16px;
+}
+
+.js_dislike_link_holder a,
+.js_dislike_link_holder a:hover
+{
+	background:url('../image/layout/dislike_small.png') no-repeat;
 	padding-left:16px;
 }
 
@@ -3037,10 +3077,19 @@ ul.block_listing_hover li:hover
 /**
  Photo
  */
-.photo_holder
+.albums_container
+{
+    height: 226px;
+}
+ .photo_holder
 {
 	border:1px #DFDFDF solid;
 	background:#fff;
+}
+.photo_holder_square
+{
+	width: 150px;
+	height: 150px;
 }
 
 .photo_rotate
@@ -3254,30 +3303,71 @@ ul.block_listing_hover li:hover
 .photo_clip_holder_main
 {
 	height:120px;
-	width:150px;
+	width:130px;
+	position:relative;			
+}
+.photo_clip_holder_main_big, .photo_with_info
+{
+	height:196px;
+	width:196px;
 	position:relative;			
 }
 
 .photo_clip_holder_border
 {
-	width:148px;
 	height:120px;
+	width:128px;
 	border:1px #DFDFDF solid;
 	background:#fff;
 	-moz-box-shadow: 3px 3px 3px #ccc;
 	-webkit-box-shadow: 3px 3px 3px #ccc;
 	box-shadow: 3px 3px 3px #ccc;		
 }
+.photo_clip_holder_border_big
+{
+	height:196px;
+	width:196px;
+	border:1px #DFDFDF solid;
+	background:#fff;
+	-moz-box-shadow: 3px 3px 3px #ccc;
+	-webkit-box-shadow: 3px 3px 3px #ccc;
+	box-shadow: 3px 3px 3px #ccc;
+}
 
+/* Used when auto_crop is enabled and dynamic view is disabled */
 a.photo_clip_holder,
 a.photo_clip_holder:hover
 {
 	position:absolute;
 	top:-4px;
-	left:6px;
+	left:1px;
 	height:120px;
-	width:140px;
-	clip: rect(10px, 148px, 120px, 0px);	
+	width:128px;
+	padding-top: 5px;
+	overflow: hidden;	
+	display:block;
+	text-decoration:none;
+	
+}
+
+a.photo_clip_holder img,
+a.photo_clip_holder:hover img
+{
+    clip: rect(10px, 148px, 120px, 0px);	
+}
+
+a.photo_clip_holder_big,
+a.photo_clip_holder_big:hover
+{
+	position:absolute;
+	top:0px;
+	/*left:6px;*/
+	height:190px;
+	width:190px;
+	background-position: 50% 25%;
+	background-size: cover;
+	transition-duration: 500ms;
+	transition-property: width, height;		
 	overflow: hidden;	
 	display:block;
 	text-decoration:none;
@@ -3286,12 +3376,15 @@ a.photo_clip_holder:hover
 
 .photo_row
 {
-	width:33%; margin-bottom:10px; float:left; padding-top:5px; z-index:1;
+	width:150px; margin-bottom:10px; float:left; padding-top:5px; z-index:1;
 }
 
 .photo_row_holder
 {
-	width:150px; min-height:90px; height:auto !important; height:90px;
+	width:100%;
+	min-height:90px; 
+	height:auto !important; 
+	height:196px;
 }
 
 .photo_row_info
@@ -3302,13 +3395,14 @@ a.photo_clip_holder:hover
 
 .photo_row_info_album
 {
-	padding-top:8px;	
+	padding-top:8px;
+	text-align: center;
 }
 
 .photo_row_height
 {
 	position:relative;
-	display:inline;
+	/*display:inline;*/
 }
 
 #photo_battle_full_mode
@@ -4016,6 +4110,22 @@ span.attachment_row_link
 	background:#F2F2F2;
 }
 
+#hashtag_cloud .tag_cloud ul li a,
+#hashtag_cloud .tag_cloud ul li a:hover
+{
+    background:transparent;
+    border:0px;
+    float:none;
+    padding:0px;
+    height:20px;
+    line-height:20px;
+}
+
+#hashtag_cloud .tag_cloud ul li a:hover
+{
+    text-decoration:underline;
+}
+
 /**
 	Footer
  */
@@ -4090,17 +4200,24 @@ a#pages_like_join:hover
 	line-height:22px;
 	padding:0px 8px 0px 8px;
 	background:#fff url('../image/layout/section_menu.png') repeat-x center bottom;	
-	border:1px solid #BFBFBF;
+	border-top:1px solid #BFBFBF;
+    /*
 	position:absolute;
-	left:12px;
-	top:3px;
+	left:0px;
+	top:0px;
+	bottom: 0px;
+	*/
 	font-size:12px;
 	font-weight:bold;
 	text-decoration:none;
 	white-space:nowrap;
-  	-moz-box-shadow:2px 2px 2px #F1F1F1;
-  	-webkit-box-shadow:2px 2px 2px #F1F1F1;
-  	box-shadow:2px 2px 2px #F1F1F1;		
+}
+
+.profile_no_timeline a#pages_like_join
+{
+    border:1px solid #BFBFBF;
+    width:80%;
+    margin:auto;
 }
 
 .global_like_number
@@ -4360,6 +4477,31 @@ a.like_count_link:hover
 	color:#fff;
 }
 
+a.dislike_count_link,
+a.dislike_count_link:hover
+{
+	background:#DFDFDF url('../image/layout/dislike.png') no-repeat 6px 4px;
+	position:absolute; 
+	right:60px; 
+	top:8px; 
+	display:block;	
+	padding:0px 8px 0px 25px;
+	line-height:25px;
+	height:25px;
+	text-decoration:none;
+	color:#333;
+	
+	-moz-border-radius:7px;
+	-webkit-border-radius:7px;
+  	border-radius:7px;  	
+}
+
+a.dislike_count_link:hover
+{
+	background-color:#333;
+	color:#fff;
+}
+
 /* The next blocks are the "popup" used to search for Inputs when clicking "Advanced Filters" */
 #js_search_input_holder
 {
@@ -4399,4 +4541,140 @@ a.like_count_link:hover
 	font-weight: bold;
 	font-size: 12px;
 	width: 290px;
+}
+
+/* Wrapper for locations in the feed*/
+.js_div_place
+{
+	background-color: white;
+	color: blue;
+}
+
+.js_div_place:hover
+{
+	background-color: green;
+	color: white;
+	cursor: pointer;
+}
+
+.js_div_place_name
+{
+	float: left;
+}
+.js_div_place_vicinity
+{
+	float: left;
+}
+.js_div_place
+{
+	width: 100%;
+	height: 15px;
+}
+
+/* This is the map showing on hover */
+.js_location_map
+{
+	position: absolute; 
+	height: 200px; 
+	width: 200px; 
+	margin-top: -220px; 
+	border:1px solid; 
+	left: 150px;
+}
+
+.js_location_name_hover
+{
+	color: #63799F;
+	cursor: pointer;
+}
+
+.comment_mini_text,
+.activity_feed_content_status,
+.row_title_info,
+#content_load_data h1,
+.activity_feed_content_float,
+.activity_feed_content_no_image
+{
+	word-wrap:break-word;
+}
+
+.js_parent_module_feed_poll .activity_feed_content_float
+{
+	overflow:hidden;
+}
+
+#js_location_feedback
+{
+    text-align: right;
+}
+
+/** 3.7.0 code for the ad unit when multi_ad is enabled */
+.ad_unit_multi_ad
+{
+	border-bottom: 1px solid #dfdfdf;
+    padding-bottom:10px;
+	position:relative;
+	cursor: pointer;
+}
+
+.ad_unit_multi_ad_content
+{
+    position:relative;
+    min-height:80px;
+    overflow:hidden;
+}
+
+.ad_unit_multi_ad a
+{
+	color: #333;
+	text-decoration:none;
+}
+
+.multi_ad_holder{ margin-top: 5px; }
+.multi_ad_holder:first-child { margin-top: 0px; }
+
+.ad_unit_multi_ad_title
+{
+	color:#6F6F6F;
+	font-weight: bold;
+	text-align: left;
+}
+
+.ad_unit_multi_ad_url
+{
+	margin-bottom: 5px;
+	text-align: left;
+}
+
+.ad_unit_multi_ad_url a
+{
+	color:#808080;
+}
+
+.ad_unit_multi_ad_image
+{
+	width:100px;
+    height:72px;
+	position:absolute;
+    left:0px;
+    top:0px;
+}
+
+.ad_unit_multi_ad_image img
+{
+	width:100px;
+	height:72px;
+}
+
+.ad_unit_multi_ad_text
+{
+	margin-left:105px;
+    text-align:left;
+    color:#808080;
+}
+
+.header_login_block span iframe
+{
+	width: 60px;
+	height: 60px;
 }

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Profile
- * @version 		$Id: menu.class.php 2243 2010-12-15 06:44:43Z Raymond_Benc $
+ * @version 		$Id: menu.class.php 5075 2012-12-07 12:49:53Z Miguel_Espinoza $
  * @deprecated 		v2.1.0beta1
  */
 class Profile_Component_Block_Menu extends Phpfox_Component
@@ -23,7 +23,7 @@ class Profile_Component_Block_Menu extends Phpfox_Component
 	{		
 		return false;
 		
-		$aUser = $this->getParam('aUser');
+		/*$aUser = $this->getParam('aUser');
 		
 		(($sPlugin = Phpfox_Plugin::get('profile.component_block_menu_process')) ? eval($sPlugin) : false);
 		
@@ -35,7 +35,7 @@ class Profile_Component_Block_Menu extends Phpfox_Component
 		$this->template()->assign(array(
 				'bIsBlocked' => (Phpfox::isUser() ? Phpfox::getService('user.block')->isBlocked(Phpfox::getUserId(), $aUser['user_id']) : false)
 			)
-		);
+		);*/
 	}
 	
 	/**

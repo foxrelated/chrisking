@@ -24,6 +24,18 @@ class Photo_Service_Api extends Phpfox_Service
 		$this->_oApi = Phpfox::getService('api');	
 	}
 	
+	public function add()
+	{
+		/*
+		@title
+		@info Share a photo. Simply pass a URL of a photo you wish to share. If successfull it will return an array of photos.
+		@method GET
+		@extra url=#{URL to the photo|string|yes}
+		@return
+		*/
+		return $this->addPhoto();
+	}	
+
 	/**
 	 * Adds a photo to an album of the name of the application.
 	 * If such album does not exist it creates it.
@@ -39,32 +51,59 @@ class Photo_Service_Api extends Phpfox_Service
 		$oFile = Phpfox::getLib('file');
 		$oImage = Phpfox::getLib('image');
 		
-		$sType = 'png';
-		switch($_FILES['photo']['type'])
+		if (isset($_FILES['photo']))
 		{
-			case 'image/jpeg':
-			case 'image/jpg':
-				$sType = 'jpg';
-				break;
-			case 'image/gif':
-				$sType = 'gif';
-				break;
+			$sType = 'png';
+			switch($_FILES['photo']['type'])
+			{
+				case 'image/jpeg':
+				case 'image/jpg':
+					$sType = 'jpg';
+					break;
+				case 'image/gif':
+					$sType = 'gif';
+					break;
+			}
+		}
+		
+		$bIsUrlImage = false;
+		if (empty($_FILES['photo']))
+		{
+			$sImage = $this->_oApi->get('url');
+			$sType = $oFile->getFileExt($sImage);
+			$sImageContent = file_get_contents($sImage);
+			$bIsUrlImage = true;
 		}
 		
 		$sImagePath = Phpfox::getParam('photo.dir_photo') . uniqid() . '.' . $sType;
 		
-		move_uploaded_file($_FILES['photo']['tmp_name'], $sImagePath);
-		
+		if ($bIsUrlImage)
+		{
+			$hFile = fopen($sImagePath, 'w');
+			fwrite($hFile, $sImageContent);
+			fclose($hFile);
+			
+			$_FILES['photo']['error'] = '';
+			$_FILES['photo']['name'] = basename($sImagePath);
+			$_FILES['photo']['size'] = filesize($sImagePath);
+			$_FILES['photo']['type'] = $sType;
+		}
+		else
+		{		
+			move_uploaded_file($_FILES['photo']['tmp_name'], $sImagePath);
+			$_FILES['photo']['name'] = $this->_oApi->get('photo_name');
+		}		
+
 		$_FILES['photo']['tmp_name'] = $sImagePath;
-		$_FILES['photo']['name'] = $this->_oApi->get('photo_name');
 		
 		$aImage = $oFile->load('photo', array(
 			'jpg',
 			'gif',
 			'png'), (Phpfox::getUserParam('photo.photo_max_upload_size') === 0 ? null : (Phpfox::getUserParam('photo.photo_max_upload_size') / 1024))
 		);
-		
+
 		$aImage['type_id'] = 1;
+		$aImage['description'] = $this->_oApi->get('description');
 		$aErrors = Phpfox_Error::get();
 		if (!empty($aErrors))
 		{
@@ -93,7 +132,7 @@ class Photo_Service_Api extends Phpfox_Service
 					'destination' => $sFileName,
 					'title' => $sPhotoTitle,
 					'width' => $aSize[0],
-					'height' => $aSize[1],
+					'height' => $aSize[1],					
 					'server_id' => Phpfox::getLib('request')->getServer('PHPFOX_SERVER_ID')
 				)
 			);		
@@ -126,41 +165,83 @@ class Photo_Service_Api extends Phpfox_Service
 				$iFeedId = Phpfox::getService('feed.process')->add('photo', $iId, $iPrivacy, $iPrivacyComment, 0);
 			}
 			
-			return $aReturnPhotos;
+			return $this->getPhotos($iId);
 		}
 	
 		return $this->_oApi->error('photo.add_photo_process', 'Could not add photo to process');
 	
 	}
 	
-	public function getPhotos()
+	public function get()
 	{
-		if ((int) $this->_oApi->get('user_id') === 0)
-		{
-			$iUserId = $this->_oApi->getUserId();
-		}
-		else
-		{
+		/*
+		@title
+		@info Get photos for a specific user or all public photos. Will return an array of different sizes.
+		@method GET
+		@extra user_id=#{User ID#|int|no}
+		@return
+		*/		
+		return $this->getPhotos();
+	}
+	
+	public function getPhotos($iId = 0)
+	{
+		if ((int) $this->_oApi->get('user_id') !== 0)
+		{			
 			$iUserId = $this->_oApi->get('user_id');
 		}		
 		
 		$iCnt = $this->database()->select('COUNT(*)')
 			->from($this->_sTable, 'p')
-			->where('p.view_id = 0 AND p.group_id = 0 AND p.type_id = 0 AND p.privacy = 0 AND p.user_id = ' . (int) $iUserId)
+			->where(($iId > 0 ? 'p.photo_id = ' . (int) $iId . '': 'p.view_id = 0 AND p.group_id = 0 AND p.type_id IN(0,1) AND p.privacy = 0 AND p.is_profile_photo = 0 ' . (isset($iUserId) ? ' AND p.user_id = ' . (int) $iUserId : '')))
 			->execute('getSlaveField');
 		
 		$this->_oApi->setTotal($iCnt);
 		
-		$aRows = $this->database()->select('p.*')
+		$iOffset = ($this->_oApi->get('page') * 10);
+		
+		if (Phpfox::isModule('like'))
+		{
+			$this->database()->select('lik.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'lik', 'lik.type_id = \'photo\' AND lik.item_id = p.photo_id AND lik.user_id = ' . Phpfox::getUserId());
+		}		
+		
+		$aRows = $this->database()->select('p.*, pi.description, ' . Phpfox::getUserField())
 			->from($this->_sTable, 'p')
-			->where('p.view_id = 0 AND p.group_id = 0 AND p.type_id = 0 AND p.privacy = 0 AND p.user_id = ' . (int) $iUserId)
-			->limit($this->_oApi->get('page'), 10, $iCnt)
+			->join(Phpfox::getT('user'), 'u', 'u.user_id = p.user_id')
+			->join(Phpfox::getT('photo_info'), 'pi', 'pi.photo_id = p.photo_id')
+			->where(($iId > 0 ? 'p.photo_id = ' . (int) $iId . '': 'p.view_id = 0 AND p.group_id = 0 AND p.type_id IN (0,1) AND p.privacy = 0 AND p.is_profile_photo = 0 ' . (isset($iUserId) ? ' AND p.user_id = ' . (int) $iUserId : '')))			
+			->limit($iOffset, 10)
+			->order('p.time_stamp DESC')
 			->execute('getSlaveRows');
-	
+
 		$aPhotos = array();
 		foreach ($aRows as $iKey => $aRow)
 		{
 			$sImagePath = $aRow['destination'];
+
+			$aPhotos[$iKey] = array(
+					'id' => $aRow['photo_id'],
+					'title' => $aRow['title'],
+					'likes' => $aRow['total_like'],
+					'comments' => $aRow['total_comment'],
+					'uploaded_by' => $aRow['full_name'],
+					'uploaded_by_id' => $aRow['user_id'],
+					'uploaded_by_url' => Phpfox::getLib('url')->makeUrl($aRow['user_name']),
+					'uploaded_by_username' => $aRow['user_name'],
+					'description' => Phpfox::getLib('parse.output')->parse($aRow['description']),
+					'permalink' => Phpfox::permalink('photo', $aRow['photo_id'], $aRow['title']),
+					'is_liked' => (empty($aRow['is_liked']) ? false : true)
+					);
+			
+			$aPhotos[$iKey]['convert_time_stamp'] = Phpfox::getLib('date')->convertTime($aRow['time_stamp'], 'comment.comment_time_stamp');
+			
+			$aPhotos[$iKey]['uploaded_by_image'] = Phpfox::getLib('image.helper')->display(array(
+					'user' => $aRow,
+					'suffix' => '_50_square',
+					'return_url' => true
+				)
+			);			
 			
 			$aPhotos[$iKey]['photo_100px'] = Phpfox::getLib('image.helper')->display(array(
 					'path' => 'photo.url_photo',
@@ -180,6 +261,24 @@ class Photo_Service_Api extends Phpfox_Service
 				)
 			);
 			
+			$aPhotos[$iKey]['photo_500px'] = Phpfox::getLib('image.helper')->display(array(
+					'path' => 'photo.url_photo',
+					'server_id' => $aRow['server_id'],
+					'file' => $aRow['destination'],
+					'suffix' => '_500',
+					'return_url' => true
+				)
+			);	
+
+			$aPhotos[$iKey]['photo_1024px'] = Phpfox::getLib('image.helper')->display(array(
+					'path' => 'photo.url_photo',
+					'server_id' => $aRow['server_id'],
+					'file' => $aRow['destination'],
+					'suffix' => '_1024',
+					'return_url' => true
+				)
+			);			
+			
 			$aPhotos[$iKey]['photo_original'] = Phpfox::getLib('image.helper')->display(array(
 					'path' => 'photo.url_photo',
 					'server_id' => $aRow['server_id'],
@@ -188,6 +287,11 @@ class Photo_Service_Api extends Phpfox_Service
 					'return_url' => true
 				)
 			);				
+		}
+		
+		if ($iId > 0)
+		{
+			return $aPhotos[0];
 		}
 		
 		return $aPhotos;

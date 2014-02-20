@@ -23,7 +23,6 @@ class Egift_Component_Controller_Admincp_Index extends Phpfox_Component
 		$aCategories = Phpfox::getService('egift')->getCategories();
 		$aEgifts = Phpfox::getService('egift')->getEgifts();			
 
-
 		if (($aVals = $this->request()->getArray('upload')) && ($this->request()->get('action') == 'upload'))
 		{			
 			$aVals = array_merge($aVals, $_FILES);
@@ -57,7 +56,7 @@ class Egift_Component_Controller_Admincp_Index extends Phpfox_Component
 			'aCategories' => $aCategories,
 			'aEgifts' => $aEgifts
 			))
-			->setBreadcrumb('Manage EGift', $this->url()->makeUrl('admincp.egify'))
+			->setBreadcrumb('Manage EGift', $this->url()->makeUrl('admincp.egift'))
 			->setHeader(array(
 				'admincp.js' => 'module_egift',
 				'admincp.css' => 'module_egift'

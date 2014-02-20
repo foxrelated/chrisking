@@ -69,6 +69,83 @@ class Core_Service_Redirect_Process extends Phpfox_Service
 		return true;
 	}	
 		
+	/** This function updates the site wide rewrites, not the redirects.
+	 * 	This is called from AdminCP -> Tools -> SEO -> URL Rewrite
+	 * 	@version 3.7.0
+	 * 	@param $aRewrites array [ {rewrite_id: #, original_url: string, replacement_url : string }, {... ]
+	 */ 
+	public function updateRewrites($aRewrites)
+	{
+		Phpfox::isAdmin(true);
+		$oParse = Phpfox::getLib('parse.input');
+		foreach ($aRewrites as $aRewrite)
+		{
+			if (!isset($aRewrite['rewrite_id']) || ( !isset($aRewrite['remove']) && (!isset($aRewrite['original_url']) || !isset($aRewrite['replacement_url'])) ))
+			{
+				continue;
+			}
+			if ( !isset($aRewrite['remove']) && strpos($aRewrite['original_url'], ' ') !== false)
+			{
+				Phpfox_Error::set('This is not a valid url: "' . $aRewrite['original_url'] . '"');
+				continue;
+			}
+			if ( !isset($aRewrite['remove']) && strpos($aRewrite['replacement_url'], ' ') !== false)
+			{
+				Phpfox_Error::set('This is not a valid url: "' . $aRewrite['replacement_url'] . '"');
+				continue;
+			}
+			
+			// Invalid params from the otiringal url
+			if (isset($aRewrite['original_url']))
+			{
+				$aRewrite['original_url'] = str_replace('_', '', $aRewrite['original_url']);
+			}
+					
+			if (is_numeric($aRewrite['rewrite_id']) && $aRewrite['rewrite_id'] > 0 && ( (int)$aRewrite['rewrite_id'] == $aRewrite['rewrite_id']))
+			{
+				if (isset($aRewrite['remove']))
+				{
+					$this->database()->delete(Phpfox::getT('rewrite'), 'rewrite_id = ' . (int)$aRewrite['rewrite_id']);
+				}
+				else
+				{
+					$aRewrite['original_url'] = trim($aRewrite['original_url'], '/');
+					$aRewrite['replacement_url'] = trim($aRewrite['replacement_url'], '/');
+					
+					$this->database()->update(Phpfox::getT('rewrite'), array(
+						'url' => $oParse->clean($aRewrite['original_url']),
+						'replacement' => $oParse->clean($aRewrite['replacement_url'])
+					), 'rewrite_id = ' . (int)$aRewrite['rewrite_id']);
+				}
+			}
+			else
+			{
+				$aRewrite['original_url'] = trim($aRewrite['original_url'], '/');
+				$aRewrite['replacement_url'] = trim($aRewrite['replacement_url'], '/');
+				
+				$this->database()->insert(Phpfox::getT('rewrite'), array(
+					'url' => $oParse->clean($aRewrite['original_url']),
+					'replacement' => $oParse->clean($aRewrite['replacement_url'])
+				));
+			}			
+		}
+		$iCacheId = Phpfox::getLib('cache')->set('rewrite');
+		Phpfox::getLib('cache')->remove( $iCacheId );
+		$iReverseCacheId = Phpfox::getLib('cache')->set('rewrite_reverse');
+		Phpfox::getLib('cache')->remove( $iReverseCacheId );
+		
+		return true;
+	}
+
+	public function removeRewrite($iId)
+	{
+		$this->database()->delete(Phpfox::getT('rewrite'), 'rewrite_id = ' . (int) $iId);
+		Phpfox::getLib('cache')->remove('rewrite');
+		Phpfox::getLib('cache')->remove('rewrite_reverse');
+
+		return true;
+	}
+
 	/**
 	 * If a call is made to an unknown method attempt to connect
 	 * it to a specific plug-in with the same name thus allowing 

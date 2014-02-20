@@ -5,12 +5,12 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: init.inc.php 3917 2012-02-20 18:21:08Z Raymond_Benc $
+ * @version 		$Id: init.inc.php 6619 2013-09-11 12:08:49Z Miguel_Espinoza $
  */
 
 defined('PHPFOX') or exit('NO DICE!');
 
-@ini_set('memory_limit', '64M');
+@ini_set('memory_limit', '-1');
 @set_time_limit(0);
 
 if (!function_exists('memory_get_usage'))
@@ -28,6 +28,11 @@ if (function_exists('get_magic_quotes_runtime') && get_magic_quotes_runtime())
 	{
 		set_magic_quotes_runtime(0);
 	}    
+}
+
+if (!isset($_SERVER['HTTP_USER_AGENT']))
+{
+	$_SERVER['HTTP_USER_AGENT'] = '';
 }
 
 // Start the debug
@@ -66,6 +71,17 @@ require(PHPFOX_DIR_LIB_CORE . 'module' . PHPFOX_DS . 'component.class.php');
 if (PHPFOX_DEBUG)
 {
 	require_once(PHPFOX_DIR_LIB_CORE . 'debug' . PHPFOX_DS . 'debug.class.php');	
+}
+// http://www.phpfox.com/tracker/view/14329/
+else
+{
+	foreach($_COOKIE AS $sKey => $sValue) 
+	{
+		if(preg_match('/js_console/i', $sKey))
+		{
+			setcookie($sKey, "0", time()-(3600*24), Phpfox::getParam('core.cookie_path'), Phpfox::getParam('core.cookie_domain'));
+		}
+	}
 }
 
 set_error_handler(array('Phpfox_Error', 'errorHandler'));
@@ -117,10 +133,13 @@ if (!function_exists('json_encode'))
 
 	if (!function_exists('json_decode'))
 	{
-		function json_decode($mData) 
+		function json_decode($mData, $bIsArray = false) 
 		{
 			$json = new Services_JSON();
-			
+			if ($bIsArray === true)
+			{
+				return (array) $json->decode($mData);	
+			}
 			return ($json->decode($mData));
 		}
 	}
@@ -133,12 +152,15 @@ if (!defined('PHPFOX_NO_SESSION'))
 }
 
 if (!defined('PHPFOX_NO_USER_SESSION'))
-{	
+{
 	Phpfox::getService('log.session')->setUserSession();
 }
 
 // check if user already verified their email
-Phpfox::getService('user.auth')->handleStatus();	
+if (!defined('PHPFOX_CLI') || PHPFOX_CLI != true)
+{
+	Phpfox::getService('user.auth')->handleStatus();
+}
 
 (($sPlugin = Phpfox_Plugin::get('init')) ? eval($sPlugin) : false);
 

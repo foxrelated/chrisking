@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Miguel Espinoza
  * @package  		Module_User
- * @version 		$Id: featured.class.php 1496 2010-03-05 17:15:05Z Raymond_Benc $
+ * @version 		$Id: featured.class.php 6585 2013-09-05 10:01:48Z Miguel_Espinoza $
  */
 class User_Service_Featured_Featured extends Phpfox_Service
 {	
@@ -28,6 +28,11 @@ class User_Service_Featured_Featured extends Phpfox_Service
 	 */
 	public function get()
 	{
+		if ($sPlugin = Phpfox_Plugin::get('user.service_featured_get_1'))
+		{
+			eval($sPlugin);
+			if (isset($mPluginReturn)){ return $mPluginReturn; }
+		}
 		$iTotal = Phpfox::getParam('user.how_many_featured_members');
 		// the random will be done with php logic
 		$sCacheId = $this->cache()->set('featured_users');
@@ -38,10 +43,14 @@ class User_Service_Featured_Featured extends Phpfox_Service
 			->join($this->_sTable, 'uf', 'uf.user_id = u.user_id')
 			->order('ordering DESC')
 			->execute('getSlaveRows');
-			$this->cache()->save($sCacheId, $aUsers);
+			
+			if (Phpfox::getParam('user.cache_featured_users'))
+			{
+				$this->cache()->save($sCacheId, $aUsers);
+			}
 		}
 
-		if (!is_array($aUsers)) return array(false, 0);		
+		if (!is_array($aUsers)) return array(array(), 0);		
 		$aOut = array();
 		if (Phpfox::getParam('user.randomize_featured_members'))		
 			shuffle($aUsers);			

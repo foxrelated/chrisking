@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: custom.class.php 4933 2012-10-23 07:20:12Z Miguel_Espinoza $
+ * @version 		$Id: custom.class.php 7069 2014-01-27 17:04:05Z Fern $
  */
 class Custom_Service_Custom extends Phpfox_Service
 {
@@ -29,6 +29,14 @@ class Custom_Service_Custom extends Phpfox_Service
 	{
 		return $this->_sAlias;
 	}
+	
+	public function getUserCustomValue($iUserId, $sFieldName)
+	{
+		return $this->database()->select($sFieldName)
+			->from(Phpfox::getT('user_custom_value'))
+			->where('user_id = ' . (int) $iUserId)
+			->execute('getSlaveField');
+	}
 
 	/**
 	 * This function returns the appropriate phrase for when a user updates their relationship status
@@ -42,8 +50,8 @@ class Custom_Service_Custom extends Phpfox_Service
 	 */
 	public function getRelationshipPhrase($aRelation, $aFeed = array(), $aReplace = array(), $sPrevious = '')
 	{		
-	    $sCacheName = 'relationship_phrase_' . $aRelation['user_id'] . '_' . $aRelation['relation_data_id'] . (isset($aRelation['is_header']) && $aRelation['is_header'] == true ? '_header' : '');
-		$sCacheId = $this->cache()->set($sCacheName);
+	    // $sCacheName = 'relationship_phrase_' . $aRelation['user_id'] . '_' . $aRelation['relation_data_id'] . (isset($aRelation['is_header']) && $aRelation['is_header'] == true ? '_header' : '');
+		// $sCacheId = $this->cache()->set($sCacheName);
 		/*if (false && ($aPhrase = $this->cache()->get($sCacheId)))
 		{
 			if (isset($aPhrase['return']))
@@ -64,28 +72,34 @@ class Custom_Service_Custom extends Phpfox_Service
 			{
 				return Phpfox_Error::set('aRelation does not have relation_data_id or with_user_id');
 			}
+			
+			$sCacheId = $this->cache()->set(array('relations', $aRelation['user_id']));
+			if (!($aUser = $this->cache()->get($sCacheId)))
+			{
+				// We need to figure out the other user
+				if ($aRelation['relation_with'] == 1)
+				{
+					// $aRelation has the With user and we need to get the first user
+					$aUser = $this->database()->select('cr.relation_id, crd.relation_data_id, crd.status_id, u.user_name, u.full_name, u.user_id, cr.phrase_var_name, cr.confirmation')
+						->from(Phpfox::getT('custom_relation_data'), 'crd')
+						->join(Phpfox::getT('custom_relation'), 'cr', 'cr.relation_id = crd.relation_id')
+						->leftjoin(Phpfox::getT('user'), 'u', 'u.user_id = crd.user_id')
+						->where('crd.relation_data_id = ' . $aRelation['relation_data_id'] .' ')
+						->execute('getSlaveRow');
+				}
+				else
+				{
+					// $aRelation has the first user and we need to get the With user
+					$aUser = $this->database()->select('cr.relation_id, crd.relation_data_id,crd.status_id, u.user_name, u.full_name, u.user_id, cr.phrase_var_name, cr.confirmation')
+						->from(Phpfox::getT('custom_relation_data'), 'crd')
+						->join(Phpfox::getT('custom_relation'), 'cr', 'cr.relation_id = crd.relation_id')
+						->leftjoin(Phpfox::getT('user'), 'u', 'u.user_id = crd.with_user_id')
+						->where('crd.relation_data_id = ' . $aRelation['relation_data_id'] .' ')
+						->execute('getSlaveRow');
+				}
 
-			// We need to figure out the other user
-			if ($aRelation['relation_with'] == 1)
-			{
-				// $aRelation has the With user and we need to get the first user
-				$aUser = $this->database()->select('cr.relation_id, crd.relation_data_id, crd.status_id, u.user_name, u.full_name, u.user_id, cr.phrase_var_name, cr.confirmation')
-					->from(Phpfox::getT('custom_relation_data'), 'crd')
-					->join(Phpfox::getT('custom_relation'), 'cr', 'cr.relation_id = crd.relation_id')
-					->leftjoin(Phpfox::getT('user'), 'u', 'u.user_id = crd.user_id')
-					->where('crd.relation_data_id = ' . $aRelation['relation_data_id'] .' ')
-					->execute('getSlaveRow');
-			}
-			else
-			{
-				// $aRelation has the first user and we need to get the With user
-				$aUser = $this->database()->select('cr.relation_id, crd.relation_data_id,crd.status_id, u.user_name, u.full_name, u.user_id, cr.phrase_var_name, cr.confirmation')
-					->from(Phpfox::getT('custom_relation_data'), 'crd')
-					->join(Phpfox::getT('custom_relation'), 'cr', 'cr.relation_id = crd.relation_id')
-					->leftjoin(Phpfox::getT('user'), 'u', 'u.user_id = crd.with_user_id')
-					->where('crd.relation_data_id = ' . $aRelation['relation_data_id'] .' ')
-					->execute('getSlaveRow');
-			}
+				$this->cache()->save($sCacheId, $aUser);
+			}			
 			
 			if ( (!isset($aRelation['is_header']) || $aRelation['is_header'] != true) && isset($aUser['status_id']) && $aUser['status_id'] == 1)
 			{
@@ -308,7 +322,14 @@ class Custom_Service_Custom extends Phpfox_Service
 			}
 			else
 			{
-				$aConds[] = 'ucv.cf_' . $aFields[$iKey]['field_name'] . ' LIKE \'%' . $this->database()->escape($mValue) . '%\' AND ucv.user_id = u.user_id';
+				$sAlias = 'ucv'.rand(1,10000);
+				$aConds[] = array(
+					'table' => Phpfox::getT('user_custom'),
+					'alias' => $sAlias,
+					'on' => $sAlias . '.user_id = u.user_id',
+					'where' => $sAlias . '.cf_' . $aFields[$iKey]['field_name'] . ' LIKE \'%' . $this->database()->escape($mValue) . '%\''
+				);
+				// $aConds[] = 'ucv.cf_' . $aFields[$iKey]['field_name'] . ' LIKE \'%' . $this->database()->escape($mValue) . '%\' AND ucv.user_id = u.user_id';
 			}
 		}
 		
@@ -324,15 +345,15 @@ class Custom_Service_Custom extends Phpfox_Service
 		{
 			$aGroups = $this->database()->select('group_id, phrase_var_name')
 				->from(Phpfox::getT('custom_group'))
-				->where('type_id = \'' . $this->database()->escape($sType) . '\' AND user_group_id = ' . (int) $iUserGroup . ' AND is_active = 1')
+				->where('type_id = \'' . $this->database()->escape($sType) . '\' ' . ($iUserGroup > 0 ? 'AND user_group_id = ' . (int) $iUserGroup : '') . ' AND is_active = 1')
 				->execute('getRows');
 
 			foreach ($aGroups as $aGroup)
 			{
 				$aFields = $this->database()->select('field_id, field_name, phrase_var_name, var_type')
 					->from(Phpfox::getT('custom_field'))
-					->where('group_id = ' . $aGroup['group_id'] . ' AND is_active = 1 AND user_group_id = 0')
-					->execute('getrows');
+					->where('group_id = ' . $aGroup['group_id'] . ' AND is_active = 1')
+					->execute('getSlaveRows');
 
 				$aCustom[$aGroup['group_id']] = array(
 					'phrase_var_name' => $aGroup['phrase_var_name'],
@@ -349,6 +370,7 @@ class Custom_Service_Custom extends Phpfox_Service
 						$aCustom[$aGroup['group_id']]['fields'][$aField['field_id']]['options'] = $this->database()->select('option_id, phrase_var_name')
 							->from(Phpfox::getT('custom_option'))
 							->where('field_id = ' . $aField['field_id'])
+							->order('option_id ASC')
 							->execute('getRows');
 					}
 				}
@@ -381,9 +403,31 @@ class Custom_Service_Custom extends Phpfox_Service
 		{
 			$iInherit = $this->database()->select('inherit_id')->from(Phpfox::getT('user_group'))->where('user_group_id = ' . (int)$iUserGroupId)->execute('getSlaveField');
 			
+			if(empty($iUserGroupId) && !Phpfox::getService('user.group.setting')->getGroupParam(Phpfox::getUserBy('user_group_id'), 'custom.has_special_custom_fields'))
+			{
+				$aCustomGroups = $this->database()->select('cg.group_id')
+					->from(Phpfox::getT('custom_group'), 'cg')
+					->where('cg.user_group_id = 0 OR cg.user_group_id = ' . Phpfox::getUserBy('user_group_id'))
+					->execute('getRows');
+					
+				$sCustomGroupIDs = null;
+				foreach($aCustomGroups as $aCustomGroup)
+				{
+					$sCustomGroupIDs .= $aCustomGroup['group_id'] . ', ';
+				}
+				$sCustomGroupIDs = rtrim($sCustomGroupIDs, ', ');
+			}
+			
+			$sWhere = 'cf.user_group_id = 0 OR cf.user_group_id = '. (int) $iInherit .' '.($iUserGroupId !== null ? 'OR cf.user_group_id = ' . (int) $iUserGroupId . '' : '') . ' AND cf.is_active = 1';
+			
+			if(isset($sCustomGroupIDs))
+			{
+				$sWhere = 'cf.group_id IN (' . $sCustomGroupIDs . ') AND (' . $sWhere . ')';
+			}
+			
 			$aRows = $this->database()->select('cf.*')
 				->from($this->_sTable, 'cf')
-				->where('cf.user_group_id = 0 OR cf.user_group_id = '. (int) $iInherit .' '.($iUserGroupId !== null ? 'OR cf.user_group_id = ' . (int) $iUserGroupId . '' : '') . ' AND cf.is_active = 1')
+				->where($sWhere)
 				->join(Phpfox::getT('module'), 'm', 'm.module_id = cf.module_id AND m.is_active = 1')
 				->order('cf.ordering ASC')
 				->execute('getRows');
@@ -545,10 +589,11 @@ class Custom_Service_Custom extends Phpfox_Service
 			->execute('getSlaveRow');
 
 		$sTable = 'user_custom';
-		if (Phpfox::getUserGroupParam($aUser['user_group_id'], 'custom.has_special_custom_fields'))
+		// http://www.phpfox.com/tracker/view/14865/
+		/*if (Phpfox::getUserGroupParam($aUser['user_group_id'], 'custom.has_special_custom_fields'))
 		{
 			$sTable = Phpfox::getUserGroupParam($aUser['user_group_id'], 'custom.custom_table_name') . '_value';
-		}
+		}*/
 		
 		if ($aField['var_type'] == 'select' || $aField['var_type'] == 'radio')
 		{
@@ -675,6 +720,8 @@ class Custom_Service_Custom extends Phpfox_Service
 		$iGroup = 0;
 		$sTable = 'user_custom_multiple_value';
 
+		
+		if ($sPlugin = Phpfox_Plugin::get('custom.service_custom_getforedit_1')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
 		$sTypes = '';
 		foreach ($aTypes as $sType)
 		{
@@ -700,12 +747,21 @@ class Custom_Service_Custom extends Phpfox_Service
 		{
 			$aWhere[] = 'AND cf.on_signup = 1';
 		}
+
+		// Fixes 13743
+		if($iUserId !== null)
+		{
+			$this->database()->leftjoin(Phpfox::getT('user_custom_multiple_value'), 'cmv', 'cmv.field_id = cf.field_id AND cmv.user_id = ' . (int)$iUserId);
+		}
+		else
+		{
+			$this->database()->leftjoin(Phpfox::getT('custom_option'), 'cmv', 'cmv.field_id = cf.field_id');
+		}
 		
-		
-		$aRows = $this->database()->select('cf.*, cmv.option_id as customValue')
+		$aRows = $this->database()->select('cf.*, cmv.option_id as customValue, cg.user_group_id as cg_user_group_id')
 			->from($this->_sTable, 'cf')
 			->join(Phpfox::getT('module'), 'm', 'm.module_id = cf.module_id AND m.is_active = 1')
-			->leftjoin(Phpfox::getT('user_custom_multiple_value'), 'cmv', 'cmv.field_id = cf.field_id' . ($iUserId !== null ? ' AND cmv.user_id = ' . (int)$iUserId : ''))
+			->leftjoin(Phpfox::getT('custom_group'), 'cg', 'cg.group_id = cf.group_id')
 			->where($aWhere)
 			//->where('cf.type_id IN(' . $sTypes . ') AND cf.user_group_id = ' . (int) $iGroup . ($bRegister ? ' AND cf.on_signup = 1' : '') . ' AND cf.is_active = 1')
 			->order('cf.ordering ASC')
@@ -735,9 +791,14 @@ class Custom_Service_Custom extends Phpfox_Service
 		
 		foreach ($aRows as $iKey => $aRow)
 		{
+			if (!empty($aRow['cg_user_group_id']) && $aRow['cg_user_group_id'] != $iUserGroup)
+			{
+				unset($aRows[$iKey]);
+				continue;
+			}
 		    if (!isset($aTemp[$aRow['field_id']]))
 		    {
-			$aTemp[$aRow['field_id']] = $aRow;
+				$aTemp[$aRow['field_id']] = $aRow;
 		    }
 		    // merge duplicated fields (they have different customValue
 		    if ( ($aRow['var_type'] == 'multiselect' || $aRow['var_type'] == 'checkbox') && !is_array($aTemp[$aRow['field_id']]['customValue']) )
@@ -752,6 +813,7 @@ class Custom_Service_Custom extends Phpfox_Service
 		    else if ($aRow['type_name'] == 'MEDIUMTEXT' && isset($aTexts['cf_' . $aRow['field_name']]) || (strpos($aRow['type_name'], 'VARCHAR') !== false && isset($aTexts['cf_' . $aRow['field_name']])))
             {
 				$aRow['value'] = $aTexts['cf_' . $aRow['field_name']];
+				$aRow['value'] = str_replace('<br />', "\n", $aRow['value']);
 				$aTemp[$aRow['field_id']] = $aRow;
             }
 		    
@@ -835,7 +897,7 @@ class Custom_Service_Custom extends Phpfox_Service
 				}
 			}			
 		}
-		
+
 		return $aFields;
 	}
 
@@ -904,7 +966,9 @@ class Custom_Service_Custom extends Phpfox_Service
 			$aOptions = $this->database()->select('option_id, field_id, phrase_var_name')
 				->from(Phpfox::getT('custom_option'))
 				->where('field_id = ' . $aField['field_id'])
+				->order('option_id ASC')
 				->execute('getSlaveRows');
+			
 
 			foreach ($aOptions as $iKey => $aOption)
 			{
@@ -1026,6 +1090,10 @@ class Custom_Service_Custom extends Phpfox_Service
 	 */
 	public function getRelations()
 	{
+		if (Phpfox::getParam('user.enable_relationship_status') != true)
+		{
+			return array();
+		}
 		$aReturn = $this->database()->select('cr.relation_id, cr.phrase_var_name')
 				->from(Phpfox::getT('custom_relation'), 'cr')
 				->execute('getSlaveRows');
@@ -1036,6 +1104,21 @@ class Custom_Service_Custom extends Phpfox_Service
 		}
 		return $aReturn;
 	}
+	
+	
+	public function getInfoForAction($aItem)
+	{
+		$aRow = $this->database()->select('crd.relation_data_id, cr.phrase_var_name, crd.user_id, u.gender, u.user_name, u.full_name')	
+			->from(Phpfox::getT('custom_relation_data'), 'crd')
+			->join(Phpfox::getT('user'), 'u', 'u.user_id = crd.user_id')
+			->join(Phpfox::getT('custom_relation'), 'cr', 'cr.relation_id = crd.relation_data_id')
+			->where('crd.relation_data_id = ' . (int) $aItem['item_id'])
+			->execute('getSlaveRow');
+		$aRow['link'] = Phpfox::getLib('url')->makeUrl('user_name');
+		$aRow['title'] = Phpfox::getPhrase($aRow['phrase_var_name']);
+		return $aRow;
+	}
+	
 	/**
 	 * If a call is made to an unknown method attempt to connect
 	 * it to a specific plug-in with the same name thus allowing

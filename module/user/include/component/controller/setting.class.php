@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			natio
  * @package  		Module_User
- * @version 		$Id: setting.class.php 4624 2012-09-12 10:16:38Z Raymond_Benc $
+ * @version 		$Id: setting.class.php 5463 2013-03-01 08:37:09Z Miguel_Espinoza $
  */
 class User_Component_Controller_Setting extends Phpfox_Component
 {
@@ -127,17 +127,21 @@ class User_Component_Controller_Setting extends Phpfox_Component
 		}		
 		
 		$aGateways = Phpfox::getService('api.gateway')->getActive();		
-		$aGatewayValues = Phpfox::getService('api.gateway')->getUserGateways($aUser['user_id']);
-		foreach ($aGateways as $iKey => $aGateway)
+        if (!empty($aGateways))
 		{
-			foreach ($aGateway['custom'] as $iCustomKey => $aCustom)
-			{
-				if (isset($aGatewayValues[$aGateway['gateway_id']]['gateway'][$iCustomKey]))
-				{
-					$aGateways[$iKey]['custom'][$iCustomKey]['user_value'] = $aGatewayValues[$aGateway['gateway_id']]['gateway'][$iCustomKey];
-				}
-			}
-		}		
+            $aGatewayValues = Phpfox::getService('api.gateway')->getUserGateways($aUser['user_id']);
+            foreach ($aGateways as $iKey => $aGateway)
+            {
+                foreach ($aGateway['custom'] as $iCustomKey => $aCustom)
+                {
+                    if (isset($aGatewayValues[$aGateway['gateway_id']]['gateway'][$iCustomKey]))
+                    {
+                        $aGateways[$iKey]['custom'][$iCustomKey]['user_value'] = $aGatewayValues[$aGateway['gateway_id']]['gateway'][$iCustomKey];
+                    }
+                }
+            }	
+        }
+        
 		$aTimeZones = Phpfox::getService('core')->getTimeZones();
 		if (count($aTimeZones) > 100) // we are using the php 5.3 way
 		{

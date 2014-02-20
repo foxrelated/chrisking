@@ -20,7 +20,7 @@ if (Phpfox::getParam('facebook.enable_facebook_connect'))
 							
 							if ($bIsLoggedIn)
 							{
-								Phpfox::getLib('url')->send('');	
+								Phpfox::getLib('url')->send(Phpfox::getParam('user.redirect_after_login'));	
 							}
 							else 
 							{
@@ -58,7 +58,7 @@ if (Phpfox::getParam('facebook.enable_facebook_connect'))
 								list($bIsLoggedIn, $aPostUserInfo) = Phpfox::getService('user.auth')->login($aUserCache['user_name'], null, false, 'user_name', true);
 								if ($bIsLoggedIn)
 								{							
-									Phpfox::getLib('url')->send('');	
+									Phpfox::getLib('url')->send(Phpfox::getParam('user.redirect_after_login'));	
 								}																	
 							}
 						}
@@ -70,7 +70,7 @@ if (Phpfox::getParam('facebook.enable_facebook_connect'))
 							list($bIsLoggedIn, $aPostUserInfo) = Phpfox::getService('user.auth')->login($aUser['user_name'], null, false, 'user_name', true);
 							if ($bIsLoggedIn)
 							{						
-								Phpfox::getLib('url')->send('');	
+								Phpfox::getLib('url')->send(Phpfox::getParam('user.redirect_after_login'));	
 							}							
 						}
 						

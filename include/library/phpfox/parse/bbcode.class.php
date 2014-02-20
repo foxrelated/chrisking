@@ -13,7 +13,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: bbcode.class.php 4783 2012-09-27 09:00:14Z Raymond_Benc $
+ * @version 		$Id: bbcode.class.php 5616 2013-04-10 07:54:55Z Miguel_Espinoza $
  */
 class Phpfox_Parse_Bbcode
 {	
@@ -746,7 +746,7 @@ class Phpfox_Parse_Bbcode
 							'title' => $this->_aUsers[$sMember]['full_name'],
 							'path' => 'core.url_user',
 							'file' => $this->_aUsers[$sMember]['user_image'],
-							'suffix' => '_75',
+							'suffix' => '_50',
 							'max_width' => 75,
 							'max_height' => 75										
 						)

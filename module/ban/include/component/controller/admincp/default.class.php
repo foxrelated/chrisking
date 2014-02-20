@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: default.class.php 2525 2011-04-13 18:03:20Z Raymond_Benc $
+ * @version 		$Id: default.class.php 6374 2013-07-27 12:05:58Z Raymond_Benc $
  */
 class Ban_Component_Controller_Admincp_Default extends Phpfox_Component
 {
@@ -52,7 +52,7 @@ class Ban_Component_Controller_Admincp_Default extends Phpfox_Component
 			{				
 				foreach ($aFilter['user_groups_affected'] as $aGroup)
 				{
-					$aFilters[$iKey]['s_user_groups_affected'] .= $aGroup['title'] . ', ';
+					$aFilters[$iKey]['s_user_groups_affected'] .= Phpfox::getLib('locale')->convert($aGroup['title']) . ', ';
 				}
 				$aFilters[$iKey]['s_user_groups_affected'] = rtrim($aFilters[$iKey]['s_user_groups_affected'], ', ');
 			}

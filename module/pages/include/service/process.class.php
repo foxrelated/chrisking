@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Service
- * @version 		$Id: process.class.php 5040 2012-11-26 07:33:17Z Raymond_Benc $
+ * @version 		$Id: process.class.php 6473 2013-08-20 06:32:57Z Raymond_Benc $
  */
 class Pages_Service_Process extends Phpfox_Service 
 {
@@ -139,7 +139,15 @@ class Pages_Service_Process extends Phpfox_Service
 		
 		$oFilter = Phpfox::getLib('parse.input');
 		
-		if (!$aVals['is_block'])
+		if ($iEditId !== null)
+		{
+		    $sNewTitle = $this->database()->select('url_title')
+				->from(Phpfox::getT('pages_widget'))
+				->where('widget_id = ' . (int)$iEditId)
+				->execute('getSlaveField');
+		}
+
+		if (!$aVals['is_block'] && ($iEditId !== null && ($sNewTitle != $aVals['url_title'])))
 		{
 			$sNewTitle = Phpfox::getLib('parse.input')->prepareTitle('pages', $aVals['url_title'], 'url_title', Phpfox::getUserId(), Phpfox::getT('pages_widget'), 'page_id = ' . (int) $aPage['page_id'] . ' AND url_title LIKE \'%' . $aVals['url_title'] . '%\'');
 		}
@@ -149,7 +157,7 @@ class Pages_Service_Process extends Phpfox_Service
 			'title' => $aVals['title'],
 			'is_block' => (int) $aVals['is_block'],
 			'menu_title' => ($aVals['is_block'] ? null : $aVals['menu_title']),
-			'url_title' => ($aVals['is_block'] ? null : $sNewTitle)
+			'url_title' => ($aVals['is_block'] ? null : (isset($sNewTitle) ? $sNewTitle : $aVals['url_title']))
 		);		
 		
 		if ($iEditId === null)
@@ -321,7 +329,13 @@ class Pages_Service_Process extends Phpfox_Service
 		
 		$iId = $this->database()->insert($this->_sTable, $aInsert);
 		
-		$this->database()->insert(Phpfox::getT('pages_text'), array('page_id' => $iId));
+		$aInsertText = array('page_id' => $iId);
+		if (isset($aVals['info']))
+		{
+			$aInsertText['text'] = $this->preParse()->clean($aVals['info']); 
+			$aInsertText['text_parsed'] = $this->preParse()->prepare($aVals['info']);
+		}
+		$this->database()->insert(Phpfox::getT('pages_text'), $aInsertText);
 		
 		$sSalt = '';
 		for ($i = 0; $i < 3; $i++)
@@ -329,7 +343,7 @@ class Pages_Service_Process extends Phpfox_Service
 			$sSalt .= chr(rand(33, 91));
 		}		
 		
-		$sPossible = Phpfox::getParam('captcha.captcha_code');
+		$sPossible = '23456789bcdfghjkmnpqrstvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
       	$sPassword = '';
       	$i = 0;
       	while ($i < 10) 
@@ -360,6 +374,7 @@ class Pages_Service_Process extends Phpfox_Service
 		
 		$this->cache()->remove(array('user', 'pages_' . Phpfox::getUserId())); // Seems to fix http://www.phpfox.com/tracker/view/8411/
 		$this->cache()->remove('pages_' . Phpfox::getUserId());
+		$this->cache()->remove(array('pages', Phpfox::getUserId()));
 		
 		if (!Phpfox::getUserParam('pages.approve_pages'))
 		{
@@ -377,6 +392,7 @@ class Pages_Service_Process extends Phpfox_Service
 		{
 			return false;
 		}
+		if ($sPlugin = Phpfox_Plugin::get('pages.service_process_update_0')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
 		
 		$aUser = $this->database()->select('user_id')
 			->from(Phpfox::getT('user'))
@@ -390,6 +406,29 @@ class Pages_Service_Process extends Phpfox_Service
 			//'landing_page' => $aVals['landing_page'],
 			'privacy' => (isset($aVals['privacy']) ? (int) $aVals['privacy'] : 0)			
 		);
+		
+		if (isset($aVals['use_timeline']))
+		{
+			$aUpdate['use_timeline'] = (int)$aVals['use_timeline'];
+		}
+		
+		/* Only store the location if the admin has set a google key or ipinfodb key. This input is not always available */
+		if ( (Phpfox::getParam('core.ip_infodb_api_key') != '' || Phpfox::getParam('core.google_api_key')) && isset($aVals['location']))
+		{
+			if (isset($aVals['location']['name']))
+			{
+				$aUpdate['location_name'] = $this->preParse()->clean($aVals['location']['name']);
+			}
+			if (isset($aVals['location']['latlng']))
+			{
+				$aMatch = explode(',',$aVals['location']['latlng']);
+				if (isset($aMatch[1]))
+				{
+					$aUpdate['location_latitude'] = $aMatch[0];
+					$aUpdate['location_longitude']= $aMatch[1];
+				}
+			}
+		}
 		
 		if (isset($aVals['landing_page']))
 		{
@@ -442,6 +481,8 @@ class Pages_Service_Process extends Phpfox_Service
 			'text_parsed' => $this->preParse()->prepare($aVals["text"])
 		), 'page_id = ' . (int) $iId);		
 		
+		if ($sPlugin = Phpfox_Plugin::get('pages.service_process_update_1')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
+
 		if (isset($aVals['invite']) && is_array($aVals['invite']))
 		{
 			$aNewPage = Phpfox::getService('pages')->getForEdit($aPage['page_id']);
@@ -464,6 +505,8 @@ class Pages_Service_Process extends Phpfox_Service
 				
 				
 			$bSent = false;
+            $sLink = Phpfox::getService('pages')->getUrl($aNewPage['page_id'], $aNewPage['title'], $aNewPage['vanity_url']);
+            
 			foreach ($aUsers as $aUser)
 			{
 				if (isset($aCachedEmails[$aUser['email']]))
@@ -476,7 +519,7 @@ class Pages_Service_Process extends Phpfox_Service
 					continue;
 				}
 				
-				$sLink = Phpfox::getService('pages')->getUrl($aNewPage['page_id'], $aNewPage['title'], $aNewPage['vanity_url']);
+				
 
 				$sMessage = Phpfox::getPhrase('pages.full_name_invited_you_to_the_page_title', array('full_name' => Phpfox::getUserBy('full_name'), 'title' => $aNewPage['title']));
 				$sMessage .= "\n" . Phpfox::getPhrase('pages.to_view_this_page_click_the_link_below_a_href_link_link_a', array('link' => $sLink)) . "\n";
@@ -521,6 +564,7 @@ class Pages_Service_Process extends Phpfox_Service
 				$this->database()->insert(Phpfox::getT('pages_admin'), array('page_id' => $iId, 'user_id' => $iAdmin));
 				
 				$this->cache()->remove(array('user', 'pages_' . $iAdmin));
+				$this->cache()->remove(array('pages', $iAdmin));
 			}			
 		}		
 		
@@ -715,12 +759,26 @@ class Pages_Service_Process extends Phpfox_Service
 		{
 			return Phpfox_Error::set(Phpfox::getPhrase('pages.unable_to_log_in_as_this_page'));
 		}
+
+		if (Phpfox::getParam('core.auth_user_via_session'))
+		{
+			$this->database()->delete(Phpfox::getT('session'), 'user_id = ' . (int) Phpfox::getUserId());
+			$this->database()->insert(Phpfox::getT('session'), array(
+					'user_id' => $aPage['user_id'],
+					'last_activity' => PHPFOX_TIME,
+					'id_hash' => Phpfox::getLib('request')->getIdHash()
+				)
+			);
+		}
 		
 		$sPasswordHash = Phpfox::getLib('hash')->setRandomHash(Phpfox::getLib('hash')->setHash($aPage['password'], $aPage['password_salt']));
 
 		$iTime = 0;
-		Phpfox::setCookie('user_id', $aPage['user_id'], $iTime);
-		Phpfox::setCookie('user_hash', $sPasswordHash, $iTime);
+
+		$aUserCookieNames = Phpfox::getService('user.auth')->getCookieNames();
+
+		Phpfox::setCookie($aUserCookieNames[0], $aPage['user_id'], $iTime);
+		Phpfox::setCookie($aUserCookieNames[1], $sPasswordHash, $iTime);
 		
 		Phpfox::getLib('session')->remove(Phpfox::getParam('core.theme_session_prefix') . 'theme');
 
@@ -752,7 +810,7 @@ class Pages_Service_Process extends Phpfox_Service
 		Phpfox::setCookie('page_login', '', -1);
 	}
 	
-	public function delete($iId)
+	public function delete($iId, $bDoCallback = true)
 	{		
 		$aPage = $this->database()->select('*')
 			->from(Phpfox::getT('pages'))
@@ -790,13 +848,15 @@ class Pages_Service_Process extends Phpfox_Service
 			$this->database()->delete(Phpfox::getT('pages_url'), 'page_id = ' . (int) $aPage['page_id']);
 			$this->database()->delete(Phpfox::getT('feed'), 'type_id = \'pages_itemLiked\' AND item_id = ' . (int) $aPage['page_id']);
 			
-			if ( ((int)$iUser) > 0)
+			if (((int)$iUser) > 0 && $bDoCallback === true)
 			{
 				Phpfox::massCallback('onDeleteUser', $iUser);
 			}
 			$this->database()->delete(Phpfox::getT('pages'), 'page_id = ' . $aPage['page_id']);
 
 			Phpfox::getService('user.activity')->update(Phpfox::getUserId(), 'pages', '-');
+
+			$this->cache()->remove(array('pages', $aPage['user_id']));
 			
 			return true;
 		}
@@ -891,7 +951,7 @@ class Pages_Service_Process extends Phpfox_Service
 	/**
 	* param $bAjaxPageUpload 
 	*/
-	public function setCoverPhoto ($iPageId, $iPhotoId, $bIsAjaxPageUpload = false)
+	public function setCoverPhoto($iPageId, $iPhotoId, $bIsAjaxPageUpload = false)
 	{
 		/*if (!Phpfox::isAdmin())
 		{
@@ -908,9 +968,11 @@ class Pages_Service_Process extends Phpfox_Service
 				return Phpfox_Error::set('User is not an admin: ' . print_r($aIsAdmin, true));
 			}
 		}*/
+
+
 		if (!Phpfox::getService('pages')->isAdmin($iPageId) && !Phpfox::isAdmin())
 		{
-			return Phpfox_Error::set('User is not an sasadmin');
+			return Phpfox_Error::set('User is not an admin');
 		}
 		
 		if ($bIsAjaxPageUpload == false)
@@ -921,7 +983,7 @@ class Pages_Service_Process extends Phpfox_Service
 				->where('module_id = "pages" AND group_id = '. (int)$iPageId . ' AND photo_id = ' . (int)$iPhotoId)
 				->execute('getSlaveField');
 		}		
-		
+
 		if (!empty($iPhotoId))
 		{
 			$this->database()->update(Phpfox::getT('pages'), array('cover_photo_position' => '', 'cover_photo_id' => (int)$iPhotoId), 'page_id = ' . (int)$iPageId);

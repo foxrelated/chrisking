@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: admincp.class.php 4944 2012-10-24 05:24:29Z Raymond_Benc $
+ * @version 		$Id: admincp.class.php 6343 2013-07-19 19:42:10Z Raymond_Benc $
  */
 class Admincp_Service_Admincp extends Phpfox_Service 
 {
@@ -20,6 +20,77 @@ class Admincp_Service_Admincp extends Phpfox_Service
 	 */	
 	public function __construct()
 	{	
+	}
+	
+	public function getHostingInfo($sCall, $aPost = array())
+	{
+		$aPost['hash'] = Phpfox::getParam(array('db', 'host'));
+
+		$mReturn = json_decode(Phpfox::getLib('request')->send('http://oncloud.phpfox.com/oncloud/apicall_' . $sCall . '/', $aPost), true);
+
+		return $mReturn;
+	}
+		
+	public function getHostingStats()
+	{
+		$sCacheId = $this->cache()->set('admincp_site_cache');
+		if (!($aReturn = $this->cache()->get($sCacheId, 1 * 60 * 60))) // cache is in hours
+		{
+			$aParts = explode('|', Phpfox::getParam('core.phpfox_max_users_online'));
+			$iTotalMemberCnt = $this->database()->select('COUNT(*)')
+				->from(Phpfox::getT('user'))
+				->where('view_id = 0')
+				->execute('getSlaveField');
+			
+			$iOneGigIntoBytes = 1073741824;
+			$iTotalSpace = ($aParts[0] * $iOneGigIntoBytes);
+			$iTotalUsed = Phpfox::getLib('cdn')->getUsage();
+			
+			$iCount1 = $iTotalUsed / $iTotalSpace;
+			$iCount2 = $iCount1 * 100;
+			$iTotalUsage = number_format($iCount2, 0);	
+			if (!$iTotalUsage)
+			{
+				$iTotalUsage = '< 1';
+			}	
+			
+			if ($aParts[1] == '0')
+			{
+				$aParts[1] = 'Unlimited';
+			}		
+			else
+			{	
+				$iCount1 = $iTotalMemberCnt / $aParts[1];
+				$iCount2 = $iCount1 * 100;
+				$iTotalMemberUsage = number_format($iCount2, 0);
+				if (!$iTotalMemberUsage)
+				{
+					$iTotalMemberUsage = '< 1';
+				}		
+			}
+
+			$sPastHistory = Phpfox::getParam('core.phpfox_total_users_online_history');
+			$aParts = explode('|', $sPastHistory);
+			$iVideosUploaded = 0;
+			$iTotalVideoUsage = 0;
+			if (isset($aParts[1]))
+			{
+				$iVideosUploaded = (int) $aParts[0];
+				$iCount1 = $iVideosUploaded / Phpfox::getParam('core.phpfox_total_users_online_mark');
+				$iCount2 = $iCount1 * 100;
+				$iTotalVideoUsage = number_format($iCount2, 0);
+			}
+
+			$aReturn = array(
+				'sTotalSpaceUsage' => $iTotalUsage . '% (' . Phpfox::getLib('file')->filesize($iTotalUsed) . ' out of ' . $aParts[0] . ' GB)',
+				'sTotalMemberUsage' => (isset($iTotalMemberUsage) ? $iTotalMemberUsage . '% (' . $iTotalMemberCnt . ' out of ' . number_format($aParts[1]) . ')' : 'Unlimited'),
+				'sTotalVideoUsage' => $iTotalVideoUsage . '% (' . $iVideosUploaded . ' out of ' . Phpfox::getParam('core.phpfox_total_users_online_mark') . ')'
+			);
+
+			$this->cache()->save($sCacheId, $aReturn);
+		}
+		
+		return $aReturn;
 	}
 	
 	public function getAdmincpRules()

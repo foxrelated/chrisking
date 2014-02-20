@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Mail
- * @version 		$Id: callback.class.php 4345 2012-06-26 08:23:18Z Raymond_Benc $
+ * @version 		$Id: callback.class.php 6051 2013-06-11 13:33:49Z Raymond_Benc $
  */
 class Mail_Service_Callback extends Phpfox_Service 
 {
@@ -104,7 +104,13 @@ class Mail_Service_Callback extends Phpfox_Service
 	 * @param int $iUser
 	 */
 	public function onDeleteUser($iUser)
-	{		
+	{
+		if (Phpfox::getParam('mail.threaded_mail_conversation'))
+		{
+			$this->database()->delete(Phpfox::getT('mail_thread_text'), 'user_id = ' . $iUser);
+			$this->database()->delete(Phpfox::getT('mail_thread_user'), 'user_id = ' . $iUser);
+		}
+
 		// get all the mail in this user's inbox		
 		$aMails = $this->database()
 			->select('mail_id, owner_user_id, viewer_user_id')

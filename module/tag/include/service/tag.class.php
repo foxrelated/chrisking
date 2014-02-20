@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Tag
- * @version 		$Id: tag.class.php 3533 2011-11-21 14:07:21Z Raymond_Benc $
+ * @version 		$Id: tag.class.php 6277 2013-07-16 12:59:34Z Raymond_Benc $
  */
 class Tag_Service_Tag extends Phpfox_Service 
 {
@@ -150,7 +150,7 @@ class Tag_Service_Tag extends Phpfox_Service
 	                'value' => $aRow['total'],
 	                'key' => $aRow['tag'],
 	                'url' => $aRow['tag_url'],
-	            	'link' => Phpfox::getLib('url')->makeUrl($aParams['link'], array('tag', $aRow['tag_url']))
+	            	'link' => (($sCategory === null && Phpfox::getParam('tag.enable_hashtag_support')) ? Phpfox::getLib('url')->makeUrl('hashtag', array($aRow['tag_url'])) : Phpfox::getLib('url')->makeUrl($aParams['link'], array('tag', $aRow['tag_url'])))
 				);				
 			}
 			

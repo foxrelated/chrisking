@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Comment
- * @version 		$Id: callback.class.php 4132 2012-04-25 13:38:46Z Raymond_Benc $
+ * @version 		$Id: callback.class.php 5425 2013-02-25 14:16:35Z Raymond_Benc $
  */
 class Comment_Service_Callback extends Phpfox_Service 
 {
@@ -299,6 +299,24 @@ class Comment_Service_Callback extends Phpfox_Service
 		return $aMenus;
 	}		
 
+	public function getActions()
+	{
+		return array(
+			'dislike' => array(
+				'enabled' => true,
+				'action_type_id' => 2, // 2 = dislike
+				'phrase' => Phpfox::getPhrase('like.dislike'),
+				'phrase_in_past_tense' => 'disliked',
+				'item_phrase' => Phpfox::getPhrase('comment.item_phrase'),
+				'item_type_id' => 'comment', // used to differentiate between photo albums and photos for example. This is not a phrase
+				'table' => 'comment',
+				'column_update' => 'total_dislike',
+				'column_find' => 'comment_id',
+				'where_to_show' => array('')			
+			)
+		);
+	}
+	
 	/**
 	 * If a call is made to an unknown method attempt to connect
 	 * it to a specific plug-in with the same name thus allowing 

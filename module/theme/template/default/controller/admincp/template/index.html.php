@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Theme
- * @version 		$Id: index.html.php 2197 2010-11-22 15:26:08Z Raymond_Benc $
+ * @version 		$Id: index.html.php 7022 2014-01-06 19:43:59Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -73,12 +73,12 @@ defined('PHPFOX') or exit('NO DICE!');
 			<textarea cols="50" rows="15" name="val[editor_text]" id="js_template_content"></textarea>		
 			<div>
 				<div class="go_left">
-					<input type="button" value="Save" class="button" id="js_update_template" />		
+					<input type="button" value="{phrase var='core.save'}" class="button" id="js_update_template" />		
 					<span id="js_last_modified"><input type="button" value="{phrase var='theme.revert'}" class="button" id="js_revert" /></span>		
 					<span id="js_delete_custom"><input type="button" value="{phrase var='theme.delete'}" class="button" onclick="return $Core.templateEditor.deleteItem();" /></span>
 				</div>
 				<div class="t_right" style="margin-right:20px;">
-					Product:
+					{phrase var='admincp.product'}:
 					<select name="val[product_id]" id="js_template_product_id">
 					{foreach from=$aProducts item=aProduct}
 						<option value="{$aProduct.product_id}">{$aProduct.title}</option>

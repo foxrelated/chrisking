@@ -188,6 +188,15 @@ $Core.searchFriendsInput =
 		this.aFoundUsers[$iUserId] = $aData;	
 	},
 	
+	removeSelected: function($oObj, $iUserId)
+	{
+		if (isset(this.aLiveUsers[$iUserId]))
+		{
+			delete this.aLiveUsers[$iUserId];
+		}
+		$($oObj).parents('li:first').remove();
+	},
+	
 	processClick: function($oObj, $iUserId)
 	{
 		if (!isset(this.aFoundUsers[$iUserId]))
@@ -216,7 +225,7 @@ $Core.searchFriendsInput =
 		var $sHtml = '';
 		$sHtml += '<li>';
 		
-		$sHtml += '<a href="#" class="friend_search_remove" title="Remove" onclick="$(this).parents(\'li:first\').remove(); return false;">Remove</a>';
+		$sHtml += '<a href="#" class="friend_search_remove" title="Remove" onclick="$Core.searchFriendsInput.removeSelected(this, ' + $iUserId + ');  return false;">Remove</a>';
 		if (!this._get('inline_bubble'))
 		{
 			$sHtml += '<div class="friend_search_image"><img src="' + $aUser['user_image'] + '" alt="" style="width:25px; height:25px;" /></div>';

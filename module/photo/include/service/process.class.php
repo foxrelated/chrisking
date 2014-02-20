@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: process.class.php 4854 2012-10-09 05:20:40Z Raymond_Benc $
+ * @version 		$Id: process.class.php 6998 2013-12-18 16:56:16Z Fern $
  */
 class Photo_Service_Process extends Phpfox_Service
 {
@@ -36,12 +36,23 @@ class Photo_Service_Process extends Phpfox_Service
 			return false;
 		}
 		
+		// A file path should not have curly brackets
+		$aPhoto['destination'] = str_replace(array('{', '}'), '', $aPhoto['destination']);
 		/* 2.copy the picture to <the folder that I need to find out> */
 		$sTempName = PHPFOX_DIR_FILE .'pic' . PHPFOX_DS . 'photo' . PHPFOX_DS . sprintf($aPhoto['destination'],'');
+		if (!file_exists($sTempName))
+		{
+			$sTempName = PHPFOX_DIR_FILE .'pic' . PHPFOX_DS . 'photo' . PHPFOX_DS . sprintf($aPhoto['destination'], '_500');
+		}
+		
+		if (Phpfox::getParam('core.allow_cdn'))
+		{
+			$sTempName = Phpfox::getLib('cdn')->getUrl($sTempName);
+		}		
 		
 		define('PHPFOX_USER_PHOTO_IS_COPY', true);
 		
-		$aRet = Phpfox::getService('user.process')->uploadImage(Phpfox::getUserId(), true, $sTempName);
+		$aRet = Phpfox::getService('user.process')->uploadImage(Phpfox::getUserId(), true, $sTempName, false, $iId);
 		
 		return (isset($aRet['user_image']) && !empty($aRet['user_image']));
 	}
@@ -81,7 +92,18 @@ class Photo_Service_Process extends Phpfox_Service
 		    if (!empty($aVals['title']))
 		    {
 				$aFields[] = 'title';
-		
+
+				// http://www.phpfox.com/tracker/view/14353/
+				$bWindows = false;
+				if (stristr(PHP_OS, "win"))
+				{
+					$bWindows = true;
+				}
+				else
+				{
+					$aVals['original_title'] = $aVals['title'];
+				}
+				
 				// Clean the title for any sneaky attacks
 				$aVals['title'] = $oParseInput->clean($aVals['title'], 255);
 				
@@ -94,7 +116,7 @@ class Photo_Service_Process extends Phpfox_Service
 					    ->where('photo_id = ' . $aVals['photo_id'])
 					    ->execute('getRow');
 		
-				    $sNewName = preg_replace("/^(.*?)-(.*?)%(.*?)$/", "$1-" . str_replace('%', '', $aVals['title']) . "%$3", $aPhoto['destination']);
+				    $sNewName = preg_replace("/^(.*?)-(.*?)%(.*?)$/", "$1-" . str_replace('%', '', ($bWindows ? $aVals['title'] : $aVals['original_title'])) . "%$3", $aPhoto['destination']);
 		
 				    $aVals['destination'] = $sNewName;
 		
@@ -109,7 +131,6 @@ class Photo_Service_Process extends Phpfox_Service
 		    }
 		    
 		    $iAlbumId = (int) (empty($aVals['move_to']) ? (isset($aVals['album_id']) ? $aVals['album_id'] : 0) : $aVals['move_to']);
-	
 		    if (!empty($aVals['set_album_cover']))
 		    {
 		    	$aFields['is_cover'] = 'int';	
@@ -121,6 +142,7 @@ class Photo_Service_Process extends Phpfox_Service
 		    if (!empty($aVals['move_to']))
 		    {
 		    	$aFields['album_id'] = 'int';
+		    	$iOldAlbumId = $aVals['album_id'];
 		    	$aVals['album_id'] = (int) $aVals['move_to'];
 		    }
 		    
@@ -134,15 +156,12 @@ class Photo_Service_Process extends Phpfox_Service
 		    $this->database()->process($aFields, $aVals)->update($this->_sTable, 'photo_id = ' . (int) $aVals['photo_id']);
 	
 		    // Check if we need to update the description of the photo
-		    if (!empty($aVals['description']))
-		    {
 				$aFieldsInfo = array(
 					'description'
 				);
 		
 				// Clean the data before we add it into the database
-				$aVals['description'] = $oParseInput->clean($aVals['description']);
-		    }    
+				$aVals['description'] = (empty($aVals['description']) ? null : $this->preParse()->prepare($aVals['description']));
 	
 		    (!empty($aVals['width']) ? $aFieldsInfo[] = 'width' : 0);
 		    (!empty($aVals['height']) ? $aFieldsInfo[] = 'height' : 0);
@@ -154,22 +173,35 @@ class Photo_Service_Process extends Phpfox_Service
 		    }
 	
 		    // Add tags for the photo
-		    if (Phpfox::isModule('tag') && isset($aVals['tag_list']) && !empty($aVals['tag_list']) && Phpfox::getUserParam('photo.can_add_tags_on_photos'))
-		    {
-				Phpfox::getService('tag.process')->update('photo', $aVals['photo_id'], $iUserId, $aVals['tag_list']);
-		    }
-	
+			if (Phpfox::isModule('tag') && Phpfox::getParam('tag.enable_hashtag_support') && Phpfox::getUserParam('photo.can_add_tags_on_photos') && !empty($aVals['description']))
+			{
+				Phpfox::getService('tag.process')->update('photo', $aVals['photo_id'], $iUserId, $aVals['description'], true);
+			}
+			else
+			{
+				if (Phpfox::isModule('tag') && isset($aVals['tag_list']) && !empty($aVals['tag_list']) && Phpfox::getUserParam('photo.can_add_tags_on_photos'))
+				{
+					Phpfox::getService('tag.process')->update('photo', $aVals['photo_id'], $iUserId, $aVals['tag_list']);
+				}
+			}
+
 		    // Make sure if we plan to add categories for this image that there is something to add
 		    if (isset($aVals['category_id']) && count($aVals['category_id']))
 		    {
-				// Loop thru all the categories
+				if (!is_array($aVals['category_id']))
+				{
+					$aVals['category_id'] = array($aVals['category_id']);
+				}
+				// Loop through all the categories
+		    	$this->database()->delete(Phpfox::getT('photo_category_data'), 'photo_id = ' . (int) $aVals['photo_id']);
+				
 				foreach ($aVals['category_id'] as $iCategory)
 				{
-				    // Add each of the categories
+				    // Add each of the categories					
 				    Phpfox::getService('photo.category.process')->updateForItem($aVals['photo_id'], $iCategory);
 				}
 		    }
-		
+			
 		    $iId = $aVals['photo_id'];
 		    
 		    if (Phpfox::isModule('privacy') && isset($aVals['privacy']))
@@ -184,6 +216,20 @@ class Photo_Service_Process extends Phpfox_Service
 				}	
 		    }
 			
+			if(!empty($iAlbumId))
+			{
+				$aAlbum = Phpfox::getService('photo.album')->getAlbum($iUserId, $iAlbumId, true);
+				if(!empty($aAlbum['privacy']))
+				{
+					$aVals['privacy'] = $aAlbum['privacy'];
+				}
+				
+				if(!empty($aAlbum['privacy_comment']))
+				{
+					$aVals['privacy_comment'] = $aAlbum['privacy_comment'];
+				}
+			}
+			
 			if (!isset($aVals['privacy']))
 			{
 				$aVals['privacy'] = 0;
@@ -194,7 +240,22 @@ class Photo_Service_Process extends Phpfox_Service
 				$aVals['privacy_comment'] = 0;
 			}
 			
-			(Phpfox::isModule('feed') ? Phpfox::getService('feed.process')->update('photo', $iId, $aVals['privacy'], $aVals['privacy_comment'], 0, $iUserId) : null);			
+			(Phpfox::isModule('feed') ? Phpfox::getService('feed.process')->update('photo', $iId, $aVals['privacy'], $aVals['privacy_comment'], 0, $iUserId) : null);
+
+			if (!empty($aVals['move_to']))
+			{
+				Phpfox::getService('photo.album.process')->updateCounter($iOldAlbumId, 'total_photo');
+				Phpfox::getService('photo.album.process')->updateCounter($aVals['move_to'], 'total_photo');		
+				$aCoverPhoto = $this->database()->select('photo_id')
+					->from(Phpfox::getT('photo'))
+					->where('album_id = ' . $iOldAlbumId)
+					->order('time_stamp DESC')
+					->execute('getRow');	
+				if (isset($aCoverPhoto['photo_id']))
+				{
+					$this->database()->update(Phpfox::getT('photo'), array('is_cover' => '1'), 'photo_id = ' . (int) $aCoverPhoto['photo_id']);
+				}					
+			}						
 		}
 		else
 		{
@@ -254,7 +315,7 @@ class Photo_Service_Process extends Phpfox_Service
 			    'extension' => strtolower($aVals['ext']),
 			    'file_size' => $aVals['size'],
 			    'mime_type' => $aVals['type'],
-			    'description' => (empty($aVals['description']) ? null : $this->preParse()->clean($aVals['description']))
+			    'description' => (empty($aVals['description']) ? null : $this->preParse()->prepare($aVals['description']))
 		    );
 	
 		    // Insert the data into the photo_info table
@@ -284,6 +345,11 @@ class Photo_Service_Process extends Phpfox_Service
 					Phpfox::getService('privacy.process')->add('photo', $iId, (isset($aVals['privacy_list']) ? $aVals['privacy_list'] : array()));			
 				}			    
 			}
+
+			if (Phpfox::isModule('tag') && Phpfox::getParam('tag.enable_hashtag_support') && Phpfox::getUserParam('photo.can_add_tags_on_photos') && !empty($aVals['description']))
+			{
+				Phpfox::getService('tag.process')->add('photo', $iId, $iUserId, $aVals['description'], true);
+			}
 		}
 	
 		// Plugin call
@@ -308,7 +374,10 @@ class Photo_Service_Process extends Phpfox_Service
     public function update($iUserId, $iId, $aVals, $bAllowTitleUrl = false)
     {
 		$aVals['photo_id'] = $iId;
-	
+        if (Phpfox::getParam('feed.cache_each_feed_entry') )
+        {
+            $this->cache()->remove(array('feeds', 'photo_' . $iId));
+        }
 		return $this->add($iUserId, $aVals, true, $bAllowTitleUrl);
     }
 
@@ -322,7 +391,7 @@ class Photo_Service_Process extends Phpfox_Service
     public function delete($iId, $bPass = false)
     {
 		// Get the image ID and full path to the image.
-		$aPhoto = $this->database()->select('user_id, module_id, group_id, is_sponsor, album_id, photo_id, destination')
+		$aPhoto = $this->database()->select('user_id, module_id, group_id, is_sponsor, album_id, photo_id, destination, server_id')
 			->from($this->_sTable)
 			->where('photo_id = ' . (int) $iId)
 			->execute('getRow');
@@ -354,6 +423,12 @@ class Photo_Service_Process extends Phpfox_Service
 		    Phpfox::getLib('file')->unlink(Phpfox::getParam('photo.dir_photo') . sprintf($aPhoto['destination'], ''));
 		}
 	
+		// If CDN is in use, remove the original image, as done above
+		if(Phpfox::getParam('core.allow_cdn') && $aPhoto['server_id'] > 0)
+		{
+			Phpfox::getLib('cdn')->remove(sprintf($aPhoto['destination'], ''));
+		}
+	
 		// Loop thru all the other smaller images
 		foreach(Phpfox::getParam('photo.photo_pic_sizes') as $iSize)
 		{
@@ -365,6 +440,12 @@ class Photo_Service_Process extends Phpfox_Service
 		
 				// Remove the image
 				Phpfox::getLib('file')->unlink(Phpfox::getParam('photo.dir_photo') . sprintf($aPhoto['destination'], '_' . $iSize));
+		    }
+
+		    // If CDN is in use, remove the thumbnails there too
+		    if(Phpfox::getParam('core.allow_cdn') && $aPhoto['server_id'] > 0)
+		    {
+			    Phpfox::getLib('cdn')->remove(sprintf($aPhoto['destination'], '_' . $iSize));
 		    }
 		}
 	
@@ -514,12 +595,64 @@ class Photo_Service_Process extends Phpfox_Service
 	
 		if (($aPhoto['user_id'] == Phpfox::getUserId() && Phpfox::getUserParam('photo.can_edit_own_photo')) || Phpfox::getUserParam('photo.can_edit_other_photo'))
 		{
-		    foreach(array_merge(array(''), Phpfox::getParam('photo.photo_pic_sizes')) as $iSize)
+			if(!Phpfox::getParam('photo.delete_original_after_resize'))
+			{
+				$aSizes = array_merge(array(''), Phpfox::getParam('photo.photo_pic_sizes'));
+			}
+			else
+			{
+				$aSizes = Phpfox::getParam('photo.photo_pic_sizes');
+			}
+			
+			$aParts = explode('/', $aPhoto['destination']);
+			$sParts = '';
+			if(is_array($aParts))
+			{
+				foreach($aParts as $sPart)
+				{
+					if(!empty($sPart))
+					{
+						if(!preg_match('/jpg|gif|png/i', $sPart))
+						{
+							$sParts .= $sPart . '/';
+						}
+					}
+				}
+			}
+			
+		    foreach($aSizes as $iSize)
 		    {
 				$sFile = Phpfox::getParam('photo.dir_photo') . sprintf($aPhoto['destination'], (empty($iSize) ? '' : '_') . $iSize);
-				if (file_exists($sFile))
+				if (file_exists($sFile) || Phpfox::getParam('core.allow_cdn'))
 				{
+					if (Phpfox::getParam('core.allow_cdn') && $aPhoto['server_id'] > 0)
+					{
+						$sMainFile = $sFile;
+						$sActualFile = Phpfox::getLib('image.helper')->display(array(
+								'server_id' => $aPhoto['server_id'],
+								'path' => 'photo.url_photo',
+								'file' => $aPhoto['destination'],
+								'suffix' => (empty($iSize) ? '' : '_') . $iSize,
+								'return_url' => true
+							)
+						);
+
+						$aExts = preg_split("/[\/\\.]/", $sActualFile);
+						$iCnt = count($aExts)-1;
+						$sExt = strtolower($aExts[$iCnt]);
+
+						$sFile = Phpfox::getParam('photo.dir_photo') . $sParts . md5($aPhoto['destination']) . (empty($iSize) ? '' : '_') . $iSize . '.' . $sExt;
+
+						copy($sActualFile, $sFile);
+						//p($sFile);
+					}
+
 				    Phpfox::getLib('image')->rotate($sFile, $sCmd);
+				}
+
+				if (Phpfox::getParam('core.allow_cdn') && $aPhoto['server_id'] > 0)
+				{
+					$this->database()->update(Phpfox::getT('photo'), array('destination' => $sParts . md5($aPhoto['destination']) . '%s.' . $sExt), 'photo_id = ' . (int) $aPhoto['photo_id']);
 				}
 		    }
 	

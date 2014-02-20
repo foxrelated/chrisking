@@ -12,7 +12,7 @@ $Behavior.quickEdit = function()
 		$(this).createQuickEditForm($(this).get(0).href);	
 		return false;
 	});	
-}
+};
 
 $.fn.createQuickEditForm = function(sUrl)
 {
@@ -79,4 +79,4 @@ $.fn.createQuickEditForm = function(sUrl)
 			$('#js_quick_edit' + $aParams['id']).focus();
 			break;
 	}	
-}
+};

@@ -101,7 +101,7 @@ function getCookie(check_name)
 	var b_cookie_found = false;
 	var check_name = getParam('sJsCookiePrefix') + check_name;
 
-	for ( i = 0; i < a_all_cookies.length; i++ )
+	for (var i = 0; i < a_all_cookies.length; i++ )
 	{
 		a_temp_cookie = a_all_cookies[i].split( '=' );		
 		
@@ -376,7 +376,8 @@ function in_array(needle, haystack, strict) {
 
 function getResizedWindow() 
 {
-	var myWidth = 0, myHeight = 0;
+	var myWidth = 0;
+	var myHeight = 0;
   	if( typeof( window.innerWidth ) == 'number' ) 
   	{
     	//Non-IE
@@ -465,7 +466,8 @@ function htmlspecialchars (string, quote_style, charset, double_encode) {
 
   // getPageScroll() by quirksmode.com
   function getPageScroll() {
-    var xScroll, yScroll;
+    var xScroll;
+    var yScroll;
     if (self.pageYOffset) {
       yScroll = self.pageYOffset;
       xScroll = self.pageXOffset;
@@ -476,12 +478,12 @@ function htmlspecialchars (string, quote_style, charset, double_encode) {
       yScroll = document.body.scrollTop;
       xScroll = document.body.scrollLeft;
     }
-    return new Array(xScroll,yScroll)
+    return new Array(xScroll,yScroll);
   }
 
   // Adapted from getPageSize() by quirksmode.com
   function getPageHeight() {
-    var windowHeight
+    var windowHeight;
     if (self.innerHeight) {	// all except Explorer
       windowHeight = self.innerHeight;
     } else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
@@ -489,7 +491,7 @@ function htmlspecialchars (string, quote_style, charset, double_encode) {
     } else if (document.body) { // other Explorers
       windowHeight = document.body.clientHeight;
     }
-    return windowHeight
+    return windowHeight;
   }
   
 function htmlentities (str) {

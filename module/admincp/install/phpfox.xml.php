@@ -86,6 +86,21 @@
 		<hook module_id="admincp" hook_type="controller" module="admincp" call_name="admincp.component_controller_foxporter_index_clean" added="1274286148" version_id="2.0.5dev1" />
 		<hook module_id="admincp" hook_type="controller" module="admincp" call_name="admincp.component_controller_sql_title_clean" added="1276177474" version_id="2.0.5" />
 		<hook module_id="admincp" hook_type="service" module="admincp" call_name="admincp.service_product_product_export" added="1286546859" version_id="2.0.7" />
+		<hook module_id="admincp" hook_type="service" module="admincp" call_name="admincp.service_module_process_updateactivity" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="admincp" hook_type="service" module="admincp" call_name="admincp.service_module_process_delete" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="admincp" hook_type="service" module="admincp" call_name="admincp.service_product_process_update" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="admincp" hook_type="service" module="admincp" call_name="admincp.service_product_process_delete" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="admincp" hook_type="controller" module="admincp" call_name="admincp.component_controller_seo_nofollow_clean" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="admincp" hook_type="controller" module="admincp" call_name="admincp.component_controller_seo_meta_clean" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="admincp" hook_type="controller" module="admincp" call_name="admincp.component_controller_product_file_1" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="admincp" hook_type="controller" module="admincp" call_name="admincp.component_controller_product_file_2" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="admincp" hook_type="controller" module="admincp" call_name="admincp.component_controller_product_file_3" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="admincp" hook_type="controller" module="admincp" call_name="admincp.component_controller_product_index_3" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="admincp" hook_type="controller" module="admincp" call_name="admincp.component_controller_product_index_1" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="admincp" hook_type="controller" module="admincp" call_name="admincp.component_controller_product_index_2" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="admincp" hook_type="controller" module="admincp" call_name="admincp.component_controller_limit_clean" added="1361175548" version_id="3.5.0rc1" />
+		<hook module_id="admincp" hook_type="component" module="admincp" call_name="admincp.component_block_oncloud_clean" added="1361175548" version_id="3.5.0rc1" />
+		<hook module_id="admincp" hook_type="controller" module="admincp" call_name="admincp.component_controller_maintain_1" added="1378375116" version_id="3.7.0rc1" />
 	</hooks>
 	<components>
 		<component module_id="admincp" component="index" m_connection="" module="admincp" is_controller="0" is_block="0" is_active="1" />
@@ -808,6 +823,15 @@ Note: This includes updating the status, editing or deleting modules.</phrase>
 		<phrase module_id="admincp" version_id="3.4.0beta1" var_name="admincp_privacy" added="1347866519">AdminCP Privacy</phrase>
 		<phrase module_id="admincp" version_id="3.4.0rc1" var_name="save_your_notes_here" added="1349851420">Save your notes here...</phrase>
 		<phrase module_id="admincp" version_id="3.4.0rc1" var_name="fix_birthdays" added="1349869890">Fix Birthdays</phrase>
+		<phrase module_id="admincp" version_id="3.6.0beta2" var_name="custom_elements" added="1369660476">Custom Elements</phrase>
+		<phrase module_id="admincp" version_id="3.6.0" var_name="add_new_element" added="1372494868">Add New Element</phrase>
+		<phrase module_id="admincp" version_id="3.6.0" var_name="provide_the_full_url_to_add_your_custom_element" added="1372494888">Provide the full URL to add your custom element.</phrase>
+		<phrase module_id="admincp" version_id="3.6.0" var_name="if_adding_keywords_make_sure_to_separate_them_with_commas" added="1372494902">If adding keywords make sure to separate them with commas.</phrase>
+		<phrase module_id="admincp" version_id="3.7.0beta1" var_name="rewrite_url" added="1373976912">Rewrite URLs</phrase>
+		<phrase module_id="admincp" version_id="3.7.0beta2" var_name="this_url" added="1376308242">This url</phrase>
+		<phrase module_id="admincp" version_id="3.7.0beta2" var_name="will_show_this_page" added="1376308252">Will show this page</phrase>
+		<phrase module_id="admincp" version_id="3.7.0beta2" var_name="add_new_rewrite" added="1376308259">Add New Rewrite</phrase>
+		<phrase module_id="admincp" version_id="3.7.0rc1" var_name="uninstall_module_reminder" added="1377070561">Do not forget to remove the folder for this module from the /module/ folder</phrase>
 	</phrases>
 	<user_group_settings>
 		<setting is_admin_setting="0" module_id="admincp" type="boolean" admin="1" user="0" guest="0" staff="0" module="admincp" ordering="2">can_clear_site_cache</setting>

@@ -145,4 +145,4 @@ $Behavior.selector = function()
 			}				
 		}
 	});
-}
+};

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: profile.class.php 619 2009-06-01 14:30:21Z Raymond_Benc $
+ * @version 		$Id: profile.class.php 5077 2012-12-13 09:05:45Z Raymond_Benc $
  */
 class Report_Component_Block_Profile extends Phpfox_Component
 {
@@ -20,7 +20,18 @@ class Report_Component_Block_Profile extends Phpfox_Component
 	 */
 	public function process()
 	{
+		(($sPlugin = Phpfox_Plugin::get('report.component_block_profile_process')) ? eval($sPlugin) : false);
 		
+		if (isset($bHideReportLink))
+		{
+			return false;
+		}
+		
+		$aUser = $this->getParam('aUser');
+		if (isset($aUser['is_page']) && $aUser['is_page'])
+		{
+			return false;
+		}
 	}
 	
 	/**

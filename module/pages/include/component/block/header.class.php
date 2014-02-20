@@ -27,6 +27,11 @@ class Pages_Component_Block_Header extends Phpfox_Component
 			return false;
 		}
 		
+		if (isset($aPage['use_timeline']) && $aPage['use_timeline'])
+		{
+			return false;
+		}
+		
 		if ($this->getParam('bIsPagesViewSection'))
 		{
 			$aMenus = Phpfox::callback($this->getParam('sCurrentPageModule') . '.getPageSubMenu', $aPage);			

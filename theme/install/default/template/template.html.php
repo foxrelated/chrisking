@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: template.html.php 2823 2011-08-09 12:52:04Z Raymond_Benc $
+ * @version 		$Id: template.html.php 5861 2013-05-10 08:36:45Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -16,6 +16,7 @@ defined('PHPFOX') or exit('NO DICE!');
 	<head>
 		<title>{title}</title>	
 		{header}
+		{loadjs}
 	{literal}
 		<script type="text/javascript">
 		$Core.installer =
@@ -50,27 +51,28 @@ defined('PHPFOX') or exit('NO DICE!');
 				
 				return true;
 			});			
-			
+			/*
 			$(window).bind('resize', function() 
 			{
 				$Core.installer.resize();	
 			});
 			
 			$Core.installer.resize();
+			*/
 		});		
 		</script>
 	{/literal}
 	</head>
 	<body>
-		<div id="container" style="display:none;">				
+		<div id="container">				
 			<div id="main">
 				<div class="left">
 					<div class="logo">
-						<a href="http://www.phpfox.com/" target="_blank">{img theme='layout/logo.png' alt=''}</a>
+						<a href="http://www.phpfox.com/" target="_blank">{img theme='layout/phpfox-logo-dark.png' alt=''}</a>
 					</div>				
 					<ul class="step">
 						{foreach from=$aSteps item=aStep}
-						<li{if $aStep.is_active} class="active"{/if}>{$aStep.count}) {$aStep.name}</li>
+						<li{if $aStep.is_active} class="active"{/if}>{$aStep.count}. {$aStep.name}</li>
 						{/foreach}
 					</ul>
 				</div>
@@ -80,7 +82,10 @@ defined('PHPFOX') or exit('NO DICE!');
 					{$sPublicMessage}
 				</div>
 				<script type="text/javascript">
-					$('#public_message').show('slow');
+					$Behavior.theme_install_template = function()
+					{l}
+						$('#public_message').show('slow');
+					{r};
 				</script>
 				{/if}
 				<div id="core_js_messages">
@@ -96,7 +101,7 @@ defined('PHPFOX') or exit('NO DICE!');
 				<div class="clear"></div>
 			</div>
 			<div id="copyright">
-				 {product_branding}
+				 {img theme='layout/phpfox-emblem.png' style='vertical-align:middle;'} {product_branding}
 			</div>
 		</div>
 		<script type="text/javascript">

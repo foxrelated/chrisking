@@ -25,6 +25,7 @@
 		<hook module_id="notification" hook_type="service" module="notification" call_name="notification.service_process_add" added="1276177474" version_id="2.0.5" />
 		<hook module_id="notification" hook_type="component" module="notification" call_name="notification.component_block_notify_clean" added="1319729453" version_id="3.0.0rc1" />
 		<hook module_id="notification" hook_type="service" module="notification" call_name="notification.service_api__call" added="1319729453" version_id="3.0.0rc1" />
+		<hook module_id="notification" hook_type="component" module="notification" call_name="notification.component_ajax_update_1" added="1361180401" version_id="3.5.0rc1" />
 	</hooks>
 	<components>
 		<component module_id="notification" component="feed" m_connection="" module="notification" is_controller="0" is_block="1" is_active="1" />

@@ -21,7 +21,7 @@ defined('PHPFOX') or exit('NO DICE!');
 
 	var script = document.createElement('script');
 	script.type= 'text/javascript';
-	script.src = 'http://maps.google.com/maps/api/js?sensor=false&callback=showOnMap';
+	script.src = '{if Phpfox::getParam("core.force_https_secure_pages")}https://{else}http://{/if}maps.google.com/maps/api/js?sensor=false&callback=showOnMap';
 	document.body.appendChild(script);
 
 	function showOnMap()

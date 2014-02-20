@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: add.html.php 3534 2011-11-21 14:22:06Z Raymond_Benc $
+ * @version 		$Id: add.html.php 6374 2013-07-27 12:05:58Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -24,7 +24,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		<div class="table_right">
 			<select name="val[inherit_id]">
 			{foreach from=$aGroups key=iKey item=aGroup}
-				<option value="{$aGroup.user_group_id}" {if $aGroup.user_group_id == 2} selected="selected"{/if}>{$aGroup.title}</option>
+				<option value="{$aGroup.user_group_id}" {if $aGroup.user_group_id == 2} selected="selected"{/if}>{$aGroup.title|convert}</option>
 			{/foreach}		
 			</select>
 		</div>

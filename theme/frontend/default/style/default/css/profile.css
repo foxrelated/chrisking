@@ -594,3 +594,8 @@ a.timeline_friendlist_link:hover
 {
 	margin-top:-8px;
 }
+
+#js_is_user_profile .feed_share_custom_block
+{
+	width: 90px;
+}

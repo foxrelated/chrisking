@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: index.class.php 4616 2012-08-31 06:24:56Z Miguel_Espinoza $
+ * @version 		$Id: index.class.php 5948 2013-05-24 08:26:41Z Miguel_Espinoza $
  */
 class Pages_Component_Controller_Index extends Phpfox_Component
 {
@@ -62,8 +62,19 @@ class Pages_Component_Controller_Index extends Phpfox_Component
 			}
 		}		
 		
-		$this->template()->setTitle(($bIsProfile ? Phpfox::getPhrase('pages.full_name_s_pages', array('full_name' => $aUser['full_name'])) : Phpfox::getPhrase('pages.pages')))->setBreadcrumb(Phpfox::getPhrase('pages.pages'), ($bIsProfile ? $this->url()->makeUrl($aUser['user_name'], array('pages')) : $this->url()->makeUrl('pages')));
-
+        if ($bIsProfile)
+        {
+            $this->template()
+                    ->setTitle(Phpfox::getPhrase('pages.full_name_s_pages', array('full_name' => $aUser['full_name'])))
+                    ->setBreadcrumb(Phpfox::getPhrase('pages.pages'), $this->url()->makeUrl($aUser['user_name'], array('pages')) );
+        }
+        else
+        {
+            $this->template()
+                    ->setTitle(Phpfox::getPhrase('pages.pages'))
+                    ->setBreadcrumb(Phpfox::getPhrase('pages.pages'), $this->url()->makeUrl('pages'));
+        }
+            
 		$this->search()->set(array(
 				'type' => 'pages',
 				'field' => 'pages.page_id',				
@@ -130,21 +141,30 @@ class Pages_Component_Controller_Index extends Phpfox_Component
 				}				
 				break;			
 			default:
-				$this->search()->setCondition('AND pages.app_id = 0 AND pages.view_id = 0 AND pages.privacy IN(%PRIVACY%)');
+				if (Phpfox::getUserParam('privacy.can_view_all_items'))
+				{
+					$this->search()->setCondition('AND pages.app_id = 0 ');  
+				}
+				else
+				{
+				    $this->search()->setCondition('AND pages.app_id = 0 AND pages.view_id = 0 AND pages.privacy IN(%PRIVACY%)');
+				}
 				break;
 		}		
 		
 		$this->template()->buildSectionMenu('pages', $aFilterMenu);
+		$bIsValidCategory = false;
 		
 		if ($this->request()->get('req2') == 'category' && ($iCategoryId = $this->request()->getInt('req3')) && ($aType = Phpfox::getService('pages.type')->getById($iCategoryId)))
 		{
-			$this->setParam('iCategory', $iCategoryId);			
-			
+			$bIsValidCategory = true;
+			$this->setParam('iCategory', $iCategoryId);
 			$this->template()->setBreadcrumb(Phpfox::getLib('locale')->convert($aType['name']), Phpfox::permalink('pages.category', $aType['type_id'], $aType['name']) . ($sView ? 'view_' . $sView . '/' . '' : ''), true);
 		}
 		
 		if ($this->request()->get('req2') == 'sub-category' && ($iSubCategoryId = $this->request()->getInt('req3')) && ($aCategory = Phpfox::getService('pages.category')->getById($iSubCategoryId)))
 		{
+			$bIsValidCategory = true;
 			$this->setParam('iCategory', $aCategory['type_id']);
 			$this->template()->setBreadcrumb(Phpfox::getLib('locale')->convert($aCategory['type_name']), Phpfox::permalink('pages.category', $aCategory['type_id'], $aCategory['type_name']) . ($sView ? 'view_' . $sView . '/' . '' : ''));
 			$this->template()->setBreadcrumb(Phpfox::getLib('locale')->convert($aCategory['name']), Phpfox::permalink('pages.sub-category', $aCategory['category_id'], $aCategory['name']) . ($sView ? 'view_' . $sView . '/' . '' : ''), true);
@@ -216,7 +236,30 @@ class Pages_Component_Controller_Index extends Phpfox_Component
 				)
 			)
 		);
-					
+				
+				
+		$iStartCheck = 0;
+		if ($bIsValidCategory == true)
+		{
+			$iStartCheck = 5;
+		}
+		$aRediAllow = array('category');
+		if (defined('PHPFOX_IS_USER_PROFILE') && PHPFOX_IS_USER_PROFILE)
+		{
+			$aRediAllow[] = 'pages';
+		}
+		$aCheckParams = array(
+			'url' => $this->url()->makeUrl('pages'),
+			'start' => $iStartCheck,
+			'reqs' => array(
+					'2' => $aRediAllow
+				)
+			);
+		
+		if (Phpfox::getParam('core.force_404_check') && !Phpfox::getService('core.redirect')->check404($aCheckParams))
+		{
+			return Phpfox::getLib('module')->setController('error.404');
+		}
 	}
 	
 	/**

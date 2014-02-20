@@ -1,4 +1,9 @@
 
+.forum_content img
+{
+	vertical-align:top;
+}
+
 .forum_post_tag
 {
 	margin:5px 0px 5px 2px;

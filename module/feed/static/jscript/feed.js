@@ -28,6 +28,7 @@ $Core.isInView = function(elem)
 	
 $Core.resetActivityFeedForm = function()
 {		
+	
 	$('.activity_feed_form_attach li a').removeClass('active');
 	$('.activity_feed_form_attach li a:first').addClass('active');	
 	$('.global_attachment_holder_section').hide();
@@ -50,6 +51,11 @@ $Core.resetActivityFeedForm = function()
 	{
 		this(this);
 	});
+	
+	$('#js_add_location, #js_location_input, #js_location_feedback').hide();
+	$('.activity_feed_form_button_position').show();
+	$('#hdn_location_name, #val_location_name ,#val_location_latlng').val('');
+	$('#btn_display_check_in').removeClass('is_active');
 }
 
 $Core.resetActivityFeedErrorMessage = function()
@@ -84,9 +90,16 @@ $Core.activityFeedProcess = function($bShow)
 	}
 }
 
-$Core.addNewPollOption = function()
+$Core.addNewPollOption = function(iMaxAnswers, sLimitReached)
 {
-	$('.js_poll_feed_answer').append('<li><input type="text" name="val[answer][][answer]" value="" size="30" class="js_feed_poll_answer v_middle" /></li>');
+	if(iMaxAnswers >= ($('#js_poll_feed_answer li').length + 1))
+	{
+		$('.js_poll_feed_answer').append('<li><input type="text" name="val[answer][][answer]" value="" size="30" class="js_feed_poll_answer v_middle" /></li>');
+	}
+	else
+	{
+		alert(oTranslations['poll.you_have_reached_your_limit']);
+	}
 	
 	return false;
 }
@@ -130,6 +143,10 @@ $Core.forceLoadOnFeed = function()
 	if ($iReloadIteration >= 2){
 		return;
 	}
+
+    if (!$Core.exists('#js_feed_pass_info')){
+        return;
+    }
 	
 	$iReloadIteration++;
 	$('#feed_view_more_loader').show();
@@ -161,7 +178,7 @@ $Core.handlePasteInFeed = function(oObj)
 				else{
 					$('#js_global_attach_value').val($(oObj).val());
 					bCheckUrlForceAdd = true;	
-					// bCheckUrlCheck = false;
+					/* bCheckUrlCheck = false; */
 					$('#js_preview_link_attachment_custom_form_sub').html($sOutput);
 				}
 			}
@@ -189,9 +206,11 @@ $Behavior.activityFeedProcess = function(){
 		
 		$('.like_count_link').each(function(){
 			var sHtml = $(this).parent().find('.like_count_link_holder:first').html();
+			/*
 			if (empty(sHtml)){
-				$(this).parents('.activity_like_holder:first').hide();
+				 $(this).parents('.activity_like_holder:first').hide();
 			}
+			*/
 		});
 		
 		$sFormAjaxRequest = $('.activity_feed_form_attach li a.active').find('.activity_feed_link_form_ajax').html();
@@ -209,7 +228,7 @@ $Behavior.activityFeedProcess = function(){
 				else{
 					if (!$('.timeline_main_menu').hasClass('timeline_main_menu_fixed')){
 						$('.timeline_main_menu').addClass('timeline_main_menu_fixed');
-						
+
 						if ($('#content').height() > 600){
 							$('#timeline_dates').addClass('timeline_dates_fixed');
 						}						
@@ -314,19 +333,30 @@ $Behavior.activityFeedProcess = function(){
 			}
 			
 			return false;
-		});		
-		
+		});
+
+
 		$('.activity_feed_form_attach li a').click(function()
 		{			
 			$sCurrentForm = $(this).attr('rel');
-			
+
 			if ($sCurrentForm == 'view_more_link'){
+				
 				$('.view_more_drop').toggle();
+				
 				return false;
 			}
 			else{
 				$('.view_more_drop').hide();
 			}
+			
+			if ($sCurrentForm == 'global_attachment_status'){
+				$('#btn_display_check_in').show();
+			} else {
+				$('#btn_display_check_in').hide();
+				$('#hdn_location_name, #val_location_name ,#val_location_latlng').val('');
+				$('#btn_display_check_in').removeClass('is_active');				
+			}			
 
 			$('#js_preview_link_attachment_custom_form_sub').remove();
 			$('#activity_feed_upload_error').hide();
@@ -415,19 +445,8 @@ $Behavior.activityFeedProcess = function(){
 				$('.activity_feed_form_button_status_info').hide();
 			}		
 					
-			if ($(this).attr('rel') == 'global_attachment_photo'){
-				if (((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i))) )
-				{				
-					// if ($('#Filedata').length < 1) /* it means we already added it and triggered mobileInit() */
-					$('#js_piccup_upload').remove();
-					$('.activity_feed_form_button .button').hide().after('<div id="js_piccup_upload"><input type="button" name="Filedata" id="Filedata" value="Choose photo"></div>');
-					mobileInit();					
-				}			
-			}
-			else{
-				$('.activity_feed_form_button .button').show();
-				$('#js_piccup_upload').hide();
-			}
+			$('.activity_feed_form_button .button').show();
+			$('#js_piccup_upload').hide();
 			
 			return false;
 		});		
@@ -483,7 +502,7 @@ $Behavior.activityFeedLoader = function()
 	/**
 	 * Comment textarea on focus.
 	 */
-	$('.js_comment_feed_textarea').click(function()
+	$('.js_comment_feed_textarea').focus(function()
 	{
 		$Core.commentFeedTextareaClick(this);
 	});		
@@ -540,13 +559,16 @@ $Behavior.activityFeedLoader = function()
 			return false;
 		}				
 		
-		oParent.html($('.js_feed_comment_form').html());
+		var sCommentForm = $(this).parents('.js_feed_comment_border:first').find('.js_feed_comment_form:first').html();
+		oParent.html(sCommentForm);
 		oParent.find('.js_feed_comment_parent_id:first').val($(this).attr('rel'));
 		
 		oParent.find('.js_comment_feed_textarea:first').focus();
 		$Core.commentFeedTextareaClick(oParent.find('.js_comment_feed_textarea:first'));
 		
 		$('.js_feed_add_comment_button .error_message').remove();
+		
+		oParent.find('.button_set_off:first').show().removeClass('button_set_off');
 		
 		$Core.loadInit();
 		/*$Behavior.activityFeedLoader();*/
@@ -657,11 +679,13 @@ function attachFunctionTagger(sSelector)
 				{
 					$($(this).data('selector')).siblings('.chooseFriend').hide(function(){$(this).remove();});
 					return;
-				}
+				}			
+				
 				var sNameToFind = sInput.substring(iAtSymbol+1, iInputLength);				
 				
 				/* loop through friends */
 				var aFoundFriends = [], sOut = '';
+				
 				for (var i in $Cache.friends)
 				{
 					if ($Cache.friends[i]['full_name'].toLowerCase().indexOf(sNameToFind.toLowerCase()) >= 0)
@@ -669,16 +693,17 @@ function attachFunctionTagger(sSelector)
 						var sNewInput = sInput.substr(0, iAtSymbol).replace(/\'/g,'\\\'').replace(/\"/g,'&#34;');
 						sToReplace = sNewInput;
 						
-						aFoundFriends.push({user_id: $Cache.friends[i]['user_id'], full_name: $Cache.friends[i]['full_name'], user_image: $Cache.friends[i]['user_image']});				
-
-						sOut += '<div class="tagFriendChooser" onclick="$(\''+ $(this).data('selector') +'\').val(sToReplace + \'[x=' + $Cache.friends[i]['user_id'] + ']' + $Cache.friends[i]['full_name'] +'[/x]\').putCursorAtEnd();$(\''+$(this).data('selector')+'\').siblings(\'.chooseFriend\').remove();"><div class="tagFriendChooserImage"><img style="vertical-align:middle;width:25px; height:25px;" src="'+$Cache.friends[i]['user_image'] + '"> </div><span>' + (($Cache.friends[i]['full_name'].length > 25) ?($Cache.friends[i]['full_name'].substr(0,25) + '...') : $Cache.friends[i]['full_name']) + '</span></div>';
+						aFoundFriends.push({user_id: $Cache.friends[i]['user_id'], full_name: $Cache.friends[i]['full_name'], user_image: $Cache.friends[i]['user_image']});
+				
+						sOut += '<div class="tagFriendChooser" onclick="$(\''+ $(this).data('selector') +'\').val(sToReplace + \'\' + (getParam(\'bEnableMicroblogSite\') ? \'@' + $Cache.friends[i]['user_name'] + '\' : \'[x=' + $Cache.friends[i]['user_id'] + ']' + $Cache.friends[i]['full_name'].replace(/\&#039;/g,'\\\'') +'[/x]\') + \' \').putCursorAtEnd();$(\''+$(this).data('selector')+'\').siblings(\'.chooseFriend\').remove();"><div class="tagFriendChooserImage"><img style="vertical-align:middle;width:25px; height:25px;" src="'+$Cache.friends[i]['user_image'] + '"> </div><span>' + (($Cache.friends[i]['full_name'].length > 25) ?($Cache.friends[i]['full_name'].substr(0,25) + '...') : $Cache.friends[i]['full_name']) + '</span></div>';
 						/* just delete the fancy choose your friend and recreate it */
-						sOut = sOut.replace("\n", '').replace("\r", '');
-						
+						sOut = sOut.replace("\n", '').replace("\r", '');						
 					}
 				}
 				$($(this).data('selector')).siblings('.chooseFriend').remove();
-				$($(this).data('selector')).after('<div class="chooseFriend" style="width: '+ $(this).parent().width()+'px;">'+sOut+'</div>');
+				if (!empty(sOut)){
+					$($(this).data('selector')).after('<div class="chooseFriend" style="width: '+ $(this).parent().width()+'px;">'+sOut+'</div>');
+				}
 				
 			}).focus(function(){
 				if (typeof $Cache == 'undefined' || typeof $Cache.friends == 'undefined')

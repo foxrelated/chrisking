@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: export.class.php 4961 2012-10-29 07:11:34Z Raymond_Benc $
+ * @version 		$Id: export.class.php 5259 2013-01-29 14:30:29Z Raymond_Benc $
  */
 class Apps_Component_Controller_Admincp_Export extends Phpfox_Component
 {
@@ -25,8 +25,8 @@ class Apps_Component_Controller_Admincp_Export extends Phpfox_Component
 			Phpfox::getService('apps')->export($aVals);
 		}
 		
-		$this->template()->setTitle('Export Apps')
-			->setBreadcrumb('Export Apps')
+		$this->template()->setTitle(Phpfox::getPhrase('apps.export_apps'))
+			->setBreadcrumb(Phpfox::getPhrase('apps.export_apps'))
 			->assign(array(
 						'aApps' => Phpfox::getService('apps')->getAllApps()					
 					)

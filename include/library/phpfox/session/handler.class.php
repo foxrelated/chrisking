@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: handler.class.php 1668 2010-07-12 08:54:32Z Raymond_Benc $
+ * @version 		$Id: handler.class.php 5557 2013-03-26 10:48:01Z Raymond_Benc $
  */
 class Phpfox_Session_Handler
 {
@@ -33,15 +33,22 @@ class Phpfox_Session_Handler
 		if (!$this->_oObject)
 		{
 			$sStorage = 'phpfox.session.handler.default';		
-			if (defined('PHPFOX_IS_AJAX') && PHPFOX_IS_AJAX)
+			if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
 			{
-				$sStorage = 'phpfox.session.handler.file';			
+				$sStorage = 'phpfox.session.handler.memcache';
 			}
 			else
 			{
-				if (Phpfox::getParam(array('balancer', 'enabled')))
+				if (defined('PHPFOX_IS_AJAX') && PHPFOX_IS_AJAX)
 				{
-					$sStorage = 'phpfox.session.handler.memcache';
+					$sStorage = 'phpfox.session.handler.file';			
+				}
+				else
+				{
+					if (Phpfox::getParam(array('balancer', 'enabled')))
+					{
+						$sStorage = 'phpfox.session.handler.memcache';
+					}
 				}
 			}
 			

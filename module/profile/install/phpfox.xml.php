@@ -27,10 +27,13 @@
 		<setting group="" module_id="profile" is_hidden="0" type="boolean" var_name="show_empty_tabs" phrase_var_name="setting_show_empty_tabs" ordering="1" version_id="2.0.8">0</setting>
 		<setting group="" module_id="profile" is_hidden="0" type="drop" var_name="profile_default_landing_page" phrase_var_name="setting_profile_default_landing_page" ordering="1" version_id="3.4.0beta1"><![CDATA[a:2:{s:7:"default";s:4:"wall";s:6:"values";a:2:{i:0;s:4:"wall";i:1;s:4:"info";}}]]></setting>
 		<setting group="" module_id="profile" is_hidden="0" type="boolean" var_name="allow_user_select_landing" phrase_var_name="setting_allow_user_select_landing" ordering="1" version_id="3.4.0beta1">0</setting>
+		<setting group="cache" module_id="profile" is_hidden="0" type="boolean" var_name="cache_blocks_design" phrase_var_name="setting_cache_blocks_design" ordering="1" version_id="3.6.0rc1">0</setting>
+		<setting group="cache" module_id="profile" is_hidden="0" type="boolean" var_name="profile_caches" phrase_var_name="setting_profile_caches" ordering="2" version_id="3.6.0rc1">0</setting>
+		<setting group="" module_id="profile" is_hidden="1" type="boolean" var_name="display_submenu_for_photo" phrase_var_name="setting_display_submenu_for_photo" ordering="1" version_id="3.5.0beta1">0</setting>
 		<setting group="" module_id="profile" is_hidden="1" type="boolean" var_name="ajax_profile_tab" phrase_var_name="setting_ajax_profile_tab" ordering="1" version_id="2.1.0Beta1">1</setting>
 	</settings>
 	<blocks>
-		<block type_id="0" m_connection="pages.view" module_id="profile" component="logo" location="13" is_active="1" ordering="6" disallow_access="" can_move="0">
+		<block type_id="0" m_connection="pages.view" module_id="profile" component="logo" location="13" is_active="1" ordering="8" disallow_access="" can_move="0">
 			<title>Pages Cover Photo</title>
 			<source_code />
 			<source_parsed />
@@ -135,6 +138,8 @@
 		<hook module_id="profile" hook_type="controller" module="profile" call_name="profile.component_controller_index_process_is_sub_section" added="1323703660" version_id="3.0.0" />
 		<hook module_id="profile" hook_type="component" module="profile" call_name="profile.component_block_cover_clean" added="1335951260" version_id="3.2.0" />
 		<hook module_id="profile" hook_type="component" module="profile" call_name="profile.component_block_logo_clean" added="1335951260" version_id="3.2.0" />
+		<hook module_id="profile" hook_type="component" module="profile" call_name="profile.component_block_pic_start" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="profile" hook_type="service" module="profile" call_name="profile.service_profile_get_profile_menu" added="1378374384" version_id="3.7.0rc1" />
 	</hooks>
 	<components>
 		<component module_id="profile" component="index" m_connection="profile.index" module="profile" is_controller="1" is_block="0" is_active="1" />
@@ -257,6 +262,11 @@ If this setting is disabled there will be an extra query for each tab in profile
 		<phrase module_id="profile" version_id="3.3.0beta1" var_name="cover_photo" added="1339153611">Cover Photo</phrase>
 		<phrase module_id="profile" version_id="3.4.0beta1" var_name="setting_profile_default_landing_page" added="1344592982"><![CDATA[<title>Default Profile Landing Page</title><info>Select what should be the default landing page for user profiles.</info>]]></phrase>
 		<phrase module_id="profile" version_id="3.4.0beta1" var_name="setting_allow_user_select_landing" added="1344593926"><![CDATA[<title>Allow Users Select for Landing Page</title><info>Enable this option if you would like to allow your users.</info>]]></phrase>
+		<phrase module_id="profile" version_id="3.5.0beta1" var_name="setting_display_submenu_for_photo" added="1355998784"><![CDATA[<title>Display Sub-Menu for Photos</title><info>If this setting is enabled it will display a sub menu in the profiles where users can click to view "Albums" or "Photos". 
+If this setting is disabled that sub-menu will not be shown, and instead a bigger menu will be displayed on the right side. 
+Please note that this is only valid if Timeline is disabled.</info>]]></phrase>
+		<phrase module_id="profile" version_id="3.6.0rc1" var_name="setting_cache_blocks_design" added="1371724344"><![CDATA[<title>Profile/Dashboard Design</title><info>Stops querying the table user_dashboard, which is used to store information about the block positioning on a users profiles or dashboard.</info>]]></phrase>
+		<phrase module_id="profile" version_id="3.6.0rc1" var_name="setting_profile_caches" added="1371724865"><![CDATA[<title>Profile Tracking</title><info>This cache removes the track from profiles. It goes against privacy and is very difficult to circumvent efficiently.</info>]]></phrase>
 	</phrases>
 	<user_group_settings>
 		<setting is_admin_setting="0" module_id="profile" type="boolean" admin="1" user="1" guest="0" staff="1" module="profile" ordering="0">can_post_comment_on_profile</setting>

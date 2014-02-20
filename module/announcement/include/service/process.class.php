@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Miguel Espinoza
  * @package 		Phpfox_Service
- * @version 		$Id: process.class.php 3826 2011-12-16 12:30:19Z Raymond_Benc $
+ * @version 		$Id: process.class.php 6436 2013-08-12 08:19:48Z Miguel_Espinoza $
  */
 class Announcement_Service_Process extends Phpfox_Service 
 {
@@ -285,7 +285,7 @@ class Announcement_Service_Process extends Phpfox_Service
 			->leftJoin(Phpfox::getT('announcement_hide'), 'ah', 'ah.announcement_id = a.announcement_id AND ah.user_id = ' . Phpfox::getUserId())
 			->where('a.announcement_id = ' . (int) $iId)
 			->execute('getRow');
-
+		
 		if ($aAnnouncement['can_be_closed'] == 0)
 		{
 			return false;
@@ -301,7 +301,10 @@ class Announcement_Service_Process extends Phpfox_Service
 		}
 		
 		$this->database()->insert(Phpfox::getT('announcement_hide'), array('announcement_id' => $aAnnouncement['announcement_id'], 'user_id' => Phpfox::getUserId()));
-		
+		//if (Phpfox::getParam('core.super_cache_system'))
+        {
+            $this->cache()->remove(array('announcement', Phpfox::getUserId()));
+        }
 		return true;
 	}
 

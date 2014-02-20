@@ -25,7 +25,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: file.class.php 4922 2012-10-22 14:33:52Z Miguel_Espinoza $
+ * @version 		$Id: file.class.php 6862 2013-11-07 11:00:19Z Miguel_Espinoza $
  */
 class Phpfox_File
 {
@@ -197,6 +197,8 @@ class Phpfox_File
 	 */
     public function upload($sFormItem, $sDestination, $sFileName, $bModifyFileName = true, $iPerm = 0644, $buildDir = true, $bCdn = true)
     {
+        (($sPlugin = Phpfox_Plugin::get('file_upload_start')) ? eval($sPlugin) : false);
+        
 		if ($buildDir)
 		{
 			$this->_buildDir($sDestination);
@@ -205,10 +207,9 @@ class Phpfox_File
 		{
 			$this->_sDestination = $sDestination;
 		}
-
-    	(($sPlugin = Phpfox_Plugin::get('file_upload_start')) ? eval($sPlugin) : false);
 	
-    	if (!defined('PHPFOX_APP_USER_ID') && !is_uploaded_file($this->_aFile['tmp_name']))
+        if ($sPlugin = Phpfox_Plugin::get('library_phpfox_file_file_upload_1')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
+    	if (!defined('PHPFOX_APP_USER_ID') && !is_uploaded_file($this->_aFile['tmp_name']) && !defined('PHPFOX_HTML5_PHOTO_UPLOAD'))
         {
             return Phpfox_Error::set(Phpfox::getPhrase('core.unable_to_upload_the_image'));
         }    	
@@ -233,7 +234,8 @@ class Phpfox_File
         
         $sDest = $this->_sDestination . $sFileName . '.' . $this->_sExt;
 		
-		if (defined('PHPFOX_APP_USER_ID'))
+	if ($sPlugin = Phpfox_Plugin::get('library_phpfox_file_file_upload_2')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
+		if (defined('PHPFOX_APP_USER_ID') || defined('PHPFOX_HTML5_PHOTO_UPLOAD'))
 		{
 			 @copy($this->_aFile['tmp_name'], $sDest);
 			 @unlink($this->_aFile['tmp_name']);
@@ -242,7 +244,7 @@ class Phpfox_File
         {
             return Phpfox_Error::set(Phpfox::getPhrase('core.unable_to_move_the_file'));
         }    
-        
+        if ($sPlugin = Phpfox_Plugin::get('library_phpfox_file_file_upload_3')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
         // Windows permission problem???
         if (stristr(PHP_OS, "win"))
         {        
@@ -574,7 +576,11 @@ class Phpfox_File
 	{
 		if (Phpfox::getParam('core.allow_cdn'))
 		{
-			Phpfox::getLib('cdn')->remove($sSrc);
+			try 
+		    { 
+		        Phpfox::getLib('cdn')->remove($sSrc); 
+		    } 
+	    	catch(Exception $e){}	    	
 		}		
 		
 		if (@unlink($sSrc))
@@ -625,7 +631,7 @@ class Phpfox_File
                 /**
                  * Trying to create a new file
                  */
-                $fp = @fopen($sPath . 'win-test.txt', 'w');                
+                $fp = @fopen($sPath . PHPFOX_DS . 'win-test.txt', 'w');                
                 if (!$fp)
                 {
                     if ($bForce === true)
@@ -802,7 +808,7 @@ class Phpfox_File
 				}
         	}
         	closedir($dh);
-        	rmdir($dir);
+        	@rmdir($dir);
         }
 	}
 
@@ -847,6 +853,15 @@ class Phpfox_File
 	public function getFileDetails()
 	{
 		return $this->_aFile;
+	}
+	
+	public function getFileExt($sFileName)
+	{
+		$sFilename = strtolower($sFileName);
+		$aExts = preg_split("/[\/\\.]/", $sFileName);
+		$iCnt = count($aExts)-1;
+		
+		return strtolower($aExts[$iCnt]);		
 	}
 	
 	/**
@@ -904,7 +919,7 @@ class Phpfox_File
      */
 	private function _buildDir($sDestination)
 	{
-		if (!PHPFOX_SAFE_MODE && Phpfox::getParam('core.build_file_dir'))
+		if (!PHPFOX_SAFE_MODE && Phpfox::getParam('core.build_file_dir') && !defined('PHPFOX_IS_HOSTED_SCRIPT'))
 		{
 			$aParts = explode('/', Phpfox::getParam('core.build_format'));
 			$this->_sDestination = $sDestination;
@@ -951,7 +966,7 @@ class Phpfox_File
      */
     private function _buildFile($sFormItem)
     { 	
-    	if (!strpos($sFormItem, ']'))
+    	if (strpos($sFormItem, ']') === false)
         {
             $this->_aFile = $_FILES[$sFormItem];
         }

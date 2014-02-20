@@ -2,7 +2,8 @@ var $bIsSearching = false;
 var $bKeepSending = true;
 var $iJobId = null;
 var iCurrentPage = 0;
-$(function(){
+$Behavior.user_inactivereminder_init = function()
+{
 	$('#btnSearch').click(function()
 	{
 		var $iDays = $('#inactive_days').val();
@@ -51,7 +52,7 @@ $(function(){
 		$("#btnProcess").show();
 		$("#btnStop").hide();
 	});
-});
+};
 
 function addJob()
 {

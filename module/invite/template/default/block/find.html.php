@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Invite
- * @version 		$Id: find.html.php 1339 2009-12-19 00:37:55Z Raymond_Benc $
+ * @version 		$Id: find.html.php 5538 2013-03-25 13:20:22Z Miguel_Espinoza $
  */
 
 defined('PHPFOX') or exit('NO DICE!');
@@ -15,10 +15,10 @@ defined('PHPFOX') or exit('NO DICE!');
 <!--
 {literal}
 	var sSearchByFindValue = '';
-	$(function()
+	$Behavior.invite_find_search = function()
 	{
 		sSearchByFindValue = $('.js_is_find_enter').val();		
-	});
+	};
 
 	function toggleSearchValue(oObj, sType)
 	{

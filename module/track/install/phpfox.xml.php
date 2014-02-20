@@ -9,6 +9,10 @@
 		<phrase_var_name />
 		<writable />
 	</data>
+	<settings>
+		<setting group="cache" module_id="track" is_hidden="0" type="integer" var_name="cache_recently_viewed_by_timeout" phrase_var_name="setting_cache_recently_viewed_by_timeout" ordering="1" version_id="3.6.0rc1">0</setting>
+		<setting group="cache" module_id="track" is_hidden="0" type="integer" var_name="cache_allow_recurrent_visit" phrase_var_name="setting_cache_allow_recurrent_visit" ordering="2" version_id="3.6.0rc1">0</setting>
+	</settings>
 	<blocks>
 		<block type_id="0" m_connection="blog.view" module_id="track" component="recent-views" location="3" is_active="1" ordering="1" disallow_access="" can_move="0">
 			<title>Recently Viewed By</title>
@@ -47,5 +51,7 @@
 		<phrase module_id="track" version_id="2.0.0alpha1" var_name="recently_viewed_by" added="1213418447">Recently Viewed By</phrase>
 		<phrase module_id="track" version_id="2.0.0rc4" var_name="recent_visitors" added="1255345958">Recent Visitors</phrase>
 		<phrase module_id="track" version_id="2.0.0rc4" var_name="recent_views" added="1255345989">Recent Views</phrase>
+		<phrase module_id="track" version_id="3.6.0rc1" var_name="setting_cache_recently_viewed_by_timeout" added="1371723922"><![CDATA[<title>Recently Viewed Refresh</title><info>The cache will be refreshed after X minutes. 0 for no cache.</info>]]></phrase>
+		<phrase module_id="track" version_id="3.6.0rc1" var_name="setting_cache_allow_recurrent_visit" added="1371723988"><![CDATA[<title>Refresh Profile Visitor List</title><info>How long before the same user is added to the list again. Minutes, 0 for no cache.</info>]]></phrase>
 	</phrases>
 </module>

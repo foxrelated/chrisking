@@ -21,7 +21,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: setting.class.php 4951 2012-10-24 09:55:04Z Raymond_Benc $
+ * @version 		$Id: setting.class.php 7095 2014-02-06 16:19:52Z Fern $
  */
 class Phpfox_Setting
 {
@@ -82,7 +82,20 @@ class Phpfox_Setting
 		'core.date_field_order' => 'MDY',
 		'core.cache_storage' => 'file',
 		'core.allow_cdn' => false,
-		'core.is_auto_hosted' => false
+		'core.is_auto_hosted' => false,
+		'core.store_only_users_in_session' => false,
+		'core.cache_js_css' => false,
+		'core.ip_check' => 1,
+		'profile.profile_caches_user' => false,
+		'rate.cache_rate_profiles' => false,
+		'core.defer_loading_js' => false,
+		'core.use_custom_cookie_names' => false,
+		'core.include_site_title_all_pages' => true,
+		'core.defer_loading_user_images' => false,
+		'core.include_master_files' => false,
+		'core.force_secure_site' => false,
+		'core.auth_user_via_session' => false,
+		'core.defer_loading_images' => false
 	);
 	
 	/**
@@ -125,7 +138,7 @@ class Phpfox_Setting
 				// $this->_aDefaults = array();
 			}
 			
-			if ($_CONF['core.db_table_installed'] === false)
+			if ($_CONF['core.db_table_installed'] === false && !defined('PHPFOX_SCRIPT_CONFIG'))
 			{
 				define('PHPFOX_SCRIPT_CONFIG', true);
 			}
@@ -151,18 +164,41 @@ class Phpfox_Setting
 		{
 			$_CONF['core.path'] = '../';	
 			$_CONF['core.url_file'] = '../file/';
-		}			
-				
+		}		
+		
+		if (file_exists(PHPFOX_DIR_SETTING . 'video.default.php'))
+		{
+			if (file_exists(PHPFOX_DIR_SETTING . 'video.php'))
+			{
+				require_once(PHPFOX_DIR_SETTING . 'video.php');
+			}
+			else
+			{
+				require_once(PHPFOX_DIR_SETTING . 'video.default.php');
+			}
+		}
+
+		if (file_exists(PHPFOX_DIR_SETTING . 'security.sett.php'))
+		{
+			require_once(PHPFOX_DIR_SETTING . 'security.sett.php');
+		}
+		else
+		{
+			require_once(PHPFOX_DIR_SETTING . 'security.sett.php.new');
+		}
+       
 		$this->_aParams =& $_CONF;
 		
 		if (defined('PHPFOX_INSTALLER'))
 		{
 			$this->_aParams['core.url_rewrite'] = '2';
-			if ($this->_aParams['db']['driver'] == 'mysqli')
+			// http://www.php.net/manual/en/intro.mysql.php
+			if (($this->_aParams['db']['driver'] == 'mysqli') && !function_exists('mysqli_connect'))
 			{
 				$this->_aParams['db']['driver'] = 'mysql';
 			}			
-		}				
+		}		
+		
 	}
 	
 	/**
@@ -340,6 +376,23 @@ class Phpfox_Setting
 		
 		$this->_aParams['core.theme_session_prefix'] = '';	
 		$this->_aParams['core.load_jquery_from_google_cdn'] = false;
+		
+		if (defined('PHPFOX_IS_HOSTED_SCRIPT') && isset($this->_aParams['core.phpfox_max_users_online']))
+		{
+			if (defined('PHPFOX_GROUPLY_TEST'))
+			{
+				$this->_aParams['core.phpfox_grouply_space'] = (int) (50 * 1073741824);
+				$this->_aParams['core.phpfox_grouply_members'] = 100;
+				$this->_aParams['core.phpfox_grouply_admins'] = 2;
+			}
+			else
+			{
+				$aSettingParts = explode('|', $this->_aParams['core.phpfox_max_users_online']);
+				$this->_aParams['core.phpfox_grouply_space'] = (int) ($aSettingParts[0] * 1073741824);
+				$this->_aParams['core.phpfox_grouply_members'] = (int) $aSettingParts[1];
+				$this->_aParams['core.phpfox_grouply_admins'] = (int) $aSettingParts[2];
+			}
+		}		
 	}
 	
 	/**
@@ -350,11 +403,17 @@ class Phpfox_Setting
 	 * @return nixed Returns the value of the setting, which can be a STRING, ARRAY, BOOL or INT.
 	 */
 	public function getParam($mVar, $sDef = '')
-	{		
-		if ($mVar == 'core.wysiwyg' && !defined('PHPFOX_INSTALLER') && Phpfox::isMobile())
+	{
+		if ($mVar == 'im.enable_im_in_footer_bar' && Phpfox::isMobile())
+		{
+			return false;
+		}
+
+		// http://www.phpfox.com/tracker/view/15079/
+		/*if ($mVar == 'core.wysiwyg' && !defined('PHPFOX_INSTALLER') && Phpfox::isMobile())
 		{
 			return 'default';
-		}				
+		}*/				
 		
 		if ($mVar == 'core.phpfox_is_hosted')
 		{
@@ -363,16 +422,33 @@ class Phpfox_Setting
 		
 		if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
 		{
+			/*
 			if ($mVar == 'core.url_static_script')
 			{
 				return Phpfox::getCdnPath() . 'static/jscript/';
 			}
-			elseif ($mVar == 'core.setting_session_prefix')
+			*/
+			if ($mVar == 'core.setting_session_prefix')
 			{
 				return PHPFOX_IS_HOSTED_SCRIPT;	
 			}
+			elseif ($mVar == 'video.allow_video_uploading')
+			{				
+				return true;				
+			}
+			/*
+			elseif ($mVar == 'core.cache_js_css')
+			{
+				return true;			
+			}
+			*/
 		}
-		
+
+		if (defined('PHPFOX_INSTALLER') && $mVar == 'core.cache_js_css')
+		{
+			return false;
+		}
+
 		if (is_array($mVar))
 		{
 			$sParam = (isset($this->_aParams[$mVar[0]][$mVar[1]]) ? $this->_aParams[$mVar[0]][$mVar[1]] : (isset($this->_aDefaults[$mVar[0]][$mVar[1]]) ? $this->_aDefaults[$mVar[0]][$mVar[1]] : Phpfox_Error::trigger('Missing Param: ' . $mVar[0] . '][' . $mVar[1])));

@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: entry.html.php 1247 2009-11-03 16:08:56Z Raymond_Benc $
+ * @version 		$Id: entry.html.php 6891 2013-11-15 16:37:37Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -46,7 +46,7 @@ defined('PHPFOX') or exit('NO DICE!');
 			{if !empty($aForms.icon_ext)}
 			<div id="js_group_icon">
 				<div class="p_2">
-					<img src="{param var='core.url_icon'}{$aForms.icon_ext}" alt="{$aForms.title|clean}" title="{$aForms.title|clean}" />
+					{img server_id=$aForms.server_id title=$aForms.title alt=$aForms.title file=$aForms.icon_ext path='core.url_icon'}
 				</div>
 				<div class="p_4">
 					<a href="#" onclick="$('#js_group_upload_icon').show(); $('#js_group_icon').hide(); return false;">Change Icon</a>

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: pending.class.php 3192 2011-09-26 17:00:18Z Raymond_Benc $
+ * @version 		$Id: pending.class.php 5916 2013-05-13 08:42:54Z Raymond_Benc $
  */
 class Friend_Component_Controller_Pending extends Phpfox_Component
 {
@@ -21,7 +21,7 @@ class Friend_Component_Controller_Pending extends Phpfox_Component
 	public function process()
 	{
 		Phpfox::isUser(true);
-		
+
 		if ($iDeleteId = $this->request()->get('id'))
 		{
 			if (Phpfox::getService('friend.request.process')->delete($iDeleteId, Phpfox::getUserId()))

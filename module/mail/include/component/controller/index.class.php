@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Mail
- * @version 		$Id: index.class.php 5054 2012-11-29 12:58:53Z Raymond_Benc $
+ * @version 		$Id: index.class.php 5840 2013-05-09 06:14:35Z Raymond_Benc $
  */
 class Mail_Component_Controller_Index extends Phpfox_Component
 {
@@ -57,7 +57,7 @@ class Mail_Component_Controller_Index extends Phpfox_Component
 		{
 			Phpfox::getService('mail.process')->archiveThread($this->request()->getInt('id'), 2);
 				
-			$this->url()->send('mail.trash', null, 'Conversation successfully deleted.');
+			$this->url()->send('mail.trash', null, Phpfox::getPhrase('mail.conversation_successfully_deleted'));
 		}		
 		
 		if ($this->request()->get('action') == 'unarchive')
@@ -281,7 +281,7 @@ class Mail_Component_Controller_Index extends Phpfox_Component
 			'phrase' => Phpfox::getPhrase('mail.delete'),
 			'action' => 'delete'
 		);
-		if (!$bIsSentbox)
+		if (!$bIsSentbox && !$bIsInLegacyView)
 		{
 			$aActions[] = array(
 				'phrase' => Phpfox::getPhrase('mail.move'),
@@ -342,6 +342,10 @@ class Mail_Component_Controller_Index extends Phpfox_Component
 		if ((!Phpfox::getUserParam('mail.override_mail_box_limit') && Phpfox::getParam('mail.enable_mail_box_warning')))
 		{
 			$iMailSpaceUsed = Phpfox::getService('mail')->getSpaceUsed(Phpfox::getUserId());
+			if ($iMailSpaceUsed > 100)
+			{
+				$iMailSpaceUsed = 100;
+			}
 		}		
 		
 			$this->template()->setTitle($sFolder)

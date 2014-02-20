@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Captcha
- * @version 		$Id: captcha.class.php 1496 2010-03-05 17:15:05Z Raymond_Benc $
+ * @version 		$Id: captcha.class.php 6005 2013-06-06 14:12:12Z Raymond_Benc $
  */
 class Captcha_Service_Captcha extends Phpfox_Service 
 {
@@ -47,19 +47,88 @@ class Captcha_Service_Captcha extends Phpfox_Service
 	
 			return false;
 		}		
-		
-		if ($this->_getHash(strtolower($sCode), $this->_oSession->getSessionId()) == $this->_oSession->get('captcha_hash'))
+
+		if (Phpfox::getParam('core.store_only_users_in_session'))
 		{
-			return true;
+			$oSession = Phpfox::getLib('session');
+
+			$sSessionHash = $oSession->get('sessionhash');
+
+			$aRow = $this->database()->select('*')
+				->from(Phpfox::getT('log_session'))
+				->where('session_hash = \'' . $this->database()->escape($sSessionHash) . '\'')
+				->execute('getSlaveRow');
+
+			if (isset($aRow['session_hash']) && $this->_getHash(strtolower($sCode), $aRow['session_hash']) == $aRow['captcha_hash'])
+			{
+				return true;
+			}
 		}
+		else
+		{
+			if ($this->_getHash(strtolower($sCode), $this->_oSession->getSessionId()) == $this->_oSession->get('captcha_hash'))
+			{
+				return true;
+			}
+		}
+
 		return false;
 	}
 	
 	public function setHash($sCode)
 	{
-		$iId = $this->_oSession->getSessionId();
+		if (Phpfox::getParam('core.store_only_users_in_session'))
+		{
+			$oRequest = Phpfox::getLib('request');
+			$oSession = Phpfox::getLib('session');
 
-		$this->database()->update(Phpfox::getT('log_session'), array('captcha_hash' => $this->_getHash($sCode, $iId)), "session_hash = '" . $iId . "'");
+			$sSessionHash = $oSession->get('sessionhash');
+			$bCreate = true;
+
+			if (!empty($sSessionHash))
+			{
+				$bCreate = false;
+				$aRow = $this->database()->select('*')
+					->from(Phpfox::getT('log_session'))
+					->where('session_hash = \'' . $this->database()->escape($sSessionHash) . '\'')
+					->execute('getSlaveRow');
+
+				if (isset($aRow['session_hash']))
+				{
+					$this->database()->update(Phpfox::getT('log_session'), array('captcha_hash' => $this->_getHash($sCode, $sSessionHash)), "session_hash = '" . $sSessionHash . "'");
+				}
+				else
+				{
+					$bCreate = true;
+				}
+			}
+
+			if ($bCreate)
+			{
+				$sSessionHash = $oRequest->getSessionHash();
+				$this->database()->insert(Phpfox::getT('log_session'), array(
+						'session_hash' => $sSessionHash,
+						'id_hash' => $oRequest->getIdHash(),
+						'captcha_hash' => $this->_getHash($sCode, $sSessionHash),
+						'user_id' => Phpfox::getUserId(),
+						'last_activity' => PHPFOX_TIME,
+						'location' => '',
+						'is_forum' => '0',
+						'forum_id' => 0,
+						'im_hide' => 0,
+						'ip_address' => '',
+						'user_agent' => ''
+					)
+				);
+				$oSession->set('sessionhash', $sSessionHash);
+			}
+		}
+		else
+		{
+			$iId = $this->_oSession->getSessionId();
+
+			$this->database()->update(Phpfox::getT('log_session'), array('captcha_hash' => $this->_getHash($sCode, $iId)), "session_hash = '" . $iId . "'");
+		}
 	}
 	
 	public function displayCaptcha($sText)

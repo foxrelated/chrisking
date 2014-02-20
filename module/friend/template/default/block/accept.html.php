@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: accept.html.php 4941 2012-10-23 12:43:23Z Miguel_Espinoza $
+ * @version 		$Id: accept.html.php 5840 2013-05-09 06:14:35Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -54,25 +54,27 @@ defined('PHPFOX') or exit('NO DICE!');
 					<div style="width:120px;">
 						{$aFriend|user}
 						{if $aFriend.relation_data_id > 0}
-						<div class="extra_info_link">
-							{img theme='misc/heart.png' class='v_middle'} {phrase var='friend.relationship_request'}
-						</div>
+                            <div class="extra_info_link">
+                                {img theme='misc/heart.png' class='v_middle'} {phrase var='friend.relationship_request'}
+                            </div>
 						{else}
-						{if isset($aFriend.mutual_friends) && $aFriend.mutual_friends.total > 0}
-						<div class="extra_info_link">				
-							<a href="#" onclick="$Core.box('friend.getMutualFriends', 300, 'user_id={$aFriend.friend_user_id}'); return false;">
-							{if $aFriend.mutual_friends.total == 1}
-							{phrase var='friend.1_mutual_friend'}
-							{else}
-							{phrase var='friend.total_mutual_friends' total=$aFriend.mutual_friends.total}
-							{/if}
-							</a>
-						</div>
+                            {if isset($aFriend.mutual_friends) && $aFriend.mutual_friends.total > 0}
+                                <div class="extra_info_link">				
+                                    <a href="#" onclick="$Core.box('friend.getMutualFriends', 300, 'user_id={$aFriend.friend_user_id}'); return false;">
+                                    {if $aFriend.mutual_friends.total == 1}
+                                    {phrase var='friend.1_mutual_friend'}
+                                    {else}
+                                    {phrase var='friend.total_mutual_friends' total=$aFriend.mutual_friends.total}
+                                    {/if}
+                                    </a>
+                                </div>
+                            {/if}
 						{/if}
-						{/if}
+                        {plugin call='friend.template_block_accept__1'}
+                        
 						{if !empty($aFriend.message)}
 						<div class="extra_info">
-							{$aFriend.message|clean|shorten:20:'friend.view_more':true}
+							{$aFriend.message|clean:false|shorten:20:'friend.view_more':true}
 						</div>
 						{/if}
 					</div>

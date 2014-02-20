@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: paypal.class.php 4880 2012-10-10 11:52:22Z Raymond_Benc $
+ * @version 		$Id: paypal.class.php 7131 2014-02-19 13:55:19Z Fern $
  */
 class Phpfox_Gateway_Api_Paypal implements Phpfox_Gateway_Interface
 {
@@ -78,29 +78,33 @@ class Phpfox_Gateway_Api_Paypal implements Phpfox_Gateway_Interface
 	 */
 	public function getForm()
 	{		
+		$bCurrencySupported = true;
+				
 		if (!in_array($this->_aParam['currency_code'], $this->_aCurrency))
 		{
-			if (isset($this->_aParam['alternative_cost']))
+			if (!empty($this->_aParam['alternative_cost']))
 			{
 				$aCosts = unserialize($this->_aParam['alternative_cost']);
-				$bPassed = false;
-				foreach ($aCosts as $sCode => $iPrice)
+				foreach ($aCosts as $aCost)
 				{
+					$sCode = key($aCost);
+					$iPrice = $aCost[key($aCost)];
+					
 					if (in_array($sCode, $this->_aCurrency))
 					{
 						$this->_aParam['amount'] = $iPrice;
-						$this->_aParam['currency_code'] = $sCode;	
-						$bPassed = true;
+						$this->_aParam['currency_code'] = $sCode;
+						$bCurrencySupported = false;
 						break;
 					}
 				}
-				
-				if ($bPassed === false)
+			   
+				if ($bCurrencySupported === true)
 				{
 					return false;
 				}
 			}
-			else 
+			else
 			{
 				return false;
 			}
@@ -142,11 +146,52 @@ class Phpfox_Gateway_Api_Paypal implements Phpfox_Gateway_Interface
 	                break;              
 	        }			
 			
-	        $aCosts = unserialize($this->_aParam['alternative_recurring_cost']);	
+			if ((!isset($this->_aParam['recurring_cost']) || empty($this->_aParam['recurring_cost'])) 
+				&& !empty($this->_aParam['alternative_recurring_cost']))
+			{
+				$aCosts = unserialize($this->_aParam['alternative_recurring_cost']);
+				$bPassed = false;
+				foreach ($aCosts as $aCost)
+				{
+					foreach($aCost as $sKey => $iCost)
+					{
+						if (in_array($sKey, $this->_aCurrency))
+						{
+							// Make all in the same currency
+							$this->_aParam['currency_code'] = $sKey;
+							$this->_aParam['amount'] = unserialize($this->_aParam['alternative_cost']);
+							$this->_aParam['amount'] = $this->_aParam['amount'][0][$sKey];
+							
+							$this->_aParam['recurring_cost'] = $iCost;
+							if (is_array($this->_aParam['recurring_cost']))
+							{
+								$aRec = array_values($this->_aParam['recurring_cost']);
+								$this->_aParam['recurring_cost'] = array_shift($aRec);
+							}
+							$bPassed = true;
+							break;
+						}
+					}
+					
+					if($bPassed)
+					{
+						break;
+					}
+				}
+			   
+				if ($bPassed === false)
+				{
+					return false;
+				}
+			}
 			
+			/* 
+				a1 is optional an price for the trial period @see https://cms.paypal.com/uk/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables#id08A6HI00JQU 
+				a3 is the price of the transaction required
+			*/
 			$aForm['param']['cmd'] = '_xclick-subscriptions';
 			$aForm['param']['a1'] = $this->_aParam['amount'];
-			$aForm['param']['a3'] = $aCosts[Phpfox::getService('core.currency')->getDefault()];
+			$aForm['param']['a3'] = $this->_aParam['recurring_cost']; // $aCosts[$this->_aParam['currency_code']]; change made for 3.7.1
 			$aForm['param']['t1'] = $t3;
 			$aForm['param']['p1'] = $p3;
 			$aForm['param']['t3'] = $t3;

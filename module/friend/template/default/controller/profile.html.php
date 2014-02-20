@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: profile.html.php 4097 2012-04-16 13:45:26Z Raymond_Benc $
+ * @version 		$Id: profile.html.php 6041 2013-06-10 18:50:19Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -13,18 +13,21 @@ defined('PHPFOX') or exit('NO DICE!');
 ?>
 {if count($aFriends)}
 {foreach from=$aFriends name=friend item=aFriend}
-<div id="js_friend_{$aFriend.friend_id}" class="go_left" style="width:32%; padding-bottom:10px;">
+<div id="js_friend_{$aFriend.friend_id}" class="go_left row_friend_browse" style="width:32%; padding-bottom:10px; position:relative;">
 	<div class="t_center" style="width:80px; float:left;">
-		{img user=$aFriend suffix='_75_square' max_width=75 max_height=75}
+		{img user=$aFriend suffix='_50_square' max_width=75 max_height=75}				
 	</div>
-	<div style="margin-left:85px;">
+	<div style="margin-left:85px; position:relative;">
 		<span class="row_title_link">{$aFriend|user:'':'':50}</span>
+		{if defined('PHPFOX_IS_USER_PROFILE') && isset($aUser.user_id) && $aUser.user_id == Phpfox::getUserId()}		
+		<div class="row_unfriend">
+			<a href="#" onclick="$.ajaxCall('friend.delete', 'id={$aFriend.friend_id}'); return false;">{phrase var='friend.unfriend'}</a>
+		</div>
+		{/if}		
 	</div>
 	<div class="clear"></div>
 </div>
-{if is_int($phpfox.iteration.friend/3)}
-<div class="clear"></div>
-{/if}
+
 {/foreach}
 <div class="clear"></div>
 {pager}

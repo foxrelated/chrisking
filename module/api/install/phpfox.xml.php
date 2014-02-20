@@ -24,6 +24,9 @@
 		<hook module_id="api" hook_type="template" module="api" call_name="api.template_block_gateway_form_end" added="1274286148" version_id="2.0.5dev1" />
 		<hook module_id="api" hook_type="controller" module="api" call_name="api.component_controller_method_clean" added="1319729453" version_id="3.0.0rc1" />
 		<hook module_id="api" hook_type="controller" module="api" call_name="api.component_controller_token_clean" added="1319729453" version_id="3.0.0rc1" />
+		<hook module_id="api" hook_type="service" module="api" call_name="api.service_api_sendresponse_1" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="api" hook_type="service" module="api" call_name="api.service_api_createtoken_1" added="1361180401" version_id="3.5.0rc1" />
+		<hook module_id="api" hook_type="service" module="api" call_name="api.service_gateway_gateway_getactive_1" added="1362126685" version_id="3.5.0" />
 	</hooks>
 	<phrases>
 		<phrase module_id="api" version_id="2.0.0beta4" var_name="module_api" added="1244660981">Api</phrase>

@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: validator.sett.php 1642 2010-06-09 11:58:38Z Miguel_Espinoza $
+ * @version 		$Id: validator.sett.php 5840 2013-05-09 06:14:35Z Raymond_Benc $
  */
 
 defined('PHPFOX') or exit('NO DICE!');
@@ -17,7 +17,7 @@ $this->_aDefaults = array(
 		
 	),
     'email' => array(
-        'pattern' => '/^[0-9a-zA-Z]([\-.\w]*[0-9a-zA-Z]?)*@([0-9a-zA-Z][\-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,}$/',
+        'pattern' => '/^[0-9a-zA-Z]([\-+.\w]*[0-9a-zA-Z]?)*@([0-9a-zA-Z\-.\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,}$/',
         'maxlen' => 100,
         'title' => (defined('PHPFOX_INSTALLER') ? '' : Phpfox::getPhrase('user.provide_a_valid_email_address'))
     ),    

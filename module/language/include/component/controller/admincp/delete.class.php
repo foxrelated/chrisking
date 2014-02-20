@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Language
- * @version 		$Id: delete.class.php 1187 2009-10-14 13:05:26Z Raymond_Benc $
+ * @version 		$Id: delete.class.php 6136 2013-06-24 12:28:43Z Miguel_Espinoza $
  */
 class Language_Component_Controller_Admincp_Delete extends Phpfox_Component 
 {
@@ -45,6 +45,7 @@ class Language_Component_Controller_Admincp_Delete extends Phpfox_Component
 		{
 			if (Phpfox::getService('language.process')->delete($iId))
 			{
+				Phpfox::getLib('locale')->autoLoadLanguage();
 				$this->url()->send('admincp', 'language', Phpfox::getPhrase('language.language_package_successfully_deleted'));
 			}
 		}

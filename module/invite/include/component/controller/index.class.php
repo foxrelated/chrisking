@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Invite
- * @version 		$Id: index.class.php 3437 2011-11-02 14:29:41Z Miguel_Espinoza $
+ * @version 		$Id: index.class.php 6837 2013-10-31 14:45:37Z Fern $
  */
 class Invite_Component_Controller_Index extends Phpfox_Component
 {
@@ -52,10 +52,13 @@ class Invite_Component_Controller_Index extends Phpfox_Component
 					
 					(($sPlugin = Phpfox_Plugin::get('invite.component_controller_index_process_send')) ? eval($sPlugin) : false);		
 
+					$sFromEmail = Phpfox::getParam('core.email_from_email');
 					// check if we could send the mail
 					$sLink = Phpfox::getLib('url')->makeUrl('invite', array('id' => $iInvite));
 					$bSent = Phpfox::getLib('mail')->to($sMail)		
-						->fromEmail(Phpfox::getUserBy('email'))				
+						// SMTP error: from email is not the same as the SMTP account 
+						// ->fromEmail(Phpfox::getUserBy('email'))
+						->fromEmail( (empty($sFromEmail) ? Phpfox::getUserBy('email') : Phpfox::getParam('core.email_from_email')) )	
 						->fromName(Phpfox::getUserBy('full_name'))				
 						->subject(array('invite.full_name_invites_you_to_site_title', array('full_name' => Phpfox::getUserBy('full_name'), 'site_title' => Phpfox::getParam('core.site_title'))))
 						->message(array('invite.full_name_invites_you_to_site_title_link', array('full_name' => Phpfox::getUserBy('full_name'), 'site_title' => Phpfox::getParam('core.site_title'), 'link' => $sLink)))

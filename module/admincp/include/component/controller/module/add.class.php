@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: add.class.php 1931 2010-10-25 11:58:06Z Raymond_Benc $
+ * @version 		$Id: add.class.php 5243 2013-01-29 10:46:33Z Raymond_Benc $
  */
 class Admincp_Component_Controller_Module_Add extends Phpfox_Component 
 {
@@ -115,8 +115,8 @@ class Admincp_Component_Controller_Module_Add extends Phpfox_Component
 			}
 		}
 		
-		$this->template()->setBreadCrumb(Phpfox::getPhrase('admincp.create_module'))
-			->setTitle(Phpfox::getPhrase('admincp.create_module'))		
+		$this->template()->setBreadCrumb(($bIsEdit ? 'Editing Module: ' . $aRow['module_id'] : Phpfox::getPhrase('admincp.create_module')))
+			->setTitle(($bIsEdit ? 'Editing Module: ' . $aRow['module_id'] : Phpfox::getPhrase('admincp.create_module')))		
 			->assign(array(
 				'aProducts' => Phpfox::getService('admincp.product')->get(),
 				'sCreateJs' => $oValid->createJS(),

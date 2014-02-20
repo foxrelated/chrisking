@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: process.class.php 4497 2012-07-11 10:27:33Z Miguel_Espinoza $
+ * @version 		$Id: process.class.php 5840 2013-05-09 06:14:35Z Raymond_Benc $
  */
 class User_Service_Group_Process extends Phpfox_Service 
 {
@@ -115,7 +115,7 @@ class User_Service_Group_Process extends Phpfox_Service
 		{
 			$aGroupSettings = $this->database()->select('ugs.setting_id, ugc.module_id, ugc.name, ugc.default_value')
 				->from(Phpfox::getT('user_group_custom'), 'ugc')
-				->join(Phpfox::getT('user_group_setting'), 'ugs', 'ugc.name = ugs.name')
+				->join(Phpfox::getT('user_group_setting'), 'ugs', 'ugc.name = ugs.name AND ugc.module_id = ugs.module_id')
 				->where('ugc.user_group_id = ' . (int) $aVals['inherit_id'])
 				->execute('getRows');  				
 		}

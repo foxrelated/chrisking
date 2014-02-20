@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: seo.class.php 4165 2012-05-14 10:43:25Z Raymond_Benc $
+ * @version 		$Id: seo.class.php 7052 2014-01-20 13:45:52Z Fern $
  */
 class Admincp_Service_Seo_Seo extends Phpfox_Service 
 {
@@ -25,7 +25,7 @@ class Admincp_Service_Seo_Seo extends Phpfox_Service
 	
 	public function setHeaders()
 	{
-		$sCacheId = $this->cache()->set('seo_nofollow');
+		$sCacheId = $this->cache()->set('seo_nofollow_build');
 		if (!($aNoFollows = $this->cache()->get($sCacheId)))
 		{
 			$aRows = $this->database()->select('*')
@@ -49,27 +49,42 @@ class Admincp_Service_Seo_Seo extends Phpfox_Service
 			}
 		}
 		
-		$sCacheId = $this->cache()->set('seo_meta');
+		$sCacheId = $this->cache()->set('seo_meta_build');
 		if (!($aMetas = $this->cache()->get($sCacheId)))
 		{
 			$aRows = $this->database()->select('*')
 				->from(Phpfox::getT('seo_meta'))
 				->execute('getSlaveRows');
+
 			$aMetas = array();
 			foreach ($aRows as $aRow)
 			{
-				$aMetas[$aRow['url']] = $aRow;
+				if (!isset($aMetas[$aRow['url']]))
+				{
+					$aMetas[$aRow['url']] = array();
+				}
+				$aMetas[$aRow['url']][] = $aRow;
 			}
 
 			$this->cache()->save($sCacheId, $aMetas);
 		}		
-		
+
 		if (count($aMetas))
 		{
 			$sUrl = trim(Phpfox::getLib('url')->getFullUrl(true), '/');
+
 			if (isset($aMetas[$sUrl]))
 			{
-				Phpfox::getLib('template')->setMeta((!$aMetas[$sUrl]['type_id'] ? 'keywords' : 'description'), $aMetas[$sUrl]['content']);
+				foreach ($aMetas[$sUrl] as $aMeta)
+				{
+					if ($aMeta['type_id'] == '2')
+					{
+						Phpfox::getLib('template')->setTitle(Phpfox::getLib('locale')->convert($aMeta['content']));
+						
+						continue;
+					}
+					Phpfox::getLib('template')->setMeta((!$aMeta['type_id'] ? 'keywords' : 'description'), $aMeta['content']);
+				}
 			}
 		}
 	}
@@ -85,21 +100,30 @@ class Admincp_Service_Seo_Seo extends Phpfox_Service
 	
 	public function getNoFollows()
 	{
-		$aRows = $this->database()->select('*')
-			->from(Phpfox::getT('seo_nofollow'))
-			->order('time_stamp')
-			->execute('getSlaveRows');
-		
+		$sCacheId = $this->cache()->set('seo_nofollow');
+		if (!($aRows = $this->cache()->get($sCacheId)))
+		{
+			$aRows = $this->database()->select('*')
+				->from(Phpfox::getT('seo_nofollow'))
+				->order('time_stamp')			
+				->execute('getSlaveRows');
+			$this->cache()->save($sCacheId, $aRows);
+		}		
 		return $aRows;
 	}
 	
 	public function getSiteMetas()
 	{
-		$aRows = $this->database()->select('*')
-			->from(Phpfox::getT('seo_meta'))
-			->order('time_stamp')
-			->execute('getSlaveRows');
-		
+		$sCacheId = $this->cache()->set('seo_meta');
+		if (!($aRows = $this->cache()->get($sCacheId)))
+		{
+			$aRows = $this->database()->select('*')
+				->from(Phpfox::getT('seo_meta'))
+				->order('time_stamp')
+				->execute('getSlaveRows');
+
+			$this->cache()->save($sCacheId, $aRows);
+		}	
 		return $aRows;		
 	}
 }

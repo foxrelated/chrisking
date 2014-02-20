@@ -37,7 +37,43 @@ class Poke_Service_Poke extends Phpfox_Service
 		{
 			return false;
 		}
-		
+
+		/*
+		if (Phpfox::getParam('core.super_cache_system'))
+		{
+			$sCacheId = $this->cache()->set(array('pokes', $iUser));
+			if ( !($aCache = $this->cache()->get($sCacheId)) )
+			{
+				$aCache = $this->database()->select('p.*, u.user_name, u.full_name')
+					->from($this->_sTable, 'p')
+					->join(Phpfox::getT('user'), 'u', 'u.user_id = p.to_user_id')
+					->where('p.user_id = ' . (int)$iUser)
+					->execute('getSlaveRows');
+				$iCnt = count($aCache);
+				$aCache = array('cnt' => $iCnt, 'pokes' => $aCache);
+				$this->cache()->save($sCacheId, $aCache);
+			}
+			
+			if (!is_array($aCache))
+			{
+				return false;
+			}
+			
+			if ($aCache['cnt'] < 1)
+			{
+				return true;
+			}
+			foreach ($aCache['pokes'] as $aPoke)
+			{
+				if ($aPoke['user_id'] == Phpfox::getUserId() && $aPoke['status_id'] == 1)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		*/
+
 		/* if $iUser has a pending poke */
 		$iExists = $this->database()->select('poke_id')
 				->from($this->_sTable)
@@ -48,12 +84,24 @@ class Poke_Service_Poke extends Phpfox_Service
 	}
 	
 	
-	public function getPokesForUser($iUserId)
+	public function getPokesForUser($iUserId, $bCache = false)
 	{
+		$bCache = false;
+		if ($bCache)
+		{
+			$sCacheId = $this->cache()->set(array('pokes', $iUserId . (PHPFOX_IS_AJAX ? '_ajax' : '')));
+			if (($aCache = $this->cache()->get($sCacheId)))
+			{
+				$aCache = $this->checkPokes($aCache);
+				return array($aCache['cnt'], $aCache['pokes']);
+			}
+		}
+		
 		$iCnt = $this->database()->select('COUNT(*)')
 			->from($this->_sTable, 'p')
 			->join(Phpfox::getT('user'), 'u', 'u.user_id = p.user_id')
 			->where('to_user_id = ' . (int)$iUserId . ' AND p.status_id = 1')				
+			->group('p.user_id')
 			->execute('getSlaveField');		
 		
 		if (!PHPFOX_IS_AJAX)
@@ -64,12 +112,44 @@ class Poke_Service_Poke extends Phpfox_Service
 		$aPokes = $this->database()->select('p.*, u.user_name, u.user_id, u.full_name')
 			->from($this->_sTable, 'p')
 			->join(Phpfox::getT('user'), 'u', 'u.user_id = p.user_id')
-			->where('p.to_user_id = ' . (int)$iUserId . ' AND p.status_id = 1')							
+			->where('p.to_user_id = ' . (int)$iUserId . ' AND p.status_id = 1')		
+			->group('p.user_id')					
 			->order('p.poke_id DESC')
 			->execute('getSlaveRows');
 		
+		if ($bCache)
+		{
+			$this->cache()->save($sCacheId, array('cnt' => $iCnt, 'pokes' => $aPokes));
+		}
+				
 		return array($iCnt, $aPokes);
 	}
+	
+	
+	/* Removes duplicates */
+	private function checkPokes($aItem)
+	{
+		$aChecked = array();
+		foreach ($aItem['pokes'] as $aPoke)
+		{
+			$sKey = $aPoke['user_id'] . '-' . $aPoke['to_user_id'];
+			if (!isset($aChecked[$sKey]))
+			{
+				$aChecked[$sKey] = $aPoke;
+				continue;
+			}
+			
+			if (isset($aChecked[$sKey]) && $aChecked[$sKey]['poke_id'] < $aPoke['poke_id'])
+			{
+				$aChecked[$sKey] = $aPoke;
+				$aItem['cnt'] = $aItem['cnt'] - 1;
+			}
+		}
+		$aItem['pokes'] = $aChecked;
+		return $aItem;
+	}
+	
+	
 	/**
 	 * If a call is made to an unknown method attempt to connect
 	 * it to a specific plug-in with the same name thus allowing 

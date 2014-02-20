@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Mail
- * @version 		$Id: private.class.php 4255 2012-06-13 07:24:53Z Raymond_Benc $
+ * @version 		$Id: private.class.php 6437 2013-08-12 08:40:14Z Miguel_Espinoza $
  */
 class Mail_Component_Controller_Admincp_Private extends Phpfox_Component
 {
@@ -107,7 +107,7 @@ class Mail_Component_Controller_Admincp_Private extends Phpfox_Component
 				'type' => 'select',
 				'options' => $aUserGroups,
 				'add_any' => true,
-				'search' => 'AND sender.user_group_id = [VALUE]'
+				'search' => 'AND sender.user_group_id = \'[VALUE]\''
 			),
 			'status' => array(
 				'type' => 'select',
@@ -136,12 +136,12 @@ class Mail_Component_Controller_Admincp_Private extends Phpfox_Component
 			'sender' => array(
 				'type' => 'input:text',
 				'size' => 20,
-				'search' => 'SENDER=[VALUE]'
+				'search' => 'SENDER=\'[VALUE]\''
 			),
 			'receiver' => array(
 				'type' => 'input:text',
 				'size' => 20,
-				'search' => 'RECEIVER=[VALUE]'
+				'search' => 'RECEIVER=\'[VALUE]\''
 			)
 		);
 		
@@ -154,7 +154,6 @@ class Mail_Component_Controller_Admincp_Private extends Phpfox_Component
 		);
 
 		
-		//d($oFilter->getConditions());
 		$iPage = $this->request()->getInt('page', 1);
 		
 		define('PHPFOX_IS_PRIVATE_MAIL', true);

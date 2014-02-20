@@ -64,8 +64,7 @@ class Egift_Component_Block_Display extends Phpfox_Component
 		{
 			foreach ($aCat as $iKey => $aGift)
 			{
-				$bEmpty = true;
-				if (is_array($aGift['price']) && !empty($aGift['price']))
+				if (is_array($aGift['price']) && !empty($aGift['price']) && isset($aEgifts[$sCat][$iKey]['price'][Phpfox::getService('user')->getCurrency()]))
 				{
 					/*get the currency for this user*/
 					$aGift['price'] = $aEgifts[$sCat][$iKey]['price'][Phpfox::getService('user')->getCurrency()];

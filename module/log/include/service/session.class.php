@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Log
- * @version 		$Id: session.class.php 4944 2012-10-24 05:24:29Z Raymond_Benc $
+ * @version 		$Id: session.class.php 5844 2013-05-09 08:00:59Z Raymond_Benc $
  */
 class Log_Service_Session extends Phpfox_Service
 {
@@ -132,18 +132,26 @@ class Log_Service_Session extends Phpfox_Service
 		
 		$sSessionHash = $oSession->get('session');		
 
-		if ($sSessionHash)
+		if (Phpfox::getParam('core.store_only_users_in_session'))
 		{
 			$this->_aSession = Phpfox::getService('user.auth')->getUserSession();
-			
-			if (!isset($this->_aSession['session_hash']))
+		}
+		else
+		{
+			if ($sSessionHash)
 			{
-				$this->_aSession = $this->database()->select('s.session_hash, s.id_hash, s.captcha_hash, s.user_id')
-					->from($this->_sTable, 's')
-					->where("s.session_hash = '" . $this->database()->escape($oSession->get('session')) . "' AND s.id_hash = '" . $this->database()->escape($oRequest->getIdHash()) . "'")
-					->execute('getRow');			
-			}
-		}		
+				$this->_aSession = Phpfox::getService('user.auth')->getUserSession();
+				
+				if (!isset($this->_aSession['session_hash']) && !Phpfox::getParam('core.store_only_users_in_session'))
+				{				
+					$this->database()->where("s.session_hash = '" . $this->database()->escape($oSession->get('session')) . "' AND s.id_hash = '" . $this->database()->escape($oRequest->getIdHash()) . "'");
+					
+					$this->_aSession = $this->database()->select('s.session_hash, s.id_hash, s.captcha_hash, s.user_id')
+						->from($this->_sTable, 's')					
+						->execute('getRow');			
+				}
+			}		
+		}
 		
 		$sLocation = $oRequest->get(PHPFOX_GET_METHOD);
 		$sLocation = substr($sLocation, 0, 244);
@@ -152,6 +160,10 @@ class Log_Service_Session extends Phpfox_Service
 
 		if (Phpfox::getParam('core.log_site_activity'))
 		{
+            if(Phpfox::getUserId() > 0) 
+			{
+				$this->database()->delete($this->_sTable, 'user_id = ' . Phpfox::getUserId());
+			}
 			$this->database()->insert(Phpfox::getT('log_view'), array(
 					'user_id' => Phpfox::getUserId(),				
 					'ip_address' => $sIp,				
@@ -201,42 +213,69 @@ class Log_Service_Session extends Phpfox_Service
 			}			
 		}
 		
-		if (!isset($this->_aSession['session_hash']))
+		if (Phpfox::getParam('core.store_only_users_in_session'))
 		{
-			$sSessionHash = $oRequest->getSessionHash();
-			if(Phpfox::getUserId() > 0) 
+			if (Phpfox::isUser())
 			{
-				$this->database()->delete($this->_sTable, 'user_id = ' . Phpfox::getUserId());
+				if (!isset($this->_aSession['session_hash']))
+				{
+					if(Phpfox::getUserId() > 0)
+					{
+						$this->database()->delete(Phpfox::getT('session'), 'user_id = ' . Phpfox::getUserId());
+					}
+					$this->database()->insert(Phpfox::getT('session'), array(
+							'user_id' => Phpfox::getUserId(),
+							'last_activity' => PHPFOX_TIME
+						)
+					);
+				}
+				else
+				{
+					$this->database()->update(Phpfox::getT('session'), array(
+							'last_activity' => PHPFOX_TIME							
+					), 'user_id = ' . (int) Phpfox::getUserId());
+				}	
+			}		
+		}
+		else
+		{		
+			if (!isset($this->_aSession['session_hash']))
+			{
+				$sSessionHash = $oRequest->getSessionHash();
+				if(Phpfox::getUserId() > 0) 
+				{
+					$this->database()->delete($this->_sTable, 'user_id = ' . Phpfox::getUserId());
+				}
+				$this->database()->insert($this->_sTable, array(
+						'session_hash' => $sSessionHash,
+						'id_hash' => $oRequest->getIdHash(),
+						'user_id' => Phpfox::getUserId(),
+						'last_activity' => PHPFOX_TIME,
+						'location' => $sLocation,
+						'is_forum' => ($bIsForum ? '1' : '0'),
+						'forum_id' => $iForumId,
+						'im_hide' => $iIsHidden,
+						'ip_address' => $sIp,
+						'user_agent' => $sBrowser
+					)
+				);
+				$oSession->set('session', $sSessionHash);
 			}
-			$this->database()->insert($this->_sTable, array(
-					'session_hash' => $sSessionHash,
-					'id_hash' => $oRequest->getIdHash(),
+			else if (isset($this->_aSession['session_hash']))
+			{
+				$this->database()->update($this->_sTable, array(
+					'last_activity' => PHPFOX_TIME, 
 					'user_id' => Phpfox::getUserId(),
-					'last_activity' => PHPFOX_TIME,
-					'location' => $sLocation,
-					'is_forum' => ($bIsForum ? '1' : '0'),
-					'forum_id' => $iForumId,
+					"location" => $sLocation,
+					"is_forum" => ($bIsForum ? "1" : "0"),
+					"forum_id" => $iForumId,
 					'im_hide' => $iIsHidden,
-					'ip_address' => $sIp,
-					'user_agent' => $sBrowser
-				)
-			);
-			$oSession->set('session', $sSessionHash);
-		}
-		else 
-		{
-			$this->database()->update($this->_sTable, array(
-				'last_activity' => PHPFOX_TIME, 
-				'user_id' => Phpfox::getUserId(),
-				"location" => $sLocation,
-				"is_forum" => ($bIsForum ? "1" : "0"),
-				"forum_id" => $iForumId,
-				'im_hide' => $iIsHidden,
-				"ip_address" => $sIp,
-				"user_agent" => $sBrowser
-			),"session_hash = '" . $this->_aSession["session_hash"] . "'");	
-		}
-		
+					"ip_address" => $sIp,
+					"user_agent" => $sBrowser
+				), "session_hash = '" . $this->_aSession["session_hash"] . "'");	
+			}	
+		}			
+			
 		if (!Phpfox::getCookie('visit'))
 		{
 			Phpfox::setCookie('visit', PHPFOX_TIME);			
@@ -260,7 +299,10 @@ class Log_Service_Session extends Phpfox_Service
 				}
 			}		
 			
-			$this->database()->update(Phpfox::getT('user'), array('last_activity' => PHPFOX_TIME, 'last_ip_address' => Phpfox::getIp()), 'user_id = ' . Phpfox::getUserId());
+			if (!Phpfox::getParam('user.disable_store_last_user'))
+			{
+				$this->database()->update(Phpfox::getT('user'), array('last_activity' => PHPFOX_TIME, 'last_ip_address' => Phpfox::getIp()), 'user_id = ' . Phpfox::getUserId());
+			}
 		}
 	}
 	
@@ -309,15 +351,22 @@ class Log_Service_Session extends Phpfox_Service
 	public function getOnlineStats()
 	{
 		$sOnlineMembers = $this->database()->select('COUNT(DISTINCT user_id)')
-			->from(Phpfox::getT('log_session'))
+			->from((Phpfox::getParam('core.store_only_users_in_session') ? Phpfox::getT('session') : Phpfox::getT('log_session')))
 			->where('user_id > 0 AND last_activity > ' . (PHPFOX_TIME - (Phpfox::getParam('log.active_session')*60)))
 			->execute('getSlaveField');
 			
-		$sOnlineGuests = $this->database()->select('COUNT(*)')
-			->from(Phpfox::getT('log_session'))
-			->where('user_id = 0 AND last_activity > '  . (PHPFOX_TIME - (Phpfox::getParam('log.active_session')*60)))
-			->execute('getSlaveField');			
-			
+        if (Phpfox::getParam('core.log_site_activity'))
+		{
+            $sOnlineGuests = $this->database()->select('COUNT(DISTINCT ip_address)')
+				->from(Phpfox::getT('log_session'))
+				->where('user_id = 0 AND last_activity > '  . (PHPFOX_TIME - (Phpfox::getParam('log.active_session')*60)))
+				->execute('getSlaveField');			
+        }
+        else
+        {
+            $sOnlineGuests = 0;
+        }
+        
 		return array(
 			'members' => (int) $sOnlineMembers,
 			'guests' => (int) $sOnlineGuests

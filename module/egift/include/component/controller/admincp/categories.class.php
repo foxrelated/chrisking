@@ -58,7 +58,7 @@ class Egift_Component_Controller_Admincp_Categories extends Phpfox_Component
 			->setHeader(array(
 				'categories.js' => 'module_egift',
 				'drag.js' => 'static_script',
-				'<script type="text/javascript">Core_drag.init({table: \'#js_drag_drop\', ajax: \'egift.setOrder\'});</script>'
+				'<script type="text/javascript">$Behavior.coreDragInit = function() { Core_drag.init({table: \'#js_drag_drop\', ajax: \'egift.setOrder\'}); }</script>'
 			))
 			->setBreadcrumb(Phpfox::getPhrase('egift.module_egift'), $this->url()->makeUrl('admincp.egift'))
 			->setBreadcrumb(Phpfox::getPhrase('egift.maange_categories'), null, true);

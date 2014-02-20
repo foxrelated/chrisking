@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: site-stat.class.php 1599 2010-05-28 04:31:26Z Raymond_Benc $
+ * @version 		$Id: site-stat.class.php 5502 2013-03-18 08:25:12Z Miguel_Espinoza $
  */
 class Core_Component_Block_Site_Stat extends Phpfox_Component
 {
@@ -23,20 +23,24 @@ class Core_Component_Block_Site_Stat extends Phpfox_Component
 		$aStats = array();
 		
 		$aOnline = Phpfox::getService('log.session')->getOnlineStats();
-		
+
 		$aStats[Phpfox::getPhrase('admincp.online')] = array(
 			array(
 				'phrase' => Phpfox::getPhrase('admincp.members'),
 				'value' => $aOnline['members'],
 				'link' => $this->url()->makeUrl('admincp.user.browse', array('view' => 'online'))
-			),
-			array(
+			)
+			
+		);
+		
+        if (Phpfox::getParam('core.log_site_activity'))
+        {
+            $aStats[Phpfox::getPhrase('admincp.online')][] = array(
 				'phrase' => Phpfox::getPhrase('admincp.guests'),
 				'value' => $aOnline['guests'],
 				'link' => $this->url()->makeUrl('admincp.core.online-guest')
-			)
-		);
-		
+			);
+        }
 		$aPendingCallback = Phpfox::massCallback('pendingApproval');	
 		$aStats[Phpfox::getPhrase('admincp.pending_approval')] = array();
 		$iTotalApprove = 0;		
@@ -123,8 +127,14 @@ class Core_Component_Block_Site_Stat extends Phpfox_Component
 		{
 			unset($aStats[Phpfox::getPhrase('admincp.today_s_site_stats')]);
 		}		
-		
-		
+
+		/*
+		if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
+		{
+			$this->template()->assign(Phpfox::getService('admincp')->getHostingStats());
+		}
+		*/
+
 		$this->template()->assign(array(
 				'sHeader' => Phpfox::getPhrase('admincp.site_statistics'),
 				'aStats' => $aStats

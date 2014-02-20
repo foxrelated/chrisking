@@ -4,7 +4,7 @@ function photoLoaderImage()
 	$('#site_content').html($.ajaxProcess(oTranslations['photo.loading'], 'large'));		
 }
 
-$(function()
+$Behavior.photo_browse = function()
 {
 	/*
 	if (!empty(window.location.hash))
@@ -44,7 +44,7 @@ $(function()
 		return false;
 	});
 	*/
-});
+};
 
 $Behavior.photoCategoryDropDown = function()
 {
@@ -61,4 +61,4 @@ $Behavior.photoCategoryDropDown = function()
 			$('#js_photo_category_' + aParts[i]).attr('selected', true);
 		}
 	}
-}
+};

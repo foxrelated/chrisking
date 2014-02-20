@@ -19,7 +19,7 @@ if ((Phpfox::getLib('module')->getFullControllerName() == 'forum.thread' || (PHP
 		|| Phpfox::getService('forum.moderate')->hasAccess($aThread['forum_id'], 'can_reply')
 		)
 	{
-		echo '<li><a href="#" onclick="$Core.box(\'forum.reply\', 800, \'id=' . $aPost['thread_id'] . '&amp;quote=' . $aPost['post_id'] . '&amp;total_post=' . $iTotalPosts . '\'); return false;">' . Phpfox::getPhrase('forum.reply') . '</a></li>';
+		echo '<li><a href="#" onclick="$Core.box(\'forum.reply\', 800, \'id=' . $aPost['thread_id'] . '&amp;quote=' . $aPost['post_id'] . '&amp;total_post=' . $iTotalPosts . '\'); return false;">' . Phpfox::getPhrase('core.quote') . '</a></li>';
 		echo '<li>&middot;</li>';
 	}
 

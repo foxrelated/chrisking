@@ -17,7 +17,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: output.class.php 5050 2012-11-28 09:47:44Z Raymond_Benc $
+ * @version 		$Id: output.class.php 7094 2014-02-06 15:15:56Z Fern $
  */
 class Phpfox_Parse_Output
 {
@@ -100,27 +100,145 @@ class Phpfox_Parse_Output
 		}				
 
 		$sTxt = Phpfox::getService('ban.word')->clean($sTxt);
-		
+
+		/*
 		if (Phpfox::getParam('core.xhtml_valid'))
 		{
 			$sTxt = Phpfox::getLib('parse.format')->validXhtml($sTxt);
 		}
+		*/
 		
 		$sTxt = $this->parseUrls($sTxt);
 
 		$sTxt = preg_replace_callback('/<object(.*?)>(.*?)<\/object>/is', array($this, '_embedWmode'), $sTxt);
 		// $sTxt = preg_replace_callback('/<iframe(.*?)>(.*?)<\/iframe>/is', array($this, '_embedWmode'), $sTxt);
 		
-		$sTxt = preg_replace_callback('/\[PHPFOX_PHRASE\](.*?)\[\/PHPFOX_PHRASE\]/i', array($this, '_getPhrase'), $sTxt);
+		if (Phpfox::getParam('core.enable_html_purifier') && file_exists(PHPFOX_DIR_LIB . 'htmlpurifier/HTMLPurifier.auto.php'))
+		{
+			static $purifier = null;
+
+			Phpfox_Error::skip(true);
+
+			if ($purifier === null)
+			{
+				require_once PHPFOX_DIR_LIB . 'htmlpurifier/HTMLPurifier.auto.php';
+				$config = HTMLPurifier_Config::createDefault();
+				if (file_exists(PHPFOX_DIR_SETTING . 'htmlpurifier.sett.php'))
+				{
+					require_once(PHPFOX_DIR_SETTING . 'htmlpurifier.sett.php');
+				}
+				else
+				{
+					require_once(PHPFOX_DIR_SETTING . 'htmlpurifier.sett.php.new');
+				}
+				$config->set('Attr.AllowedRel', array('nofollow'));
+				$config->set('Attr.AllowedFrameTargets', array('_blank'));
+				$purifier = new HTMLPurifier($config);
+			}
+
+			$sTxt = $purifier->purify($sTxt);
+
+			Phpfox_Error::skip(false);
+		}
 		
+		$sTxt = preg_replace_callback('/\[PHPFOX_PHRASE\](.*?)\[\/PHPFOX_PHRASE\]/i', array($this, '_getPhrase'), $sTxt);
+
 		if (Phpfox::getParam('core.resize_images'))
 		{
 			$sTxt = preg_replace_callback('/<img(.*?)>/i', array($this, '_fixImageWidth'), $sTxt);
 		}
-		
+
+		if (Phpfox::getParam('tag.enable_hashtag_support'))
+		{
+			$sTxt = $this->replaceHashTags($sTxt);
+		}
+
 		return $sTxt;
 	}	
+
+	private function _replaceHashTags($aMatches)
+	{
+		$sTagSearch = substr_replace(strip_tags($aMatches[0]), '', 0, 1);
+		$sTagSearch = preg_replace('/\[UNICODE\]([0-9]+)\[\/UNICODE\]/', '&#\\1;', $sTagSearch);
+		$sTagSearch = urlencode($sTagSearch);
+
+		$sTxt = '<a href="' . Phpfox::getLib('url')->makeUrl('hashtag', array($sTagSearch)) . '"' . ((Phpfox::isMobile() || defined('PHPFOX_FEED_HASH_POPUP')) ? '' : ' onclick="tb_show(\'\', $.ajaxBox(\'feed.hashtag\', \'height=300&width=600&hashtagsearch=' . $sTagSearch . '&hashtagpopup=true\')); return false;"') . '>' . strip_tags($aMatches[0]) . '</a>';
+
+		return $sTxt;
+	}
 	
+	private function _replaceHexColor($aMatches)
+	{
+		// http://www.phpfox.com/tracker/view/14956/
+		// after change to check whether "color" is in the string or not, this if is incorrect
+		// if(strlen($aMatches[1]) == 3) {
+		if(strlen($aMatches[2]) == 3) {
+			$r = hexdec(substr($aMatches[2],0,1).substr($aMatches[2],0,1));
+			$g = hexdec(substr($aMatches[2],1,1).substr($aMatches[2],1,1));
+			$b = hexdec(substr($aMatches[2],2,1).substr($aMatches[2],2,1));
+		}
+		else
+		{
+			$r = hexdec(substr($aMatches[2],0,2));
+			$g = hexdec(substr($aMatches[2],2,2));
+			$b = hexdec(substr($aMatches[2],4,2));
+		}
+		$sRGB = "rgb(" . $r . "," . $g . ",". $b . ")";
+		
+		return "color:" . $sRGB;
+	}
+	
+	public function _replaceUnicode($aMatches)
+	{
+		return '[UNICODE]' . (int) str_replace(array('&#', ';'), '', $aMatches[0]) . '[/UNICODE]';
+	}
+
+	public function replaceHashTags($sTxt)
+	{
+		// http://www.phpfox.com/tracker/view/15043/
+		if(preg_match('/http(s)?:\/\/(www)?/i', $sTxt))
+		{
+			return $sTxt;
+		}
+		
+		$sTxt = preg_replace_callback("/(&#+[0-9+]+;)/", array($this, '_replaceUnicode'), $sTxt);
+		// http://www.phpfox.com/tracker/view/14956/
+		$sTxt = preg_replace_callback("/(color:)?\s*#(([A-F0-9]{3}){1,2})/i", array($this, '_replaceHexColor'), $sTxt);
+		$sTxt = preg_replace_callback("/(#[\wa-zA-Z0-9\[\]\/]+)/u", array($this, '_replaceHashTags'), $sTxt);
+		$sTxt = preg_replace('/\[UNICODE\]([0-9]+)\[\/UNICODE\]/', '&#\\1;', $sTxt);
+
+		return $sTxt;
+	}
+
+	public function getHashTags($sTxt)
+	{
+		$aTags = array();
+		$sTxt = str_replace(array('<br >', '<br />', '<p>', '</p>'), ' ', $sTxt);
+		
+		$sTxt = preg_replace_callback("/(&#+[0-9+]+;)/", array($this, '_replaceUnicode'), $sTxt);
+		
+		// http://www.phpfox.com/tracker/view/14956/
+		$sTxt = preg_replace("/#(([A-F0-9]{3}){1,2})/i", "", $sTxt);
+		$sTxt = preg_replace("/http(s?):\/\/.*#(.*).*/i", "", $sTxt);
+		
+		preg_match_all("/(#[^\s]*)/i", $sTxt, $aMatches);
+		
+		if (is_array($aMatches) && count($aMatches))
+		{
+			foreach ($aMatches as $aSubTags)
+			{
+				foreach ($aSubTags as $sTag)
+				{
+					$sTag = preg_replace('/\[UNICODE\]([0-9]+)\[\/UNICODE\]/', '&#\\1;', $sTag);
+					$aTags[] = substr_replace($sTag, '', 0, 1);
+				}
+
+				break;
+			}
+		}
+		return $aTags;
+	}
+
 	public function parseUrls($sTxt)
 	{
 		if (Phpfox::getParam('core.disable_all_external_emails'))
@@ -132,23 +250,77 @@ class Phpfox_Parse_Output
 		{
 			$sTxt = preg_replace_callback('#([\s>])([\w]+?://[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', array(&$this, '_replaceLinks'), $sTxt);
 			$sTxt = preg_replace_callback('#([\s>])((www|ftp)\.[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', array(&$this, '_replaceLinks'), $sTxt);	
-		}		
+		}
+		
+		if (Phpfox::getParam('core.replace_url_with_links') || Phpfox::getParam('core.warn_on_external_links'))
+		{		
+			if (Phpfox::getParam('core.warn_on_external_links'))
+			{
+				/*
+	            if (preg_match_callback('#(<a\s*(?:href=[\'"]([^\'"]+)[\'"])?\s*(?:title=[\'"]([^\'"]+)[\'"])?.*?>((?:(?!</a>).)*)</a>)#i', array(&$this, '_urlToLink'), $sTxt))
+	            {
+	                foreach ($aMatches[1] as $iKey => $sLink)
+	                {
+	                    $sNu = $this->_urlToLink(array(1 => '', 2 => $aMatches[2][$iKey]));
+	                   
+	                    	if (!preg_match('/' . preg_quote(Phpfox::getParam('core.host')) . '/i', $sHref))
+	                    	{
+	                    		$sHref = Phpfox::getLib('url')->makeUrl('core.redirect', array('url' => Phpfox::getLib('url')->encode($sHref)));
+	                    	}
+	                   
+	                    
+	                    $sTxt = str_replace($sLink, $sNu , $sTxt);
+	                }
+	            }
+	            */
+				$sTxt = preg_replace_callback('/<a\s(.*?)>/i', array(&$this, '_warnOnExtLink'), $sTxt);
+			}
+            
+			$sTxt = preg_replace_callback('#([\s>])([\w]+?://[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', array(&$this, '_urlToLink'), $sTxt);
+			$sTxt = preg_replace_callback('#([\s>])((www|ftp)\.[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', array(&$this, '_urlToLink'), $sTxt);
+		}
 		
 		if (Phpfox::getParam('core.no_follow_on_external_links'))
 		{
 			$sTxt = preg_replace('/<a\s(.*?)>/is', '<a \\1 rel="nofollow">', $sTxt);
 		}		
 		
-		if (Phpfox::getParam('core.replace_url_with_links') || Phpfox::getParam('core.warn_on_external_links') || Phpfox::getParam('core.no_follow_on_external_links'))
-		{		
-			$sTxt = preg_replace_callback('#([\s>])([\w]+?://[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', array(&$this, '_urlToLink'), $sTxt);
-			$sTxt = preg_replace_callback('#([\s>])((www|ftp)\.[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', array(&$this, '_urlToLink'), $sTxt);	
-		}				
-		
 		$sTxt = preg_replace("#(<a( [^>]+?>|>))<a [^>]+?>([^>]+?)</a></a>#i", "$1$3</a>", $sTxt);
-		$sTxt = trim($sTxt);			
-		
+		$sTxt = trim($sTxt);
+
 		return $sTxt;
+	}
+	
+	private function _warnOnExtLink($aMatches)
+	{
+		if (!isset($aMatches[1]))
+		{
+			return '';
+		}
+		
+		$sHref = '';
+		$aParts = explode(' ', $aMatches[1]);
+		foreach ($aParts as $sPart)
+		{
+			if (substr($sPart, 0, 5) == 'href=')
+			{
+				$sHref = $sPart;
+				if (!preg_match('/' . preg_quote(Phpfox::getParam('core.host')) . '/i', $sHref))
+				{
+					$sHref = str_replace(array('"', "'"), '', $sHref);
+					$sHref = substr_replace($sHref, '', 0, 5);
+					$sHref = 'href="' . Phpfox::getLib('url')->makeUrl('core.redirect', array('url' => Phpfox::getLib('url')->encode($sHref))) . '"';
+				}
+				
+				return '<a ' . $sHref . '>';
+				break;
+			}
+		}
+		
+		if (empty($sHref))
+		{
+			return '<a ' . $aMatches[1] . '>';
+		}
 	}
 	
 	public function parseUserTagged($iUser)
@@ -221,11 +393,63 @@ class Phpfox_Parse_Output
 			$sStr = preg_replace_callback('/<img(.*?)>/i', array($this, '_fixImageWidth'), $sStr);
 		}
 		
+		if (Phpfox::getParam('core.allow_html_in_activity_feed') && Phpfox::getParam('core.resize_embed_video'))
+		{
+			$this->setEmbedParser();
+			$sStr = preg_replace_callback('/<object(.*?)>(.*?)<\/object>/is', array($this, '_embedWmode'), $sStr);
+			$sStr = preg_replace_callback('/<iframe(.*?)><\/iframe>/is', array($this, '_embedIframe'), $sStr);
+		}
+		
 		$sStr = $this->replaceUserTag($sStr);
 		
 		$sStr = preg_replace_callback('/\[PHPFOX_PHRASE\](.*?)\[\/PHPFOX_PHRASE\]/i', array($this, '_getPhrase'), $sStr);
 		
 		$sStr = Phpfox::getService('ban.word')->clean($sStr);
+
+		if (Phpfox::isModule('tag') && Phpfox::getParam('tag.enable_hashtag_support'))
+		{
+			$sStr = $this->replaceHashTags($sStr);
+		}
+		
+		return $sStr;
+	}
+	
+	public function maxLine($sStr)
+	{
+		if (Phpfox::getParam('core.activity_feed_line_breaks') > 0)
+		{
+			$aLines = explode("<br />", $sStr);
+			if (count($aLines) > Phpfox::getParam('core.activity_feed_line_breaks'))
+			{
+				$sLines = '<span class="js_read_more_parent_main">';
+				$iLineCnt = 0;
+				foreach ($aLines as $sLine)
+				{
+					$iLineCnt++;
+						
+					if ($iLineCnt > Phpfox::getParam('core.activity_feed_line_breaks'))
+					{
+						$bHasLineBreak = true;
+						$sLines .= '<span class="js_read_more_parent" style="display:none;">';
+						$sLines .= $sLine . '<br />';
+						$sLines .= '</span>';
+					}
+					else
+					{
+						$sLines .= $sLine . '<br />';
+					}
+				}
+		
+				if (isset($bHasLineBreak))
+				{
+					$sLines .= '<div><a href="#" onclick="$(this).parents(\'.js_read_more_parent_main:first\').find(\'.js_read_more_parent\').show(); $(this).hide(); return false;">Read More</a></div>';
+				}
+		
+				$sLines .= '</span>';
+		
+				return $sLines;
+			}
+		}		
 		
 		return $sStr;
 	}
@@ -367,7 +591,7 @@ class Phpfox_Parse_Output
 	    {
 	    	return $html;
 	    }	    
-    	
+	        	
     	$printedLength = 0;
 	    $position = 0;
 	    $tags = array();
@@ -482,7 +706,7 @@ class Phpfox_Parse_Output
 				}
 			}
 		}
-    	
+		
     	return $sNewString;    	
     }   
     
@@ -512,7 +736,10 @@ class Phpfox_Parse_Output
     public function split($sString, $iCount, $bBreak = false)
     { 	
     	// $sString = str_replace('0', '&#48;', $sString);
-    	if ($sString == '0') return $sString;
+    	if ($sString == '0' || Phpfox::getParam('language.no_string_restriction'))
+		{
+			return $sString;
+		}
     	$sNewString = '';
    		$aString = explode('>', $sString);
    		$iSizeOf = sizeof($aString);
@@ -634,13 +861,13 @@ class Phpfox_Parse_Output
 		{
 			$sHref = 'http://' . $sHref;
 		}		
-		
+
 		$sName = $aMatches[2];		
 		if (Phpfox::getParam('core.shorten_parsed_url_links') > 0)
 		{
 			$sName = substr($sName, 0, Phpfox::getParam('core.shorten_parsed_url_links')) . (strlen($sName) > Phpfox::getParam('core.shorten_parsed_url_links') ? '...' : '');
 		}		
-		
+
 		if (Phpfox::getParam('core.warn_on_external_links'))
 		{
 			if (!preg_match('/' . preg_quote(Phpfox::getParam('core.host')) . '/i', $sHref))
@@ -680,6 +907,21 @@ class Phpfox_Parse_Output
     	}
     	
     	return '<object ' . $aMatches[1] . '><param name="wmode" value="transparent"></param>' . str_replace('<embed ', '<embed  wmode="transparent" ', $aMatches[2]) . '</object>';
+    }
+    
+    private function _embedIframe($aMatches)
+    {
+    	if (Phpfox::getParam('core.resize_embed_video'))
+    	{ 
+    		$aMatches[1] = ' ' . $aMatches[1] . ' ';
+    		$aMatches[1] = preg_replace('/ width=([0-9"\' ]+)([ >]+)/ise', "'' . \$this->_fixEmbedWidth('$1', 'width', '$2') . ''", $aMatches[1]);
+    		
+    		$aMatches[1] = ' ' . $aMatches[1] . ' ';
+    		$aMatches[1] = preg_replace('/ height=([0-9"\' ]+)([ >]+)/ise', "'' . \$this->_fixEmbedWidth('$1', 'height', '$2') . ''", $aMatches[1]);
+    		$aMatches[1] = trim($aMatches[1]);    		
+    	}
+    	
+    	return '<iframe ' . $aMatches[1] . '></iframe>';
     }
     
     /**

@@ -4,9 +4,13 @@
 			'server_id' => $aVideo['image_server_id'],
 			'path' => 'video.url_image',
 			'file' => $aVideo['image_path'],
-			'suffix' => '_120',
+			/*'suffix' => '_120',
 			'max_width' => '120',
-			'max_height' => '120',
+			'max_height' => '120',*/
+			// http://www.phpfox.com/tracker/view/14924/
+			'suffix' => '_200',
+			'max_width' => '200',
+			'max_height' => '200',
 			'return_url' => true
 		)
 	);

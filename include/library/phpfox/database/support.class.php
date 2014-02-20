@@ -15,7 +15,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: support.class.php 4520 2012-07-18 14:08:39Z Miguel_Espinoza $
+ * @version 		$Id: support.class.php 6394 2013-07-31 13:13:37Z Raymond_Benc $
  */
 class Phpfox_Database_Support
 {
@@ -25,6 +25,15 @@ class Phpfox_Database_Support
 	 * @var array
 	 */
 	private $_aDbs = array(
+		'mysqli'	=> array(
+			'label'			=> 'MySQL with MySQLi Extension',
+			'schema'		=> 'mysql',
+			'module'		=> 'mysqli',
+			'delim'			=> ';',
+			'comments'		=> 'remove_remarks',
+			'driver'		=> 'mysqli',
+			'available'		=> true
+		),
 		'mysql'		=> array(
 			'label'			=> 'MySQL',
 			'schema'		=> 'mysql',
@@ -34,15 +43,6 @@ class Phpfox_Database_Support
 			'driver'		=> 'mysql',
 			'available'		=> true
 		),
-		'mysqli'	=> array(
-			'label'			=> 'MySQL with MySQLi Extension',
-			'schema'		=> 'mysql',
-			'module'		=> 'mysqli',
-			'delim'			=> ';',
-			'comments'		=> 'remove_remarks',
-			'driver'		=> 'mysqli',
-			'available'		=> true
-		),		
 		'mssql'		=> array(
 			'label'			=> 'MS SQL Server 2000+',
 			'schema'		=> 'mssql',
@@ -463,6 +463,7 @@ class Phpfox_Database_Support
 				$sType = preg_replace("/^char\((.*?)\)(.*)/i", "CHAR:$1", $sType);
 				$sType = preg_replace("/^text$/i", "TEXT", $sType);
 				$sType = preg_replace("/^mediumtext$/i", "MTEXT", $sType);
+				$sType = preg_replace("/^decimal\(30,27\)(.*)/i", "MDECIMAL:", $sType);
 				$sType = preg_replace("/^decimal\((.*?),2\)(.*)/i", "DECIMAL:$1", $sType);
 				$sType = preg_replace("/^bigint\((.*?)\)(.*)/i", "BINT", $sType);
 				

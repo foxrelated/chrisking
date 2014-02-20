@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: process.class.php 1496 2010-03-05 17:15:05Z Raymond_Benc $
+ * @version 		$Id: process.class.php 5612 2013-04-05 07:46:26Z Miguel_Espinoza $
  */
 class Profile_Service_Process extends Phpfox_Service 
 {
@@ -68,6 +68,15 @@ class Profile_Service_Process extends Phpfox_Service
 		}
 	}
 	*/
+	
+	
+	public function clearProfileCache($mUser)
+	{
+		if (Phpfox::getParam('core.super_cache_system'))
+		{
+			$this->cache()->remove(array('profile', 'user_id_' . (int)$mUser));
+		}
+	}
 	
 	/**
 	 * If a call is made to an unknown method attempt to connect

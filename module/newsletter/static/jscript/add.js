@@ -30,7 +30,7 @@ $Core.Newsletter = {
 	}
 }
 
-$(function()
+$Behavior.newsletter_add_init = function()
 {	
 	$('.end_option').change(function()
 	{
@@ -144,4 +144,4 @@ $(function()
 	}
 	
 		
-});
+};

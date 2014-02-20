@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: token.php 3489 2011-11-14 14:13:07Z Raymond_Benc $
+ * @version 		$Id: token.php 7004 2013-12-20 14:23:28Z Raymond_Benc $
  */
 
 // Make sure we are running PHP5

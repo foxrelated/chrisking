@@ -193,7 +193,8 @@ class Input_Service_Callback extends Phpfox_Service
 		
 		if (Phpfox::isUser())
 		{
-			$this->database()->select('l.like_id AS is_liked, ')->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'custom_relation\' AND l.item_id = crd.relation_data_id AND l.user_id = ' . Phpfox::getUserId());
+			$this->database()->select('l.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'custom_relation\' AND l.item_id = crd.relation_data_id AND l.user_id = ' . Phpfox::getUserId());
 		}		
 		
 		/* New status */

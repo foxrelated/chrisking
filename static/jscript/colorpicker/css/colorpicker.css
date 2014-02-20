@@ -1,7 +1,7 @@
 
 
 .colorpicker_select {
-	background: #fff url(../images/select.gif);
+	background: #fff url(../image/select.gif);
 	height:30px;
 	width:30px;
 	text-indent:-9999px;
@@ -14,7 +14,7 @@
 	height: 176px;
 	overflow: hidden;
 	position: absolute;
-	background: url(../images/custom_background.png);
+	background: url(../image/custom_background.png);
 	font-family: Arial, Helvetica, sans-serif;
 	display: none;
 	z-index:10000;

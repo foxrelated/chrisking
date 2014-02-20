@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Share
- * @version 		$Id: frame.class.php 4545 2012-07-20 10:40:35Z Raymond_Benc $
+ * @version 		$Id: frame.class.php 5269 2013-01-30 09:00:11Z Raymond_Benc $
  */
 class Share_Component_Block_Frame extends Phpfox_Component
 {
@@ -23,7 +23,7 @@ class Share_Component_Block_Frame extends Phpfox_Component
 		static $aBookmarks = array();
 		if (empty($aBookmarks))
 		{
-			$aBookmarks = Phpfox::getService('share')->getType('bookmark');
+			$aBookmarks = Phpfox::getService('share')->getType();
 		}
 		if (!is_array($aBookmarks))
 		{

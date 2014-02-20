@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Share
- * @version 		$Id: share.class.php 2792 2011-08-03 17:11:30Z Raymond_Benc $
+ * @version 		$Id: share.class.php 5269 2013-01-30 09:00:11Z Raymond_Benc $
  */
 class Share_Service_Share extends Phpfox_Service 
 {
@@ -61,15 +61,20 @@ class Share_Service_Share extends Phpfox_Service
 			->execute('getRows');
 	}
 	
-	public function getType($sType)
+	public function getType($sType = null)
 	{
+		if ($sType === null)
+		{
+			$sType = 'all';
+		}
+		
 		$sCacheId = $this->cache()->set('share_' . $sType);
 		
 		if (!($aSites = $this->cache()->get($sCacheId)))
 		{
 			$aSites =$this->database()->select('*')
 				->from($this->_sTable)
-				->where('type_id = \'' . $this->database()->escape($sType) . '\' AND is_active = 1')
+				->where(($sType != 'all' ? 'type_id = \'' . $this->database()->escape($sType) . '\' AND ' : '') . ' is_active = 1')
 				->order('ordering ASC')
 				->execute('getRows');		
 				

@@ -22,7 +22,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		<div class="attachment_image_holder">
 			{if !empty($aLink.image)}
 			<div id="js_attachment_link_default_image">	
-				<a href="{$aLink.link|clean}"{if $aLink.has_embed} class="play_link" onclick="$.ajaxCall('link.play', 'id={$aLink.link_id}', 'GET'); return false;"{/if}>{if $aLink.has_embed}<span class="play_link_img">{phrase var='link.play'}</span>{/if}<img src="{$aLink.image}" alt="" style="max-width:120px;" /></a>
+				<a href="{$aLink.link|clean}"{if $aLink.has_embed} class="play_link" onclick="$.ajaxCall('link.play', 'id={$aLink.link_id}', 'GET'); return false;"{else} target="_blank"{/if}>{if $aLink.has_embed}<span class="play_link_img">{phrase var='link.play'}</span>{/if}<img src="{$aLink.image}" alt="" style="max-width:120px;" /></a>
 			</div>
 			{/if}
 		</div>

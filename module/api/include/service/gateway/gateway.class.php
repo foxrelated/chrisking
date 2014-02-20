@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: gateway.class.php 4926 2012-10-23 05:09:31Z Raymond_Benc $
+ * @version 		$Id: gateway.class.php 7132 2014-02-19 14:03:43Z Fern $
  */
 class Api_Service_Gateway_Gateway extends Phpfox_Service 
 {
@@ -25,6 +25,7 @@ class Api_Service_Gateway_Gateway extends Phpfox_Service
 	
 	public function getActive()
 	{
+        if ($sPlugin = Phpfox_Plugin::get('api.service_gateway_gateway_getactive_1')){eval($sPlugin);if (isset($mReturnPlugin)){return $mReturnPlugin;}}
 		$aGateways = $this->database()->select('ag.*')
 			->from($this->_sTable, 'ag')
 			->where('ag.is_active = 1')
@@ -72,8 +73,10 @@ class Api_Service_Gateway_Gateway extends Phpfox_Service
 				continue;
 			}
 			
-			$aGateways[$mValue['gateway_id']]['gateway'] = unserialize($mValue['gateway_detail']);
-		}		
+			// http://www.phpfox.com/tracker/view/15071/
+			$aCache['seller_id'] = $mValue['user_id']; 
+			$aGateways[$mValue['gateway_id']]['gateway'] = $aCache; //unserialize($mValue['gateway_detail']);
+		}
 			
 		return $aGateways;
 	}
@@ -118,9 +121,16 @@ class Api_Service_Gateway_Gateway extends Phpfox_Service
 			$aSetting = Phpfox::getParam('user.points_conversion_rate');
 			if (isset($aSetting[$sCurreny]))
 			{
-				$iConversion = ($aGatewayData['amount'] / $aSetting[$sCurreny]);			
+				// Avoid division by zero
+				$iConversion = ($aSetting[$sCurreny] != 0 ? ($aGatewayData['amount'] / $aSetting[$sCurreny]) : 0);
 				if ($iTotalPoints >= $iConversion)
 				{
+					if(isset($aGatewayData['setting']) && is_array($aGatewayData['setting']))
+					{
+						$sParam = serialize($aGatewayData['setting']);
+						unset($aGatewayData['setting']);
+					}
+					
 					$aPointsGateway = array(
 						'yourpoints' => $iTotalPoints,
 						'yourcost' => $iConversion,		
@@ -133,9 +143,17 @@ class Api_Service_Gateway_Gateway extends Phpfox_Service
 							'param' => $aGatewayData
 						)
 					);
+					if(isset($sParam) && !empty($sParam))
+					{
+						$aPointsGateway['setting'] = $sParam;
+					}
 					
 					$aGateways[] = $aPointsGateway;
-				}		
+				}
+				else
+				{
+					Phpfox_Error::display(Phpfox::getPhrase('user.not_enough_points', array('total' => $iTotalPoints)));
+				}
 			}	
 		}
 		

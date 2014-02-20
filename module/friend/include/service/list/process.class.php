@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: process.class.php 3107 2011-09-15 12:01:25Z Raymond_Benc $
+ * @version 		$Id: process.class.php 5605 2013-04-02 09:32:58Z Miguel_Espinoza $
  */
 class Friend_Service_List_Process extends Phpfox_Service 
 {
@@ -31,6 +31,11 @@ class Friend_Service_List_Process extends Phpfox_Service
 	 */
 	public function add($sName)
 	{		
+		if (Phpfox::getParam('friend.cache_friend_list'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_list', Phpfox::getUserId()));
+			$this->cache()->remove($sCacheId);
+		}
 		return $this->database()->insert($this->_sTable, array(
 			'user_id' => Phpfox::getUserId(),
 			'name' => Phpfox::getLib('parse.input')->clean($sName, 255),
@@ -58,6 +63,11 @@ class Friend_Service_List_Process extends Phpfox_Service
 		);		
 		
 		(($sPlugin = Phpfox_Plugin::get('friend.service_list_process_update')) ? eval($sPlugin) : false);
+		if (Phpfox::getParam('friend.cache_friend_list'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_list', Phpfox::getUserId()));
+			$this->cache()->remove($sCacheId);
+		}
 		
 		return true;
 	}	
@@ -89,6 +99,11 @@ class Friend_Service_List_Process extends Phpfox_Service
 		$this->database()->delete($this->_sTable, 'list_id = ' . (int) $iId);
 		
 		(($sPlugin = Phpfox_Plugin::get('friend.service_list_process_delete')) ? eval($sPlugin) : false);
+		if (Phpfox::getParam('friend.cache_friend_list'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_list', Phpfox::getUserId()));
+			$this->cache()->remove($sCacheId);
+		}
 		
 		return true;
 	}
@@ -108,7 +123,11 @@ class Friend_Service_List_Process extends Phpfox_Service
 		}
 		
 		(($sPlugin = Phpfox_Plugin::get('friend.service_list_process_move')) ? eval($sPlugin) : false);
-		
+		if (Phpfox::getParam('friend.cache_friend_list'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_list', Phpfox::getUserId()));
+			$this->cache()->remove($sCacheId);
+		}
 		return true;
 	}
 	
@@ -128,7 +147,11 @@ class Friend_Service_List_Process extends Phpfox_Service
 				)
 			);
 		}
-		
+		if (Phpfox::getParam('friend.cache_friend_list'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_list', Phpfox::getUserId()));
+			$this->cache()->remove($sCacheId);
+		}
 		return true;
 	}
 	
@@ -150,7 +173,11 @@ class Friend_Service_List_Process extends Phpfox_Service
 		}
 			
 		$this->database()->delete(Phpfox::getT('friend_list_data'), 'list_id = ' . (int) $iListId . ' AND friend_user_id = ' . (int) $iFriendId);
-		
+		if (Phpfox::getParam('friend.cache_friend_list'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_list', Phpfox::getUserId()));
+			$this->cache()->remove($sCacheId);
+		}
 		return true;
 	}
 	
@@ -172,7 +199,11 @@ class Friend_Service_List_Process extends Phpfox_Service
 		}		
 		
 		$this->database()->update(Phpfox::getT('friend_list'), array('is_profile' => '1'), 'list_id = ' . (int) $iListId);
-		
+		if (Phpfox::getParam('friend.cache_friend_list'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_list', Phpfox::getUserId()));
+			$this->cache()->remove($sCacheId);
+		}
 		return true;
 	}
 	
@@ -194,7 +225,11 @@ class Friend_Service_List_Process extends Phpfox_Service
 		}		
 		
 		$this->database()->update(Phpfox::getT('friend_list'), array('is_profile' => '0'), 'list_id = ' . (int) $iListId);
-		
+		if (Phpfox::getParam('friend.cache_friend_list'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_list', Phpfox::getUserId()));
+			$this->cache()->remove($sCacheId);
+		}
 		return true;		
 	}
 	
@@ -229,7 +264,11 @@ class Friend_Service_List_Process extends Phpfox_Service
 			
 			$this->database()->update(Phpfox::getT('friend_list_data'), array('ordering' => (int) $iCnt), 'list_id = ' . (int) $iListId . ' AND friend_user_id = ' . (int) $iFriendId);
 		}
-		
+		if (Phpfox::getParam('friend.cache_friend_list'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_list', Phpfox::getUserId()));
+			$this->cache()->remove($sCacheId);
+		}
 		return true;
 	}
 	

@@ -30,4 +30,4 @@ $Behavior.switchLegends = function()
 			$(this).next().hide();
 		}
 	});	
-}
+};

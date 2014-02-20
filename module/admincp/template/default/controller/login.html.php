@@ -23,7 +23,7 @@ defined('PHPFOX') or exit('NO DICE!');
 					{phrase var='admincp.email'}:
 				</div>
 				<div class="table_right">
-					<input type="text" name="val[email]" value="{value id='email' type='input'}" size="40" />
+					<input id="admincp_login_email" type="text" name="val[email]" value="{value id='email' type='input'}" size="40" />
 				</div>
 				<div class="clear"></div>
 			</div>

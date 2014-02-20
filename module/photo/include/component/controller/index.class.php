@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: index.class.php 4770 2012-09-26 07:59:38Z Raymond_Benc $
+ * @version 		$Id: index.class.php 7108 2014-02-12 12:38:45Z Fern $
  */
 class Photo_Component_Controller_Index extends Phpfox_Component
 {
@@ -19,15 +19,79 @@ class Photo_Component_Controller_Index extends Phpfox_Component
 	 * Class process method wnich is used to execute this component.
 	 */
 	public function process()
-	{		
-		if (defined('PHPFOX_IS_PAGES_VIEW') && ($this->request()->get('req3') == 'albums' || $this->request()->get('req4') == 'albums'))
+	{			
+		if (Phpfox::getParam('photo.show_info_on_mouseover'))
+		{
+		    $this->template()->setHeader(array(
+			'index.css' => 'module_photo',
+			'index.js' => 'module_photo'			
+			));		
+		}
+		
+		if (defined('PHPFOX_IS_USER_PROFILE') )//&& Phpfox::getParam('profile.display_submenu_for_photo') != true)
+		{
+		    $aUser = $this->getParam('aUser');
+		    $bShowPhotos = $this->request()->get('req3') != 'albums';
+		    
+		    if ($this->request()->get('req3') == '')
+		    {
+				$bShowPhotos = Phpfox::getParam('photo.in_main_photo_section_show') != 'albums';
+		    }
+		    $aInfo = array(
+				'total_albums' => Phpfox::getService('photo.album')->getAlbumCount($aUser['user_id']),
+				'total_photos' => $aUser['total_photo']
+		    );
+		    $bSpecialMenu = (!defined('PHPFOX_IS_AJAX_CONTROLLER'));
+		    
+		    $this->template()->assign(array(
+			'bSpecialMenu' => $bSpecialMenu,
+			'aInfo' => $aInfo,
+			'bShowPhotos' => $bShowPhotos,
+			'sLinkPhotos' => $this->url()->makeUrl($aUser['user_name'] . '.photo.photos'),
+			'sLinkAlbums' => $this->url()->makeUrl($aUser['user_name'] . '.photo.albums'))
+		    );
+			    
+		}
+		else
+		{		    
+		    $this->template()->assign(array('bSpecialMenu' => false));
+		}		
+		
+		if (Phpfox::getParam('photo.show_info_on_mouseover') && isset($aUser['use_timeline']) && $aUser['use_timeline'])
+		{
+		    $this->template()->setFullSite();
+		}
+		
+		if (!$this->request()->get('delete') && defined('PHPFOX_IS_PAGES_VIEW') && ($this->request()->get('req3') == 'albums' || $this->request()->get('req4') == 'albums'))
 		{
 			Phpfox::getComponent('photo.albums', array('bNoTemplate' => true), 'controller');
-			
 			return;
 		}
 		
-		if (defined('PHPFOX_IS_USER_PROFILE') && ($sLegacyTitle = $this->request()->get('req3')) && !empty($sLegacyTitle))
+		
+		
+		if (
+			( (defined('PHPFOX_IS_USER_PROFILE') /*&& Phpfox::getParam('profile.display_submenu_for_photo') != true*/)
+			    || !defined('PHPFOX_IS_USER_PROFILE'))
+			&& $this->request()->get('req3') != 'photos' && !in_array($this->request()->get('view'), array('my','photos', 'pending')) && !is_numeric($this->request()->get('req2'))
+			&& Phpfox::getParam('photo.in_main_photo_section_show') == 'albums'
+			&& !$this->request()->get('delete')
+            && !$this->request()->get('search-id')
+		    )
+		{
+		    
+		    Phpfox::getComponent('photo.albums', array('bNoTemplate' => true), 'controller');
+		    return;
+		}
+		
+		$sAssert = $this->request()->get('req4', false);		
+		if (/*Phpfox::getParam('profile.display_submenu_for_photo') != true
+			&&*/ ($this->request()->get('req3') == 'photos' || $this->request()->get('req3') == 'albums')
+			&& $sAssert == false)
+		{
+		    
+		}
+		else if (defined('PHPFOX_IS_USER_PROFILE') && ($sLegacyTitle = $this->request()->get('req3')) && !empty($sLegacyTitle))
 		{
 			if (($sLegacyPhoto = $this->request()->get('req4')) && !empty($sLegacyPhoto))
 			{
@@ -91,6 +155,16 @@ class Photo_Component_Controller_Index extends Phpfox_Component
 				$this->url()->send('photo', null, Phpfox::getPhrase('photo.photo_successfully_unfeatured'));
 			}
 		}
+
+		if(empty($aParentModule) && ($this->request()->get('req1') == 'pages'))
+		{
+			$aParentModule = array(
+					'module_id' => 'pages',
+					'item_id' => $this->request()->get('req2'),
+					'url' => Phpfox::getService('pages')->getUrl($this->request()->get('req2'))
+			);
+			define('PHPFOX_IS_PAGES_VIEW', true);
+		}		
 		
 		if ($aParentModule === null && $this->request()->getInt('req2') > 0)
 		{
@@ -122,11 +196,22 @@ class Photo_Component_Controller_Index extends Phpfox_Component
 		}			
 		
 		$bIsUserProfile = false;
-		if (defined('PHPFOX_IS_AJAX_CONTROLLER'))
+		if (defined('PHPFOX_IS_AJAX_CONTROLLER') || defined('PHPFOX_LOADING_DELAYED'))
 		{
-			$bIsUserProfile = true;
-			$aUser = Phpfox::getService('user')->get($this->request()->get('profile_id'));
-			$this->setParam('aUser', $aUser);
+			if ($this->request()->get('profile_id', null) !== null)
+			{
+			    $aUser = Phpfox::getService('user')->get($this->request()->get('profile_id'));
+			    $bIsUserProfile = true;
+			    $this->setParam('aUser', $aUser);
+			}
+			else if ($this->request()->get('req1', null) !== null)
+			{
+			    if (($aUser = Phpfox::getService('user')->get($this->request()->get('req1'), false)))			    
+			    {
+					$bIsUserProfile = true;
+					$this->setParam('aUser', $aUser);
+			    }
+			}
 		}		
 		
 		// Used to control privacy 
@@ -134,11 +219,23 @@ class Photo_Component_Controller_Index extends Phpfox_Component
 		if (defined('PHPFOX_IS_USER_PROFILE'))
 		{
 			$bIsUserProfile = true;
-			$aUser = $this->getParam('aUser');
+			$aUser = $this->getParam('aUser');			
 			if (!Phpfox::getService('user.privacy')->hasAccess($aUser['user_id'], 'photo.display_on_profile'))
 			{
 				$bNoAccess = true;
 			}
+		}		
+		
+		if(isset($aUser) && $aUser['profile_page_id'] != 0)
+		{
+			$bIsUserProfile = false;
+				
+			$aParentModule = array(
+					'module_id' => 'pages',
+					'item_id' => $aUser['profile_page_id'],
+					'url' => Phpfox::getService('pages')->getUrl($aUser['profile_page_id'])
+			);
+			define('PHPFOX_IS_PAGES_VIEW', true);
 		}		
 		
 		$aCallback = $this->getParam('aCallback', null);
@@ -161,7 +258,13 @@ class Photo_Component_Controller_Index extends Phpfox_Component
 					);
 				}
 			}
-		}		
+		}
+		
+		// http://www.phpfox.com/tracker/view/15103	
+		if(!isset($aUser) && defined('PHPFOX_IS_PAGES_VIEW'))
+		{
+			$aUser = $this->getParam('aUser');
+		}
 		
 		$sCategory = null;	
 		$aSearch = $this->request()->getArray('search');
@@ -194,6 +297,8 @@ class Photo_Component_Controller_Index extends Phpfox_Component
 			$aSort['top-battle'] = array('photo.total_battle', Phpfox::getPhrase('photo.top_battle'));
 		}
 		
+		$aPhotoDisplays = Phpfox::getUserParam('photo.total_photos_displays');
+		
 		$this->search()->set(array(
 				'type' => 'photo',
 				'field' => 'photo.photo_id',				
@@ -206,7 +311,7 @@ class Photo_Component_Controller_Index extends Phpfox_Component
 						'field' => 'photo.title'
 					),
 					'sort' => $aSort,
-					'show' => (array) Phpfox::getUserParam('photo.total_photos_displays')
+					'show' => (array) $aPhotoDisplays
 				)
 			)
 		);		
@@ -286,11 +391,31 @@ class Photo_Component_Controller_Index extends Phpfox_Component
 				}
 				break;	
 		}
-		
+				
 		if ($this->request()->get('req2') == 'category')
 		{
-			$sCategory = $this->request()->getInt('req3');
-			$this->search()->setCondition('AND pcd.category_id = ' . (int) $sCategory);
+			$sCategory = $iCategory = $this->request()->getInt('req3');
+			$sWhere = 'AND pcd.category_id = ' . (int) $sCategory;
+			
+			if (!is_int($iCategory))
+			{
+				$iCategory = Phpfox::getService('photo.category')->getCategoryId($sCategory);
+				
+			}
+			
+			// Get sub-categories
+			$aSubCategories = Phpfox::getService('photo.category')->getForBrowse($iCategory);
+			
+			if (!empty($aSubCategories) && is_array($aSubCategories))
+			{
+				$aSubIds = Phpfox::getService('photo.category')->extractCategories($aSubCategories);
+				if (!empty($aSubIds))
+				{
+					$sWhere = 'AND pcd.category_id IN (' . (int)$sCategory . ',' . join(',', $aSubIds) . ')';
+				}
+			}
+			
+			$this->search()->setCondition($sWhere);
 			$this->setParam('hasSubCategories', true);
 		}		
 		
@@ -338,8 +463,12 @@ class Photo_Component_Controller_Index extends Phpfox_Component
 		$aPager = array(
 				'page' => $this->search()->getPage(), 
 				'size' => $this->search()->getDisplay(), 
-				'count' => $this->search()->browse()->getCount()
+				'count' => $this->search()->browse()->getCount()				
 			);
+		if (Phpfox::getParam('photo.show_info_on_mouseover'))
+		{
+		    $aPager['ajax'] = 'photo.browse';    
+		}
 		
 		if ($aPager['size'] > Phpfox::getUserParam('photo.max_photo_display_limit'))
 		{
@@ -347,18 +476,32 @@ class Photo_Component_Controller_Index extends Phpfox_Component
 		}
 		Phpfox::getLib('pager')->set($aPager);
 				
+		
 		$this->template()->setTitle(($bIsUserProfile ? Phpfox::getPhrase('photo.full_name_s_photos', array('full_name' => $aUser['full_name'])) : Phpfox::getPhrase('photo.photos')))
 			->setBreadcrumb(Phpfox::getPhrase('photo.photos'), $sPhotoUrl)
 			->setMeta('keywords', Phpfox::getParam('photo.photo_meta_keywords'))
-			->setMeta('description', Phpfox::getParam('photo.photo_meta_description'))
-			->setMeta('description', Phpfox::getPhrase('photo.site_title_has_a_total_of_total_photo_s', array('site_title' => Phpfox::getParam('core.site_title'), 'total' => $iCnt)))	
-			->setPhrase(array(
+			->setMeta('description', Phpfox::getParam('photo.photo_meta_description'));
+			//->setMeta('description', Phpfox::getPhrase('photo.site_title_has_a_total_of_total_photo_s', array('site_title' => Phpfox::getParam('core.site_title'), 'total' => $iCnt)))
+			
+		if(defined('PHPFOX_IS_USER_PROFILE') || defined('PHPFOX_IS_PAGES_VIEW'))
+		{
+			$this->template()->setMeta('description', Phpfox::getPhrase('photo.site_title_has_a_total_of_total_photo_s', array('site_title' => $aUser['full_name'], 'total' => $iCnt)));
+		}
+		else
+		{
+			$this->template()->setMeta('description', Phpfox::getPhrase('photo.site_title_has_a_total_of_total_photo_s', array('site_title' => Phpfox::getParam('core.site_title'), 'total' => $iCnt)));
+		}
+			
+		$this->template()->setPhrase(array(
 					'photo.loading'
 				)
 			)
 			->setHeader('cache', array(
+					'progress.js' => 'static_script',
 					'browse.js' => 'module_photo',					
-					'jquery/plugin/jquery.highlightFade.js' => 'static_script',					
+					'jquery/plugin/jquery.highlightFade.js' => 'static_script',	
+					'jquery/plugin/imgnotes/jquery.tag.js' => 'static_script',
+					'imgnotes.css' => 'style_css',
 					'quick_edit.js' => 'static_script',
 					'comment.css' => 'style_css',
 					'pager.css' => 'style_css',
@@ -369,7 +512,8 @@ class Photo_Component_Controller_Index extends Phpfox_Component
 					'view.css' => 'module_photo',
 					'feed.js' => 'module_feed',
 					'browse.css' => 'module_photo',
-					'edit.css' => 'module_photo'
+					'edit.css' => 'module_photo',
+					'index.js' => 'module_photo'
 				)
 			)
 			->assign(array(
@@ -377,7 +521,8 @@ class Photo_Component_Controller_Index extends Phpfox_Component
 					'bIsAjax' => PHPFOX_IS_AJAX,
 					'sPhotoUrl' => $sPhotoUrl,				
 					'sView' => $sView,
-					'bIsMassEditUpload' => $bIsMassEditUpload
+					'bIsMassEditUpload' => $bIsMassEditUpload,
+					'iPhotosPerRow' => 3
 				)
 			);	
 		
@@ -428,7 +573,45 @@ class Photo_Component_Controller_Index extends Phpfox_Component
 					)					
 				)
 			)
-		);			
+		);	
+		
+		
+		$iStartCheck = 0;
+		if (!empty($sCategory))
+		{
+			$iStartCheck = 5;
+		}
+		
+		if (!defined('PHPFOX_ALLOW_ID_404_CHECK'))
+		{
+			$iAllowIds = uniqid();
+			define('PHPFOX_ALLOW_ID_404_CHECK', $iAllowIds);
+		}
+		else
+		{
+			$iAllowIds = PHPFOX_ALLOW_ID_404_CHECK;
+		}
+		
+		$aRediAllow = array('category', $iAllowIds);
+		if (defined('PHPFOX_IS_USER_PROFILE') && PHPFOX_IS_USER_PROFILE)
+		{
+			$aRediAllow[] = 'photo';
+		}
+		$aCheckParams = array(
+			'url' => $this->url()->makeUrl('photo'),
+			'start' => $iStartCheck,
+			'reqs' => array(
+					'2' => $aRediAllow,
+					'3' => $aRediAllow
+				),
+			'reserved' => array('mode', 'photos')
+			);
+		
+		if (Phpfox::getParam('core.force_404_check') && !Phpfox::getService('core.redirect')->check404($aCheckParams))
+		{
+			return Phpfox::getLib('module')->setController('error.404');
+		}			
+				
 	}
 	
 	/**

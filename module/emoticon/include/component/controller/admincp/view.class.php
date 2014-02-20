@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Miguel Espinoza
  * @package  		Module_Emoticon
- * @version 		$Id: view.class.php 2846 2011-08-18 09:30:49Z Raymond_Benc $
+ * @version 		$Id: view.class.php 6113 2013-06-21 13:58:40Z Raymond_Benc $
  */
 class Emoticon_Component_Controller_Admincp_View extends Phpfox_Component
 {
@@ -43,7 +43,7 @@ class Emoticon_Component_Controller_Admincp_View extends Phpfox_Component
 			))
 			->setHeader(array(
 				'drag.js' => 'static_script',
-				'<script type="text/javascript">Core_drag.init({table: \'#js_drag_drop\', ajax: \'emoticon.setEmoticonOrder\'});</script>'
+				'<script type="text/javascript">$Behavior.coreDragInit = function() { Core_drag.init({table: \'#js_drag_drop\', ajax: \'emoticon.setEmoticonOrder\'}); }</script>'
 			));
 	}
 }

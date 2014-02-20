@@ -13,46 +13,46 @@ defined('PHPFOX') or exit('NO DICE!');
 	{if count($aEgifts)}
 	<script type="text/javascript">
 		if (window.bLoadedCSS == undefined)
-		{left_curly}
-		var oCSS = document.createElement('link');
-		oCSS.type = 'text/css';
-		oCSS.rel = 'stylesheet';
-		oCSS.href = oParams['sEgiftStyle'];
-		document.getElementsByTagName("head")[0].appendChild(oCSS);
-		window.bLoadedCSS = true;
-		{right_curly}
+		{l}
+			var oCSS = document.createElement('link');
+			oCSS.type = 'text/css';
+			oCSS.rel = 'stylesheet';
+			oCSS.href = oParams['sEgiftStyle'];
+			document.getElementsByTagName("head")[0].appendChild(oCSS);
+			window.bLoadedCSS = true;
+		{r}
 		function showGiftsByCategory()
-		{left_curly}
+		{l}
 			var $sName = $('#selectCategory option:selected').val().toLowerCase();
 			//debug('sName: ' + $sName);
 			$('.egift_category_holder').hide();
 			$('#egift_item_cat_'+$sName).show();
-		{right_curly}
+		{r}
 		function setEgift(eGiftId)
-		{left_curly}
-			$('.egift_item').each(function(){left_curly}$(this).removeClass('eGiftHighlight');{right_curly});
+		{l}
+			$('.egift_item').each(function(){l}$(this).removeClass('eGiftHighlight');{r});
 			if ($('#egift_id').val() == eGiftId)
-			{left_curly}
+			{l}
 				/* unhighlight*/			
 				$('#egift_id').val('');
-			{right_curly}
+			{r}
 			else
-			{left_curly}
+			{l}
 				$('#egift_item_'+eGiftId).addClass('eGiftHighlight');
 				$('#egift_id').val(eGiftId);
-			{right_curly}
-		{right_curly}
+			{r}
+		{r}
 	</script>
 
 	<div><input type="hidden" name="val[egift_id]" id="egift_id" value=""></div>
-	<div class="egift_selector">
+	<div class="egift_selector{if Phpfox::getService('profile')->timeline()}_timeline{/if}">
 		<select onchange="if (!empty(this.value)) {l} showGiftsByCategory(); {r}" id="selectCategory">
 			{foreach from=$aCategories name=giftcategories item=aCat}
 			<option value="{$aCat.category_id}">{phrase var=$aCat.phrase}</option>
 			{/foreach}
 		</select>		
 	</div>
-	<div class="extra_info" {if Phpfox::getService('profile')->timeline()} style="width:80%;"{/if}>
+	<div class="extra_info" {if Phpfox::getService('profile')->timeline()} style="width:65%;"{/if}>
 		{phrase var='egift.you_can_choose_an_egift_to_send'}
 	</div>
 	<div class="egift_selection">
@@ -60,7 +60,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		<div id="egift_item_cat_{$sName}" class="egift_category_holder">
 			{foreach from=$aCategory key=iKey name=egift_item item=aGift}
 				<div class="egift_item {if $aGift.price != '0.00'}egift_item_with_price{/if}" id="egift_item_{$aGift.egift_id}" onclick="setEgift({$aGift.egift_id});">
-					<div class='js_hover_title'>{img server_id=0 path='egift.url_egift' file=$aGift.file_path suffix='_75_square' max_width=75 max_height=75}<span class="js_hover_info">{$aGift.title}</span></div>
+					<div class='js_hover_title'>{img server_id=$aGift.server_id path='egift.url_egift' file=$aGift.file_path suffix='_75_square' max_width=75 max_height=75}<span class="js_hover_info">{$aGift.title}</span></div>
 					<div class="extra_info">
 					{if $aGift.price == '0.00'}
 						{phrase var='marketplace.free'}
@@ -78,7 +78,10 @@ defined('PHPFOX') or exit('NO DICE!');
 	</div>
 
 	<script type="text/javascript">
-		showGiftsByCategory();
+		$Behavior.loadEgift = function()
+		{l}
+			showGiftsByCategory();
+		{r}
 	</script>
 
 	{/if}

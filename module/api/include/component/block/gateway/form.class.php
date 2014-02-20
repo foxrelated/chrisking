@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: form.class.php 1544 2010-04-07 13:20:17Z Raymond_Benc $
+ * @version 		$Id: form.class.php 7107 2014-02-11 19:46:17Z Fern $
  */
 class Api_Component_Block_Gateway_Form extends Phpfox_Component
 {
@@ -22,9 +22,14 @@ class Api_Component_Block_Gateway_Form extends Phpfox_Component
 	{
 		$aGatewayData = $this->getParam('gateway_data');
 		
+		// http://www.phpfox.com/tracker/view/15093/
+		$bIsThickBox = $this->getParam('bIsThickBox');
+		
 		$this->template()->assign(array(
 				'aGateways' => Phpfox::getService('api.gateway')->get($aGatewayData),
-				'aGatewayData' => $aGatewayData
+				'aGatewayData' => $aGatewayData,
+				// http://www.phpfox.com/tracker/view/15093/
+				'bIsThickBox' => $bIsThickBox
 			)
 		);
 	}

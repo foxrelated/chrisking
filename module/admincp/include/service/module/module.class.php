@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: module.class.php 4854 2012-10-09 05:20:40Z Raymond_Benc $
+ * @version 		$Id: module.class.php 5840 2013-05-09 06:14:35Z Raymond_Benc $
  */
 class Admincp_Service_Module_Module extends Phpfox_Service  
 {
@@ -305,6 +305,11 @@ class Admincp_Service_Module_Module extends Phpfox_Service
 		$sData = '';
 		foreach ($aRows as $aRow)
 		{
+			if ($aRow['module_id'] == 'microblog')
+			{
+				continue;
+			}
+			
 			$sDir = PHPFOX_DIR_MODULE . $aRow['module_id'];		
 			
 			$oXmlBuilder->addGroup('module');

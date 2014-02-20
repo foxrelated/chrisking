@@ -16,50 +16,11 @@
 		<setting group="" module_id="tag" is_hidden="0" type="integer" var_name="tag_cache_tag_cloud" phrase_var_name="setting_tag_cache_tag_cloud" ordering="0" version_id="2.0.0alpha1">180</setting>
 		<setting group="" module_id="tag" is_hidden="0" type="integer" var_name="tag_min_display" phrase_var_name="setting_tag_min_display" ordering="0" version_id="2.0.0alpha1">1</setting>
 		<setting group="" module_id="tag" is_hidden="0" type="integer" var_name="tag_days_treading" phrase_var_name="setting_tag_days_treading" ordering="1" version_id="2.1.0Beta1">7</setting>
+		<setting group="" module_id="tag" is_hidden="0" type="boolean" var_name="enable_hashtag_support" phrase_var_name="setting_enable_hashtag_support" ordering="1" version_id="3.7.0beta1">0</setting>
 	</settings>
 	<blocks>
-		<block type_id="0" m_connection="video.index" module_id="tag" component="cloud" location="3" is_active="1" ordering="5" disallow_access="" can_move="0">
-			<title></title>
-			<source_code />
-			<source_parsed />
-		</block>
-		<block type_id="0" m_connection="video.index" module_id="tag" component="cloud" location="3" is_active="1" ordering="5" disallow_access="" can_move="0">
-			<title></title>
-			<source_code />
-			<source_parsed />
-		</block>
-		<block type_id="0" m_connection="photo.index" module_id="tag" component="cloud" location="3" is_active="1" ordering="4" disallow_access="" can_move="0">
-			<title></title>
-			<source_code />
-			<source_parsed />
-		</block>
-		<block type_id="0" m_connection="photo.index" module_id="tag" component="cloud" location="3" is_active="1" ordering="4" disallow_access="" can_move="0">
-			<title></title>
-			<source_code />
-			<source_parsed />
-		</block>
 		<block type_id="0" m_connection="blog.index" module_id="tag" component="cloud" location="3" is_active="1" ordering="4" disallow_access="" can_move="0">
 			<title>Trending Topics</title>
-			<source_code />
-			<source_parsed />
-		</block>
-		<block type_id="0" m_connection="blog.index" module_id="tag" component="cloud" location="3" is_active="1" ordering="4" disallow_access="" can_move="0">
-			<title>Trending Topics</title>
-			<source_code />
-			<source_parsed />
-		</block>
-		<block type_id="0" m_connection="blog.index" module_id="tag" component="cloud" location="3" is_active="1" ordering="4" disallow_access="" can_move="0">
-			<title>Trending Topics</title>
-			<source_code />
-			<source_parsed />
-		</block>
-		<block type_id="0" m_connection="blog.index" module_id="tag" component="cloud" location="3" is_active="1" ordering="4" disallow_access="" can_move="0">
-			<title>Trending Topics</title>
-			<source_code />
-			<source_parsed />
-		</block>
-		<block type_id="0" m_connection="photo.index" module_id="tag" component="cloud" location="3" is_active="1" ordering="4" disallow_access="" can_move="0">
-			<title></title>
 			<source_code />
 			<source_parsed />
 		</block>
@@ -73,8 +34,8 @@
 			<source_code />
 			<source_parsed />
 		</block>
-		<block type_id="0" m_connection="video.index" module_id="tag" component="cloud" location="3" is_active="1" ordering="5" disallow_access="" can_move="0">
-			<title></title>
+		<block type_id="0" m_connection="core.index-member" module_id="tag" component="cloud" location="3" is_active="1" ordering="12" disallow_access="" can_move="0">
+			<title>Hashtags</title>
 			<source_code />
 			<source_parsed />
 		</block>
@@ -91,21 +52,9 @@
 		<hook module_id="tag" hook_type="service" module="tag" call_name="tag.service_callback__call" added="1258389334" version_id="2.0.0rc8" />
 	</hooks>
 	<components>
-		<component module_id="tag" component="cloud" m_connection="" module="tag" is_controller="0" is_block="1" is_active="1" />
-		<component module_id="tag" component="cloud" m_connection="" module="tag" is_controller="0" is_block="1" is_active="1" />
-		<component module_id="tag" component="item" m_connection="" module="tag" is_controller="0" is_block="1" is_active="1" />
-		<component module_id="tag" component="item" m_connection="" module="tag" is_controller="0" is_block="1" is_active="1" />
-		<component module_id="tag" component="ajax" m_connection="" module="tag" is_controller="0" is_block="0" is_active="1" />
-		<component module_id="tag" component="ajax" m_connection="" module="tag" is_controller="0" is_block="0" is_active="1" />
-		<component module_id="tag" component="add" m_connection="" module="tag" is_controller="0" is_block="1" is_active="1" />
-		<component module_id="tag" component="add" m_connection="" module="tag" is_controller="0" is_block="1" is_active="1" />
-		<component module_id="tag" component="add" m_connection="" module="tag" is_controller="0" is_block="1" is_active="1" />
 		<component module_id="tag" component="add" m_connection="" module="tag" is_controller="0" is_block="1" is_active="1" />
 		<component module_id="tag" component="ajax" m_connection="" module="tag" is_controller="0" is_block="0" is_active="1" />
-		<component module_id="tag" component="ajax" m_connection="" module="tag" is_controller="0" is_block="0" is_active="1" />
 		<component module_id="tag" component="item" m_connection="" module="tag" is_controller="0" is_block="1" is_active="1" />
-		<component module_id="tag" component="item" m_connection="" module="tag" is_controller="0" is_block="1" is_active="1" />
-		<component module_id="tag" component="cloud" m_connection="" module="tag" is_controller="0" is_block="1" is_active="1" />
 		<component module_id="tag" component="cloud" m_connection="" module="tag" is_controller="0" is_block="1" is_active="1" />
 	</components>
 	<phrases>
@@ -134,6 +83,7 @@
 		<phrase module_id="tag" version_id="3.0.0rc1" var_name="trending_since_since" added="1320239415">Trending since {since}</phrase>
 		<phrase module_id="tag" version_id="3.0.1" var_name="trending_topics" added="1327429607">Trending Topics</phrase>
 		<phrase module_id="tag" version_id="3.0.1" var_name="setting_trending_topics_timestamp" added="1327429718"><![CDATA[<title>Trending Topics Timestamp</title><info>This is the timestamp used for the phrase "Trending since {time}"</info>]]></phrase>
+		<phrase module_id="tag" version_id="3.7.0beta1" var_name="setting_enable_hashtag_support" added="1373896214"><![CDATA[<title>Enable Hashtags</title><info>Enable this option if you wish to allow hashtags on the site to create topics for the item being added. This will remove the default tagging system.</info>]]></phrase>
 	</phrases>
 	<user_group_settings>
 		<setting is_admin_setting="0" module_id="tag" type="boolean" admin="1" user="1" guest="0" staff="1" module="tag" ordering="0">edit_own_tags</setting>

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: setting.class.php 4953 2012-10-24 10:05:25Z Raymond_Benc $
+ * @version 		$Id: setting.class.php 6545 2013-08-30 08:41:44Z Raymond_Benc $
  */
 class Admincp_Service_Setting_Setting extends Phpfox_Service 
 {
@@ -176,7 +176,7 @@ class Admincp_Service_Setting_Setting extends Phpfox_Service
 				
 		$aTimezones = Phpfox::getService('core')->getTimeZones();
 		
-		if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
+		if (defined('PHPFOX_IS_HOSTED_SCRIPT') && !defined('PHPFOX_GROUPLY_TEST'))
 		{
 			$aNotAllowedToEdit = array(
 					'core.allow_cdn',
@@ -214,8 +214,33 @@ class Admincp_Service_Setting_Setting extends Phpfox_Service
 					'core.enable_getid3_check',
 					'core.force_https_secure_pages',
 					'core.disable_hash_bang_support',
-					'core.site_wide_ajax_browsing'		
-				);
+					'core.site_wide_ajax_browsing',
+					'core.mail_smtp_password',
+					'core.use_dnscheck',
+					'core.mail_smtp_port',
+					'core.mail_smtp_username',
+					'core.mail_smtp_authentication',
+					'core.mailsmtphost',
+					'core.method',
+					'apps.openssl_config_path',
+					'apps.token_keep_alive',
+					'video.allow_video_uploading',
+				'video.params_for_ffmpeg',
+				'video.params_for_mencoder',
+				'video.params_for_mencoder_fallback',
+				'video.enable_flvtool2',
+				'video.params_for_flvtool2',
+				'video.flvtool2_path',
+				'video.vidly_support',
+				'video.vidly_user_key',
+				'video.vidly_api_key',
+				'video.mencoder_path',
+				'video.ffmpeg_path',
+				'photo.rename_uploaded_photo_names',
+				'photo.delete_original_after_resize',
+				'core.build_file_dir',
+				'core.allow_html_in_activity_feed'
+			);
 		}
 		
 		$aCacheSetting = array();
@@ -228,7 +253,7 @@ class Admincp_Service_Setting_Setting extends Phpfox_Service
 				continue;
 			}			
 			
-			if (defined('PHPFOX_IS_HOSTED_SCRIPT') && !defined('PHPFOX_SHOW_HIDDEN'))
+			if (defined('PHPFOX_IS_HOSTED_SCRIPT') && !defined('PHPFOX_SHOW_HIDDEN') && !defined('PHPFOX_GROUPLY_TEST'))
 			{				
 				if (in_array($aRow['module_id'] . '.' . $aRow['var_name'], $aNotAllowedToEdit))
 				{

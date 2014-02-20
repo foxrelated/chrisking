@@ -1,8 +1,9 @@
-
+/*
 $Core.loadStaticFile(getParam('sJsStatic') + 'jscript/jquery/plugin/imgnotes/jquery.imgareaselect.js');
 $Core.loadStaticFile(getParam('sJsStatic') + 'jscript/jquery/plugin/imgnotes/jquery.imgnotes.js');
 $Core.loadStaticFile(getParam('sJsStatic') + 'jscript/jquery/plugin/imgnotes/imgnotes.css');
 $Core.loadStaticFile(getParam('sJsStatic') + 'jscript/jquery/plugin/imgnotes/imgareaselect/imgareaselect-default.css');
+*/
 
 $Core.photo_tag =
 {
@@ -13,11 +14,17 @@ $Core.photo_tag =
 	init: function(aParams)
 	{		
 		this.aParams = aParams;
-		
+				
 		notes = aParams['js_notes'];
 		
 		$(function() 
 		{
+			if ($Core.photo_tag.aParams['id'] == '#js_photo_view_image'){
+				if ($($Core.photo_tag.aParams['id']).is(':hidden')){
+					$Core.photo_tag.aParams['id'] = '#js_photo_view_image_small';
+				}
+			}
+			
 			if ($($Core.photo_tag.aParams['id']).length <= 0)
 			{
 				return;
@@ -75,7 +82,7 @@ $Core.photo_tag =
 			$('body').prepend(this.sHtml);	
 		});		
 	}
-}
+};
 
 function showaddnote(img, area) 
 {

@@ -89,8 +89,8 @@ defined('PHPFOX') or exit('NO DICE!');
 			</div>
 			<div class="table_right">
 				<select name="val[required]" id="lst_required">
-					<option value="1" id="opt_required_yes">Yes</option>
-					<option value="2"id="opt_required_no">No</option>
+					<option value="1" id="opt_required_yes">{phrase var='input.yes'}</option>
+					<option value="2"id="opt_required_no">{phrase var='input.no'}</option>
 				</select>
 			</div>
 		</div>

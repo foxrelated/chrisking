@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: connect.class.php 5056 2012-11-30 10:39:19Z Raymond_Benc $
+ * @version 		$Id: connect.class.php 5074 2012-12-06 10:37:26Z Raymond_Benc $
  */
 class Share_Component_Controller_Connect extends Phpfox_Component
 {

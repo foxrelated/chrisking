@@ -12,9 +12,9 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: search.class.php 4701 2012-09-20 11:10:23Z Raymond_Benc $
+ * @version 		$Id: search.class.php 6599 2013-09-06 08:18:37Z Miguel_Espinoza $
  */
-final class Phpfox_Search
+class Phpfox_Search
 {
 	/**
 	 * Holds HTML form.
@@ -177,7 +177,8 @@ final class Phpfox_Search
 			{
 				$aParams['search_tool']['custom_filters'] = array();
 			}
-			$sThisUrl = $this->_oUrl->getUrl();
+			
+			$sThisUrl = Phpfox::getLib('module')->getModuleName();
 			$aInputs = Phpfox::getService('input')->getInputsForSearch($sThisUrl);
 			
 			if (!empty($aInputs))
@@ -243,6 +244,7 @@ final class Phpfox_Search
 		);		
 		
 		$bIsCanonical = false;
+		/*
 		if (
 				$this->_oReq->getInt('page')
 				|| $this->_oReq->getInt('sort')
@@ -260,6 +262,7 @@ final class Phpfox_Search
 				)
 			);
 		}
+		*/
 		
 		if (isset($this->_aParams['search_tool']))
 		{
@@ -304,6 +307,7 @@ final class Phpfox_Search
 				}
 				
 				$aDisplayData[] = array(
+					'nofollow' => true,
 					'link' => $iPageDisplay,
 					'phrase' => Phpfox::getPhrase('core.per_page', array('total' => $iPageDisplay))
 				);	
@@ -311,18 +315,22 @@ final class Phpfox_Search
 			
 			$aWhens = array(
 				array(
+					'nofollow' => true,
 					'link' => 'all-time',
 					'phrase' => Phpfox::getPhrase('core.all_time')							
 				),
 				array(
+					'nofollow' => true,
 					'link' => 'this-month',
 					'phrase' => Phpfox::getPhrase('core.this_month')							
 				),
 				array(
+					'nofollow' => true,
 					'link' => 'this-week',
 					'phrase' => Phpfox::getPhrase('core.this_week')							
 				),
 				array(
+					'nofollow' => true,
 					'link' => 'today',
 					'phrase' => Phpfox::getPhrase('core.today')							
 				)						
@@ -610,8 +618,8 @@ final class Phpfox_Search
 		}	
 		
 		$sSort = (isset($this->_aConditions['sort']['alias']) ? trim($this->_aConditions['sort']['alias']) . '.' : '') . ($this->_getVar('sort') ? $this->_getVar('sort') : $this->_aConditions['sort']['default']);
-		$sSort .= ' ' . ($this->_getVar('sort_by') ? $this->_getVar('sort_by') : $this->_aConditions['sort_by']['default']);
-		
+		$sSort .= ' ' . ($this->_getVar('sort_by') ? ($this->_getVar('sort_by') == 'ASC' ? 'ASC' : 'DESC') : $this->_aConditions['sort_by']['default']);
+
 		return $sSort;
 	}
 	
@@ -712,9 +720,12 @@ final class Phpfox_Search
 					break;
 				case 'this-week':
 					$this->_aConds[] = ' AND ' . $this->_aParams['search_tool']['table_alias'] . '.' . $sWhenField . ' >= \'' . Phpfox::getLib('date')->convertToGmt(Phpfox::getLib('date')->getWeekStart()) . '\'';
+					$this->_aConds[] = ' AND ' . $this->_aParams['search_tool']['table_alias'] . '.' . $sWhenField . ' <= \'' . Phpfox::getLib('date')->convertToGmt(Phpfox::getLib('date')->getWeekEnd()) . '\'';
 					break;
 				case 'this-month':
 					$this->_aConds[] = ' AND ' . $this->_aParams['search_tool']['table_alias'] . '.' . $sWhenField . ' >= \'' . Phpfox::getLib('date')->convertToGmt(Phpfox::getLib('date')->getThisMonth()) . '\'';
+					$iLastDayMonth = Phpfox::getLib('date')->mktime(0, 0, 0, date('n'), Phpfox::getLib('date')->lastDayOfMonth(date('n')), date('Y'));
+					$this->_aConds[] = ' AND ' . $this->_aParams['search_tool']['table_alias'] . '.' . $sWhenField . ' <= \'' . Phpfox::getLib('date')->convertToGmt($iLastDayMonth) . '\'';
 					break;		
 				case 'upcoming':
 					$this->_aConds[] = ' AND ' . $this->_aParams['search_tool']['table_alias'] . '.' . $sWhenField . ' >= \'' . Phpfox::getLib('date')->convertToGmt($iTimeDisplay) . '\'';
@@ -723,7 +734,7 @@ final class Phpfox_Search
 					
 					break;			
 			}
-		}		
+		}
 		
 		if (!count($this->_aConds))
 		{
@@ -733,7 +744,7 @@ final class Phpfox_Search
 		$oDb = Phpfox::getLib('database');
 		$aConds = array();		
 		foreach ($this->_aConds as $mKey => $mValue)
-		{			
+		{
 			$aConds[] = (is_numeric($mKey) ? $mValue : str_replace('[VALUE]', Phpfox::getLib('parse.input')->clean($oDb->escape($mValue)), $mKey));
 		}		
 				
@@ -765,6 +776,11 @@ final class Phpfox_Search
 		}		
 		
 		$this->_aConds[] = Phpfox::getLib('database')->search($sType, $mFields, Phpfox::getLib('parse.input')->clean($sSearch));
+	}
+	
+	public function getPhrase($sName, $sValue)
+	{
+		return ((isset($this->_aParams['search_tool'][$sName]) && isset($this->_aParams['search_tool'][$sName][$sValue])) ? $this->_aParams['search_tool'][$sName][$sValue] : false);
 	}
 	
 	/**

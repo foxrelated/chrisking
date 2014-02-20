@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: dashboard.class.php 1339 2009-12-19 00:37:55Z Raymond_Benc $
+ * @version 		$Id: dashboard.class.php 5616 2013-04-10 07:54:55Z Miguel_Espinoza $
  */
 class Core_Component_Block_Dashboard extends Phpfox_Component
 {
@@ -23,7 +23,7 @@ class Core_Component_Block_Dashboard extends Phpfox_Component
 		$sImage = Phpfox::getLib('image.helper')->display(array_merge(array('user' => Phpfox::getService('user')->getUserFields(true)), array(				
 					'path' => 'core.url_user',
 					'file' => Phpfox::getUserBy('user_image'),
-					'suffix' => '_100',
+					'suffix' => '_120',
 					'max_width' => 100,
 					'max_height' => 100
 				)

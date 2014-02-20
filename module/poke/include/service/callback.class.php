@@ -107,10 +107,15 @@ class Poke_Service_Callback extends Phpfox_Service
 	}	
 
 	public function getActivityFeed($aItem)
-	{		
-		$aRow = $this->database()->select('uc.*, l.like_id AS is_liked, uc.total_like, uc.total_comment, u.user_name, u.full_name')
+	{
+		if (Phpfox::isModule('like'))
+		{
+			$this->database()->select('l.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'poke\' AND l.item_id = uc.poke_id AND l.user_id = ' . Phpfox::getUserId());
+		}
+		
+		$aRow = $this->database()->select('uc.*, uc.total_like, uc.total_comment, u.user_name, u.full_name')
 				->from(Phpfox::getT('poke_data'), 'uc')
-				->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'poke\' AND l.item_id = uc.poke_id AND l.user_id = ' . Phpfox::getUserId())				
 				->join(Phpfox::getT('user'), 'u', 'u.user_id = uc.to_user_id')
 				->where('uc.poke_id = ' . (int) $aItem['item_id'])
 				->execute('getSlaveRow');

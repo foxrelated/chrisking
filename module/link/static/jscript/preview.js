@@ -18,7 +18,7 @@
 		{
 			return $Core.editAttachmentText(this);
 		});
-	}
+	};
 	
 	$Core.editAttachmentText = function($oObj)
 	{
@@ -27,7 +27,7 @@
 		$($oObj).parent().find('.js_text_attachment_edit_value').select();	
 		
 		return false;
-	}
+	};
 	
 	$Core.changeDefaultAttachmentImage = function($oObj, $sType)
 	{
@@ -62,7 +62,7 @@
 		$('#js_attachment_link_counter').html($iCurrentAttachmentCount + ' of ' + $iTotalAttachmentImages);
 		
 		return false;
-	}
+	};
 	
 	$Core.toggleAttachmentLinkThumb = function($oObj)
 	{
@@ -76,4 +76,4 @@
 			$('#js_attachment_link_default_image_hide').val('0');	
 			$('.attachment_image_holder').show();
 		}
-	}
+	};

@@ -14,7 +14,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: input.class.php 4736 2012-09-24 08:36:44Z Raymond_Benc $
+ * @version 		$Id: input.class.php 6978 2013-12-09 14:40:17Z Fern $
  */
 class Phpfox_Parse_Input
 {
@@ -105,7 +105,7 @@ class Phpfox_Parse_Input
 		'background-color',
 		'width',
 		'height',
-		'behaviour'
+		'behavior'
 	);
 
 	/**
@@ -158,6 +158,11 @@ class Phpfox_Parse_Input
 	 */
 	public function clean($sTxt, $iShorten = null)
 	{
+		if (!defined('PHPFOX_INSTALLER') && Phpfox::getParam('language.no_string_restriction'))
+		{
+			$iShorten = null;
+		}
+
 		$sTxt = Phpfox::getLib('parse.output')->htmlspecialchars($sTxt);
 
 		// Parse for language package
@@ -302,15 +307,18 @@ class Phpfox_Parse_Input
 		closedir($hDir);
 		
 		$aRewrites = Phpfox::getLib('url')->getRewrite();		
-		foreach ($aRewrites as $sUrl => $aRow)
-		{		    
-		    if (strtolower($sUrl) == strtolower($sTitle) || strtolower($aRow['module']) == strtolower($sTitle))
-		    {
-				$bIsOk = false;
-				break;
-		    }
+		if (is_array($aRewrites) && !empty($aRewrites))
+		{
+			foreach ($aRewrites as $sUrl => $aRow)
+			{		    
+				if (strtolower($sUrl) == strtolower($sTitle) || (isset($aRow['module']) && strtolower($aRow['module']) == strtolower($sTitle)))
+				{
+					$bIsOk = false;
+					break;
+				}
+			}
 		}
-
+		
 		if (Phpfox::getService('user')->isUser($sTitle))
 		{
 			$bIsOk = false;
@@ -365,6 +373,18 @@ class Phpfox_Parse_Input
 		
 		return $this->prepare($sTxt);
 	}
+	
+	private function _replaceUsernames($aMatches)
+	{
+		$oDb = Phpfox::getLib('database');
+		$aRow = $oDb->select(Phpfox::getUserField())->from(Phpfox::getT('user'), 'u')->where('u.user_name = \'' . $oDb->escape($aMatches[1]) . '\'')->execute('getSlaveRow');
+		if (isset($aRow['user_id']))
+		{			
+			return '<a href="' . Phpfox::getLib('url')->makeUrl($aRow['user_name']) . '">@' . $aRow['user_name'] . '</a>';
+		}	
+		
+		return $aMatches[0];
+	}
 
 	/**
 	 * Prepare text strings. Used to prepare all data that can contain HTML. Not only does
@@ -375,6 +395,16 @@ class Phpfox_Parse_Input
 	 */
 	public function prepare($sTxt, $bNoClean = false)
 	{
+		if (Phpfox::isModule('microblog') && Phpfox::getParam('microblog.enable_microblog_site'))
+		{
+			$sTxt = $this->clean($sTxt);
+
+			// $sTxt = preg_replace($pattern, $replace, $sTxt);
+			$sTxt = preg_replace_callback('/@([a-zA-Z0-9\-]+)/', array($this, '_replaceUsernames'), $sTxt);
+			
+			return $sTxt;
+		}
+		
 		// Parse Emoticons
 		if (Phpfox::isModule('emoticon'))
 		{		
@@ -408,7 +438,8 @@ class Phpfox_Parse_Input
 		$sTxt = str_replace('<br /><td>', '<td>', $sTxt);
 		$sTxt = str_replace('<br /></tr>', '</tr>', $sTxt);
 		$sTxt = str_replace('<br /></table>', '</table>', $sTxt);		
-
+		$sTxt = str_replace('<br /></ol>', '</ol>', $sTxt);
+		
 		return $sTxt;
 	}
 
@@ -845,7 +876,7 @@ class Phpfox_Parse_Input
 										}
 										else
 										{
-											$sLink = preg_match('/http:\/\/www\.youtube.com\/embed\/([a-z0-9\-_]*)/i',$aSub[2],$aVal);
+											$sLink = preg_match('/www\.youtube.com\/embed\/([a-z0-9\-_]*)/i',$aSub[2],$aVal);
 											if (isset($aVal[1]))
 											{
 												$sReplace .= 'src="http://www.youtube.com/embed/' . $this->clean($aVal[1]) .'?wmode=transparent" wmode="Opaque"';
@@ -943,7 +974,7 @@ class Phpfox_Parse_Input
         
         foreach ($this->_aEvilEvents as $sRemove)
         {
-            $sTxt = preg_replace('#'.$sRemove.'=#i', 'title=', $sTxt);
+            $sTxt = preg_replace('#'.$sRemove.'#i', 'title', $sTxt);
         }
 
         $sTxt = preg_replace('#javascript:#i', '', $sTxt);
@@ -958,6 +989,11 @@ class Phpfox_Parse_Input
         {
 			if ($sKey == 'src')
 			{
+                /* http://www.phpfox.com/tracker/view/12793/ */
+                if (substr($mValue, 1, strlen('//www.')) == '//www.')
+                {
+                    $mValue = substr($mValue,0,1) . 'http:' . substr($mValue,1);
+                }
 				if (!preg_match('/(http|https):\/\//is', $mValue))
 				{
 					$sTxt = preg_replace('/'. $sKey .'=' . preg_quote($mValue, '/')  . '/is', 'replaced=""', $sTxt);
@@ -1063,30 +1099,49 @@ class Phpfox_Parse_Input
         $unicode = array();
         $values = array();
         $lookingFor = 1;
-
-        for ($i = 0; $i < strlen( $str ); $i++ )
+        
+        if(defined('PHPFOX_UNICODE_JSON') && PHPFOX_UNICODE_JSON === true)
         {
-            $thisValue = ord( $str[ $i ] );
-
-            if ( $thisValue < 128 )
+            $aUnicodes = preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY);
+            foreach($aUnicodes as $char)
             {
-            	$unicode[] = $thisValue;
-            }
-            else
-            {
-                if ( count( $values ) == 0 ) $lookingFor = ( $thisValue < 224 ) ? 2 : 3;
-
-                $values[] = $thisValue;
-
-                if ( count( $values ) == $lookingFor ) 
+                $thisValue = ord($char);
+                if ($thisValue < 128)
                 {
-                    $number = ( $lookingFor == 3 ) ?
-                        ( ( $values[0] % 16 ) * 4096 ) + ( ( $values[1] % 64 ) * 64 ) + ( $values[2] % 64 ):
-                    	( ( $values[0] % 32 ) * 64 ) + ( $values[1] % 64 );
+                    $unicode[] = $thisValue;
+                }
+                else
+                {
+                    $unicode[] = hexdec(trim(trim(json_encode($char), '"'), '\u'));
+                }
+            }
+        }
+        else
+        {
+            for ($i = 0; $i < strlen( $str ); $i++ )
+            {
+                $thisValue = ord( $str[ $i ] );
 
-                    $unicode[] = $number;
-                    $values = array();
-                    $lookingFor = 1;
+                if ( $thisValue < 128 )
+                {
+                    $unicode[] = $thisValue;
+                }
+                else
+                {
+                    if ( count( $values ) == 0 ) $lookingFor = ( $thisValue < 224 ) ? 2 : 3;
+
+                    $values[] = $thisValue;
+
+                    if ( count( $values ) == $lookingFor ) 
+                    {
+                        $number = ( $lookingFor == 3 ) ?
+                            ( ( $values[0] % 16 ) * 4096 ) + ( ( $values[1] % 64 ) * 64 ) + ( $values[2] % 64 ):
+                            ( ( $values[0] % 32 ) * 64 ) + ( $values[1] % 64 );
+
+                        $unicode[] = $number;
+                        $values = array();
+                        $lookingFor = 1;
+                    }
                 }
             }
         }

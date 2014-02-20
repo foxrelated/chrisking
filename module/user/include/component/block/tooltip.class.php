@@ -75,6 +75,23 @@ class User_Component_Block_Tooltip extends Phpfox_Component
 		{
 			$bShowBDayInput = true;
 		}
+		
+		if (empty($aUser['dob_setting']))
+		{
+			switch (Phpfox::getParam('user.default_privacy_brithdate'))
+			{
+				case 'month_day':
+					$aUser['dob_setting'] =  '1';
+					break;
+				case 'show_age':
+					$aUser['dob_setting'] =  '2';
+					break;
+				case 'hide':
+					$aUser['dob_setting'] =  '3';
+					break;
+			}
+		}
+		
 		(($sPlugin = Phpfox_Plugin::get('user.component_block_tooltip_1')) ? eval($sPlugin) : false);
 		$this->template()->assign(array(
 				'bIsPage' => $bIsPage,

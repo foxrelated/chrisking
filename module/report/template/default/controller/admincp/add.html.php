@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: add.html.php 1179 2009-10-12 13:56:40Z Raymond_Benc $
+ * @version 		$Id: add.html.php 6474 2013-08-20 06:58:29Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -18,8 +18,8 @@ defined('PHPFOX') or exit('NO DICE!');
 	<div class="table_header">
 		{phrase var='report.category_details'}
 	</div>
-	{module name='admincp.product.form'}
-	{module name='admincp.module.form'}
+	<div><input type="hidden" name="val[product_id]" value="phpfox" /></div>
+	<div><input type="hidden" name="val[module_id]" value="core" /></div>
 	<div class="table">
 		<div class="table_left">
 		{required}{phrase var='report.category_name'}:

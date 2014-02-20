@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: processpoints.class.php 5017 2012-11-13 05:33:15Z Raymond_Benc $
+ * @version 		$Id: processpoints.class.php 5022 2012-11-13 08:05:06Z Raymond_Benc $
  */
 class User_Component_Block_Processpoints extends Phpfox_Component
 {

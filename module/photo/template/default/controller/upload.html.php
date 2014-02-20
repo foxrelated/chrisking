@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: upload.html.php 2526 2011-04-13 18:15:51Z Raymond_Benc $
+ * @version 		$Id: upload.html.php 5616 2013-04-10 07:54:55Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -80,7 +80,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		<h3>{phrase var='photo.uploaded_photos'}</h3>
 		{/if}	
 		{foreach from=$aImages item=aImage name=images}
-		{img thickbox=true server_id=$aImage.server_id path='photo.url_photo' file=$aImage.destination suffix='_75' max_width=75 max_height=75 style="position:absolute; right:0px; padding-right:20px; padding-top:5px;"}
+		{img thickbox=true server_id=$aImage.server_id path='photo.url_photo' file=$aImage.destination suffix='_50' max_width=75 max_height=75 style="position:absolute; right:0px; padding-right:20px; padding-top:5px;"}
 		<div class="{if is_int($phpfox.iteration.images/2)}row1{else}row2{/if}{if $phpfox.iteration.images == 1} row_first{/if}">			
 			{template file='photo.block.form'}
 		</div>	

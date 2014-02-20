@@ -1,9 +1,33 @@
 
-$Core.loadStaticFile(getParam('sJsStatic') + 'jscript/player/flowplayer/flowplayer.js');
-
 $Core.player =
 {
     aParams: {},
+    
+    supportsVideo: function(){
+    	return !!document.createElement('video').canPlayType;
+    },
+    
+    canPlayVideo: function(){
+    	
+    	var bCanPlay = false;
+    	if (this.supportsVideo()){    		
+    		var v = document.createElement('video');
+    		if (v.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')){
+    			bCanPlay = true;
+    			p('Supports: video/mp4');
+    		}
+    		else if (v.canPlayType('video/ogg; codecs="theora, vorbis"')){
+    			bCanPlay = true;
+    			p('Supports: video/ogg');
+    		}
+    		else if (v.canPlayType('video/webm; codecs="vp8, vorbis"')){
+    			bCanPlay = true;
+    			p('Supports: video/webm');
+    		}
+    	}
+    	
+    	return bCanPlay;
+    },    
 	
     load: function(aParams)
     {
@@ -13,13 +37,26 @@ $Core.player =
 		}
 		
 		this.aParams = aParams;
+		
+		if (getParam('bUseHTML5Video') && this.aParams['type'] == 'video' && this.canPlayVideo()){
+			
+			var sHtml = '';
+			sHtml += '<video width="600" height="366" preload="auto" controls autoplay>';			
+			sHtml += '<source type="video/webm" src="' + aParams['play'].replace('.flv', '.webm') + '">';
+			sHtml += '<source type="video/mp4" src="' + aParams['play'].replace('.flv', '.mp4') + '">';			
+			sHtml += '<source type="video/ogg" src="' + aParams['play'].replace('.flv', '.ogg') + '">';					
+			sHtml += '</video>';
+			$('#' + this.aParams['id'] + '').html(sHtml);			
+
+			return this;
+		}
 			
 		var sCall = '$f(\'' + this.aParams['id'] + '\', {src: \'' + getParam('sJsStatic') + 'jscript/player/flowplayer/flowplayer.swf\', wmode: \'transparent\', zIndex: -1},{';
 		switch (this.aParams['type'])
 		{
 		    case 'video':
 				sCall += 'clip: {';
-				sCall += 'url: \'' + this.aParams['play'] + '\',';
+				sCall += 'url: \'' + (getParam('bUseHTML5Video') ? this.aParams['play'].replace('.flv', '.mp4') : this.aParams['play']) + '\',';
 				sCall += 'autoBuffering: true,';
 				if (isset(this.aParams['auto']))
 				{
@@ -28,7 +65,7 @@ $Core.player =
 				sCall = rtrim(sCall, ',');
 				sCall += '}';
 				break;
-			    case 'music':
+			case 'music':
 				sCall += 'clip: {';
 						
 				if (!empty(this.aParams['play']))
@@ -37,7 +74,7 @@ $Core.player =
 				}
 				if (isset(this.aParams['on_finish']))
 				{
-				    sCall += 'onFinish: ' + this.aParams['on_finish'] + ','
+				    sCall += 'onFinish: ' + this.aParams['on_finish'] + ',';
 				}
 				else
 				{		    
@@ -76,8 +113,8 @@ $Core.player =
 				sCall += '}';	
 			
 				break;
-			    default:
-			    	p('Not a valid call.');
+			default:
+				p('Not a valid call.');
 			    break;
 		}
 		sCall += '});';
@@ -111,4 +148,4 @@ $Core.player =
 			
 		return false;
     }
-}
+};

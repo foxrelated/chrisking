@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: index.class.php 4272 2012-06-13 14:56:34Z Miguel_Espinoza $
+ * @version 		$Id: index.class.php 6661 2013-09-19 11:19:22Z Fern $
  */
 class Feed_Component_Controller_Index extends Phpfox_Component
 {
@@ -20,6 +20,7 @@ class Feed_Component_Controller_Index extends Phpfox_Component
 	 */
 	public function process()
 	{
+		Phpfox::getUserParam('feed.can_view_feed', true);
 		$sFeedDisplay = 'feed.display';
 		(($sPlugin = Phpfox_Plugin::get('feed.component_controller_index_feeddisplay')) ? eval($sPlugin) : false);
 		/* Load the picup files if needed*/
@@ -38,7 +39,8 @@ class Feed_Component_Controller_Index extends Phpfox_Component
 				'comment.css' => 'style_css',					
 				'quick_edit.js' => 'static_script',
 				'jquery/plugin/jquery.highlightFade.js' => 'static_script',
-				'jquery/plugin/jquery.scrollTo.js' => 'static_script'								
+				'jquery/plugin/jquery.scrollTo.js' => 'static_script',
+				'player/flowplayer/flowplayer.js' => 'static_script'								
 			)					
 		)
 		->assign(array('sFeedDisplay' => $sFeedDisplay));			

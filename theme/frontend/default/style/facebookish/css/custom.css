@@ -359,3 +359,9 @@ a.mobile_main_sub_menu:hover
 {
 	margin:0px;
 }
+
+/* Fixes bug 13957 and 14307 */
+#js_controller_photo_albums #content_load_data h1
+{
+	position: relative;
+}

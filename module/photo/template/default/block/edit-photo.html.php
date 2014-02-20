@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: edit-photo.html.php 4749 2012-09-25 06:41:43Z Raymond_Benc $
+ * @version 		$Id: edit-photo.html.php 6871 2013-11-11 12:19:49Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -14,8 +14,9 @@ defined('PHPFOX') or exit('NO DICE!');
 {if isset($bSingleMode)}
 <form method="post" action="#" onsubmit="$(this).ajaxCall('photo.updatePhoto'); return false;">
 	<div><input type="hidden" name="photo_id" value="{$aForms.photo_id}" /></div>
-	<div><input type="hidden" name="val{if isset($aForms.photo_id)}[{$aForms.photo_id}]{/if}[photo_id]" value="{$aForms.photo_id}" /></div>
+	<div><input type="hidden" name="val{if isset($aForms.photo_id)}[{$aForms.photo_id}]{/if}[photo_id]" id="photo_id" value="{$aForms.photo_id}" /></div>
 	<div><input type="hidden" name="val{if isset($aForms.photo_id)}[{$aForms.photo_id}]{/if}[album_id]" value="{$aForms.album_id}" /></div>
+	<div><input type="hidden" name="val{if isset($aForms.photo_id)}[{$aForms.photo_id}]{/if}[server_id]" value="{$aForms.server_id}" /></div>
 	<div id="js_custom_privacy_input_holder">
 		{if $aForms.album_id == '0' && $aForms.group_id == '0'}
 		{module name='privacy.build' privacy_item_id=$aForms.photo_id privacy_module_id='photo'}
@@ -31,7 +32,7 @@ defined('PHPFOX') or exit('NO DICE!');
 <div id="photo_edit_item_id_{$aForms.photo_id}" class="{if !isset($bSingleMode)}row1 {/if}photo_edit_row">
 	<div class="photo_edit_holder">
 		<div class="t_center">
-			{img server_id=$aForms.server_id path='photo.url_photo' file=$aForms.destination suffix='_150' max_width=150 max_height=150 title=$aForms.title class='js_mp_fix_width photo_holder' thickbox=true}
+			{img server_id=$aForms.server_id path='photo.url_photo' file=$aForms.destination suffix='_150' max_width=150 max_height=150 title=$aForms.title class='js_mp_fix_width photo_holder'}
 		</div>
 		<div class="p_4">
 			{if !isset($bIsEditMode) && $aForms.album_id > 0}

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: form.class.php 4854 2012-10-09 05:20:40Z Raymond_Benc $
+ * @version 		$Id: form.class.php 5428 2013-02-25 15:01:29Z Raymond_Benc $
  */
 class Privacy_Component_Block_Form extends Phpfox_Component
 {
@@ -56,6 +56,8 @@ class Privacy_Component_Block_Form extends Phpfox_Component
 			);
 		}
 		
+		(($sPlugin = Phpfox_Plugin::get('privacy.component_block_form_process')) ? eval($sPlugin) : '');
+		
 		$aVals = (array) $this->template()->getVar('aForms');
 		if (($aPostVals = $this->request()->getArray('val')))
 		{
@@ -93,6 +95,7 @@ class Privacy_Component_Block_Form extends Phpfox_Component
 					$aPrivacyControl['phrase'] = preg_replace('/<span>(.*)<\/span>/i', '', $aPrivacyControl['phrase']);
 					$aSelectedPrivacyControl = $aPrivacyControl;
 					$aPrivacyControls[$iKey]['is_active'] = true;
+					$bNoActive = false;
 					break;					
 				}		
 			}	
@@ -103,7 +106,12 @@ class Privacy_Component_Block_Form extends Phpfox_Component
 		{
 			$sPrivacyInfo = Phpfox::getPhrase($sPrivacyInfo);
 		}
-		
+        
+        if (empty($aSelectedPrivacyControl))
+        {
+            $aSelectedPrivacyControl = $aPrivacyControls[0];
+        }
+        
 		$this->template()->assign(array(
 				'sPrivacyFormType' => $this->getParam('privacy_type'),
 				'sPrivacyFormName' => $this->getParam('privacy_name'),

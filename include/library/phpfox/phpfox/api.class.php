@@ -12,9 +12,9 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: api.class.php 4984 2012-11-02 05:43:44Z Raymond_Benc $
+ * @version 		$Id: api.class.php 6599 2013-09-06 08:18:37Z Miguel_Espinoza $
  */
-final class Phpfox_Api
+class Phpfox_Api
 {	
 	/**
 	 * Error message.

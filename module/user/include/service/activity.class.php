@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: activity.class.php 4637 2012-09-17 09:37:20Z Miguel_Espinoza $
+ * @version 		$Id: activity.class.php 5840 2013-05-09 06:14:35Z Raymond_Benc $
  */
 class User_Service_Activity extends Phpfox_Service
 {	
@@ -40,6 +40,9 @@ class User_Service_Activity extends Phpfox_Service
 			return Phpfox_Error::trigger('Invalid activity method: ' . $sMethod);
 		}
 
+        /* Adding a hook based on this request http://www.phpfox.com/tracker/view/13054/ 
+         * if ($sPlugin = Phpfox_Plugin::get('user.service_activity_update_1')){eval($sPlugin);if (isset($mReturn)){return $mReturn;}}
+         */
 		$sModule = $sType;
 		$sModuleExtra = null;
 		if (preg_match('/(.*)_(.*)/i', $sModule, $aMatches))
@@ -126,7 +129,7 @@ class User_Service_Activity extends Phpfox_Service
 				$iNewFieldCount	= $aTotalItemInfo['total'];
 			}
 			
-			$this->database()->update(Phpfox::getT('user_field'), array($aTotalItemInfo['field'] => $iNewFieldCount), 'user_id = ' . (int) $iUserId);
+			 $this->database()->update(Phpfox::getT('user_field'), array($aTotalItemInfo['field'] => $iNewFieldCount), 'user_id = ' . (int) $iUserId);
 		}
 		
 		(($sPlugin = Phpfox_Plugin::get('user.service_activity_update')) ? eval($sPlugin) : false);
@@ -137,7 +140,7 @@ class User_Service_Activity extends Phpfox_Service
 	public function doGiftPoints($iTrgUser, $iAmount)
 	{
 		Phpfox::getUserParam('core.can_gift_points', true);
-		$iAmount = (int)$iAmount;
+		$iAmount = (int)$iAmount;        
 		// How many points do we have?
 		if ( (Phpfox::getUserBy('activity_points') < 1) || ($iAmount > Phpfox::getUserBy('activity_points')) )
 		{
@@ -147,7 +150,7 @@ class User_Service_Activity extends Phpfox_Service
 		{
 			$iAmount = 1;
 		}
-		
+		$iAmount = abs($iAmount);
 		// Get current values
 		$aValues = $this->database()->select('activity_points, user_id, activity_points_gifted')
 			->from(Phpfox::getT('user_activity'))

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Profile
- * @version 		$Id: logo.class.php 4963 2012-10-29 07:33:30Z Raymond_Benc $
+ * @version 		$Id: logo.class.php 6203 2013-07-04 08:42:30Z Raymond_Benc $
  */
 class Profile_Component_Block_Logo extends Phpfox_Component
 {
@@ -33,8 +33,9 @@ class Profile_Component_Block_Logo extends Phpfox_Component
 		{			
 			$aUser['cover_photo'] = $aUser['cover_photo_id'];
 			$aUser['cover_photo_top'] = isset($aUser['cover_photo_position']) ? $aUser['cover_photo_position'] : 0;
+
 			$this->template()->assign(array(
-				'bNoPrefix' => true,
+				// 'bNoPrefix' => true,
 				'sLogoPosition' => $aUser['cover_photo_top']
 			));
 			$sModule = 'pages';
@@ -65,7 +66,7 @@ class Profile_Component_Block_Logo extends Phpfox_Component
 		{
 			return false;
 		}		
-		
+
 		$sPagesUrl = '';
 		if ($bIsPages)
 		{
@@ -73,7 +74,7 @@ class Profile_Component_Block_Logo extends Phpfox_Component
 			
 			$this->template()->assign('sPagesLink', $aPage['link']);
 		}
-		
+
 		$this->template()->assign(array(
 				'aCoverPhoto' => $aCoverPhoto,
 				'bRefreshPhoto' => ($this->request()->getInt('coverupdate') ? true : false),

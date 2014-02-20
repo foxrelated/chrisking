@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Module
- * @version 		$Id: phpfox.class.php 5004 2012-11-08 09:36:00Z Raymond_Benc $
+ * @version 		$Id: phpfox.class.php 5022 2012-11-13 08:05:06Z Raymond_Benc $
  */
 class Module_Pages
 {

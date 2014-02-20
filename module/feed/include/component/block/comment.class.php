@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Feed
- * @version 		$Id: comment.class.php 4545 2012-07-20 10:40:35Z Raymond_Benc $
+ * @version 		$Id: comment.class.php 6714 2013-10-03 08:28:06Z Miguel_Espinoza $
  */
 class Feed_Component_Block_Comment extends Phpfox_Component 
 {
@@ -21,21 +21,42 @@ class Feed_Component_Block_Comment extends Phpfox_Component
 	public function process()
 	{
 		$aFeed = $this->getParam('aFeed');
-		$sFeedType = (isset($aFeed['feed_display']) ? $aFeed['feed_display'] : null);
 		$aFeed['feed_id'] = $aFeed['item_id'];
-		$aFeed['is_view_item'] = true;		
+		$aFeed['is_view_item'] = true;
+		$sFeedType = (isset($aFeed['feed_display']) ? $aFeed['feed_display'] : null);
+
+		$bForceLoad = false;
+		if (PHPFOX_IS_AJAX && Phpfox::getLib('module')->getFullControllerName() == 'photo.view')
+		{
+			// $bForceLoad = true;
+		}
+
+		if ((!PHPFOX_IS_AJAX || $bForceLoad) && $sFeedType == 'view' && Phpfox::isModule('comment') && Phpfox::getParam('comment.load_delayed_comments_items'))
+		{
+			// Prepare the param
+			$sDelayedParam = urlencode(json_encode($aFeed));
+			$this->template()->assign(array(
+				'sDelayedParam' => $sDelayedParam, 
+				'sDelayedParamId' => rand(100,999)
+			));
+			
+			return 'block';
+		}
+		else if (defined('PHPFOX_IS_AJAX') && PHPFOX_IS_AJAX && Phpfox::getLib('ajax')->get('delayedParam') != null)
+		{
+			$aFeed = json_decode(urldecode(Phpfox::getLib('ajax')->get('delayedParam')));
+		}
 		
-		if (Phpfox::getUserParam('comment.can_delete_comment_on_own_item') && ($iOwnerDeleteCmt = $this->request()->getInt('ownerdeletecmt')) && isset($aFeed['user_id']) && $aFeed['user_id'] == Phpfox::getUserId())
+		if (Phpfox::isModule('comment') && Phpfox::getUserParam('comment.can_delete_comment_on_own_item') && ($iOwnerDeleteCmt = $this->request()->getInt('ownerdeletecmt')) && isset($aFeed['user_id']) && $aFeed['user_id'] == Phpfox::getUserId())
 		{
 			if (Phpfox::getService('comment.process')->deleteInline($iOwnerDeleteCmt, $aFeed['comment_type_id'], true))
 			{
 				$this->url()->forward($aFeed['feed_link'], Phpfox::getPhrase('comment.comment_successfully_deleted'));
 			}
-			exit('failed');
 		}
 
 		$bCanPostComment = true;
-		if (isset($aFeed['comment_privacy']) && $aFeed['user_id'] != Phpfox::getUserId() && !Phpfox::getUserParam('privacy.can_comment_on_all_items'))
+		if (isset($aFeed['comment_privacy']) && $aFeed['user_id'] != Phpfox::getUserId() && (Phpfox::isModule('privacy') && !Phpfox::getUserParam('privacy.can_comment_on_all_items')))
 		{
 			switch ($aFeed['comment_privacy'])
 			{
@@ -65,11 +86,24 @@ class Feed_Component_Block_Comment extends Phpfox_Component
 		}
 		$aFeed['can_post_comment'] = $bCanPostComment;
 		
-		if ((int) $aFeed['total_like'] > 0 && Phpfox::isModule('like'))
+		if ( (int) $aFeed['total_like'] > 0 && Phpfox::isModule('like'))
 		{
 			$aFeed['likes'] = Phpfox::getService('like')->getLikesForFeed($aFeed['like_type_id'], $aFeed['item_id'], ((int) $aFeed['feed_is_liked'] > 0 ? true : false), Phpfox::getParam('feed.total_likes_to_display'));
-		}		
+		}
 		
+		$bHasBeenMarked = (Phpfox::isModule('like') ? Phpfox::getService('like')->hasBeenMarked(2, isset($aFeed['type_id']) ? $aFeed['type_id'] : $aFeed['like_type_id'], $aFeed['item_id']) : false);
+		
+		/* Quick check without the actions*/
+		$aFeed['bShowEnterCommentBlock'] = false;
+		
+		if (Phpfox::isModule('like') && ((isset($aFeed['total_like']) && $aFeed['total_like'] > 0 && Phpfox::getParam('like.show_user_photos') == false) ||
+				(isset($aFeed['total_comment']) && $aFeed['total_comment'] > 0) || 
+				(Phpfox::getParam('like.allow_dislike') && Phpfox::isModule('like') && $bHasBeenMarked)
+			))
+		{
+			$aFeed['bShowEnterCommentBlock'] = true;
+		}
+				
 		$iPageLimit = 2;
 		$mPager = null;
 		$iCommentId = null;
@@ -77,7 +111,7 @@ class Feed_Component_Block_Comment extends Phpfox_Component
 		if (Phpfox::isModule('comment') && $sFeedType != 'mini')
 		{	
 			if ((int) $aFeed['total_comment'] > 0)
-			{					
+			{	
 				if ($sFeedType == 'view')
 				{
 					$iPageLimit = Phpfox::getParam('comment.comment_page_limit');
@@ -116,9 +150,11 @@ class Feed_Component_Block_Comment extends Phpfox_Component
 
 		$aFeed['type_id'] = (!empty($aFeed['type_id']) ? $aFeed['type_id'] : (isset($aFeed['report_module']) ? $aFeed['report_module'] : ''));
 		
-		if (empty($sFeedType))
+		if ($aFeed['type_id'] == 'forum_reply') $aFeed['type_id'] = 'forum_post';
+		
+		if (!isset($aFeed['feed_like_phrase']) && Phpfox::isModule('like'))
 		{
-			$sFeedType = 'default';
+			Phpfox::getService('feed')->getPhraseForLikes($aFeed);
 		}
 		$this->template()->assign(array(
 				'aFeed' => $aFeed,

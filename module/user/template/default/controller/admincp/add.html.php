@@ -76,7 +76,7 @@ defined('PHPFOX') or exit('NO DICE!');
 			{phrase var='user.photo'}:
 		</div>
 		<div class="table_right">
-			<div id="js_user_photo_{$aUser.user_id}">{img user=$aUser max_width='75' max_height='75' suffix='_75' thickbox=true}</div>
+			<div id="js_user_photo_{$aUser.user_id}">{img user=$aUser max_width='75' max_height='75' suffix='_50' thickbox=true}</div>
 			<div class="extra_info">
 				<a href="#" onclick="tb_show('{phrase var='user.edit_profile_picture' phpfox_squote=true}', $.ajaxBox('user.changePicture', 'height=150&width=700&user_id={$aUser.user_id}')); return false;">
 					{phrase var='user.change_this_photo'}
@@ -103,27 +103,29 @@ defined('PHPFOX') or exit('NO DICE!');
 	{/foreach}
 	{/foreach}		
 	{/if}
-	<div class="table_header">
-		{phrase var='user.custom_fields'}
-	</div>
-	<div id="js_custom_field_holder">		
-		{template file='user.block.custom'}		
-	</div>
+	{if !empty($aSettings)}
+		<div class="table_header">
+			{phrase var='user.custom_fields'}
+		</div>
+		<div id="js_custom_field_holder">		
+			{template file='user.block.custom'}		
+		</div>
+	{/if}
 	<div class="table_header">
 		{phrase var='user.activity_points'}
 	</div>	
 	{foreach from=$aActivityPoints key=sActivityKeyName item=aActivityPoint}
-	<div class="table">
-	{foreach from=$aActivityPoint key=sActivityPhrase item=iActivityCount}
-		<div class="table_left">
-			{$sActivityPhrase}:
+		<div class="table">
+			{foreach from=$aActivityPoint key=sActivityPhrase item=iActivityCount}
+				<div class="table_left">
+					{$sActivityPhrase}:
+				</div>
+				<div class="table_right">
+					<input type="text" name="val[activity][{$sActivityKeyName}]" value="{$iActivityCount}" />
+				</div>
+				<div class="clear"></div>
+			{/foreach}
 		</div>
-		<div class="table_right">
-			<input type="text" name="val[activity][{$sActivityKeyName}]" value="{$iActivityCount}" />
-		</div>
-		<div class="clear"></div>
-	{/foreach}
-	</div>
 	{/foreach}
 	<div class="table_clear">
 		<input type="submit" value="{phrase var='user.update'}" class="button" />

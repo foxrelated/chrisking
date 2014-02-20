@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: index.class.php 3917 2012-02-20 18:21:08Z Raymond_Benc $
+ * @version 		$Id: index.class.php 6739 2013-10-07 14:14:51Z Fern $
  */
 class Admincp_Component_Controller_Menu_Index extends Phpfox_Component 
 {
@@ -57,14 +57,17 @@ class Admincp_Component_Controller_Menu_Index extends Phpfox_Component
 		
 		foreach ($aRows as $iKey => $aRow)
 		{
-			if (!$iParentId && in_array($aRow['m_connection'], $aTypes))
+			if(Phpfox::isModule($aRow['module_id']))
 			{
-				$aMenus[$aRow['m_connection']][] = $aRow;
+				if (!$iParentId && in_array($aRow['m_connection'], $aTypes))
+				{
+					$aMenus[$aRow['m_connection']][] = $aRow;
+				}
+				else 
+				{
+					$aModules[$aRow['m_connection']][] = $aRow;
+				}			
 			}
-			else 
-			{
-				$aModules[$aRow['m_connection']][] = $aRow;
-			}			
 		}
 		unset($aRows);		
 	

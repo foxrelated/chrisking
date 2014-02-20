@@ -87,8 +87,9 @@ defined('PHPFOX') or exit('NO DICE!');
 							|| (!Phpfox::isUser() && Phpfox::getLib('module')->getFullControllerName() == 'user.register') 
 							|| (!Phpfox::isUser() && Phpfox::getLib('module')->getFullControllerName() == 'user.login')
 							|| (!Phpfox::isUser() && Phpfox::getLib('module')->getFullControllerName() == 'user.password/request')
+							|| (!Phpfox::isUser() && Phpfox::getLib('module')->getFullControllerName() == 'janrain.login')
 							}			
-							{if defined('PHPFOX_IS_USER_PROFILE')}
+							{if defined('PHPFOX_IS_USER_PROFILE') || defined('PHPFOX_IS_PAGES_VIEW')}
 							{module name='profile.mobile'}
 							{/if}
 							{block location='2'}
@@ -108,15 +109,13 @@ defined('PHPFOX') or exit('NO DICE!');
 					<li>&middot;</li>			
 					<li><a href="{url link='user.setting'}">{$sLocaleName}</a></li>					
 					{if Phpfox::isUser()}
-					<li>&middot;</li>			
-					<li><a href="{url link='logout'}">{phrase var='mobile.logout'}</a></li>
+						<li>&middot;</li>			
+						<li><a href="{url link='user.logout'}">{phrase var='mobile.logout'}</a></li>
 					{/if}
 				</ul>
 			</div>		
 		</div>
-		<script type="text/javascript">
-			$Core.init();
-		</script>		
+		{footer}
 	</body>
 </html>
 {/if}

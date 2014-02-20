@@ -27,7 +27,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: debug.class.php 2668 2011-06-14 13:11:58Z Miguel_Espinoza $
+ * @version 		$Id: debug.class.php 6627 2013-09-12 08:35:04Z Miguel_Espinoza $
  */
 class Phpfox_Debug
 {
@@ -192,7 +192,7 @@ class Phpfox_Debug
     	$aKeywords = array('SELECT', 'SELECT ', 'FROM', 'FROM ', 'WHERE ', 'UPDATE ', 'OFFSET', ' AS ', 'UNION ALL', 'INNER JOIN ', 'LEFT JOIN ', 'INSERT INTO ', 'SHOW COLUMNS ', 'ON', 'SET', 'USING', 'USE INDEX', 'JOIN ', 'ORDER BY', 'DESC', 'LIMIT', 'DELETE');
     	$oRequest = Phpfox::getLib('request');
     	$oFile = Phpfox::getLib('file');
-    	$aReplaces = array_map(array('self', '_addKeyworSyntax'), $aKeywords);
+    	$aReplaces = array_map(array('self', '_addKeywordSyntax'), $aKeywords);
     	$sDriver = Phpfox::getParam(array('db', 'driver'));
     	$sSql = '';
     	$bIsCmd = ((PHP_SAPI == 'cli' || (defined('PHPFOX_IS_AJAX') && PHPFOX_IS_AJAX)));
@@ -255,10 +255,11 @@ class Phpfox_Debug
 		{
 			define('PHPFOX_MEM_END', memory_get_usage());
 		}
+    	
     	if (PHPFOX_DEBUG_LEVEL === 1)
     	{    	
-    		$sDebugReturn .= '<div style="font-size:9pt; text-align:center; padding-bottom:50px;">Page generated in ' . round($iTotalTime, 4) . ' seconds with ' . $iSqlCount . ' queries and GZIP ' . (Phpfox::getParam('core.use_gzip') ? 'enabled' : 'disabled') . '.</div>';
-    	}
+    		$sDebugReturn .= '<div style="font-size:9pt; text-align:center; padding-bottom:50px;">Page generated in ' . round($iTotalTime, 4) . ' seconds with ' . $iSqlCount . ' queries and GZIP ' . (Phpfox::getParam('core.use_gzip') ? 'enabled' : 'disabled') . ' on ' . $_SERVER['SERVER_ADDR'] . '.</div>';
+    	}    	
     	elseif (PHPFOX_DEBUG_LEVEL === 2 || PHPFOX_DEBUG_LEVEL === 3)
     	{
 	    	$bSlaveEnabled = Phpfox::getParam(array('db', 'slave'));
@@ -401,6 +402,15 @@ class Phpfox_Debug
     	
     	$sDebugReturn .= '</div>';
     	
+    	if (defined('PHPFOX_DEBUG_SHOW_FIXED'))
+    	{
+    		$sDebugReturn .= '<div style="position:fixed; bottom:0px; right:5px; background:#fff; border:1px #dfdfdf solid; width:200px; padding:5px; font-size:16px;">
+    				Generated in: ' . round($iTotalTime, 4) . ' <br />
+    				SQL: ' . $iSqlCount . ' (' . $iTotalSqlTime . ') <br />
+    				Server:  ' . $_SERVER['SERVER_ADDR'] . '
+    		</div>';
+    	}
+    	
     	return $sDebugReturn;
 	}	
 	
@@ -445,7 +455,7 @@ class Phpfox_Debug
 	 * @param string $sVal SQL Code to parse
 	 * @return string Returns updated code with bolding on special functions
 	 */
-	private static function _addKeyworSyntax($sVal)
+	private static function _addKeywordSyntax($sVal)
 	{
 	    if (trim($sVal) == 'UNION ALL')
 	    {

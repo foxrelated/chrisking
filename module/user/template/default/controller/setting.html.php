@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: setting.html.php 4973 2012-10-31 06:03:06Z Raymond_Benc $
+ * @version 		$Id: setting.html.php 7121 2014-02-18 13:57:28Z Fern $
  */
 
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -184,7 +184,11 @@ defined('PHPFOX') or exit('NO DICE!');
 					{$aCustom.phrase}:
 				</div>
 				<div class="table_right">
-					<input type="text" name="val[gateway_detail][{$aGateway.gateway_id}][{$sFormField}]" value="{if isset($aCustom.user_value)}{$aCustom.user_value|clean}{/if}" size="40" />
+					{if (isset($aCustom.type) && $aCustom.type == 'textarea')}
+						<textarea name="val[gateway_detail][{$aGateway.gateway_id}][{$sFormField}]" cols="50" rows="8">{if isset($aCustom.user_value)}{$aCustom.user_value|clean}{/if}</textarea>
+					{else}
+						<input type="text" name="val[gateway_detail][{$aGateway.gateway_id}][{$sFormField}]" value="{if isset($aCustom.user_value)}{$aCustom.user_value|clean}{/if}" size="40" />
+					{/if}
 					{if !empty($aCustom.phrase_info)}
 					<div class="extra_info">
 						{$aCustom.phrase_info}
@@ -194,7 +198,7 @@ defined('PHPFOX') or exit('NO DICE!');
 				<div class="clear"></div>
 			</div>			
 			{/foreach}			
-			<div class="separate"></div>
+			{if isset($aGateway.custom) && is_array($aGateway.custom) && count($aGateway.custom)}<div class="separate"></div>{/if}
 		{/foreach}		
 
 		<div class="table_clear">

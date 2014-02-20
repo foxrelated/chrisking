@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox
- * @version 		$Id: add.html.php 4504 2012-07-11 15:08:44Z Raymond_Benc $
+ * @version 		$Id: add.html.php 6934 2013-11-22 14:26:35Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -21,8 +21,8 @@ defined('PHPFOX') or exit('NO DICE!');
 <div id="js_photo_form_holder">
 	<form method="post" action="{url link='photo.frame'}" id="js_photo_form" enctype="multipart/form-data" target="js_upload_frame" onsubmit="return startProcess(true, true);">
 		
-	{if $sModule}
-		<div><input type="hidden" name="val[callback_module]" value="{$sModule}" /></div>
+	{if $sModuleContainer}
+		<div><input type="hidden" name="val[callback_module]" value="{$sModuleContainer}" /></div>
 	{/if}
 	{if $iItem}
 		<div><input type="hidden" name="val[callback_item_id]" value="{$iItem}" /></div>
@@ -44,12 +44,12 @@ defined('PHPFOX') or exit('NO DICE!');
 									<option value="{$aAlbum.album_id}"{if $iAlbumId == $aAlbum.album_id} selected="selected"{/if}>{$aAlbum.name|clean}</option>
 								{/foreach}
 						</select>
-					</span>&nbsp;(<a href="#" onclick="$Core.box('photo.newAlbum', 500, 'module={$sModule}&amp;item={$iItem}'); return false;">{phrase var='photo.create_a_new_photo_album'}</a>)
+					</span>&nbsp;(<a href="#" onclick="$Core.box('photo.newAlbum', 500, 'module={$sModuleContainer}&amp;item={$iItem}'); return false;">{phrase var='photo.create_a_new_photo_album'}</a>)
 				</div>
 			</div>		
 		{/if}		
 		
-		{if !$sModule && Phpfox::getParam('photo.allow_photo_category_selection') && Phpfox::getService('photo.category')->hasCategories()}
+		{if !$sModuleContainer && Phpfox::getParam('photo.allow_photo_category_selection') && Phpfox::getService('photo.category')->hasCategories()}
 		<div class="table">
 			<div class="table_left">
 				<label for="category">{phrase var='photo.category'}:</label>
@@ -61,7 +61,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		{/if}
 		
 		<div id="js_photo_privacy_holder" {if $iAlbumId} style="display:none;"{/if}>
-			{if $sModule}
+			{if $sModuleContainer}
 			<div><input type="hidden" id="privacy" name="val[privacy]" value="0" /></div>
 			<div><input type="hidden" id="privacy_comment" name="val[privacy_comment]" value="0" /></div>
 			{else}
@@ -115,7 +115,7 @@ defined('PHPFOX') or exit('NO DICE!');
 					{phrase var='photo.select_photo_s'}:
 				</div>
 				<div class="table_right">
-					<div id="js_photo_upload_input"></div>		
+					<div id="js_photo_upload_input"></div>
 					
 					<div class="extra_info">
 						{phrase var='photo.you_can_upload_a_jpg_gif_or_png_file'}
@@ -126,16 +126,21 @@ defined('PHPFOX') or exit('NO DICE!');
 					</div>
 				</div>
 			</div>
-			
 			{if isset($bRawFileInput) && $bRawFileInput}
 				<input type="button" name="Filedata" id="Filedata" value="Choose photo">
 			{else}		
-			<div class="table_clear">
-				<input type="submit" value="{phrase var='photo.upload'}" class="button" />
-			</div>		
+				<div class="table_clear js_upload_button_link">
+					<input type="submit" value="{phrase var='photo.upload'}" class="button" />
+				</div>		
 			{/if}			
 		{/if}		
 		
 	</form>
+</div>
+<div id="js_photo_form_holder_loading" class="t_center" style="display:none;">
+	<span style="margin-left:4px; margin-right:4px; font-size:9pt; font-weight:normal;">
+		{img theme='ajax/large.gif' alt='' class='v_middle'}
+		{phrase var='core.uploading'}
+	</span>
 </div>
 {/if}

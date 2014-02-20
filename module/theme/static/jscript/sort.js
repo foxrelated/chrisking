@@ -1,5 +1,33 @@
 
 var oCacheImageBlocks = {};
+
+function makeSortable( sSelector, sConnectWith )
+{
+	$(sSelector).sortable({		
+			items: '.js_sortable',
+			update: function(element, ui)
+			{			
+				if (function_exists('designOnUpdate'))
+				{
+					designOnUpdate();
+				}
+			},
+			start: function(element, ui)
+			{			
+				$('.js_temp_place_holder').removeClass('js_temp_place_holder_hide').addClass('js_sort_holder_active');
+				$(ui.item).attr('id', 'clone_' + $(ui.item).attr('id'));
+			},
+			opacity: 0.4,
+			helper: 'clone',
+			handle: '.js_sortable_header',
+			placeholder: 'js_sort_holder',
+			cursor: 'move',
+			axis: (oCore['core.can_move_on_a_y_and_x_axis'] ? false : 'y'),
+			connectWith: sConnectWith
+		}
+	);	
+}
+
 $Behavior.sortBlocks = function()
 {	
 	$('.js_sortable_header').each(function()
@@ -48,35 +76,16 @@ $Behavior.sortBlocks = function()
 		$(this).find('.js_edit_header_hover').hide();
 	});	
 	
-	$('body').sortable({		
-			items: '.js_sortable',
-			create : function()
-			{
-				
-			},
-			update: function(element, ui)
-			{			
-				if (function_exists('designOnUpdate'))
-				{
-					designOnUpdate();
-				}
-				
-				// $('.js_temp_place_holder').addClass('js_temp_place_holder_hide').removeClass('js_sort_holder_active');
-			},		
-			start: function(element, ui)
-			{			
-				$('.js_temp_place_holder').removeClass('js_temp_place_holder_hide').addClass('js_sort_holder_active');
-				
-				$(ui.item).attr('id', 'clone_' + $(ui.item).attr('id'));
-			},			
-			opacity: 0.4,
-			helper: 'clone',
-			handle: '.js_sortable_header',
-			placeholder: 'js_sort_holder',
-			cursor: 'move',
-			axis: (oCore['core.can_move_on_a_y_and_x_axis'] ? false : 'y')
-		}
-	);	
+	if (typeof oCore['profile.user_id'] != 'undefined' && oCore['profile.user_id'] > 0 && oCore['core.can_move_on_a_y_and_x_axis'] != true)
+	{
+		makeSortable('#left', '#left');
+		makeSortable('#right', '#right');
+		makeSortable('#content', '#content');
+	}
+	else
+	{
+		makeSortable('body', '');
+	}
 	
 	$('.js_temp_place_holder').remove();
 	$('.js_content_parent').each(function()

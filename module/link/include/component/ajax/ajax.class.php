@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Ajax
- * @version 		$Id: ajax.class.php 3533 2011-11-21 14:07:21Z Raymond_Benc $
+ * @version 		$Id: ajax.class.php 6498 2013-08-23 12:08:24Z Fern $
  */
 class Link_Component_Ajax_Ajax extends Phpfox_Ajax
 {
@@ -45,6 +45,18 @@ class Link_Component_Ajax_Ajax extends Phpfox_Ajax
 			$aCallback = Phpfox::callback($aVals['callback_module'] . '.addLink', $aVals);	
 		}		
 		
+                if(!empty($aCallback) && $aCallback['module'] == 'pages')
+                {
+                    $aPage = Phpfox::getService('pages')->getForView($aCallback['item_id']);
+                    if (isset($aPage['use_timeline']) && $aPage['use_timeline'])
+                    {
+			if (!defined('PAGE_TIME_LINE'))
+			{
+				define('PAGE_TIME_LINE', true);
+			}
+                    }
+                }
+                
 		if (($iId = Phpfox::getService('link.process')->add($aVals, false, $aCallback)))
 		{
 			(($sPlugin = Phpfox_Plugin::get('link.component_ajax_addviastatusupdate')) ? eval($sPlugin) : false);
@@ -88,6 +100,8 @@ class Link_Component_Ajax_Ajax extends Phpfox_Ajax
 		Phpfox::isUser(true);
 		
 		Phpfox::getService('link.process')->delete($this->get('id'));
+                
+                $this->call("$('.extra_info').show();");
 	}
 }
 

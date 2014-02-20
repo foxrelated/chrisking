@@ -285,8 +285,8 @@ class Apps_Service_Process extends Phpfox_Service
 				->where('app_id = ' . $aApp['app_id'])
 				->execute('getSlaveField');
 		
-		Phpfox::getService('pages.process')->delete($iPageId);
-		return true;
+		return Phpfox::getService('pages.process')->delete($iPageId);
+		
 	}
 	/**
 	 * Manages deleting an app, it stops at the first error.
@@ -345,17 +345,29 @@ class Apps_Service_Process extends Phpfox_Service
 		
 		$oParse = Phpfox::getLib('parse.input');
 		
-		$sUrl = rtrim($oParse->clean($aVals['app_url']), '/') . '/';
-		
-		if (!preg_match('/^(http|https):\/\/(.*)$/i', $sUrl))
+		$sUrl = null;
+		if (!empty($aVals['app_url']))
 		{
-			return Phpfox_Error::set(Phpfox::getPhrase('apps.please_provide_a_valid_url'));
+			$sUrl = rtrim($oParse->clean($aVals['app_url']), '/') . '/';
+			
+			if (!preg_match('/^(http|https):\/\/(.*)$/i', $sUrl))
+			{
+				return Phpfox_Error::set(Phpfox::getPhrase('apps.please_provide_a_valid_url'));
+			}
+		}
+		
+		$sReturnUrl = true;
+		if (!empty($aVals['return_url']) && strlen($aVals['return_url']) > 0)
+		{
+			$sReturnUrl = rtrim($oParse->clean($aVals['return_url']), '/') . '/';
 		}
 		
 		$this->database()->update(Phpfox::getT('app'), array(
 			'app_title' => $oParse->clean($aVals['title']),
 			'app_description' => $oParse->clean($aVals['description']),
-			'app_url' => $sUrl
+			'app_url' => $sUrl,
+			'return_url' => ($sReturnUrl !== true ? $sReturnUrl : ''),
+			'is_ext' => (isset($aVals['is_ext']) ? (int) $aVals['is_ext'] : '0')
 		), 'app_id = ' . $aApp['app_id']);
 		
 		if (!empty($_FILES['image']['name']))
@@ -371,11 +383,21 @@ class Apps_Service_Process extends Phpfox_Service
 			// Create thumbnail						
 			$oImage->createThumbnail(Phpfox::getParam('app.dir_image') . sprintf($sFileName, ''), Phpfox::getParam('app.dir_image') . sprintf($sFileName, '_200'), 200, 200);
 			
-			$iSize = 50;
-			$oImage->createThumbnail(Phpfox::getParam('app.dir_image') . sprintf($sFileName, ''), Phpfox::getParam('app.dir_image') . sprintf($sFileName, '_' . $iSize), $iSize, $iSize);
-			$oImage->createThumbnail(Phpfox::getParam('app.dir_image') . sprintf($sFileName . '', ''), Phpfox::getParam('app.dir_image') . sprintf($sFileName, '_square'), $iSize, $iSize, false);
+			// $iSize = 50;
+			$aSizes = array(50, 120);
+			foreach ($aSizes as $iSize)
+			{
+				$oImage->createThumbnail(Phpfox::getParam('app.dir_image') . sprintf($sFileName, ''), Phpfox::getParam('app.dir_image') . sprintf($sFileName, '_' . $iSize), $iSize, $iSize);
+				$oImage->createThumbnail(Phpfox::getParam('app.dir_image') . sprintf($sFileName . '', ''), Phpfox::getParam('app.dir_image') . sprintf($sFileName, '_square'), $iSize, $iSize, false);
+			}
+			
 			// update the image from the database
 			$this->database()->update(Phpfox::getT('app'), array('image_path' => $sFileName), 'app_id = ' . $aApp['app_id']);
+			
+			if (Phpfox::isModule('pages'))
+			{
+				$this->database()->update(Phpfox::getT('pages'), array('image_path' => $sFileName), 'app_id = ' . $aApp['app_id']);
+			}
 			
 			// now we can delete the old image
 			if (!empty($aApp['image_path']))

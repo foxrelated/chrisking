@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Language
- * @version 		$Id: phrase.class.php 4517 2012-07-18 09:36:40Z Miguel_Espinoza $
+ * @version 		$Id: phrase.class.php 5538 2013-03-25 13:20:22Z Miguel_Espinoza $
  */
 class Language_Component_Controller_Admincp_Phrase_Phrase extends Phpfox_Component 
 {
@@ -177,7 +177,7 @@ class Language_Component_Controller_Admincp_Phrase_Phrase extends Phpfox_Compone
 		{
 			$bIsForceLanguagePackage = true;
 			$oSearch->setCondition('AND lp.language_id = \'' . Phpfox::getLib('database')->escape($iLangId) . '\'');
-			$this->template()->setHeader('<script type="text/javascript">$(function(){ $(\'#js_language_id\').val(\'' . $iLangId. '\'); });</script>');
+			$this->template()->setHeader('<script type="text/javascript">$Behavior.language_admincp_phrase = function(){ $(\'#js_language_id\').val(\'' . $iLangId. '\'); };</script>');
 		}
 		
 		if (empty($iLangId) && ($iLangId = $oSearch->get('language_id')))

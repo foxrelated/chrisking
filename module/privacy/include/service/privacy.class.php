@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Privacy
- * @version 		$Id: privacy.class.php 5051 2012-11-28 12:40:24Z Raymond_Benc $
+ * @version 		$Id: privacy.class.php 6872 2013-11-11 16:30:16Z Fern $
  */
 class Privacy_Service_Privacy extends Phpfox_Service 
 {
@@ -183,6 +183,8 @@ class Privacy_Service_Privacy extends Phpfox_Service
 				break;
 		}
 		
+		(($sPlugin = Phpfox_Plugin::get('privacy.service_privacy_getphrase')) ? eval($sPlugin) : '');
+		
 		return $sPhrase;
 	}
 	
@@ -195,6 +197,16 @@ class Privacy_Service_Privacy extends Phpfox_Service
 		if (Phpfox::getUserParam('core.can_view_private_items'))
 		{
 			$oObject->getQueryJoins($bIsCount, true);
+			
+			// http://www.phpfox.com/tracker/view/14708/
+			if(!$bIsCount && isset($aCond['join']) && !empty($aCond['join']))
+			{
+				$this->database()->leftjoin(
+					$aCond['join']['table'], 
+					$aCond['join']['alias'], 
+					$aCond['join']['alias'] . "." . $aCond['join']['field'] . ' = ' . $aCond['alias'] . "." . $aCond['field']
+				);
+			}
 					
 			$this->database()->select(($bIsCount ? (isset($aCond['distinct']) ? 'COUNT(DISTINCT ' . $aCond['distinct'] . ')' : 'COUNT(*)') : $aCond['alias'] . '.*'))
 				->from($aCond['table'], $aCond['alias'])

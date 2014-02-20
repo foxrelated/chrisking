@@ -37,20 +37,20 @@ $Core.templateEditor =
 	
 	checkIfAnyOpen: function(sId)
 	{
-				$('#' + sId).remove();
-				
-				var iCnt = 0;
-				$('.js_append_theme_layer').each(function()
-				{
-					iCnt++;
-				});
-				
-				if (iCnt === 0)
-				{
-					$('#js_template_content_loader').show();
-				}
+		$('#' + sId).remove();
+		
+		var iCnt = 0;
+		$('.js_append_theme_layer').each(function()
+		{
+			iCnt++;
+		});
+		
+		if (iCnt === 0)
+		{
+			$('#js_template_content_loader').show();
+		}
 	}	
-}
+};
 
 $Behavior.templateEditor = function()
 {
@@ -101,13 +101,13 @@ $Behavior.templateEditor = function()
 		
 		return false;
 	});
-}
+};
 
-$(function()
+$Behavior.theme_template_set_dimension = function()
 {
 	$('#js_template_content').width(($('#content_editor_text').width() - 25));
 	$('#js_template_content').height(($('#content_editor_menu').height() - 75));
 	
 	$('#js_template_content_loader').width($('#content_editor_text').width());
 	$('#js_template_content_loader').height(($('#content_editor_text').height()));	
-});
+};

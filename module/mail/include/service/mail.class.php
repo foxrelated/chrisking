@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Mail
- * @version 		$Id: mail.class.php 4966 2012-10-30 09:48:20Z Raymond_Benc $
+ * @version 		$Id: mail.class.php 7047 2014-01-16 13:28:17Z Fern $
  */
 class Mail_Service_Mail extends Phpfox_Service
 {
@@ -187,6 +187,7 @@ class Mail_Service_Mail extends Phpfox_Service
 						->from(Phpfox::getT('mail_thread_text'), 'mt')
 						->join(Phpfox::getT('mail_thread_user'), 'th', 'th.user_id = mt.user_id')	
 						->join(Phpfox::getT('mail_thread'), 't', 't.thread_id = mt.thread_id')
+						->join(Phpfox::getT('user'), 'u', 'u.user_id = mt.user_id')
 						// ->join(Phpfox::getT('mail_thread_text'), 'tt', 'tt.message_id = t.last_id')					
 						->limit($iPage, $iLimit, $iCnt)
 						->order('t.time_stamp DESC')
@@ -197,7 +198,8 @@ class Mail_Service_Mail extends Phpfox_Service
 					$aRows = $this->database()->select('th.*, tt.text AS preview, tt.time_stamp, tt.user_id AS last_user_id')
 						->from(Phpfox::getT('mail_thread_user'), 'th')	
 						->join(Phpfox::getT('mail_thread'), 't', 't.thread_id = th.thread_id')
-						->join(Phpfox::getT('mail_thread_text'), 'tt', 'tt.message_id = t.last_id')					
+						->join(Phpfox::getT('mail_thread_text'), 'tt', 'tt.message_id = t.last_id')
+						->join(Phpfox::getT('user'), 'u', 'u.user_id = tt.user_id')
 						->limit($iPage, $iLimit, $iCnt)
 						->order('t.time_stamp DESC')
 						->execute('getSlaveRows');
@@ -218,7 +220,7 @@ class Mail_Service_Mail extends Phpfox_Service
 						->join(Phpfox::getT('user'), 'u', 'u.user_id = th.user_id')						
 						->where('th.thread_id = ' . (int) $aRow['thread_id'])
 						->execute('getSlaveRows');
-					
+
 					$iUserCnt = 0;
 					foreach ($aRows[$iKey]['users'] as $iUserKey => $aUser)
 					{
@@ -252,6 +254,11 @@ class Mail_Service_Mail extends Phpfox_Service
 						{
 							$aRows[$iKey]['users_is_read'][] = $aUser;
 						}
+					}
+
+					if (!$iUserCnt)
+					{
+						unset($aRows[$iKey]);
 					}
 				}
 			}
@@ -305,7 +312,16 @@ class Mail_Service_Mail extends Phpfox_Service
 			->where('viewer_user_id = ' . (int)$iUser . ' AND viewer_type_id != 1 AND viewer_type_id != 3')
 			->execute('getSlaveField');
 		$iAllowed = Phpfox::getUserParam('mail.mail_box_limit');
-		return ceil(($iUsed / $iAllowed) * 100);
+		// http://www.phpfox.com/tracker/view/15014/
+		if(empty($iAllowed))
+		{
+			$iPercent = 0;
+		}
+		else
+		{
+			$iPercent = ceil(($iUsed / $iAllowed) * 100);
+		}
+		return $iPercent;
 	}
 
 	/**
@@ -473,6 +489,7 @@ class Mail_Service_Mail extends Phpfox_Service
 				->from(Phpfox::getT('mail_thread_user'), 'th')	
 				->join(Phpfox::getT('mail_thread'), 't', 't.thread_id = th.thread_id')
 				->join(Phpfox::getT('mail_thread_text'), 'tt', 'tt.message_id = t.last_id')					
+				->join(Phpfox::getT('user'), 'u', 'u.user_id = tt.user_id')
 				->where('th.user_id = ' . (int) Phpfox::getUserId() . ' AND th.is_archive = 0 AND th.is_sent_update = 0')
 				->limit(5)
 				->order('t.time_stamp DESC')
@@ -574,16 +591,17 @@ class Mail_Service_Mail extends Phpfox_Service
 			if (strpos($sCond, 'SENDER=') !== false)
 			{				
 				$bJoinSender = true;
-				$aConds[$iKey] = 'AND sender.user_name = "' . Phpfox::getLib('parse.input')->clean(str_replace('SENDER=','',$sCond)) . '"';
+				$aConds[$iKey] = 'AND sender.user_name = "' . Phpfox::getLib('parse.input')->clean(str_replace(array('SENDER=', "'"),'',$sCond)) . '"';
 			}
 			if (strpos($sCond, 'RECEIVER=') !== false)
 			{				
-				$aConds[$iKey] = 'AND receiver.user_name = "' . Phpfox::getLib('parse.input')->clean(str_replace('RECEIVER=','',$sCond)) . '"';
+				$aConds[$iKey] = 'AND receiver.user_name = "' . Phpfox::getLib('parse.input')->clean(str_replace(array('RECEIVER=', "'"),'',$sCond)) . '"';
 				$this->database()->join(Phpfox::getT('user'), 'receiver', 'receiver.user_id = m.viewer_user_id');
 			}
 		}
 		
 		$aConds = array_merge(array('m.owner_user_id != 0'), $aConds);
+		
 		if ($bJoinSender)
 		{
 			$this->database()->join(Phpfox::getT('user'), 'sender', 'sender.user_id = m.owner_user_id');
@@ -610,6 +628,7 @@ class Mail_Service_Mail extends Phpfox_Service
 		
 		$iCnt = $this->database()->execute('getSlaveField');
 
+		
 		if ($iCnt > 0)
 		{
 			if (is_int($iLimit) && $iLimit > 0 )
@@ -692,6 +711,7 @@ class Mail_Service_Mail extends Phpfox_Service
 	
 	public function buildMenu()
 	{
+		// Add a hook with return here
 		if (Phpfox::getParam('mail.show_core_mail_folders_item_count') && Phpfox::getUserParam('mail.show_core_mail_folders_item_count'))
 		{
 			$aCountFolders = Phpfox::getService('mail')->getDefaultFoldersCount(Phpfox::getUserId());

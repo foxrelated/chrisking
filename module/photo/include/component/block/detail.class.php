@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: detail.class.php 4854 2012-10-09 05:20:40Z Raymond_Benc $
+ * @version 		$Id: detail.class.php 5857 2013-05-10 08:05:37Z Raymond_Benc $
  */
 class Photo_Component_Block_Detail extends Phpfox_Component
 {
@@ -45,12 +45,12 @@ class Photo_Component_Block_Detail extends Phpfox_Component
 		}
 		
 		$aInfo = array(
-			Phpfox::getPhrase('photo.added') => Phpfox::getTime(Phpfox::getParam('photo.photo_image_details_time_stamp'), $aPhoto['time_stamp']),
+			Phpfox::getPhrase('photo.added') => '<span itemprop="dateCreated">' . Phpfox::getTime(Phpfox::getParam('photo.photo_image_details_time_stamp'), $aPhoto['time_stamp']) . '</span>',
 			Phpfox::getPhrase('photo.category') => $sCategories,
 			Phpfox::getPhrase('photo.file_size') => Phpfox::getLib('file')->filesize($aPhoto['file_size']),
 			Phpfox::getPhrase('photo.resolution') => $aPhoto['width'] . '×' . $aPhoto['height'],
 			Phpfox::getPhrase('photo.comments') => $aPhoto['total_comment'],
-			Phpfox::getPhrase('photo.views') => $aPhoto['total_view'],
+			Phpfox::getPhrase('photo.views') => '<span itemprop="interactionCount">' . $aPhoto['total_view'] . '</span>',
 			Phpfox::getPhrase('photo.rating') => round($aPhoto['total_rating']),
 			Phpfox::getPhrase('photo.battle_wins') => round($aPhoto['total_battle']),
 			Phpfox::getPhrase('photo.downloads') => $aPhoto['total_download']
@@ -90,7 +90,8 @@ class Photo_Component_Block_Detail extends Phpfox_Component
 
 		$this->template()->clean(array(
 				'aPhotoDetails',
-				'sEmbedCode'
+				'sEmbedCode',
+				'sHeader'
 			)
 		);
 	}

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: core.class.php 3826 2011-12-16 12:30:19Z Raymond_Benc $
+ * @version 		$Id: core.class.php 6712 2013-10-02 15:13:38Z Miguel_Espinoza $
  */
 class Core_Service_Core extends Phpfox_Service 
 {
@@ -206,10 +206,49 @@ class Core_Service_Core extends Phpfox_Service
 		$aCallback = Phpfox::callback($sModule . '.getBlocks' . str_replace('-', '', implode('.', $aParts)));
 			
 		$aItems = array();
-		$aItemDatas = $this->database()->select('cache_id, is_hidden')
+		
+		$aCachedTables = array('user_design_order','pages_design_order', 'user_dashboard');
+		if (Phpfox::getParam('profile.cache_blocks_design') && in_array($aCallback['table'], $aCachedTables))
+		{
+			$sCacheTable = 'user_design';
+			$oCache = Phpfox::getLib('cache');
+			if ($aCallback['table'] == 'pages_design_order')
+			{
+				$sCacheTable = 'pages_design';
+			}
+			else if ($aCallback['table'] == 'user_dashboard')
+			{
+				$sCacheTable = 'user_dashboard';
+			}
+			$sCacheId = $oCache->set(array($sCacheTable, $iItemId));
+			
+			if ( ($aCache = $oCache->get($sCacheId)))
+			{
+				if (!is_array($aCache))
+				{
+					$aCache = array();
+				}
+				$aItemDatas = array();
+				foreach ($aCache as $aRow)
+				{
+					if (isset($aRow[$aCallback['field']]) && $aRow[$aCallback['field']] == $iItemId)
+					{
+						$aItemDatas[] = $aRow;
+					}
+				}
+			}	
+		}
+		
+		if (!isset($aItemDatas))
+		{
+			$aItemDatas = $this->database()->select('cache_id, is_hidden')
 			->from(Phpfox::getT($aCallback['table']))
 			->where($aCallback['field'] . ' = ' . (int) $iItemId)
 			->execute('getSlaveRows');
+			// We dont cache this one because this query does not include all the fields
+			// This caching occurs in the module library instead
+		}
+		
 		foreach ($aItemDatas as $aItemData)
 		{
 			$aItems[$aItemData['cache_id']] = $aItemData;
@@ -400,7 +439,7 @@ class Core_Service_Core extends Phpfox_Service
 		$aResults = array();		
 		if (Phpfox::getParam('core.ip_infodb_api_key') != '')
 		{	
-			$sUrl = 'http://api.ipinfodb.com/v2/ip_query.php?ip=' . $sSearch . '&key=' . Phpfox::getParam('core.ip_infodb_api_key');
+			$sUrl = 'http://api.ipinfodb.com/v3/ip-city/?ip=' . $sSearch . '&key=' . Phpfox::getParam('core.ip_infodb_api_key').'&format=xml';
 			if (function_exists('file_get_contents') && ini_get('allow_url_fopen'))
 			{
 				$sXML = file_get_contents($sUrl);
@@ -412,7 +451,7 @@ class Core_Service_Core extends Phpfox_Service
 			$aCallback = Phpfox::getLib('xml.parser')->parse($sXML, 'UTF-8');				
 			$aInfo = array(
 				Phpfox::getPhrase('admincp.host_address') => gethostbyaddr($sSearch),
-				Phpfox::getPhrase('admincp.country') => (isset($aCallback['CountryName']) ? $aCallback['CountryName'] : 'Unknown')
+				Phpfox::getPhrase('admincp.country') => (isset($aCallback['countryName']) ? $aCallback['countryName'] : 'Unknown')
 			);
 			
 			if (!empty($aCallback['City']))
@@ -553,21 +592,42 @@ class Core_Service_Core extends Phpfox_Service
 	 */
 	public function getHashForUpload()
 	{			
-		Phpfox::getLib('database')->delete(Phpfox::getT('upload_track'), 'user_id = ' . Phpfox::getUserId());
+        if (Phpfox::isUser())
+		{
+            Phpfox::getLib('database')->delete(Phpfox::getT('upload_track'), 'user_id = ' . Phpfox::getUserId());
+        }
 		$sHash = md5(uniqid() . Phpfox::getUserBy('email') . uniqid() . Phpfox::getUserBy('password_salt'));
 	
-		/*
-		$hFile = fopen(PHPFOX_DIR_FILE . 'create.log', 'a+');
-		fwrite($hFile, $sHash . "\n");
-		fclose($hFile);		
-		*/
-		
+		$aCookieNames = Phpfox::getService('user.auth')->getCookieNames();
+		Phpfox::getLib('session')->set('flashuploadhash', Phpfox::getCookie($aCookieNames[1]));
+
+		$sCacheId = $this->cache()->set(array('uagent', $sHash));
+		$this->cache()->remove($sCacheId);
+		$this->cache()->save($sCacheId, $_SERVER['HTTP_USER_AGENT']);
+
 		Phpfox::getLib('database')->insert(Phpfox::getT('upload_track'), array(
 			'user_id' => Phpfox::getUserId(),
 			'hash' => $sHash,
-			'user_hash' => Phpfox::getLib('parse.input')->clean(Phpfox::getCookie('user_hash')),
+			'user_hash' => Phpfox::getLib('parse.input')->clean(Phpfox::getCookie($aCookieNames[1])),
 			'ip_address' => $_SERVER['REMOTE_ADDR']
 				));
+		return $sHash;
+	}
+
+	/* This function is used to get the hash for an image in the Spam Questions feature */
+	public function getHashForImage($sUrl)
+	{
+		$sHash = md5(rand(100,999) . $sUrl . rand(100,999));
+		$this->database()->insert(Phpfox::getT('upload_track'), array(
+			'hash' => $sUrl,
+			'user_hash' => $sHash,
+			'time_stamp' => PHPFOX_TIME,
+			'ip_address' => $_SERVER['REMOTE_ADDR']
+		));
+		
+		// Delete tracks from last 15 minutes to avoid 
+		$this->database()->delete(Phpfox::getT('upload_track'), 'time_stamp < ' . (PHPFOX_TIME - (60*15)));
+		
 		return $sHash;
 	}
 
@@ -653,6 +713,12 @@ class Core_Service_Core extends Phpfox_Service
 		
 		return $sPrivacy;
 	}	
+	
+	/* This function scrambles a url
+	public function scrambleUrl($sUrl)
+	{
+		
+	}
 	
 	/**
 	 * If a call is made to an unknown method attempt to connect

@@ -5,14 +5,13 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: template.html.php 4872 2012-10-10 06:36:53Z Raymond_Benc $
+ * @version 		$Id: template.html.php 6620 2013-09-11 12:10:20Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
 
 ?>{if !PHPFOX_IS_AJAX_PAGE}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" dir="{$sLocaleDirection}" lang="{$sLocaleCode}">
 	<head>
 		<title>{title}</title>	
@@ -38,10 +37,10 @@ defined('PHPFOX') or exit('NO DICE!');
 							{/if}
 							<div id="header_menu_holder">
 								{if Phpfox::isUser()}
-								{menu_account}
-								<div class="clear"></div>	
-								{else}
-								{module name='user.login-header'}
+                                    {menu_account}
+                                    <div class="clear"></div>	
+                                {else}
+                                    {module name='user.login-header'}
 								{/if}							
 							</div>							
 							{if Phpfox::isUser() && !Phpfox::getUserBy('profile_page_id') && Phpfox::isModule('search')}
@@ -68,8 +67,10 @@ defined('PHPFOX') or exit('NO DICE!');
 			{else}
 			<div id="header_menu_page_holder">	
 				<div class="holder">
-					<div id="header_menu">				
-						{menu}
+					<div id="header_menu">	
+						<nav>			
+							{menu}
+						</nav>
 						<div class="clear"></div>
 					</div>		
 				</div>			
@@ -86,9 +87,9 @@ defined('PHPFOX') or exit('NO DICE!');
 				<div {holder_name}>		
 					<div {is_page_view} class="holder">	
 						
-						{module name='profile.logo'}
+						{module name='profile.logo'}						
 						
-						<div id="content_holder">		
+						<div id="content_holder"{if isset($sMicroPropType)} itemscope itemtype="http://schema.org/{$sMicroPropType}"{/if}>		
 							{block location='13'}
 							{block location='7'}				
 							{if !defined('PHPFOX_IS_USER_PROFILE') && !defined('PHPFOX_IS_PAGES_VIEW')}
@@ -97,7 +98,7 @@ defined('PHPFOX') or exit('NO DICE!');
 							{/if}
 
 							{if !$bUseFullSite && (count($aBlocks1) || count($aAdBlocks1)) || (isset($aFilterMenus) && is_array($aFilterMenus) && count($aFilterMenus))}					
-							<div id="left">
+							<div id="left" class="content_column">
 								{menu_sub}
 								{block location='1'}
 							</div>					
@@ -109,12 +110,13 @@ defined('PHPFOX') or exit('NO DICE!');
 								{/if}
 								<div id="main_content_padding">
 
-									{if defined('PHPFOX_IS_USER_PROFILE')}
-									{module name='profile.header'}							
+									{if defined('PHPFOX_IS_USER_PROFILE') || defined('PHPFOX_IS_PAGES_VIEW') || (isset($aPage) && isset($aPage.use_timeline) && $aPage.use_timeline)}
+									    {if $bLoadedProfileHeader = true}{/if}
+									    {module name='profile.header'}
 									{/if}
-									{if defined('PHPFOX_IS_PAGES_VIEW')}
-									{block location='12'}
-									{module name='pages.header'}							
+									{if defined('PHPFOX_IS_PAGES_VIEW') && !isset($bLoadedProfileHeader)}
+									    {block location='12'}
+									    {module name='pages.header'}
 									{/if}							
 
 									<div id="content_load_data">
@@ -123,7 +125,7 @@ defined('PHPFOX') or exit('NO DICE!');
 										{/if}								
 
 										{if isset($aBreadCrumbTitle) && count($aBreadCrumbTitle)}
-										<h1><a href="{$aBreadCrumbTitle[1]}">{$aBreadCrumbTitle[0]|clean|split:30}</a></h1>
+										<h1{if isset($sMicroPropType)} itemprop="name"{/if}><a href="{$aBreadCrumbTitle[1]}"{if isset($sMicroPropType)} itemprop="url"{/if}>{$aBreadCrumbTitle[0]|clean|split:30}</a></h1>
 										{/if}
 
 										<div id="content" {content_class}>
@@ -134,7 +136,7 @@ defined('PHPFOX') or exit('NO DICE!');
 										</div>
 
 										{if !$bUseFullSite && (count($aBlocks3) || count($aAdBlocks3))}
-										<div id="right">								
+										<div id="right" class="content_column">								
 											{block location='3'}
 										</div>
 										{/if}
@@ -152,18 +154,23 @@ defined('PHPFOX') or exit('NO DICE!');
 			</div>		
 			<div id="main_footer_holder">
 				<div class="holder">
-					<div id="footer">		
-						{menu_footer}					
-						<div id="copyright">
-							{copyright}
-						</div>
-						<div class="clear"></div>				
-						{block location='5'}
+					<div id="footer">
+						<footer>		
+							<nav>
+								{menu_footer}
+							</nav>					
+							<div id="copyright">
+								{copyright}
+							</div>
+							<div class="clear"></div>				
+							{block location='5'}
+						</footer>
 					</div>				
 				</div>			
-			</div>		
-			{footer}		
-		</div>
-	</body>
+			</div>
+                        
+                        {footer}		
+		</div>        
+    </body>
 </html>
 {/if}

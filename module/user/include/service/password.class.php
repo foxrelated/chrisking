@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: password.class.php 4085 2012-04-03 11:23:54Z Miguel_Espinoza $
+ * @version 		$Id: password.class.php 5382 2013-02-18 09:48:39Z Miguel_Espinoza $
  */
 class User_Service_Password extends Phpfox_Service
 {	
@@ -100,14 +100,18 @@ class User_Service_Password extends Phpfox_Service
 	
 	public function verifyRequest($sId)
 	{
+        $sSelect = 'r.*, u.email, u.full_name';
+        $sWhere = 'r.request_id = \'' . $this->database()->escape($sId) . '\'';
+        $sJoin = 'u.user_id = r.user_id';
+        
 		if ($sPlugin = Phpfox_Plugin::get('user.service_password_verifyrequest_start'))
 		{
 			eval($sPlugin);
 		}
-		$aRequest = $this->database()->select('r.*, u.email, u.full_name')
+		$aRequest = $this->database()->select($sSelect)
 			->from(Phpfox::getT('password_request'), 'r')
-			->join($this->_sTable, 'u', 'u.user_id = r.user_id')
-			->where('r.request_id = \'' . $this->database()->escape($sId) . '\'')
+			->join($this->_sTable, 'u', $sJoin)
+			->where($sWhere)
 			->execute('getRow');
 
 		(($sPlugin = Phpfox_Plugin::get('user.service_password_verifyrequest_2')) ? eval($sPlugin) : false);

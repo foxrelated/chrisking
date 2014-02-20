@@ -83,6 +83,18 @@ defined('PHPFOX') or exit('NO DICE!');
 				<textarea cols="40" rows="6" name="val[description]">{value type='textarea' id='app_description'}</textarea>
 			</div>
 		</div>		
+		
+		<div class="table">
+			<div class="table_left">
+				{phrase var='apps.will_your_app_be_on_this_site'}
+			</div>
+			<div class="table_right">				
+				<div class="item_is_active_holder">		
+					<span class="js_item_active item_is_active"><input type="radio" name="val[is_ext]" value="0" class="v_middle"{value type='radio' id='is_ext' default='0' selected='true'}/> {phrase var='apps.yes'}</span>
+					<span class="js_item_active item_is_not_active"><input type="radio" name="val[is_ext]" value="1" class="v_middle"{value type='radio' id='is_ext' default='1'}/> {phrase var='apps.no'}</span>
+				</div>	
+			</div>
+		</div>			
 
 	</div>
 
@@ -103,15 +115,27 @@ defined('PHPFOX') or exit('NO DICE!');
 	<div id="js_apps_block_url" class="js_apps_block page_section_menu_holder">
 		<div class="table">
 			<div class="table_left">
-				{phrase var='apps.call_home_url'}:
+				{phrase var='apps.frame_url'}:
 			</div>
 			<div class="table_right">
 				<input type="text" name="val[app_url]" value="{value type='input' id='app_url'}" size="80" />
 				<div class="extra_info">
-					This is the URL to your application.
+					{phrase var='apps.this_is_the_url_to_your_application'}
 				</div>	
 			</div>
 		</div>
+		
+		<div class="table">
+			<div class="table_left">
+				{phrase var='apps.return_url'}:
+			</div>
+			<div class="table_right">
+				<input type="text" name="val[return_url]" value="{value type='input' id='return_url'}" size="80" />
+				<div class="extra_info">
+					{phrase var='apps.if_your_app_is_not_on_this_site_you_need_to_provide_return_url_for_authentication'}
+				</div>	
+			</div>
+		</div>		
 	</div>
 	
 	<div class="table_clear">

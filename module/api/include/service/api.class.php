@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: api.class.php 3223 2011-10-06 12:56:24Z Miguel_Espinoza $
+ * @version 		$Id: api.class.php 5382 2013-02-18 09:48:39Z Miguel_Espinoza $
  */
 class Api_Service_Api extends Phpfox_Service 
 {
@@ -21,6 +21,9 @@ class Api_Service_Api extends Phpfox_Service
 	private $_aOutput = array();
 	private $_iTotal = 0;
 	private $_aOpenSSLConfig = array();
+	private $_oService = null;
+	private $_sMethod = '';
+	private $_sModule = '';
 	
 	/**
 	 * Class constructor
@@ -109,6 +112,8 @@ class Api_Service_Api extends Phpfox_Service
 
 		$pubKey = openssl_pkey_get_details($res);		
 		
+        if ($sPlugin = Phpfox_Plugin::get('api.service_api_createtoken_1')){eval($sPlugin);}
+        
 		$this->database()->delete(Phpfox::getT('app_access'), 'app_id = ' . $aApp['app_id'] . ' AND user_id = ' . $aApp['installed_user_id']);
 		$this->database()->insert(Phpfox::getT('app_access'), array(
 				'app_id' => $aApp['app_id'],
@@ -131,6 +136,8 @@ class Api_Service_Api extends Phpfox_Service
 			
 			return $this->_sendResponse();			
 		}		
+		
+		$_SERVER['HTTP_USER_AGENT'] = 'phpfox';
 		
 		$this->_aApi = $this->database()->select('a.*, aa.token_key, aa.token_private, ai.user_id AS target_user_id, u.user_group_id')
 			->from(Phpfox::getT('app_access'), 'aa')
@@ -160,14 +167,7 @@ class Api_Service_Api extends Phpfox_Service
 			
 			return $this->_sendResponse();
 		}		
-		/*
-		if ($this->_aApi['time_stamp'] >= (PHPFOX_TIME - Phpfox::getParam('apps.token_keep_alive')))
-		{
-			$this->error('api.token_time_out', 'Token has timed out. Please create a new token.');	
-			
-			return $this->_sendResponse();			
-		}
-		*/
+
 		if ($this->get('method') == '')
 		{
 			$this->error('api.method_not_defined', 'Method not defined.');
@@ -185,6 +185,8 @@ class Api_Service_Api extends Phpfox_Service
 					
 		$sModule = $aParts[0];
 		$sMethod = $aParts[1];
+		$this->_sModule = $sModule;
+		$this->_sMethod = $sMethod;
 
 		if (!Phpfox::isModule($sModule))
 		{
@@ -200,22 +202,27 @@ class Api_Service_Api extends Phpfox_Service
 		// Used to skip passing params everywhere
 		define('PHPFOX_APP_ID', $this->_aApi['app_id']);		
 		
-		$oService = Phpfox::getService($sModule . '.api');
-		if (!method_exists($oService, $sMethod))
+		$this->_oService = Phpfox::getService($sModule . '.api');
+		if (!method_exists($this->_oService, $sMethod))
 		{
 			$this->error('api.method_not_valid_for_module', 'Method for this module does not exist.');
 			return $this->_sendResponse();
 		}
 				
-		$mOutput = $oService->$sMethod();
+		$mOutput = $this->_oService->$sMethod();
 		
 		if ($this->isPassed())
 		{
 			$this->_aOutput = $mOutput;
-			
+
 			return $this->_sendResponse();
 		}
-		
+
+		if (empty($this->_aOutput))
+		{
+			$this->_bError = true;
+			$this->_aOutput = array('error_message' => implode('', Phpfox_Error::get()));
+		}
 		$this->_aOutput = array_merge(array('error' => $this->_bError), $this->_aOutput);			
 		
 		return $this->_sendResponse();
@@ -269,6 +276,11 @@ class Api_Service_Api extends Phpfox_Service
 	
 	public function isPassed()
 	{
+		if (!Phpfox_Error::isPassed())
+		{
+			return false;
+		}
+		
 		return ($this->_bError ? false : true);
 	}
 	
@@ -277,23 +289,23 @@ class Api_Service_Api extends Phpfox_Service
 		$this->_bError = true;	
 		$this->_aOutput = array(
 			'error_id' => $iErrorId,
-			'error_message' => $sErrorMessage
+			'error_message' => (empty($sErrorMessage) ? implode('', Phpfox_Error::get()) : $sErrorMessage)
 		);
 		
 		return false;
 	}	
 	
 	private function _sendResponse()
-	{		
+	{	
 		$sOutput = json_encode(array(
-				'api' => array(
+				'api' => array(	
 					'total' => $this->_iTotal,
-					'pages' => Phpfox::getLib('pager')->getTotalPages(),
-					'current_page' => Phpfox::getLib('pager')->getCurrentPage()
+					'current_page' => $this->get('page')
 				),
 				'output' => $this->_aOutput
 			)
 		);	
+		if ($sPlugin = Phpfox_Plugin::get('api.service_api_sendresponse_1')){eval($sPlugin);}
 		echo $sOutput;		
 	}
 	

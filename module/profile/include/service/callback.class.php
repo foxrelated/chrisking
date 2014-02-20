@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Profile
- * @version 		$Id: callback.class.php 4003 2012-03-13 14:42:41Z Raymond_Benc $
+ * @version 		$Id: callback.class.php 5594 2013-03-28 14:36:07Z Miguel_Espinoza $
  */
 class Profile_Service_Callback extends Phpfox_Service 
 {
@@ -33,8 +33,33 @@ class Profile_Service_Callback extends Phpfox_Service
 		);
 	}	
 	
+	/**
+	 * Inserts a track record, i.e. when $iUserId visits $iId's profile
+	 */ 
 	public function addTrack($iId, $iUserId = null)
 	{
+		if (Phpfox::getParam('track.cache_allow_recurrent_visit') > 0)
+		{
+			// Get the cache!
+			$sCacheId = $this->cache()->set('profile_' . $iId);
+			if (!($aTracks = $this->cache()->get($sCacheId)))
+			{				
+			}
+			else
+			{
+				// Check every track record in cache
+				foreach ($aTracks as $aTrack)
+				{
+					// If its the user visiting this profile and it was added recently we dont add it anymore.
+					if ($aTrack['user_id'] == $iUserId && 
+						($aTrack['time_stamp'] >= (PHPFOX_TIME - (Phpfox::getParam('track.cache_allow_recurrent_visit') * 60)))
+						)
+					{
+						return true;
+					}
+				}
+			}
+		}
 		$this->database()->insert(Phpfox::getT('user_track'), array(
 				'item_id' => (int) $iId,
 				'user_id' => Phpfox::getUserBy('user_id'),
@@ -42,12 +67,16 @@ class Profile_Service_Callback extends Phpfox_Service
 			)
 		);
 	}
-	
+	/**
+	 * Gets the latest users to profile $iId filtering out $iUserId
+	 * @param $iId int The stalkee user
+	 * @param $iUserId int The stalker
+	 */ 
 	public function getLatestTrackUsers($iId, $iUserId)
 	{
-		$aRows = $this->database()->select(Phpfox::getUserField())
+		$aRows = $this->database()->select('track.time_stamp,'.Phpfox::getUserField())
 			->from(Phpfox::getT('user_track'), 'track')
-			->join(Phpfox::getT('user'), 'u', 'u.user_id = track.user_id')
+			->join(Phpfox::getT('user'), 'u', 'u.user_id = track.user_id AND u.profile_page_id = 0')
 			->where('track.item_id = ' . (int) $iId . ' AND track.user_id != ' . (int) $iUserId)
 			->order('track.time_stamp DESC')
 			->limit(0, 7)
@@ -203,6 +232,11 @@ class Profile_Service_Callback extends Phpfox_Service
 		Phpfox::getService('user.field.process')->updateCommentCounter($iId, true);
 	}		
 	
+    public function getActions()
+    {
+        return Phpfox::getService('user.callback')->getActions();
+    }
+    
 	public function getBlocksIndex()
 	{
 		return array(

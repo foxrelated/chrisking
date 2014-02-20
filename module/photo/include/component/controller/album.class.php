@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: album.class.php 4139 2012-05-02 09:50:43Z Miguel_Espinoza $
+ * @version 		$Id: album.class.php 7048 2014-01-16 13:43:09Z Fern $
  */
 class Photo_Component_Controller_Album extends Phpfox_Component
 {
@@ -110,7 +110,8 @@ class Photo_Component_Controller_Album extends Phpfox_Component
 							'server_id' => $aPhoto['server_id'],
 							'path' => 'photo.url_photo',
 							'file' => $aPhoto['destination'],
-							'suffix' => '_150',
+							//'suffix' => '_150',  http://www.phpfox.com/tracker/view/14924/
+							'suffix' => '_240',
 							'return_url' => true
 						)
 					)
@@ -167,10 +168,12 @@ class Photo_Component_Controller_Album extends Phpfox_Component
 					'photo.js' => 'module_photo',
 					'switch_legend.js' => 'static_script',
 					'switch_menu.js' => 'static_script',
+					'index.css' => 'module_photo',
 					'view.css' => 'module_photo',
 					'feed.js' => 'module_feed',
 					'browse.css' => 'module_photo',
-					'edit.css' => 'module_photo'
+					'edit.css' => 'module_photo',
+					'index.js' => 'module_photo'					
 				)
 			)
 			->assign(array(
@@ -179,7 +182,8 @@ class Photo_Component_Controller_Album extends Phpfox_Component
 				'aAlbum' => $aAlbum,
 				'aCallback' => null,
 				'bIsInAlbumMode' => true,
-				'iForceAlbumId' => $aAlbum['album_id']
+				'iForceAlbumId' => $aAlbum['album_id'],
+				'iPhotosPerRow' => 5
 			)
 		);
 		

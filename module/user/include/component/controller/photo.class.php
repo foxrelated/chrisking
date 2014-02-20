@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			natio
  * @package  		Module_User
- * @version 		$Id: photo.class.php 4703 2012-09-20 11:52:55Z Raymond_Benc $
+ * @version 		$Id: photo.class.php 6532 2013-08-29 11:15:56Z Raymond_Benc $
  */
 class User_Component_Controller_Photo extends Phpfox_Component
 {
@@ -110,13 +110,13 @@ class User_Component_Controller_Photo extends Phpfox_Component
 				'class' => 'border'
 			)
 		);
-		
+		/*
 		$sImageThumb = Phpfox::getLib('image.helper')->display(array(
 				'server_id' => Phpfox::getUserBy('server_id'),
 				'title' => Phpfox::getUserBy('full_name'),
 				'path' => 'core.url_user',
 				'file' => Phpfox::getUserBy('user_image'),
-				'suffix' => '_120',
+				'suffix' => '_120' . (Phpfox::getParam('core.keep_non_square_images') ? '_square' : ''),
 				'max_width' => 120,
 				'max_height' => 120,
 				'no_default' => true,
@@ -124,13 +124,13 @@ class User_Component_Controller_Photo extends Phpfox_Component
 				'class' => 'border'	
 			)
 		);		
-		
+		*/
 		$sImageAvatar = Phpfox::getLib('image.helper')->display(array(
 				'server_id' => Phpfox::getUserBy('server_id'),
 				'title' => Phpfox::getUserBy('full_name'),
 				'path' => 'core.url_user',
 				'file' => Phpfox::getUserBy('user_image'),
-				'suffix' => '_75_square',
+				'suffix' => '_50_square',
 				'max_width' => 75,
 				'max_height' => 75,
 				'no_default' => true,
@@ -155,7 +155,7 @@ class User_Component_Controller_Photo extends Phpfox_Component
 			)
 			->assign(array(
 					'sProfileImage' => $sImage,
-					'sImageThumb' => $sImageThumb,
+					// 'sImageThumb' => $sImageThumb,
 					'sImageAvatar' => $sImageAvatar,
 					'sProfileImage2' => str_replace('id="user_profile_photo"', 'id="js_profile_photo_preview"', $sImage),
 					'bIsRegistration' => $bIsRegistration,
@@ -169,12 +169,25 @@ class User_Component_Controller_Photo extends Phpfox_Component
 		if ((Phpfox::getUserBy('user_image') && !empty($sImage)) || ($bIsProcess === true && !empty($sImage)))
 		{
 			preg_match("/height=\"(.*?)\" width=\"(.*?)\"/", $sImage, $aMatches);
-			$iHeight = $aMatches[1];
-			$iWidth = $aMatches[2];
+			if (!isset($aMatches[1]))
+			{
+				preg_match("/src=\"(.*?)\"/", $sImage, $aMatches);
+
+				$aImage = getimagesize($aMatches[1]);
+				$iHeight = $aImage[1];
+				$iWidth = $aImage[0];
+			}
+			else
+			{
+				$iHeight = $aMatches[1];
+				$iWidth = $aMatches[2];
+			}
 			
 			$this->template()->setHeader('cache', array(
 						'jquery/plugin/jquery.crop.js' => 'static_script',
-						'<script type="text/javascript">$Core.photo_crop.init({width: 75, height: 75, image_width: ' . $iWidth . ', image_height: ' . $iHeight . '});</script>'		
+						'jquery/plugin/imgnotes/jquery.imgareaselect.js' => 'static_script',
+						'imgareaselect-default.css' => 'style_css',
+						'<script type="text/javascript">$Behavior.initPhotoCrop = function(){$Core.photo_crop.init({width: 75, height: 75, image_width: ' . $iWidth . ', image_height: ' . $iHeight . '}); };</script>'		
 					)
 				)		
 				->assign(array(

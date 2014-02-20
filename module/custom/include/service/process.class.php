@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: process.class.php 5064 2012-12-04 06:51:24Z Raymond_Benc $
+ * @version 		$Id: process.class.php 6156 2013-06-26 09:09:14Z Miguel_Espinoza $
  */
 class Custom_Service_Process extends Phpfox_Service 
 {	
@@ -359,6 +359,12 @@ class Custom_Service_Process extends Phpfox_Service
 	 */
 	public function updateFields($iItemId, $iEditUserId, $aVals, $bForce = false)
 	{		
+		if (empty($aVals)) 
+		{
+			/* This happens when the Admin edits a user from the AdminCP but did not set any value for the custom fields*/
+			return true;
+		}	
+			
 		$aFields = $this->database()->select('*')
 			->from($this->_sTable)
 			->where('field_id IN(' . implode(',', array_map('intval', array_keys($aVals))) . ')')
@@ -402,58 +408,55 @@ class Custom_Service_Process extends Phpfox_Service
 					{
 						return false;
 					}
-					else
+				}
+				// if no value has ever been set
+				elseif (empty($aChosen))
+				{                                    
+					if ($this->updateField($iFieldId, $iItemId, $iEditUserId, $aVal, $bForce) === false)
 					{
+						return false;
 					}
 				}
-                                // if no value has ever been set
-				elseif (empty($aChosen))
-                                {                                    
-                                    if ($this->updateField($iFieldId, $iItemId, $iEditUserId, $aVal, $bForce) === false)
-                                    {
-                                        return false;
-                                    }
-                                }
-                                // there is a third case when some options have been set but this is the first time
-                                // that we set this specific value
+				// there is a third case when some options have been set but this is the first time
+				// that we set this specific value
 				else
-                                {              
-                                            if ($this->updateField($iFieldId, $iItemId, $iEditUserId, $aVal, $bForce) === false)
-                                            {
-                                                return false;
-                                            }
-					    continue; 
-                                            /* We check the array */
-                                            $aFound = array();
-                                            foreach ($aChosen as $aChose)
-                                            {
-                                                /* We check for matches only if this is the same field id */
+				{              
+					if ($this->updateField($iFieldId, $iItemId, $iEditUserId, $aVal, $bForce) === false)
+					{
+						return false;
+					}
+					continue; 
+					/* We check the array */
+					$aFound = array();
+					foreach ($aChosen as $aChose)
+					{
+						/* We check for matches only if this is the same field id */
 						if ($iFieldId != $aChose['field_id'])
-                                                {
-                                                    continue;
-                                                }
+						{
+							continue;
+						}
 
-                                                if (!is_array($aVal) && $aVal != $aChose['option_id'])
-                                                {
-                                                    if ($this->updateField($iFieldId, $iItemId, $iEditUserId, $aVal, $bForce) === false)
-                                                    {
-                                                        return false;
-                                                    }
-                                                }
-                                                else if (is_array($aVal))
-                                                {
-                                                    foreach ($aVal as $iOneOfMany)
-                                                    {
-                                                        if ($iOneOfMany == $aChose['option_id'])
-                                                        {
-                                                            if ($this->updateField($iFieldId, $iItemId, $iEditUserId, $aVal, $bForce) === false)
-                                                            {
-                                                                    return false;
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                        }
+						if (!is_array($aVal) && $aVal != $aChose['option_id'])
+						{
+							if ($this->updateField($iFieldId, $iItemId, $iEditUserId, $aVal, $bForce) === false)
+							{
+								return false;
+							}
+						}
+						else if (is_array($aVal))
+						{
+							foreach ($aVal as $iOneOfMany)
+							{
+								if ($iOneOfMany == $aChose['option_id'])
+								{
+									if ($this->updateField($iFieldId, $iItemId, $iEditUserId, $aVal, $bForce) === false)
+									{
+											return false;
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}	
@@ -699,8 +702,9 @@ class Custom_Service_Process extends Phpfox_Service
 				$aExisting = $this->database()->select('user_id as userCustomValue')
 						->from(Phpfox::getT($sValueTable))
 						->where('user_id = ' . (int)$iItemId)
-						->execute('getSlaveField');				
-				if (isset($aExisting['userCustomValue']) && !empty($aExisting['user_customValue']))
+						->execute('getSlaveRow');		
+				
+				if (isset($aExisting['userCustomValue']) && !empty($aExisting['userCustomValue']))
 				{
 					$this->database()->update(Phpfox::getT($sValueTable), array(
 						Phpfox::getService('custom')->getAlias() . $aField['field_name'] => $sInsertValue

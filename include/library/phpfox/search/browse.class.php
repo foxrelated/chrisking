@@ -12,9 +12,9 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: browse.class.php 4669 2012-09-19 07:31:27Z Miguel_Espinoza $
+ * @version 		$Id: browse.class.php 6599 2013-09-06 08:18:37Z Miguel_Espinoza $
  */
-final class Phpfox_Search_Browse
+class Phpfox_Search_Browse
 {
 	/**
 	 * Item count.
@@ -140,6 +140,7 @@ final class Phpfox_Search_Browse
 			$this->_iCnt = $this->database()->select((isset($this->_aParams['distinct']) ? 'COUNT(DISTINCT ' . $this->_aParams['field'] . ')' : 'COUNT(*)'))
 				->from($this->_aParams['table'], $this->_aParams['alias'])
 				->where($this->_aConditions)
+				//->limit($this->search()->getPage(), $this->search()->getDisplay())
 				->execute('getSlaveField');
 		}
 		
@@ -163,14 +164,24 @@ final class Phpfox_Search_Browse
 			$this->_aRows = $this->database()->select($this->_aParams['alias'] . '.*, ' . (isset($this->_aParams['select']) ? $this->_aParams['select'] : '') . Phpfox::getUserField())
 				->join(Phpfox::getT('user'), 'u', 'u.user_id = ' . $this->_aParams['alias'] . '.user_id')
 				->order($this->search()->getSort())
-				->limit($this->search()->getPage(), $this->search()->getDisplay(), $this->_iCnt)
+				->limit($this->search()->getPage(), $this->search()->getDisplay(), $this->_iCnt, false, false)
 				->execute('getSlaveRows');
-				
+			
+			if ($this->search()->getPage() > 0 && count($this->_aRows) < 1)
+			{
+				Phpfox::getLib('url')->send('error.404');
+			}
+			
 			if (method_exists($this->_oBrowse, 'processRows'))
 			{
 				$this->_oBrowse->processRows($this->_aRows);
 			}
-		}			
+		}
+		else if ($this->search()->getPage() > 0)
+		{
+			Phpfox::getLib('url')->send('error.404');
+		}
+					
 	}
 	
 	/**

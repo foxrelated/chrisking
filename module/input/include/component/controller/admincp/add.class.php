@@ -77,12 +77,12 @@ class Input_Component_Controller_Admincp_Add extends Phpfox_Component
 			}
 		}
 		
-		$this->template()->setTitle('Add Input Field')
-			->setBreadcrumb('Add Input Field', null, true)
+		$this->template()->setTitle(Phpfox::getPhrase('input.add_input_field'))
+			->setBreadcrumb(Phpfox::getPhrase('input.add_input_field'), null, true)
 		->setHeader(array(
 			'admin.js' => 'module_input',
 			'admin.css' => 'module_input',
-			'<script type="text/javascript">$Core.input.setLanguages(\''. $jLanguages .'\'); $Behavior.initInput = function(){ $Core.input.'. $sJsAction.' }</script>'
+			'<script type="text/javascript"> $Behavior.initInput = function(){$Core.input.setLanguages(\''. $jLanguages .'\'); $Core.input.'. $sJsAction.' }</script>'
 		))
 		->assign(array(
 			'bIsEdit' => $bIsEdit,

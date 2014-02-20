@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: profile.class.php 3144 2011-09-20 20:39:58Z Raymond_Benc $
+ * @version 		$Id: profile.class.php 5840 2013-05-09 06:14:35Z Raymond_Benc $
  */
 class Pages_Component_Block_Profile extends Phpfox_Component
 {
@@ -31,7 +31,7 @@ class Pages_Component_Block_Profile extends Phpfox_Component
 		
 		$this->template()->assign(array(
 				'sHeader' => Phpfox::getPhrase('pages.pages'),
-				'aPages' => $aPages
+				'aPagesList' => $aPages
 			)
 		);
 		

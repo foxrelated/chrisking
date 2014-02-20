@@ -17,7 +17,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: ajax.class.php 5011 2012-11-12 09:02:36Z Raymond_Benc $
+ * @version 		$Id: ajax.class.php 6626 2013-09-12 07:49:28Z Fern $
  */
 class Phpfox_Ajax
 {
@@ -97,6 +97,9 @@ class Phpfox_Ajax
 
 	/* Used to http://www.phpfox.com/tracker/view/11874/ */
 	public $bIsModeration = false;
+
+	public $sPopupMessage = '';
+
 	/**
 	 * Class Constructor
 	 *
@@ -446,7 +449,7 @@ class Phpfox_Ajax
 			}
 			else 
 			{
-				$this->alert($sErrors, Phpfox::getPhrase('core.error'));
+				$this->alert($sErrors, (empty($this->sPopupMessage) ? Phpfox::getPhrase('core.error') : $this->sPopupMessage));
 			}
 			
 			return '';
@@ -558,7 +561,9 @@ class Phpfox_Ajax
 		}
 		else 
 		{
-			$sStr = "tb_show('" . str_replace("'", "\'", ($sTitle === null ? Phpfox::getPhrase('core.notice') : $sTitle)) . "', \$.ajaxBox('core.message', 'height={$iHeight}&width={$iWidth}&message=' + encodeURIComponent('" . str_replace("'", "\'", $sMessage) . "') + ''));";
+			// encodeURIComponent('" . str_replace("'", "\'", $sMessage) . "')
+			$sStr = 'window.parent.sCustomMessageString = \'' . strip_tags(str_replace("'", "\'", $sMessage)) . '\';';
+			$sStr .= "tb_show('" . str_replace("'", "\'", ($sTitle === null ? Phpfox::getPhrase('core.notice') : $sTitle)) . "', \$.ajaxBox('core.message', 'height={$iHeight}&width={$iWidth}'));";
 			if ($bClose)
 			{
 				$sStr .= 'setTimeout(\'tb_remove();\', 2000);';

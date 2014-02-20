@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: phpfox.class.php 4784 2012-09-27 09:02:08Z Miguel_Espinoza $
+ * @version 		$Id: phpfox.class.php 6995 2013-12-16 18:38:28Z Fern $
  */
 class Phpfox_Cdn_Module_Phpfox extends Phpfox_Cdn_Abstract
 {	
@@ -38,7 +38,7 @@ class Phpfox_Cdn_Module_Phpfox extends Phpfox_Cdn_Abstract
 			$this->_aServers[$iKey] = $aServer;
 		}							
 		
-		$this->_iServerId = rand(2, (count($this->_aServers) + 1));
+		$this->_iServerId = array_rand($this->_aServers);//rand(2, (count($this->_aServers) + 1));        
 	}
 	
 	public function setServerId($iServerId)
@@ -67,7 +67,7 @@ class Phpfox_Cdn_Module_Phpfox extends Phpfox_Cdn_Abstract
 			// $this->_iServerId = rand(2, (count($this->_aServers) + 1));
 			// $bServerIdIsSet = false;
 		}
-		
+        
 		$aPost = array(
 			'file_name' => $sName,
 			'upload' => '@' . $sFile . '',
@@ -88,16 +88,28 @@ class Phpfox_Cdn_Module_Phpfox extends Phpfox_Cdn_Abstract
 		 */
 		
 		$mReturn = (array) $mReturn;	
+		if (Phpfox::getParam('core.keep_files_in_server') == false)
+		{
+			$oSess = Phpfox::getLib('session');
+			$aFiles = $oSess->get('deleteFiles');
+			if (is_array($aFiles))
+			{
+				$aFiles[] = $sFile;
+			}
+			else
+			{
+				$aFiles = array($sFile);
+			}
+			$oSess->set('deleteFiles',$aFiles);
+		}
 		
-		if (!$mReturn['pass'])
+		if (isset($mReturn['pass']) && !$mReturn['pass'])
 		{
 			return false;
 		}
-		$bDelete = false; // turn this into a setting
-		if ($bDelete)
-		{
-			unlink($sFile);
-		}
+		
+		
+		
 		return true;		
 	}
 	
@@ -119,16 +131,19 @@ class Phpfox_Cdn_Module_Phpfox extends Phpfox_Cdn_Abstract
 	/**
 	 * Get the full URL to the amazon bucket with support to load a CDN CNAME URL.
 	 *
-	 * @param string $sPath Path to the fule we are going to display.
+	 * @param string $sPath Path to the file we are going to display.
 	 * @return string Full path to the file on amazons server.
 	 */
-	public function getUrl($sPath, $iServerId = 0, $bBass = false)
+	public function getUrl($sPath, $iServerId = null, $bBass = false)
 	{		
 		$sPath = str_replace(Phpfox::getParam('core.path'), '', $sPath);
 		$sPath = str_replace("\\", '/', $sPath);
 		
 		$aParts = explode('.', $sPath);
-		
+		if ($iServerId == null)
+        {
+            $iServerId = $this->getServerId();
+        }
 		if (!isset($this->_aServers[$iServerId]))
 		{
 			return '';
@@ -148,6 +163,26 @@ class Phpfox_Cdn_Module_Phpfox extends Phpfox_Cdn_Abstract
 		curl_setopt($hCurl, CURLOPT_SSL_VERIFYPEER, false);
 
 		curl_setopt($hCurl, CURLOPT_POST, true);
+		
+		// https://github.com/sendgrid/sendgrid-php/issues/38
+		if(defined('PHP_VERSION_ID') && PHP_VERSION_ID > 50500)
+		{
+			$sMIME = null;
+			$sFileName = substr($aPost['upload'], 1);
+			
+			if(function_exists('mime_content_type'))
+			{
+				$sMIME = mime_content_type($sFileName);
+			}
+			else
+			{
+				$hFileInfo = finfo_open(FILEINFO_MIME_TYPE);
+				$sMIME = finfo_file($hFileInfo, $sFileName);
+				finfo_close($hFileInfo);
+			}
+			$aPost['upload'] = new CurlFile($sFileName, $sMIME, $sFileName);
+		}
+		
 		curl_setopt($hCurl, CURLOPT_POSTFIELDS, $aPost);
 
 		$mReturn = curl_exec($hCurl);

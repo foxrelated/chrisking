@@ -12,7 +12,7 @@ $Behavior.putCursorAtEnd = function()
     {
         return this.each(function()
         {
-            $(this).focus()
+            $(this).focus();
             /* If this function exists...*/
             if (this.setSelectionRange)
             {
@@ -33,7 +33,7 @@ $Behavior.putCursorAtEnd = function()
             this.scrollTop = 999999;
         });
     };
-}
+};
 
 if (typeof(oEditor) == 'undefined')
 {
@@ -156,8 +156,8 @@ var Editor =
 	getList: function($sType)
 	{
 		var $sList = ($sType == 'bullet' ? 'ul' : 'ol');
-		
-		Editor.createBBtag("[" + $sList + "]", "\n[/" + $sList + "]\n", this.sEditorId);
+		this.sLastListType = $sList;
+		Editor.createBBtag("[" + $sList + "]", '', this.sEditorId);
 		
 		this.getListReply();
 	},
@@ -171,6 +171,10 @@ var Editor =
 			Editor.createBBtag("\n[*]", "", this.sEditorId, $sReply);
 			
 			this.getListReply();
+		}
+		else
+		{
+			Editor.createBBtag("\n[/" + this.sLastListType + "]\n",'', this.sEditorId);
 		}
 	},
 	

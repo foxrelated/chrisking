@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: url.class.php 4943 2012-10-23 13:37:12Z Miguel_Espinoza $
+ * @version 		$Id: url.class.php 7062 2014-01-22 19:16:20Z Fern $
  */
 class Phpfox_Url
 {
@@ -129,7 +129,9 @@ class Phpfox_Url
 				{
 					$aParts = explode('/', $aRow['url']);
 						
-					$this->aRewrite[rtrim($aRow['replacement'], '/')] = array('module' => $aParts[0], 'component' => ((isset($aParts[1]) && !empty($aParts[1])) ? $aParts[1] : 'index'));
+					/*$this->aRewrite[rtrim($aRow['replacement'], '/')] = array(
+						'module' => $aParts[0], 
+						'component' => ((isset($aParts[1]) && !empty($aParts[1])) ? $aParts[1] : 'index'));*/
 					$this->aRewrite[$aRow['url']] = $aRow['replacement'];	
 					$this->aReverseRewrite[rtrim($aRow['replacement'], '/')] = $aRow['url'];
 				}
@@ -138,7 +140,7 @@ class Phpfox_Url
 				$oCache->save($iReverseCacheId, $this->aReverseRewrite);
 			}			
 		}
-		
+
 		$this->_setParams();
 	}
 	
@@ -467,7 +469,7 @@ class Phpfox_Url
 	 * @return string Full URL.
 	 */
 	public function makeUrl($sUrl, $aParams = array(), $bFullPath = false)
-	{		
+	{
 		if (defined('PHPFOX_INSTALLER'))
 		{
 			if (is_array($aParams))
@@ -480,10 +482,11 @@ class Phpfox_Url
 			}
 		}
 		
-		if (preg_match('/http:\/\//i', $sUrl))
+		if (preg_match('/https?:\/\//i', $sUrl))
 		{
 		    return $sUrl;
 		}		
+		
 		
 		if ($sUrl == 'current')
 		{
@@ -492,13 +495,13 @@ class Phpfox_Url
 			{
 				if (substr($sKey, 0, 3) == 'req')
 				{
-					$sUrl .= $sValue . '.';
+					$sUrl .= urlencode($sValue) . '.';
 				}
 				else 
 				{					
-					$sUrl .= $sKey . '_' . $sValue . '.';
+					$sUrl .= $sKey . '_' . urlencode($sValue) . '.';
 				}
-			}			
+			}
 		}
 		
 		(($sPlugin = Phpfox_Plugin::get('check_url_is_array')) ? eval($sPlugin) : false);
@@ -566,7 +569,7 @@ class Phpfox_Url
 		}
 		else 
 		{
-			if ($this->isMobile())
+			if ($this->isMobile() && $sUrl != 'logout')
 			{
 				$sUrl = 'mobile.' . $sUrl;
 			}					
@@ -615,17 +618,32 @@ class Phpfox_Url
 		
 		if (!defined('PHPFOX_INSTALLER') && Phpfox::getParam('core.force_https_secure_pages'))
 		{
-			if (in_array(str_replace('mobile.', '', $sUrl), Phpfox::getService('core')->getSecurePages()))
+			if (Phpfox::getParam('core.force_secure_site'))
 			{
-				$sUrls = str_replace('http://', 'https://', $sUrls);
+				// if (Phpfox::isUser() || in_array(str_replace('mobile.', '', $sUrl), Phpfox::getService('core')->getSecurePages()))
+				{
+					$sUrls = str_replace('http://', 'https://', $sUrls);
+				}
 			}
-			else 
+			else
 			{
-				$sUrls = str_replace('https://', 'http://', $sUrls);
+				if (in_array(str_replace('mobile.', '', $sUrl), Phpfox::getService('core')->getSecurePages()))
+				{
+					$sUrls = str_replace('http://', 'https://', $sUrls);
+				}
+				else
+				{
+					$sUrls = str_replace('https://', 'http://', $sUrls);
+				}
 			}
 		}
 		
 		(($sPlugin = Phpfox_Plugin::get('check_url_is_array_return')) ? eval($sPlugin) : false);
+		
+		if (defined('PHPFOX_IS_HOSTED_SCRIPT') && defined('PHPFOX_IS_HOSTED_VERSION'))
+		{
+			$sUrls = str_replace('/' . PHPFOX_IS_HOSTED_VERSION . '/', '/', $sUrls);
+		}		
 		
 		return $sUrls;
 	}
@@ -741,6 +759,10 @@ class Phpfox_Url
 				}
 				else 
 				{
+					if ($mKey == 'view')
+					{
+						$mValue = urlencode($mValue);
+					}
 					$aExtra[$mKey] = $mValue;	
 				}
 			}
@@ -953,6 +975,25 @@ class Phpfox_Url
 	 */
 	private function _setParams()
 	{
+		if (PHPFOX_IS_AJAX)
+		{
+			if (isset($_REQUEST['params']))
+			{
+				foreach ($_REQUEST['params'] as $sReq => $sVal)
+				{
+					if (strpos($sVal, '_') !== false)
+					{
+						$aParts = explode('_', $sVal);
+						$this->_aParams[$aParts[0]] = $aParts[1];
+					}
+					else if (strpos($sReq, 'req') !== false)
+					{
+						$this->_aParams[$sReq] = $sVal;
+					}
+				}
+			}
+		}
+		
 		if (Phpfox::getParam('core.url_rewrite') == 3)
 		{
 			/**
@@ -977,12 +1018,93 @@ class Phpfox_Url
 			$sDefaultModule = Phpfox::getParam('core.module_core');
 		}
 
-		$sRequest = $_GET[PHPFOX_GET_METHOD];		
-		$aRequest = explode("/", $sRequest);				
+		$sRequest = $_GET[PHPFOX_GET_METHOD];
+		$sRequest = trim($sRequest, '/');
+		$aRequest = explode("/", $sRequest);
+
 		$iCnt = 0;
 		foreach($aRequest as $sVar)
 		{
 			$sVar = trim($sVar);
+
+			if (!empty($sVar))
+			{
+				if ($iCnt == 0 && $sVar == 'mobile')
+				{
+					self::$_isMobile = true;
+					// http://www.phpfox.com/tracker/view/15019/
+					$sRequest = preg_replace('/mobile\//i', '', $sRequest, 1);
+					//$sRequest = str_replace('mobile/', '', $sRequest);
+					break;
+				}
+			}
+		}
+
+		$aRequest = explode("/", $sRequest);
+
+		// Remove params from sRequest
+		preg_match('/([a-z0-9]+_[a-z0-9]+)/i', $sRequest, $aParams);
+		
+		$sRequest = str_replace($aParams, '', $sRequest);
+		$sRequest = trim($sRequest, '/');
+		if (isset($this->aRewrite[$sRequest]))
+		{
+			// this is the final url, do not rewrite
+		}
+		else if (isset($this->aReverseRewrite[$sRequest]))
+		{
+			$sRequest = $this->aReverseRewrite[$sRequest];
+			
+			$aRequest = (explode('/', $sRequest));
+			$iCnt++;
+			foreach ($aRequest as $sReq)
+			{
+				$this->_aParams['req' . $iCnt] = $sReq;
+			}
+			$iCnt = 0;
+			
+			if (!empty($aParams))
+			{
+				$aRequest = $aRequest + $aParams;
+			}
+		}
+		else if (isset($aRequest[0]) && isset($this->aReverseRewrite[$aRequest[0]]))
+		{
+			$sRequest = $this->aReverseRewrite[$aRequest[0]]; 
+
+			$aRequest[0] = $sRequest; 
+			$iCnt++; 
+			foreach ($aRequest as $sReq) 
+			{ 
+				$this->_aParams['req' . $iCnt] = $sReq; 
+			} 
+			$iCnt = 0; 
+
+			if (!empty($aParams)) 
+			{ 
+				$aRequest = $aRequest + $aParams; 
+			}
+		}
+		$sRequest = trim($sRequest, '/');		
+		
+		
+		$bRedirected = false;
+		
+		if (isset($this->aReverseRewrite[$sRequest]))
+		{
+			// we already redirected and should stop now.
+			$bRedirected = true;
+		}
+		else if ( isset($this->aRewrite[$sRequest]))
+		{
+			
+		}
+		
+		
+		foreach($aRequest as $sVar)
+		{
+			$sVar = trim($sVar);
+			
 			if (!empty($sVar))
 			{
 				if ($iCnt == 0 && $sVar == 'mobile')
@@ -998,7 +1120,7 @@ class Phpfox_Url
 				if ($iCnt == 1 && !preg_match("/^frame_(.*)$/", $sVar))
 				{
 					$bPass = false;	
-				}				
+				}
 	
 				if ($bPass && preg_match('/\_/', $sVar))
 				{
@@ -1017,36 +1139,28 @@ class Phpfox_Url
 				}
 				else
 				{					
-					// Override our default requests incase the user has created some special URL rewrites
+					// Override our default requests in case the user has created some special URL rewrites
 					/**
 					 * @todo We need to look over this routine. Currently it might be eating up a little too 
 					 * much extra memory, however from recent tests it seems to be working fine.
-					 */					
-					if (($iCnt == 1 && isset($this->aRewrite[$sVar])))						 
-					{	
-						$this->_aParams['req1'] = $this->aRewrite[$sVar]['module'];															
-						if ($this->aRewrite[$sVar]['component'] != 'index')
-						{							
-							$this->_aParams['req2'] = $this->aRewrite[$sVar]['component'];
-							$iCnt++;
-						}
-						continue;						
-					}
+					 */
 					
-					if (!defined('PHPFOX_INSTALLER') && $iCnt == 1 && $sDefaultModule != PHPFOX_MODULE_CORE && isset($this->aRewrite['']['module']) && ($sModule = $this->aRewrite['']['module']) == $sDefaultModule && !$oModule->isModule($sVar))
+					if (!defined('PHPFOX_INSTALLER') && $iCnt == 1 && $sDefaultModule != PHPFOX_MODULE_CORE &&
+						$bRedirected != true && isset($this->aRewrite['']['module']) && ($sModule = $this->aRewrite['']['module']) == $sDefaultModule && !$oModule->isModule($sVar))
 					{
 						$this->_aParams['req1'] = strtolower($sDefaultModule);
 						$this->_aParams['req2'] = $sVar;
 						$iCnt++;
 						continue;
 					}					
-		
+					
 					$sVar = rawurldecode($sVar);
 					$sVar = rawurlencode($sVar);
 					$this->_aParams['req' . $iCnt] = $sVar;
 				}
 			}
 		}
+		
 	}	
 	
 	/**

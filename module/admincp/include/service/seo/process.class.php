@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: process.class.php 4165 2012-05-14 10:43:25Z Raymond_Benc $
+ * @version 		$Id: process.class.php 5844 2013-05-09 08:00:59Z Raymond_Benc $
  */
 class Admincp_Service_Seo_Process extends Phpfox_Service 
 {
@@ -28,6 +28,7 @@ class Admincp_Service_Seo_Process extends Phpfox_Service
 	{
 		$this->database()->delete(Phpfox::getT('seo_meta'), 'meta_id = ' . (int) $iId);
 		$this->cache()->remove('seo_meta');
+		$this->cache()->remove('seo_meta_build');
 	}	
 	
 	public function addMeta($aVals)
@@ -46,6 +47,7 @@ class Admincp_Service_Seo_Process extends Phpfox_Service
 		);
 		
 		$this->cache()->remove('seo_meta');
+		$this->cache()->remove('seo_meta_build');
 		
 		return $iId;		
 	}
@@ -64,6 +66,7 @@ class Admincp_Service_Seo_Process extends Phpfox_Service
 		);
 		
 		$this->cache()->remove('seo_nofollow');
+		$this->cache()->remove('seo_nofollow_build');
 		
 		return $iId;
 	}
@@ -71,7 +74,9 @@ class Admincp_Service_Seo_Process extends Phpfox_Service
 	public function deleteNoFollow($iId)
 	{
 		$this->database()->delete(Phpfox::getT('seo_nofollow'), 'nofollow_id = ' . (int) $iId);
+
 		$this->cache()->remove('seo_nofollow');
+		$this->cache()->remove('seo_nofollow_build');
 	}
 }
 

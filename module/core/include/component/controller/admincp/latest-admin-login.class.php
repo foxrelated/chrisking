@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: latest-admin-login.class.php 982 2009-09-16 08:11:36Z Raymond_Benc $
+ * @version 		$Id: latest-admin-login.class.php 6189 2013-06-29 08:45:09Z Raymond_Benc $
  */
 class Core_Component_Controller_Admincp_Latest_Admin_Login extends Phpfox_Component
 {
@@ -38,14 +38,6 @@ class Core_Component_Controller_Admincp_Latest_Admin_Login extends Phpfox_Compon
 				'type' => 'select',
 				'options' => $aDisplays,
 				'default' => '20'
-			),
-			'created_by' => array(
-				'type' => 'select',
-				'options' => array(
-					array(Phpfox::getPhrase('blog.users'), "ANDal.user_id != 0"),
-					array(Phpfox::getPhrase('blog.system'), "ANDal.user_id = 0")
-				),
-				'add_select' => true
 			),
 			'sort' => array(
 				'type' => 'select',

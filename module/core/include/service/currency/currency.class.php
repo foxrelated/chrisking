@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: currency.class.php 1823 2010-09-21 07:34:28Z Raymond_Benc $
+ * @version 		$Id: currency.class.php 6621 2013-09-11 12:45:56Z Miguel_Espinoza $
  */
 class Core_Service_Currency_Currency extends Phpfox_Service 
 {
@@ -30,6 +30,8 @@ class Core_Service_Currency_Currency extends Phpfox_Service
 	public function __construct()
 	{	
 		$this->_sTable = Phpfox::getT('currency');
+		
+		if ($sPlugin = Phpfox_Plugin::get('core.service_currency_contruct__1')){eval($sPlugin); if (isset($mReturnFromPlugin)){ return $mReturnFromPlugin; }}
 		
 		$sCacheId = $this->cache()->set('currency');
 		if (!($this->_aCurrencies = $this->cache()->get($sCacheId)))
@@ -93,6 +95,7 @@ class Core_Service_Currency_Currency extends Phpfox_Service
 	
 	public function getForEdit($sId)
 	{
+		if ($sPlugin = Phpfox_Plugin::get('core.service_currency_getforedit__1')){eval($sPlugin); if (isset($mReturnFromPlugin)){ return $mReturnFromPlugin; }}
 		$aCurrency = $this->database()->select('*')
 			->from($this->_sTable)
 			->where('currency_id = \'' . $this->database()->escape($sId) . '\'')
@@ -108,6 +111,7 @@ class Core_Service_Currency_Currency extends Phpfox_Service
 	
 	public function getForBrowse()
 	{
+		if ($sPlugin = Phpfox_Plugin::get('core.service_currency_getforbrowse__1')){eval($sPlugin); if (isset($mReturnFromPlugin)){ return $mReturnFromPlugin; }}
 		$aCurrencies = $this->database()->select('*')	
 			->from(Phpfox::getT('currency'))
 			->order('ordering ASC')
@@ -134,7 +138,7 @@ class Core_Service_Currency_Currency extends Phpfox_Service
 			return false;
 		}
 		
-		$sAmount = file_get_contents('http://www.exchangerate-api.com/' . $sCurrency . '/' . $this->getDefault() . '/' . $iPrice . '?k=kke6i-rudPU-Zb9nO');
+		$sAmount = file_get_contents('http://www.exchangerate-api.com/' . $sCurrency . '/' . $this->getDefault() . '/' . $iPrice . '?k='.$sKey);
 		
 		return ($sAmount > 0 ? $sAmount : false);
 	}

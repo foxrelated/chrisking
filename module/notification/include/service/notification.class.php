@@ -79,7 +79,8 @@ class Notification_Service_Notification extends Phpfox_Service
 				
 				continue;				
 			}
-			
+
+
 			if (($aCallBack = Phpfox::callback($aRow['type_id'] . '.getNotification', $aRow)))
 			{			
 				if (!isset($aCallBack['message']))
@@ -176,6 +177,7 @@ class Notification_Service_Notification extends Phpfox_Service
 				{
 					$aCallBack['link'] = '#';
 					$aCallBack['message'] = '2. Notification is missing a callback. [' . $aRow['type_id'] . '::getNotification]';										
+                    
 				}		
 				elseif (substr($aRow['type_id'], 0, 8) == 'comment_' && substr($aRow['type_id'], 0, 12) != 'comment_feed' && !Phpfox::hasCallback(substr_replace($aRow['type_id'], '', 0, 8), 'getCommentNotification'))
 				{
@@ -185,18 +187,28 @@ class Notification_Service_Notification extends Phpfox_Service
 				else
 				{
 					$aCallBack = Phpfox::callback($aRow['type_id'] . '.getNotification', $aRow);
+					$aRow['final_module'] = Phpfox::getLib('module')->sFinalModuleCallback;
+					if ($aRow['final_module'] == 'photo')
+					{
+						$aCallBack['link'] = $aCallBack['link'] . 'userid_' . Phpfox::getUserId() . '/';
+					}
 	
 					if ($aCallBack === false)
 					{
 						$this->database()->delete($this->_sTable, 'notification_id = ' . (int) $aRow['notification_id']);
-
 						continue;
 					}
 				}
-
+				/*
+				if (!isset($aCallback['message']))
+				{
+					$this->database()->delete($this->_sTable, 'notification_id = ' . (int) $aRow['notification_id']);
+					continue;
+				}
+				*/
 				$aNotifications[] = array_merge($aRow, (array) $aCallBack);	
 			}
-			
+						
 			$this->database()->update($this->_sTable, array('is_seen' => '1'), 'type_id = \'' . $this->database()->escape($aRow['type_id']) . '\' AND item_id = ' . (int) $aRow['item_id']);
 		}		
 		

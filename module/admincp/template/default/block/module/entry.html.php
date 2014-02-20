@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: entry.html.php 4939 2012-10-23 09:17:04Z Miguel_Espinoza $
+ * @version 		$Id: entry.html.php 6480 2013-08-21 07:37:40Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -36,7 +36,7 @@ defined('PHPFOX') or exit('NO DICE!');
 				<li><a href="{url link='admincp.setting.edit' module-id=$aModule.module_id}">{phrase var='admincp.manage_settings'}</a></li>
 				{/if}
 				{if !$aModule.is_core}
-				<li><a href="{url link='admincp.module' delete=$aModule.module_id}" onclick="return confirm('{phrase var='admincp.are_you_sure' phpfox_squote=true}');">{phrase var='admincp.uninstall'}</a></li>					
+				<li><a href="{url link='admincp.module' delete=$aModule.module_id}" onclick="return (confirm('{phrase var='admincp.are_you_sure' phpfox_squote=true}') && alert('{phrase var='admincp.uninstall_module_reminder'}'));">{phrase var='admincp.uninstall'}</a></li>					
 				{/if}
 			</ul>
 		</div>		

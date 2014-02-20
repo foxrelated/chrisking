@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Core
- * @version 		$Id: ajax.class.php 4874 2012-10-10 08:26:35Z Raymond_Benc $
+ * @version 		$Id: ajax.class.php 6742 2013-10-07 15:07:33Z Raymond_Benc $
  */
 class Core_Component_Ajax_Ajax extends Phpfox_Ajax
 {	
@@ -26,9 +26,10 @@ class Core_Component_Ajax_Ajax extends Phpfox_Ajax
 	public function message()
 	{
 		Phpfox::getBlock('core.message', array(
-				'sMessage' => $this->get('message')
+				'sMessage' => ''// strip_tags($this->get('message'))
 			)
 		);
+		$this->call('<script type="text/javascript">$(\'#js_custom_core_message\').html(sCustomMessageString);</script>');
 	}
 
 	public function preview()
@@ -405,6 +406,123 @@ class Core_Component_Ajax_Ajax extends Phpfox_Ajax
 			$sError = Phpfox_Error::get();
 			$this->html('#div_show_gift_points', 'An error occurred: ' . array_pop($sError));
 		}
+	}
+	
+	
+	public function getMyCity()
+	{
+		//$sInfo = Phpfox::getLib('request')->send('http://smart-ip.net/geoip-json/' . Phpfox::getLib('request')->getIp(), array(), 'GET');
+		$sInfo = Phpfox::getLib('request')->send('http://freegeoip.net/json/' . Phpfox::getLib('request')->getIp(), array(), 'GET');
+		$oInfo = json_decode($sInfo);
+		if ($this->get('section') == 'feed')
+		{
+			// during testing latlng wont work
+			if (empty($oInfo->latitude))
+			{
+				$oInfo->latitude = '-43.132123';
+				$oInfo->longitude = '9.140625';
+			}
+			$this->call('$Core.Feed.gMyLatLng = new google.maps.LatLng("' . $oInfo->latitude . '","' . $oInfo->longitude .'");');
+			$this->call('setCookie("core_places_location", "' . $oInfo->latitude .',' . $oInfo->longitude . '");');
+			$this->call('$("#hdn_location_name, #val_location_name").val("' . $oInfo->city . ', ' . $oInfo->countryName . '"); ');
+			$this->call('$Core.Feed.getNewLocations();');
+			$this->call('$Core.Feed.createMap();');
+		}
+		
+		if ($this->get('saveLocation'))
+		{
+			Phpfox::getService('user.process')->saveMyLatLng(array('latitude' => $oInfo->latitude, 'longitude' => $oInfo->longitude));
+		}
+		
+		if ($this->get('callback') == '$Core.Feed.showMap')
+		{
+			/*$this->call('$Core.Feed.showMap();');*/
+		}
+	}
+	
+	/* Called from main.js loads the blocks from an ajax call after the controller has loaded */
+	public function loadDelayedBlocks()
+	{
+		// These are blocks intentionally delayed
+		$aLocations = explode(',',$this->get('locations'));
+		$oModule = Phpfox::getLib('phpfox.module');
+		$aParams = $this->get('params');
+		define('PHPFOX_LOADING_DELAYED', true);
+		if ($this->get('locations') != null && count($aLocations) > 0)
+		{	
+			$oModule->loadBlocks();
+			if ($oModule->getFullControllerName() == 'core.index' && Phpfox::isUser())
+			{
+				$oModule->setController('core.index-member');
+			}
+			foreach ($aLocations as $iLocation)
+			{
+				$aBlocks = $oModule->getModuleBlocks($iLocation, true);
+				foreach ($aBlocks as $sBlock)
+				{
+					Phpfox::getBlock($sBlock);
+					$this->html('#delayed_block_' . $iLocation , $this->getContent(false));
+				}
+			}
+		}
+		else if ($this->get('loadContent') != null) // Then we are loading the 'content'
+		{
+			$sController = $this->get('loadContent');
+			if (!empty($aParams))
+			{
+				$oRequest = Phpfox::getLib('request');
+				foreach ($aParams as $sIndex => $sKey)
+				{
+					$oRequest->set($sIndex, $sKey);
+				}
+			}		
+			$oModule->getComponent($sController, $aParams, 'controller');
+			
+			$this->hide('#delayed_block_image');
+			$this->html('#delayed_block', $this->getContent(false) );
+			$this->show('#delayed_block');
+		}
+		else if ($this->get('delayedTemplates') != null)
+		{
+			
+			$aTemplates = $this->get('delayedTemplates');
+			
+			foreach ($aTemplates as $sIndex => $sKey)
+			{
+				$aTemplate = explode('=', $sKey);
+				$sTemplate = Phpfox::getLib('template')->getBuiltFile($aTemplate[1]);
+				$this->html('#' . $aTemplate[1], $sTemplate);
+			}
+			
+		}
+		$this->call('$Behavior.loadDelayedBlocks = function(){}; $Core.loadInit();');
+	}
+	
+	/** Called from rewrite.js in the AdminCP -> SEO -> Rewrite URL */
+	public function updateRewrites()
+	{
+		Phpfox::isAdmin(true);
+		$aRewrites = json_decode($this->get('aRewrites'), true);
+		
+		Phpfox::getService('core.redirect.process')->updateRewrites($aRewrites);
+		
+		if (Phpfox_Error::isPassed())
+		{
+			$this->call('$Core.AdminCP.Rewrite.saveSuccessful();');
+			$this->softNotice('Saved Successfully');
+		}
+		else
+		{
+			$this->call('$("#processing").hide();');
+		}
+		
+	}
+
+	public function removeRewrite()
+	{
+		Phpfox::isAdmin(true);
+
+		Phpfox::getService('core.redirect.process')->removeRewrite($this->get('id'));
 	}
 }
 

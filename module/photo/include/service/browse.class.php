@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Service
- * @version 		$Id: browse.class.php 4538 2012-07-19 10:38:00Z Miguel_Espinoza $
+ * @version 		$Id: browse.class.php 7059 2014-01-22 14:20:10Z Fern $
  */
 class Photo_Service_Browse extends Phpfox_Service 
 {
@@ -40,6 +40,12 @@ class Photo_Service_Browse extends Phpfox_Service
 			->leftJoin(Phpfox::getT('photo_category'), 'ppc', 'ppc.category_id = ppcd.category_id')
 			->group('photo.photo_id');
 			
+		if (Phpfox::isModule('like'))
+		{
+		    $this->database()->select('l.like_id as is_liked, adisliked.action_id as is_disliked, ')
+					->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = "photo" AND l.item_id = photo.photo_id AND l.user_id = ' . Phpfox::getUserId() . '')
+					->leftJoin(Phpfox::getT('action'), 'adisliked', 'adisliked.action_type_id = 2 AND adisliked.item_id = photo.photo_id AND adisliked.user_id = ' . Phpfox::getUserId());
+		}
 		
 		if (Phpfox::getLib('request')->get('mode') == 'edit')
 		{

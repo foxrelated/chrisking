@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: process.class.php 4563 2012-07-24 10:44:36Z Miguel_Espinoza $
+ * @version 		$Id: process.class.php 6828 2013-10-23 17:56:18Z Fern $
  */
 class Friend_Service_Process extends Phpfox_Service 
 {
@@ -23,12 +23,23 @@ class Friend_Service_Process extends Phpfox_Service
 		$this->_sTable = Phpfox::getT('friend');
 	}
 	
+	/**
+	 * @param $iUserId int Is the user accepting the Friend Request
+	 * @param $iFriendId int is the user who sent the friend request
+	 */
 	public function add($iUserId, $iFriendId, $iFolderId = 0)
 	{
-		$iIsFriend = $this->database()->select('COUNT(*)')
-			->from(Phpfox::getT('friend'), 'f')
-			->where('f.user_id = ' . (int) $iUserId . ' AND f.friend_user_id = ' . (int) $iFriendId)
-			->execute('getSlaveField');		
+		if (Phpfox::getParam('core.super_cache_system'))
+		{
+			$iIsFriend = Phpfox::getService('friend')->isFriend($iUserId, $iFriendId);
+		}
+		else
+		{
+			$iIsFriend = $this->database()->select('COUNT(*)')
+				->from(Phpfox::getT('friend'), 'f')
+				->where('f.user_id = ' . (int) $iUserId . ' AND f.friend_user_id = ' . (int) $iFriendId)
+				->execute('getSlaveField');		
+		}
 		
 		// They are already friends lets not add them again
 		if ($iIsFriend)
@@ -50,29 +61,54 @@ class Friend_Service_Process extends Phpfox_Service
 			return false;
 		}
 
-		$this->database()->insert($this->_sTable, array(
+		$iUserToFriend = $this->database()->insert($this->_sTable, array(
 				'list_id' => $iFolderId,
 				'user_id' => $iUserId,
 				'friend_user_id' => $iFriendId,
 				'time_stamp' => PHPFOX_TIME
 			)
 		);
+		$this->database()->delete(Phpfox::getT('user_blocked'), 'user_id = ' . ((int)$iUserId) . ' AND block_user_id = ' . ((int)$iFriendId));
 		
-		$this->database()->insert($this->_sTable, array(
+        $iFriendToUser = $this->database()->insert($this->_sTable, array(
 				'list_id' => $aRow['list_id'],
 				'user_id' => $iFriendId,
 				'friend_user_id' => $iUserId,
 				'time_stamp' => PHPFOX_TIME
 			)
 		);
-		
+		$this->database()->delete(Phpfox::getT('user_blocked'), 'user_id = ' . ((int)$iFriendId) . ' AND block_user_id = ' . ((int)$iUserId));
+        
 		$this->database()->delete(Phpfox::getT('friend_request'), 'request_id = ' . $aRow['request_id']);
 		
 		// Update friend count
 		$this->_updateFriendCount(Phpfox::getUserId(), $aRow['user_id']);
 		
+		// Refresh the super cache
+		if (Phpfox::getParam('core.super_cache_system'))
+		{
+			$sCacheId = $this->cache()->set(array('friend', $iUserId));
+			$this->cache()->remove($sCacheId);
+			$sCacheId = $this->cache()->set(array('friend', $iFriendId));
+			$this->cache()->remove($sCacheId);
+		}
+		if (Phpfox::getParam('friend.cache_rand_list_of_friends') > 0)
+		{
+			$sCacheId = $this->cache()->set(array('friend_rand_6', $iUserId));
+				$this->cache()->remove($sCacheId);
+			$sCacheId = $this->cache()->set(array('friend_rand_6', $iFriendId));
+				$this->cache()->remove($sCacheId);
+		}
+		if (Phpfox::getParam('friend.cache_is_friend'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_is_friend', $iUserId . '_' . $iFriendId));
+				$this->cache()->remove($sCacheId);
+			$sCacheId = $this->cache()->set(array('friend_is_friend', $iFriendId . '_' . $iUserId));
+				$this->cache()->remove($sCacheId);
+		}
+		
 		// Add to feed
-		(Phpfox::isModule('feed') ? Phpfox::getService('feed.process')->add('friend', $iFriendId, 0, 0, $aRow['user_id'], Phpfox::getUserId()) : false);
+		(Phpfox::isModule('feed') ? Phpfox::getService('feed.process')->add('friend', $iFriendToUser, 0, 0, $iFriendId, Phpfox::getUserId()) : false); // http://www.phpfox.com/tracker/view/14671/
 		// (Phpfox::isModule('feed') ? Phpfox::getService('feed.process')->add('friend', $iUserId, 0, 0, 0, $aRow['user_id']) : false);
 		
 		// Remove the initial request
@@ -95,10 +131,17 @@ class Friend_Service_Process extends Phpfox_Service
 			Phpfox::getService('friend.suggestion')->reBuild($iFriendId);
 		}			
 		
+		/*if (Phpfox::getParam('core.super_cache_system'))
+		{
+			$sCacheId = $this->cache()->set(array('friend', $iUserId));
+		}*/
 		if ($sPlugin = Phpfox_Plugin::get('friend.service_process_add__1')){eval($sPlugin);}
 		return true;	
 	}
 	
+	/**
+	 * Denies a friend request
+	 */ 
 	public function deny($iUserId, $iFriendId)
 	{		
 		$aRow = $this->database()->select('fr.request_id, fr.user_id, fr.friend_user_id, u.user_name')
@@ -214,12 +257,13 @@ class Friend_Service_Process extends Phpfox_Service
 		// non top friends even with higher ordering will be listed after the top friends
 		return true;
 	}	
+
 	
-	public function delete($iId)
+	public function delete($iId, $bIsFriendId = true)
 	{
 		$aFriend = $this->database()->select('f.*')
 			->from($this->_sTable, 'f')
-			->where('f.friend_id =' . (int) $iId . ' AND f.user_id = ' . Phpfox::getUserId())
+			->where( ($bIsFriendId == true ? 'f.friend_id =' : 'f.friend_user_id =') . (int) $iId  . ' AND f.user_id = ' . Phpfox::getUserId())
 			->execute('getSlaveRow');
 			
 		// Invalid friend ID#
@@ -236,6 +280,29 @@ class Friend_Service_Process extends Phpfox_Service
 		// Remove friends
 		$this->database()->delete($this->_sTable, "user_id = " . Phpfox::getUserId() . " AND friend_user_id = " . $aFriend['friend_user_id']);
 		$this->database()->delete($this->_sTable, "user_id = " . $aFriend['friend_user_id'] . " AND friend_user_id = " . Phpfox::getUserId());
+
+		// Refresh the super cache
+		if (Phpfox::getParam('core.super_cache_system'))
+		{
+			$sCacheId = $this->cache()->set(array('friend', Phpfox::getUserId()));
+				$this->cache()->remove($sCacheId);
+			$sCacheId = $this->cache()->set(array('friend', $aFriend['friend_user_id']));
+				$this->cache()->remove($sCacheId);
+		}
+		if (Phpfox::getParam('friend.cache_rand_list_of_friends') > 0)
+		{
+			$sCacheId = $this->cache()->set(array('friend_rand_6', Phpfox::getUserId()));
+				$this->cache()->remove($sCacheId);
+			$sCacheId = $this->cache()->set(array('friend_rand_6', $aFriend['friend_user_id']));
+				$this->cache()->remove($sCacheId);
+		}
+		if (Phpfox::getParam('friend.cache_is_friend'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_is_friend', Phpfox::getUserId() . '_' . $aFriend['friend_user_id']));
+				$this->cache()->remove($sCacheId);
+			$sCacheId = $this->cache()->set(array('friend_is_friend', $aFriend['friend_user_id'] . '_' . Phpfox::getUserId()));
+				$this->cache()->remove($sCacheId);
+		}
 		
 		(Phpfox::isModule('feed') ? Phpfox::getService('feed.process')->delete('friend', $aFriend['friend_user_id']) : null);
 		(Phpfox::isModule('feed') ? Phpfox::getService('feed.process')->delete('friend', Phpfox::getUserId()) : null);
@@ -256,6 +323,7 @@ class Friend_Service_Process extends Phpfox_Service
 		if ($sPlugin = Phpfox_Plugin::get('friend.service_process_delete__1')){eval($sPlugin);}
 		return true;
 	}
+	
 	
 	public function deleteFromConnection($iUserId, $iFriendId)
 	{

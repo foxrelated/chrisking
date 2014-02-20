@@ -208,7 +208,7 @@ else
 	if ($sType == 'css')
 	{
 		$sContent = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $sContent);
-		$sContent = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $sContent);
+		$sContent = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), ' ', $sContent);
 		$sContent = preg_replace('/\.\.\/image\//i', '../' . $sThemePath, $sContent);
 	}	
 	else 

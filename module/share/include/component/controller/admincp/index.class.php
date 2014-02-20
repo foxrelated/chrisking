@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: index.class.php 2846 2011-08-18 09:30:49Z Raymond_Benc $
+ * @version 		$Id: index.class.php 6113 2013-06-21 13:58:40Z Raymond_Benc $
  */
 class Share_Component_Controller_Admincp_Index extends Phpfox_Component
 {
@@ -30,7 +30,7 @@ class Share_Component_Controller_Admincp_Index extends Phpfox_Component
 			->setBreadcrumb(Phpfox::getPhrase('share.manage_sites'), null, true)
 			->setHeader('cache', array(
 					'drag.js' => 'static_script',
-					'<script type="text/javascript">Core_drag.init({table: \'#js_drag_drop\', ajax: \'share.ordering\'});</script>'		
+					'<script type="text/javascript">$Behavior.coreDragInit = function() { Core_drag.init({table: \'#js_drag_drop\', ajax: \'share.ordering\'}); }</script>'
 				)
 			)			
 			->assign(array(

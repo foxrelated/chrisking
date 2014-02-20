@@ -10,7 +10,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: request.class.php 1320 2009-12-15 14:29:49Z Raymond_Benc $
+ * @version 		$Id: request.class.php 6530 2013-08-29 11:09:03Z Miguel_Espinoza $
  */
 class Friend_Component_Block_Request extends Phpfox_Component
 {
@@ -48,7 +48,7 @@ class Friend_Component_Block_Request extends Phpfox_Component
 				)
 			)
 			->setHeader(array(
-					'jquery/plugin/jquery.limitTextarea.js' => 'static_script'
+					//'jquery/plugin/jquery.limitTextarea.js' => 'static_script'
 				)
 			)
 			->assign(array(

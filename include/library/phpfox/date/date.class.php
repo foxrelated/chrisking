@@ -21,7 +21,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: date.class.php 5073 2012-12-06 10:23:21Z Raymond_Benc $
+ * @version 		$Id: date.class.php 6109 2013-06-21 11:48:16Z Raymond_Benc $
  */
 class Phpfox_Date
 {
@@ -459,7 +459,7 @@ class Phpfox_Date
 			$iTime = PHPFOX_TIME;
 		}
 
-		$iSat = 5;
+		$iSat = 7;
 		$iDayOfWeek = date('w', $iTime);
 		$iDaysUntilSat = $iSat - $iDayOfWeek;
 

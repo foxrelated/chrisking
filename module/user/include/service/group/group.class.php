@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: group.class.php 4490 2012-07-10 10:02:38Z Miguel_Espinoza $
+ * @version 		$Id: group.class.php 5612 2013-04-05 07:46:26Z Miguel_Espinoza $
  */
 class User_Service_Group_Group extends Phpfox_Service 
 {
@@ -34,12 +34,45 @@ class User_Service_Group_Group extends Phpfox_Service
 			'cache' => true,
 			'cache_name' => 'user_group'
 		);
-		
-		return $this->database()->select('user_group.*')
+		if (empty($aConds))
+        {
+            $aConds[] = 'user_group.user_group_id > 0';
+        }
+		$aGroups = $this->database()->select('user_group.*')
 			->from($this->_sTable, 'user_group')
 			->where($aConds)
 			->order('user_group.user_group_id ASC')
 			->execute('getRows', ($aConds ? null : $aCache));
+		
+		
+		return $aGroups;
+	}
+	
+	public function getAll()
+	{
+		if (Phpfox::getParam('user.cache_user_groups'))
+		{
+			if ( ($aGroups = $this->cache()->get('user_groups')) );
+			{
+				if (!is_array($aGroups))
+				{
+					$aGroups = array();
+				} 
+				return $aGroups;
+			}
+		}
+		
+		$aGroups = $this->database()->select('user_group.*')
+			->from($this->_sTable, 'user_group')
+			->order('user_group.user_group_id ASC')
+			->execute('getSlaveRows');
+			
+		if (Phpfox::getParam('user.cache_user_groups'))
+		{
+			$this->cache()->save('user_groups', $aGroups);
+		}
+		
+		return $aGroups;
 	}
 	
 	public function getForEdit()

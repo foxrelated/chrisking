@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: friend.class.php 1224 2009-10-27 19:03:46Z Raymond_Benc $
+ * @version 		$Id: friend.class.php 6223 2013-07-09 08:40:27Z Miguel_Espinoza $
  */
 class Share_Component_Block_Friend extends Phpfox_Component
 {
@@ -22,9 +22,12 @@ class Share_Component_Block_Friend extends Phpfox_Component
 	{
 		Phpfox::isUser(true);
 		
+		$sMessage = Phpfox::getPhrase('share.hi_check_this_out_bbcode', array('url' => $this->request()->get('url')));
+		$sMessage = str_replace("\n", "",  $sMessage);
+		
 		$this->template()->assign(array(
 				'sTitle' => $this->request()->get('title'),
-				'sMessage' => Phpfox::getPhrase('share.hi_check_this_out_bbcode', array('url' => $this->request()->get('url')))
+				'sMessage' => $sMessage
 			)
 		);	
 	}

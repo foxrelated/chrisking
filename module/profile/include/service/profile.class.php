@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: profile.class.php 4771 2012-09-26 10:06:58Z Raymond_Benc $
+ * @version 		$Id: profile.class.php 6587 2013-09-05 10:03:17Z Miguel_Espinoza $
  */
 class Profile_Service_Profile extends Phpfox_Service 
 {
@@ -78,6 +78,28 @@ class Profile_Service_Profile extends Phpfox_Service
 			return false;
 		}
 		
+		if (defined('PAGE_TIME_LINE') && PAGE_TIME_LINE)
+		{
+			return true;
+		}
+		
+		$iUserId = Phpfox::getLib('request')->get('profile_user_id');
+		
+		
+		if ((defined('PHPFOX_IS_USER_PROFILE') || !empty($iUserId)) && Phpfox::isModule('feed') && Phpfox::getParam('feed.force_timeline'))
+		{
+		    return true;
+		}
+		
+		if (PHPFOX_IS_AJAX && (
+				Phpfox::getLib('request')->get('action') == 'upload_photo_via_share' &&
+				Phpfox::getLib('request')->get('callback_module') == 'pages' &&
+				Phpfox::getService('pages')->timelineEnabled(Phpfox::getLib('request')->get('callback_item_id'))
+			))
+		{
+			return true;
+		}
+		
 		if (Phpfox::isModule('feed') && !Phpfox::getParam('feed.force_timeline'))
 		{
 			if (Phpfox::getParam('feed.timeline_optional') && PHPFOX_IS_AJAX && Phpfox::getLib('request')->get('profile_user_id') > 0)
@@ -99,6 +121,7 @@ class Profile_Service_Profile extends Phpfox_Service
 			}		
 			
 			$aCore = Phpfox::getLib('request')->get('core');
+			
 			if (PHPFOX_IS_AJAX && Phpfox::getParam('feed.timeline_optional') && isset($aCore['profile_user_id']) && $aCore['profile_user_id'] > 0)
 			{
 				Phpfox::getService('user')->get($aCore['profile_user_id']);
@@ -108,13 +131,7 @@ class Profile_Service_Profile extends Phpfox_Service
 					return true;
 				}
 			}			
-					
 			return false;
-		}
-		
-		if (PHPFOX_IS_AJAX && Phpfox::getLib('request')->get('profile_user_id') > 0)
-		{
-			return true;
 		}
 		
 		return (defined('PHPFOX_IS_USER_PROFILE') ? true : false);
@@ -147,7 +164,8 @@ class Profile_Service_Profile extends Phpfox_Service
 				{
 					continue;
 				}
-				$aMenus[] = $aModuleCall[0];
+				// $aMenus[] = $aModuleCall[0];
+				$aMenus = array_merge($aMenus, $aModuleCall);
 			}
 		}
 		
@@ -186,7 +204,7 @@ class Profile_Service_Profile extends Phpfox_Service
 				$aMenus[$iKey]['is_selected'] = true;
 			}
 			
-			if ($aMenu['url'] == 'profile.photo' && Phpfox::getLib('request')->get('req2') == 'photo' && Phpfox::getLib('request')->get('req3') == 'albums')
+			if ($aMenu['url'] == 'profile.photo' && Phpfox::getLib('request')->get('req2') == 'photo' && (Phpfox::getLib('request')->get('req3') == 'albums' || Phpfox::getLib('request')->get('req3') == 'photos'))
 			{
 				$aMenus[$iKey]['is_selected'] = true;
 			}
@@ -202,7 +220,11 @@ class Profile_Service_Profile extends Phpfox_Service
 				$aMenus[$iKey]['url'] = $aUser['user_name'] . '.' . Phpfox::getLib('url')->doRewrite(preg_replace("/^profile\.(.*)$/i", "\\1", $aMenu['url']));
 			}
 		}		
-		
+		/* Reminder for purefan add a hook here */
+		if ($sPlugin = Phpfox_Plugin::get('profile.service_profile_get_profile_menu'))
+		{
+			eval($sPlugin);
+		}
 		return $aMenus;	
 	}
 	
@@ -216,6 +238,14 @@ class Profile_Service_Profile extends Phpfox_Service
 		return (int) $this->_iUserId;
 	}
 	
+    public function getInfoForAction($aItem)
+    {
+        if (isset($aItem['item_type_id']) && $aItem['item_type_id'] == 'user-status')
+        {
+            return Phpfox::getService('user')->getInfoForAction($aItem);
+        }
+    }
+    
 	/**
 	 * If a call is made to an unknown method attempt to connect
 	 * it to a specific plug-in with the same name thus allowing 

@@ -15,9 +15,9 @@ Phpfox::getLibClass('phpfox.gateway.interface');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: gateway.class.php 1666 2010-07-07 08:17:00Z Raymond_Benc $
+ * @version 		$Id: gateway.class.php 7120 2014-02-18 13:56:29Z Fern $
  */
-final class Phpfox_Gateway
+class Phpfox_Gateway
 {
 	/**
 	 * Holds an ARRAY of API objects
@@ -53,7 +53,11 @@ final class Phpfox_Gateway
 			{
 				$this->_aObject[$sGateway]->set($aSettings);
 			}
-		}		
+		}
+		else if (isset($aSettings['currency_code']))
+		{
+			$this->_aObject[$sGateway]->set($aSettings);
+		}
 		
 		return $this->_aObject[$sGateway];
 	}
@@ -66,7 +70,17 @@ final class Phpfox_Gateway
 	 */
 	public function url($sGateway)
 	{
-		return Phpfox::getLib('phpfox.url')->makeUrl('api.gateway.callback', array($sGateway));
+		// Make URL, no matter whether short URL is enabled or not
+		$sUrl = Phpfox::getLib('phpfox.url')->makeUrl('api.gateway.callback', array($sGateway));
+		// Disable use of short URLs if enabled
+		if(Phpfox::getParam('core.url_rewrite') == 1)
+		{
+			Phpfox::getLib('setting')->setParam('core.url_rewrite', 2);
+			$sUrl = Phpfox::getLib('phpfox.url')->makeUrl('api.gateway.callback', array($sGateway));
+			Phpfox::getLib('setting')->setParam('core.url_rewrite', 1);
+		}
+		
+		return $sUrl;
 	}
 }
 

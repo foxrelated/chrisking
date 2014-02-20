@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Miguel Espinoza
  * @package  		Module_User
- * @version 		$Id: process.class.php 1496 2010-03-05 17:15:05Z Raymond_Benc $
+ * @version 		$Id: process.class.php 5612 2013-04-05 07:46:26Z Miguel_Espinoza $
  */
 class User_Service_Featured_Process extends Phpfox_Service
 {	
@@ -34,9 +34,7 @@ class User_Service_Featured_Process extends Phpfox_Service
 		
 		(($sPlugin = Phpfox_Plugin::get('user.service_featured_feature_start')) ? eval($sPlugin) : false);
 		$iUser = (int)$iUser;
-		/** @TODO When the featured users are cached you need to change this routine to check first for the cache
-		 * [X] Change: no need to check the cache since this is a very fast query, checking the cache could actually be slower
-		 */
+		
 		$bAlready = $this->database()
 				->select('count(user_id)')
 				->from($this->_sTable)
@@ -47,12 +45,25 @@ class User_Service_Featured_Process extends Phpfox_Service
 		if ($bAlready > 0) return true;
 
 		(($sPlugin = Phpfox_Plugin::get('user.service_featured_feature_end')) ? eval($sPlugin) : false);
+		
 		$this->database()->insert($this->_sTable, array('user_id' => $iUser));
 		// clear the cache
-		$this->cache()->remove('featured_users');
+		$this->cacheFeaturedUsers();
+		
 		return true;
 	}
 
+	public function cacheFeaturedUsers()
+	{
+		if (Phpfox::getParam('user.cache_featured_users') != true) return;
+				
+		$this->cache()->remove('featured_users');
+		
+		// This function does the caching for us
+		$aUsers = Phpfox::getService('user.featured')->get();
+		
+			
+	}
 	/**
 	 * Updates the order of a featured member and clears the cache
 	 * @param INT $iUser `user_featured`.`user_id`
@@ -67,7 +78,7 @@ class User_Service_Featured_Process extends Phpfox_Service
 		{			
 			$this->database()->update($this->_sTable, array('ordering' => (int)$iPos), 'user_id = ' . (int)$iUser);
 		}
-		$this->cache()->remove('featured_users');
+		$this->cacheFeaturedUsers();
 		return true;
 	}
 
@@ -80,7 +91,7 @@ class User_Service_Featured_Process extends Phpfox_Service
 	{
 		if (!Phpfox::getUserParam('user.can_feature'))	return false;
 		$this->database()->delete($this->_sTable, 'user_id = ' . (int)$iUser);
-		$this->cache()->remove('featured_users');
+		$this->cacheFeaturedUsers();
 		return true;
 	}
 

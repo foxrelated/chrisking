@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: group.class.php 4953 2012-10-24 10:05:25Z Raymond_Benc $
+ * @version 		$Id: group.class.php 6545 2013-08-30 08:41:44Z Raymond_Benc $
  */
 class Admincp_Service_Setting_Group_Group extends Phpfox_Service 
 {
@@ -55,20 +55,21 @@ class Admincp_Service_Setting_Group_Group extends Phpfox_Service
 			}			
 		}
 		
-		if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
+		if (defined('PHPFOX_IS_HOSTED_SCRIPT') && !defined('PHPFOX_GROUPLY_TEST'))
 		{
 			$aNotAllowedToEdit = array(
 					'archive_handler',
 					'cdn_content_delivery_network',
 					'cookie',
 					'debug',
-					'ftp'
+					'ftp',
+					'image_processing'
 				);
 		}
 		
 		foreach ($aRows as $aRow)
 		{			
-			if (defined('PHPFOX_IS_HOSTED_SCRIPT') && !defined('PHPFOX_SHOW_HIDDEN'))
+			if (defined('PHPFOX_IS_HOSTED_SCRIPT') && !defined('PHPFOX_SHOW_HIDDEN') && !defined('PHPFOX_GROUPLY_TEST'))
 			{
 				if (in_array($aRow['group_id'], $aNotAllowedToEdit))
 				{

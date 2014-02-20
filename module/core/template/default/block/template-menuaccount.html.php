@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox
- * @version 		$Id: template-menuaccount.html.php 5028 2012-11-19 09:57:54Z Raymond_Benc $
+ * @version 		$Id: template-menuaccount.html.php 5074 2012-12-06 10:37:26Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 

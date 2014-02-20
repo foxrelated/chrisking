@@ -12,7 +12,7 @@ $Core.categorySort =
 	}
 }
 
-$(function()
+$Behavior.photo_sort_init = function()
 {
 	$('#js_all_photo_category').remove();	
 	
@@ -44,4 +44,4 @@ $(function()
 		
 		return false;
 	});
-});
+};

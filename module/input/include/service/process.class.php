@@ -382,6 +382,9 @@ class Input_Service_Process extends Phpfox_Service
 		$this->database()->delete(Phpfox::getT('input_value_longtext'),'field_id = ' . (int)$iId);
 		$this->database()->delete(Phpfox::getT('input_value_shorttext'),'field_id = ' . (int)$iId);
 		$this->database()->delete(Phpfox::getT('input_value_option'),'field_id = ' . (int)$iId);
+		
+		$this->cache()->remove();
+		
 		return true;
 	}
 
@@ -406,6 +409,10 @@ class Input_Service_Process extends Phpfox_Service
 		}
 
 		$aInputId = $this->database()->select('field_id')->from(Phpfox::getT('input_field'))->execute('getSlaveRows');
+		if (!count($aInputId))
+		{
+			return;
+		}
 		$sWhere = '';
 		foreach ($aInputId as $aInput)
 		{

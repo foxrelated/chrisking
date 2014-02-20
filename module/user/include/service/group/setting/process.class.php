@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: process.class.php 4497 2012-07-11 10:27:33Z Miguel_Espinoza $
+ * @version 		$Id: process.class.php 6547 2013-08-30 09:59:50Z Fern $
  */
 class User_Service_Group_Setting_Process extends Phpfox_Service 
 {	
@@ -191,38 +191,44 @@ class User_Service_Group_Setting_Process extends Phpfox_Service
 						$sValue = '0';
 					}
 					break;
-				case 'integer':
+                                case 'integer':					
 					$sValue = strtolower($sValue);
 					if (!is_numeric($sValue) && $sValue != 'null')
 					{
 						$sValue = 0;
 					}
 					break;
+                                case 'string' && !is_array($sValue):
+                                        $sValue = Phpfox::getLib('parse.input')->clean($sValue);
+                                        $sValue = Phpfox::getLib('parse.output')->shorten($sValue, 255);
+                                        break;
 			}
 
 			if (isset($aVals['sponsor_setting_id_'.$iId]) && $iId == $aVals['sponsor_setting_id_'.$iId])
 			{
+				
 			    $iEmpty = 0;
 			    foreach($aVals['value_actual'][$iId] as $sCurrency => $iValue)
 			    {
-				if (preg_match('/[^\d\.]/',$iValue))
-				{
-				    return Phpfox_Error::set(mysql_real_escape_string(Phpfox::getPhrase('core.money_field_only_accepts_numbers_and_point')));
-				}
-				if (empty($iValue))
-				{
-				    $iEmpty++;
-				}
-				if (substr_count($iValue, '.') > 1)
-				{
-				    return Phpfox_Error::set(Phpfox::getPhrase('core.only_one_point_is_allowed'));
-				}
+					if (preg_match('/[^\d\.]/',$iValue))
+					{
+						return Phpfox_Error::set(mysql_real_escape_string(Phpfox::getPhrase('core.money_field_only_accepts_numbers_and_point')));
+					}
+					if (empty($iValue))
+					{
+						$iEmpty++;
+					}
+					if (substr_count($iValue, '.') > 1)
+					{
+						return Phpfox_Error::set(Phpfox::getPhrase('core.only_one_point_is_allowed'));
+					}
 			    }
 			    if ($iEmpty > 0 && count($aVals['value_actual'][$iId]) > $iEmpty)
 			    {
 					return Phpfox_Error::set(Phpfox::getPhrase('core.money_fields_are_required'));
 			    }
 			    $sValue = serialize($aVals['value_actual'][$iId]);
+			    $bDeb = true;
 			}
 
 			$aSql[] = array(
@@ -230,15 +236,23 @@ class User_Service_Group_Setting_Process extends Phpfox_Service
 				$iId,
 				$sValue
 			);
-
+			
 		}		
+		//d('Final:');
+		//d($aSql);die();
 		
+		foreach ($aSql as $aRow)
+		{
+			$this->database()->delete(Phpfox::getT('user_setting'), 'user_group_id = ' . $aRow[0] . ' AND setting_id = ' . $aRow[1]);
+			$this->database()->insert(Phpfox::getT('user_setting'), array( 'user_group_id' => $aRow[0], 'setting_id' => $aRow[1], 'value_actual' => $aRow[2]));
+		}
+		/*
 		$this->database()->multiInsert(Phpfox::getT('user_setting'), array(
 			'user_group_id',
 			'setting_id',
 			'value_actual'
 		), $aSql);			
-		
+		*/
 		if (!isset($aVals['bDontClearCache']))
 		{
 			$this->cache()->remove('user_group_setting_' . $iGroupId);

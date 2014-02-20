@@ -13,7 +13,7 @@
 		</a>
 	</li>
 {/if}
-
+{if Phpfox::getUserParam('pages.can_add_cover_photo_pages')}
 <li>
 	<a href="#" onclick="$(this).parent().find('.cover_section_menu_drop:first').toggle(); event.cancelBubble = true; if (event.stopPropagation) event.stopPropagation();return false;">
 		{if empty($aPage.cover_photo_id)}
@@ -49,3 +49,4 @@
 		</ul>
 	</div>
 </li>
+{/if}

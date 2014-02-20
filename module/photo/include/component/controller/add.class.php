@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: add.class.php 4449 2012-07-02 13:49:23Z Raymond_Benc $
+ * @version 		$Id: add.class.php 6858 2013-11-06 17:27:45Z Fern $
  */ 
 class Photo_Component_Controller_Add extends Phpfox_Component
 {
@@ -47,11 +47,13 @@ class Photo_Component_Controller_Add extends Phpfox_Component
 		if (Phpfox::isMobile() || $this->request()->isIOS())
 		{
 			$sMethod = 'simple';
+			/*
 			$this->template()->setHeader(array(
 				'<script type="text/javascript">
 						var flash_user_id = '.Phpfox::getUserId() .';
 						var sHash = "'.Phpfox::getService('core')->getHashForUpload().'";window.name="my_form";</script>',
 						));
+				
 			if ( ($sBrowser = Phpfox::getLib('request')->getBrowser()) && strpos($sBrowser, 'Safari') !== false)
 			{
 				$this->template()->setHeader(array(
@@ -59,6 +61,7 @@ class Photo_Component_Controller_Add extends Phpfox_Component
 					))
 				->assign(array('bRawFileInput' => true));
 			}
+		*/
 		}
 		$this->template()->setPhrase(array(
 			'core.select_a_file_to_upload'
@@ -122,10 +125,8 @@ class Photo_Component_Controller_Add extends Phpfox_Component
 				)
 			);			
 		}
-		else if ($this->request()->isIOS() == false)
-		{
-			 $this->template()->setHeader('<script type="text/javascript">$Behavior.photoProgressBarSettings = function(){ if ($Core.exists(\'#js_photo_form_holder\')) { oProgressBar = {holder: \'#js_photo_form_holder\', progress_id: \'#js_progress_bar\', uploader: \'#js_photo_upload_input\', add_more: ' . ($bCantUploadMore ? 'false' : 'true') . ', max_upload: ' . Phpfox::getUserParam('photo.max_images_per_upload') . ', total: 1, frame_id: \'js_upload_frame\', file_id: \'image[]\', valid_file_ext: new Array(\'gif\', \'png\', \'jpg\', \'jpeg\')}; $Core.progressBarInit(); } }</script>');	
-		}
+
+		$this->template()->setHeader('<script type="text/javascript">$Behavior.photoProgressBarSettings = function(){ if ($Core.exists(\'#js_photo_form_holder\')) { oProgressBar = {html5upload: ' . (Phpfox::getParam('photo.html5_upload_photo') ? 'true' : 'false') . ', holder: \'#js_photo_form_holder\', progress_id: \'#js_progress_bar\', uploader: \'#js_photo_upload_input\', add_more: ' . ($bCantUploadMore ? 'false' : 'true') . ', max_upload: ' . Phpfox::getUserParam('photo.max_images_per_upload') . ', total: 1, frame_id: \'js_upload_frame\', file_id: \'image[]\', valid_file_ext: new Array(\'gif\', \'png\', \'jpg\', \'jpeg\')}; $Core.progressBarInit(); } }</script>');
 		
 		$aCallback = false;
 		if ($sModule !== false && $iItem !== false && Phpfox::hasCallback($sModule, 'getPhotoDetails'))
@@ -157,12 +158,18 @@ class Photo_Component_Controller_Add extends Phpfox_Component
 			->setHeader('cache', array(
 					'progress.js' => 'static_script'
 				)
-			)			
+			)
+			->setPhrase(array(
+					'core.not_a_valid_file_extension_we_only_allow_ext',
+					'photo.photo_uploads',
+					'photo.upload_complete_we_are_currently_processing_the_photos'
+				)
+			)
 			->assign(array(
 					'iMaxFileSize' => $iMaxFileSize,
 					'iAlbumId' => $this->request()->getInt('album'),
 					'aAlbums' => $aPhotoAlbums, // Get all the photo albums for this specific user
-					'sModule' => $sModule,
+					'sModuleContainer' => $sModule,
 					'iItem' => $iItem,
 					'sMethod' => $sMethod,
 					'sMethodUrl' => $sMethodUrl,

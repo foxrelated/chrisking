@@ -56,7 +56,8 @@ class Pages_Service_Browse extends Phpfox_Service
 		
 		if (Phpfox::isUser() && Phpfox::isModule('like'))
 		{
-			$this->database()->select('lik.like_id AS is_liked, ')->leftJoin(Phpfox::getT('like'), 'lik', 'lik.type_id = \'pages\' AND lik.item_id = pages.page_id AND lik.user_id = ' . Phpfox::getUserId());
+			$this->database()->select('lik.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'lik', 'lik.type_id = \'pages\' AND lik.item_id = pages.page_id AND lik.user_id = ' . Phpfox::getUserId());
 		}		
 	}
 	

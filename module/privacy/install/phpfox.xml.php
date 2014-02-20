@@ -22,6 +22,8 @@
 		<hook module_id="privacy" hook_type="component" module="privacy" call_name="privacy.component_block_build_clean" added="1319729453" version_id="3.0.0rc1" />
 		<hook module_id="privacy" hook_type="component" module="privacy" call_name="privacy.component_block_form_clean" added="1319729453" version_id="3.0.0rc1" />
 		<hook module_id="privacy" hook_type="component" module="privacy" call_name="privacy.component_block_friend_clean" added="1319729453" version_id="3.0.0rc1" />
+		<hook module_id="privacy" hook_type="service" module="privacy" call_name="privacy.service_privacy_getphrase" added="1358258443" version_id="3.5.0beta1" />
+		<hook module_id="privacy" hook_type="component" module="privacy" call_name="privacy.component_block_form_process" added="1358258443" version_id="3.5.0beta1" />
 	</hooks>
 	<components>
 		<component module_id="privacy" component="invalid" m_connection="privacy.invalid" module="privacy" is_controller="1" is_block="0" is_active="1" />

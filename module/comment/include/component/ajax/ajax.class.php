@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Comment
- * @version 		$Id: ajax.class.php 5011 2012-11-12 09:02:36Z Raymond_Benc $
+ * @version 		$Id: ajax.class.php 7096 2014-02-06 17:32:04Z Fern $
  */
 class Comment_Component_Ajax_Ajax extends Phpfox_Ajax
 {
@@ -24,7 +24,16 @@ class Comment_Component_Ajax_Ajax extends Phpfox_Ajax
 		{
 			Phpfox::getUserParam($sVar, true);
 		}
-		Phpfox::getUserParam('comment.can_post_comments', true);
+		
+		if (!Phpfox::getUserParam('comment.can_post_comments'))
+		{
+			$this->html('#js_comment_process', '');
+			$this->call("$('#js_comment_submit').removeAttr('disabled');");
+			$this->hide('.js_feed_comment_process_form');
+			$this->alert('Your user group is not allowed to add comments.');			
+			
+			return false;
+		}
 		
 		(($sPlugin = Phpfox_Plugin::get('comment.component_ajax_ajax_add_start')) ? eval($sPlugin) : false);		
 		
@@ -124,7 +133,7 @@ class Comment_Component_Ajax_Ajax extends Phpfox_Ajax
 		{
 			$bPassCaptcha = false;
 			$this->call("$('#js_captcha_image').ajaxCall('captcha.reload', 'sId=js_captcha_image&sInput=image_verification');");			
-			$this->alert(Phpfox::getPhrase('captcha.captcha_failed_please_try_again'));
+			$this->alert(Phpfox::getPhrase('captcha.captcha_failed_please_try_again'), Phpfox::getPhrase('core.error'));
 			if (Phpfox::getParam('core.wysiwyg') == 'tinymce' && Phpfox::getParam('core.allow_html'))
 			{
 				$this->call("tinyMCE.execCommand('mceSetContent',false, '" . str_replace("'", "\'", $aVals['text']) . "');");
@@ -132,13 +141,15 @@ class Comment_Component_Ajax_Ajax extends Phpfox_Ajax
 		}
 
 		if ($bPassCaptcha)
-		{			
+		{
 			if (($mId = Phpfox::getService('comment.process')->add($aVals)) === false)
 			{				
 				$this->html('#js_comment_process', '');
 				$this->call("$('#js_comment_submit').removeAttr('disabled');");
+				$this->hide('.js_feed_comment_process_form');
+				$this->val('.js_comment_feed_textarea', '');
 				// $this->alert(Phpfox::getPhrase('comment.cannot_comment_on_this_item_as_it_does_not_exist_any_longer'));		
-				
+
 				if (isset($aVals['is_via_feed']))
 				{
 					$this->hide('#js_feed_comment_form_' . $aVals['item_id'])->show('#js_feed_comment_form_mini_' . $aVals['item_id']);
@@ -146,7 +157,7 @@ class Comment_Component_Ajax_Ajax extends Phpfox_Ajax
 				
 				return false;
 			}
-			
+
 			$this->hide('#js_captcha_load_for_check');
 			
 			// Comment requires moderation
@@ -254,6 +265,20 @@ class Comment_Component_Ajax_Ajax extends Phpfox_Ajax
 			$this->call("if (\$Core.exists('.js_feed_comment_view_more_holder')) { $('.js_feed_comment_view_more_holder')[0].scrollTop = $('.js_feed_comment_view_more_holder')[0].scrollHeight; }");
 		}
 		
+		// http://www.phpfox.com/tracker/view/15074/
+		// get the onclick atrribute
+		$sCall = "sOnClick = $('#js_feed_comment_view_more_link_" . $aVals['is_via_feed'] . " .comment_mini_link .no_ajax_link').attr('onclick');";
+		// regex to get the params for the ajax call in this onlclick
+		$sCall .= "sPattern = new RegExp('(comment_)?type_id=[a-z]+&(amp;)?item_id=[0-9]+&(amp;)?feed_id=[0-9]+', 'i');";
+		// save the current ajax params
+		$sCall .= "sOnClickParam = sPattern.exec(sOnClick);";
+		// replace the params, adding the new "added" variable
+		$sCall .= "sNewOnClick = sOnClick.replace(sOnClickParam[0], sOnClickParam[0]+'&added=1');";
+		// replace the onclick attribute
+		$sCall .= "$('#js_feed_comment_view_more_link_" . $aVals['is_via_feed'] . " .comment_mini_link .no_ajax_link').attr('onclick', sNewOnClick);";
+		// call this JS code
+		$this->call($sCall);
+		
 		$this->call('$Core.loadInit();');
 	}
 	
@@ -356,7 +381,7 @@ class Comment_Component_Ajax_Ajax extends Phpfox_Ajax
 			$this->slideUp('#js_comment_' . $this->get('comment_id'));
 			if (!$this->get('photo_theater'))
 			{
-				$this->alert(Phpfox::getPhrase('comment.comment_successfully_deleted'));
+				// $this->alert(Phpfox::getPhrase('comment.comment_successfully_deleted'));
 			}
 			/*
 			if ($this->get('type_id') == 'feed')
@@ -431,7 +456,7 @@ class Comment_Component_Ajax_Ajax extends Phpfox_Ajax
 			{
 				foreach ($aComment['children']['comments'] as $aMini)
 				{
-					$this->template()->assign(array('aComment' => $aMini))->getTemplate('comment.block.mini');
+					$this->template()->assign(array('aComment' => $aMini, 'aFeed' => array('feed_id' => $this->get('item_id'))))->getTemplate('comment.block.mini');
 				}
 			}
 		}
@@ -443,7 +468,7 @@ class Comment_Component_Ajax_Ajax extends Phpfox_Ajax
 	
 	public function viewMoreFeed()
 	{		
-		$aComments = Phpfox::getService('comment')->getCommentsForFeed($this->get('comment_type_id'), $this->get('item_id'), Phpfox::getParam('comment.total_amount_of_comments_to_load'), ($this->get('total') ? (int) $this->get('total') : null));		
+		$aComments = Phpfox::getService('comment')->getCommentsForFeed($this->get('comment_type_id'), $this->get('item_id'), Phpfox::getParam('comment.comment_page_limit'), ($this->get('total') ? (int) $this->get('total') : null));		
 		
 		if (!count($aComments))
 		{
@@ -452,9 +477,17 @@ class Comment_Component_Ajax_Ajax extends Phpfox_Ajax
 			return false;
 		}
 		
+		// http://www.phpfox.com/tracker/view/15074/
+		// if the added parameter is 1
+		if($this->get('added') == 1)
+		{
+			// remove the last object, or it will be displayed as duplicate
+			array_pop($aComments);
+		}
+		
 		foreach ($aComments as $aComment)
 		{
-			$this->template()->assign(array('aComment' => $aComment))->getTemplate('comment.block.mini');
+			$this->template()->assign(array('aComment' => $aComment, 'aFeed' => array('feed_id' => $this->get('item_id'))))->getTemplate('comment.block.mini');
 		}
 		
 		if ($this->get('append'))

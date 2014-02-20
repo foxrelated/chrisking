@@ -20,6 +20,7 @@
 		<hook module_id="janrain" hook_type="service" module="janrain" call_name="janrain.service_callback__call" added="1319729453" version_id="3.0.0rc1" />
 		<hook module_id="janrain" hook_type="service" module="janrain" call_name="janrain.service_janrain__call" added="1319729453" version_id="3.0.0rc1" />
 		<hook module_id="janrain" hook_type="service" module="janrain" call_name="janrain.service_process__call" added="1319729453" version_id="3.0.0rc1" />
+		<hook module_id="janrain" hook_type="controller" module="janrain" call_name="janrain.component_controller_rpx_1" added="1378372973" version_id="3.7.0rc1" />
 	</hooks>
 	<phrases>
 		<phrase module_id="janrain" version_id="3.0.0beta1" var_name="module_janrain" added="1306309103">Janrain</phrase>

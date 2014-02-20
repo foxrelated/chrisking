@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: process.class.php 4980 2012-11-01 11:47:16Z Raymond_Benc $
+ * @version 		$Id: process.class.php 6545 2013-08-30 08:41:44Z Raymond_Benc $
  */
 class Theme_Service_Process extends Phpfox_Service 
 {
@@ -27,6 +27,16 @@ class Theme_Service_Process extends Phpfox_Service
 	public function __construct()
 	{	
 		$this->_sTable = Phpfox::getT('theme');	
+	}
+	
+	public function deleteUserMenu($iMenuId, $bRemove = false)
+	{
+		$this->database()->delete(Phpfox::getT('theme_umenu'), 'user_id = ' . Phpfox::getUserId() . ' AND menu_id = ' . (int) $iMenuId);
+		if (!$bRemove)
+		{
+			$this->database()->insert(Phpfox::getT('theme_umenu'), array('user_id' => Phpfox::getUserId(), 'menu_id' => $iMenuId));
+		}
+		Phpfox::getLib('cache')->remove(array('user', 'nbselectname_' . Phpfox::getUserId()));
 	}
 	
 	public function add($aVals, $iEditId = null, $sXmlData = null, $bIsImport = false)
@@ -261,6 +271,11 @@ class Theme_Service_Process extends Phpfox_Service
 		}
 		
 		$this->database()->update(Phpfox::getT($aCallback['table']), array($aCallback['field'] => (int) $iStyleId), $aCallback['action'] . ' = ' . $aCallback['value']);
+		if (Phpfox::getParam('core.super_cache_system'))
+		{
+			$this->cache()->remove('profile', 'substr');
+			$sCacheId = $this->cache()->remove(array('userdata', Phpfox::getUserId()));	
+		}
 		
 		if (isset($aCallback['javascript']))
 		{
@@ -321,6 +336,7 @@ class Theme_Service_Process extends Phpfox_Service
 	 */
 	public function updateOrder($aVals)
 	{
+		
 		$aCallback = Phpfox::callback($aVals['param']['type_id'] . '.getDetailOnOrderUpdate', $aVals);
 		
 		if ($aCallback === false)
@@ -335,6 +351,27 @@ class Theme_Service_Process extends Phpfox_Service
 				->where($aCallback['field'] . ' = ' . $aCallback['value'])
 				->execute('getRows');
 			$aCache = array();
+			
+			if (Phpfox::getParam('profile.cache_blocks_design'))
+			{
+				$aValidTables = array('pages_design_order','user_design_order','user_dashboard');
+				if (in_array($aCallback['table'], $aValidTables))
+				{					
+					$sCacheTable = 'user_design';
+					$oCache = Phpfox::getLib('cache');
+					if ($aCallback['table'] == 'pages_design_order')
+					{
+						$sCacheTable = 'pages_design';
+					}
+					else if ($aCallback['table'] == 'user_dashboard')
+					{
+						$sCacheTable = 'user_dashboard';
+					}
+					$sCacheId = $this->cache()->set(array($sCacheTable, Phpfox::getUserId()));
+					$this->cache()->remove($sCacheId);
+				}				
+			}
+			
 			foreach ($aRows as $aRow)
 			{
 				$aCache[$aRow['cache_id']] = true;
@@ -597,6 +634,11 @@ class Theme_Service_Process extends Phpfox_Service
 		
 		$this->database()->delete(Phpfox::getT('theme_template'), 'folder = \'' . $this->database()->escape($aTheme['folder']) . '\'');
 		$this->database()->delete(Phpfox::getT('theme'), 'theme_id = ' . $aTheme['theme_id']);		
+		if (Phpfox::getParam('core.super_cache_system'))
+		{
+			// We need to clear cache to update the themes in profiles. user module user service
+			$this->cache()->remove('profile', 'substr');
+		}
 		
 		if (Phpfox::getParam('core.ftp_enabled'))
 		{		
@@ -700,6 +742,7 @@ class Theme_Service_Process extends Phpfox_Service
 		$aParams['is_default'] = 0;
 
 		$iId = $this->database()->insert(Phpfox::getT('theme'), $aParams);
+		// I dont think we need to clear cache for profiles here, seems to be working fine without doing this -Purefan
 		
 		if ($mForce && Phpfox::getParam('core.phpfox_is_hosted'))
 		{
@@ -716,7 +759,7 @@ class Theme_Service_Process extends Phpfox_Service
 			if ($sFolder == '.' || $sFolder == '..')
 			{
 				continue;
-			}			
+			}
 		
 			if (!file_exists($sStyleDir . $sFolder . PHPFOX_DS . 'phpfox.xml'))
 			{
@@ -837,7 +880,8 @@ class Theme_Service_Process extends Phpfox_Service
 		if (file_exists($sActualFile))
 		{
 			$aParts = explode('upload/', $this->_sStyleDir);
-			$sUrl = Phpfox::getParam('core.rackspace_url') . $aParts[2];
+			$sUrl = Phpfox::getParam('core.rackspace_url') . $aParts[1];
+			Phpfox::getLib('cdn')->put($sActualFile, $aParts[1] . str_replace('..', '', $sImage));
 		}
 		else
 		{
@@ -852,21 +896,29 @@ class Theme_Service_Process extends Phpfox_Service
 	public function resetBlock($sType)
 	{
 		Phpfox::isUser(true);
-		
 		if ($sType == 'profile')
 		{
 			$this->database()->delete(Phpfox::getT('user_design_order'), 'user_id = ' . Phpfox::getUserId());
+			if (Phpfox::getParam('profile.cache_blocks_design'))
+			{
+				$sCacheId = $this->cache()->set(array('user_design', Phpfox::getUserId()));
+				$this->cache()->remove($sCacheId);
+			}
 		}
 		elseif ($sType == 'pages')
 		{
 			if (Phpfox::getService('pages')->isAdmin(Phpfox::getLib('request')->get('req2')))
 			{	
 				$this->database()->delete(Phpfox::getT('pages_design_order'), 'page_id = ' . (int) Phpfox::getLib('request')->get('req2'));
+				$sCacheId = $this->cache()->set(array('pages_design', Phpfox::getUserId()));
+				$this->cache()->remove($sCacheId);
 			}		
 		}
 		else
 		{
 			$this->database()->delete(Phpfox::getT('user_dashboard'), 'user_id = ' . Phpfox::getUserId());
+			$sCacheId = $this->cache()->set(array('user_dashboard', Phpfox::getUserId()));
+			$this->cache()->remove($sCacheId);
 		}
 		
 		return true;

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Ajax
- * @version 		$Id: ajax.class.php 4882 2012-10-11 04:57:29Z Raymond_Benc $
+ * @version 		$Id: ajax.class.php 6079 2013-06-17 12:01:11Z Miguel_Espinoza $
  */
 class Custom_Component_Ajax_Ajax extends Phpfox_Ajax
 {
@@ -90,7 +90,12 @@ class Custom_Component_Ajax_Ajax extends Phpfox_Ajax
 	
 	public function updateFields()
 	{
-		if ($aVals = $this->get('custom'))
+		$aVals = $this->get('custom');
+		if (empty($aVals))
+		{
+			$aVals = $this->get('val');
+		}
+		if (!(empty($aVals)))
 		{
 			$aCustomFields = Phpfox::getService('custom')->getForEdit(array('user_main', 'user_panel', 'profile_panel'), Phpfox::getUserId(), Phpfox::getUserBy('user_group_id'), false, Phpfox::getUserId());
 			foreach ($aCustomFields as $aCustomField)
@@ -107,6 +112,7 @@ class Custom_Component_Ajax_Ajax extends Phpfox_Ajax
 				}
 			}			
 			
+            if ($sPlugin = Phpfox_Plugin::get('custom.component_ajax_updatefields__1')){eval($sPlugin);if (isset($aPluginReturn)){return $aPluginReturn;}}
 			if (Phpfox_Error::isPassed())
 			{
 				$bReturnCustom = Phpfox::getService('custom.process')->updateFields(Phpfox::getUserId(), Phpfox::getUserId(), $aVals);

@@ -13,6 +13,24 @@ $Core.Pages = {
 	}
 };
 $Behavior.pagesBuilder = function(){
+	var sHash = 'js_pages_block_' + window.location.hash.replace('#','');
+	if (sHash.length > 0)
+	{
+	    $('.page_section_menu_header a').each(function()
+	    {	    
+		if ($(this).attr('rel') == sHash)
+		{
+		    var oObj = $(this);
+		    setTimeout(function(){
+			$('.active').removeClass('active');
+			$(oObj).parent().addClass('active');
+			$('.js_pages_block').hide();
+			$('#' + sHash).show();
+		    }, 600);
+		}
+	    });
+	}
+	
 	
 	// Creating/Editing pages
 	if ($Core.exists('#js_pages_add_holder')){
@@ -59,5 +77,9 @@ $Behavior.pagesBuilder = function(){
 			return false;
 		});
 	}
-	
+};
+
+$Behavior.contentHeight = function()
+{
+	$('#content').height($('.main_timeline').height());
 }

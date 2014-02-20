@@ -14,7 +14,7 @@ Phpfox::getLibClass('phpfox.image.interface');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: abstract.class.php 1666 2010-07-07 08:17:00Z Raymond_Benc $
+ * @version 		$Id: abstract.class.php 5357 2013-02-14 07:09:29Z Raymond_Benc $
  * @abstract 
  */
 abstract class Phpfox_Image_Abstract implements Phpfox_Image_Interface
@@ -102,6 +102,11 @@ abstract class Phpfox_Image_Abstract implements Phpfox_Image_Interface
 					break;
 				}				
 			}		
+		}
+		
+		if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
+		{
+			$sPath = str_replace(PHPFOX_DIR, rtrim(Phpfox::getParam('core.rackspace_url'), '/') . '/', $sPath);
 		}
 		
 		$this->sPath = $sPath;

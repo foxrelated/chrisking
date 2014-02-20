@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Miguel Espinoza
  * @package  		Module_User
- * @version 		$Id: remove.html.php 3827 2011-12-16 12:47:44Z Miguel_Espinoza $
+ * @version 		$Id: remove.html.php 6551 2013-08-30 10:50:19Z Raymond_Benc $
  */
 
 ?>
@@ -23,7 +23,7 @@ defined('PHPFOX') or exit('NO DICE!');
 			<tr>
 				{foreach from=$aFriends item=aFriend name=friends}
 				<td align='center'>
-					{img id='sJsUserImage_'$aFriend.friend_id'' user=$aFriend suffix='_120' max_width=1200 max_height=120}
+					{img id='sJsUserImage_'$aFriend.friend_id'' user=$aFriend suffix='_120_square' max_width=1200 max_height=120}
 					<br />
 					{phrase var='user.user_info_will_miss_you' user_info=$aFriend|user}
 				</td>
@@ -56,7 +56,7 @@ defined('PHPFOX') or exit('NO DICE!');
 				<textarea cols="40" rows="4" name="val[feedback_text]"></textarea>
 			</div>
 		</div>
-		{if !Phpfox::getUserBy('fb_user_id')}
+		{if !Phpfox::getUserBy('fb_user_id') && !Phpfox::getUserBy('janrain_user_id')}
 		<div class="table_left"  style="margin-top:15px;" >
 			{phrase var='user.enter_your_password'}:
 		</div>

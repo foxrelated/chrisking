@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Service
- * @version 		$Id: category.class.php 2818 2011-08-09 12:01:57Z Raymond_Benc $
+ * @version 		$Id: category.class.php 5099 2013-01-07 19:01:38Z Raymond_Benc $
  */
 class Pages_Service_Category_Category extends Phpfox_Service 
 {
@@ -21,6 +21,25 @@ class Pages_Service_Category_Category extends Phpfox_Service
 	public function __construct()
 	{	
 		$this->_sTable = Phpfox::getT('pages_category');
+	}
+	
+	public function getCategories()
+	{
+		$aRows = $this->database()->select('*')
+			->from(Phpfox::getT('pages_type'))
+			->where('is_active = 1')
+			->order('time_stamp DESC')			
+			->execute('getSlaveRows');
+		
+		foreach ($aRows as $iKey => $aRow)
+		{
+			$aRows[$iKey]['sub_categories'] = $this->database()->select('*')
+				->from(Phpfox::getT('pages_category'))
+				->where('type_id = ' . $aRow['type_id'] . ' AND is_active = 1')
+				->execute('getSlaveRows');
+		}
+		
+		return $aRows;
 	}
 	
 	public function getByTypeId($iTypeId)

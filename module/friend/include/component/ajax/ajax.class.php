@@ -11,10 +11,18 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: ajax.class.php 4767 2012-09-26 05:41:30Z Raymond_Benc $
+ * @version 		$Id: ajax.class.php 6926 2013-11-21 18:38:29Z Fern $
  */
 class Friend_Component_Ajax_Ajax extends Phpfox_Ajax
 {
+	public function getOnlineFriends()
+	{
+		Phpfox::getBlock('friend.mini');
+		
+		$this->call('$(\'#js_block_border_friend_mini\').find(\'.content:first\').html(\'' . $this->getContent() . '\');');
+		$this->call('$Core.loadInit();');
+	}
+	
 	/**
 	 * Shows the congratulate box for a birthday congratulation
 	 */
@@ -164,46 +172,55 @@ class Friend_Component_Ajax_Ajax extends Phpfox_Ajax
 		}
 		elseif (Phpfox::getService('friend.request')->isRequested(Phpfox::getUserId(), $aUser['user_id']))
 		{	
-			return false;
+			Phpfox_Error::set('You were already requested to be friends');
+			//return false;
 		}		
 		elseif (Phpfox::getService('friend.request')->isRequested($aUser['user_id'], Phpfox::getUserId()))
 		{
-			return false;
+			Phpfox_Error::set('You already requested to be friends');
+			//return false;
 		}
 		elseif (Phpfox::getService('friend')->isFriend($aUser['user_id'], Phpfox::getUserId()))
 		{	
-			return false;
+			Phpfox_Error::set('You are already friends with this user');
+			//return false;
 		}
 		else if (Phpfox::getService('user.block')->isBlocked($aUser['user_id'], Phpfox::getUserId()) /* is user blocked*/
 			&& (Phpfox::isModule('friend') && Phpfox::getParam('friend.allow_blocked_user_to_friend_request') == false)
 				)
 		{
 			$this->call('tb_remove();');
-			return Phpfox_Error::set('Unable to send a friend request to this user at this moment.');
+			return Phpfox_Error::set(Phpfox::getPhrase('friend.unable_to_send_a_friend_request_to_this_user_at_this_moment'));
 		}
-		
+		if (Phpfox_Error::isPassed() != true)
+		{
+			$this->call('tb_remove();');
+			return false;
+		}
 		if (Phpfox::getService('friend.request.process')->add(Phpfox::getUserId(), $aVals['user_id'], (isset($aVals['list_id']) ? $aVals['list_id'] : 0), $aVals['text']))
-		{	
+		{
 			if (isset($aVals['invite']))
 			{
 				$this->call('tb_remove();')->html('#js_invite_user_' . $aVals['user_id'], '' . Phpfox::getPhrase('friend.friend_request_successfully_sent') . '');	
 			}			
 			else 
 			{
-				$this->call('tb_remove(); $("#core_js_messages").message("' . Phpfox::getPhrase('friend.friend_request_successfully_sent') . '", "valid").slideDown("slow").fadeOut(5000);');
+				$this->call('tb_remove(); $("#core_js_messages").html(""); $("#core_js_messages").message("' . Phpfox::getPhrase('friend.friend_request_successfully_sent') . '", "valid").slideDown("slow").fadeOut(5000);');
 				$this->remove('#js_add_friend_on_profile');
-			}			
+			}
+
+			$this->call('$(\'#js_parent_user_' . $aVals['user_id'] . '\').find(\'.user_browse_add_friend:first\').hide();');
 			
 			if (isset($aVals['suggestion']))
 			{				
-				$this->loadSuggestion(true);
+				$this->loadSuggestion(false);
 			}
 			
 			if (isset($aVals['page_suggestion']))
 			{
 				$this->hide('#js_suggestion_parent_' . $aVals['user_id']);
 			}
-		}			
+		}		
 	}
 	
 	public function addList()
@@ -243,6 +260,7 @@ class Friend_Component_Ajax_Ajax extends Phpfox_Ajax
 					$this->call('$Core.friend.addNewList(' . (int) $iId . ', \'' . str_replace("'", "\\'", Phpfox::getLib('parse.input')->clean($sName)) . '\');');
 					$this->append('.sub_section_menu ul', '<li><a href="' . Phpfox::getLib('url')->makeUrl('friend', array('view' => 'list', 'id' => $iId)) . '">' . str_replace("'", "\\'", Phpfox::getLib('parse.input')->clean($sName)) . '</a></li>');
 				}
+				$this->call('$Core.loadInit()');
 			}
 		}
 	}
@@ -375,12 +393,19 @@ class Friend_Component_Ajax_Ajax extends Phpfox_Ajax
 	}
 	
 	public function delete()
-	{		
-		if (Phpfox::getService('friend.process')->delete($this->get('id')))
-		{			
+	{
+		$bDeleted = $this->get('id') ? Phpfox::getService('friend.process')->delete($this->get('id')) : Phpfox::getService('friend.process')->delete($this->get('friend_user_id'), false);
+		
+		if ($bDeleted)
+		{
+			if ($this->get('reload'))
+			{				
+				$this->call('window.location.href=window.location.href');
+				return;
+			}
 			$this->call('$("#js_friend_' . $this->get('id') . '").remove();');
 			$this->alert(Phpfox::getPhrase('friend.friend_successfully_removed'), Phpfox::getPhrase('friend.remove_friend'), 300, 150, true);
-		}	
+		}
 	}
 	
 	public function search()
@@ -414,7 +439,7 @@ class Friend_Component_Ajax_Ajax extends Phpfox_Ajax
 		}
 		else 
 		{
-			list($iCnt, $aFriends) = Phpfox::getService('friend')->get('friend.is_page = 0 AND friend.user_id = ' . Phpfox::getUserId() . ' AND (u.full_name LIKE \'%' . $oDb->escape($sFind) . '%\' OR (u.email LIKE \'%' . $oDb->escape($sFind) . '@%\' OR u.email = \'' . $oDb->escape($sFind) . '\'))', 'friend.time_stamp DESC', 0, 10, true, true);
+			list($iCnt, $aFriends) = Phpfox::getService('friend')->get('friend.is_page = 0 AND friend.user_id = ' . Phpfox::getUserId() . ' AND (u.full_name LIKE \'%' . Phpfox::getLib('parse.input')->convert($oDb->escape($sFind)) . '%\' OR (u.email LIKE \'%' . $oDb->escape($sFind) . '@%\' OR u.email = \'' . $oDb->escape($sFind) . '\'))', 'friend.time_stamp DESC', 0, 10, true, true);
 		}
 		
 		if ($iCnt)
@@ -422,7 +447,7 @@ class Friend_Component_Ajax_Ajax extends Phpfox_Ajax
 			$sHtml = '';
 			foreach ($aFriends as $aFriend)
 			{
-				$sHtml .= '<li><a href="#" onclick="$(\'#' . $this->get('div_id') . '\').parent().hide(); $(\'#' . $this->get('input_id') . '\').val(\'' . $aFriend['user_id'] . '\'); $(\'#' . $this->get('text_id') . '\').val(\'' . $aFriend['full_name'] . '\'); return false;">' . Phpfox::getLib('parse.output')->shorten(Phpfox::getLib('parse.output')->clean($aFriend['full_name']), 40, '...') . '</a></li>';
+				$sHtml .= '<li><a href="#" onclick="$(\'#' . $this->get('div_id') . '\').parent().hide(); $(\'#' . $this->get('input_id') . '\').val(\'' . $aFriend['user_id'] . '\'); $(\'#' . $this->get('text_id') . '\').val(\'' . addslashes(str_replace("O&#039;", "'", $aFriend['full_name'])) . '\'); return false;">' . Phpfox::getLib('parse.output')->shorten(Phpfox::getLib('parse.output')->clean($aFriend['full_name']), 40, '...') . '</a></li>';
 			}
 			$this->html('#' . $this->get('div_id'), '<ul>' . $sHtml . '</ul>');
 			$this->call('$(\'#' . $this->get('div_id') . '\').parent().show();');

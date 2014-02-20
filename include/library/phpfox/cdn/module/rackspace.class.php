@@ -51,21 +51,51 @@ class Phpfox_Cdn_Module_Rackspace extends Phpfox_Cdn_Abstract
 	 */
 	public function __construct()
 	{
+			
+	}
+	
+	public function connect()
+	{
+		static $bConnected = false;
+		
+		if ($bConnected === true)
+		{
+			return;
+		}
+		
 		require_once(PHPFOX_DIR_LIB . 'rackspace/cloudfiles.php');
 		
 		$oAuth = new CF_Authentication(Phpfox::getParam('core.rackspace_username'), Phpfox::getParam('core.rackspace_key'));
-		$oAuth->authenticate();
+		try
+		{
+			$oAuth->authenticate();
+		}
+		catch (Exception $e)
+		{
+			Phpfox_Error::trigger('Rackspace error: ' . $e->getMessage(), E_USER_ERROR);
+		}
 		$this->_oObject = new CF_Connection($oAuth);
-		$this->_sBucket = Phpfox::getParam('core.rackspace_container');	
+		$this->_sBucket = Phpfox::getParam('core.rackspace_container');
 		
-		$this->_oContainer = $this->_oObject->get_container($this->_sBucket);		
+		$this->_oContainer = $this->_oObject->get_container($this->_sBucket);
+		
+		$bConnected = true;
 	}
 	
 	public function remove($sFile)
 	{
+		$this->connect();
+		
 		$sName = str_replace("\\", '/', str_replace(PHPFOX_DIR, '', $sFile));
 		
-		$this->_oContainer->delete_object($sName);
+		try
+		{
+			$this->_oContainer->delete_object($sName);
+		}
+		catch(Exception $hException)
+		{
+			//Phpfox_Error::set($hException->getMessage());
+		} 
 	}	
 	
 	/**
@@ -77,6 +107,10 @@ class Phpfox_Cdn_Module_Rackspace extends Phpfox_Cdn_Abstract
 	 */
 	public function put($sFile, $sName = null)
 	{	
+		$this->connect();
+		
+		Phpfox_Error::skip(true);
+		
 		if (empty($sName))
 		{
 			$sName = str_replace("\\", '/', str_replace(PHPFOX_DIR, '', $sFile));
@@ -84,16 +118,42 @@ class Phpfox_Cdn_Module_Rackspace extends Phpfox_Cdn_Abstract
 		
 		$object = $this->_oContainer->create_object($sName);
 
-		$object->load_from_filename($sFile);
+		try
+		{
+			$object->load_from_filename($sFile);
+		}
+		catch(Exception $hException)
+		{
+			Phpfox_Error::trigger($hException->getMessage());
+		} 
 		
 		$this->_bIsUploaded = true;
-		$bDelete = false;
-		if ($bDelete)
+		
+		if (Phpfox::getParam('core.keep_files_in_server') == false)
 		{
-			unlink($sFile);
+			$oSess = Phpfox::getLib('session');
+			$aFiles = $oSess->get('deleteFiles');
+			if (is_array($aFiles))
+			{
+				$aFiles[] = $sFile;
+			}
+			else
+			{
+				$aFiles = array($sFile);
+			}
+			$oSess->set('deleteFiles',$aFiles);
 		}
 		
+		Phpfox_Error::skip(false);
+		
 		return true;
+	}
+	
+	public function getUsage()
+	{
+		$this->connect();
+		
+		return $this->_oContainer->bytes_used;
 	}
 	
 	/**

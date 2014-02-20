@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Feed
- * @version 		$Id: timeline.html.php 4398 2012-06-27 15:07:37Z Raymond_Benc $
+ * @version 		$Id: timeline.html.php 5458 2013-02-28 14:54:14Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -35,12 +35,12 @@ defined('PHPFOX') or exit('NO DICE!');
 				{/if}
 			{/if}	
 		</div>
-		<div style="margin-left:36px; overflow:hidden; width:85%;">
+		<div style="margin-left:36px; overflow:hidden; width:85%;" class="timeline_name_and_date_wrapper">
 			{$aFeed|user:'':'':'user.maximum_length_for_full_name'}{if $aFeed.parent_feed_id > 0} {phrase var='feed.shared'}{else}{if isset($aFeed.parent_user)} {img theme='layout/arrow.png' class='v_middle'} {$aFeed.parent_user|user:'parent_':'':'user.maximum_length_for_full_name'} {/if}{if !empty($aFeed.feed_info)} {$aFeed.feed_info}{/if}{/if}
-			<div class="extra_info">
-				{$aFeed.feed_time_stamp|convert_time:'feed.feed_display_time_stamp'}
+			<div class="extra_info timeline_date_1">
+				{$aFeed.time_stamp|convert_time:'feed.feed_display_time_stamp'}
 				{if $aFeed.privacy > 0 && ($aFeed.user_id == Phpfox::getUserId() || Phpfox::getUserParam('core.can_view_private_items'))}
-				<div class="js_hover_title">{img theme='layout/privacy_icon.png' alt=$aFeed.privacy}<span class="js_hover_info">{$aFeed.privacy|privacy_phrase}</span></div>
+				<div class="js_hover_title">{img theme='layout/privacy_icon.png' alt=$aFeed.privacy}<span class="js_hover_info">{if Phpfox::isModule('privacy')}{$aFeed.privacy|privacy_phrase}{else}Privacy {$aFeed.privacy} {/if}</span></div>
 				{/if}
 			</div>
 		</div>

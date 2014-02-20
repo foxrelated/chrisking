@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: file.class.php 1931 2010-10-25 11:58:06Z Raymond_Benc $
+ * @version 		$Id: file.class.php 5296 2013-01-31 12:37:12Z Miguel_Espinoza $
  */
 class Admincp_Component_Controller_Product_File extends Phpfox_Component
 {
@@ -39,12 +39,17 @@ class Admincp_Component_Controller_Product_File extends Phpfox_Component
 				}
 				else 
 				{
+					Phpfox::getLib('module')->_cacheModules();
+					Phpfox_Plugin::set();
+					if ($sPlugin = Phpfox_Plugin::get('admincp.component_controller_product_file_1')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
 					if ($this->request()->get('overwrite'))
 					{
+						if ($sPlugin = Phpfox_Plugin::get('admincp.component_controller_product_file_2')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
 						$this->url()->send('admincp', array('product'), Phpfox::getPhrase('admincp.product_successfully_installed'));	
 					}
 					else 
 					{
+						if ($sPlugin = Phpfox_Plugin::get('admincp.component_controller_product_file_3')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
 						$this->url()->send('admincp', array('product', 'file'), Phpfox::getPhrase('admincp.product_successfully_installed'));	
 					}
 				}

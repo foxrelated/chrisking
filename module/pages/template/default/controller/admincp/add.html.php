@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox
- * @version 		$Id: add.html.php 3402 2011-11-01 09:07:31Z Miguel_Espinoza $
+ * @version 		$Id: add.html.php 5387 2013-02-19 12:19:37Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -50,7 +50,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		<div class="clear"></div>		
 	</div>
 	{if $bIsEdit && !isset($aForms.category_id)}{else}
-	<div class="table" id="is_group">
+	<div class="table" id="is_group" style="display: none;">
 		<div class="table_left">
 			{phrase var='pages.is_a_group'}
 		</div>

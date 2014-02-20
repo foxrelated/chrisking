@@ -18,6 +18,9 @@ class Notification_Component_Ajax_Ajax extends Phpfox_Ajax
 	public function update()
 	{
 		Phpfox::massCallback('getGlobalNotifications');
+        
+        if ($sPlugin = Phpfox_Plugin::get('notification.component_ajax_update_1')){eval($sPlugin);}
+        
 		$this->call('$Core.notification.setTitle();');
 	}
 	
@@ -42,7 +45,15 @@ class Notification_Component_Ajax_Ajax extends Phpfox_Ajax
 		}
 		else
 		{
-			Phpfox::getBlock('notification.link');	
+			// This function caches into a static so it shouldn't be an extra load
+			/*
+			$aNotifications = Phpfox::getService('notification')->get();
+			if (count($aNotifications) < 1)
+			{
+				$this->call('<script type="text/javascript">$("#js_total_new_notifications").hide();</script>');
+			}
+			*/
+			Phpfox::getBlock('notification.link');
 		}
 	}
 	

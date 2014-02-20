@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: s3.class.php 4784 2012-09-27 09:02:08Z Miguel_Espinoza $
+ * @version 		$Id: s3.class.php 5038 2012-11-21 15:40:59Z Miguel_Espinoza $
  */
 class Phpfox_Cdn_Module_S3 extends Phpfox_Cdn_Abstract
 {
@@ -116,11 +116,19 @@ class Phpfox_Cdn_Module_S3 extends Phpfox_Cdn_Abstract
 
 		if ($this->_oObject->putObjectFile($sFile, $this->_sBucket, $sName,Phpfox::getParam('core.enable_amazon_expire_urls') ? S3::ACL_PRIVATE : S3::ACL_PUBLIC_READ))
 		{
-			$this->_bIsUploaded = true;
-			$bDelete = false; // turn this into a setting
-			if ($bDelete)
+			if (Phpfox::getParam('core.keep_files_in_server') == false)
 			{
-				unlink($sFile);
+				$oSess = Phpfox::getLib('session');
+				$aFiles = $oSess->get('deleteFiles');
+				if (is_array($aFiles))
+				{
+					$aFiles[] = $sFile;
+				}
+				else
+				{
+					$aFiles = array($sFile);
+				}
+				$oSess->set('deleteFiles',$aFiles);
 			}
 	
 			return true;

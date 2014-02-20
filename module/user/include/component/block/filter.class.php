@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: filter.class.php 2690 2011-06-23 13:14:12Z Raymond_Benc $
+ * @version 		$Id: filter.class.php 7021 2014-01-06 19:37:08Z Fern $
  */
 class User_Component_Block_Filter extends Phpfox_Component
 {
@@ -20,7 +20,16 @@ class User_Component_Block_Filter extends Phpfox_Component
 	 */
 	public function process()
 	{		
-		
+		// http://www.phpfox.com/tracker/view/14683/
+		$aSearch = $this->request()->getArray('search');
+		if(is_array($aSearch) && !empty($aSearch))
+		{
+			$this->template()->assign(array(
+					'sCountryISO' => isset($aSearch['country']) ? $aSearch['country'] : '',
+					'sCountryChildId' => isset($aSearch['country_child_id']) ? $aSearch['country_child_id'] : ''
+				)
+			);
+		}
 	}
 	
 	/**

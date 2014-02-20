@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Miguel Espinoza
  * @package  		Module_Contact
- * @version 		$Id: contact.class.php 4646 2012-09-17 11:25:24Z Raymond_Benc $
+ * @version 		$Id: contact.class.php 6968 2013-12-03 16:29:01Z Fern $
  */
 class Contact_Service_Contact extends Phpfox_Service
 {
@@ -70,8 +70,11 @@ class Contact_Service_Contact extends Phpfox_Service
 			$sText .= Phpfox::getPhrase('contact.full_name') . ': ' . Phpfox::getUserBy('full_name') . '<br />';
 			$sText .= Phpfox::getPhrase('contact.user_id') . ': ' . Phpfox::getUserId() . '<br />';
 			$sText .= Phpfox::getPhrase('contact.profile') . ': ' . Phpfox::getLib('url')->makeUrl(Phpfox::getUserBy('user_name')) . '<br />';
-			$sText .= '------------------------------------------------------------<br />';
 		}
+		
+		$sText .= Phpfox::getPhrase('contact.email') . ': ' . $aValues['email'] . '<br />';
+		$sText .= '------------------------------------------------------------<br />';
+		
 		if (!empty($aValues['category_id']) && $aValues['category_id'] == 'phpfox_sales_ticket')
 		{
 			$sText = $oParser->clean($aValues['text']);
@@ -103,7 +106,9 @@ class Contact_Service_Contact extends Phpfox_Service
 				->subject((!empty($aValues['category_id']) ? Phpfox::getLib('locale')->convert($aValues['category_id']) . ': ' : '') . $aValues['subject'])
 				->message($sText)
 				->fromName($aValues['full_name'])
-				->fromEmail($aValues['email'])
+				// Relay error SMTP http://www.phpfox.com/tracker/view/14866/
+				// ->fromEmail($aValues['email'])
+				->fromEmail(Phpfox::getParam('core.email_from_email'))
 				->send();
 
 			$bResult = $bResult && $bSend;

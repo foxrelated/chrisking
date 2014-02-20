@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Core
- * @version 		$Id: index-member.class.php 4358 2012-06-26 13:38:01Z Raymond_Benc $
+ * @version 		$Id: index-member.class.php 5908 2013-05-13 07:28:31Z Raymond_Benc $
  */
 class Core_Component_Controller_Index_Member extends Phpfox_Component 
 {
@@ -73,8 +73,8 @@ class Core_Component_Controller_Index_Member extends Phpfox_Component
 								)
 							)
 							->setHeader(array(												
-								'<script type="text/javascript">function designOnUpdate() { $Core.design.updateSorting(); }</script>',		
-								'<script type="text/javascript">$Core.design.init({type_id: \'user\'});</script>'
+								'<script type="text/javascript">$Behavior.core_controller_member_designonupdate = function() { function designOnUpdate() { $Core.design.updateSorting(); } };</script>',
+								'<script type="text/javascript">$Behavior.core_controller_init = function() { $Core.design.init({type_id: \'user\'}); };</script>'
 							)					
 					);						
 				}
@@ -93,7 +93,12 @@ class Core_Component_Controller_Index_Member extends Phpfox_Component
 					// '<script type="text/javascript">$Core.design.init({type_id: \'user\'});</script>'
 				)
 			);
-		}		
+		}
+
+		if (Phpfox::getParam('video.convert_servers_enable'))
+		{
+			$this->template()->setHeader('<script type="text/javascript">document.domain = "' . Phpfox::getParam('video.convert_js_parent') . '";</script>');
+		}
 		
 		Phpfox::getLib('module')->setCacheBlockData(array(
 				'table' => 'user_dashboard',
@@ -110,7 +115,8 @@ class Core_Component_Controller_Index_Member extends Phpfox_Component
 					'comment.css' => 'style_css',
 					'quick_edit.js' => 'static_script',
 					'jquery/plugin/jquery.highlightFade.js' => 'static_script',
-					'jquery/plugin/jquery.scrollTo.js' => 'static_script'					
+					'jquery/plugin/jquery.scrollTo.js' => 'static_script',
+                    'player/flowplayer/flowplayer.js' => 'static_script'
 				)
 			)
 			->setEditor(array(

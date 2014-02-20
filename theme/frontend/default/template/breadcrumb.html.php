@@ -5,15 +5,15 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: breadcrumb.html.php 2845 2011-08-18 08:06:52Z Raymond_Benc $
+ * @version 		$Id: breadcrumb.html.php 5844 2013-05-09 08:00:59Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
 
 ?>
 {if count($aBreadCrumbs)}
-<div id="breadcrumb_holder"{if !$bIsUsersProfilePage && count($aSubMenus)} class="has_section_menu"{/if}>
-	<div id="breadcrumb_content">
+<div id="breadcrumb_holder"{if !$bIsUsersProfilePage && count($aSubMenus)} class="has_section_menu"{/if} itemscope itemtype="http://schema.org/WebPage">
+	<div id="breadcrumb_content" itemprop="breadcrumb">
 		{if empty($aBreadCrumbTitle)}
 		{foreach from=$aBreadCrumbs key=sLink item=sCrumb name=link}
 		{if $phpfox.iteration.link == 1}

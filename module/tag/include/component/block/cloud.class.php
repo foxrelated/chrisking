@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Tag
- * @version 		$Id: cloud.class.php 3917 2012-02-20 18:21:08Z Raymond_Benc $
+ * @version 		$Id: cloud.class.php 6877 2013-11-12 11:18:43Z Miguel_Espinoza $
  */
 class Tag_Component_Block_Cloud extends Phpfox_Component 
 {
@@ -24,12 +24,16 @@ class Tag_Component_Block_Cloud extends Phpfox_Component
 		{
 			return false;
 		}
-		
+
 		$sType = $this->getParam('sTagType', null);
 		$bNoTagBlock = $this->getParam('bNoTagBlock', false);
+		if ($sType === null && !Phpfox::getParam('tag.enable_hashtag_support'))
+		{
+			return false;
+		}
 		
 		$aRows = Phpfox::getService('tag')->getTagCloud($sType, (($this->getParam('bIsProfile') === true && ($aUser = $this->getParam('aUser'))) ? $aUser['user_id'] : null), $this->getParam('iTagDisplayLimit', null));		
-		
+
 		if (!count($aRows))
 		{
 			return false;
@@ -51,10 +55,22 @@ class Tag_Component_Block_Cloud extends Phpfox_Component
 			);
 		}
 		
+		$iSince = (PHPFOX_TIME - (86400 * Phpfox::getParam('tag.tag_days_treading')));
+		$sTrendingSince = date(Phpfox::getParam('tag.trending_topics_timestamp'), $iSince);
+		if (strpos(Phpfox::getParam('tag.trending_topics_timestamp'), 'F') !== false)
+		{
+			$sTrendingSince = str_replace(date('F', $iSince), Phpfox::getLib('date')->getMonth(date('n', $iSince)), $sTrendingSince);
+		}
+		else if (strpos(Phpfox::getParam('tag.trending_topics_timestamp'), 'M') !== false)
+		{
+			$sTrendingSince = str_replace(date('M', $iSince), substr(Phpfox::getLib('date')->getMonth(date('n', $iSince)), 0, 3), $sTrendingSince);
+		}
+		
+		
 		$this->template()->assign(array(
 				'aRows' => $aRows,
 				'sTagGlobalType' => $sType,
-				'sTrendingSince' => date(Phpfox::getParam('tag.trending_topics_timestamp'), (PHPFOX_TIME - (86400 * Phpfox::getParam('tag.tag_days_treading'))))
+				'sTrendingSince' => $sTrendingSince
 			)
 		);
 		

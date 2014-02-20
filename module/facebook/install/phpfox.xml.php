@@ -36,6 +36,7 @@
 		<hook module_id="facebook" hook_type="service" module="facebook" call_name="facebook.service_callback__call" added="1266260139" version_id="2.0.4" />
 		<hook module_id="facebook" hook_type="service" module="facebook" call_name="facebook.service_process__call" added="1266260139" version_id="2.0.4" />
 		<hook module_id="facebook" hook_type="controller" module="facebook" call_name="facebook.component_controller_frame_clean" added="1290072896" version_id="2.0.7" />
+		<hook module_id="facebook" hook_type="controller" module="facebook" call_name="facebook.component_controller_unlink_clean" added="1358258443" version_id="3.5.0beta1" />
 	</hooks>
 	<phrases>
 		<phrase module_id="facebook" version_id="2.0.4" var_name="module_facebook" added="1264688556">Facebook Module</phrase>

@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: edit.html.php 4597 2012-08-17 07:27:46Z Raymond_Benc $
+ * @version 		$Id: edit.html.php 7128 2014-02-19 13:21:59Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -80,7 +80,14 @@ function addInput(oObj, sVarName)
 		<div><input type="hidden" name="val[value][{$aSetting.var_name}][real]" value="{$aSetting.value_actual}" size="40" /></div>
 		<select name="val[value][{$aSetting.var_name}][value]">
 		{foreach from=$aSetting.values.values key=mKey item=sDropValue}
-			<option value="{$sDropValue}" {if $aSetting.values.default == $sDropValue}selected="selected"{/if}>{$sDropValue}</option>
+			<option value="{$sDropValue}" {if $aSetting.values.default == $sDropValue}selected="selected"{/if}>
+				{if !empty($sDropValue) && !stripos( $sDropValue, ' ') && !stripos($sDropValue, '.')}
+					{php}{$this->_aVars['sDropValue'] = strtolower($this->_aVars['sDropValue']);}{/php}
+					{phrase var=$aSetting.module_id'.'$sDropValue}
+				{else}
+					{$sDropValue}
+				{/if}
+			</option>
 		{/foreach}
 		</select>
 		{elseif ($aSetting.type_id == 'drop_with_key')}

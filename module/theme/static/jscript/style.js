@@ -63,7 +63,7 @@ $Core.cssEditor =
 	}
 }
 
-$(function()
+$Behavior.theme_style_init_2 = function()
 {
 	$('.js_open_template_list').click(function()
 	{		
@@ -86,4 +86,4 @@ $(function()
 	
 	$('#js_template_content_loader').width($('#content_editor_text').width());
 	$('#js_template_content_loader').height(($('#content_editor_text').height()));	
-});
+};

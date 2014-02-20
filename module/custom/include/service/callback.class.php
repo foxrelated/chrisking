@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: callback.class.php 4690 2012-09-20 08:05:05Z Miguel_Espinoza $
+ * @version 		$Id: callback.class.php 7059 2014-01-22 14:20:10Z Fern $
  */
 class Custom_Service_Callback extends Phpfox_Service 
 {
@@ -115,8 +115,14 @@ class Custom_Service_Callback extends Phpfox_Service
 	
 	public function getRedirectCommentRelation($iId)
 	{
-		d($iId);
-		//die();
+		$aRow = $this->database()->select('crd.relation_data_id, u.user_name, f.feed_id')
+					->from(Phpfox::getT('feed'), 'f')
+					->join(Phpfox::getT('custom_relation_data'), 'crd', 'crd.user_id = f.user_id')
+					->join(Phpfox::getT('user'), 'u', 'u.user_id = f.user_id')
+					->where('f.item_id = ' . $iId . " AND f.type_id = 'custom_relation'")
+					->execute('getSlaveRow');
+
+		return Phpfox::getLib('url')->makeUrl($aRow['user_name'], array('feed' => $aRow['feed_id']));
 	}
 	
 	public function addLike($iItemId, $bDoNotSendEmail = false)
@@ -223,10 +229,14 @@ class Custom_Service_Callback extends Phpfox_Service
 		{
 		    //return false;
 		}
-		
-		if (Phpfox::isUser())
+		if (Phpfox::getParam('user.enable_relationship_status') != true)
 		{
-			$this->database()->select('l.like_id AS is_liked, ')->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'custom_relation\' AND l.item_id = crd.relation_data_id AND l.user_id = ' . Phpfox::getUserId());
+			return false;
+		}
+		if (Phpfox::isUser() && Phpfox::isModule('like'))
+		{
+			$this->database()->select('l.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'custom_relation\' AND l.item_id = crd.relation_data_id AND l.user_id = ' . Phpfox::getUserId());
 		}		
 		
 		/* New status */
@@ -306,6 +316,10 @@ class Custom_Service_Callback extends Phpfox_Service
 
 	public function addCommentRelation($aVals, $iUserId = null, $sUserName = null)
 	{
+		if (Phpfox::getParam('user.enable_relationship_status') != true)
+		{
+			return Phpfox_Error::trigger('Relations are disabled');
+		}
 		$aRow = $this->database()->select('cr.phrase_var_name, cf.relation_data_id, f.feed_id, u.full_name, u.gender, u.user_id, u.user_name')
 				->from(Phpfox::getT('custom_relation_data'), 'cf')
 				->join(Phpfox::getT('custom_relation'), 'cr', 'cr.relation_id = cf.relation_id')
@@ -358,6 +372,10 @@ class Custom_Service_Callback extends Phpfox_Service
 
 	public function addLikeRelation($iItemId, $bDoNotSendEmail = false)
 	{
+		if (Phpfox::getParam('user.enable_relationship_status') != true)
+		{
+			return false;
+		}
 		$aRow = $this->database()->select('crd.relation_data_id, crd.total_like, crd.user_id, cr.phrase_var_name')
 				->from(Phpfox::getT('custom_relation_data'), 'crd')
 				->join(Phpfox::getT('custom_relation'), 'cr', 'cr.relation_id = crd.relation_id')
@@ -421,7 +439,10 @@ class Custom_Service_Callback extends Phpfox_Service
 	
 	public function getNotificationComment_Relation($aNotification)
 	{
-		
+		if (Phpfox::getParam('user.enable_relationship_status') != true)
+		{
+			return false;
+		}
 		$aRow = $this->database()->select('l.relation_data_id, l.relation_data_id, cr.phrase_var_name, u.user_id, u.gender, u.user_name, u.full_name')	
 			->from(Phpfox::getT('custom_relation_data'), 'l')
 			->join(Phpfox::getT('custom_relation'), 'cr', 'cr.relation_id = l.relation_id')
@@ -838,6 +859,29 @@ class Custom_Service_Callback extends Phpfox_Service
 		}
 	}
 
+	public function getActionsRelation()
+	{
+		return $this->getActions();
+	}
+	
+	public function getActions()
+	{
+		return array(
+			'dislike' => array(
+				'enabled' => true,
+				'action_type_id' => 2, // sort of redundant given the key 
+				'phrase' => Phpfox::getPhrase('like.dislike'),
+				'phrase_in_past_tense' => 'disliked',
+				'item_type_id' => 'custom_relation', // used internally to differentiate between photo albums and photos for example.
+				'item_phrase' => Phpfox::getPhrase('profile.relationship_status'), // used to display to the user what kind of item is this
+				'table' => 'custom_relation_data',
+				'column_update' => 'total_dislike',
+				'column_find' => 'relation_data_id',
+				'where_to_show' => array('blog', '')
+				)
+		);
+	}
+	
 	/**
 	 * If a call is made to an unknown method attempt to connect
 	 * it to a specific plug-in with the same name thus allowing 

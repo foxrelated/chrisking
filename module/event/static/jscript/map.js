@@ -119,9 +119,14 @@ function initialize()
 
 function loadScript()
 {
+	sAddr = 'http://';
+	if (window.location.protocol == "https:")
+	{
+		sAddr = 'https://';
+	}
 	var script = document.createElement('script');
 	script.type= 'text/javascript';
-	script.src = 'http://maps.google.com/maps/api/js?sensor=false&callback=initialize';
+	script.src = sAddr+'maps.google.com/maps/api/js?sensor=false&callback=initialize';
 	document.body.appendChild(script);
 }
 

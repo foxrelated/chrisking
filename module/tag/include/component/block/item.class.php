@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Tag
- * @version 		$Id: item.class.php 1179 2009-10-12 13:56:40Z Raymond_Benc $
+ * @version 		$Id: item.class.php 6269 2013-07-15 15:25:14Z Raymond_Benc $
  */
 class Tag_Component_Block_Item extends Phpfox_Component 
 {
@@ -20,10 +20,27 @@ class Tag_Component_Block_Item extends Phpfox_Component
 	 */
 	public function process()
 	{
+		if (Phpfox::getParam('tag.enable_hashtag_support'))
+		{
+			return false;
+		}
+
+		if (!defined('PHPFOX_TAG_PARENT_MODULE'))
+		{
+			define('PHPFOX_TAG_PARENT_MODULE', $this->getParam('sTagListParentModule', null));
+		}
+		if (!defined('PHPFOX_TAG_PARENT_ID'))
+		{
+			define('PHPFOX_TAG_PARENT_ID', $this->getParam('iTagListParentId', 0));
+		}
+		
+		$this->template()->assign('sMicroKeywords', $this->getParam('sMicroKeywords'));
+		
 		if (($sType = $this->getParam('type')))
 		{
 			$aUser = $this->getParam('aUser');
-			$sLink = Phpfox::callback($sType . '.getTagLink', $aUser);		
+			$sLink = Phpfox::callback($sType . '.getTagLink', $aUser);
+					
 			$iItemId = $this->getParam('item_id');				
 			$sTags = '';
 			$sTagsClean = '';

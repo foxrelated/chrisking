@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: template.html.php 4854 2012-10-09 05:20:40Z Raymond_Benc $
+ * @version 		$Id: template.html.php 5581 2013-03-28 07:36:56Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -188,12 +188,8 @@ defined('PHPFOX') or exit('NO DICE!');
 					{param var='core.site_copyright'} {product_branding}
 				</div>		
 						
-			</div>
-		
-		
-		<script type="text/javascript">
-			$Core.init();
-		</script>	
+			</div>		
 		{plugin call='theme_template_body__end'}	
+        {loadjs}
 	</body>
 </html>

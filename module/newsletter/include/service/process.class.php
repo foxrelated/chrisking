@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: process.class.php 4264 2012-06-13 11:03:47Z Miguel_Espinoza $
+ * @version 		$Id: process.class.php 5840 2013-05-09 06:14:35Z Raymond_Benc $
  */
 class Newsletter_Service_Process extends Phpfox_Service
 {
@@ -300,13 +300,15 @@ class Newsletter_Service_Process extends Phpfox_Service
 		// how many users do we have left?
 		// check if we have a where
 		$sSelect = 'COUNT(user_id)';
-
-		if (str_replace('uf.newsletter_state = 0', '', $sWhere) != '')
+		
+		$sNewWhere = str_replace('uf.newsletter_state = 0 AND ', '', $sWhere);
+		if ($sNewWhere != '')
 		{
 			$sSelect = 'COUNT(uf.user_id)';
-			$this->database()->where($sWhere)
+			$this->database()->where($sNewWhere)
 			->join(Phpfox::getT('user_field'), 'uf', 'uf.user_id = u.user_id');
-		}
+		}		
+		
 		$iTotalUsers = $this->database()
 			->select($sSelect)
 			->from(Phpfox::getT('user'), 'u')

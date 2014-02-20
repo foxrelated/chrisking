@@ -218,6 +218,10 @@ class CF_Authentication
                 "Expected headers missing from auth service.");
         }
         $this->storage_url = $surl;
+        if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
+        {
+        	$this->storage_url = str_replace('dfw1', 'ord1', $this->storage_url);
+        }        
         $this->cdnm_url = $curl;
         $this->auth_token = $atoken;
         return True;
@@ -1966,17 +1970,25 @@ class CF_Object
      */
     function _guess_content_type($handle) {
 
-    	if (is_file((string)$handle) && substr($handle, -4) == '.css')
+    	if (is_string($handle) && substr($handle, -4) == '.css' && is_file((string)$handle))
     	{
 	    	$this->content_type = 'text/css';
 
 	    	return True;
     	}
     	
+		if (is_string($handle) && substr($handle, -3) == '.js' && is_file((string)$handle))
+    	{
+    		$this->content_type = 'application/x-javascript';
+    		// $this->headers['Content-Encoding'] = 'gzip';
+    	
+    		return True;
+    	}    	
+    	
     	if ($this->content_type)
             return;
             
-        if (function_exists("finfo_open")) {
+        if (function_exists("finfo_open") && !defined('PHPFOX_FORCE_NO_MIME')) {
             $local_magic = dirname(__FILE__) . "/share/magic";
             $finfo = @finfo_open(FILEINFO_MIME, $local_magic);
 
@@ -2345,7 +2357,7 @@ class CF_Object
         }
 
         $this->_guess_content_type($ct_data);
-        
+
         list($status, $reason, $etag) =
                 $this->container->cfs_http->put_object($this, $fp);
         #if ($status == 401 && $this->_re_auth()) {

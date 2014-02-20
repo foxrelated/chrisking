@@ -14,7 +14,7 @@ Phpfox::getLibClass('phpfox.database.interface');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: dba.class.php 4550 2012-07-23 08:28:41Z Miguel_Espinoza $
+ * @version 		$Id: dba.class.php 6809 2013-10-21 09:16:37Z Miguel_Espinoza $
  */
 abstract class Phpfox_Database_Dba implements Phpfox_Database_Interface
 {
@@ -170,6 +170,12 @@ abstract class Phpfox_Database_Dba implements Phpfox_Database_Interface
      */
 	public function select($sSelect)
 	{
+		/*
+		if ($sSelect == 'dob_setting')
+		{
+			echo $a;
+		}
+		*/
 		if (!isset($this->_aQuery['select']))
 		{
 			$this->_aQuery['select'] = 'SELECT ';
@@ -230,6 +236,14 @@ abstract class Phpfox_Database_Dba implements Phpfox_Database_Interface
      */	
 	public function from($sTable, $sAlias = '')
 	{
+		/*
+		if ($sTable == 'phpfox_custom_relation_data')
+		{
+			ob_clean();
+			echo $a;
+			exit;
+		}
+		*/
 		if (PHPFOX_DEBUG && in_array(strtoupper($sAlias), $this->_aWords))
 		{
 			Phpfox_Error::trigger('The alias "' . $sAlias . '" is a reserved SQL word. Use another alias to resolve this problem.', E_USER_ERROR);
@@ -363,9 +377,10 @@ abstract class Phpfox_Database_Dba implements Phpfox_Database_Interface
      * @param int $iPage If $sLimit and $iCnt are NULL then this value is the LIMIT on the SQL query. However if $sLimit and $iCnt are not NULL then this value is the current page we are on.
      * @param string $sLimit Is how many to limit per query
      * @param int $iCnt Is how many rows there are in this query
+     * @param bool $bCorrectMax Should we limit searches to valid pages
      * @return object Returns own object
      */		
-	public function limit($iPage, $sLimit = null, $iCnt = null, $bReturn = false)
+	public function limit($iPage, $sLimit = null, $iCnt = null, $bReturn = false, $bCorrectMax = true)
 	{
 		if ($sLimit === null && $iCnt === null && $iPage !== null)
 		{
@@ -374,9 +389,15 @@ abstract class Phpfox_Database_Dba implements Phpfox_Database_Interface
 			return $this;
 		}
 		
-		$iOffset = ($iCnt === null ? $iPage : Phpfox::getLib('pager')->getOffset($iPage, $sLimit, $iCnt));
-		
-		$this->_aQuery['limit'] = ($sLimit ? 'LIMIT ' . $sLimit : '') . ($iOffset ? ' OFFSET ' . $iOffset : '');
+		if ($bCorrectMax == true)
+		{
+			$iOffset = ($iCnt === null ? $iPage : Phpfox::getLib('pager')->getOffset($iPage, $sLimit, $iCnt));
+			$this->_aQuery['limit'] = ($sLimit ? 'LIMIT ' . $sLimit : '') . ($iOffset ? ' OFFSET ' . $iOffset : '');
+		}
+		else
+		{
+			$this->_aQuery['limit'] = ($sLimit ? 'LIMIT ' . $sLimit : '') . ($sLimit != null && $iPage > 0 ? ' OFFSET ' . (($iPage-1)* ($sLimit)) : '');
+		}
 		
 		if ($bReturn === true)
 		{
@@ -437,6 +458,10 @@ abstract class Phpfox_Database_Dba implements Phpfox_Database_Interface
 	 */
 	public function execute($sType = null, $aParams = array())
 	{		
+        if (($sType == 'getField' || $sType == 'getSlaveField') && (!isset($this->_aQuery['limit']) || empty($this->_aQuery['limit'])))
+        {
+            $this->_aQuery['limit'] = ' LIMIT 1';
+        }
 		$sSql = '';
 		if (isset($this->_aQuery['select']))
 		{
@@ -452,7 +477,12 @@ abstract class Phpfox_Database_Dba implements Phpfox_Database_Interface
 		{
 			$sSql .= $this->_aQuery['table'] . "\n";
 		}
-		
+        
+		if (isset($this->_aQuery['forceIndex']) && !empty($this->_aQuery['forceIndex']))
+        {
+            $sSql .= 'FORCE INDEX (' . $this->_aQuery['forceIndex'] .') ' . "\n";
+        }
+        
 		if (isset($this->_aQuery['union_from']))
 		{
 			$sSql .= "FROM(\n";
@@ -503,7 +533,7 @@ abstract class Phpfox_Database_Dba implements Phpfox_Database_Interface
 		}
 		
 		$bDoCache = false;
-		if (isset($aParams['cache']) && $aParams)
+		if (isset($aParams['cache']) && !empty($aParams))
 		{
 			$bDoCache = true;	
 			$oCache = Phpfox::getLib('cache');
@@ -769,7 +799,7 @@ abstract class Phpfox_Database_Dba implements Phpfox_Database_Interface
 		}
 		foreach ($aDrops as $sDrop)
 		{
-			$this->query("DROP TABLE {$sDrop}");		
+			$this->query("DROP TABLE IF EXISTS {$sDrop}");		
 		}			
 	}
 	
@@ -874,7 +904,20 @@ abstract class Phpfox_Database_Dba implements Phpfox_Database_Interface
 				{
 					$sQuery .= ' OR ';
 				}
-				$sQuery .= $sField . ' LIKE \'%' . Phpfox::getLib('database')->escape($sWord) . '%\'';
+				
+				$sQuery .= $sField . ' LIKE \'%' . Phpfox::getLib('database')->escape($sWord) . '%\' ';
+				
+				$aLikeWords = $this->getLikeWords($sWord);
+				
+				foreach ($aLikeWords as $sLikeWord)
+				{
+					if (strpos($sQuery, $sLikeWord) === false)
+					{
+						$sQuery .= ' OR ' . $sField . ' LIKE \'%' . Phpfox::getLib('database')->escape($sLikeWord) . '%\'' ;
+					}
+				}
+				
+				$sQuery = rtrim($sQuery, ' OR ');				
 			}
 		}
 		
@@ -888,6 +931,32 @@ abstract class Phpfox_Database_Dba implements Phpfox_Database_Interface
 		return $sQuery;
 	}
 	
+	/**
+	*	Takes into account html entities to return the ucwords and strtolower in an array.
+	*	Mysql treats LIKE "%Something%" as => column LIKE "%Something" OR column LIKE "%something" but this doesnt work with non-english characters
+	*	@return array
+	*	@param $sWord string
+	*/
+	private function getLikeWords($sWord)
+	{
+		if (preg_match('/(&#[0-9]+;)(.*)/', $sWord, $aMatch) < 1)
+		{
+			return array();
+		}
+		else if (isset($aMatch[2]))
+		{
+			$sFirstChar = $aMatch[1];
+			$sFirstCharInChar = mb_decode_numericentity($sFirstChar, array(0x0, 0xffff, 0, 0x2ffff), 'UTF-8');
+			$sRest = $aMatch[2];
+			
+			// Check its an html entity
+			return array(
+				(mb_encode_numericentity (mb_strtoupper($sFirstCharInChar, 'UTF-8'), array (0x0, 0xffff, 0, 0xffff), 'UTF-8')) . $sRest,
+				(mb_encode_numericentity (mb_strtolower($sFirstCharInChar, 'UTF-8'), array (0x0, 0xffff, 0, 0xffff), 'UTF-8')) . $sRest,
+			);
+		}
+	}
+
 	/**
 	 * Performs all the joins based on information passed from JOIN methods within this class.
 	 *
@@ -1003,6 +1072,19 @@ abstract class Phpfox_Database_Dba implements Phpfox_Database_Interface
 		
 		$this->query($sSql);		
 	}
+    
+    /**
+     * Tells which index to use by issuing a Force Index ($sName)
+     * @param type String
+     */
+    public function forceIndex($sName)
+    {
+        if (preg_match('/([a-zA-Z0-9_]+)/', $sName, $aMatches) > 0)
+        {
+            $this->_aQuery['forceIndex'] = $aMatches[1];
+        }
+        return $this;
+    }
 }
 
 ?>

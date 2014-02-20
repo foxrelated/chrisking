@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Service
- * @version 		$Id: link.class.php 4909 2012-10-22 05:56:49Z Raymond_Benc $
+ * @version 		$Id: link.class.php 6989 2013-12-12 12:15:15Z Miguel_Espinoza $
  */
 class Link_Service_Link extends Phpfox_Service 
 {
@@ -36,11 +36,11 @@ class Link_Service_Link extends Phpfox_Service
 		{
 			return Phpfox_Error::set(Phpfox::getPhrase('link.not_a_valid_link'));
 		}
-		
+				
 		$aReturn = array();		
 		$oVideo = json_decode(Phpfox::getLib('request')->send('http://api.embed.ly/1/oembed?format=json&maxwidth=400&url=' . urlencode($sUrl), array(), 'GET', $_SERVER['HTTP_USER_AGENT']));
 
-		if (isset($oVideo->provider_url))
+		if (isset($oVideo->provider_url) && (isset($oVideo->photo)))
 		{
 			$aReturn = array(
 				'link' => $sUrl,
@@ -110,7 +110,9 @@ class Link_Service_Link extends Phpfox_Service
 			}
 		}		
 		
-		$sContent = Phpfox::getLib('request')->send($sUrl, array(), 'GET', $_SERVER['HTTP_USER_AGENT']);		
+		
+		$sContent = Phpfox::getLib('request')->send($sUrl, array(), 'GET', $_SERVER['HTTP_USER_AGENT'], null, true);		
+		
 		if( function_exists('mb_convert_encoding') )
       	{
       		$sContent = mb_convert_encoding($sContent, 'HTML-ENTITIES', "UTF-8");
@@ -175,6 +177,20 @@ class Link_Service_Link extends Phpfox_Service
 		
 		if (!isset($aReturn['default_image']))
 		{
+			$oMeta = $oXpath->query("//meta[@itemprop='image']")->item(0);
+			if (method_exists($oMeta, 'getAttribute'))
+			{
+				$aReturn['default_image'] = strip_tags($oMeta->getAttribute('content'));
+				if (strpos($aReturn['default_image'], $sUrl) === false)
+				{
+					$aReturn['default_image'] = $sUrl . '/' . $aReturn['default_image'];
+				}
+			}			
+		}
+		
+		
+		if (!isset($aReturn['default_image']))
+		{						
 			$oImages = $oDoc->getElementsByTagName('img');
 			$iIteration = 0;
 			foreach ($oImages as $oImage)
@@ -230,6 +246,24 @@ class Link_Service_Link extends Phpfox_Service
 		return $aReturn;
 	}
 	
+	/**
+	 * Takes into account redirects.
+	 */
+	public function getHTML($sUrl)
+	{
+		$iMaxCount = 2;
+		$sContent = '';
+		while( ($iMaxCount--) > 0)
+		{
+			$sContent = Phpfox::getLib('request')->send($sUrl, array(), 'GET', $_SERVER['HTTP_USER_AGENT'], null, true);
+			$sHeaders = substr($sContent, 0, strpos($sContent, '<'));
+			// if (strpos($sHeaders, 'Moved') !== false && 
+			d($sHeaders);
+			//d($sContent, true);
+			die();
+		}
+	}
+	
 	public function getEmbedCode($iId, $bIsPopUp = false)
 	{
 		$aLinkEmbed = $this->database()->select('embed_code')	
@@ -257,6 +291,12 @@ class Link_Service_Link extends Phpfox_Service
 			 }
 		}
 		
+		// http://www.phpfox.com/tracker/view/14676/
+		if(Phpfox::getParam('core.force_https_secure_pages') && Phpfox::getParam('core.force_secure_site'))
+		{
+			$aLinkEmbed['embed_code'] = str_replace('http://', 'https://', $aLinkEmbed['embed_code']);
+		}
+		
 		return $aLinkEmbed['embed_code'];
 	}
 	
@@ -274,6 +314,23 @@ class Link_Service_Link extends Phpfox_Service
 		}
 		
 		return $aLink;
+	}
+	
+	/* Havent tested this */
+	public function getInfoForAction($aItem)
+	{
+		if (is_numeric($aItem))
+		{
+			$aItem = array('item_id' => $aItem);
+		}
+		$aRow = $this->database()->select('l.link_id, l.title, l.user_id, u.gender, u.full_name')
+			->from(Phpfox::getT('link'), 'l')
+			->join(Phpfox::getT('user'), 'u', 'u.user_id = l.user_id')
+			->where('l.link_id = ' . (int) $aItem['item_id'])
+			->execute('getSlaveRow');
+		
+		$aRow['link'] = Phpfox::getLib('url')->permalink('link', $aRow['link_id'], $aRow['title']);
+		return $aRow;
 	}
 	
 	/**

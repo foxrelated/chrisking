@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: index.class.php 2197 2010-11-22 15:26:08Z Raymond_Benc $
+ * @version 		$Id: index.class.php 6219 2013-07-09 06:43:36Z Raymond_Benc $
  */
 class Event_Component_Controller_Admincp_Index extends Phpfox_Component
 {
@@ -45,7 +45,7 @@ class Event_Component_Controller_Admincp_Index extends Phpfox_Component
 			->setHeader(array(
 					'jquery/ui.js' => 'static_script',
 					'admin.js' => 'module_event',
-					'<script type="text/javascript">$Core.event.url(\'' . $this->url()->makeUrl('admincp.event') . '\');</script>'
+					'<script type="text/javascript">$Behavior.loadEventUrl = function() { $Core.event.url(\'' . $this->url()->makeUrl('admincp.event') . '\'); }</script>'
 				)
 			)
 			->assign(array(

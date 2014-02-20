@@ -26,9 +26,9 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: error.class.php 4943 2012-10-23 13:37:12Z Miguel_Espinoza $
+ * @version 		$Id: error.class.php 6628 2013-09-12 08:35:36Z Miguel_Espinoza $
  */
-final class Phpfox_Error
+class Phpfox_Error
 {
 	/**
 	 * Holds an ARRAY of all the error messages we set
@@ -228,6 +228,11 @@ final class Phpfox_Error
 	 */
 	public static function errorHandler($nErrNo, $sErrMsg, $sFileName, $nLinenum, $aVars = array())
 	{		
+		/* @Todo Purefan fix all 65 preg_replace calls that use /e */
+		if (strpos($sErrMsg, '/e modifier is deprecated') !== false)
+		{
+			return;
+		}
 		if (defined('PHPFOX_IS_API'))
 		{
 			echo serialize(array(

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: add.class.php 2831 2011-08-12 19:44:19Z Raymond_Benc $
+ * @version 		$Id: add.class.php 6891 2013-11-15 16:37:37Z Fern $
  */
 class User_Component_Controller_Admincp_Group_Add extends Phpfox_Component 
 {
@@ -58,6 +58,17 @@ class User_Component_Controller_Admincp_Group_Add extends Phpfox_Component
 			}	
 			
 			$aGroup = Phpfox::getService('user.group')->getGroup($iGroupId);
+			
+			// http://www.phpfox.com/tracker/view/14644/
+			if(Phpfox::getParam('core.allow_cdn'))
+			{
+				$aGroup['server_id'] = Phpfox::getLib('cdn')->getServerId();
+			}
+			else
+			{
+				$aGroup['server_id'] = 0;
+			}
+			
 			if (!isset($aGroup['user_group_id']))
 			{
 				return Phpfox_Error::display(Phpfox::getPhrase('user.invalid_user_group'));

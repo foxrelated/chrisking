@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: phpfox.class.php 4854 2012-10-09 05:20:40Z Raymond_Benc $
+ * @version 		$Id: phpfox.class.php 5076 2012-12-12 15:57:18Z Miguel_Espinoza $
  */
 class Module_User 
 {	
@@ -50,11 +50,13 @@ class Module_User
 		'upload_track',
 		'user_custom_multiple_value',
 		'user_custom_data',
-		'point_purchase'		
+		'point_purchase',
+		'user_spam'
 	);
 	
 	public static $aInstallWritable = array(
-		'file/pic/user/'
+		'file/pic/user/',
+		'file/pic/user/spam_question/'
 	);		
 }
 

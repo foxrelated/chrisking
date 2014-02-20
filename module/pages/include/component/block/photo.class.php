@@ -26,7 +26,10 @@ class Pages_Component_Block_Photo extends Phpfox_Component
 		}
 		
 		$aPage = $this->getParam('aPage');
-		
+		if (empty($aPage))
+        {
+            return false;
+        }
 		$this->template()->assign(array(
 				'aPageLinks' => Phpfox::getService('pages')->getMenu($aPage)
 			)

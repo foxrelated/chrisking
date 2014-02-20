@@ -112,7 +112,7 @@ div.comment_mini_content_holder_icon
 	background:url('../image/layout/comment_mini_content_holder.png') no-repeat 10px 0px;
 	height:8px;
 	line-height:8px;
-	margin-top:4px;
+	/*margin-top:4px;*/
 }
 
 div.comment_mini_content_border
@@ -128,6 +128,11 @@ div.comment_mini
 	padding:4px;
 	position:relative;
 	border-bottom:1px #fff solid;
+}
+
+.comment_mini_content_holder
+{
+     
 }
 
 div.comment_mini_end

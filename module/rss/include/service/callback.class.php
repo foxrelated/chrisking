@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Rss
- * @version 		$Id: callback.class.php 3346 2011-10-24 15:20:05Z Raymond_Benc $
+ * @version 		$Id: callback.class.php 7097 2014-02-07 14:27:25Z Fern $
  */
 class Rss_Service_Callback extends Phpfox_Service 
 {
@@ -102,38 +102,70 @@ class Rss_Service_Callback extends Phpfox_Service
 	{		
 		if (isset($aModule['rss_group']))
 		{
+			// http://www.phpfox.com/tracker/view/15083/
+			$aCurrentGroups = $this->database()->select('name_var')
+				->from(Phpfox::getT('rss_group'))
+				->where("module_id = '" . $sModule . "' AND product_id = '" . $sProduct . "'")
+				->execute('getSlaveRows');
+			
+			$aCacheCheck = array();
+			foreach ($aCurrentGroups as $aCacheRow)
+			{
+				$aCacheCheck[$aCacheRow['name_var']] = $aCacheRow;
+			}
+			// END
+			
 			$aRows = (isset($aModule['rss_group']['group'][1]) ? $aModule['rss_group']['group'] : array($aModule['rss_group']['group']));
 			$aGroups = array();
 			foreach ($aRows as $aRow)
 			{
-				$aGroups[$aRow['group_id']] = $this->database()->insert(Phpfox::getT('rss_group'), array(
-						'module_id' => ($sModule === null ? $aRow['module_id'] : $sModule),
-						'product_id' => $sProduct,
-						'name_var' => $aRow['name_var'],
-						'is_active' => (int) $aRow['is_active']
-					)
-				);
+				if(!isset($aCacheCheck[$aRow['name_var']])) // http://www.phpfox.com/tracker/view/15083/
+				{
+					$aGroups[$aRow['group_id']] = $this->database()->insert(Phpfox::getT('rss_group'), array(
+							'module_id' => ($sModule === null ? $aRow['module_id'] : $sModule),
+							'product_id' => $sProduct,
+							'name_var' => $aRow['name_var'],
+							'is_active' => (int) $aRow['is_active']
+						)
+					);
+				}
 			}
 		}
 		
 		if (isset($aModule['rss']))
 		{
+			// http://www.phpfox.com/tracker/view/15083/
+			$aCurrentRss = $this->database()->select('title_var, description_var')
+				->from(Phpfox::getT('rss'))
+				->where("module_id = '" . $sModule . "' AND product_id = '" . $sProduct . "'")
+				->execute('getSlaveRows');
+			
+			$aCacheCheck = array();
+			foreach ($aCurrentRss as $aCacheRow)
+			{
+				$aCacheCheck[$aCacheRow['title_var'] . "-" . $aCacheRow['description_var']] = $aCacheRow;
+			}
+			// END
+			
 			$aRows = (isset($aModule['rss']['feed'][1]) ? $aModule['rss']['feed'] : array($aModule['rss']['feed']));
 			foreach ($aRows as $aRow)
 			{
-				$this->database()->insert(Phpfox::getT('rss'), array(
-						'module_id' => ($sModule === null ? $aRow['module_id'] : $sModule),
-						'product_id' => $sProduct,
-						'group_id' => (int) $aGroups[$aRow['group_id']],
-						'title_var' => $aRow['title_var'],
-						'description_var' => $aRow['description_var'],					
-						'feed_link' => $aRow['feed_link'],
-						'php_group_code' => (empty($aRow['php_group_code']) ? null : Phpfox::getLib('parse.format')->phpCode($aRow['php_group_code'])),
-						'php_view_code' => Phpfox::getLib('parse.format')->phpCode($aRow['php_view_code']),	
-						'is_active' => (int) $aRow['is_active'],
-						'is_site_wide' => (int) $aRow['is_site_wide']
-					)
-				);
+				if(!isset($aCacheCheck[$aRow['title_var'] . "-" . $aRow['description_var']])) // http://www.phpfox.com/tracker/view/15083/
+				{
+					$this->database()->insert(Phpfox::getT('rss'), array(
+							'module_id' => ($sModule === null ? $aRow['module_id'] : $sModule),
+							'product_id' => $sProduct,
+							'group_id' => (int) $aGroups[$aRow['group_id']],
+							'title_var' => $aRow['title_var'],
+							'description_var' => $aRow['description_var'],					
+							'feed_link' => $aRow['feed_link'],
+							'php_group_code' => (empty($aRow['php_group_code']) ? null : Phpfox::getLib('parse.format')->phpCode($aRow['php_group_code'])),
+							'php_view_code' => Phpfox::getLib('parse.format')->phpCode($aRow['php_view_code']),	
+							'is_active' => (int) $aRow['is_active'],
+							'is_site_wide' => (int) $aRow['is_site_wide']
+						)
+					);
+				}
 			}
 		}
 	}

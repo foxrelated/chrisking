@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: process.class.php 2692 2011-06-27 19:13:17Z Raymond_Benc $
+ * @version 		$Id: process.class.php 5592 2013-03-28 12:54:36Z Raymond_Benc $
  */
 class User_Service_Privacy_Process extends Phpfox_Service 
 {
@@ -124,6 +124,7 @@ class User_Service_Privacy_Process extends Phpfox_Service
 			if (isset($aVals['special']['dob_setting']))
 			{
 				Phpfox::getService('user.field.process')->update($iUserId, 'dob_setting', (int) $aVals['special']['dob_setting']);
+				$this->cache()->remove(array('udob', $iUserId));
 			}
 		}
 		

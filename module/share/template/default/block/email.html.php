@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: email.html.php 4154 2012-05-07 14:32:57Z Raymond_Benc $
+ * @version 		$Id: email.html.php 6982 2013-12-10 13:22:50Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -24,7 +24,8 @@ defined('PHPFOX') or exit('NO DICE!');
 			
 			return false;
 		}
-		
+		$('#btnShareEmail').attr('disabled', 'disabled');
+		$('#imgShareEmailLoading').show();
 		$(oObj).ajaxCall('share.sendEmails');
 		
 		return false;
@@ -67,7 +68,8 @@ defined('PHPFOX') or exit('NO DICE!');
 				</div>
 			</div>
 			<div class="table_clear">
-				<input type="submit" value="{phrase var='share.send'}" class="button" />
+				<input type="submit" id="btnShareEmail" value="{phrase var='share.send'}" class="button" />
+				{img theme='ajax/small.gif' style="display:none" id="imgShareEmailLoading"}
 			</div>
 		</div>		
 	</form>

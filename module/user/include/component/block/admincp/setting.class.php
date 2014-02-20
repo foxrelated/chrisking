@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: setting.class.php 1676 2010-07-14 13:49:41Z Raymond_Benc $
+ * @version 		$Id: setting.class.php 6922 2013-11-21 10:55:55Z Miguel_Espinoza $
  */
 class User_Component_Block_Admincp_Setting extends Phpfox_Component
 {
@@ -25,6 +25,7 @@ class User_Component_Block_Admincp_Setting extends Phpfox_Component
 		$aSettings = Phpfox::getService('user.group.setting')->get($this->request()->get('group_id'), $this->request()->get('module_id'));
 		
 		$aCurr = array();
+		$aAvoidDup = array();
 		if (isset($aSettings['phpfox']))
 		{
 			$aModuleSettings = $aSettings['phpfox'][$this->request()->get('module_id')];			
@@ -39,6 +40,22 @@ class User_Component_Block_Admincp_Setting extends Phpfox_Component
 					}
 					$aSettings['phpfox'][$this->request()->get('module_id')][$aKey]['isCurrency'] = 'Y';
 			    }
+			}
+		}
+		
+		/* Remove duplicates */
+		foreach ($aSettings as $sModule => $aSets)
+		{
+			foreach ($aSets as $iKey => $mSets)
+			{
+				foreach ($mSets as $jKey => $aSetting)
+				{
+					if (isset($aAvoidDup[$aSetting['setting_id']]))
+					{
+						unset($aSettings[$sModule][$iKey][$jKey]);
+					}
+					$aAvoidDup[$aSetting['setting_id']] = true;
+				}
 			}
 		}
 		

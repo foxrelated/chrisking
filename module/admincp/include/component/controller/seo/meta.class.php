@@ -11,23 +11,29 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Admincp
- * @version 		$Id: meta.class.php 4165 2012-05-14 10:43:25Z Raymond_Benc $
+ * @version 		$Id: meta.class.php 5936 2013-05-15 08:16:34Z Raymond_Benc $
  */
 class Admincp_Component_Controller_Seo_Meta extends Phpfox_Component 
 {
 	/**
 	 * Class process method wnich is used to execute this component.
 	 * @todo Complete the update routine...
-	 */
+	 */	
 	public function process()
 	{
-		$this->template()->setTitle(Phpfox::getPhrase('admincp.custom_meta_tags'))
-			->setBreadcrumb(Phpfox::getPhrase('admincp.custom_meta_tags'), $this->url()->makeUrl('admincp.seo.meta'))
+		$aMetas = Phpfox::getService('admincp.seo')->getSiteMetas();
+		if (is_bool($aMetas))
+		{
+			$aMetas = array();
+		}
+		
+		$this->template()->setTitle(Phpfox::getPhrase('admincp.custom_elements'))
+			->setBreadcrumb(Phpfox::getPhrase('admincp.custom_elements'), $this->url()->makeUrl('admincp.seo.meta'))
 			->assign(array(
-					'aMetas' => Phpfox::getService('admincp.seo')->getSiteMetas()
-				)
-			);
-	}
+					'aMetas' => $aMetas
+			)
+		);
+	}	
 	
 	/**
 	 * Garbage collector. Is executed after this class has completed

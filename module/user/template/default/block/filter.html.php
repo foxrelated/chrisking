@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: filter.html.php 4361 2012-06-26 14:01:00Z Raymond_Benc $
+ * @version 		$Id: filter.html.php 6860 2013-11-06 20:17:19Z Fern $
  */
 
 defined('PHPFOX') or exit('NO DICE!');
@@ -45,14 +45,16 @@ defined('PHPFOX') or exit('NO DICE!');
 			{filter key='city'}
 		</div>
 	</div>
-
-	<div class="p_top_4">
-		<span class="user_browse_title">{phrase var='user.zip_postal_code'}</span>:
-		<div class="p_4">
-			{filter key='zip'}
+	
+	{if Phpfox::getUserParam('user.can_search_by_zip')}
+		<div class="p_top_4">
+			<span class="user_browse_title">{phrase var='user.zip_postal_code'}</span>:
+			<div class="p_4">
+				{filter key='zip'}
+			</div>
 		</div>
-	</div>
-
+	{/if}
+	
 	<div class="p_top_4">
 		<span class="user_browse_title">{phrase var='user.keywords'}</span>:
 		<div class="p_4">
@@ -101,7 +103,7 @@ defined('PHPFOX') or exit('NO DICE!');
 	{if count($aForms)}
 	{literal}
 	<script type="text/javascript">
-		$(function()
+		$Behavior.user_filter_1 = function()
 		{
 			var iBrowseCnt = 0;
 			$('#js_block_border_user_filter .menu li').each(function()
@@ -116,7 +118,7 @@ defined('PHPFOX') or exit('NO DICE!');
 					$(this).addClass('active');
 				}
 			});
-		});
+		};
 	</script>
 	{/literal}
 	{/if}
@@ -135,6 +137,19 @@ defined('PHPFOX') or exit('NO DICE!');
 		    
 		</div>
 	</div>
-
+	
+	{if isset($sCountryISO)}
+		<script type="text/javascript">
+			$Behavior.loadStatesAfterBrowse = function()
+			{l}
+				sCountryISO = "{$sCountryISO}";
+				if(sCountryISO != "")
+				{l}
+					sCountryChildId = {$sCountryChildId};
+					$.ajaxCall('core.getChildren', 'country_child_filter=true&country_child_type=browse&country_iso=' + sCountryISO + '&country_child_id=' + sCountryChildId);
+				{r}
+			{r}
+		</script>
+	{/if}
 	
 </form>

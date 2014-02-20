@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: foxporter.class.php 5057 2012-11-30 12:22:23Z Raymond_Benc $
+ * @version 		$Id: foxporter.class.php 5074 2012-12-06 10:37:26Z Raymond_Benc $
  */
 class FoxporterModule_Ning extends Foxporter_Abstract
 {	

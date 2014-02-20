@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Event
- * @version 		$Id: callback.class.php 4621 2012-09-12 05:34:34Z Raymond_Benc $
+ * @version 		$Id: callback.class.php 7059 2014-01-22 14:20:10Z Fern $
  */
 class Event_Service_Callback extends Phpfox_Service 
 {
@@ -142,7 +142,7 @@ class Event_Service_Callback extends Phpfox_Service
 	{
 		return array(
 			'module' => 'event',
-			'item_id' => $aVals['callback_item_id']
+			'item_id' => (is_array($aVals) && isset($aVals['callback_item_id']) ? $aVals['callback_item_id'] : (int) $aVals)
 		);
 	}
 	
@@ -730,10 +730,15 @@ class Event_Service_Callback extends Phpfox_Service
 	
 	public function getActivityFeedComment($aItem)
 	{
-		$aRow = $this->database()->select('fc.*, l.like_id AS is_liked, e.event_id, e.title')
+		if (Phpfox::isModule('like'))
+		{
+			$this->database()->select('l.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'event_comment\' AND l.item_id = fc.feed_comment_id AND l.user_id = ' . Phpfox::getUserId());
+		}
+		
+		$aRow = $this->database()->select('fc.*, e.event_id, e.title')
 			->from(Phpfox::getT('event_feed_comment'), 'fc')
 			->join(Phpfox::getT('event'), 'e', 'e.event_id = fc.parent_user_id')
-			->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'event_comment\' AND l.item_id = fc.feed_comment_id AND l.user_id = ' . Phpfox::getUserId())			
 			->where('fc.feed_comment_id = ' . (int) $aItem['item_id'])
 			->execute('getSlaveRow');		
 
@@ -750,12 +755,14 @@ class Event_Service_Callback extends Phpfox_Service
 			'feed_link' => $sLink,
 			'total_comment' => $aRow['total_comment'],
 			'feed_total_like' => $aRow['total_like'],
-			'feed_is_liked' => $aRow['is_liked'],
+			'feed_is_liked' => (isset($aRow['is_liked']) ? $aRow['is_liked'] : false),
 			'feed_icon' => Phpfox::getLib('image.helper')->display(array('theme' => 'misc/comment.png', 'return_url' => true)),
-			'time_stamp' => $aRow['time_stamp'],			
+			'time_stamp' => $aRow['time_stamp'],
 			'enable_like' => true,			
 			'comment_type_id' => 'event',
-			'like_type_id' => 'event_comment'			
+			'like_type_id' => 'event_comment',
+			// http://www.phpfox.com/tracker/view/14689/
+			'parent_user_id' => 0	
 		);
 				
 		return $aReturn;		
@@ -895,19 +902,35 @@ class Event_Service_Callback extends Phpfox_Service
 		);	
 	}	
 	
-	public function canShareItemOnFeed(){}	
-	
+	public function canShareItemOnFeed(){}
+
+	public function getActivityFeedCustomChecks($aRow)
+	{
+		if ((defined('PHPFOX_IS_PAGES_VIEW') && !Phpfox::getService('pages')->hasPerm(null, 'event.view_browse_events'))
+			|| (!defined('PHPFOX_IS_PAGES_VIEW') && $aRow['custom_data_cache']['module_id'] == 'pages' && !Phpfox::getService('pages')->hasPerm($aRow['custom_data_cache']['item_id'], 'event.view_browse_events'))
+		)
+		{
+			return false;
+		}
+
+		return $aRow;
+	}
+
 	public function getActivityFeed($aItem, $aCallback = null, $bIsChildItem = false)
 	{				
 		if ($bIsChildItem)
 		{
 			$this->database()->select(Phpfox::getUserField('u2') . ', ')->join(Phpfox::getT('user'), 'u2', 'u2.user_id = e.user_id');
 		}			
-		
-		$aRow = $this->database()->select('e.event_id, e.module_id, e.item_id, e.title, e.time_stamp, e.image_path, e.server_id, e.total_like, e.total_comment, et.description_parsed, l.like_id AS is_liked')
+		$sSelect = 'e.event_id, e.module_id, e.item_id, e.title, e.time_stamp, e.image_path, e.server_id, e.total_like, e.total_comment, et.description_parsed';
+		if (Phpfox::isModule('like'))
+		{
+			$sSelect .= ', l.like_id AS is_liked';
+			$this->database()->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'event\' AND l.item_id = e.event_id AND l.user_id = ' . Phpfox::getUserId());
+		}
+		$aRow = $this->database()->select($sSelect)
 			->from(Phpfox::getT('event'), 'e')
 			->leftJoin(Phpfox::getT('event_text'), 'et', 'et.event_id = e.event_id')
-			->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'event\' AND l.item_id = e.event_id AND l.user_id = ' . Phpfox::getUserId())
 			->where('e.event_id = ' . (int) $aItem['item_id'])
 			->execute('getSlaveRow');
 		
@@ -921,8 +944,8 @@ class Event_Service_Callback extends Phpfox_Service
 			$aItem = $aRow;
 		}			
 		
-		if ((defined('PHPFOX_IS_PAGES_VIEW') && !Phpfox::getService('pages')->hasPerm(null, 'event.view_browse_events'))
-			|| (!defined('PHPFOX_IS_PAGES_VIEW') && $aRow['module_id'] == 'pages' && !Phpfox::getService('pages')->hasPerm($aRow['item_id'], 'event.view_browse_events'))			
+		if (((defined('PHPFOX_IS_PAGES_VIEW') && !Phpfox::getService('pages')->hasPerm(null, 'event.view_browse_events'))
+			|| (!defined('PHPFOX_IS_PAGES_VIEW') && $aRow['module_id'] == 'pages' && !Phpfox::getService('pages')->hasPerm($aRow['item_id'], 'event.view_browse_events')))
 		)
 		{
 			return false;
@@ -936,10 +959,11 @@ class Event_Service_Callback extends Phpfox_Service
 			'feed_icon' => Phpfox::getLib('image.helper')->display(array('theme' => 'module/event.png', 'return_url' => true)),
 			'time_stamp' => $aRow['time_stamp'],	
 			'feed_total_like' => $aRow['total_like'],
-			'feed_is_liked' => $aRow['is_liked'],
+			'feed_is_liked' => isset($aRow['is_liked']) ? $aRow['is_liked'] : false,
 			'enable_like' => true,			
 			'like_type_id' => 'event',
-			'total_comment' => $aRow['total_comment']			
+			'total_comment' => $aRow['total_comment'],
+			'custom_data_cache' => $aRow
 		);
 		
 		if (!empty($aRow['image_path']))
@@ -1040,13 +1064,46 @@ class Event_Service_Callback extends Phpfox_Service
 	public function getTotalItemCount($iUserId)
 	{
 		$iToday = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+		// get the events for this user that apply to the future
+		if (Phpfox::getParam('event.cache_events_per_user'))
+		{
+			$sCacheId = $this->cache()->set(array('events_by_user', (int)$iUserId));
+			if ( !($aEvents = $this->cache()->get($sCacheId)) )
+			{
+				$aEvents = $this->database()->select('/* getTotalItemCount */ e.*')
+					->from(Phpfox::getT('event'), 'e')
+					->where('user_id = ' . (int)$iUserId)
+					->execute('getSlaveRows');
+				
+				$sCacheId = $this->cache()->set(array('events_by_user', (int)$iUserId));
+				$this->cache()->save($sCacheId, $aEvents);
+			}
+			
+			$iTotal = 0;
+			if (is_array($aEvents)) // This happens if the array was stored empty
+			{
+				foreach ($aEvents as $aEvent)
+				{
+					if ($aEvent['start_time'] > $iToday)
+					{
+						$iTotal = $iTotal + 1;
+					}
+				}
+			}
+			
+		}
 		
-		return array(
-			'field' => 'total_event',
-			'total' => $this->database()->select('COUNT(*)')
+		// this happens if it was not cached for this user
+		if (!isset($iTotal))
+		{
+			$iTotal = $this->database()->select('COUNT(*)')
 				->from(Phpfox::getT('event'))
 				->where('view_id = 0 AND item_id = 0 AND user_id = ' . (int) $iUserId . ' AND start_time > ' . $iToday)
-				->execute('getSlaveField')
+				->execute('getSlaveField');
+		}
+		return array(
+			'field' => 'total_event',
+			'total' => $iTotal
 		);	
 	}	
 	
@@ -1208,6 +1265,23 @@ class Event_Service_Callback extends Phpfox_Service
 			'link' => Phpfox::getLib('url')->permalink('event', $aRow['event_id'], $aRow['title']) .'comment_' . $aNotification['item_id'],
 			'message' => $sPhrase,
 			'icon' => Phpfox::getLib('template')->getStyle('image', 'activity.png', 'blog')
+		);
+	}
+	
+	public function getActions()
+	{
+		return array(
+			'dislike' => array(
+				'enabled' => true,
+				'action_type_id' => 2, // 2 = dislike
+				'phrase' => Phpfox::getPhrase('like.dislike'),
+				'phrase_in_past_tense' => 'disliked',
+				'item_type_id' => 'event', // used to differentiate between photo albums and photos for example.
+				'table' => 'event',
+				'item_phrase' => Phpfox::getPhrase('event.item_phrase'),
+				'column_update' => 'total_dislike',
+				'column_find' => 'event_id'				
+				)
 		);
 	}
 	

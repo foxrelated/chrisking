@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: logout.class.php 3826 2011-12-16 12:30:19Z Raymond_Benc $
+ * @version 		$Id: logout.class.php 5538 2013-03-25 13:20:22Z Miguel_Espinoza $
  */
 class Facebook_Component_Controller_Logout extends Phpfox_Component
 {
@@ -27,7 +27,7 @@ class Facebook_Component_Controller_Logout extends Phpfox_Component
 		$this->template()->setHeader(array(
 			'<script src="' . $sHttp. '://connect.facebook.net/en_US/all.js" type="text/javascript"></script>',							
 			'<script type="text/javascript">
-				$(function()
+				$Behavior.facebook_init = function()
 				{
 					FB.init(
 					{
@@ -53,7 +53,7 @@ class Facebook_Component_Controller_Logout extends Phpfox_Component
 				   		}
 				   });		   
 		   
-		   		});
+		   		};
 		   </script>')
 		);
 	}

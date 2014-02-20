@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Miguel Espinoza
  * @package 		Phpfox_Service
- * @version 		$Id: announcement.class.php 3788 2011-12-14 08:36:58Z Miguel_Espinoza $
+ * @version 		$Id: announcement.class.php 6220 2013-07-09 06:55:41Z Miguel_Espinoza $
  */
 class Announcement_Service_Announcement extends Phpfox_Service
 {
@@ -79,17 +79,26 @@ class Announcement_Service_Announcement extends Phpfox_Service
 		}
 
 		// get the announcements this user has decided to close
-		$aHide = $this->database()->select('announcement_id')
-			->from(Phpfox::getT('announcement_hide'))
-			->where('user_id = ' . Phpfox::getUserId())
-			->execute('getSlaveRows');
 		$aHidden = array();
-		
-		foreach ($aHide as $aH) 
+		$sCacheIdHide = $this->cache()->set(array('announcement', Phpfox::getUserId()));
+		if (!($aHidden = $this->cache()->get($sCacheIdHide)))
 		{
-			$aHidden[] = $aH['announcement_id'];
+			$aHide = $this->database()->select('announcement_id')
+				->from(Phpfox::getT('announcement_hide'))
+				->where('user_id = ' . Phpfox::getUserId())
+				->execute('getSlaveRows');			
+			
+			foreach ($aHide as $aH) 
+			{
+				$aHidden[] = $aH['announcement_id'];
+			}
+			
+			$this->cache()->save($sCacheIdHide, $aHidden);
 		}
-		
+		if (!is_array($aHidden))
+		{
+			$aHidden = array();
+		}
 		if (!is_array($aAnnouncements))
 		{
 		    return false;//$aAnnouncements = array($aAnnouncements);

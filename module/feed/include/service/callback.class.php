@@ -133,6 +133,8 @@ class Feed_Service_Callback extends Phpfox_Service
 	public function onDeleteUser($iUser)
 	{
 	    $this->database()->delete($this->_sTable, 'user_id = ' . (int)$iUser);
+	    $this->database()->delete($this->_sTable, 'parent_user_id = ' . (int)$iUser);
+	    $this->database()->delete(Phpfox::getT('feed_comment'), 'parent_user_id = ' . (int)$iUser); 
 	}
 
 	public function getProfileSettings()
@@ -188,19 +190,19 @@ class Feed_Service_Callback extends Phpfox_Service
 	
 	public function getReportRedirectComment($iId)
 	{
-		$aFeed = $this->database()->select('c.comment_id, f.feed_id, ' . Phpfox::getUserField())
-			->from(Phpfox::getT('comment'), 'c')
-			->join(Phpfox::getT('feed'), 'f', 'f.feed_id = c.item_id')
+		$aFeed = $this->database()->select('f.feed_id, ' . Phpfox::getUserField())
+			->from(Phpfox::getT('feed_comment'), 'c')
+			->join(Phpfox::getT('feed'), 'f', 'type_id = \'feed_comment\' && f.item_id = c.feed_comment_id')
 			->join(Phpfox::getT('user'), 'u', 'u.user_id = f.user_id')
-			->where('c.comment_id = ' . (int) $iId)
+			->where('c.feed_comment_id = ' . (int) $iId)
 			->execute('getRow');	
-			
+
 		if (empty($aFeed))
 		{
 			return false;
 		}
 		
-		return Phpfox::getLib('url')->makeUrl($aFeed['user_name'], array('feed' => $aFeed['feed_id'], 'feed-comment' => $aFeed['comment_id'], '#feed'));
+		return Phpfox::getLib('url')->makeUrl($aFeed['user_name'], array('feed' => $aFeed['feed_id'], '#feed'));
 	}
 	
 	public function getRedirectComment($iId)
@@ -220,16 +222,21 @@ class Feed_Service_Callback extends Phpfox_Service
 
 	public function getActivityFeedEgift($aItem)
 	{
+		if(Phpfox::isModule('like'))
+		{
+			$this->database()->select('l.like_id as is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'feed_egift\' AND l.item_id = fc.feed_comment_id AND l.user_id = ' . Phpfox::getUserId());
+		}
+		
 		/* Check if this egift is free or paid */
 		// `phpfox_egift_invoice`.`birthday_id` = `phpfox_feed`.`feed_id`
-		$aInvoice = $this->database()->select('e.file_path, g.price, g.status, fc.content, fc.feed_comment_id, fc.total_comment, f.time_stamp, fc.total_like, l.like_id as is_liked, ' . Phpfox::getUserField('u', 'parent_'))
+		$aInvoice = $this->database()->select('e.file_path, g.price, g.status, fc.content, fc.feed_comment_id, fc.total_comment, f.time_stamp, fc.total_like, ' . Phpfox::getUserField('u', 'parent_'))
 				->from(Phpfox::getT('egift_invoice'), 'g')
 				->join(Phpfox::getT('feed'), 'f', 'f.feed_id = g.birthday_id')
 				->join(Phpfox::getT('egift'), 'e', 'e.egift_id = g.egift_id')
 				->leftjoin(Phpfox::getT('feed_comment'), 'fc', 'fc.feed_comment_id = ' . $aItem['item_id'])
 				->leftJoin(Phpfox::getT('user'), 'u', 'u.user_id = fc.parent_user_id')
 				// ->leftjoin(Phpfox::getT('like'),'l', 'l.item_id = f.feed_id AND l.type_id = "feed_egift"')
-				->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'feed_egift\' AND l.item_id = fc.feed_comment_id AND l.user_id = ' . Phpfox::getUserId())
 				->where('g.birthday_id = ' . (int)$aItem['feed_id'])
 				->execute('getSlaveRow');
 
@@ -244,7 +251,7 @@ class Feed_Service_Callback extends Phpfox_Service
 			'feed_link' => '',
 			'total_comment' => $aInvoice['total_comment'],
 			'feed_total_like' => $aInvoice['total_like'],
-			'feed_is_liked' => $aInvoice['is_liked'],
+			'feed_is_liked' => (isset($aInvoice['is_liked']) ? $aInvoice['is_liked'] : false),
 			'feed_icon' => Phpfox::getLib('image.helper')->display(array('theme' => 'misc/comment.png', 'return_url' => true)),
 			'time_stamp' => $aInvoice['time_stamp'],			
 			'enable_like' => true,			
@@ -300,10 +307,15 @@ class Feed_Service_Callback extends Phpfox_Service
 		}	
 		*/
 		
-		$aRow = $this->database()->select('fc.*, l.like_id AS is_liked, ' . Phpfox::getUserField('u', 'parent_'))
+		if(Phpfox::isModule('like'))
+		{
+			$this->database()->select('l.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'feed_comment\' AND l.item_id = fc.feed_comment_id AND l.user_id = ' . Phpfox::getUserId());
+		}
+		
+		$aRow = $this->database()->select('fc.*, ' . Phpfox::getUserField('u', 'parent_'))
 			->from(Phpfox::getT('feed_comment'), 'fc')			
 			->leftJoin(Phpfox::getT('user'), 'u', 'u.user_id = fc.parent_user_id')
-			->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'feed_comment\' AND l.item_id = fc.feed_comment_id AND l.user_id = ' . Phpfox::getUserId())			
 			->where('fc.feed_comment_id = ' . (int) $aItem['item_id'])
 			->execute('getSlaveRow');
 	
@@ -315,7 +327,7 @@ class Feed_Service_Callback extends Phpfox_Service
 			'feed_link' => $sLink,
 			'total_comment' => $aRow['total_comment'],
 			'feed_total_like' => $aRow['total_like'],
-			'feed_is_liked' => $aRow['is_liked'],
+			'feed_is_liked' => (isset($aRow['is_liked']) ? $aRow['is_liked'] : false),
 			'feed_icon' => Phpfox::getLib('image.helper')->display(array('theme' => 'misc/comment.png', 'return_url' => true)),
 			'time_stamp' => $aRow['time_stamp'],			
 			'enable_like' => true,			
@@ -331,8 +343,10 @@ class Feed_Service_Callback extends Phpfox_Service
 		if (!PHPFOX_IS_AJAX && defined('PHPFOX_IS_USER_PROFILE') && !empty($aRow['parent_user_name']) && $aRow['parent_user_id'] != Phpfox::getService('profile')->getProfileUserId())
 		{			
 			$aReturn['feed_info'] = Phpfox::getPhrase('feed.posted_on_parent_full_names_wall', array('parent_user_name' => Phpfox::getLib('url')->makeUrl($aRow['parent_user_name']), 'parent_full_name' => $aRow['parent_full_name']));
-			$aReturn['feed_status'] = $aRow['content'];			
-			
+			$aReturn['feed_status'] = $aRow['content'];
+			// http://www.phpfox.com/tracker/view/15025/
+			$aReturn['parent_user_id'] = $aRow['user_id'];
+						
 			/*
 			if (Phpfox::getService('profile')->timeline())
 			{
@@ -433,7 +447,7 @@ class Feed_Service_Callback extends Phpfox_Service
 	
 	public function getCommentNotificationFeed($aNotification)
 	{
-		$aRow = $this->database()->select('fc.feed_comment_id, u.user_id, fc.content, fc.parent_user_id, u.gender, u.user_name, u.full_name, u2.user_name AS parent_user_name')	
+		$aRow = $this->database()->select('fc.feed_comment_id, u.user_id, fc.content, fc.parent_user_id, u.gender, u.user_name, u.full_name, u2.user_name AS parent_user_name, u2.full_name AS parent_full_name')	
 			->from(Phpfox::getT('feed_comment'), 'fc')
 			->join(Phpfox::getT('user'), 'u', 'u.user_id = fc.user_id')
 			->join(Phpfox::getT('user'), 'u2', 'u2.user_id = fc.parent_user_id')
@@ -464,7 +478,7 @@ class Feed_Service_Callback extends Phpfox_Service
 			}
 			else
 			{
-				$sPhrase = $aRow['parent_user_name'] . ' commented on one of your status updates ';
+				$sPhrase = Phpfox::getPhrase('feed.parent_user_name_commented_on_one_of_your_status_updates', array('parent_user_name' => $aRow['parent_full_name']));
 			}
 		}
 		else 
@@ -532,7 +546,10 @@ class Feed_Service_Callback extends Phpfox_Service
 			$bWasChanged = true;
 		}
 		$sUsers = Phpfox::getService('notification')->getUsers($aNotification);
-		
+		if (empty($aRow) || !isset($aRow['user_id']))
+        {
+            return false;
+        }
 		$sPhrase = '';
 		if ($aNotification['user_id'] == $aRow['user_id'])
 		{
@@ -860,6 +877,116 @@ class Feed_Service_Callback extends Phpfox_Service
 		
 		return 0;
 	}	
+
+	public function getActions()
+	{
+	    return array(
+		'dislike' => array(
+			'enabled' => true,
+			'action_type_id' => 2, // 2 = dislike
+			'phrase' => Phpfox::getPhrase('like.dislike'),
+			'phrase_in_past_tense' => 'disliked',
+			'item_phrase' => 'comment',
+			'item_type_id' => 'feed', // used to differentiate between photo albums and photos for example.
+			'table' => 'feed_comment',
+			'column_update' => 'total_dislike',
+			'column_find' => 'feed_comment_id',
+			'where_to_show' => array('', 'photo')			
+			)
+		);
+	}
+	
+	/**
+	 * Used from the Ad module when sponsoring a post in the feed.
+	 * Complies with the requirement in the ad.sponsor controller for $aItem
+	 * @param $aParams array(sModule => <string>, iItemId
+	 * Condition: A user may only sponsor posts that he added.
+	 * @return array
+	 * 
+	 * /* aItem must be in the format:
+		     * array(
+		     *	'title' => 'item title',		    <-- required	     
+		     *  'link'  => 'makeUrl()'ed link',		    <-- required
+		     *  'paypal_msg' => 'message for paypal'	    <-- required
+		     *  'item_id' => int			    <-- required
+		     *  'user_id'   => owner's user id		    <-- required
+		     *	'error' => 'phrase if item doesnt exit'	    <-- optional
+		     *	'extra' => 'description'		    <-- optional
+		     *	'image' => 'path to an image',		    <-- optional
+		     *  'image_dir' => 'photo.url_photo|...	    <-- optional (required if image)
+		     * )
+		    */
+	 
+	public function getSponsorPostInfo($aParams)
+	{
+		// We are sponsoring feeds now, not the actual item.
+		// Get the feed to check if it has already been sponsored
+		$aFeed = $this->database()->select('f.*, fs.*, ' . Phpfox::getUserField())
+			->from(Phpfox::getT('feed'), 'f')
+			->leftjoin(Phpfox::getT('feed_sponsor'), 'fs', 'fs.feed_id = f.feed_id')
+			->join(Phpfox::getT('user'), 'u', 'u.user_id = f.user_id')
+			->where('f.type_id = "' . $aParams['sModule'] . '" AND f.item_id = ' . (int)$aParams['iItemId'] . ' AND f.user_id = ' . Phpfox::getUserId())
+			->execute('getSlaveRow');
+				
+		$aInfo = array(
+			'title' => 'Sponsoring ' . $aParams['sModule'] . ' #' . $aParams['iItemId'],
+			'link' => Phpfox::getLib('url')->makeUrl('photo',array($aParams['iItemId'])),
+			'paypal_msg' => 'Purchasing a sponsored feed ',
+			'item_id' => $aParams['iItemId'],
+			'user_id' => Phpfox::getUserId()
+		);
+		
+		if (Phpfox::isModule($aParams['sModule']) && Phpfox::hasCallback($aParams['sModule'], 'getToSponsorInfo'))
+		{
+			$aCalled = Phpfox::callback($aParams['sModule'] . '.getToSponsorInfo', $aParams['iItemId']);
+			$aInfo = array_merge($aInfo, $aCalled);
+		}
+		
+		return $aInfo;
+	}
+	
+	/**
+	  * @param int $iId feed_id
+	  * @return array in the format:
+	     * array(
+	     *	'sModule' => 'module_id',		    <-- required
+	     *  'iItemId'  => 'item_id',		    <-- required
+	     * )
+	    */
+	public function getToSponsorInfo($iId)
+	{
+		$aFeed = $this->database()->select('f.type_id AS sModule, f.item_id AS iItemId')
+		    ->from($this->_sTable, 'f')
+		    ->where('f.feed_id = ' . (int) $iId)
+		    ->execute('getSlaveRow');
+		    
+		if (empty($aFeed))
+	    {
+			return false;
+	    }
+
+	    return $this->getSponsorPostInfo($aFeed);
+	}
+	
+	public function getLink($aParams)
+	{
+	    $aFeed = $this->database()->select('f.type_id as section, f.item_id')
+			->from($this->_sTable, 'f')
+			->where('f.feed_id = ' . (int)$aParams['item_id'])
+		    ->execute('getSlaveRow');
+		    
+	    if (empty($aFeed))
+	    {
+			return false;
+	    }
+	    
+	    if (Phpfox::isModule($aFeed['section']) && Phpfox::hasCallback($aFeed['section'], 'getLink'))
+		{
+			return Phpfox::callback($aFeed['section'] . '.getLink', $aFeed);
+		}
+		
+		return false;
+	}
 }
 
 ?>

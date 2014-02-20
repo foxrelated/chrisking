@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: login-block.html.php 3826 2011-12-16 12:30:19Z Raymond_Benc $
+ * @version 		$Id: login-block.html.php 5318 2013-02-04 10:38:35Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -42,7 +42,7 @@ defined('PHPFOX') or exit('NO DICE!');
 	{/if}
 	{if Phpfox::isModule('janrain') && Phpfox::getParam('janrain.enable_janrain_login')}
 	<div class="header_login_block">
-		<a class="rpxnow" onclick="return false;" href="{$sJanrainUrl}">{img theme='layout/janrain-icons.png'}</a>
+		<a class="rpxnow" href="{$sJanrainUrl}">{img theme='layout/janrain-icons.png'}</a>
 	</div>
 	{/if}
 </div>

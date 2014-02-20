@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Theme
- * @version 		$Id: phpfox.class.php 1179 2009-10-12 13:56:40Z Raymond_Benc $
+ * @version 		$Id: phpfox.class.php 5345 2013-02-13 09:44:03Z Raymond_Benc $
  */
 class Module_Theme 
 {	
@@ -20,7 +20,8 @@ class Module_Theme
 		'theme_css',
 		'theme_style',
 		'theme_style_logo',
-		'theme_template'
+		'theme_template',
+		'theme_umenu'
 	);
 	
 	public static $aInstallWritable = array(

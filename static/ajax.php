@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: ajax.php 4941 2012-10-23 12:43:23Z Miguel_Espinoza $
+ * @version 		$Id: ajax.php 6708 2013-10-01 14:36:56Z Miguel_Espinoza $
  */
 ob_start();
 
@@ -48,6 +48,27 @@ if (isset($_GET['ajax_page_display']))
 {	
 	$oCache = Phpfox::getLib('cache');
 	$oAjax = Phpfox::getLib('ajax');
+	
+	if (Phpfox::getLib('template')->getThemeFolder() == 'nebula')
+	{
+		$oTpl = Phpfox::getLib('template');
+		$sUserProfileImage = Phpfox::getLib('image.helper')->display(array_merge(array('user' => Phpfox::getService('user')->getUserFields(true)), array(
+				'path' => 'core.url_user',
+				'file' => Phpfox::getUserBy('user_image'),
+				'suffix' => '_50_square',
+				'max_width' => 50,
+				'max_height' => 50
+				)
+			)
+		);
+		
+		$oTpl->assign(array(
+				'sUserProfileImage' => $sUserProfileImage,
+				'sUserProfileUrl' => Phpfox::getLib('url')->makeUrl('profile', Phpfox::getUserBy('user_name')), // Create the users profile URL
+				'sCurrentUserName' => Phpfox::getLib('parse.output')->shorten(Phpfox::getLib('parse.output')->clean(Phpfox::getUserBy('full_name')), Phpfox::getParam('user.max_length_for_username'), '...'), // Get the users display name
+			)
+		);		
+	}
 
 	Phpfox::run();
 
@@ -62,6 +83,8 @@ if (isset($_GET['ajax_page_display']))
 	$sCustomCss = '';
 	$sLoadFiles = '';		
 	$sEchoData = '';
+	
+	
 	foreach ($aHeaderFiles as $sHeaderFile)
 	{
 		if (preg_match('/js_user_profile_css/i', $sHeaderFile))
@@ -78,6 +101,11 @@ if (isset($_GET['ajax_page_display']))
 			continue;
 		}
 		
+		if (preg_match('/href=(["\']?([^"\'>]+)["\']?)/', $sHeaderFile, $aMatches) > 0 && strpos($aMatches[1], '.css') !== false)
+		{
+			$sHeaderFile = str_replace(array('"', "'"), '', $aMatches[1]);
+			$sHeaderFile = substr($sHeaderFile, 0, strpos($sHeaderFile, '?') ); 
+		}
 		$sHeaderFile = strip_tags($sHeaderFile);
 		
 		$sNew = preg_replace('/\s+/','',$sHeaderFile);
@@ -94,6 +122,7 @@ if (isset($_GET['ajax_page_display']))
 	$sContent = Phpfox::getLib('ajax')->getContent();
 	
 	$aPhrases = Phpfox::getLib('template')->getPhrases();	
+	
 	
 	$sJs .= 'content: \'' . $sContent . '\', ';
 	$sJs .= 'files: [' . $sLoadFiles . '], ';
@@ -113,7 +142,12 @@ if (isset($_GET['ajax_page_display']))
 	{
 		$sJs .= ', customcss: [' . $sCustomCss . ']';
 	}
-	
+
+	if (Phpfox::getLib('template')->getThemeFolder() == 'nebula' && isset($_GET['req1']))
+	{
+		$sJs .= ", nebula_current_menu: '" . phpFox::getLib('url')->makeUrl($_GET['req1']) . "'";
+	}
+
 	/*
 	$aAds = array();
 	for ($i = 1; $i <= 11; $i++)

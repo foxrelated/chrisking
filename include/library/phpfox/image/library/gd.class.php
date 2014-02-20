@@ -13,7 +13,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: gd.class.php 4688 2012-09-20 07:26:42Z Raymond_Benc $
+ * @version 		$Id: gd.class.php 7064 2014-01-27 13:03:55Z Fern $
  */
 class Phpfox_Image_Library_Gd extends Phpfox_Image_Abstract
 {	
@@ -140,11 +140,16 @@ class Phpfox_Image_Library_Gd extends Phpfox_Image_Abstract
 	 * @return mixed FALSE on failure, TRUE or NULL on success
 	 */
 	public function createThumbnail($sImage, $sDestination, $nMaxW, $nMaxH, $bRatio = true, $bSkipCdn = false)
-	{    	
+	{	
 		if (!$this->_load($sImage))
 		{
 			return false;
-		}		
+		}
+
+		if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
+		{
+			$sImage = str_replace(PHPFOX_DIR, rtrim(Phpfox::getParam('core.rackspace_url'), '/') . '/', $sImage);
+		}
 		
 		if ($bRatio)
 		{
@@ -224,7 +229,7 @@ class Phpfox_Image_Library_Gd extends Phpfox_Image_Abstract
         {
         	$nNewW = 1;
         }
-    	
+
 		$hTo = imagecreatetruecolor($nNewW, $nNewH);
 		
 		switch($this->sType)
@@ -285,7 +290,41 @@ class Phpfox_Image_Library_Gd extends Phpfox_Image_Abstract
 		}		
 		
 		@imageDestroy($hTo);		
-        @imageDestroy($hFrm);	
+        @imageDestroy($hFrm);
+
+		if (($this->sType == 'jpg' || $this->sType == 'jpeg') && function_exists('exif_read_data'))
+		{
+			$exif = exif_read_data($sImage);//d($exif);die();
+			if(!empty($exif['Orientation']))
+			{
+				switch($exif['Orientation'])
+				{
+					case 1:
+					case 2:
+						break;
+					case 3:
+					case 4:
+						// 90 degrees
+						$this->rotate($sDestination, 'right');
+						// 180 degrees
+						$this->rotate($sDestination, 'right');
+						break;
+					case 5:
+					case 6:
+						// 90 degrees right
+						$this->rotate($sDestination, 'right');
+						break;
+					case 7:
+					case 8:
+						// 90 degrees left
+						$this->rotate($sDestination, 'left');
+						break;
+					default:
+						break;
+				}
+			}
+		}
+		
         
 		if (Phpfox::getParam('core.allow_cdn'))
 		{
@@ -302,6 +341,11 @@ class Phpfox_Image_Library_Gd extends Phpfox_Image_Abstract
 	
 	public function createSquareThumbnail($sSrc, $sDestination, $iNewWIdth = 0, $iNewHeight = 0, $bSkipCdn = false, $iZoom = 1, $iQuality = 100)
 	{				
+		if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
+		{
+			$sSrc = str_replace(PHPFOX_DIR, rtrim(Phpfox::getParam('core.rackspace_url'), '/') . '/', $sSrc);
+		}
+		
 		if ($iNewWIdth == 0 && $iNewHeight == 0) 
 		{
 		    $iNewWIdth = 100;
@@ -456,13 +500,13 @@ class Phpfox_Image_Library_Gd extends Phpfox_Image_Abstract
 	 * @param string $sCmd Command to perform. Must be "left" or "right" (without quotes)
 	 * @return mixed FALSE on failure, NULL on success
 	 */
-	public function rotate($sImage, $sCmd)
+	public function rotate($sImage, $sCmd, $sActualFile = null)
 	{
 		if (!$this->_load($sImage))
 		{
 			return false;
 		}	        
-		
+
 		switch ($this->_aInfo[2])
         {
             case 1:
@@ -475,8 +519,11 @@ class Phpfox_Image_Library_Gd extends Phpfox_Image_Abstract
                 $hFrm = @imageCreateFromJpeg($this->sPath);               
 				break;
         }		
-		
-        @unlink($this->sPath);
+
+		if (substr($this->sPath, 0, 7) != 'http://')
+		{
+        	@unlink($this->sPath);
+		}
         
 		if (function_exists('imagerotate'))
 		{
@@ -503,8 +550,8 @@ class Phpfox_Image_Library_Gd extends Phpfox_Image_Abstract
 					imagealphablending($im2, true);
 					break;			
 				case 'png':
-					imagealphablending($im2, false);
-					imagesavealpha($im2, true);
+					//imagealphablending($im2, false);
+					//imagesavealpha($im2, true);
 			break;
 			}			 
 
@@ -531,9 +578,9 @@ class Phpfox_Image_Library_Gd extends Phpfox_Image_Abstract
 	            @imagegif($im2, $this->sPath);
 			break;
             case 'png':
-            	@imagepng($im2, $this->sPath);
-				imagealphablending($im2, false);
-				imagesavealpha($im2, true);            	
+            	imagealphablending($im2, false);
+            	imagesavealpha($im2, true);
+            	@imagepng($im2, $this->sPath);				            	
 			break;
             default:
             	@imagejpeg($im2, $this->sPath);
@@ -542,10 +589,10 @@ class Phpfox_Image_Library_Gd extends Phpfox_Image_Abstract
 		
 		imagedestroy($hFrm); 
 		imagedestroy($im2);
-		
+
 		if (Phpfox::getParam('core.allow_cdn'))
 		{
-			Phpfox::getLib('cdn')->put($this->sPath);
+			Phpfox::getLib('cdn')->put($this->sPath, $sActualFile);
 		}		
 	}
 	
@@ -669,43 +716,130 @@ class Phpfox_Image_Library_Gd extends Phpfox_Image_Abstract
 		$iOpacity = Phpfox::getParam('core.watermark_opacity');
 		$aImgInfo = @getimagesize($sPath);
 		
-		$iResizeWatermark = null;	
-		if ($this->nW <= 20)
+		// http://www.phpfox.com/tracker/view/14952/
+		$iWatermarkImageSize = 0;
+		$bHorizontal = true;
+		$iOriginalImageSize = 0;
+		// Watermark is rectangular? Get the small side
+		if($aImgInfo[0] <= $aImgInfo[1])
+		{
+			$iWatermarkImageSize = $aImgInfo[0];
+		}
+		else
+		{
+			$iWatermarkImageSize = $aImgInfo[1];
+			$bHorizontal = false;
+		}
+		// Original image is rectangular? Get the larger side
+		if($this->nW >= $this->nH)
+		{
+			$iOriginalImageSize = $this->nW;
+		}
+		else
+		{
+			$iOriginalImageSize = $this->nH;
+		}
+		// END
+
+		$iResizeWatermarkW = null;
+		$iResizeWatermarkH = null;
+		$iResizeWatermark = null;
+		if ($iOriginalImageSize <= 20)
 		{
 			return false;
 		}
-		elseif ($this->nW <= 50 && $aImgInfo[0] > 10)
+		elseif ($iOriginalImageSize <= 75 && $iWatermarkImageSize > 10)
 		{
+			if($bHorizontal)
+			{
+				$iResizeWatermarkW = 10;
+				$iResizeWatermarkH = round(($aImgInfo[1] * $iResizeWatermarkW)/$aImgInfo[0]);
+			}
+			else
+			{
+				$iResizeWatermarkH = 10;
+				$iResizeWatermarkW = round(($aImgInfo[0] * $iResizeWatermarkH)/$aImgInfo[1]);
+			}
 			$iResizeWatermark = 10;
 		}			
-		elseif ($this->nW <= 100 && $aImgInfo[0] > 15)
+		elseif ($iOriginalImageSize <= 100 && $iWatermarkImageSize > 15)
 		{
+			if($bHorizontal)
+			{
+				$iResizeWatermarkW = 15;
+				$iResizeWatermarkH = round(($aImgInfo[1] * $iResizeWatermarkW)/$aImgInfo[0]);
+			}
+			else
+			{
+				$iResizeWatermarkH = 15;
+				$iResizeWatermarkW = round(($aImgInfo[0] * $iResizeWatermarkH)/$aImgInfo[1]);
+			}
 			$iResizeWatermark = 15;
 		}			
-		elseif ($this->nW <= 150 && $aImgInfo[0] > 20)
+		elseif ($iOriginalImageSize <= 150 && $iWatermarkImageSize > 20)
 		{
+			if($bHorizontal)
+			{
+				$iResizeWatermarkW = 20;
+				$iResizeWatermarkH = round(($aImgInfo[1] * $iResizeWatermarkW)/$aImgInfo[0]);
+			}
+			else
+			{
+				$iResizeWatermarkH = 20;
+				$iResizeWatermarkW = round(($aImgInfo[0] * $iResizeWatermarkH)/$aImgInfo[1]);
+			}
 			$iResizeWatermark = 20;
 		}
-		elseif ($this->nW <= 200 && $aImgInfo[0] > 30)
+		elseif ($iOriginalImageSize <= 200 && $iWatermarkImageSize > 30)
 		{
+			if($bHorizontal)
+			{
+				$iResizeWatermarkW = 30;
+				$iResizeWatermarkH = round(($aImgInfo[1] * $iResizeWatermarkW)/$aImgInfo[0]);
+			}
+			else
+			{
+				$iResizeWatermarkH = 30;
+				$iResizeWatermarkW = round(($aImgInfo[0] * $iResizeWatermarkH)/$aImgInfo[1]);
+			}
 			$iResizeWatermark = 30;
 		}
-		elseif ($this->nW <= 250 && $aImgInfo[0] > 40)
+		elseif ($iOriginalImageSize <= 250 && $iWatermarkImageSize > 40)
 		{
+			if($bHorizontal)
+			{
+				$iResizeWatermarkW = 30;
+				$iResizeWatermarkH = round(($aImgInfo[1] * $iResizeWatermarkW)/$aImgInfo[0]);
+			}
+			else
+			{
+				$iResizeWatermarkH = 30;
+				$iResizeWatermarkW = round(($aImgInfo[0] * $iResizeWatermarkH)/$aImgInfo[1]);
+			}
 			$iResizeWatermark = 30;
 		}	
-		elseif ($this->nW <= 500 && $aImgInfo[0] > 50)
+		elseif ($iOriginalImageSize <= 500 && $iWatermarkImageSize > 40)
 		{
+			if($bHorizontal)
+			{
+				$iResizeWatermarkW = 40;
+				$iResizeWatermarkH = round(($aImgInfo[1] * $iResizeWatermarkW)/$aImgInfo[0]);
+			}
+			else
+			{
+				$iResizeWatermarkH = 40;
+				$iResizeWatermarkW = round(($aImgInfo[0] * $iResizeWatermarkH)/$aImgInfo[1]);
+			}
 			$iResizeWatermark = 40;
-		}		
+		}
 		
 		if ($iResizeWatermark !== null)
-		{	
+		{
 			$sNewPath = Phpfox::getParam('core.dir_watermark') . sprintf(Phpfox::getParam('core.watermark_image'), '_' . $iResizeWatermark);
 			if (!file_exists($sNewPath))
 			{
 				$this->_destroy();
-				$this->createThumbnail($sPath, $sNewPath, $iResizeWatermark, $iResizeWatermark);
+				$this->createThumbnail($sPath, $sNewPath, $iResizeWatermarkW, $iResizeWatermarkH);
 				$this->_destroy();
 				$this->_load($sImage);
 			}

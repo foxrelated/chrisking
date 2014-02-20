@@ -26,7 +26,7 @@
 			<version_id>3.0.0</version_id>
 			<var_name>full_name_liked_a_comment_you_made_on_the_page_title</var_name>
 			<added>1323186791</added>
-			<value><![CDATA[{full_name} liked a comment you made on the page "{title"}]]></value>
+			<value><![CDATA[{full_name} liked a comment you made on the page "{title}"]]></value> 
 		</phrase>
 		<phrase>
 			<module_id>pages</module_id>

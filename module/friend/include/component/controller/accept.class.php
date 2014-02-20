@@ -22,6 +22,20 @@ class Friend_Component_Controller_Accept extends Phpfox_Component
 	{
 		Phpfox::isUser(true);
 		
+		$aCheckParams = array(
+			'url' => $this->url()->makeUrl('friend'),
+			'start' => 3,
+			'reqs' => array(
+					'2' => array('accept', 'pending')
+				)
+			);
+				
+		if (Phpfox::getParam('core.force_404_check') && !Phpfox::getService('core.redirect')->check404($aCheckParams))
+		{
+			return Phpfox::getLib('module')->setController('error.404');
+		}
+		
+		
 		$iPage = $this->request()->getInt('page');
 		$iLimit = Phpfox::getParam('friend.total_requests_display');
 		$iRequestId = $this->request()->getInt('id');	

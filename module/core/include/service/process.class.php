@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: process.class.php 3321 2011-10-19 17:36:51Z Miguel_Espinoza $
+ * @version 		$Id: process.class.php 5582 2013-03-28 08:33:43Z Raymond_Benc $
  */
 class Core_Service_Process extends Phpfox_Service 
 {
@@ -54,6 +54,8 @@ class Core_Service_Process extends Phpfox_Service
 			
 			if ($oObject->$aParts[1]($aVals['user_value']))
 			{			
+				Phpfox::getLib('cache')->remove(array('csetting', Phpfox::getUserId()));
+				
 				$this->database()->delete(Phpfox::getT('component_setting'), 'user_id = ' . Phpfox::getUserId() . ' AND var_name = \'' . $this->database()->escape($aVals['var_name']) . '\'');			
 				$this->database()->insert(Phpfox::getT('component_setting'), array('user_id' => Phpfox::getUserId(), 'var_name' => $aVals['var_name'], 'user_value' => $aVals['user_value']));
 				

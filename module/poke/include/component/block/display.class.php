@@ -9,7 +9,7 @@ class Poke_Component_Block_Display extends Phpfox_Component
 {
 	public function process()
 	{
-		list($iTotalPokes, $aPokes) = Phpfox::getService('poke')->getPokesForUser(Phpfox::getUserId());
+		list($iTotalPokes, $aPokes) = Phpfox::getService('poke')->getPokesForUser(Phpfox::getUserId(), true);
 		if (!$iTotalPokes)
 		{
 			return false;

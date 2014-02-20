@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Search
- * @version 		$Id: index.html.php 3642 2011-12-02 10:01:15Z Miguel_Espinoza $
+ * @version 		$Id: index.html.php 6569 2013-09-03 06:48:49Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -27,9 +27,9 @@ defined('PHPFOX') or exit('NO DICE!');
 <div class="search_result">
 	<div class="search_result_image">
 		{if isset($aSearchResult.profile_image)}
-		{img user=$aSearchResult.profile_image suffix='_50_square' max_width=50 max_height=50}		
+			{img user=$aSearchResult.profile_image suffix='_50_square' max_width=50 max_height=50}		
 		{else}
-		{img user=$aSearchResult suffix='_50_square' max_width=50 max_height=50}		
+			{img user=$aSearchResult suffix='_50_square' max_width=50 max_height=50}		
 		{/if}
 	</div>
 	<div class="search_result_info">
@@ -58,5 +58,5 @@ defined('PHPFOX') or exit('NO DICE!');
 {/if}
 {/if}
 {if !PHPFOX_IS_AJAX}
-<div id="js_feed_content"></div>
+	<div id="js_feed_content" class="js_feed_content"></div>
 {/if}

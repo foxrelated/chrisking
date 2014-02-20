@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: new-image.html.php 1356 2009-12-23 12:23:28Z Raymond_Benc $
+ * @version 		$Id: new-image.html.php 5616 2013-04-10 07:54:55Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -16,7 +16,7 @@ defined('PHPFOX') or exit('NO DICE!');
 	<div class="go_left">
 		<div style="position:relative;">
 			<a href="#" title="{phrase var='photo.delete_this_image'}" onclick="return deleteNewPhoto('{$aNewImage.photo_id}');">{img theme='misc/delete.gif' class='delete_hover' style='position:absolute;'}</a>
-			{img server_id=$aNewImage.server_id path='photo.url_photo' file=$aNewImage.destination suffix='_75' max_width='75' max_height='75'}
+			{img server_id=$aNewImage.server_id path='photo.url_photo' file=$aNewImage.destination suffix='_50' max_width='75' max_height='75'}
 		</div>
 	</div>
 	<div class="extra_info">

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: callback.class.php 4947 2012-10-24 06:02:30Z Raymond_Benc $
+ * @version 		$Id: callback.class.php 7059 2014-01-22 14:20:10Z Fern $
  */
 class Photo_Service_Callback extends Phpfox_Service 
 {
@@ -132,7 +132,7 @@ class Photo_Service_Callback extends Phpfox_Service
 
 	public function getCommentItem($iId)
 	{
-		$aRow = $this->database()->select('photo_id AS comment_item_id, privacy_comment, user_id AS comment_user_id, module_id AS parent_module_id')
+		$aRow = $this->database()->select('photo_id AS comment_item_id, privacy, privacy_comment, user_id AS comment_user_id, module_id AS parent_module_id')
 			->from(Phpfox::getT('photo'))
 			->where('photo_id = ' . (int) $iId)
 			->execute('getSlaveRow');
@@ -414,7 +414,7 @@ class Photo_Service_Callback extends Phpfox_Service
 					'server_id' => $aPart['server_id'],
 					'path' => 'photo.url_photo',
 					'file' => $aRow['image_path'],
-					'suffix' => '_75',
+					'suffix' => '_50',
 					'max_width' => 75,
 					'max_height' => 75,
 					'style' => 'vertical-align:top; padding-right:5px;'					
@@ -454,9 +454,10 @@ class Photo_Service_Callback extends Phpfox_Service
 	
 	public function getActivityFeedComment($aRow)
 	{
-		if (Phpfox::isUser())
+		if (Phpfox::isUser() && Phpfox::isModule('like'))
 		{
-			$this->database()->select('l.like_id AS is_liked, ')->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'feed_mini\' AND l.item_id = c.comment_id AND l.user_id = ' . Phpfox::getUserId());
+			$this->database()->select('l.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'feed_mini\' AND l.item_id = c.comment_id AND l.user_id = ' . Phpfox::getUserId());
 		}		
 		
 		$aItem = $this->database()->select('b.photo_id, b.album_id, b.server_id, b.destination, b.title, b.time_stamp, b.privacy, b.total_comment, b.total_like, c.total_like, ct.text_parsed AS text, f.friend_id AS is_friend, b.mature, ' . Phpfox::getUserField())
@@ -565,7 +566,15 @@ class Photo_Service_Callback extends Phpfox_Service
 	
 		if (empty($aRow['group_id']))
 		{
-			(Phpfox::isModule('feed') ? Phpfox::getService('feed.process')->add($aVals['type'] . '_comment', $aVals['comment_id']) : null);
+			$iPrivacy = 0;
+			$iPrivacyComment = 0;
+			
+			if(Phpfox::getParam('feed.add_feed_for_comments'))
+			{
+				$iPrivacy = $aVals['privacy'];
+				$iPrivacy = $aVals['privacy_comment'];
+			}
+			(Phpfox::isModule('feed') ? Phpfox::getService('feed.process')->add($aVals['type'] . '_comment', $aVals['comment_id'], $iPrivacy, $iPrivacyComment) : null);
 		}
 		
 		if (empty($aVals['parent_id']))
@@ -772,6 +781,41 @@ class Photo_Service_Callback extends Phpfox_Service
 		return 'photo';
 	}	
 	
+	public function getNotificationFeed_Profile($aNotification)
+	{
+	    
+		
+		$aRow = $this->database()->select('p.photo_id, u.user_id, u.gender, u.user_name, u.full_name')
+			->from(Phpfox::getT('photo'), 'p')
+			->join(Phpfox::getT('user'), 'u', 'u.user_id = ' . Phpfox::getUserId())
+			->where('p.photo_id = ' . (int) $aNotification['item_id'])
+			->execute('getSlaveRow');	
+		
+		
+		$sUsers = Phpfox::getService('notification')->getUsers($aNotification);		
+		
+		$sPhrase = '';		
+		if ($aNotification['user_id'] == $aRow['user_id'])
+		{
+			$sPhrase = Phpfox::getPhrase('feed.users_commented_on_gender_wall', array('users' => $sUsers, 'gender' => Phpfox::getService('user')->gender($aRow['gender'], 1)));	
+		}
+		elseif ($aRow['user_id'] == Phpfox::getUserId())		
+		{
+			$sPhrase = Phpfox::getPhrase('feed.users_commented_on_your_wall', array('users' => $sUsers));
+		}
+		else 
+		{
+			$sPhrase = Phpfox::getPhrase('feed.users_commented_on_one_span_class_drop_data_user_row_full_name_span_wall', array('users' => $sUsers, 'row_full_name' => $aRow['full_name']));
+		}			
+		
+		return array(
+			'link' => Phpfox::getLib('url')->makeUrl('photo', array($aRow['photo_id'],)),
+			'message' => $sPhrase,
+			'icon' => Phpfox::getLib('template')->getStyle('image', 'activity.png', 'blog')
+		);		
+	}
+	
+	
 	public function processCommentModeration($sAction, $iId)
 	{
 		// Is this comment approved?
@@ -888,7 +932,7 @@ class Photo_Service_Callback extends Phpfox_Service
 							'title' => $aRow['title'],
 							'path' => 'photo.url_photo',
 							'file' => $aRow['destination'],
-							'suffix' => '_75',
+							'suffix' => '_50',
 							'max_width' => 75,
 							'max_height' => 75
 						)
@@ -952,7 +996,7 @@ class Photo_Service_Callback extends Phpfox_Service
 					'server_id' => $aItem['photo_server_id'],
 					'path' => 'photo.url_photo',
 					'file' => $aItem['destination'],
-					'suffix' => '_75',
+					'suffix' => '_50',
 					'max_width' => 75,
 					'max_height' => 75
 				)
@@ -982,7 +1026,7 @@ class Photo_Service_Callback extends Phpfox_Service
 					'server_id' => $aItem['photo_server_id'],
 					'path' => 'photo.url_photo',
 					'file' => $aItem['destination'],
-					'suffix' => '_75',
+					'suffix' => '_50',
 					'max_width' => 75,
 					'max_height' => 75
 				)
@@ -1330,7 +1374,7 @@ class Photo_Service_Callback extends Phpfox_Service
 			{
 				$iTotalPhotos = $this->database()->select('COUNT(f.photo_id)')
 					->from(Phpfox::getT('photo'), 'f')
-					->where('f.view_id = 0 AND f.group_id = 0 AND f.type_id = 0 AND f.user_id = ' . $aRow['user_id'])
+					->where('f.view_id = 0 AND f.group_id = 0 AND f.type_id = 0 AND f.privacy = 0 AND f.is_profile_photo = 0 AND f.user_id = ' . $aRow['user_id'])
 					->execute('getSlaveField');		
 
 				$this->database()->update(Phpfox::getT('user_field'), array('total_photo' => $iTotalPhotos), 'user_id = ' . $aRow['user_id']);			
@@ -1499,6 +1543,29 @@ class Photo_Service_Callback extends Phpfox_Service
 	}		
 	
 	public function canShareItemOnFeed(){}
+
+	public function getActivityFeedCustomChecks($aRow)
+	{
+		if ((defined('PHPFOX_IS_PAGES_VIEW') && !Phpfox::getService('pages')->hasPerm(null, 'photo.view_browse_photos'))
+			|| (!defined('PHPFOX_IS_PAGES_VIEW') && $aRow['custom_data_cache']['module_id'] == 'pages' && !Phpfox::getService('pages')->hasPerm($aRow['custom_data_cache']['group_id'], 'photo.view_browse_photos'))
+		)
+		{
+			return false;
+		}
+
+		if (!empty($aRow['custom_data_cache']['parent_user_name']) && !defined('PHPFOX_IS_USER_PROFILE') && empty($_POST))
+		{
+			$aRow['parent_user'] = Phpfox::getService('user')->getUserFields(true, $aRow['custom_data_cache'], 'parent_');
+		}
+
+		if (!PHPFOX_IS_AJAX && defined('PHPFOX_IS_USER_PROFILE') && !empty($aRow['custom_data_cache']['parent_user_name']) && $aRow['custom_data_cache']['parent_user_id'] != Phpfox::getService('profile')->getProfileUserId())
+		{
+			$aRow['feed_mini'] = true;
+			$aRow['feed_mini_content'] = Phpfox::getPhrase('photo.full_name_posted_a_href_link_photo_a_photo_a_on_a_href_link_user_parent_full_name_a_s_a_href_link_wall_wall_a',array('full_name' => Phpfox::getService('user')->getFirstName('Test'), 'link_photo' => Phpfox::permalink('photo', $aRow['custom_data_cache']['photo_id'], $aRow['custom_data_cache']['title']), 'link_user' => Phpfox::getLib('url')->makeUrl($aRow['custom_data_cache']['parent_user_name']), 'parent_full_name' => $aRow['custom_data_cache']['parent_full_name'], 'link_wall' => Phpfox::getLib('url')->makeUrl($aRow['custom_data_cache']['parent_user_name'])));
+		}
+
+		return $aRow;
+	}
 	
 	public function getActivityFeed($aItem, $aCallback = null, $bIsChildItem = false)
 	{		
@@ -1517,11 +1584,17 @@ class Photo_Service_Callback extends Phpfox_Service
 		{
 			$this->database()->select(Phpfox::getUserField('u2') . ', ')->join(Phpfox::getT('user'), 'u2', 'u2.user_id = photo.user_id');
 		}
-
-		$aRow = $this->database()->select('photo.*, l.like_id AS is_liked, pi.description, pfeed.photo_id AS extra_photo_id, pa.album_id, pa.name')
+		
+		$sSelect = 'photo.*, pi.description, pfeed.photo_id AS extra_photo_id, pa.album_id, pa.name';
+		
+		if (Phpfox::isModule('like'))
+		{
+			$sSelect .= ', l.like_id AS is_liked';
+			$this->database()->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'photo\' AND l.item_id = photo.photo_id AND l.user_id = ' . Phpfox::getUserId());
+		}
+		$aRow = $this->database()->select($sSelect)
 			->from($this->_sTable, 'photo')			
 			->join(Phpfox::getT('photo_info'), 'pi', 'pi.photo_id = photo.photo_id')
-			->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'photo\' AND l.item_id = photo.photo_id AND l.user_id = ' . Phpfox::getUserId())
 			->leftJoin(Phpfox::getT('photo_feed'), 'pfeed', 'pfeed.feed_id = ' . (int) $aItem['feed_id'])
 			->leftJoin(Phpfox::getT('photo_album'), 'pa', 'pa.album_id = photo.album_id')
 			->where('photo.photo_id = ' . (int) $aItem['item_id'])
@@ -1537,8 +1610,13 @@ class Photo_Service_Callback extends Phpfox_Service
 			return false;
 		}
 		
-		if ((defined('PHPFOX_IS_PAGES_VIEW') && !Phpfox::getService('pages')->hasPerm(null, 'photo.view_browse_photos'))
-			|| (!defined('PHPFOX_IS_PAGES_VIEW') && $aRow['module_id'] == 'pages' && !Phpfox::getService('pages')->hasPerm($aRow['group_id'], 'photo.view_browse_photos'))	
+		if (Phpfox::getUserParam('photo.can_view_photos'))
+		{
+			$sThickbox .= ' js_photo_item_' . $aRow['photo_id'] . ' ';
+		}		
+		
+		if (((defined('PHPFOX_IS_PAGES_VIEW') && !Phpfox::getService('pages')->hasPerm(null, 'photo.view_browse_photos'))
+			|| (!defined('PHPFOX_IS_PAGES_VIEW') && $aRow['module_id'] == 'pages' && !Phpfox::getService('pages')->hasPerm($aRow['group_id'], 'photo.view_browse_photos')))
 			)
 		{
 			return false;
@@ -1566,7 +1644,8 @@ class Photo_Service_Callback extends Phpfox_Service
 					'suffix' => '_' . $iImageMaxSuffix,					
 					'max_width' => (Phpfox::isMobile() ? 230 : $iImageMax),
 					'max_height' => (Phpfox::isMobile() ? 300 : $iImageMax),
-					'class' => 'photo_holder'
+					'class' => 'photo_holder',
+					'defer' => true
 				)
 			);			
 		}
@@ -1604,14 +1683,13 @@ class Photo_Service_Callback extends Phpfox_Service
 							'max_width' => 100,
 							'max_height' => 100,
 							'class' => 'photo_holder',
-							'userid' => isset($aItem['user_id']) ? $aItem['user_id'] : ''
+							'userid' => isset($aItem['user_id']) ? $aItem['user_id'] : '',
+							'defer' => true // Further controlled in the library image.helper.
 						)
 					) . '</a>';
 				}
 				else
 				{
-					
-					
 					$aListPhotos[] = '<a href="#" class="no_ajax_link" onclick="tb_show(\'' . Phpfox::getPhrase('photo.warning') . '\', $.ajaxBox(\'photo.warning\', \'height=300&width=350&link=' . Phpfox::permalink('photo', $aPhoto['photo_id'], $aPhoto['title']) . ($bIsPhotoAlbum ? 'albumid_' . $aRow['album_id'] : 'userid_' . $aRow['user_id']) . '/\')); return false;">' . $sImage . '</a>';
 				}
 			}	
@@ -1626,7 +1704,7 @@ class Photo_Service_Callback extends Phpfox_Service
 			'feed_link' => $sLink,
 			'total_comment' => $aRow['total_comment'],
 			'feed_total_like' => $aRow['total_like'],
-			'feed_is_liked' => $aRow['is_liked'],
+			'feed_is_liked' => isset($aRow['is_liked']) ? $aRow['is_liked'] : false,
 			'feed_icon' => Phpfox::getLib('image.helper')->display(array('theme' => 'module/photo.png', 'return_url' => true)),
 			'time_stamp' => $aRow['time_stamp'],			
 			'enable_like' => true,			
@@ -1635,7 +1713,8 @@ class Photo_Service_Callback extends Phpfox_Service
 			'custom_css' => $sCustomCss,
 			'custom_rel' => $aRow['photo_id'],
 			'custom_js' => $sFeedImageOnClick,
-			'no_target_blank' => true
+			'no_target_blank' => true,
+			'custom_data_cache' => $aRow
 		);	
 		
 		if ($aRow['module_id'] == 'pages')
@@ -1851,10 +1930,15 @@ class Photo_Service_Callback extends Phpfox_Service
 	
 	public function getActivityFeedAlbum($aItem, $aCallback = null)
 	{	
-		$aRow = $this->database()->select('pa.*, l.like_id AS is_liked, pai.description')
+		if(Phpfox::isModule('like'))
+		{
+			$this->database()->select('l.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'photo_album\' AND l.item_id = pa.album_id AND l.user_id = ' . Phpfox::getUserId());
+		}
+		
+		$aRow = $this->database()->select('pa.*, pai.description')
 			->from(Phpfox::getT('photo_album'), 'pa')			
 			->join(Phpfox::getT('photo_album_info'), 'pai', 'pai.album_id = pa.album_id')
-			->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'photo_album\' AND l.item_id = pa.album_id AND l.user_id = ' . Phpfox::getUserId())
 			->where('pa.album_id = ' . (int) $aItem['item_id'])
 			->execute('getSlaveRow');
 			
@@ -1880,7 +1964,8 @@ class Photo_Service_Callback extends Phpfox_Service
 					'suffix' => '_100',
 					'max_width' => 100,
 					'max_height' => 100,
-					'class' => 'photo_holder'			
+					'class' => 'photo_holder',
+					'feed' => true
 				)
 			) . '</a>';
 		}	
@@ -1893,7 +1978,7 @@ class Photo_Service_Callback extends Phpfox_Service
 			'feed_link' => Phpfox::permalink('photo.album', $aRow['album_id'], $aRow['name']),
 			'total_comment' => $aRow['total_comment'],
 			'feed_total_like' => $aRow['total_like'],
-			'feed_is_liked' => $aRow['is_liked'],
+			'feed_is_liked' => (isset($aRow['is_liked']) ? $aRow['is_liked'] : false),
 			'feed_icon' => Phpfox::getLib('image.helper')->display(array('theme' => 'module/photo.png', 'return_url' => true)),
 			'time_stamp' => $aRow['time_stamp'],			
 			'enable_like' => true,			
@@ -2007,6 +2092,10 @@ class Photo_Service_Callback extends Phpfox_Service
 	
 	public function getProfileMenu($aUser)
 	{
+	    if (!empty($aUser['user_image']))
+	    {
+			// $aUser['total_photo']++;
+	    }
 		if (!Phpfox::getParam('profile.show_empty_tabs'))
 		{		
 			if (!isset($aUser['total_photo']))
@@ -2020,18 +2109,19 @@ class Photo_Service_Callback extends Phpfox_Service
 			}
 		}
 		
+		if ($sPlugin = Phpfox_Plugin::get('photo.service_callback_getprofilemenu_1')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
 		$aSubMenu = array();
-		if ($this->request()->get('req2') == 'photo')
+		/*if (Phpfox::getParam('profile.display_submenu_for_photo') && ($this->request()->get('req2') == 'photo' || Phpfox::getParam('photo.in_main_photo_section_show') == 'albums'))
 		{
 			$aSubMenu[] = array(
 				'phrase' => Phpfox::getPhrase('profile.albums'),
 				'url' => Phpfox::getLib('url')->makeUrl($aUser['user_name'].'.photo.albums'),
 				'total' => Phpfox::getService('photo.album')->getAlbumCount($aUser['user_id'])
-			);		
-		}
+			);
+		}*/
 		
 		$aMenus[] = array(
-			'phrase' => Phpfox::getPhrase('profile.photos'),
+			'phrase' => Phpfox::getPhrase('profile.photos') . '',
 			'url' => 'profile.photo',
 			'total' => (int) (isset($aUser['total_photo']) ? $aUser['total_photo'] : 0),
 			'icon' => 'feed/photo.png',
@@ -2045,7 +2135,7 @@ class Photo_Service_Callback extends Phpfox_Service
 	{
 		return array(
 			'field' => 'total_photo',
-			'total' => $this->database()->select('COUNT(*)')->from(Phpfox::getT('photo'))->where('view_id = 0 AND group_id = 0 AND type_id = 0 AND user_id = ' . (int) $iUserId)->execute('getSlaveField')
+			'total' => $this->database()->select('COUNT(*)')->from(Phpfox::getT('photo'))->where('view_id = 0 AND group_id = 0 AND type_id = 0 AND user_id = ' . (int) $iUserId . ' AND is_profile_photo IN(' . (Phpfox::getParam('photo.display_profile_photo_within_gallery') ? '0,1' : '0') . ')')->execute('getSlaveField')
 		);	
 	}		
 
@@ -2211,6 +2301,35 @@ class Photo_Service_Callback extends Phpfox_Service
 			'no_profile_image' => true
 		);			
 	}	
+	
+	public function getActions()
+	{
+		return array(
+			'dislike' => array(
+				'enabled' => true,
+				'action_type_id' => 2, // 2 = dislike
+				'phrase' => Phpfox::getPhrase('like.dislike'),
+				'phrase_in_past_tense' => 'disliked',
+				'item_phrase' => Phpfox::getPhrase('photo.item_phrase'),
+				'item_type_id' => 'photo', // used to differentiate between photo albums and photos for example.
+				'table' => 'photo',
+				'column_update' => 'total_dislike',
+				'column_find' => 'photo_id',
+				'where_to_show' => array('', 'photo')			
+				),
+			'dislike-album' => array(
+				'enabled' => true,
+				'action_type_id' => 2,
+				'phrase' => Phpfox::getPhrase('like.dislike'),
+				'item_type_id' => 'photo-album',
+				'item_phrase' => Phpfox::getPhrase('photo.item_phrase_album'), // This will be used in email sent in notifications and displaying 
+				'table' => 'photo-album',
+				'column_update' => 'total_dislike',
+				'column_find' => 'album_id',
+				'where_to_show' => array('photo-album', 'photo')
+			)
+		);
+	}
 	
 	/**
 	 * If a call is made to an unknown method attempt to connect

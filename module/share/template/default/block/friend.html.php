@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: friend.html.php 4154 2012-05-07 14:32:57Z Raymond_Benc $
+ * @version 		$Id: friend.html.php 7020 2014-01-06 17:34:09Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -34,6 +34,17 @@ defined('PHPFOX') or exit('NO DICE!');
 		
 		return false;
 	}
+	
+	function sendFriends(oObj)
+	{
+		$('#js_send_friends_error_message').hide();
+		
+		$('#btnShareFriends').attr('disabled', 'disabled');
+		$('#imgShareFriendsLoading').show();
+		$(oObj).ajaxCall('share.sendFriends');
+		
+		return false;
+	}
 {/literal}
 </script>
 <div>	
@@ -44,7 +55,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		</div>		
 	</div>
 	<div id="js_friend_mail" style="display:none;">
-		<form method="post" action="#" onsubmit="$(this).ajaxCall('share.sendFriends'); return false;">
+		<form method="post" action="#" onsubmit="return sendFriends(this);">
 			<div id="js_selected_friends" style="display:none;"></div>
 			<div class="p_4">
 				<div class="table">
@@ -64,7 +75,8 @@ defined('PHPFOX') or exit('NO DICE!');
 					</div>
 				</div>
 				<div class="table_clear">
-					<input type="submit" value="{phrase var='share.send'}" class="button" />
+					<input type="submit" id="btnShareFriends" value="{phrase var='share.send'}" class="button" />
+					{img theme='ajax/small.gif' style="display:none" id="imgShareFriendsLoading"}
 				</div>
 			</div>
 		</form>

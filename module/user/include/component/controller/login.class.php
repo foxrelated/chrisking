@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: login.class.php 4074 2012-03-28 14:02:40Z Raymond_Benc $
+ * @version 		$Id: login.class.php 7002 2013-12-20 13:46:31Z Miguel_Espinoza $
  */
 class User_Component_Controller_Login extends Phpfox_Component 
 {	
@@ -108,6 +108,16 @@ class User_Component_Controller_Login extends Phpfox_Component
 					if (isset($aUser['status_id']) && $aUser['status_id'] == 1)
 					{
 						$this->url()->send($sReturn, null, Phpfox::getPhrase('user.you_still_need_to_verify_your_email_address'));
+					}
+					
+					if (Phpfox::getParam('user.verify_email_at_signup'))
+					{
+						$bDoRedirect = Phpfox::getLib('session')->get('verified_do_redirect');
+						Phpfox::getLib('session')->remove('verified_do_redirect');
+						if ( (int)$bDoRedirect == 1 && Phpfox::getParam('user.redirect_after_signup') != '')
+						{
+							$sReturn = Phpfox::getParam('user.redirect_after_signup');
+						}
 					}
 					$this->url()->send($sReturn);
 				}

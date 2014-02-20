@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Comment
- * @version 		$Id: comment.class.php 4187 2012-05-31 09:20:19Z Miguel_Espinoza $
+ * @version 		$Id: comment.class.php 7059 2014-01-22 14:20:10Z Fern $
  */
 class Comment_Service_Comment extends Phpfox_Service 
 {	
@@ -84,7 +84,11 @@ class Comment_Service_Comment extends Phpfox_Service
 				$this->database()->select(Phpfox::getUserField('owner', 'owner_') . ', ')->leftJoin(Phpfox::getT('user'), 'owner', 'owner.user_id = cmt.owner_user_id');
 			}
 			
-			$this->database()->select('l.like_id AS is_liked, ')->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'feed_mini\' AND l.item_id = cmt.comment_id AND l.user_id = ' . Phpfox::getUserId());
+			if(Phpfox::isModule('like'))
+			{
+				$this->database()->select('l.like_id AS is_liked, ')
+						->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'feed_mini\' AND l.item_id = cmt.comment_id AND l.user_id = ' . Phpfox::getUserId());
+			}
 			
 			(($sPlugin = Phpfox_Plugin::get('comment.service_comment_get_query')) ? eval($sPlugin) : false);
 			
@@ -261,7 +265,11 @@ class Comment_Service_Comment extends Phpfox_Service
 			$this->database()->where('c.parent_id = 0 AND c.type_id = \'' . $this->database()->escape($sType) . '\' AND c.item_id = ' . (int) $iItemId . ' AND c.view_id = 0');
 		}
 
-		$this->database()->select('l.like_id AS is_liked, ')->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'feed_mini\' AND l.item_id = c.comment_id AND l.user_id = ' . Phpfox::getUserId());
+		if(Phpfox::isModule('like'))
+		{
+			$this->database()->select('l.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'feed_mini\' AND l.item_id = c.comment_id AND l.user_id = ' . Phpfox::getUserId());
+		}
 		
 		$aFeedComments = $this->database()->select('c.*, ' . (Phpfox::getParam('core.allow_html') ? "ct.text_parsed" : "ct.text") .' AS text, ' . Phpfox::getUserField())
 			->from(Phpfox::getT('comment'), 'c')
@@ -336,12 +344,16 @@ class Comment_Service_Comment extends Phpfox_Service
 	
 	public function massMail($sModule, $iItemId, $iOwnerUserId, $aMessage = array())
 	{
+        if ($sPlugin = Phpfox_Plugin::get('comment.service_comment_massmail__0')){eval($sPlugin);if (isset($aPluginReturn)){return $aPluginReturn;}}
+        
 		$aRows = $this->database()->select('c.*')
 			->from($this->_sTable, 'c')
 			->where('c.type_id = \'' . $this->database()->escape($sModule) . '\' AND item_id = ' . (int) $iItemId . ' AND view_id = 0')
 			->group('c.user_id')
 			->execute('getSlaveRows');
 
+        if ($sPlugin = Phpfox_Plugin::get('comment.service_comment_massmail__1')){eval($sPlugin);}
+            
 		foreach ($aRows as $aRow)
 		{
 			if ($aRow['user_id'] == $iOwnerUserId)
@@ -377,7 +389,11 @@ class Comment_Service_Comment extends Phpfox_Service
 			->where('c.parent_id = ' . (int) $iParentId . ' AND c.type_id = \'' . $this->database()->escape($sType) . '\' AND c.item_id = ' . (int) $iItemId . ' AND c.view_id = 0')
 			->execute('getSlaveField');
 		
-		$this->database()->select('l.like_id AS is_liked, ')->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'feed_mini\' AND l.item_id = c.comment_id AND l.user_id = ' . Phpfox::getUserId());		
+		if(Phpfox::isModule('like'))
+		{
+			$this->database()->select('l.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'feed_mini\' AND l.item_id = c.comment_id AND l.user_id = ' . Phpfox::getUserId());		
+		}
 		
 		if ($iCommentId === null)
 		{
@@ -405,7 +421,19 @@ class Comment_Service_Comment extends Phpfox_Service
 		}	
 		
 		return array('total' => (int) ($iTotalComments - Phpfox::getParam('comment.thread_comment_total_display')), 'comments' => $aFeedComments);
-	}	
+	}
+	
+	public function getInfoForAction($aItem)
+	{
+		$aRow = $this->database()->select('c.comment_id, ct.text as title, c.user_id, u.gender, u.full_name')	
+			->from(Phpfox::getT('comment'), 'c')
+			->join(Phpfox::getT('comment_text'), 'ct', 'c.comment_id = ct.comment_id')
+			->join(Phpfox::getT('user'), 'u', 'u.user_id = c.user_id')
+			->where('c.comment_id = ' . (int) $aItem['item_id'])
+			->execute('getSlaveRow');
+		$aRow['link'] = '';//Phpfox::getLib('url')->permalink('blog', $aRow['blog_id'], $aRow['title']);
+		return $aRow;
+	}
 }
 
 ?>

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Tag
- * @version 		$Id: process.class.php 2736 2011-07-15 09:46:34Z Miguel_Espinoza $
+ * @version 		$Id: process.class.php 6876 2013-11-12 10:48:57Z Miguel_Espinoza $
  */
 class Tag_Service_Process extends Phpfox_Service 
 {
@@ -23,11 +23,19 @@ class Tag_Service_Process extends Phpfox_Service
 		$this->_sTable = Phpfox::getT('tag');
 	}
 	
-	public function add($sType, $iItemId, $iUserId, $sTags)
+	public function add($sType, $iItemId, $iUserId, $sTags, $bHashTags = false)
 	{			
 		$oFilter = Phpfox::getLib('parse.input');
-		Phpfox::getService('ban')->checkAutomaticBan($sTags);
-		$aTags = explode(',', $sTags);
+		if ($bHashTags)
+		{
+			$aTags = Phpfox::getLib('parse.output')->getHashTags($sTags);
+		}
+		else
+		{
+			Phpfox::getService('ban')->checkAutomaticBan($sTags);
+			$aTags = explode(',', $sTags);
+		}
+
 		$aCache = array();
 		foreach ($aTags as $sTag)
 		{
@@ -65,15 +73,16 @@ class Tag_Service_Process extends Phpfox_Service
 	 * @param unknown_type $sTags
 	 * @return unknown
 	 */	
-	public function update($sType, $iItemId, $iUserId, $sTags = null)
+	public function update($sType, $iItemId, $iUserId, $sTags = null, $bHashTags = false)
 	{
 		if ($sTags !== null)
 		{
-                    /* Since tags are unique to each item it should be safe to delete every tag
-                     * belonging to one item and add the new ones
-                     */
-                    $this->database()->delete(Phpfox::getT('tag'), 'item_id = ' . (int)$iItemId . ' AND category_id = \'' . $this->database()->escape($sType) . '\' AND user_id = ' . (int)$iUserId);
-                    return $this->add($sType, $iItemId, $iUserId, $sTags);
+			/* Since tags are unique to each item it should be safe to delete every tag
+			 * belonging to one item and add the new ones
+			 */
+            $this->database()->delete(Phpfox::getT('tag'), 'item_id = ' . (int)$iItemId . ' AND category_id = \'' . $this->database()->escape($sType) . '\' AND user_id = ' . (int)$iUserId);
+
+			return $this->add($sType, $iItemId, $iUserId, $sTags, $bHashTags);
                     
 			// get the tags for this item
 			$aCurrentTags = $this->database()

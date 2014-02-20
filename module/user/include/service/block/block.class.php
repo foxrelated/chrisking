@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: block.class.php 1496 2010-03-05 17:15:05Z Raymond_Benc $
+ * @version 		$Id: block.class.php 5591 2013-03-28 10:12:52Z Miguel_Espinoza $
  */
 class User_Service_Block_Block extends Phpfox_Service 
 {
@@ -23,18 +23,54 @@ class User_Service_Block_Block extends Phpfox_Service
 		$this->_sTable = Phpfox::getT('user_blocked');	
 	}
 	
+	/**
+	 * This function checks if $iUserId blocked $iBlockedUserId.
+	 * We cache the $iBlockedUser (`phpfox_user_blocked`.`block_user_id`) and check 
+	 * if $iUserId is in that array.
+	 * 
+	 */
 	public function isBlocked($iUserId, $iBlockedUserId)
 	{
 		static $aCache = array();
+		if (isset($aCache[$iUserId][$iBlockedUserId]))
+		{
+			return $aCache[$iUserId][$iBlockedUserId];
+		}
+		if (Phpfox::getParam('core.super_cache_system'))
+		{
+			$sCacheId = $this->cache()->set(array('user_blocked', $iBlockedUserId));
+			if ( !($aSuperCache = $this->cache()->get($sCacheId)))
+			{
+				$aSuperCache = $this->database()->select('*')
+					->from($this->_sTable)
+					->where('block_user_id = ' . (int)$iBlockedUserId)
+					->execute('getSlaveRows');
+				$this->cache()->save($sCacheId, $aSuperCache);
+			}
+			if (!is_array($aSuperCache))
+			{
+				$aSuperCache = array();
+			}
+			foreach ($aSuperCache as $aEntry)
+			{
+				$aCache[$aEntry['user_id']][$iBlockedUserId] = true;
+				if ($aEntry['user_id'] == (int)$iUserId)
+				{
+					return true;
+				}
+			}
+			$aCache[$iUserId][$iBlockedUserId] = false;
+			return false;			
+		}
 		
+		// This is the old routine.
 		if (!isset($aCache[$iUserId][$iBlockedUserId]))
 		{
 			$aCache[$iUserId][$iBlockedUserId] = (int) $this->database()->select('COUNT(*)')
 				->from($this->_sTable)
 				->where('user_id = ' . (int) $iUserId . ' AND block_user_id = ' . (int) $iBlockedUserId)
-				->execute('getSlaveField');		
+				->execute('getSlaveField');
 		}
-		
 		return $aCache[$iUserId][$iBlockedUserId];
 	}
 	

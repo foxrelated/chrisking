@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: list.class.php 5051 2012-11-28 12:40:24Z Raymond_Benc $
+ * @version 		$Id: list.class.php 5608 2013-04-03 11:52:10Z Miguel_Espinoza $
  */
 class Friend_Service_List_List extends Phpfox_Service 
 {
@@ -146,11 +146,25 @@ class Friend_Service_List_List extends Phpfox_Service
 	
 	public function getListForProfile($iProfileId)
 	{
-		$aLists = $this->database()->select('fl.list_id, fl.name')			
+		if (Phpfox::getParam('friend.cache_friend_list'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_list', $iProfileId));
+			if ( ($aList = $this->cache()->get($sCacheId)))
+			{
+				// if the array was empty when saved to cache it gets stored as 1 or true
+				if (!is_array($aList))
+				{
+					$aList = array();
+				}
+				return $aList;
+			}
+		}
+		
+		$aLists = $this->database()->select('/*getListForProfile*/ fl.list_id, fl.name')			
 			->from(Phpfox::getT('friend_list'), 'fl') 
 			->where('fl.user_id = ' . (int) $iProfileId . ' AND fl.is_profile = 1')			
 			->execute('getSlaveRows');
-
+		
 		$aSubList = array();		
 		foreach ($aLists as $aList)
 		{
@@ -175,6 +189,11 @@ class Friend_Service_List_List extends Phpfox_Service
 			}
 		}
 		
+		if (Phpfox::getParam('friend.cache_friend_list'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_list', $iProfileId));
+			$this->cache()->save($sCacheId, $aSubList);
+		}
 		return $aSubList;
 	}
 	

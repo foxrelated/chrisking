@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: system.class.php 4457 2012-07-03 07:41:44Z Raymond_Benc $
+ * @version 		$Id: system.class.php 5456 2013-02-28 14:24:45Z Miguel_Espinoza $
  */
 class Core_Service_System extends Phpfox_Service 
 {
@@ -71,6 +71,22 @@ class Core_Service_System extends Phpfox_Service
 					}
 				}
 			}
+            else if (stristr(PHP_OS, "win") === false)
+            {
+                $sMemory = file_get_contents('/proc/meminfo'); 
+                $aMemoryStats = explode("n", $sMemory); // escape the "new line" 
+                $aMem = null; 
+                foreach($aMemoryStats as $iKey => $sMemoryStat) 
+                { 
+                    $aMemoryStats[$iKey] = preg_replace('/s+/', ' ', $sMemoryStat); 
+                    if(preg_match('/[0-9]+/', $sMemoryStat, $aMem)) 
+                    { 
+                        $aMemoryStats[$iKey] = ($aMem[0]/1024); 
+                    } 
+                } 
+                $aStats[Phpfox::getPhrase('admincp.total_server_memory')] = (int)$aMemoryStats[0] . ' MB';
+                $aStats[Phpfox::getPhrase('admincp.available_server_memory')] = (int)$aMemoryStats[1] . ' MB';
+            }
 		}
 		
 		if (!PHPFOX_OPEN_BASE_DIR && ($sLoad = Phpfox::getService('core.load')->get()) !== null)

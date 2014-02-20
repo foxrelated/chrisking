@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: mini.class.php 3606 2011-11-30 06:23:17Z Raymond_Benc $
+ * @version 		$Id: mini.class.php 5840 2013-05-09 06:14:35Z Raymond_Benc $
  */
 class Comment_Component_Block_Mini extends Phpfox_Component
 {
@@ -22,6 +22,7 @@ class Comment_Component_Block_Mini extends Phpfox_Component
 	{
 		if (($aChildComments = $this->getParam('comment_custom')))
 		{
+			
 			$this->template()->assign(array(
 					'aComment' => $aChildComments,
 					'bNotMoreNestedComments' => false

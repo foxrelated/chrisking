@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: style.class.php 4906 2012-10-22 04:52:14Z Raymond_Benc $
+ * @version 		$Id: style.class.php 6882 2013-11-12 17:39:57Z Fern $
  */
 class Theme_Service_Style_Style extends Phpfox_Service 
 {
@@ -47,12 +47,20 @@ class Theme_Service_Style_Style extends Phpfox_Service
 			$sCssFile = PHPFOX_DIR . 'theme/frontend/' . $aStyle['theme_folder'] . '/style/' . $aStyle['folder'] . '/css/custom.css';
 			if (file_exists($sCssFile))
 			{
-				return array('css_data' => file_get_contents($sCssFile));
+				$aRow['css_data'] = file_get_contents($sCssFile);
 			}
-			
-			return '';
 		}
 		
+		if (empty($aRow['css_data']))
+		{
+			return '';
+		}
+
+		if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
+		{
+			$aRow['css_data'] = str_replace('../', Phpfox::getParam('core.path') . 'theme/frontend/' . $aStyle['theme_folder'] . '/style/' . $aStyle['folder'] . '/', $aRow['css_data']);
+		}
+
 		return $aRow;
 	}
 	
@@ -82,6 +90,8 @@ class Theme_Service_Style_Style extends Phpfox_Service
 			->where('ts.is_active = 1')
 			->execute('getSlaveRows');
 		
+        if ($sPlugin = Phpfox_Plugin::get('theme.service_style_getstyles__1')){eval($sPlugin);if (isset($aPluginReturn)){return $aPluginReturn;}}
+        
 		foreach ($aRows as $iKey => $aRow)
 		{
 			$aRows[$iKey]['block_total'] = range(1, 10);
@@ -846,8 +856,58 @@ class Theme_Service_Style_Style extends Phpfox_Service
 				}
 			}
 			closedir($hDir);
+			
+			foreach(Phpfox::getLib('module')->getModules() as $sModule)
+			{
+				$sDir = PHPFOX_DIR_MODULE . $sModule . PHPFOX_DS . "static" . PHPFOX_DS . "image" . PHPFOX_DS . $sThemeFolder . PHPFOX_DS . $sFolder . PHPFOX_DS;
+
+				$this->_getSubDirImages($sDir, $sModule);				
+			}
 		}		
-	}	
+	}
+
+	private function _getSubDirImages($sDir, $sModule)
+	{
+		if (is_dir($sDir))
+		{
+			$hDir = opendir($sDir);
+			while ($sFile = readdir($hDir))
+			{
+				if ($sFile == '.' || $sFile == '..')
+				{
+					continue;
+				}
+		
+				if (is_dir($sDir . $sFile))
+				{
+					d($sDir);die();
+					$this->_getSubDirImages($sDir);
+				}
+				else 
+				{
+					if (!preg_match('/(.*)\.(gif|png|jpg|jpeg|html)/i', $sFile))
+					{
+						continue;
+					}
+			
+					if (file_exists($sDir . $sFile))
+					{
+						if (isset($this->_aStyleImageCache[$sModule . "." . $sFile]))
+						{
+							continue;
+						}
+
+						$this->_aStyleImages[] = array(
+							'name' => $sFile,
+							'file' => $sDir . $sFile
+						);
+						$this->_aStyleImageCache[$sModule . "." . $sFile] = true;
+					}					
+				}
+			}
+			closedir($hDir);
+		}
+	}
 }
 
 ?>

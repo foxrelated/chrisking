@@ -5,18 +5,22 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Mail
- * @version 		$Id: index.html.php 4255 2012-06-13 07:24:53Z Raymond_Benc $
+ * @version 		$Id: index.html.php 6749 2013-10-08 13:04:25Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
 
 ?>
+
 {if $bIsInLegacyView}
 <div class="message">
 	{phrase var='mail.you_are_currently_viewing_our_legacy_inbox'}
 </div>
 {/if}
 
+{if Phpfox::getParam('mail.threaded_mail_conversation')}
+
+{else}
 {if $iMailSpaceUsed == 100}
 	<div class="error_message">
 		 {phrase var='mail.you_have_reached_your_mail_box_capacity_and_wont_be_able'}
@@ -28,6 +32,8 @@ defined('PHPFOX') or exit('NO DICE!');
 		</div>
 	{/if}
 {/if}
+{/if}
+
 {if $iFolder}
 <div style="position:absolute; right:0px; top:-15px;">
 	<a href="#" onclick="if (confirm('{phrase var='mail.are_you_sure'}')) {l} $.ajaxCall('mail.deleteFolder', 'id={$iFolder}'); {r} return false;">{phrase var='mail.delete_this_list'}</a>
@@ -110,7 +116,8 @@ defined('PHPFOX') or exit('NO DICE!');
 	{phrase var='mail.no_messages_found_here'}
 </div>
 {/if}
-{if $iTotalMessages && !$bIsInLegacyView}
+<input type="button" value="{phrase var='mail.mark_all_read'}" class="button button_off" onclick="$.ajaxCall('mail.markallread')"/>
+{if $iTotalMessages}
 {moderation}
 {/if}
 {pager}

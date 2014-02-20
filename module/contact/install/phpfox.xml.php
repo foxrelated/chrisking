@@ -14,12 +14,12 @@
 	</menus>
 	<settings>
 		<setting group="" module_id="contact" is_hidden="0" type="boolean" var_name="contact_enable_captcha" phrase_var_name="setting_contact_enable_captcha" ordering="1" version_id="2.0.0alpha1">1</setting>
-		<setting group="" module_id="contact" is_hidden="0" type="boolean" var_name="is_email_required" phrase_var_name="setting_is_email_required" ordering="1" version_id="2.0.0alpha1">1</setting>
 		<setting group="" module_id="contact" is_hidden="0" type="boolean" var_name="allow_html_in_contact" phrase_var_name="setting_allow_html_in_contact" ordering="1" version_id="2.0.0alpha1">1</setting>
 		<setting group="" module_id="contact" is_hidden="0" type="string" var_name="contact_staff_emails" phrase_var_name="setting_contact_staff_emails" ordering="1" version_id="2.0.0alpha2" />
 		<setting group="" module_id="contact" is_hidden="0" type="boolean" var_name="enable_auto_responder" phrase_var_name="setting_enable_auto_responder" ordering="1" version_id="2.0.8">1</setting>
 		<setting group="" module_id="contact" is_hidden="0" type="large_string" var_name="auto_responder_subject" phrase_var_name="setting_auto_responder_subject" ordering="1" version_id="2.0.8"><![CDATA[{phrase var='contact.auto_responder_subject'}]]></setting>
 		<setting group="" module_id="contact" is_hidden="0" type="large_string" var_name="auto_responder_message" phrase_var_name="setting_auto_responder_message" ordering="1" version_id="2.0.8"><![CDATA[{phrase var='contact.auto_responder_message'}]]></setting>
+		<setting group="" module_id="contact" is_hidden="1" type="boolean" var_name="is_email_required" phrase_var_name="setting_is_email_required" ordering="1" version_id="2.0.0alpha1">1</setting>
 	</settings>
 	<hooks>
 		<hook module_id="contact" hook_type="controller" module="contact" call_name="contact.component_controller_index_clean" added="1240687633" version_id="2.0.0beta1" />

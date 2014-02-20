@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: index.php 3829 2011-12-19 09:33:03Z Raymond_Benc $ 
+ * @version 		$Id: index.php 7004 2013-12-20 14:23:28Z Raymond_Benc $ 
  */
 
 // Make sure we are running PHP5.

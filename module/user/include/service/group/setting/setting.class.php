@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_User
- * @version 		$Id: setting.class.php 4074 2012-03-28 14:02:40Z Raymond_Benc $
+ * @version 		$Id: setting.class.php 5237 2013-01-29 09:53:06Z Raymond_Benc $
  */
 class User_Service_Group_Setting_Setting extends Phpfox_Service 
 {
@@ -195,6 +195,23 @@ class User_Service_Group_Setting_Setting extends Phpfox_Service
 		return true;
 	}	
 
+	/* This function gets the user groups that have enabled a setting.
+	 * Used to filter users in the user.browse service
+	 */ 
+	public function getUserGroupsBySetting($sParam, $mValue = true)
+	{
+		// Get all user groups
+		$aGroups = Phpfox::getService('user.group')->get();
+		$aOut = array();
+		foreach ($aGroups as $aGroup)
+		{
+			if ($this->getGroupParam($aGroup['user_group_id'], $sParam) == $mValue)
+			{
+				$aOut[$aGroup['user_group_id']]= $aGroup;
+			}
+		}
+		return $aOut;
+	}
 	/**
 	 * If a call is made to an unknown method attempt to connect
 	 * it to a specific plug-in with the same name thus allowing 
@@ -221,6 +238,7 @@ class User_Service_Group_Setting_Setting extends Phpfox_Service
 	
 	private function &_setType(&$aRow, $sVar)
 	{
+
 				if (empty($aRow['value_actual']) && $aRow['value_actual'] != '0')
 				{
 					if (is_null($aRow[$sVar]) && $aRow['inherit_id'] > 0)
@@ -251,7 +269,7 @@ class User_Service_Group_Setting_Setting extends Phpfox_Service
 						$aRow['value_actual'] = $aRow[$sVar];
 					}
 				}				
-				
+
 				switch ($aRow['type_id'])
 				{
 					case 'boolean':
@@ -266,7 +284,8 @@ class User_Service_Group_Setting_Setting extends Phpfox_Service
 						break;
 					case 'array':
 						// Fix unserialize sting length depending on the database driver
-						$aRow['value_actual'] = preg_replace("/s:(.*):\"(.*?)\";/ise", "'s:'.strlen('$2').':\"$2\";'", (isset($aRow['user_group_id']) && isset($aRow[$aRow['user_group_id']])) ? $aRow[$aRow['user_group_id']] : $aRow['value_actual']);
+						// $aRow['value_actual'] = preg_replace("/s:(.*):\"(.*?)\";/ise", "'s:'.strlen('$2').':\"$2\";'", (isset($aRow['user_group_id']) && isset($aRow[$aRow['user_group_id']])) ? $aRow[$aRow['user_group_id']] : $aRow['value_actual']);
+						$aRow['value_actual'] = preg_replace("/s:(.*):\"(.*?)\";/ise", "'s:'.strlen('$2').':\"$2\";'", (isset($aRow['user_group_id2']) && isset($aRow[$aRow['user_group_id']])) ? $aRow[$aRow['user_group_id']] : $aRow['value_actual']);
 						if (!empty($aRow['value_actual']))
 						{
 							//eval("\$aRow['value_actual'] = ". unserialize(trim($aRow['value_actual'])) . "");
@@ -361,7 +380,7 @@ class User_Service_Group_Setting_Setting extends Phpfox_Service
 		}
 		$mValid = $mValid[0];
 		$aModules = Phpfox::massCallback('getDashboardActivity');
-		$aOut = array();
+		
 		$sGroup = '';
 
 		/* if this user group inherits then take the default value of the parent user group*/
@@ -403,7 +422,7 @@ class User_Service_Group_Setting_Setting extends Phpfox_Service
 		$sIn = rtrim($sIn, ',');
 		$aCurrentSettings = $this->database()->select('*')
 						->from(Phpfox::getT('user_setting'))
-						->where('setting_id IN (' . $sIn . ') AND user_group_id = ' . ($mValid['inherit_id'] != 0 ? $mValid['inherit_id'] : ((int) $iUserGroup)))
+						->where('setting_id IN (' . $sIn . ') AND user_group_id = ' . ((int) $iUserGroup))
 						->execute('getSlaveRows');
 		/* Merge arrays */
 		foreach ($aDefaultSettings as $iKey => $aDefault)

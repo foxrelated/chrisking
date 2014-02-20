@@ -13,7 +13,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: helper.class.php 4961 2012-10-29 07:11:34Z Raymond_Benc $
+ * @version 		$Id: helper.class.php 6821 2013-10-22 13:07:04Z Raymond_Benc $
  */
 class Phpfox_Image_Helper
 {	
@@ -37,9 +37,16 @@ class Phpfox_Image_Helper
 	 */
 	public function getNewSize($sImage = null, $iMaxHeight, $iMaxWidth, $iWidth = 0, $iHeight = 0)
 	{
-		if ($sImage !== null && (!file_exists($sImage) || filesize($sImage) < 1))
+		if (is_array($sImage))
 		{
+			$sImage = $sImage[0];
+		}
+		else
+		{
+			if ($sImage !== null && (!file_exists($sImage) || filesize($sImage) < 1))
+			{
 				return array(0,0);
+			}
 		}
 	    if (!$iWidth && !$iHeight)
 	    {
@@ -89,7 +96,7 @@ class Phpfox_Image_Helper
 	 * @param array $aParams Holds an ARRAY of params about the image
 	 * @return string Returns the HTML <image> or the full path to the image based on the params passed with the 1st argument
 	 */
-	public function display($aParams)
+	public function display($aParams, $bIsLoop = false)
 	{
 		static $aImages = array();
 		
@@ -104,7 +111,7 @@ class Phpfox_Image_Helper
 		
 		$bIsServer = (!empty($aParams['server_id']) ? true : false);
 				
-		(($sPlugin = Phpfox_Plugin::get('image_helper_display_start')) ? eval($sPlugin) : false);		
+		if (($sPlugin = Phpfox_Plugin::get('image_helper_display_start'))){eval($sPlugin);if (isset($mReturnPlugin)){return $mReturnPlugin;}}
 
 		if (isset($aParams['theme']))
 		{
@@ -128,8 +135,11 @@ class Phpfox_Image_Helper
 		
 		// Check if this is a users profile image
 		$bIsOnline = false;
+		$bDefer = false;
+		
 		if (isset($aParams['user']))
 		{
+			$bDefer = Phpfox::getParam('core.defer_loading_user_images');
 			$sSuffix = '';
 			if (isset($aParams['user_suffix']))
 			{
@@ -229,7 +239,7 @@ class Phpfox_Image_Helper
 						}					
 					}		
 					
-					$sSrc = Phpfox::getLib('template')->getStyle('image', 'noimage/' . $sGender . 'profile' . $sImageSuffix . '.png');
+					$sSrc = Phpfox::getLib('template')->getStyle('image', 'noimage/' . $sGender . 'profile' . $sImageSuffix . '.png');	
 				}
 				else 
 				{
@@ -240,6 +250,7 @@ class Phpfox_Image_Helper
 			}
 			else 
 			{
+				$aParams['file'] = preg_replace('/%[^s]/', '%%', $aParams['file']);
 				$sSrc = Phpfox::getParam($aParams['path']) . sprintf($aParams['file'], (isset($aParams['suffix']) ? $aParams['suffix'] : ''));
 			}	
 		}
@@ -365,7 +376,7 @@ class Phpfox_Image_Helper
 			$bForcePassImage = false;
 			$sNewDirSrc = '';
 			if (preg_match("/file\/pic\/photo\//i", $sSrc))
-			{				
+			{
 				if (preg_match('/(.*)\[PHPFOX_CUSTOM_URL\](.*)\-(.*)\.(.*)/i', $sSrc, $aCustomMatches))
 				{
 					$sSrc = str_replace('[PHPFOX_CUSTOM_URL]', '', $sSrc);
@@ -390,6 +401,13 @@ class Phpfox_Image_Helper
 						}
 					}
 				}
+			}
+			
+			if (preg_match('/\{([0-9]+)\}(.*)/i', $sSrc, $aCustomMatches))
+			{
+				$bForcePassImage = true;				
+				$bIsServer = true;
+				$sSrc = Phpfox::getService('video')->getCustomUrl($aCustomMatches[1]) . 'view/' . $aCustomMatches[2];
 			}
 			
 			if (preg_match("/file\/pic\/user\//i", $sSrc))
@@ -441,8 +459,15 @@ class Phpfox_Image_Helper
 		if ($bIsServer === true)
 		{
 			if (Phpfox::getParam('core.allow_cdn'))
-			{				
-				$sSrc = Phpfox::getLib('cdn')->getUrl($sSrc, $aParams['server_id']);	
+			{
+				if (!$bIsValid)
+				{				
+					
+				}
+				else
+				{				
+					$sSrc = Phpfox::getLib('cdn')->getUrl($sSrc, $aParams['server_id']);
+				}	
 			}
 			else 
 			{
@@ -472,7 +497,11 @@ class Phpfox_Image_Helper
 					if (isset($aLbMatches[2]) && isset($aLbMatches[3]))
 					{
 						list($iHeight, $iWidth) = $this->getNewSize(null, $aParams['max_height'], $aParams['max_width'], $aLbMatches[2], $aLbMatches[3]);
-					}					
+					}	
+					else
+					{
+						$bNoWidthHeightFound = true;
+					}				
 				}										
 			}
 			else
@@ -508,7 +537,19 @@ class Phpfox_Image_Helper
 					}			
 					
 					if (isset($aParams['path']) && $aParams['path'] == 'core.url_user')
-					{					
+					{		
+									
+						if (Phpfox::getParam('user.cache_user_inner_joins') && !$bIsLoop && isset($sSuffix))
+						{
+							$aCachedUserInfo = Phpfox::getService('user')->getStaticInfo($aParams['user'][$sSuffix . 'user_id']);							
+							if (!empty($aCachedUserInfo['user_image']))
+							{					
+								$aParams['user'][$sSuffix . 'user_image'] = $aCachedUserInfo['user_image'];
+	
+								return $this->display($aParams, true);
+							}								
+						}	
+					
 						$sSrc = Phpfox::getLib('template')->getStyle('image', 'noimage/' . (empty($sGender) ? '' : $sGender) . 'profile' . $sSize . '.png');
 						preg_match("/^(.*?)_(.*?)\.(.*?)$/i", $sSrc, $aMatches);						
 					}
@@ -583,6 +624,13 @@ class Phpfox_Image_Helper
 		
 		// Windows slash fix
 		$sSrc = str_replace("\\", '/', $sSrc);		
+		if (preg_match("/file\/pic\/photo\//i", $sSrc))
+		{
+			if (Phpfox::getParam('core.defer_loading_images'))
+			{
+				$bDefer = true;
+			}			
+		}
 		
 		if (isset($aParams['return_url']) && $aParams['return_url'])
 		{
@@ -609,10 +657,64 @@ class Phpfox_Image_Helper
 		
 		if (isset($aParams['class']) && $aParams['class'] == 'js_hover_title')
 		{
-			$aParams['title'] = Phpfox::getLib('parse.output')->shorten($aParams['title'], 30, '...');
+			$aParams['title'] = Phpfox::getLib('parse.output')->shorten($aParams['title'], 100, '...');
 		}
 		
-		$sImage .= (isset($sLink) ? '<a href="' . $sLink . ((isset($aParams['thickbox']) && isset($aParams['time_stamp'])) ? '?t=' . uniqid() : '') . '"' . (isset($aParams['title']) ? ' title="' . $aParams['title'] . '"' : '') . '' . (isset($aParams['thickbox']) ? ' class="thickbox"' : '') . '' . (isset($aParams['target']) ? ' target="' . $aParams['target'] . '"' : '') . '>' : '') . '<img src="' . $sSrc . (isset($aParams['time_stamp']) ? '?t=' . uniqid() : '') . '" alt="' . (isset($aParams['title']) ? $aParams['title'] : htmlspecialchars($sAlt)) . '" ';
+		
+		if (isset($sLink))
+		{
+			$sImage .= '<a href="' . $sLink;
+			if (isset($aParams['thickbox']) && isset($aParams['time_stamp']))
+			{
+				$sImage .= '?t=' . uniqid();
+			}
+			$sImage .= '"';
+			if (isset($aParams['title']))
+			{
+				$sImage .= ' title="' . htmlspecialchars($aParams['title']) . '"';
+			}
+			if (isset($aParams['thickbox']))
+			{
+				$sImage .= ' class="thickbox"';
+			}
+			if (isset($aParams['target']))
+			{
+				$sImage .= ' target="' . $aParams['target'] . '"';
+			}
+			$sImage .= '>';
+		}
+
+		if (PHPFOX_IS_AJAX)
+		{
+			$aAjaxCall = Phpfox::getLib('request')->get('core');
+			if (isset($aAjaxCall['call']) && in_array($aAjaxCall['call'], array('core.loadDelayedBlocks')))
+			{
+
+			}
+			else
+			{
+				$bDefer = false;
+			}
+		}
+		
+		$sImage .= '<img';
+		if ($bDefer == true)
+		{
+			$aParams['class'] = ' image_deferred ' . (isset($aParams['class']) ? ' ' . $aParams['class'] : '');
+			$sImage .= ' data-src="' . $sSrc . (isset($aParams['time_stamp']) ? '?t=' . uniqid() : '') . '" src="' . Phpfox::getLib('template')->getStyle('image', 'misc/defer_holder.gif') . '" ';
+		}
+		else
+		{
+			$sImage .= ' src="' . $sSrc . (isset($aParams['time_stamp']) ? '?t=' . uniqid() : '') . '" ';
+		}
+		if (isset($aParams['title']))
+		{
+			$sImage .= ' alt="' . htmlspecialchars($aParams['title']) . '" ';
+		}
+		else
+		{
+			$sImage .= ' alt="' . htmlspecialchars($sAlt) . '" ';
+		}
 		
 		if (isset($aParams['js_hover_title']))
 		{
@@ -639,6 +741,11 @@ class Phpfox_Image_Helper
 		if (!empty($iWidth))
 		{
 			$sImage .= 'width="' . $iWidth . '" ';
+		}
+		
+		if (isset($bNoWidthHeightFound))
+		{
+			$sImage .= ' style="max-width:' . $aParams['max_width'] . 'px;max-height:' . $aParams['max_height'] . 'px;' . (isset($aParams['style']) ? $aParams['style'] : '') . '" ';
 		}
 		
 		if (isset($aParams['force_max']))

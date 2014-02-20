@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: login-header.class.php 3089 2011-09-13 10:54:02Z Raymond_Benc $
+ * @version 		$Id: login-header.class.php 6607 2013-09-10 09:00:38Z Miguel_Espinoza $
  */
 class User_Component_Block_Login_Header extends Phpfox_Component
 {
@@ -20,6 +20,8 @@ class User_Component_Block_Login_Header extends Phpfox_Component
 	 */
 	public function process()
 	{
+		if ($sPlugin = Phpfox_Plugin::get('user.component_block_login_header')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
+		
 		$this->template()->assign(array(
 				'sJanrainUrl' => (Phpfox::isModule('janrain') ? Phpfox::getService('janrain')->getUrl() : '')
 			)

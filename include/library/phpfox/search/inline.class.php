@@ -12,9 +12,9 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: inline.class.php 1668 2010-07-12 08:54:32Z Raymond_Benc $
+ * @version 		$Id: inline.class.php 6599 2013-09-06 08:18:37Z Miguel_Espinoza $
  */
-final class Phpfox_Search_Inline
+class Phpfox_Search_Inline
 {
 	/**
 	 * Class constructor.

@@ -11,10 +11,35 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Ajax
- * @version 		$Id: ajax.class.php 4664 2012-09-18 11:45:39Z Raymond_Benc $
+ * @version 		$Id: ajax.class.php 7092 2014-02-05 21:42:42Z Fern $
  */
 class Feed_Component_Ajax_Ajax extends Phpfox_Ajax
 {
+	public function hashtag()
+	{
+		$this->setTitle('#' . strip_tags($this->get('hashtagsearch')));
+		Phpfox::getBlock('feed.display');
+		$this->call('<script type="text/javascript">$Core.loadInit();</script>');
+	}
+
+	public function loadDelayedComments()
+	{		
+		Phpfox::getBlock('feed.comment', array('aFeed' => json_decode($this->get('feed'), true)));
+		$this->html('#js_load_delayed_comments', $this->getContent(false));
+		$this->call('$Core.loadInit();');
+		$this->call('if (function_exists(\'customPhotoTagImage\')){ customPhotoTagImage(); }');
+	}
+	
+	public function loadDropDates()
+	{
+		Phpfox::getBlock('feed.loaddates');
+		
+		$sContent = $this->getContent(false);
+		$sContent = str_replace(array("\n", "\t"), '', $sContent);
+		
+		$this->html('.timeline_date_holder_share', $sContent);
+	}
+	
 	public function share()
 	{
 		$aPost = $this->get('val');		
@@ -95,7 +120,7 @@ class Feed_Component_Ajax_Ajax extends Phpfox_Ajax
 		}		
 		
 		/* Check if user chose an egift */
-		if (isset($aVals['egift_id']) && !empty($aVals['egift_id']))
+		if (Phpfox::isModule('egift') && isset($aVals['egift_id']) && !empty($aVals['egift_id']))
 		{
 			/* is this gift a free one? */
 			$aGift = Phpfox::getService('egift')->getEgift($aVals['egift_id']);
@@ -157,6 +182,11 @@ class Feed_Component_Ajax_Ajax extends Phpfox_Ajax
 	
 	public function viewMore()
 	{
+		if ($this->get('callback_module_id') == 'pages' && Phpfox::getService('pages')->isTimelinePage($this->get('callback_item_id')))
+		{
+			define('PAGE_TIME_LINE', true);
+		}
+		
 		Phpfox::getBlock('feed.display');		
 		
 		$sYear = $this->get('year');
@@ -195,6 +225,26 @@ class Feed_Component_Ajax_Ajax extends Phpfox_Ajax
 		if (Phpfox::getService('feed.process')->deleteFeed($this->get('id'), $this->get('module'), $this->get('item')))
 		{
 			$this->slideUp('#js_item_feed_' . $this->get('id'));
+			
+			// http://www.phpfox.com/tracker/view/14864/
+			if(Phpfox::getParam('feed.refresh_activity_feed') > 0)
+			{
+				$aRows = Phpfox::getService('feed')->get(null, null, 0);
+				$aFeed = array_pop($aRows);
+				
+				$this->template()->assign(array(
+						'aFeed' => $aFeed	
+					)
+				);
+				
+				$this->template()->getTemplate('feed.block.entry');
+				$sId = 'js_item_feed_' . $aFeed['feed_id'];			
+				$sHtml = '<div class="js_feed_view_more_entry_holder">' . $this->getContent(true) . '</div>';
+
+				$this->call("$('#feed_view_more').before('" . $sHtml . "');");
+			}
+			// END
+			
 			$this->alert(Phpfox::getPhrase('feed.feed_successfully_deleted'), Phpfox::getPhrase('feed.feed_deletion'), 300, 150, true);
 		}
 		else
@@ -338,6 +388,35 @@ class Feed_Component_Ajax_Ajax extends Phpfox_Ajax
 		$this->slideDown('#' . $sIds);		
 		$this->call('$Core.loadInit();');        
     }
+    
+    /* Loads Pages and results from Google Places Autocomplete given a latitude and longitude
+     * This function populates $Core.Feed.aPlaces with new items by passing parameters in jSon format */
+     
+    public function loadEstablishments()
+    {
+		$aPages = array();
+		if (Phpfox::isModule('pages'))
+		{
+			$aPages = Phpfox::getService('pages')->getPagesByLocation( $this->get('latitude'), $this->get('longitude') );
+		}
+		
+		if (count($aPages))
+		{
+			foreach ($aPages as $iKey => $aPage)
+			{
+				$aPages[$iKey]['geometry'] = array('latitude' => $aPage['location_latitude'], 'longitude' => $aPage['location_longitude']);
+				$aPages[$iKey]['name'] = $aPage['title'];
+				unset($aPages[$iKey]['location_latitude']);
+				unset($aPages[$iKey]['location_longitude']);	
+			}
+		}
+		
+		if (!empty($aPages))
+		{
+			$jPages = json_encode($aPages);
+			$this->call('$Core.Feed.storePlaces(\'' . $jPages .'\');');
+		}		
+	}
 }
 
 ?>

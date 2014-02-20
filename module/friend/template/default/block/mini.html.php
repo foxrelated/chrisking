@@ -5,12 +5,20 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: mini.html.php 3388 2011-10-31 13:31:22Z Raymond_Benc $
+ * @version 		$Id: mini.html.php 6097 2013-06-20 14:16:21Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
 
 ?>
+{if Phpfox::getParam('friend.load_friends_online_ajax') && !PHPFOX_IS_AJAX}
+<script type="text/javascript">
+$Behavior.setTimeoutFriends = function(){l}
+	setTimeout('$.ajaxCall(\'friend.getOnlineFriends\', \'\', \'GET\')', 1000);
+	$Behavior.setTimeoutFriends = function(){l}{r}
+{r}
+</script>
+{else}
 {if count($aFriends)}
 <div class="block_listing_inline">
 	<ul>
@@ -26,4 +34,8 @@ defined('PHPFOX') or exit('NO DICE!');
 <div class="extra_info">
 	{phrase var='friend.no_friends_online'}
 </div>
+{/if}
+{/if}
+{if Phpfox::getParam('friend.load_friends_online_ajax') && PHPFOX_IS_AJAX}
+<script type="text/javascript">$('#js_total_block_friends_onlin').html('{$iTotalFriendsOnline}');</script>
 {/if}

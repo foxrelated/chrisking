@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Tag
- * @version 		$Id: add.class.php 225 2009-02-13 13:24:59Z Raymond_Benc $
+ * @version 		$Id: add.class.php 6269 2013-07-15 15:25:14Z Raymond_Benc $
  */
 class Tag_Component_Block_Add extends Phpfox_Component 
 {
@@ -20,6 +20,11 @@ class Tag_Component_Block_Add extends Phpfox_Component
 	 */
 	public function process()
 	{
+		if (Phpfox::getParam('tag.enable_hashtag_support'))
+		{
+			return false;
+		}
+
 		$this->template()->assign(array(
 				'sTagType' => $this->getParam('sType'),
 				'bSeparate' => $this->getParam('separate', true),

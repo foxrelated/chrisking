@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: profile.class.php 2633 2011-05-30 13:57:44Z Raymond_Benc $
+ * @version 		$Id: profile.class.php 5143 2013-01-15 14:16:21Z Miguel_Espinoza $
  */
 class Photo_Component_Controller_Profile extends Phpfox_Component
 {
@@ -21,6 +21,34 @@ class Photo_Component_Controller_Profile extends Phpfox_Component
 	public function process()
 	{
 		$this->setParam('bIsProfile', true);
+		if ($sPlugin = Phpfox_Plugin::get('photo.component_controller_profile_1')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
+		//if (Phpfox::getParam('profile.display_submenu_for_photo') != true)
+		{
+		    
+		    $aUser = $this->getParam('aUser');
+		    $aInfo = array(
+			'total_albums' => Phpfox::getService('photo.album')->getAlbumCount($aUser['user_id']),
+			'total_photos' => $aUser['total_photo']
+		    );
+		    
+		    $bShowPhotos = $this->request()->get('req3') != 'albums';
+		    
+		    if ($this->request()->get('req3') == '')
+		    {
+			$bShowPhotos = Phpfox::getParam('photo.in_main_photo_section_show') != 'albums';
+		    }
+		    
+		    
+		    $this->template()->setHeader(array(
+			'profile.css' => 'module_photo'			
+			))
+			    ->assign(array(
+				'aInfo' => $aInfo,
+				'bShowPhotos' => $bShowPhotos,
+				'sLinkPhotos' => $this->url()->makeUrl($aUser['user_name'] . '.photo.photos'),
+				'sLinkAlbums' => $this->url()->makeUrl($aUser['user_name'] . '.photo.albums'),
+			    ));
+		}
 		
 		if ($this->request()->get('req3') == 'albums')
 		{

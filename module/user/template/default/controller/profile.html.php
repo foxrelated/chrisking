@@ -5,37 +5,38 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: profile.html.php 4626 2012-09-12 11:17:50Z Raymond_Benc $
+ * @version 		$Id: profile.html.php 6730 2013-10-07 10:59:41Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
 
 ?>
-{if count($aSettings)}
-{if count($aGroups)}
 <div class="page_section_menu">
 	<ul>
 		<li class="active">
 			<a href="#" class="js_custom_change_group" id="group_basic">{phrase var='user.basic_information'}</a>
 		</li>
-	{foreach from=$aGroups name=groups item=aGroup}
-		<li class="{if $phpfox.iteration.groups == count($aGroups) && Phpfox::isModule('music') && !Phpfox::getUserParam('music.can_upload_music_public')} last{/if}"><a href="#" class="js_custom_change_group" id="group_{$aGroup.group_id}">{phrase var=$aGroup.phrase_var_name}</a></li>
-	{/foreach}
+		{if count($aGroups)}		
+			{foreach from=$aGroups name=groups item=aGroup}
+				<li class="{if $phpfox.iteration.groups == count($aGroups) && Phpfox::isModule('music') && !Phpfox::getUserParam('music.can_upload_music_public')} last{/if}"><a href="#" class="js_custom_change_group" id="group_{$aGroup.group_id}">{phrase var=$aGroup.phrase_var_name}</a></li>
+			{/foreach}
+		{else}
+			<div class="main_break"></div>
+		{/if}
 	</ul>
 	<div class="clear"></div>
 </div>
-{else}
-<div class="main_break"></div>
-{/if}
 
-<div id="js_custom_public_message" class="public_message" style="margin-bottom:10px;">
-	<a href="{url link='profile'}">{phrase var='user.view_your_updated_profile'}</a>
-</div>
 
-<form method="post" action="{url link='user.profile'}"{if !$bIsEdit} onsubmit="{plugin call='user.template_controller_profile_form_onsubmit'} $('#js_custom_public_message').hide(); $('#js_custom_submit_button').attr('disabled', true).addClass('disabled'); $('#js_custom_update_info').html($.ajaxProcess('{phrase var='user.updating_profile' phpfox_squote=true}')).show(); $(this).ajaxCall('custom.updateFields'); return false;"{/if}>
-{if isset($iUserId)}
-	<div><input type="hidden" name="id" value="{$iUserId}" /></div>
-{/if}
+
+	<div id="js_custom_public_message" class="public_message" style="margin-bottom:10px;">
+		<a href="{url link='profile'}">{phrase var='user.view_your_updated_profile'}</a>
+	</div>
+
+	<form method="post" action="{url link='user.profile'}"{if !$bIsEdit} onsubmit="{plugin call='user.template_controller_profile_form_onsubmit'} $('#js_custom_public_message').hide(); $('#js_custom_submit_button').attr('disabled', true).addClass('disabled'); $('#js_custom_update_info').html($.ajaxProcess('{phrase var='user.updating_profile' phpfox_squote=true}')).show(); $(this).ajaxCall('custom.updateFields'); return false;"{/if}>
+	{if isset($iUserId)}
+		<div><input type="hidden" name="id" value="{$iUserId}" /></div>
+	{/if}
 <div class="table js_custom_groups js_custom_group_basic">
 	<div class="table">
 			<div class="table_left">
@@ -108,7 +109,7 @@ defined('PHPFOX') or exit('NO DICE!');
 					var aRelationshipChange = {$sJsArray};
 					
 					{if isset($aForms.relation_id)}
-					$('#relation').val({$aForms.relation_id});
+						$Behavior.setRelationship = function(){l} $('#relation').val({$aForms.relation_id}); {r}
 					{/if}
 				</script>
 				
@@ -135,6 +136,8 @@ defined('PHPFOX') or exit('NO DICE!');
 						</div>
 						{literal}
 						<script type="text/javascript">
+						$Behavior.profileSearchFriends = function()
+						{
 							$Core.searchFriends({
 								'id': '#js_custom_search_friend',
 								'placement': '#js_custom_search_friend_placement',
@@ -174,6 +177,7 @@ defined('PHPFOX') or exit('NO DICE!');
 									}
 								}
 							});	
+						}
 						</script>
 						{/literal}
 					
@@ -233,29 +237,30 @@ defined('PHPFOX') or exit('NO DICE!');
 		{/if}
 </div>
 
-	{foreach from=$aSettings item=aSetting}
-	<div class="table js_custom_groups js_custom_group_{$aSetting.group_id}" style="display:none;">
-		<div class="table_left">
-		{if $aSetting.is_required}{required}{/if}{phrase var=$aSetting.phrase_var_name}:
+	{if count($aSettings)}
+		{foreach from=$aSettings item=aSetting}
+			<div class="table js_custom_groups js_custom_group_{$aSetting.group_id}" style="display:none;">
+				<div class="table_left">
+				{if $aSetting.is_required}{required}{/if}{phrase var=$aSetting.phrase_var_name}:
+				</div>
+				<div class="table_right">
+					{template file='custom.block.form'}
+				</div>
+			</div>
+		{/foreach}	
+	{else}
+		<div class="extra_info">			
+			{if Phpfox::getUserParam('custom.can_add_custom_fields')}
+				{phrase var='user.no_custom_fields_have_been_added'}
+				<ul class="action">
+					<li><a href="{url link='admincp.custom.add'}">{phrase var='user.add_a_new_custom_field'}</a></li>
+				</ul>
+			{/if}
 		</div>
-		<div class="table_right">
-			{template file='custom.block.form'}
-		</div>
-	</div>
-	{/foreach}
+	{/if}
 	{plugin call='user.template_controller_profile_form'}
 	<div class="table_clear">
 		<input type="submit" value="{phrase var='user.update'}" class="button" id="js_custom_submit_button"> <span id="js_custom_update_info"></span>
 	</div>
 </form>
 
-{else}
-<div class="extra_info">
-	{phrase var='user.no_custom_fields_have_been_added'}
-	{if Phpfox::getUserParam('custom.can_add_custom_fields')}
-	<ul class="action">
-		<li><a href="{url link='admincp.custom.add'}">{phrase var='user.add_a_new_custom_field'}</a></li>
-	</ul>
-	{/if}
-</div>
-{/if}

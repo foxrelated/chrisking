@@ -11,10 +11,21 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Event
- * @version 		$Id: ajax.class.php 3642 2011-12-02 10:01:15Z Miguel_Espinoza $
+ * @version 		$Id: ajax.class.php 5538 2013-03-25 13:20:22Z Miguel_Espinoza $
  */
 class Event_Component_Ajax_Ajax extends Phpfox_Ajax
 {
+	public function loadMiniForm()
+	{
+		Phpfox::getBlock('event.mini');
+		
+		$sContent = $this->getContent(false);
+		$sContent = str_replace(array("\n", "\t"), '', $sContent);
+		
+		$this->html('.block_event_sub_holder', $sContent);
+		$this->call('$Core.loadInit();');
+	}
+	
 	public function deleteImage()
 	{
 		Phpfox::isUser(true);
@@ -57,7 +68,7 @@ class Event_Component_Ajax_Ajax extends Phpfox_Ajax
 					->call('tb_remove();');
 				
 				$this->call('$.ajaxCall(\'event.listGuests\', \'&rsvp=' . $this->get('rsvp') . '&id=' . $this->get('id') . '' . ($this->get('module') ? '&module=' . $this->get('module') . '&item=' . $this->get('item') . '' : '') . '\');')
-					->call('$(function(){ $(\'#js_block_border_event_list .menu:first ul li\').removeClass(\'active\'); $(\'#js_block_border_event_list .menu:first ul li a\').each(function() { var aParts = explode(\'rsvp=\', this.href); var aParts2 = explode(\'&\', aParts[1]); if (aParts2[0] == ' . $this->get('rsvp') . ') {  $(this).parent().addClass(\'active\'); } }); });');
+					->call('$Behavior.event_ajax_1 = function(){ $(\'#js_block_border_event_list .menu:first ul li\').removeClass(\'active\'); $(\'#js_block_border_event_list .menu:first ul li a\').each(function() { var aParts = explode(\'rsvp=\', this.href); var aParts2 = explode(\'&\', aParts[1]); if (aParts2[0] == ' . $this->get('rsvp') . ') {  $(this).parent().addClass(\'active\'); } }); };');
 			}
 		}
 	}

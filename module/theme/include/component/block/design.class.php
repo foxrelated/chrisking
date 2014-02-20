@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: design.class.php 3593 2011-11-28 09:37:57Z Raymond_Benc $
+ * @version 		$Id: design.class.php 5538 2013-03-25 13:20:22Z Miguel_Espinoza $
  */
 class Theme_Component_Block_Design extends Phpfox_Component
 {
@@ -67,7 +67,7 @@ class Theme_Component_Block_Design extends Phpfox_Component
 		
 		if ($this->request()->get('req3') == 'advanced')
 		{
-			$this->template()->assign('sResetJs', '<script type="text/javascript">$(function() { if (!empty(window.location.hash)) { rebuilt_menu_design(window.location.hash); } });</script>');
+			$this->template()->assign('sResetJs', '<script type="text/javascript">$Behavior.theme_block_design = function() { if (!empty(window.location.hash)) { rebuilt_menu_design(window.location.hash); } };</script>');
 		}
 			
 		if (isset($aDesigner['block']))

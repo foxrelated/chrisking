@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Service
- * @version 		$Id: callback.class.php 4204 2012-06-01 10:56:18Z Raymond_Benc $
+ * @version 		$Id: callback.class.php 5016 2012-11-12 15:18:29Z Miguel_Espinoza $
  */
 class Like_Service_Callback extends Phpfox_Service 
 {
@@ -64,6 +64,79 @@ class Like_Service_Callback extends Phpfox_Service
 				'default' => 1
 			)
 		);
+	}	
+	
+	/** This function catches all the "actions" (Dislike, and in the future maybe others)
+	 * */
+	public function getNotificationAction($aNotification)
+	{
+		//d($aNotification);die();
+		// get the type of item that was marked ("blog", "photo"...)
+		$aAction = $this->database()
+			->select('*')
+			->from(Phpfox::getT('action'))
+			->where('action_id = ' . (int)$aNotification['item_id'])
+			->limit(1)
+			->execute('getSlaveRow');
+		
+		if (empty($aAction) || !isset($aAction['item_type_id']))
+		{
+			return false;
+			throw new Exception ('No type for this action ('. print_r($aAction, true).')');
+		}
+		
+		// Check if the module is a sub module
+		if (preg_match('/(?P<module>[a-z]+)[_]?(?P<submodule>[a-z]{0,99})/i', $aAction['item_type_id'], $aMatch) < 1)
+		{
+			throw new Exception ('Malformed item_type');
+		}
+		
+		// Call the module and get the title
+		if (!Phpfox::isModule($aMatch['module']))
+		{
+			return false;
+		}
+		
+		$aRow = Phpfox::getService($aMatch['module'])->getInfoForAction($aAction);
+			
+		$sUsers = Phpfox::getService('notification')->getUsers($aNotification);
+		$sTitle = Phpfox::getLib('parse.output')->shorten($aRow['title'], Phpfox::getParam('notification.total_notification_title_length'), '...');
+		
+		$sPhrase = '';
+		if ($aNotification['user_id'] == $aRow['user_id'])
+		{
+			// {users} disliked {gender} own {item} "{title}"
+			$sPhrase = Phpfox::getPhrase('like.users_disliked_gender_own_item_title', array(
+				'users' => $sUsers, 
+				'gender' => Phpfox::getService('user')->gender($aRow['gender'], 1), 
+				'title' => $sTitle,
+				'item' => $aAction['item_type_id']
+			));
+		}
+		elseif ($aRow['user_id'] == Phpfox::getUserId())		
+		{
+			// {users} liked your blog "{title}"
+			$sPhrase = Phpfox::getPhrase('like.users_disliked_your_item_title', array(
+				'users' => $sUsers, 
+				'title' => $sTitle,
+				'item' => $aAction['item_type_id']
+			));
+		}
+		else 
+		{
+			$sPhrase = Phpfox::getPhrase('like.users_disliked_users_item', array(
+				'users' => $sUsers, 
+				'row_full_name' => $aRow['full_name'], 
+				'title' => $sTitle,
+				'item' => $aAction['item_type_id']
+			));
+		}
+			
+		return array(
+			'link' => $aRow['link'],
+			'message' => $sPhrase,
+			'icon' => Phpfox::getLib('template')->getStyle('image', 'activity.png', 'blog')
+		);	
 	}	
 	
 	/**

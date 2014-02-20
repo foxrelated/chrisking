@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Component
- * @version 		$Id: browse.class.php 4205 2012-06-04 08:52:29Z Raymond_Benc $
+ * @version 		$Id: browse.class.php 5840 2013-05-09 06:14:35Z Raymond_Benc $
  */
 class Like_Component_Block_Browse extends Phpfox_Component
 {
@@ -20,7 +20,14 @@ class Like_Component_Block_Browse extends Phpfox_Component
 	 */
 	public function process()
 	{
-		$aLikes = Phpfox::getService('like')->getLikes($this->request()->get('type_id'), $this->request()->getInt('item_id'));
+		if ($this->request()->get('dislike') == '1')
+		{
+			$aLikes = Phpfox::getService('like')->getDislikes($this->request()->get('type_id'), $this->request()->getInt('item_id'));
+		}
+		else
+		{
+			$aLikes = Phpfox::getService('like')->getLikes($this->request()->get('type_id'), $this->request()->getInt('item_id'));
+		}
 	
 		$sErrorMessage = '';
 		if ($this->request()->get('type_id') == 'pages')

@@ -23,7 +23,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		{foreach from=$aFriends key=iKey name=friend item=aFriend}
 		<div class="timeline_friendlist_row">
 			<div class="timeline_friendlist_user">{$aFriend|user}</div>
-			{img user=$aFriend suffix='_100_square' max_width=100 max_height=100}
+			{img user=$aFriend suffix='_120_square' max_width=100 max_height=100}
 		</div>
 		{/foreach}
 		<div class="clear"></div>

@@ -11,16 +11,16 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Share
- * @version 		$Id: ajax.class.php 4154 2012-05-07 14:32:57Z Raymond_Benc $
+ * @version 		$Id: ajax.class.php 6970 2013-12-04 17:11:50Z Fern $
  */
 class Share_Component_Ajax_Ajax extends Phpfox_Ajax
 {
 	public function popup()
 	{		
 		Phpfox::getBlock('share.frame', array(
-				'type' => $this->get('type'),
+				'type' => htmlspecialchars($this->get('type')),
 				'url' => $this->get('url'),
-				'title' => $this->get('title')
+				'title' => htmlspecialchars($this->get('title'))
 			)
 		);
 	}
@@ -124,6 +124,17 @@ class Share_Component_Ajax_Ajax extends Phpfox_Ajax
 		else
 		{
 			$this->call('$Core.box(\'share.showConnectBox\', 400, \'connect-id=' . $sConnect . '\');');
+		}
+	}
+	
+	public function deleteConnect()
+	{
+		Phpfox::isUser(true);		
+		
+		$sConnect = $this->get('connect-id');
+		if (Phpfox::getService('share')->hasConnection($sConnect) && $this->get('status') == 'not_authorized')
+		{
+			$this->call('console.log("' . Phpfox::getService('share.process')->deleteConnect('facebook') . '");');
 		}
 	}
 	

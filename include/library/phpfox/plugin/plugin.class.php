@@ -15,9 +15,9 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: plugin.class.php 3917 2012-02-20 18:21:08Z Raymond_Benc $
+ * @version 		$Id: plugin.class.php 6599 2013-09-06 08:18:37Z Miguel_Espinoza $
  */
-final class Phpfox_Plugin
+class Phpfox_Plugin
 {
 	/**
 	 * ARRAY of plug-ins to be used.

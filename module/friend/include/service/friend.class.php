@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: friend.class.php 4709 2012-09-21 08:37:17Z Raymond_Benc $
+ * @version 		$Id: friend.class.php 5913 2013-05-13 08:36:48Z Raymond_Benc $
  */
 class Friend_Service_Friend extends Phpfox_Service
 {
@@ -25,6 +25,33 @@ class Friend_Service_Friend extends Phpfox_Service
 
 	public function get($aCond, $sSort = 'friend.time_stamp DESC', $iPage = '', $sLimit = '', $bCount = true, $bAddDetails = false, $bIsOnline = false, $iUserId = null, $bIncludeList = false, $iListId = 0)
 	{
+		$bSuperCache = false;
+		$sSuperCacheId = '';
+		// Not all calls to this function can be cached in the same way
+		if ( (Phpfox::getParam('friend.cache_rand_list_of_friends') > 0) &&
+			(is_string($aCond) && strpos($aCond, 'friend.is_page = 0 AND friend.user_id = ') !== false) &&
+			($sSort == 'friend.is_top_friend DESC, friend.ordering ASC, RAND()') && 
+			($iPage == 0)
+			&& ($bIsOnline === false)
+			)
+		{
+			$iUserId = str_replace('friend.is_page = 0 AND friend.user_id = ', '', $aCond);
+			// the folder name has to be fixed so we can clear it from the add and delete functions
+			$sCacheId = $this->cache()->set(array('friend_rand_6', $iUserId)); 
+			$sSuperCacheId = $sCacheId;
+
+			if ( ($aRows = $this->cache()->get($sCacheId, Phpfox::getParam('friend.cache_rand_list_of_friends'))))
+			{
+				if (is_bool($aRows))
+				{
+					return array();
+				}
+
+				return $aRows;
+			}
+			$bSuperCache = true;
+		}
+		
 		$bIsListView = ((Phpfox::getLib('request')->get('view') == 'list' || (defined('PHPFOX_IS_USER_PROFILE') && Phpfox::getLib('request')->getInt('list'))) ? true : false);
 		$iCnt = ($bCount ? 0 : 1);
 		$aRows = array();
@@ -38,7 +65,14 @@ class Friend_Service_Friend extends Phpfox_Service
 		{
 			if ($bIsOnline === true)
 			{
-				$this->database()->join(Phpfox::getT('log_session'), 'ls', 'ls.user_id = friend.friend_user_id AND ls.last_activity > \'' . Phpfox::getService('log.session')->getActiveTime() . '\' AND ls.im_hide = 0');
+				if (Phpfox::getParam('core.store_only_users_in_session'))
+				{
+					$this->database()->join(Phpfox::getT('session'), 'ls', 'ls.user_id = friend.friend_user_id AND ls.last_activity > \'' . Phpfox::getService('log.session')->getActiveTime() . '\'');
+				}
+				else
+				{
+					$this->database()->join(Phpfox::getT('log_session'), 'ls', 'ls.user_id = friend.friend_user_id AND ls.last_activity > \'' . Phpfox::getService('log.session')->getActiveTime() . '\' AND ls.im_hide = 0');
+				}
 			}
 
 			if ($iUserId !== null)
@@ -73,7 +107,14 @@ class Friend_Service_Friend extends Phpfox_Service
 
 			if ($bIsOnline === true)
 			{
-				$this->database()->select('ls.last_activity, ')->join(Phpfox::getT('log_session'), 'ls', 'ls.user_id = friend.friend_user_id AND ls.last_activity > \'' . Phpfox::getService('log.session')->getActiveTime() . '\' AND ls.im_hide = 0');
+				if (Phpfox::getParam('core.store_only_users_in_session'))
+				{
+					$this->database()->select('ls.last_activity, ')->join(Phpfox::getT('session'), 'ls', 'ls.user_id = friend.friend_user_id AND ls.last_activity > \'' . Phpfox::getService('log.session')->getActiveTime() . '\'');
+				}
+				else
+				{
+					$this->database()->select('ls.last_activity, ')->join(Phpfox::getT('log_session'), 'ls', 'ls.user_id = friend.friend_user_id AND ls.last_activity > \'' . Phpfox::getService('log.session')->getActiveTime() . '\' AND ls.im_hide = 0');
+				}
 			}
 
 			if ($iUserId !== null)
@@ -130,6 +171,10 @@ class Friend_Service_Friend extends Phpfox_Service
 
 		if ($bCount === false)
 		{
+			if ($bSuperCache == true)
+			{
+				$this->cache()->save($sSuperCacheId, $aRows);
+			}
 			return $aRows;
 		}
 
@@ -160,13 +205,18 @@ class Friend_Service_Friend extends Phpfox_Service
 		}
 		else
 		{
-			$aRows = $this->database()->select('f.*, ' . Phpfox::getUserField())
-				->from($this->_sTable, 'f')
-				->join(Phpfox::getT('user'), 'u', 'u.user_id = f.friend_user_id')
-				->where(($mAllowCustom ? '' : 'f.is_page = 0 AND') . ' f.user_id = ' . Phpfox::getUserId())
-				->limit(Phpfox::getParam('friend.friend_cache_limit'))
-				->order('u.last_activity DESC')
-				->execute('getSlaveRows');
+			(($sPlugin = Phpfox_Plugin::get('friend.service_getfromcachequery')) ? eval($sPlugin) : false);
+			
+			if (!isset($bForceQuery))
+			{
+				$aRows = $this->database()->select('f.*, ' . Phpfox::getUserField())
+					->from($this->_sTable, 'f')
+					->join(Phpfox::getT('user'), 'u', 'u.user_id = f.friend_user_id')
+					->where(($mAllowCustom ? '' : 'f.is_page = 0 AND') . ' f.user_id = ' . Phpfox::getUserId())
+					->limit(Phpfox::getParam('friend.friend_cache_limit'))
+					->order('u.last_activity DESC')
+					->execute('getSlaveRows');
+			}
 		}	
 
 		foreach ($aRows as $iKey => $aRow)
@@ -248,7 +298,7 @@ class Friend_Service_Friend extends Phpfox_Service
 		$sCacheId = $this->cache()->set('friend_birthday_' . $iUser);
 		if (!($aBirthdays = $this->cache()->get($sCacheId, Phpfox::getParam('friend.birthdays_cache_time_out') * 60*60))) // cache is in hours
 		{
-			$aBirthdays = $this->database()->select('u.user_name, u.full_name, u.user_name, uf.dob_setting, u.birthday, fb.birthday_user_receiver')
+			$aBirthdays = $this->database()->select('u.user_id, u.user_name, u.full_name, u.user_name, uf.dob_setting, u.birthday, fb.birthday_user_receiver')
 				->from(Phpfox::getT('friend'), 'f')
 				->join(Phpfox::getT('user'),' u', 'u.user_id = f.friend_user_id')
 				->join(Phpfox::getT('user_field'), 'uf', 'uf.user_id = u.user_id')
@@ -397,9 +447,11 @@ class Friend_Service_Friend extends Phpfox_Service
 	/**
 	 * Checks if userA is friends with userB
 	 *
-	 * @param unknown_type $iUserId
-	 * @param unknown_type $iFriendId
-	 * @param unknown_type $bRedirect
+	 * Here we are caching all the friends from $iUserId 
+	 * 
+	 * @param int $iUserId
+	 * @param int $iFriendId
+	 * @param boolean $bRedirect
 	 * @return boolean
 	 */
 	public function isFriend($iUserId, $iFriendId, $bRedirect = false)
@@ -420,12 +472,34 @@ class Friend_Service_Friend extends Phpfox_Service
 		{
 			return true;
 		}
+		
+		if (Phpfox::getParam('friend.cache_is_friend'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_is_friend', $iUserId . '_' . $iFriendId));
+			if (($bFriend = $this->cache()->get($sCacheId)))
+			{
+				$bIsFriend = ((int)$bFriend > 0) || ($bFriend != '0');
+				if (is_bool($bFriend))
+				{
+					$bIsFriend = false;
+				}
 
-		$iCnt = $this->database()->select('COUNT(*)')
+				$aCache[$iUserId][$iFriendId] = ($bIsFriend);
+
+				return $bIsFriend;
+			}
+		}
+		
+		$iCnt = $this->database()->select('/* friend.is_friend */COUNT(*)')
 			->from($this->_sTable)
 			->where('user_id = ' . (int) $iUserId . ' AND friend_user_id = ' . (int) $iFriendId)
 			->execute('getField');
 
+		if (Phpfox::getParam('friend.cache_is_friend'))
+		{
+			$sCacheId = $this->cache()->set(array('friend_is_friend', $iUserId . '_' . $iFriendId));
+			$this->cache()->save($sCacheId, ((int)$iCnt) ); // Cannot store a boolean:true in case the cache picks it up wrong
+		}
 		if ($iCnt)
 		{
 			$aCache[$iUserId][$iFriendId] = true;
@@ -464,6 +538,18 @@ class Friend_Service_Friend extends Phpfox_Service
 		{
 			return $aCache[$iUserId];
 		}
+		$iUserId = (int)$iUserId;
+		
+		if (Phpfox::getParam('friend.cache_mutual_friends') > 0)
+		{
+			$sCacheId = $this->cache()->set(array('mutual_friend', Phpfox::getUserId() . '_' . $iUserId));
+			if (($aMutual = $this->cache()->get($sCacheId, Phpfox::getParam('friend.cache_mutual_friends') )) )
+			{
+				$aCache[$iUserId] = $aMutual;
+				
+				return $aMutual;
+			}
+		}
 		
 		$sExtra1 = '';
 		$sExtra2 = '';
@@ -473,9 +559,22 @@ class Friend_Service_Friend extends Phpfox_Service
 			 eval($sPlugin);
 		}				
 		
-		$aRows = $this->database()->select(($bNoCount ? '' : 'SQL_CALC_FOUND_ROWS ') . Phpfox::getUserField())
+        /* http://www.phpfox.com/tracker/view/12737/ */
+        if ($bNoCount == false)
+        {
+            $iCnt = $this->database()->select('count(f.user_id)')
+                ->from(Phpfox::getT('friend'), 'f')
+                ->join(Phpfox::getT('friend'), 'sf', 'sf.friend_user_id = f.friend_user_id AND sf.user_id = ' . (int)$iUserId . $sExtra1)
+                ->join(Phpfox::getT('user'), 'u', 'u.user_id = f.friend_user_id')
+                ->where('f.is_page = 0 AND f.user_id = ' . Phpfox::getUserId() . $sExtra2)
+                ->group('f.friend_user_id')
+                ->execute('getSlaveRows');	
+            $iCnt = count($iCnt);
+            
+        }
+		$aRows = $this->database()->select(Phpfox::getUserField())
 			->from(Phpfox::getT('friend'), 'f')
-			->innerJoin('(SELECT friend_user_id FROM ' . Phpfox::getT('friend') . ' WHERE is_page = 0 AND user_id = ' . $iUserId . $sExtra1 . ')', 'sf', 'sf.friend_user_id = f.friend_user_id')
+			->join(Phpfox::getT('friend'), 'sf', 'sf.friend_user_id = f.friend_user_id AND sf.user_id = ' . (int)$iUserId . $sExtra1)
 			->join(Phpfox::getT('user'), 'u', 'u.user_id = f.friend_user_id')
 			->where('f.is_page = 0 AND f.user_id = ' . Phpfox::getUserId() . $sExtra2)
 			->order('f.time_stamp DESC')
@@ -485,7 +584,13 @@ class Friend_Service_Friend extends Phpfox_Service
 
 		if (!$bNoCount)
 		{
-			$iCnt = $this->database()->getField('SELECT FOUND_ROWS()');
+			//$iCnt = $this->database()->getField('SELECT FOUND_ROWS()');
+		}
+		
+		if (Phpfox::getParam('friend.cache_mutual_friends') > 0)
+		{
+			$sCacheId = $this->cache()->set(array('mutual_friend', Phpfox::getUserId() . '_' . $iUserId));
+			$this->cache()->save($sCacheId, array($iCnt, $aRows));
 		}
 		
 		$aCache[$iUserId] = array($iCnt, $aRows);
@@ -538,6 +643,7 @@ class Friend_Service_Friend extends Phpfox_Service
 	
 	public function buildMenu()
 	{
+		// Add a hook with return here
 		$aFilterMenu = array(
 			Phpfox::getPhrase('friend.all_friends') => '',
 			Phpfox::getPhrase('friend.incoming_requests') => 'friend.accept',
@@ -583,11 +689,33 @@ class Friend_Service_Friend extends Phpfox_Service
 		}
 		else		
 		{
-			$aMyFriends = $this->database()->select('friend_user_id')
-				->from(Phpfox::getT('friend'))
-				->where('user_id = ' . Phpfox::getUserId())
-				->group('friend_user_id')
-				->execute('getSlaveRows');			
+			/*
+			 * Not tested
+			 * if (Phpfox::getParam('core.super_cache_system'))
+			{
+				$sCacheId = $this->cache()->set(array('friend', Phpfox::getUserId()));
+				if ( !($aSuperCache = $this->cache()->get($sCacheId)))
+				{
+					$aSuperCache = $this->database()->select('*')
+						->from($this->_sTable)
+						->where('user_id = ' . Phpfox::getUserId())
+						->execute('getSlaveRows');
+					$this->cache()->save($sCacheId, $aSuperCache);
+				}
+				$aMyFriends = array();
+				foreach ($aSuperCache as $aEntry)
+				{
+					$aMyFriends = $aEntry;
+				}
+			}
+			else*/
+			{
+				$aMyFriends = $this->database()->select('friend_user_id')
+					->from(Phpfox::getT('friend'))
+					->where('user_id = ' . Phpfox::getUserId())
+					->group('friend_user_id')
+					->execute('getSlaveRows');
+			}
 		}
 		
 		if (isset($aMyFriends))

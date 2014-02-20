@@ -3,7 +3,10 @@
 	{$sPublicMessage}
 </div>
 <script type="text/javascript">
-	$('#public_message').show();
+	$Behavior.theme_admincp_error = function()
+	{l}
+		$('#public_message').show();
+	{r};
 </script>
 {/if}
 <div id="core_js_messages">

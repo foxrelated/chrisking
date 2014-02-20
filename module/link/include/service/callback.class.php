@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond_Benc
  * @package 		Phpfox_Service
- * @version 		$Id: callback.class.php 5014 2012-11-12 11:59:35Z Raymond_Benc $
+ * @version 		$Id: callback.class.php 7059 2014-01-22 14:20:10Z Fern $
  */
 class Link_Service_Callback extends Phpfox_Service 
 {
@@ -20,7 +20,7 @@ class Link_Service_Callback extends Phpfox_Service
 	 */	
 	public function __construct()
 	{	
-		$this->_sTable = Phpfox::getT('link');	
+		$this->_sTable = Phpfox::getT('link');
 	}
 	
 	public function getCommentNotificationTag($aNotification)
@@ -39,14 +39,31 @@ class Link_Service_Callback extends Phpfox_Service
 			'message' => $sPhrase,
 			'icon' => Phpfox::getLib('template')->getStyle('image', 'activity.png', 'blog')
 		);
-	}	
+	}
+
+	public function getActivityFeedCustomChecks($aRow)
+	{
+		if ((defined('PHPFOX_IS_PAGES_VIEW') && !Phpfox::getService('pages')->hasPerm(null, 'link.view_browse_links'))
+			|| (!defined('PHPFOX_IS_PAGES_VIEW') && $aRow['custom_data_cache']['module_id'] == 'pages' && !Phpfox::getService('pages')->hasPerm($aRow['custom_data_cache']['item_id'], 'link.view_browse_links'))
+		)
+		{
+			return false;
+		}
+
+		return $aRow;
+	}
 	
 	public function getActivityFeed($aItem)
-	{		
-		$aRow = $this->database()->select('link.*, l.like_id AS is_liked, p.app_id, a.image_path AS app_image_path, ' . Phpfox::getUserField('u', 'parent_'))
+	{
+		if (Phpfox::isModule('like'))
+		{
+			$this->database()->select('l.like_id AS is_liked, ')
+					->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'link\' AND l.item_id = link.link_id AND l.user_id = ' . Phpfox::getUserId());
+		}
+		
+		$aRow = $this->database()->select('link.*, p.app_id, a.image_path AS app_image_path, ' . Phpfox::getUserField('u', 'parent_'))
 		    ->from($this->_sTable, 'link') 
 		    ->leftJoin(Phpfox::getT('user'), 'u', 'u.user_id = link.parent_user_id') 
-		    ->leftJoin(Phpfox::getT('like'), 'l', 'l.type_id = \'link\' AND l.item_id = link.link_id AND l.user_id = ' . Phpfox::getUserId())
 		    ->leftJoin(Phpfox::getT('pages'), 'p', 'p.page_id = u.profile_page_id') 
 		    ->leftJoin(Phpfox::getT('app'), 'a', 'a.app_id = p.app_id') 
 		    ->where('link.link_id = ' . (int) $aItem['item_id']) 
@@ -57,8 +74,8 @@ class Link_Service_Callback extends Phpfox_Service
 			return false;
 		}
 		
-		if ((defined('PHPFOX_IS_PAGES_VIEW') && !Phpfox::getService('pages')->hasPerm(null, 'link.view_browse_links'))
-			|| (!defined('PHPFOX_IS_PAGES_VIEW') && $aRow['module_id'] == 'pages' && !Phpfox::getService('pages')->hasPerm($aRow['item_id'], 'link.view_browse_links'))
+		if (((defined('PHPFOX_IS_PAGES_VIEW') && !Phpfox::getService('pages')->hasPerm(null, 'link.view_browse_links'))
+			|| (!defined('PHPFOX_IS_PAGES_VIEW') && $aRow['module_id'] == 'pages' && !Phpfox::getService('pages')->hasPerm($aRow['item_id'], 'link.view_browse_links')))
 		)
 		{
 			return false;
@@ -67,6 +84,28 @@ class Link_Service_Callback extends Phpfox_Service
 		if (empty($aRow['link']))
 		{
 			return false;
+		}
+		
+		// http://www.phpfox.com/tracker/view/14749/
+		if(preg_match('/' . Phpfox::getParam('core.host') . '/i', $aRow['link']))
+		{
+			if(Phpfox::isModule('mobile'))
+			{
+				// If link is to full site, but user is visiting/using the mobile site.
+				if(!preg_match('/mobile/i', $aRow['link']) && Phpfox::isMobile())
+				{
+					// Build the site URL
+					$sSiteUrl = Phpfox::getParam('core.host') . Phpfox::getParam('core.folder');
+					// add the mobile to the link
+					$aRow['link'] = str_replace($sSiteUrl, $sSiteUrl . 'mobile/', $aRow['link']);
+				}
+				// If viewing full site, but link is mobile
+				elseif(preg_match('/mobile/i', $aRow['link']) && !Phpfox::isMobile())
+				{
+					// remove mobile from the link
+					$aRow['link'] = str_replace('mobile/', '', $aRow['link']);
+				}
+			}
 		}
 		
 		if (substr($aRow['link'], 0, 7) != 'http://' && substr($aRow['link'], 0, 8) != 'https://')
@@ -87,16 +126,17 @@ class Link_Service_Callback extends Phpfox_Service
 		    'feed_content' => $aRow['description'], 
 		    'total_comment' => $aRow['total_comment'], 
 		    'feed_total_like' => $aRow['total_like'], 
-		    'feed_is_liked' => $aRow['is_liked'], 
+		    'feed_is_liked' => (isset($aRow['is_liked']) ? $aRow['is_liked'] : false),
 		    'feed_icon' => Phpfox::getLib('image.helper')->display(array('theme' => 'feed/link.png', 'return_url' => true)), 
 		    'time_stamp' => $aRow['time_stamp'],             
-		    'enable_like' => true,             
+		    'enable_like' => true,
 		    'comment_type_id' => 'link', 
 		    'like_type_id' => 'link', 
 		    'feed_title_extra' => $aParts['host'], 
 		    'feed_title_extra_link' => $aParts['scheme'] . '://' . $aParts['host'], 
 		    'is_custom_app' => $aRow['app_id'], 
-		    'app_image_path' => $aRow['app_image_path'] 
+		    'app_image_path' => $aRow['app_image_path'],
+			'custom_data_cache' => $aRow
 		); 
 		
 		if (Phpfox::getParam('core.warn_on_external_links'))
@@ -322,6 +362,13 @@ class Link_Service_Callback extends Phpfox_Service
 	
 	public function checkFeedShareLink()
 	{
+		(($sPlugin = Phpfox_Plugin::get('link.service_callback_checkfeedsharelink')) ? eval($sPlugin) : ''); 
+		
+		if (isset($bNoFeedLink))
+		{
+			return false;
+		}
+		
 		if (defined('PHPFOX_IS_PAGES_VIEW') && !Phpfox::getService('pages')->hasPerm(null, 'link.share_links'))
 		{
 			return false;
@@ -339,6 +386,34 @@ class Link_Service_Callback extends Phpfox_Service
 		$sLink = Phpfox::getLib('url')->makeUrl($aLink, array('link-id' => $iId));
 		return $sLink;
 	}
+	
+	public function getActions()
+	{
+		return array(
+			'dislike' => array(
+				'enabled' => true,
+				'action_type_id' => 2, // 2 = dislike
+				'phrase' => Phpfox::getPhrase('like.dislike'),
+				'phrase_in_past_tense' => 'disliked',
+				'item_phrase' => strtolower(Phpfox::getPhrase('link.link')),
+				'item_type_id' => 'link', // used to differentiate between photo albums and photos for example.
+				'table' => 'link',
+				'column_update' => 'total_dislike',
+				'column_find' => 'link_id',
+				'where_to_show' => array('', 'photo', 'link')			
+				)
+		);
+	}
+	
+	// http://www.phpfox.com/tracker/view/14909/
+	public function getSqlTitleField()
+	{
+		return array(
+			'table' => 'link',
+			'field' => 'description'
+		);
+	}
+	
 	
 	/**
 	 * If a call is made to an unknown method attempt to connect

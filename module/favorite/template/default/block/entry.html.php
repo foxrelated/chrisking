@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: entry.html.php 1298 2009-12-05 16:19:23Z Raymond_Benc $
+ * @version 		$Id: entry.html.php 5616 2013-04-10 07:54:55Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -18,7 +18,7 @@ defined('PHPFOX') or exit('NO DICE!');
 	{if !empty($aFavorite.image)}
 		<a href="{$aFavorite.link}">{$aFavorite.image}</a>
 		{else}
-		{img user=$aFavorite suffix='_75' max_width=75 max_height=75}
+		{img user=$aFavorite suffix='_50' max_width=75 max_height=75}
 	{/if}
 	</div>
 	<div style="margin-left:85px; height:80px;">

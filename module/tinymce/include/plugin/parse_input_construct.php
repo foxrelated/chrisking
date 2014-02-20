@@ -1,11 +1,14 @@
 <?php
-if (Phpfox::getParam('core.wysiwyg') == 'tiny_mce')
+if(!Phpfox::isMobile(false))
 {
-	foreach ($this->_aEvilEvents as $sKey => $sValue)
+	if (Phpfox::getParam('core.wysiwyg') == 'tiny_mce')
 	{
-		if ($sValue == 'style')
+		foreach ($this->_aEvilEvents as $sKey => $sValue)
 		{
-			unset($this->_aEvilEvents[$sKey]);
+			if ($sValue == 'style')
+			{
+				unset($this->_aEvilEvents[$sKey]);
+			}
 		}
 	}
 }

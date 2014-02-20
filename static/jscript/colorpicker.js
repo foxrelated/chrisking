@@ -1,7 +1,6 @@
 
-$Core.loadStaticFile(getParam('sJsStatic') + 'jscript/colorpicker/css/colorpicker.css');
-$Core.loadStaticFile(getParam('sJsStatic') + 'jscript/colorpicker/js/colorpicker.js');
-$Core.loadStaticFile(getParam('sJsStatic') + 'jscript/jquery/plugin/jquery.bgiframe.js');
+/* $Core.loadStaticFile(getParam('sJsStatic') + 'jscript/colorpicker/css/colorpicker.css'); */
+/* $Core.loadStaticFile(getParam('sJsStatic') + 'jscript/colorpicker/js/colorpicker.js');*/
 
 $Behavior.designProfilePage = function()
 {	
@@ -9,8 +8,6 @@ $Behavior.designProfilePage = function()
 	
 	$('body').append('<div id=\"js_colorpicker_selector\" style=\"display:none; position:absolute; z-index:1009; overflow:visible;\"></div>');
 	
-	$('#js_colorpicker_selector').bgiframe();
-
 	$('#js_colorpicker_selector').ColorPicker(
 	{
 		flat: true,
@@ -43,10 +40,11 @@ $Behavior.designProfilePage = function()
 	
 	$('.colorpicker_select').click(function(e)
 	{		
+		console.log('Check 43');
 		var aArgsFinal = this.href.split('#?');	
 		var aFinal = aArgsFinal[1].split('&');
 		
-		for (i = 0; i < aFinal.length; i++)
+		for (var i = 0; i < aFinal.length; i++)
 		{
 			var aArg = aFinal[i].split('=');	
 			
@@ -72,4 +70,4 @@ $Behavior.designProfilePage = function()
     {
     	$('.colorpicker').hide();
     });	
-}
+};

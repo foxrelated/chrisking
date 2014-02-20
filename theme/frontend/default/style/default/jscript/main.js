@@ -3,6 +3,8 @@ var $aMailOldHistory = {};
 var $aNotificationOldHistory = {};
 var $bNoCloseNotify = false;
 var bCloseShareHolder = true;
+var bCloseChangeCover = true;
+var bCloseViewMoreFeed = true;
 
 $Behavior.globalThemeInit = function()
 {	
@@ -19,6 +21,10 @@ $Behavior.globalThemeInit = function()
 	$('.feed_share_on_item a').click(function()
 	{
 		bCloseShareHolder = false;		
+	});
+	
+	$('#js_change_cover_photo').click(function(){
+		bCloseChangeCover = false;
 	});
 	
 	// body clicks
@@ -59,6 +65,17 @@ $Behavior.globalThemeInit = function()
 		$('#header_sub_menu_search_input').parent().find('.js_temp_friend_search_form:first').hide();		
 		
 		$('.feed_sort_holder').hide();
+		
+		if (bCloseChangeCover){
+			$('#cover_section_menu_drop').hide();
+		}
+		
+		if (bCloseViewMoreFeed){
+			$('.view_more_drop').hide();
+		}
+		
+		bCloseChangeCover = true;
+		bCloseViewMoreFeed = true;
 	});		
 	
 	$('.feed_sort_order_link').click(function(){
@@ -95,6 +112,10 @@ $Behavior.globalThemeInit = function()
 			$(this).addClass('is_active');						
 		}		
 		
+		if (sRel == 'timeline_date_holder_share'){
+			$.ajaxCall('feed.loadDropDates', '', 'GET');
+		}
+		
 		return false;
 	});
 	
@@ -125,7 +146,18 @@ $Behavior.globalThemeInit = function()
 		$('#header_menu_holder ul li ul').removeClass('active');
 		$('#header_menu_holder ul li a').removeClass('active');	
 	});
-	
+
+    if (oCore['core.site_wide_ajax_browsing'])
+    {
+        $('.holder_notify_drop_link').click(function()
+        {
+            $(this).parents('.holder_notify_drop:first').hide();
+            $(this).parents('.is_active:first').removeClass('is_active');
+
+            return true;
+        });
+    }
+
 	$('#holder_notify ul li a').click(function()
 	{		
 		var $oParent = $(this).parent();
@@ -159,6 +191,10 @@ $Behavior.globalThemeInit = function()
 					success: function($sData)			
 					{
 						$oChild.find('.holder_notify_drop_data').html($sData);
+                        if (oCore['core.site_wide_ajax_browsing'])
+                        {
+                            $Core.loadInit();
+                        }
 					}
 				});
 			/*
@@ -202,7 +238,10 @@ $Behavior.globalThemeInit = function()
 		}
 		else
 		{
-			$('#content').addClass('content4');
+			if (typeof oParams['keepContent4'] == 'undefined' || oParams['keepContent4'] == true)
+			{
+				$('#content').addClass('content4');
+			}
 			$('#content').removeClass('content2');
 			$('#content').removeClass('content3');
 		}
@@ -420,4 +459,4 @@ $Behavior.globalThemeInit = function()
 	{
 		$(this).find('.p_4:first').hide();
 	});		
-}
+};

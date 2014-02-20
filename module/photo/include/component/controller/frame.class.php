@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: frame.class.php 4692 2012-09-20 08:22:57Z Raymond_Benc $
+ * @version 		$Id: frame.class.php 7028 2014-01-08 13:24:23Z Fern $
  */
 class Photo_Component_Controller_Frame extends Phpfox_Component
 {
@@ -41,7 +41,27 @@ class Photo_Component_Controller_Frame extends Phpfox_Component
 			$_FILES['image']['tmp_name']['image'] = $_FILES['Filedata']['tmp_name'];
 			$_FILES['image']['size']['image'] = $_FILES['Filedata']['size'];
 		}
-		
+
+		$fn = (isset($_SERVER['HTTP_X_FILENAME']) ? $_SERVER['HTTP_X_FILENAME'] : false);
+		if ($fn) 
+		{
+			define('PHPFOX_HTML5_PHOTO_UPLOAD', true);
+
+			$sHTML5TempFile = PHPFOX_DIR_CACHE . 'image_' . md5(PHPFOX_DIR_CACHE . $fn . uniqid());
+
+			file_put_contents(
+				$sHTML5TempFile,
+				file_get_contents('php://input')
+			);
+			$_FILES['image'] = array(
+				'name' => array($fn),
+				'type' => array('image/jpeg'),
+				'tmp_name' => array($sHTML5TempFile),
+				'error' => array(0),
+				'size' => array(filesize($sHTML5TempFile))
+			);
+		}
+
 		// If no images were uploaded lets get out of here.
 		if (!isset($_FILES['image']))
 		{			
@@ -100,6 +120,18 @@ class Photo_Component_Controller_Frame extends Phpfox_Component
 		$oFile = Phpfox::getLib('file');
 		$oImage = Phpfox::getLib('image');
 		$aVals = $this->request()->get('val');
+		if (defined('PHPFOX_HTML5_PHOTO_UPLOAD'))
+		{
+			$aParts = explode('&', $_SERVER['HTTP_X_POST_FORM']);
+			foreach ($aParts as $sPart)
+			{
+				$aReq = explode('=', $sPart);
+				if (substr($aReq[0], 0, 3) == 'val')
+				{
+					$aVals[preg_replace('/val\[(.*?)\]/i', '\\1', $aReq[0])] = (isset($aReq[1]) ? $aReq[1] : '');
+				}
+			}
+		}
 		if (!is_array($aVals))
 		{
 			$aVals = array();
@@ -158,6 +190,11 @@ class Photo_Component_Controller_Frame extends Phpfox_Component
 							(Phpfox::getParam('photo.rename_uploaded_photo_names') ? Phpfox::getUserBy('user_name') . '-' . $aPhoto['title'] : $iId),
 							(Phpfox::getParam('photo.rename_uploaded_photo_names') ? array() : true)							
 						);
+
+						if (!$sFileName)
+						{
+							exit('failed: ' . implode('', Phpfox_Error::get()));
+						}
 							
 						// Get the original image file size.
 						$iFileSizes += filesize(Phpfox::getParam('photo.dir_photo') . sprintf($sFileName, ''));
@@ -167,15 +204,27 @@ class Photo_Component_Controller_Frame extends Phpfox_Component
 						
 						
 						// Update the image with the full path to where it is located.
-						$oServicePhotoProcess->update(Phpfox::getUserId(), $iId, array(
+						$aUpdate = array(
 								'destination' => $sFileName,
 								'width' => $aSize[0],
 								'height' => $aSize[1],
 								'server_id' => Phpfox::getLib('request')->getServer('PHPFOX_SERVER_ID'),
-								'allow_rate' => (empty($aVals['album_id']) ? '1' : '0')
-							)
-						);				
-																			
+								'allow_rate' => (empty($aVals['album_id']) ? '1' : '0'),
+								'description' => (empty($aVals['description']) ? null : $aVals['description'])
+							);
+						
+						// Solves bug, when categories are left empty and setting "photo.allow_photo_category_selection" is enabled:
+						if (isset($aVals['category_id']))
+						{
+							$aUpdate['category_id'] = $aVals['category_id'];
+						}
+						elseif(isset($aVals['category_id[]']))
+						{
+							$aUpdate['category_id'] = $aVals['category_id[]'];
+						}
+						
+						$oServicePhotoProcess->update(Phpfox::getUserId(), $iId, $aUpdate);				
+						
 						// Assign vars for the template.
 						$aImages[] = array(
 							'photo_id' => $iId,
@@ -197,9 +246,7 @@ class Photo_Component_Controller_Frame extends Phpfox_Component
 				{
 					
 				}
-				
 			}
-			
 		}		
 		
 		
@@ -208,6 +255,11 @@ class Photo_Component_Controller_Frame extends Phpfox_Component
 		// Make sure we were able to upload some images
 		if (count($aImages))
 		{
+			if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
+			{
+				unlink(Phpfox::getParam('photo.dir_photo') . sprintf($sFileName, ''));
+			}
+			
 			$aCallback = (!empty($aVals['callback_module']) ? Phpfox::callback($aVals['callback_module'] . '.addPhoto', $aVals['callback_item_id']) : null);
 			
 			$sAction = (isset($aVals['action']) ? $aVals['action'] : 'view_photo');
@@ -274,9 +326,8 @@ class Photo_Component_Controller_Frame extends Phpfox_Component
 			}
 			else if (isset($aVals['method']) && $aVals['method'] == 'massuploader')
 			{
-				
 				//echo 'window.aImagesUrl.push("' . urlencode(base64_encode(serialize($aImages))) . '");';
-				echo 'window.aImagesUrl.push("' . urlencode(base64_encode(json_encode($aImages))) . '");';
+				echo 'window.aImagesUrl.push(' . (json_encode($aImages)) . ');';
 			}
 			else 
 			{
@@ -285,28 +336,55 @@ class Photo_Component_Controller_Frame extends Phpfox_Component
 				{
 					$sExtra .= '&start_year= ' . $aVals['start_year'] . '&start_month= ' . $aVals['start_month'] . '&start_day= ' . $aVals['start_day'] . '';	
 				}
-				
-				echo '<script type="text/javascript">';
-				echo 'window.parent.$.ajaxCall(\'photo.process\', \'js_disable_ajax_restart=true' . $sExtra . '&twitter_connection=' . ((isset($aVals['connection']) && isset($aVals['connection']['twitter'])) ? $aVals['connection']['twitter'] : '0') . '&facebook_connection=' . (isset($aVals['connection']['facebook']) ? $aVals['connection']['facebook'] : '0') . '&custom_pages_post_as_page=' . $this->request()->get('custom_pages_post_as_page') . '&photos=' . urlencode(base64_encode(json_encode($aImages))) . '&action=' . $sAction . '' . (isset($iFeedId) ? '&feed_id=' . $iFeedId : '') . '' . ($aCallback !== null ? '&callback_module=' . $aCallback['module'] . '&callback_item_id=' . $aCallback['item_id'] : '') . '&parent_user_id=' . (isset($aVals['parent_user_id']) ? (int) $aVals['parent_user_id'] : 0) . '&is_cover_photo=' . (isset($aVals['is_cover_photo']) ? '1' : '0') . ((isset($aVals['page_id']) && $aVals['page_id'] > 0) ? '&page_id='.$aVals['page_id'] : '') . '\');';
-				echo '</script>';
+
+				if (!defined('PHPFOX_HTML5_PHOTO_UPLOAD'))
+				{
+					echo '<script type="text/javascript">';
+				}
+				if ($bIsInline && Phpfox::isModule('video') && Phpfox::getParam('video.convert_servers_enable'))
+				{
+					echo 'document.domain = "' . Phpfox::getParam('video.convert_js_parent') . '";';
+				}
+
+				if (!defined('PHPFOX_HTML5_PHOTO_UPLOAD'))
+				{
+					echo 'window.parent.';
+				}
+
+				echo '$.ajaxCall(\'photo.process\', \''. ((isset($aVals['page_id']) && !empty($aVals['page_id'])) ? 'is_page=1&' : '') .'js_disable_ajax_restart=true' . $sExtra . '&twitter_connection=' . ((isset($aVals['connection']) && isset($aVals['connection']['twitter'])) ? $aVals['connection']['twitter'] : '0') . '&facebook_connection=' . (isset($aVals['connection']['facebook']) ? $aVals['connection']['facebook'] : '0') . '&custom_pages_post_as_page=' . $this->request()->get('custom_pages_post_as_page') . '&photos=' . urlencode(json_encode($aImages)) . '&action=' . $sAction . '' . (isset($iFeedId) ? '&feed_id=' . $iFeedId : '') . '' . ($aCallback !== null ? '&callback_module=' . $aCallback['module'] . '&callback_item_id=' . $aCallback['item_id'] : '') . '&parent_user_id=' . (isset($aVals['parent_user_id']) ? (int) $aVals['parent_user_id'] : 0) . '&is_cover_photo=' . (isset($aVals['is_cover_photo']) ? '1' : '0') . ((isset($aVals['page_id']) && $aVals['page_id'] > 0) ? '&page_id='.$aVals['page_id'] : '') . '\');';
+				if (!defined('PHPFOX_HTML5_PHOTO_UPLOAD'))
+				{
+					echo '</script>';
+				}
 			}
 			
 			(($sPlugin = Phpfox_Plugin::get('photo.component_controller_frame_process_photos_done_javascript')) ? eval($sPlugin) : false);
 		}
 		else 
 		{
-			
-			// Output JavaScript	
-			echo '<script type="text/javascript">';
+			// Output JavaScript
+			if (!defined('PHPFOX_HTML5_PHOTO_UPLOAD'))
+			{
+				echo '<script type="text/javascript">';
+			}
+			else
+			{
+				unlink($sHTML5TempFile);
+				header('HTTP/1.1 500 Internal Server Error');
+			}
+
 			if (!$bIsInline)
 			{
-				
-				echo 'window.parent.document.getElementById(\'js_progress_cache_holder\').style.display = \'none\';';
+				echo 'window.parent.$(\'#js_progress_cache_holder\').hide();';
 				echo 'window.parent.document.getElementById(\'js_photo_form_holder\').style.display = \'block\';';
 				echo 'window.parent.document.getElementById(\'js_upload_error_message\').innerHTML = \'<div class="error_message">' . implode('', Phpfox_Error::get()) . '</div>\';';				
 			}
 			else
 			{
+				if (Phpfox::isModule('video') && Phpfox::getParam('video.convert_servers_enable'))
+				{
+					echo 'document.domain = "' . Phpfox::getParam('video.convert_js_parent') . '";';
+				}
 				if (isset($aVals['is_cover_photo']))
 				{
 					echo 'window.parent.$(\'#js_cover_photo_iframe_loader_upload\').hide();';
@@ -318,8 +396,10 @@ class Photo_Component_Controller_Frame extends Phpfox_Component
 					echo 'window.parent.$Core.resetActivityFeedError(\'' . implode('', Phpfox_Error::get()) . '\');';
 				}
 			}
-				
-			echo '</script>';
+			if (!defined('PHPFOX_HTML5_PHOTO_UPLOAD'))
+			{
+				echo '</script>';
+			}
 		}		
 		
 		exit;

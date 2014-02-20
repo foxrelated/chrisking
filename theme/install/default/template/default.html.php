@@ -5,14 +5,20 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: default.html.php 906 2009-08-29 13:49:12Z Raymond_Benc $
+ * @version 		$Id: default.html.php 5350 2013-02-13 10:59:22Z Raymond_Benc $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
 
 ?>
-{$sMessage}
-{if isset($sNext)}
- Please hold...
-<meta http-equiv="refresh" content="2;url={$sNext}" />
-{/if}
+<div class="nb_message_holder">
+	{$sMessage}
+	{if isset($sNext)}
+	 Please hold...
+	<meta http-equiv="refresh" content="2;url={$sNext}" />
+	{/if}
+</div>
+
+<div class="nb_message_image">
+	{img theme='layout/ajax_loader_blue_128.gif'}
+</div>

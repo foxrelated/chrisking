@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: view.class.php 4879 2012-10-10 11:35:03Z Raymond_Benc $
+ * @version 		$Id: view.class.php 7008 2013-12-23 18:23:26Z Fern $
  */
 class Photo_Component_Controller_View extends Phpfox_Component
 {
@@ -208,6 +208,48 @@ class Photo_Component_Controller_View extends Phpfox_Component
 			define('PHPFOX_IS_THEATER_MODE', true);
 		}
 		
+		if (defined('PHPFOX_IS_HOSTED_SCRIPT') || ($aPhoto['server_id'] > 0 && Phpfox::getParam('core.allow_cdn')))
+		{
+			$sImageUrl = Phpfox::getLib('image.helper')->display(array(
+				'server_id' => $aPhoto['server_id'],
+				'path' => 'photo.url_photo',
+				'file' => $aPhoto['destination'],
+				'suffix' => '_1024',
+				'return_url' => true
+				)
+			);
+			$iCdnMax = (($aPhoto['height'] > $aPhoto['width']) ? 800 : 500);
+			list($iNewImageHeight, $iNewImageWidth) = Phpfox::getLib('image.helper')->getNewSize(array($sImageUrl), $iCdnMax, $iCdnMax);
+			$this->template()->assign(array(
+						'iNewImageHeight' => $iNewImageHeight,
+						'iNewImageWidth' => $iNewImageWidth
+					)
+				); 
+
+		}
+		
+		if (!Phpfox::getParam('photo.pre_load_header_view'))
+		{
+			$this->template()->setHeader('cache', array(
+						'jquery/plugin/jquery.highlightFade.js' => 'static_script',	
+						'jquery/plugin/jquery.scrollTo.js' => 'static_script',
+						'jquery/plugin/imgnotes/jquery.tag.js' => 'static_script',
+						'imgnotes.css' => 'style_css',
+						'quick_edit.js' => 'static_script',
+						'comment.css' => 'style_css',
+						'pager.css' => 'style_css',
+						'view.js' => 'module_photo',
+						'photo.js' => 'module_photo',
+						'switch_legend.js' => 'static_script',
+						'switch_menu.js' => 'static_script',
+						'view.css' => 'module_photo',
+						'feed.js' => 'module_feed',
+						'edit.css' => 'module_photo',
+						'index.js' => 'module_photo'
+					)
+				);	
+		}
+		
 		$this->template()
 				->setFullSite()
 				->setBreadcrumb(Phpfox::getPhrase('photo.photos'), ($aCallback === null ? $this->url()->makeUrl('photo') : $this->url()->makeUrl($aCallback['url_home_photo'])))
@@ -220,11 +262,17 @@ class Photo_Component_Controller_View extends Phpfox_Component
 							'server_id' => $aPhoto['server_id'],
 							'path' => 'photo.url_photo',
 							'file' => $aPhoto['destination'],
-							'suffix' => '_150',
+							//'suffix' => '_150',  http://www.phpfox.com/tracker/view/14924/
+							'suffix' => '_240',
 							'return_url' => true
 						)
 					)
 				)
+				->setHeader(array(
+					'jquery/plugin/imgnotes/jquery.imgareaselect.js' => 'static_script',
+					'jquery/plugin/imgnotes/jquery.imgnotes.js' => 'static_script',
+					'imgareaselect-default.css' => 'style_css'
+				))
 				->setPhrase(array(
 						'photo.none_of_your_files_were_uploaded_please_make_sure_you_upload_either_a_jpg_gif_or_png_file',
 						'photo.updating_photo',
@@ -232,34 +280,20 @@ class Photo_Component_Controller_View extends Phpfox_Component
 						'photo.cancel',
 						'photo.click_here_to_tag_as_yourself'
 					)
-				)				
-				->setHeader('cache', array(
-						'jquery/plugin/jquery.highlightFade.js' => 'static_script',	
-						'jquery/plugin/jquery.scrollTo.js' => 'static_script',
-						'jquery/plugin/imgnotes/jquery.tag.js' => 'static_script',						
-						'quick_edit.js' => 'static_script',
-						'comment.css' => 'style_css',
-						'pager.css' => 'style_css',
-						'view.js' => 'module_photo',
-						'photo.js' => 'module_photo',
-						'switch_legend.js' => 'static_script',
-						'switch_menu.js' => 'static_script',
-						'view.css' => 'module_photo',
-						'feed.js' => 'module_feed',
-						'edit.css' => 'module_photo'
-					)
 				)
 				->setEditor(array(
 						'load' => 'simple'					
 					)
 				)->assign(array(
 					'aForms' => $aPhoto,
+					'bVertical' => ($aPhoto['height'] > $aPhoto['width']),
 					'aCallback' => $aCallback,
 					'aPhotoStream' => Phpfox::getService('photo')->getPhotoStream($aPhoto['photo_id'], ($this->request()->getInt('albumid') ? $this->request()->getInt('albumid') : '0'), $aCallback, $iUserId, $iCategory, $aPhoto['user_id']),
 					'bIsTheater' => ($this->request()->get('theater') ? true : false),
 					'sPhotoJsContent' => Phpfox::getService('photo.tag')->getJs($aPhoto['photo_id']),
 					'iForceAlbumId' => ($this->request()->getInt('albumid') > 0 ? $this->request()->getInt('albumid') : 0),
-					'sCurrentPhotoUrl' => Phpfox::getLib('url')->makeUrl('current')
+					'sCurrentPhotoUrl' => Phpfox::getLib('url')->makeUrl('current'),
+					'sMicroPropType' => 'Photograph'
 				)
 			);		
 			

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Event
- * @version 		$Id: index.class.php 4596 2012-08-16 17:27:10Z Raymond_Benc $
+ * @version 		$Id: index.class.php 5975 2013-05-28 11:58:10Z Raymond_Benc $
  */
 class Event_Component_Controller_Index extends Phpfox_Component
 {
@@ -148,8 +148,8 @@ class Event_Component_Controller_Index extends Phpfox_Component
 				break;
 			default:
 				if ($bIsUserProfile)
-				{
-					$this->search()->setCondition('AND m.view_id ' . ($aUser['user_id'] == Phpfox::getUserId() ? 'IN(0,2)' : '= 0') . ' AND m.privacy IN(' . (Phpfox::getParam('core.section_privacy_item_browsing') ? '%PRIVACY%' : Phpfox::getService('core')->getForBrowse($aUser)) . ') AND m.user_id = ' . (int) $aUser['user_id']);
+				{					
+					$this->search()->setCondition('AND m.view_id ' . ($aUser['user_id'] == Phpfox::getUserId() ? 'IN(0,2)' : '= 0') . ' AND m.module_id = "event" AND m.privacy IN(' . (Phpfox::getParam('core.section_privacy_item_browsing') ? '%PRIVACY%' : Phpfox::getService('core')->getForBrowse($aUser)) . ') AND m.user_id = ' . (int) $aUser['user_id']);
 				}
 				elseif ($aParentModule !== null)
 				{

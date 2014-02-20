@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: index.class.php 2197 2010-11-22 15:26:08Z Raymond_Benc $
+ * @version 		$Id: index.class.php 5946 2013-05-24 07:53:54Z Miguel_Espinoza $
  */
 class Custom_Component_Controller_Admincp_Index extends Phpfox_Component
 {
@@ -51,9 +51,9 @@ class Custom_Component_Controller_Admincp_Index extends Phpfox_Component
 			)			
 			->setHeader(array(
 					'admin.js' => 'module_custom',
-					'<script type="text/javascript">$Core.custom.url(\'' . $this->url()->makeUrl('admincp.custom') . '\');</script>',
+					'<script type="text/javascript">$Behavior.custom_set_url = function() { $Core.custom.url(\'' . $this->url()->makeUrl('admincp.custom') . '\'); };</script>',
 					'jquery/ui.js' => 'static_script',
-					'<script type="text/javascript">$(function(){$Core.custom.addSort();});</script>'
+					'<script type="text/javascript">$Behavior.custom_admin_addSort = function(){$Core.custom.addSort();};</script>'
 				)
 			)
 			->assign(array(

@@ -13,9 +13,9 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: validator.class.php 5067 2012-12-05 08:55:19Z Raymond_Benc $
+ * @version 		$Id: validator.class.php 6599 2013-09-06 08:18:37Z Miguel_Espinoza $
  */
-final class Phpfox_Validator
+class Phpfox_Validator
 {	
 	/**
 	 * List of all the errors.
@@ -61,7 +61,7 @@ final class Phpfox_Validator
 	 */
 	private $_aRegex = array(
 		'user_name' => '/^[a-zA-Z0-9_\- ]{5,25}$/',
-		'email' => '/^[0-9a-zA-Z]([\-.\w]*[0-9a-zA-Z]?)*@([0-9a-zA-Z][\-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,}$/',
+		'email' => '/^[0-9a-zA-Z]([+\-.\w]*[0-9a-zA-Z]?)*@([0-9a-zA-Z][\-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,}$/',
 		'html' => '/<(.*?)>/',
 		'url' => '~(?>[a-z+]{2,}://|www\.)(?:[a-z0-9]+(?:\.[a-z0-9]+)?@)?(?:(?:[a-z](?:[a-z0-9]|(?<!-)-)*[a-z0-9])(?:\.[a-z](?:[a-z0-9]|(?<!-)-)*[a-z0-9])+|(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))(?:/[^\\/:?*"<>|\n]*[a-z0-9])*/?(?:\?[a-z0-9_.%]+(?:=[a-z0-9_.%:/+-]*)?(?:&[a-z0-9_.%]+(?:=[a-z0-9_.%:/+-]*)?)*)?(?:#[a-z0-9_%.]+)?~is',
 		'currency_id' => '/^[A-Z]{3,3}$/'
@@ -610,7 +610,11 @@ final class Phpfox_Validator
 		}		
 		
 		$sStr = '';
-	 	if ( isset($aFieldValue['pattern']) )
+		if ($sFieldKey == 'email' && function_exists('filter_var') && !empty($sValue) && !filter_var($sValue, FILTER_VALIDATE_EMAIL))
+		{
+		    Phpfox_Error::set($aFieldValue['title']);
+		}
+	 	else if ( isset($aFieldValue['pattern']) )
 	 	{
 	 		if ( $sType == 'php' && !preg_match($aFieldValue['pattern'], $sValue) )
 	 		{

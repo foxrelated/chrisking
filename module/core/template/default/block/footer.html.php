@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: footer.html.php 3333 2011-10-20 13:34:25Z Miguel_Espinoza $
+ * @version 		$Id: footer.html.php 6518 2013-08-28 11:21:49Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -24,8 +24,7 @@ defined('PHPFOX') or exit('NO DICE!');
 							{module name='notification.link'}
 						{/if}
 						
-						<li style="position: relative; width: 150px;">
-							check 2
+						<li style="position: relative; width: 150px;">							
 							<div style="width: 50px; height: 50px;">
 								<a href="#" onclick="$('#footer_bar').find('a').removeClass('focus').removeClass('is_already_open'); $('#footer_bar').hide(); $('.js_footer_holder').hide(); $('#footer_bar_open').show(); $.ajaxCall('user.updateFooterBar', 'type_id=1'); return false;" title="{phrase var='core.hide_the_footer_bar'}">{img theme='layout/hide.gif' alt='' class='v_middle'}</a>
 							</div>

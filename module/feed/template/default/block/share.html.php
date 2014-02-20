@@ -5,14 +5,27 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: share.html.php 4712 2012-09-21 10:42:01Z Raymond_Benc $
+ * @version 		$Id: share.html.php 7024 2014-01-07 14:54:37Z Fern $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
 
 ?>
+<script type="text/javascript">
+{literal}
+	function sendFeed(oObj)
+	{
+		$('#btnShareFeed').attr('disabled', 'disabled');
+		$('#imgShareFeedLoading').show();
+		$(oObj).ajaxCall('feed.share');
+		
+		return false;
+	}
+{/literal}
+</script>
+
 <div>
-	<form method="post" action="#" onsubmit="$(this).ajaxCall('feed.share'); return false;">
+	<form method="post" action="#" onsubmit="return sendFeed(this);">
 		<div><input type="hidden" name="val[parent_feed_id]" value="{$iFeedId}" /></div>
 		<div><input type="hidden" name="val[parent_module_id]" value="{$sShareModule|clean}" /></div>
 		{phrase var='share.share'}: 
@@ -46,7 +59,8 @@ defined('PHPFOX') or exit('NO DICE!');
 			<textarea cols="50" rows="4" name="val[post_content]"></textarea>
 		</div>
 		<div class="p_top_8">
-			<input type="submit" value="{phrase var='share.post'}" class="button" />
+			<input type="submit" id="btnShareFeed" value="{phrase var='share.post'}" class="button" />
+			{img theme='ajax/small.gif' style="display:none" id="imgShareFeedLoading"}
 		</div>
 	</form>
 </div>

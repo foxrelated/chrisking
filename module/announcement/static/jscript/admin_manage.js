@@ -1,5 +1,5 @@
 
-$(function()
+$Behavior.announcement_admin_manage_init = function()
 {
 	$('#age_from').change(function()
 	{
@@ -35,4 +35,4 @@ $(function()
 		$('#js_user_group').show();
 	}
 
-});
+};

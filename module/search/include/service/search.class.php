@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Search
- * @version 		$Id: search.class.php 4705 2012-09-20 14:25:01Z Miguel_Espinoza $
+ * @version 		$Id: search.class.php 5616 2013-04-10 07:54:55Z Miguel_Espinoza $
  */
 class Search_Service_Search extends Phpfox_Service 
 {
@@ -82,6 +82,7 @@ class Search_Service_Search extends Phpfox_Service
 				}
 			}
 		}
+		
 		return $aResults;
 	}
 	

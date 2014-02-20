@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Friend
- * @version 		$Id: search.html.php 4923 2012-10-23 04:35:21Z Raymond_Benc $
+ * @version 		$Id: search.html.php 5574 2013-03-27 13:02:04Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -30,93 +30,97 @@ defined('PHPFOX') or exit('NO DICE!');
 		}		
 	};
 
-	updateCheckBoxes();
-	
-	function updateFriendsList()
+	$Behavior.friend_block_search_init = function()
 	{		
 		updateCheckBoxes();
-	}
-	
-	function removeFromSelectList(sId)
-	{
-		$('.js_cached_friend_id_' + sId + '').remove();
-		$('#js_friends_checkbox_' + sId).attr('checked', false);
-		$('#js_friend_input_' + sId).remove();
-		$('.js_cached_friend_id_' + sId).remove(); return false;		
+	};
+		function updateFriendsList()
+		{		
+			updateCheckBoxes();
+		}
 		
-		return false;
-	}
-	
-	function addFriendToSelectList(oObject, sId, bForce)
-	{	
-		if (oObject.checked || bForce)
+		function removeFromSelectList(sId)
+		{
+			$('.js_cached_friend_id_' + sId + '').remove();
+			$('#js_friends_checkbox_' + sId).attr('checked', false);
+			$('#js_friend_input_' + sId).remove();
+			$('.js_cached_friend_id_' + sId).remove(); return false;		
+			
+			return false;
+		}
+		
+		function addFriendToSelectList(oObject, sId, bForce)
+		{	
+			if (oObject.checked || bForce)
+			{
+				iCnt = 0;
+				$('.js_cached_friend_name').each(function()
+				{			
+					iCnt++;
+				});			
+
+				if (function_exists('plugin_addFriendToSelectList'))
+				{
+					plugin_addFriendToSelectList(sId);
+				}
+				{/literal}
+				$('#js_selected_friends').append('<div class="js_cached_friend_name row1 js_cached_friend_id_' + sId + '' + (iCnt ? '' : ' row_first') + '"><span style="display:none;">' + sId + '</span><input type="hidden" name="val[' + sPrivacyInputName + '][]" value="' + sId + '" /><a href="#" onclick="return removeFromSelectList(' + sId + ');">{img theme='misc/delete.gif' class="delete_hover v_middle"}</a> ' + $('#js_friend_' + sId + '').html() + '</div>');			
+				{literal}
+			}
+			else
+			{
+				if (function_exists('plugin_removeFriendToSelectList'))
+				{
+					plugin_removeFriendToSelectList(sId);
+				}			
+				
+				$('.js_cached_friend_id_' + sId).remove();
+				$('#js_friend_input_' + sId).remove();
+			}
+		}
+		
+		function cancelFriendSelection()
+		{
+			if (function_exists('plugin_cancelFriendSelection'))
+			{
+				plugin_cancelFriendSelection();
+			}			
+			
+			$('#js_selected_friends').html('');	
+			$Core.loadInit(); 
+			tb_remove();
+		}
+		
+		function updateCheckBoxes()
 		{
 			iCnt = 0;
 			$('.js_cached_friend_name').each(function()
 			{			
 				iCnt++;
-			});			
-
-			if (function_exists('plugin_addFriendToSelectList'))
+				$('#js_friends_checkbox_' + $(this).find('span').html()).attr('checked', true);
+			});
+			
+			$('#js_selected_count').html((iCnt / 2));
+		}
+		
+		function showLoader()
+		{
+			$('#js_friend_search_content').html($.ajaxProcess(oTranslations['friend.loading'], 'large'));
+		}	
+		
+		function checkForEnter(event)
+		{
+			if (event.keyCode == 13) 
 			{
-				plugin_addFriendToSelectList(sId);
+				showLoader(); 
+				
+				$.ajaxCall('friend.searchAjax', 'find=' + $('#js_find_friend').val() + '&amp;input=' + sPrivacyInputName + '');
+			
+				return false;	
 			}
-			{/literal}
-			$('#js_selected_friends').append('<div class="js_cached_friend_name row1 js_cached_friend_id_' + sId + '' + (iCnt ? '' : ' row_first') + '"><span style="display:none;">' + sId + '</span><input type="hidden" name="val[' + sPrivacyInputName + '][]" value="' + sId + '" /><a href="#" onclick="return removeFromSelectList(' + sId + ');">{img theme='misc/delete.gif' class="delete_hover v_middle"}</a> ' + $('#js_friend_' + sId + '').html() + '</div>');			
-			{literal}
 		}
-		else
-		{
-			if (function_exists('plugin_removeFriendToSelectList'))
-			{
-				plugin_removeFriendToSelectList(sId);
-			}			
-			
-			$('.js_cached_friend_id_' + sId).remove();
-			$('#js_friend_input_' + sId).remove();
-		}
-	}
-	
-	function cancelFriendSelection()
-	{
-		if (function_exists('plugin_cancelFriendSelection'))
-		{
-			plugin_cancelFriendSelection();
-		}			
 		
-		$('#js_selected_friends').html('');	
-		$Core.loadInit(); 
-		tb_remove();
-	}
-	
-	function updateCheckBoxes()
-	{
-		iCnt = 0;
-		$('.js_cached_friend_name').each(function()
-		{			
-			iCnt++;
-			$('#js_friends_checkbox_' + $(this).find('span').html()).attr('checked', true);
-		});
 		
-		$('#js_selected_count').html((iCnt / 2));
-	}
-	
-	function showLoader()
-	{
-		$('#js_friend_search_content').html($.ajaxProcess(oTranslations['friend.loading'], 'large'));
-	}	
-	
-	function checkForEnter(event)
-	{
-		if (event.keyCode == 13) 
-		{
-			showLoader(); 
-			
-			$.ajaxCall('friend.searchAjax', 'find=' + $('#js_find_friend').val() + '&amp;input=' + sPrivacyInputName + '');
-		
-			return false;	
-		}
-	}
 {/literal}
 </script>
 <div id="js_friend_loader_info"></div>

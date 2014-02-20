@@ -1,5 +1,5 @@
 <?php
-/** $Id: install.xml.php 2913 2011-08-29 08:14:28Z Raymond_Benc $ **/
+/** $Id: install.xml.php 5350 2013-02-13 10:59:22Z Raymond_Benc $ **/
 defined('PHPFOX') or exit('NO DICE!');
 ?>
 <phpfox>
@@ -20,7 +20,15 @@ defined('PHPFOX') or exit('NO DICE!');
 				'is_active' => '1',
 				'is_default' => '0',
 				'total_column' => '3'
-			)			
+			),
+			array(
+				'name' => 'Nebula',
+				'folder' => 'nebula',
+				'created' => '1212226813',
+				'is_active' => '1',
+				'is_default' => '0',
+				'total_column' => '3'
+			)
 		);
 		foreach ($aRows as $aRow)
 		{
@@ -77,7 +85,16 @@ defined('PHPFOX') or exit('NO DICE!');
 				'is_active' => '1',
 				'is_default' => '0',
 				'logo_image' => 'logo.png'
-			)			
+			),
+			array(
+				'theme_id' => '3',
+				'name' => 'Nebula',
+				'folder' => 'nebula',
+				'created' => '1212227060',
+				'is_active' => '1',
+				'is_default' => '0',
+				'logo_image' => 'logo.png'
+			)					
 		);
 		foreach ($aRows as $aRow)
 		{

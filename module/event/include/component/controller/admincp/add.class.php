@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: add.class.php 1522 2010-03-11 17:56:49Z Miguel_Espinoza $
+ * @version 		$Id: add.class.php 5538 2013-03-25 13:20:22Z Miguel_Espinoza $
  */
 class Event_Component_Controller_Admincp_Add extends Phpfox_Component
 {
@@ -27,7 +27,7 @@ class Event_Component_Controller_Admincp_Add extends Phpfox_Component
 			{
 				$bIsEdit = true;
 				
-				$this->template()->setHeader('<script type="text/javascript">$(function(){$(\'#js_mp_category_item_' . $aCategory['parent_id'] . '\').attr(\'selected\', true);});</script>')->assign('aForms', $aCategory);
+				$this->template()->setHeader('<script type="text/javascript">$Behavior.event_add_set_attr = function(){$(\'#js_mp_category_item_' . $aCategory['parent_id'] . '\').attr(\'selected\', true);};</script>')->assign('aForms', $aCategory);
 			}
 		}		
 		

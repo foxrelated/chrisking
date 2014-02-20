@@ -14,7 +14,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: pager.class.php 4548 2012-07-23 07:41:07Z Raymond_Benc $
+ * @version 		$Id: pager.class.php 6699 2013-09-30 14:14:43Z Fern $
  */
 class Phpfox_Pager
 {
@@ -270,6 +270,11 @@ class Phpfox_Pager
      */
     private function _getInfo()
     {
+		if($this->getTotalPages() == 0)
+		{
+			return false;
+		}
+		
         $sParams = '';
         if (count($this->_aParams))
         {
@@ -302,11 +307,14 @@ class Phpfox_Pager
 				}
 	        	else
 				{
+					if (PHPFOX_IS_AJAX && $iKey == 'feed' && Phpfox::isModule('comment') && Phpfox::getParam('comment.load_delayed_comments_items'))
+					{
+						continue;
+					}
 					$sParams .= '&amp;' . $iKey . '=' . $sValue;
 				}
 	        }        
         }
-
     	$aInfo = array(
             'totalPages' => $this->_iPagesCount,
             'totalRows'  => $this->_iCnt,

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: privacy.class.php 4708 2012-09-21 08:36:43Z Miguel_Espinoza $
+ * @version 		$Id: privacy.class.php 5840 2013-05-09 06:14:35Z Raymond_Benc $
  */
 class User_Service_Privacy_Privacy extends Phpfox_Service 
 {
@@ -64,16 +64,23 @@ class User_Service_Privacy_Privacy extends Phpfox_Service
 		$aProfiles = Phpfox::massCallback('getProfileSettings');
 		$aItems = Phpfox::massCallback('getGlobalPrivacySettings');
 		
-		foreach ($aNotifications as $sModule => $aModules)
-		{		
-			foreach ($aModules as $sKey => $aNotification)
-			{
-				if (isset($aUserPrivacy['notification'][$sKey]))
+		if (is_array($aNotifications))
+		{
+			foreach ($aNotifications as $sModule => $aModules)
+			{		
+				if (!is_array($aModules))
 				{
-					$aNotifications[$sModule][$sKey]['default'] = 0;
+					continue;
 				}
-			}
-		}		
+				foreach ($aModules as $sKey => $aNotification)
+				{
+					if (isset($aUserPrivacy['notification'][$sKey]))
+					{
+						$aNotifications[$sModule][$sKey]['default'] = 0;
+					}
+				}
+			}		
+		}
 		
 		foreach ($aProfiles as $sModule => $aModules)
 		{			

@@ -5,7 +5,7 @@
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: entry.html.php 1224 2009-10-27 19:03:46Z Raymond_Benc $
+ * @version 		$Id: entry.html.php 5616 2013-04-10 07:54:55Z Miguel_Espinoza $
  */
  
 defined('PHPFOX') or exit('NO DICE!'); 
@@ -24,7 +24,7 @@ defined('PHPFOX') or exit('NO DICE!');
 	</a>
 	{else}	
 	{if $bNotifyIsInline}
-		{img user=$aNotification suffix='_20_square' max_width=20 max_height=20 class='v_middle'} 
+		{img user=$aNotification suffix='_50_square' max_width=20 max_height=20 class='v_middle'} 
 	{else}
 		{img user=$aNotification suffix='_50_square' max_width=50 max_height=50 class='v_middle'} 
 	{/if}

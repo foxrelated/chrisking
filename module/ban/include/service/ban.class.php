@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: ban.class.php 3826 2011-12-16 12:30:19Z Raymond_Benc $
+ * @version 		$Id: ban.class.php 7029 2014-01-08 14:30:56Z Fern $
  */
 class Ban_Service_Ban extends Phpfox_Service 
 {
@@ -73,7 +73,7 @@ class Ban_Service_Ban extends Phpfox_Service
 		{
 			$sValue = $this->preParse()->convert($sValue);
 		}
-		
+
 		if (is_array($aFilters) && count($aFilters))
 		{			
 			foreach ($aFilters as $sFilter => $mValue)
@@ -82,11 +82,21 @@ class Ban_Service_Ban extends Phpfox_Service
 				if ($sType == 'ip')
 				{
 					$sFilter = preg_replace('%[^0-9.*]%', '', $sFilter);
+					if ($sFilter == '*')
+					{
+						continue;
+					}
 				}				
 				
 				if (preg_match('/\*/i', $sFilter))
 				{
 					$sFilter = str_replace(array('.', '*'), array('\.', '(.*?)'), $sFilter);
+					
+					// http://www.phpfox.com/tracker/view/14967/
+					if(preg_match('/http(s?):\/\//i', $sFilter))
+					{
+						$sFilter = str_replace('/', '\\/\\/', $sFilter);
+					}
 					
 					if (preg_match('/^' . $sFilter . '$/i', $sValue))
 					{
@@ -215,9 +225,16 @@ class Ban_Service_Ban extends Phpfox_Service
 					define('PHPFOX_USER_IS_BANNED', true);
 					$aFilter['reason'] = str_replace('&#039;', "'", $aFilter['reason']);
 					$sReason = preg_replace('/\{phrase var=\'(.*)\'\}/ise', "'' . Phpfox::getPhrase('\\1',array(), false, null, '" . Phpfox::getUserBy('language_id') . "') . ''", $aFilter['reason']);
+					
+					// Related to issue 14487 this is a "best guess" fallback
+					$iUserGroupId = Phpfox::getParam('core.banned_user_group_id');
+					if ($iUserGroupId == 0)
+					{
+						$iUserGroupId = 5;
+					}
 
 					$this->database()->update(Phpfox::getT('user'),
-							array('user_group_id' => Phpfox::getParam('core.banned_user_group_id'))
+							array('user_group_id' => $iUserGroupId)
 							, 'user_id = ' . (int) Phpfox::getUserId());
 
 					Phpfox::getService('user.auth')->logout();

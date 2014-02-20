@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Service
- * @version 		$Id: process.class.php 1496 2010-03-05 17:15:05Z Raymond_Benc $
+ * @version 		$Id: process.class.php 5591 2013-03-28 10:12:52Z Miguel_Espinoza $
  */
 class User_Service_Block_Process extends Phpfox_Service 
 {
@@ -53,12 +53,21 @@ class User_Service_Block_Process extends Phpfox_Service
 			)
 		);
 		
+		if (Phpfox::getParam('core.super_cache_system'))
+		{
+			$sCacheId = $this->cache()->set(array('user_blocked', $iBlockedUserId));
+			$this->cache()->remove($sCacheId);
+		}
+		
 		Phpfox::getService('friend.process')->deleteFromConnection(Phpfox::getUserId(), $iBlockedUserId);
 		Phpfox::getService('friend.process')->deleteFromConnection($iBlockedUserId, Phpfox::getUserId());
 		
 		return true;
 	}	
 	
+	/**
+	 * This function is called when a user unblocks another user
+	 */ 
 	public function delete($iBlockedUserId, $bBoth = false)
 	{
 		Phpfox::isUser(true);		
@@ -68,6 +77,11 @@ class User_Service_Block_Process extends Phpfox_Service
 		if ($bBoth)
 		{
 			$this->database()->delete($this->_sTable, 'user_id = ' . (int) $iBlockedUserId . ' AND block_user_id = ' . Phpfox::getUserId());
+		}
+		if (Phpfox::getParam('core.super_cache_system'))
+		{
+			$sCacheId = $this->cache()->set(array('user_blocked', $iBlockedUserId));
+			$this->cache()->remove($sCacheId);
 		}
 		return true;
 	}	

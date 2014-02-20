@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: add.class.php 3386 2011-10-31 13:19:54Z Miguel_Espinoza $
+ * @version 		$Id: add.class.php 5945 2013-05-23 12:42:06Z Miguel_Espinoza $
  */
 class Custom_Component_Controller_Admincp_Add extends Phpfox_Component
 {
@@ -176,7 +176,7 @@ class Custom_Component_Controller_Admincp_Add extends Phpfox_Component
 			->setHeader(array(
 					'<script type="text/javascript"> var bIsEdit = ' . ($bIsEdit ?  'true' : 'false') .'</script>',
 					'admin.js' => 'module_custom',
-					'<script type="text/javascript">$(function(){$Core.custom.init(' . ($bIsEdit==true ? 1 : $iDefaultSelect) . '' . (isset($sOptionPostJs) ? ', {' . $sOptionPostJs . '}' : '') . ');});</script>'
+					'<script type="text/javascript">$Behavior.custom_admin_add_init = function(){$Core.custom.init(' . ($bIsEdit==true ? 1 : $iDefaultSelect) . '' . (isset($sOptionPostJs) ? ', {' . $sOptionPostJs . '}' : '') . ');};</script>'
 				)
 			)
 			->assign(array(

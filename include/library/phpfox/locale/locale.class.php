@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: locale.class.php 4974 2012-10-31 07:30:42Z Raymond_Benc $
+ * @version 		$Id: locale.class.php 6981 2013-12-09 17:40:04Z Fern $
  */
 class Phpfox_Locale
 {
@@ -273,7 +273,8 @@ class Phpfox_Locale
 			}			
 			else
 			{
-				$sUrl = 'http://api.ipinfodb.com/v2/ip_query.php?ip=' . Phpfox::getLib('request')->getIp() . '&key=' . Phpfox::getParam('core.ip_infodb_api_key');
+				//$sUrl = 'http://api.ipinfodb.com/v2/ip_query.php?ip=' . Phpfox::getLib('request')->getIp() . '&key=' . Phpfox::getParam('core.ip_infodb_api_key');
+				$sUrl = 'http://api.ipinfodb.com/v3/ip-city/?key='.Phpfox::getParam('core.ip_infodb_api_key').'&ip='.Phpfox::getLib('request')->getIp().'&format=xml';
 				if (function_exists('file_get_contents') && ini_get('allow_url_fopen'))
 				{
 					$sXML = file_get_contents($sUrl);
@@ -284,11 +285,11 @@ class Phpfox_Locale
 				}
 				$aCallback = Phpfox::getLib('xml.parser')->parse($sXML, 'UTF-8');			
 
-				if (!empty($aCallback['CountryCode']))
+				if (!empty($aCallback['countryCode']))
 				{
 					foreach ($this->_aLanguages as $sLangId => $bLang)
 					{
-						if (strtolower($sLangId) == strtolower($aCallback['CountryCode']))
+						if (strtolower($sLangId) == strtolower($aCallback['countryCode']))
 						{
 							Phpfox::getLib('session')->set('language_id', $sLangId);
 
@@ -299,12 +300,11 @@ class Phpfox_Locale
 					}
 				}
 			}
+			$sLangId = Phpfox::getParam('core.default_lang_id');
 			Phpfox::getLib('session')->set('language_id', $sLangId);
 		}
 		
 		$sNewLanguage = Phpfox::getParam('core.default_lang_id');
-		
-		
 		
 		return $sNewLanguage;
 	}
@@ -317,7 +317,7 @@ class Phpfox_Locale
 	 */
 	public function isPhrase($sParam)
 	{
-		if (!strpos($sParam, '.'))
+		if (strpos($sParam, '.') === false)
 		{
 			return '';
 		}		
@@ -357,7 +357,7 @@ class Phpfox_Locale
 	 */
 	public function getPhrase($sParam, $aParams = array(), $bNoDebug = false, $sDefault = null, $sLang = '')
 	{
-		if (!strpos($sParam, '.'))
+		if (strpos($sParam, '.') === false)
 		{
 			if ((Phpfox::getParam('language.lang_pack_helper') && !$bNoDebug))
 			{
@@ -405,6 +405,8 @@ class Phpfox_Locale
 				{
 					return $sDefault;
 				}
+                
+                if ($sPlugin = Phpfox_Plugin::get('library_phpfox_locale_phrase_not_found')){eval ($sPlugin); if (isset($mPluginReturn)){return $mPluginReturn;}}
 				
 				if (PHPFOX_DEBUG)
 				{
@@ -442,6 +444,10 @@ class Phpfox_Locale
 			$aReplace = array();
 			foreach ($aParams as $sKey => $sValue)
 			{
+				if (is_array($sValue))
+				{
+					continue;
+				}
 				$aFind[] = '{' . $sKey . '}';				
 				$aReplace[] = '' . $sValue . '';		
 			}		

@@ -13,7 +13,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author			Raymond Benc
  * @package 		Phpfox
- * @version 		$Id: request.class.php 4576 2012-07-31 10:32:27Z Raymond_Benc $
+ * @version 		$Id: request.class.php 7065 2014-01-27 14:11:41Z Fern $
  */
 class Phpfox_Request
 {	
@@ -243,8 +243,16 @@ class Phpfox_Request
     	}
     	elseif (preg_match('/\s+?chrome\/([0-9.]{1,10})/i', $sAgent, $aMatches))
     	{
-    		$aParts = explode(' ', trim($aMatches[1]));
-    		$sAgent = 'Chrome ' . $aParts[0];
+    		if (preg_match('/android/i', $sAgent))
+    		{
+    			$this->_bIsMobile = true;
+    			$sAgent = 'Android';
+    		}
+    		else
+    		{
+	    		$aParts = explode(' ', trim($aMatches[1]));
+	    		$sAgent = 'Chrome ' . $aParts[0];
+    		}
     	}
     	elseif (preg_match('/android/i', $sAgent))
     	{
@@ -297,10 +305,15 @@ class Phpfox_Request
      *
      * @return bool TRUE yes, FALSE no.
      */
-    public function isMobile()
+    public function isMobile($bRedirect = true)
     {    	
-    	static $bFirstCheck = false;		
-    	
+    	static $bFirstCheck = false;
+
+		if (defined('PHPFOX_NO_MOBILE_CHECK'))
+		{
+			return false;
+		}
+
     	if (!Phpfox::isModule('mobile'))
     	{
     		return false;
@@ -314,7 +327,35 @@ class Phpfox_Request
     		
     		if ($this->_bIsMobile === true && !PHPFOX_IS_AJAX)
     		{
-    			Phpfox::getLib('url')->send('mobile');
+    			if ($this->get('req1') == 'apps' && $this->get('req2') == 'install')
+    			{
+    				Phpfox::getLib('url')->send('mobile.apps.install.' . $this->get('req3'));
+    			}
+    			elseif ($this->get('req1') == 'user' && $this->get('req2') == 'verify' && $this->get('link'))
+    			{
+    				Phpfox::getLib('url')->send('mobile.user.verify', array('link' => $this->get('link')));
+    			}
+    			
+    			$sSendWhere = 'mobile';
+    			
+    			// http://www.phpfox.com/tracker/view/15041/
+    			if(Phpfox::getParam('core.redirect_guest_on_same_page'))
+    			{
+					$sSendWhere = Phpfox::getLib('url')->getFullUrl(true);
+					$sSendWhere = 'mobile.' . str_replace('/', '.', $sSendWhere);
+				}
+				
+    			(($sPlugin = Phpfox_Plugin::get('request_is_mobile')) ? eval($sPlugin) : false);
+    			
+    			if ($bRedirect && !empty($sSendWhere))
+    			{
+					Phpfox::getLib('url')->send($sSendWhere);
+				}
+				else
+				{
+					return true;
+				}
+    			
     		}
     	}
     	
@@ -456,7 +497,7 @@ class Phpfox_Request
  	 */
  	public function getIdHash()
  	{
- 		return md5((isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null) . $this->getSubstrIp($this->getIp())); 
+ 		return md5((isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null) . Phpfox::getParam('core.id_hash_salt') . (Phpfox::getParam('core.include_ip_sub_id_hash') ? $this->getSubstrIp($this->getIp()) : ''));
  	}
 	
 	/**
@@ -479,7 +520,7 @@ class Phpfox_Request
 	 * @param string $aCookies ARRAY of any cookies to pass.
 	 * @return mixed FALSE if failed to connect, STRING if anything was returned from the server.
 	 */
-	public function send($sUrl, $aPost = array(), $sMethod = 'POST', $sUserAgent = null, $aCookies = null)
+	public function send($sUrl, $aPost = array(), $sMethod = 'POST', $sUserAgent = null, $aCookies = null, $bFollow = false)
 	{
 		$aHost = parse_url($sUrl);
 		$sPost = '';
@@ -495,6 +536,7 @@ class Phpfox_Request
 			
 			curl_setopt($hCurl, CURLOPT_URL, (($sMethod == 'GET' && !empty($sPost)) ? $sUrl . '?' . ltrim($sPost, '&') : $sUrl));
 			curl_setopt($hCurl, CURLOPT_HEADER, false);
+			curl_setopt($hCurl, CURLOPT_FOLLOWLOCATION, $bFollow);
 			curl_setopt($hCurl, CURLOPT_RETURNTRANSFER, true);
 			
 			// Testing this out at the moment...

@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package 		Phpfox_Component
- * @version 		$Id: add.class.php 4681 2012-09-19 11:47:35Z Raymond_Benc $
+ * @version 		$Id: add.class.php 5481 2013-03-11 08:02:19Z Raymond_Benc $
  */
 class Event_Component_Controller_Add extends Phpfox_Component
 {
@@ -153,7 +153,7 @@ class Event_Component_Controller_Add extends Phpfox_Component
 			// Dont show the photo upload for iOS
 			if ($this->request()->isIOS())
 			{
-				unset($aMenus['customize']);
+				//unset($aMenus['customize']);
 			}
 			if (!$bIsSetup)
 			{

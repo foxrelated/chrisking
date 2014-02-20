@@ -31,6 +31,7 @@
 		<phrase module_id="mobile" version_id="2.0.4" var_name="full_site" added="1267629927">Full Site</phrase>
 		<phrase module_id="mobile" version_id="2.0.4" var_name="logout" added="1267629934">Logout</phrase>
 		<phrase module_id="mobile" version_id="3.0.0" var_name="notifications" added="1322737627">Notifications</phrase>
+		<phrase module_id="mobile" version_id="3.7.4" var_name="mobile_icon" added="1386000583">Mobile Icon</phrase>
 	</phrases>
 	<pages>
 		<page module_id="mobile" is_phrase="1" has_bookmark="0" parse_php="1" add_view="0" full_size="1" title="mobile.mobile" title_url="mobile-info" added="1267628853">

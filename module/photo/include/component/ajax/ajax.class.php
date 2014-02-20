@@ -11,7 +11,7 @@ defined('PHPFOX') or exit('NO DICE!');
  * @copyright		[PHPFOX_COPYRIGHT]
  * @author  		Raymond Benc
  * @package  		Module_Photo
- * @version 		$Id: ajax.class.php 5053 2012-11-29 12:32:11Z Raymond_Benc $
+ * @version 		$Id: ajax.class.php 6901 2013-11-19 09:23:40Z Miguel_Espinoza $
  */
 class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 {
@@ -95,9 +95,11 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
      */
     public function browse()
     {
+		if (!defined('PHPFOX_IS_AJAX_CONTROLLER')) define('PHPFOX_IS_AJAX_CONTROLLER', true);
 		Phpfox::getLib('module')->getComponent('photo.index', $this->getAll(), 'controller');
-	
-		$this->call('$(\'#site_content\').html(\'' . $this->getContent() . '\'); $.scrollTo(\'#site_content\', 340); $Behavior.hoverAction(); $Behavior.imageHoverHolder();');
+		$this->call('$(".pager_container, .moderation_holder").remove();');
+		$this->call('$(\'#js_ajax_browse_content\').append(\'' . $this->getContent() . '\'); ');
+		$this->call('$Core.loadInit();');
     }
 
     /**
@@ -254,6 +256,18 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 	
 		}
     }
+    
+    public function deleteTheaterPhoto()
+    {
+    	Phpfox::isUser(true);
+    	
+    	if (Phpfox::getService('photo.process')->delete($this->get('photo_id')))
+    	{
+	    	$this->call("js_box_remove($('.js_box_image_holder_full').find('.js_box_content:first'));");
+	    	$this->call("$('.js_photo_item_" . $this->get('photo_id') . "').parents('.js_parent_feed_entry:first').remove();");
+	    	$this->call("$('#js_photo_id_" . $this->get('photo_id') . "').remove();");
+    	}
+    }
 
     public function deletePhoto()
     {
@@ -284,49 +298,12 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
     	Phpfox::getBlock('photo.warning');
     }
 
+	/** @deprecated 3.7.3
+	 * called from rate.js in photo module but this file is not included in any controller. This function will be removed soon.
+	 */ 
     public function getPhotosForRating()
     {
 		exit();
-    	
-    	Phpfox::isUser(true);
-		Phpfox::getUserParam('photo.can_rate_on_photos', true);
-	
-		(($sPlugin = Phpfox_Plugin::get('photo.component_ajax_getphotosforrating_start')) ? eval($sPlugin) : false);
-	
-		$aPhotos = $this->get('photo_id');
-	
-		if (is_array($aPhotos) && Phpfox::getService('photo.rate.process')->add($this->get('photo_id')))
-		{
-	
-		}
-	
-		$sCategory = null;
-		$aRequests = Phpfox::getLib('request')->getRequests();
-		foreach ($aRequests as $sKey => $sValue)
-		{
-		    if (!preg_match("/req[0-9]/", $sKey))
-		    {
-			continue;
-		    }
-	
-		    if ($sKey != 'req1' && $sKey != 'req2')
-		    {
-			$sCategory = $sValue;
-		    }
-		}
-	
-		$sPhotos = Phpfox::getService('photo.rate')->getJavaScript($sCategory);
-	
-		if ($sPhotos === false)
-		{
-		    $this->html('#site_content', '<div class="extra_info">' . Phpfox::getPhrase('photo.you_have_rated_all_the_available_images', array('phpfox_squote' => true)) . '</a>');
-		}
-		else
-		{
-		    $this->call('$Core.PhotoRate.populate({' . $sPhotos . '}});');
-		}
-	
-		(($sPlugin = Phpfox_Plugin::get('photo.component_ajax_getphotosforrating_end')) ? eval($sPlugin) : false);
     }
 
     public function battle()
@@ -362,6 +339,11 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 			->html('#js_photo_hidden', '<input type="hidden" name="val[edit_id]" value="' . $aCategory['category_id'] . '" />')
 			->html('#js_photo_extra_button', ' <input type="button" name="" value="' . Phpfox::getPhrase('photo.cancel') . '" class="button" onclick="$(\'#js_photo_category_' . $aCategory['parent_id'] . '\').attr(\'selected\', false); $(\'#js_category_holder\').show(); $(\'#js_photo_table_header\').html(\'' . Phpfox::getPhrase('photo.add_a_photo_category') . '\'); $(\'#js_photo_extra_button\').html(\'\'); $(\'#js_photo_hidden\').html(\'\'); $(\'#name\').val(\'\');" /> <input type="submit" value="' . Phpfox::getPhrase('photo.delete') . '" onclick="return confirm(\'' . Phpfox::getPhrase('photo.are_you_sure') . '\');" class="button" name="val[delete]" />')
 			->val('#name', $aCategory['name']);
+		
+		if (strpos($aCategory['name'], '&#') !== false)
+		{
+			$this->call("$('#name').val($('<div />').html($('#name').val()).text());");
+		}
     }
 
     public function approve()
@@ -488,25 +470,25 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 			$aImages = array();
 			foreach ($aPostPhotos as $aPostPhoto)
 			{
-				$aPart = json_decode(base64_decode(urldecode($aPostPhoto)), true);
-				
+				$aPart = json_decode(urldecode($aPostPhoto), true);
 				$aImages[] = $aPart[0];
 			}
 		}
 		else 
 		{
-    		$aImages = json_decode(base64_decode(urldecode($this->get('photos'))), true);
+			
+    		$aImages = json_decode(urldecode($aPostPhotos), true);
 		}		
-		
+
 		$oImage = Phpfox::getLib('image');
 		$iFileSizes = 0;
 		$iGroupId = 0;
 		$bProcess = false;
 		$bIsPicup = false;
 		
-		
 		foreach ($aImages as $iKey => $aImage)
 		{
+			$aImage['destination'] = urldecode($aImage['destination']);
 			if (isset($aImage['picup']))
 			{
 				$bIsPicup = true;
@@ -530,6 +512,36 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 		
 				    //$this->call('p(\'Processing photo: ' . $aPhoto['photo_id'] . '\');');
 		
+					// If use of CDN and keep files in server is set to false
+					// see file "include/library/phpfox/phpfox/phpfox.class.php, around line 1360
+					// Bug: http://www.phpfox.com/tracker/view/14641/
+					if (!file_exists(Phpfox::getParam('photo.dir_photo') . sprintf($sFileName, '')) 
+						&& Phpfox::getParam('core.allow_cdn')
+						&& !Phpfox::getParam('core.keep_files_in_server'))
+					{
+						if (Phpfox::getParam('core.allow_cdn') && $aPhoto['server_id'] > 0)
+						{
+							$sActualFile = Phpfox::getLib('image.helper')->display(array(
+									'server_id' => $aPhoto['server_id'],
+									'path' => 'photo.url_photo',
+									'file' => $aPhoto['destination'],
+									'suffix' => '',
+									'return_url' => true
+								)
+							);
+
+							$aExts = preg_split("/[\/\\.]/", $sActualFile);
+							$iCnt = count($aExts)-1;
+							$sExt = strtolower($aExts[$iCnt]);
+
+							$aParts = explode('/', $aPhoto['destination']);
+							$sFile = Phpfox::getParam('photo.dir_photo') . $aParts[0] . '/' . $aParts[1] . '/' . md5($aPhoto['destination']) . '.' . $sExt;
+
+							// Create a temp copy of the original file in local server, deleted later in line 606
+							copy($sActualFile, $sFile);
+						}
+					}
+		
 				    foreach(Phpfox::getParam('photo.photo_pic_sizes') as $iSize)
 				    {
 						// Create the thumbnail
@@ -549,9 +561,23 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 		
 						// Add the new file size to the total file size variable
 						$iFileSizes += filesize(Phpfox::getParam('photo.dir_photo') . sprintf($sFileName, '_' . $iSize));
+						
+						if (defined('PHPFOX_IS_HOSTED_SCRIPT'))
+						{
+							unlink(Phpfox::getParam('photo.dir_photo') . sprintf($sFileName, '_' . $iSize));
+						}
 				    }
-		
-				    if (Phpfox::getParam('photo.enabled_watermark_on_photos'))
+
+				    //if (((Phpfox::getParam('photo.delete_original_after_resize') || !Phpfox::getParam('core.keep_files_in_server')) && $this->get('is_page') != 1) && !defined('PHPFOX_IS_HOSTED_SCRIPT'))
+				    if ( (
+							(Phpfox::getParam('core.allow_cdn') != true && Phpfox::getParam('photo.delete_original_after_resize')) || 
+							(Phpfox::getParam('core.allow_cdn') && !Phpfox::getParam('core.keep_files_in_server'))
+						) && $this->get('is_page') != 1 && !defined('PHPFOX_IS_HOSTED_SCRIPT')
+						)
+				    {
+						Phpfox::getLib('file')->unlink(Phpfox::getParam('photo.dir_photo') . sprintf($sFileName, ''));
+					}
+				    else if (Phpfox::getParam('photo.enabled_watermark_on_photos'))
 				    {
 						$oImage->addMark(Phpfox::getParam('photo.dir_photo') . sprintf($sFileName, ''));
 				    }
@@ -586,7 +612,10 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 			$iFeedId = 0;
 			if (!Phpfox::getUserParam('photo.photo_must_be_approved') && !$this->get('is_cover_photo'))
 			{
-				(Phpfox::isModule('feed') ? $iFeedId = Phpfox::getService('feed.process')->callback($aCallback)->add('photo', $aPhoto['photo_id'], $aPhoto['privacy'], $aPhoto['privacy_comment'], (int) $this->get('parent_user_id', 0)) : null);			
+				if (Phpfox::isModule('feed'))
+				{
+					$iFeedId = Phpfox::getService('feed.process')->callback($aCallback)->add('photo', $aPhoto['photo_id'], $aPhoto['privacy'], $aPhoto['privacy_comment'], (int) $this->get('parent_user_id', 0));
+				}
 				if (count($aImages) && !$this->get('callback_module'))
 				{
 					$aExtraPhotos = array();
@@ -635,37 +664,58 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 				}
 		    }
 		    else 
-		    {				
-				// Only display the photo block if the user plans to upload more pictures
-			    if ($this->get('action') == 'view_photo')
+		    {
+			    if (Phpfox::getParam('photo.html5_upload_photo'))
 			    {
-					Phpfox::addMessage((count($aImages) == 1 ? Phpfox::getPhrase('photo.photo_successfully_uploaded') : Phpfox::getPhrase('photo.photos_successfully_uploaded')));
-		
-					$this->call('window.parent.location.href = \'' . Phpfox::getLib('url')->permalink('photo', $aPhoto['photo_id'], $aPhoto['title']) . 'userid_' . Phpfox::getUserId() . '/\';');
-			    }
-			    elseif ($this->get('action') == 'view_album' && isset($aImages[0]['album']))
-			    {
-					Phpfox::addMessage((count($aImages) == 1 ? Phpfox::getPhrase('photo.photo_successfully_uploaded') : Phpfox::getPhrase('photo.photos_successfully_uploaded')));
-			
-					$this->call('window.location.href = \'' . Phpfox::getLib('url')->permalink('photo.album', $aImages[0]['album']['album_id'], $aImages[0]['album']['name']) . '\';');
+					// http://www.phpfox.com/tracker/view/14571/
+					if (Phpfox::getParam('photo.photo_upload_process'))
+					{
+						foreach ($aImages as $aImage)
+						{
+							// use the JS var set at progress.js
+							$this->call('sImages = sImages + ' . $aImage['photo_id'] . ' + ",";');
+						}
+						// Make a call similar to the non HTML5 uploads.
+						$this->call('var sCurrentProgressLocation = \'' . Phpfox::getLib('url')->makeUrl('photo', array('view' => 'my', 'mode' => 'edit')) . '\';');
+					}
+					else
+					{
+						$this->call('var sCurrentProgressLocation = \'' . Phpfox::getLib('url')->permalink('photo', $aPhoto['photo_id'], $aPhoto['title']) . 'userid_' . Phpfox::getUserId() . '/\';');
+					}
 			    }
 			    else
 			    {
-					Phpfox::addMessage((count($aImages) == 1 ? Phpfox::getPhrase('photo.photo_successfully_uploaded') : Phpfox::getPhrase('photo.photos_successfully_uploaded')));
-					
-					if (Phpfox::getParam('photo.photo_upload_process'))
-					{
-						$sImages = '';
-						foreach ($aImages as $aImage)
+					// Only display the photo block if the user plans to upload more pictures
+				    if ($this->get('action') == 'view_photo')
+				    {
+						Phpfox::addMessage((count($aImages) == 1 ? Phpfox::getPhrase('photo.photo_successfully_uploaded') : Phpfox::getPhrase('photo.photos_successfully_uploaded')));
+
+						$this->call('window.parent.location.href = \'' . Phpfox::getLib('url')->permalink('photo', $aPhoto['photo_id'], $aPhoto['title']) . 'userid_' . Phpfox::getUserId() . '/\';');
+				    }
+				    elseif ($this->get('action') == 'view_album' && isset($aImages[0]['album']))
+				    {
+						Phpfox::addMessage((count($aImages) == 1 ? Phpfox::getPhrase('photo.photo_successfully_uploaded') : Phpfox::getPhrase('photo.photos_successfully_uploaded')));
+
+						$this->call('window.location.href = \'' . Phpfox::getLib('url')->permalink('photo.album', $aImages[0]['album']['album_id'], $aImages[0]['album']['name']) . '\';');
+				    }
+				    else
+				    {
+						Phpfox::addMessage((count($aImages) == 1 ? Phpfox::getPhrase('photo.photo_successfully_uploaded') : Phpfox::getPhrase('photo.photos_successfully_uploaded')));
+
+						if (Phpfox::getParam('photo.photo_upload_process'))
 						{
-							$sImages .= $aImage['photo_id'] . ',';
+							$sImages = '';
+							foreach ($aImages as $aImage)
+							{
+								$sImages .= $aImage['photo_id'] . ',';
+							}
+							$this->call('window.location.href = \'' . Phpfox::getLib('url')->makeUrl('photo', array('view' => 'my', 'mode' => 'edit', 'photos' => urlencode(base64_encode($sImages)))) . '\';');
 						}
-						$this->call('window.location.href = \'' . Phpfox::getLib('url')->makeUrl('photo', array('view' => 'my', 'mode' => 'edit', 'photos' => urlencode(base64_encode($sImages)))) . '\';');
-					}
-					else
-					{		
-						$this->call('window.location.href = \'' . Phpfox::getLib('url')->permalink('photo', $aPhoto['photo_id'], $aPhoto['title']) . 'userid_' . Phpfox::getUserId() . '/\';');
-					}
+						else
+						{
+							$this->call('window.location.href = \'' . Phpfox::getLib('url')->permalink('photo', $aPhoto['photo_id'], $aPhoto['title']) . 'userid_' . Phpfox::getUserId() . '/\';');
+						}
+				    }
 			    }
 		
 			    $this->call('completeProgress();');
@@ -693,7 +743,14 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 			
 			$sExtra .= '&is_cover_photo=' . $this->get('is_cover_photo');
 			
-		    $this->call('$.ajaxCall(\'photo.process\', \'&action=' . $this->get('action') . '&js_disable_ajax_restart=true&photos=' . urlencode(base64_encode(json_encode($aImages))) . $sExtra . '\');');
+		    $this->call('$.ajaxCall(\'photo.process\', \'&action=' . $this->get('action') . '&js_disable_ajax_restart=true&photos=' . json_encode($aImages) . $sExtra . '\');');
+		}
+		
+		$aVals = $this->get('core');
+		
+		if (isset($aVals['profile_user_id']) && !empty($aVals['profile_user_id']) && $aVals['profile_user_id'] != Phpfox::getUserId() && Phpfox::isModule('notification'))
+		{
+			Phpfox::getService('notification.process')->add('feed_comment_profile', $aPhoto['photo_id'], $aVals['profile_user_id']);
 		}
     }
 
@@ -746,6 +803,11 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 				continue;
 			}
 			
+			if (strpos($sHeaderFile, 'custom.css') !== false)
+			{
+				continue;
+			}
+			
 			$sLoadFiles .= '\'' . str_replace("'", "\'", $sHeaderFile) . '\',';
 		}		
 		$sLoadFiles = rtrim($sLoadFiles, ',');    	
@@ -783,6 +845,7 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 					$this->call('$(\'#js_photo_id_' . $iId . '\').remove();');					
 				}								
 				$sMessage = Phpfox::getPhrase('photo.photo_s_successfully_approved');
+				$this->alert($sMessage, 'Moderation', 300, 150, true);
 				break;			
 			case 'delete':
 				Phpfox::getUserParam('photo.can_delete_other_photos', true);
@@ -795,9 +858,8 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 				break;
 		}
 		
-		$this->updateCount();
+		$this->updateCount();	
 		
-		$this->alert($sMessage, 'Moderation', 300, 150, true);
 		$this->hide('.moderation_process');			
 	}
 
@@ -807,7 +869,7 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 		
 		foreach ($aVals as $iPhotoId => $aVal)
 		{
-			$aPhoto = Phpfox::getLib('database')->select('photo_id, title, user_id')
+			$aPhoto = Phpfox::getLib('database')->select('photo_id, album_id, title, user_id')
 				->from(Phpfox::getT('photo'))
 				->where('photo_id = ' . (int) $iPhotoId)
 				->execute('getSlaveRow');
@@ -817,6 +879,11 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 				if ($aPhoto['user_id'] != Phpfox::getUserId())
 				{
 					continue;
+				}
+				
+				if(!empty($aPhoto['album_id']))
+				{
+					$aVal['album_id'] = $aPhoto['album_id'];
 				}
 				
 				if (isset($aVal['delete_photo']))
@@ -899,8 +966,12 @@ class Photo_Component_Ajax_Ajax extends Phpfox_Ajax
 		$sIds = $iId . ',';
 		
 		$sFileName = md5($iId . PHPFOX_TIME . uniqid()) . '%s.' . $aPhoto['extension'];
-		
-		$oFile->copy(Phpfox::getParam('photo.dir_photo') . sprintf($aPhoto['original_destination'], ''), Phpfox::getParam('core.dir_attachment') . sprintf($sFileName, ''));
+		$sFileToCopy = Phpfox::getParam('photo.dir_photo') . sprintf($aPhoto['original_destination'], '');
+		if (!file_exists($sFileToCopy))
+		{
+			$sFileToCopy = Phpfox::getParam('photo.dir_photo') . sprintf($aPhoto['original_destination'], '_500');
+		}
+		$oFile->copy($sFileToCopy, Phpfox::getParam('core.dir_attachment') . sprintf($sFileName, ''));
 
 		$sFileSize = $aPhoto['file_size'];	
 		$iFileSizes += $sFileSize;		

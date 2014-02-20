@@ -89,6 +89,7 @@ To check out this invitation, follow the link below:
 		<phrase module_id="invite" version_id="3.0.0beta5" var_name="moderation" added="1319184099">Moderation</phrase>
 		<phrase module_id="invite" version_id="3.3.0beta2" var_name="unable_to_find_your_invitation" added="1340288672">Unable to find your invitation.</phrase>
 		<phrase module_id="invite" version_id="3.3.0beta2" var_name="this_email_is_already_registered_within_our_community" added="1340288682">This email is already registered within our community.</phrase>
+		<phrase module_id="invite" version_id="3.7.3" var_name="already_invited" added="1384264138">Already invited</phrase>
 	</phrases>
 	<user_group_settings>
 		<setting is_admin_setting="0" module_id="invite" type="integer" admin="1" user="1" guest="0" staff="1" module="invite" ordering="0">points_invite</setting>
