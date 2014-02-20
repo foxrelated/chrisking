@@ -1,5 +1,4 @@
 <?php
-
 /**
  * [PHPFOX_HEADER]
  */
@@ -12,8 +11,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @author  		Konsort.org
  * @package 		DVS
  */
-class Dvs_Component_Controller_Player_Add extends Phpfox_Component {
-
+class Dvs_Component_Controller_Player_Add extends Phpfox_Component
+{
 	public function process()
 	{
 		Phpfox::isUser(true);
@@ -297,7 +296,8 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component {
 				'jquery.multiselect.css' => 'module_dvs',
 				'validate.js' => 'module_dvs',
 				'jquery.animate-shadow-min.js' => 'module_dvs',
-				'add.css' => 'module_dvs'
+				'add.css' => 'module_dvs',
+				'add_player.css' => 'module_dvs'
 			))
 			->assign(array(
 				'bIsDvs' => true,
@@ -305,7 +305,5 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component {
 		));
 	}
 
-
 }
-
 ?>

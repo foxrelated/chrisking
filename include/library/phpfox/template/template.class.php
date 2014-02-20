@@ -2171,6 +2171,8 @@ class Phpfox_Template
 						$sMetaValue = $oPhpfoxParseOutput->shorten($oPhpfoxParseOutput->clean($sMetaValue), Phpfox::getParam('core.meta_description_limit'));
 					}
 					
+					(($sPlugin = Phpfox_Plugin::get('template_getheader_meta_custom')) ? eval($sPlugin) : false);
+					
 					switch ($sMeta)
 					{
 						case 'canonical':

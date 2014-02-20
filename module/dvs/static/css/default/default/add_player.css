@@ -1,0 +1,13 @@
+label {
+	display: inline-block;
+	width: 150px;
+}
+
+input {
+	display: inline-block;
+	width: 200px;
+}
+
+h4 {
+	display: block;
+}
