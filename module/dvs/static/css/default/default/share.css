@@ -1,0 +1,65 @@
+#dvs_share_wrapper{
+	overflow:hidden;
+	width:100%;
+}
+
+#dvs_share_container{
+	overflow:hidden;
+	width:980px;;
+	text-align:center;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.dvs_share_thumbnail_image_container{
+	position: relative;
+	width:285px;
+	padding: 10px;
+	margin:10px;
+	float:left;
+	outline:1px solid #EEEEEE;
+}
+
+.dvs_share_link:hover{
+	text-decoration:none;
+}
+
+.dvs_share_text{
+	color:#000000;
+	font-size:12px;
+	text-align:center;
+	font-weight:bold;
+}
+
+.dvs_share_image{
+	text-align:center;
+}
+
+.dvs_share_control{
+	overflow:hidden;
+}
+.dvs_share_text_box_container{
+	float:left;
+}
+
+.dvs_share_text_box{
+	width:155px;
+	padding:5px;
+	font-size:8px;
+	margin:2px;
+}
+
+.dvs_share_button_container{
+	float:left;
+	padding-left:1px;
+	width:105px;
+	overflow:hidden;
+	text-align:center;
+	font-size:10px;
+}
+
+.dvs_share_button{
+	width:100px;
+	font-size:10px;
+	margin:2px;
+}

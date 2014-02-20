@@ -1,0 +1,94 @@
+<product>
+	<data>
+		<product_id>kobrightcove</product_id>
+		<is_core>0</is_core>
+		<title>Konsort.org Brightcove Integration</title>
+		<description>Brightcove Integration and Research module</description>
+		<version>4.0.2</version>
+		<latest_version></latest_version>
+		<last_check>1384877297</last_check>
+		<is_active>1</is_active>
+		<url>http://www.konsort.org</url>
+		<url_version_check></url_version_check>
+	</data>
+	<installs>
+		<install>
+			<version>1.0</version>
+			<install_code><![CDATA[// From 1.0
+Phpfox::getLib('database')->query("CREATE TABLE IF NOT EXISTS `" . Phpfox::getT('ko_brightcove') . "` (
+`ko_id` INT( 12 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`id` bigint(12) NOT NULL ,
+`name` text NOT NULL ,
+`adKeys` text ,
+`shortDescription` text ,
+`longDescription` text ,
+`creationDate` bigint(13) NOT NULL ,
+`publishedDate` bigint(13) NOT NULL ,
+`lastModifiedDate` bigint(13) NOT NULL ,
+`linkURL` text ,
+`linkText` text ,
+`tags` text ,
+`videoStillURL` text NOT NULL ,
+`thumbnailURL` text NOT NULL ,
+`referenceId` text NOT NULL ,
+`length` bigint(8) NOT NULL default '0' ,
+`economics` text ,
+`playsTotal` int(16) NOT NULL default '0' ,
+`playsTrailingWeek` int(16) NOT NULL default '0' ,
+`year` int(4) default NULL ,
+`make` text ,
+`model` text ,
+`bodyStyle` text ,
+`timestamp` INT( 12 ) NOT NULL
+) ENGINE=MyISAM ");
+
+// From 3.0
+if (!(Phpfox::getLib('database')->isField(Phpfox::getT('ko_brightcove'), "video_title_url")))
+{
+	Phpfox::getLib('database')->addField(array(
+		'table' => Phpfox::getT('ko_brightcove'),
+		'field' => 'video_title_url',
+		'type' => 'VARCHAR',
+		'attribute' => '(64)',
+		'null' => 'Not Null'
+	));
+}]]></install_code>
+			<uninstall_code></uninstall_code>
+		</install>
+		<install>
+			<version>4.0</version>
+			<install_code><![CDATA[// From 4.0
+if (!(Phpfox::getLib('database')->isField(Phpfox::getT('ko_brightcove'), "server_id")))
+{
+	Phpfox::getLib('database')->addField(array(
+		'table' => Phpfox::getT('ko_brightcove'),
+		'field' => 'server_id',
+		'type' => 'TINYINT',
+		'attribute' => '(1)',
+		'null' => 0
+	));
+
+	Phpfox::getLib('database')->addField(array(
+		'table' => Phpfox::getT('ko_brightcove'),
+		'field' => 'thumbnail_image',
+		'type' => 'varchar',
+		'attribute' => '(128)',
+		'null' => 0
+	));
+
+	Phpfox::getLib('database')->addField(array(
+		'table' => Phpfox::getT('ko_brightcove'),
+		'field' => 'video_still_image',
+		'type' => 'varchar',
+		'attribute' => '(128)',
+		'null' => 0
+	));
+}]]></install_code>
+			<uninstall_code></uninstall_code>
+		</install>
+	</installs>
+	<modules>
+		<module_id>kobrightcove</module_id>
+		<module_id>research</module_id>
+	</modules>
+</product>

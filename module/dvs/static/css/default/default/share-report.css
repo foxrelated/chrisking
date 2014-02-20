@@ -1,0 +1,17 @@
+.share_report_table td{
+	border: 2px solid #CCCCCC;
+	padding: 4px;
+	text-align:center;
+}
+
+#select_team_member_table td{
+	border: 1px solid #CCCCCC;;
+	padding: 4px 10px;
+}
+
+#select_team_member_table th{
+	font-weight:bold;
+	text-align:left;
+	border: 1px solid #CCCCCC;
+	padding: 4px;
+}

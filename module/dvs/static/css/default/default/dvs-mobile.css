@@ -1,0 +1,313 @@
+#dvs_wrapper {
+	position:absolute;
+	text-align:center;
+	width:650px;
+	max-width:650px;
+	top:0;
+	padding-left:20px;
+}
+
+.dvs_background {
+	position:absolute;
+	text-align:center;
+	width:100%;
+	height:100%;
+	background-attachment:fixed;
+	background-position:center top;
+	background-repeat:repeat;
+	top:0;
+	left:0px;
+}
+
+#dvs_container {
+	position:relative;
+	width: 600px;
+	z-index:1000;
+}
+
+#dvs_branding_container {
+
+	text-align:center;
+	width:600px;
+}
+
+/*#dvs_menu_container {
+	top:0px;
+	position:absolute;
+	width: 1107px;
+	padding-left:10px;
+	padding-top:5px;
+	height:27px;
+	text-align:left;
+
+	font-size:1.5em;
+
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-moz-border-radius-bottomright: 5px;
+	behavior: url(border-radius.htc);
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+#dvs_menu_container a{
+	padding-top:5px;
+}*/
+
+#dvs_player_wrapper_mobile {
+	/*position: relative;
+	overflow:hidden;
+	margin-left: auto;
+	margin-right: auto;
+	width:480px;
+	height:522px;
+	text-align:left;
+	float:left;*/
+	width:600px;
+	height:320px;
+}
+
+#dvs_welcome_container {
+	position: relative;
+	width:600px;
+	overflow:hidden;
+	font-size: 1.25em;
+	text-align: left;
+	float:left;
+	margin-top:20px;
+}
+
+#dvs_dealer_info {
+	position: relative;
+	width:600px;;
+	text-align: left;
+	font-size: 1.25em;
+	float:left;
+	margin-top:15px;
+	margin-bottom:20px;
+}
+
+#dvs_video_information {
+	position: relative;
+	float:left;
+	width:600px;;
+	text-align: left;
+	font-size: 1.25em;
+	margin-top:15px;
+}
+
+#dvs_video_information a{
+	text-decoration:none;
+}
+
+#dvs_get_price_container {
+	position:relative;
+	width:580px;
+	height:780px;		
+	background:#FFF;
+	color:#000;
+	border:6px solid #333;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	behavior: url(border-radius.htc);
+	border-radius:10px;
+	margin-top:10px;
+}
+
+#dvs_get_price_container table{
+	border-collapse: separate;
+	border-spacing: 5px;
+	width:600px;
+}
+
+#dvs_contact_form {
+	font-size: 24px;
+	padding:5px;
+}
+
+#dvs_contact_success {
+	font-size: 1.5em;
+	margin-top:50px;
+}
+
+#dvs_middle_container {
+	position:relative;
+	overflow:hidden;
+}
+
+#dvs_vehicle_select_container {
+	position: relative;
+	float:right;
+	width:600px;
+	font-size:42px;
+	font-weight: bold;
+	text-align:center;
+}
+
+.dvs_select {
+	width:600px;
+	-webkit-border-top-left-radius: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	-webkit-border-top-right-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	-moz-border-radius-topright: 10px;
+	-moz-border-radius-bottomright: 10px;
+	behavior: url(border-radius.htc);
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	padding:7px;
+	margin-bottom: 10px;
+	font-weight:bold;
+	font-size:42px;
+}
+
+#dvs_cta_button_container {
+	position: relative;
+	float:right;
+	width:605px;
+	font-weight:bold;
+}
+
+#dvs_share_container {
+	position: relative;
+	float:right;
+	text-align:center;
+	width:600px;
+	height:125px;
+	font-weight: bold;
+	margin-top:10px;
+	margin-bottom:10px;
+	font-size:24px;
+}
+
+/*#dvs_social_button_container {
+	position: relative;
+	float:right;
+	margin-top:20px;
+	width:480px;
+	height:32px;
+	font-weight: bold;
+	font-size:14px;
+}
+
+.dvs_social_button_link {
+	margin-right:7px;
+}*/
+
+/*#dvs_geomap_container {
+	position: relative;
+	width:480px;;
+	height:240px;
+	float:right;
+	margin-top:10px;
+}*/
+
+.dvs_c2a_button {
+	-moz-border-radius:20px;
+	-webkit-border-radius:20px;
+	behavior: url(border-radius.htc);
+	border-radius:20px;
+	display:inline-block;
+	font-family:arial;
+	font-size:52px;
+	font-weight:bold;
+	padding:4px 0px;
+	text-decoration:none;
+	width:98%;
+	text-align:center;
+	margin-bottom:6px;
+}
+
+.dvs_c2a_button:active {
+	position:relative;
+	top:1px;
+}
+
+.dvs_c2a_button:hover {
+	text-decoration:none;
+}
+
+#dvs_footer_container {
+	position:relative;
+	width: 600px;
+	text-align:center;
+	font-size: 1.25em;
+	font-weight:bold;
+	clear:both;
+	margin-top:50px;
+	margin-bottom:10px;
+}
+
+/*.dvs_top_menu_link {
+	margin-right:10px;
+}*/
+
+.dvs_footer_link {
+	margin-right:10px;
+}
+
+.dvs_footer_info {
+	font-size: 1em;
+	font-weight:normal;
+}
+
+
+
+/* Collin Custom CSS */
+
+#dvs_share_email_container {
+	position: relative;
+	width:600px;
+	height:760px;
+	top:10px;
+	left:10px;
+	/*margin-left:-180px;*/
+	background:#fff;
+	color:#000;
+	z-index:4000;
+	border:6px solid #333;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	behavior: url(border-radius.htc);
+	border-radius:10px;
+	font-size:32px;
+}
+
+#dvs_share_email_container table{
+	border-collapse: separate;
+	border-spacing: 5px;
+	width:580px;
+}
+
+.dvs_form_button {
+	font-size:42px;
+}
+
+.dvs_text_field {
+	width:500px;
+	font-size:42px;
+}
+
+.dvs_textarea_field {
+	width:500px;
+	font-size:42px;
+}
+
+/*.dvs_add_td_label{
+	text-align:right;
+}*/
+
+.dvs_add_td {
+	text-align:center;
+}

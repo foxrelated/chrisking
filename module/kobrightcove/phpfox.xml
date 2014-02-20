@@ -1,0 +1,39 @@
+<module>
+	<data>
+		<module_id>kobrightcove</module_id>
+		<product_id>kobrightcove</product_id>
+		<is_core>0</is_core>
+		<is_active>1</is_active>
+		<is_menu>1</is_menu>
+		<menu><![CDATA[a:2:{s:37:"kobrightcove.admin_menu_browse_videos";a:1:{s:3:"url";a:2:{i:0;s:12:"kobrightcove";i:1;s:6:"browse";}}s:38:"kobrightcove.admin_menu_add_new_videos";a:1:{s:3:"url";a:2:{i:0;s:12:"kobrightcove";i:1;s:5:"index";}}}]]></menu>
+		<phrase_var_name>module_kobrightcove</phrase_var_name>
+	</data>
+	<setting_groups>
+		<name module_id="kobrightcove" version_id="2.0.7" var_name="setting_group_brightcove">brightcove</name>
+	</setting_groups>
+	<settings>
+		<setting group="brightcove" module_id="kobrightcove" is_hidden="0" type="array" var_name="allow_prefix" phrase_var_name="setting_allow_prefix" ordering="1" version_id="2.0.7"><![CDATA[s:73:"array(
+  0 => 'Top200',
+  1 => '1onONE',
+  2 => 'POV',
+  3 => 'New2U',
+);";]]></setting>
+	</settings>
+	<components>
+		<component module_id="kobrightcove" component="import" m_connection="" module="kobrightcove" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="kobrightcove" component="index" m_connection="admincp.index" module="kobrightcove" is_controller="1" is_block="0" is_active="1" />
+		<component module_id="kobrightcove" component="update" m_connection="" module="kobrightcove" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="kobrightcove" component="remove" m_connection="" module="kobrightcove" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="kobrightcove" component="browse" m_connection="admincp.browse" module="kobrightcove" is_controller="1" is_block="0" is_active="1" />
+	</components>
+	<phrases>
+		<phrase module_id="kobrightcove" version_id="2.0.6" var_name="admin_menu_browse_videos" added="1288803952">Browse Videos</phrase>
+		<phrase module_id="kobrightcove" version_id="2.0.6" var_name="admin_menu_add_new_videos" added="1288803952">Manage Videos</phrase>
+		<phrase module_id="kobrightcove" version_id="2.0.6" var_name="admin_menu_remove_videos" added="1288803952">Remove Videos</phrase>
+		<phrase module_id="kobrightcove" version_id="2.0.6" var_name="admin_menu_full_update" added="1288803952">Full Update</phrase>
+		<phrase module_id="kobrightcove" version_id="2.0.6" var_name="module_kobrightcove" added="1288803952">Brightcove video integration</phrase>
+		<phrase module_id="kobrightcove" version_id="2.0.6" var_name="admin_menu_browse_brightcove_videos" added="1288968560">Browse Brightcove Videos</phrase>
+		<phrase module_id="kobrightcove" version_id="2.0.7" var_name="setting_group_brightcove" added="1322511881"><![CDATA[<title>Brightcove</title><info>Settings for the KOBrightcove Module</info>]]></phrase>
+		<phrase module_id="kobrightcove" version_id="2.0.7" var_name="setting_allow_prefix" added="1322512315"><![CDATA[<title>Allowed Reference IDs</title><info>The import script will only import videos with RefIDs starting with these values.</info>]]></phrase>
+	</phrases>
+</module>

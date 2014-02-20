@@ -1,0 +1,104 @@
+.dvs_add_td{
+	padding-top: .5em;
+	padding-bottom: .5em;
+	padding-right: 1em;
+}
+
+.dvs_add_table{
+	border-collapse: collapse;
+}
+
+
+.phrase_override_container{
+	margin-bottom:10px;
+}
+
+.phrase_override_label{
+	float:left;
+	width:270px;
+	padding-top: 4px;
+	overflow: hidden;
+    white-space: nowrap;
+}
+
+.phrase_override_row {
+    border: 1px solid #D5D5D5;
+    margin: 1px;
+    padding: 10px 5px;
+}
+
+.phrase_override_container{
+    background: none repeat scroll 0 0 #FAFAFA;	
+}
+
+.default_phrase_override_container{
+    background: none repeat scroll 0 0 #F0F0F0;	
+}
+.phrase_override_input{
+	color:#000000;
+	width: 680px;
+}
+
+.phrase_override_default_input{
+	color: #666666;
+	width: 665px;
+}
+
+.phrase_override_default_label {
+    color: #666666;
+    padding-left: 15px;
+}
+
+#phrase_override_toggle_link{
+	font-size:1.5em;
+}
+
+#dvs_settings_save_button_container{
+	margin-top:10px;
+}
+
+.dvs_sales_team_table{
+	width:400px;
+}
+
+.dvs_sales_team_table tr{
+	border:1px solid #cccccc;
+	padding:5px;
+}
+
+.dvs_sales_team_table th{
+	padding:5px;
+	font-weight:bold;
+	text-align: left;
+
+}
+
+.dvs_sales_team_table td{
+	text-align:left;
+	padding:5px;
+
+}
+
+#sales_team_members{
+	padding:5px 0 20px 10px;
+}
+
+.custom_overlay_extras_label_container{
+	margin-left:40px;
+}
+
+.m_top_left_5{
+	margin:5px 0 0 5px;;
+}
+
+.underline_tr{   
+	border-bottom:1px solid #CCCCCC;
+}
+
+.override_input_label_td{
+	text-align:right;
+}
+
+.m_left_5{
+	margin-left:5px;
+}

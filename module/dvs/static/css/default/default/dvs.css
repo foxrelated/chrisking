@@ -1,0 +1,397 @@
+#dvs_wrapper {
+	position:absolute;
+	text-align:center;
+	width:100%;
+	height:100%;
+	top:0;
+}
+
+#dvs_background {
+	position:absolute;
+	text-align:center;
+	width:100%;
+	height:100%;
+	min-height:1200px;
+	background-repeat:repeat;
+	background-attachment:fixed;
+	background-position:center top;
+	top:0;
+	min-width:1117px;
+}
+
+#dvs_container {
+	position:relative;
+	width: 1117px;
+	height: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#dvs_branding_container {
+	margin-left: auto;
+	margin-right: auto;
+	text-align:center;
+}
+
+#dvs_menu_container {
+	top:0px;
+	position:relative;
+	width: 1107px;
+	padding-left:10px;
+	padding-top:5px;
+	height:27px;
+	text-align:left;
+
+	/* Merged */
+	font-size:1.5em;
+
+	-webkit-border-top-left-radius: 0px;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-top-right-radius: 0px;
+	-webkit-border-bottom-right-radius: 5px;
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-bottomleft: 5px;
+	-moz-border-radius-topright: 0px;
+	-moz-border-radius-bottomright: 5px;
+	behavior: url(border-radius.htc);
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 5px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 5px;
+}
+
+#dvs_menu_container a{
+	padding-top:5px;
+}
+
+#dvs_player_wrapper {
+	position: relative;
+	width:880px;
+	height:522px;
+	text-align:left;
+	padding-top:10px;
+	float:left;
+	
+}
+
+#dvs_welcome_container {
+	position: relative;
+	width:730px;
+	font-size: 1.25em;
+	text-align: left;
+	margin-top:10px;
+}
+
+#dvs_dealer_info {
+	position: relative;
+	width:750px;;
+	text-align: left;
+	font-size: 1.25em;
+	margin-top:10px;
+}
+
+#dvs_lower_text_container{
+	clear:left;
+	float:left;
+	width:750px;
+	margin-top:20px;
+	margin-left:10px;
+}
+
+#dvs_video_information {
+	position: relative;
+	width:750px;;
+	text-align: left;
+	font-size: 1.25em;
+}
+
+#dvs_geomap_container {
+	margin-top:20px;
+	position: relative;
+	width:350px;;
+	height:240px;
+	float:left;
+}
+
+#dvs_dealer_address {
+	width:350px;
+	text-align: left;
+	font-size: 1.25em;
+	margin-top:10px;
+	float:right;
+	position: relative;
+}
+
+
+#dvs_video_information a{
+	text-decoration:none;
+}
+
+#dvs_contact_form {
+	font-size: 1.25em;
+	padding:15px;
+}
+
+#dvs_contact_success {
+	font-size: 1.25em;
+	margin-top:150px;
+	text-align: center;
+}
+
+#dvs_lower_container {
+	position:relative;
+}
+
+#dvs_vehicle_select_container {
+	position: relative;
+	width:190px;
+	height:156px;
+	font-size:1.25em;
+	font-weight: bold;
+	margin-left:40px;
+	margin-top:10px;
+	float:left;
+}
+
+.dvs_select {
+	width:190px;
+	-webkit-border-top-left-radius: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	-webkit-border-top-right-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	-moz-border-radius-topright: 10px;
+	-moz-border-radius-bottomright: 10px;
+	behavior: url(border-radius.htc);
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	padding:7px;
+	margin-bottom: 7px;
+	font-weight:bold;
+}
+
+#dvs_cta_button_container {
+	float: left;
+    font-weight: bold;
+    margin-left: 40px;
+    margin-top: 20px;
+    position: relative;
+    width: 190px;
+
+}
+
+#dvs_share_container {
+	position: relative;
+	width:190px;
+	height:128px;
+	font-weight: bold;
+	float:left;
+	margin-left: 40px;
+    margin-top: 20px;
+}
+
+#dvs_social_button_container {
+	position: relative;
+	width:190px;
+	height:32px;
+	font-weight: bold;
+	font-size:14px;
+}
+
+.dvs_social_button_link {
+	margin-right:7px;
+}
+
+.dvs_c2a_button {
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	behavior: url(border-radius.htc);
+	border-radius:10px;
+	display:inline-block;
+	font-family:arial;
+	font-size:1.5em;
+	font-weight:bold;
+	padding:4px 0px;
+	text-decoration:none;
+	width:190px;
+	text-align:center;
+	margin-bottom:6px;
+}
+
+.dvs_c2a_button:active {
+	position:relative;
+	top:1px;
+}
+
+.dvs_c2a_button:hover {
+	text-decoration:none;
+}
+
+#dvs_footer_container {
+	position:relative;
+	width: 1117px;
+	text-align:center;
+	font-size: 1.25em;
+	font-weight:bold;
+	clear:both;
+	padding-left:10px;
+}
+
+.dvs_top_menu_link {
+	margin-right:10px;
+}
+
+.dvs_footer_link {
+	margin-right:10px;
+}
+
+.dvs_footer_info {
+	font-size: 1em;
+	font-weight:normal;
+}
+
+#dvs_get_price_container {
+	position: absolute;
+	width:360px;
+	height:400px;		
+	top:200px;
+	left:50%;
+	margin-left:-180px;
+	background:#fff;
+	color:#000;
+	z-index:4000;
+	border:6px solid #333;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	behavior: url(border-radius.htc);
+	border-radius:10px;
+
+}
+
+#dvs_share_email_container {
+	position: absolute;
+	width:360px;
+	height:350px;		
+	top:200px;
+	left:50%;
+	margin-left:-180px;
+	background:#fff;
+	color:#000;
+	z-index:4000;
+	border:6px solid #333;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	behavior: url(border-radius.htc);
+	border-radius:10px;
+}
+
+#dvs_share_email_container table{
+	border-collapse: separate;
+	border-spacing: 5px;
+	width:320px;
+}
+
+/*.dvs_add_td_label {
+	text-align:;
+}
+.dvs_add_td {
+text-align:left;
+}*/
+
+/* Collin Custom CSS */
+
+.dvs_form_button {
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	behavior: url(border-radius.htc);
+	border-radius:5px;
+	padding:5px;
+	width:75px;
+	cursor:pointer;
+	font-weight:bold;
+}
+
+#feedback {
+	height: 104px; 
+	width: 104px; 
+	position: fixed; 
+	top: 40%; 
+	z-index: 999;
+	transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg); 
+	-moz-transform: rotate(-90deg); 
+	-o-transform: rotate(-90deg); 
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+#feedback a {
+	display: block; 
+	background: #f00; 
+	height: 15px; 
+	width: 70px; 
+	padding: 8px 16px;
+	color: #fff; 
+	font-family: Arial, sans-serif; 
+	font-size: 17px; 
+	font-weight: bold; 
+	text-decoration: none; 
+	border-bottom: solid 1px #333;
+	border-left: solid 1px #333;
+	border-right: solid 1px #fff;
+}
+
+#feedback a:hover {
+	background: #06c; 
+}
+
+#google_maps_info_window_contents{
+	color:#000000;
+}
+
+h1 {font-size:18px;font-weight:bold;margin:0;padding:0;padding-bottom:10px;}
+h2 {font-size:18px;font-weight:bold;margin:0;padding:0;padding-bottom:10px;padding-top:10px;}
+h3 {font-size:16px;font-weight:bold;margin:0;padding:0;padding-bottom:10px;border:0;}
+h4 {font-size:14px;font-weight:bold;margin:0;padding:0;padding-bottom:10px;border:0;padding-top:10px;}
+
+
+
+#email_button_wrapper {
+	padding-left:9px;
+}
+#facebook_button_wrapper {
+	padding-left:9px;
+}
+
+#google_button_wrapper {
+	padding-left:9px;
+}
+
+#twitter_button_wrapper {
+	padding-left:5px;
+}
+
+.dvs_text_field {
+	width:225px;
+	font-size:16px;
+}
+
+.dvs_textarea_field {
+	width:225px;
+	font-size:16px;
+}
+
+#dvs_share_email_form {
+	font-size: 1.25em;
+	padding:15px;
+}
+
+#footer_video_list{
+	text-align:left;
+}
+
+.placeholder {
+	color:#CCCCCC;
+}

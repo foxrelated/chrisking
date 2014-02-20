@@ -1,0 +1,15 @@
+<module>
+	<data>
+		<module_id>g</module_id>
+		<product_id>GoLevel Development Tools</product_id>
+		<is_core>0</is_core>
+		<is_active>1</is_active>
+		<is_menu>1</is_menu>
+		<menu><![CDATA[a:1:{s:26:"g.admin_menu_control_panel";a:1:{s:3:"url";a:2:{i:0;s:1:"g";i:1;s:5:"index";}}}]]></menu>
+		<phrase_var_name>module_g</phrase_var_name>
+	</data>
+	<phrases>
+		<phrase module_id="g" version_id="3.0.0rc2" var_name="admin_menu_control_panel" added="1324068340">Control Panel</phrase>
+		<phrase module_id="g" version_id="3.0.0rc2" var_name="module_g" added="1324068340">Dev Tools</phrase>
+	</phrases>
+</module>

@@ -1,0 +1,172 @@
+<module>
+	<data>
+		<module_id>research</module_id>
+		<product_id>kobrightcove</product_id>
+		<is_core>0</is_core>
+		<is_active>1</is_active>
+		<is_menu>1</is_menu>
+		<menu />
+		<phrase_var_name>module_research</phrase_var_name>
+	</data>
+	<setting_groups>
+		<name module_id="research" version_id="2.0.6" var_name="setting_group_konsortorg_research">konsortorg_research</name>
+	</setting_groups>
+	<settings>
+		<setting group="konsortorg_research" module_id="research" is_hidden="0" type="integer" var_name="character_max_before_trim" phrase_var_name="setting_character_max_before_trim" ordering="2" version_id="2.0.6">80</setting>
+		<setting group="konsortorg_research" module_id="research" is_hidden="0" type="string" var_name="new_model_year" phrase_var_name="setting_new_model_year" ordering="1" version_id="2.0.6">2014,2013</setting>
+		<setting group="konsortorg_research" module_id="research" is_hidden="0" type="string" var_name="video_url_prefix" phrase_var_name="setting_video_url_prefix" ordering="3" version_id="2.0.7">Video</setting>
+		<setting group="konsortorg_research" module_id="research" is_hidden="0" type="string" var_name="featured_new_playlist" phrase_var_name="setting_featured_new_playlist" ordering="4" version_id="2.0.7">772471243001</setting>
+		<setting group="konsortorg_research" module_id="research" is_hidden="0" type="string" var_name="featured_used_playlist" phrase_var_name="setting_featured_used_playlist" ordering="5" version_id="2.0.7">771613602001</setting>
+		<setting group="konsortorg_research" module_id="research" is_hidden="0" type="string" var_name="used_model_year_exclusion" phrase_var_name="setting_used_model_year_exclusion" ordering="6" version_id="2.0.7">2011,2012</setting>
+		<setting group="konsortorg_research" module_id="research" is_hidden="0" type="integer" var_name="max_search_results_per_page" phrase_var_name="setting_max_search_results_per_page" ordering="7" version_id="2.0.7">5</setting>
+		<setting group="konsortorg_research" module_id="research" is_hidden="0" type="integer" var_name="related_limit" phrase_var_name="setting_related_limit" ordering="8" version_id="2.0.7">4</setting>
+		<setting group="konsortorg_research" module_id="research" is_hidden="0" type="integer" var_name="popular_videos" phrase_var_name="setting_popular_videos" ordering="9" version_id="2.0.7">10</setting>
+	</settings>
+	<blocks>
+		<block type_id="0" m_connection="research.used-cars" module_id="research" component="used-car-search-block" location="3" is_active="1" ordering="1" disallow_access="a:1:{i:0;s:1:&quot;5&quot;;}" can_move="0">
+			<title>Used Car Search</title>
+			<source_code />
+			<source_parsed />
+		</block>
+		<block type_id="0" m_connection="core.index-member" module_id="research" component="search" location="3" is_active="1" ordering="26" disallow_access="" can_move="0">
+			<title>Konsort.org Search All Cars</title>
+			<source_code />
+			<source_parsed />
+		</block>
+		<block type_id="0" m_connection="research.view" module_id="research" component="info" location="3" is_active="1" ordering="1" disallow_access="a:1:{i:0;s:1:&quot;5&quot;;}" can_move="0">
+			<title>Chrome Info Box</title>
+			<source_code />
+			<source_parsed />
+		</block>
+		<block type_id="0" m_connection="research.new-cars" module_id="research" component="new-car-search-block" location="3" is_active="1" ordering="1" disallow_access="a:1:{i:0;s:1:&quot;5&quot;;}" can_move="0">
+			<title>New Car Search</title>
+			<source_code />
+			<source_parsed />
+		</block>
+		<block type_id="0" m_connection="research.used-cars" module_id="research" component="popular-used" location="3" is_active="1" ordering="4" disallow_access="" can_move="0">
+			<title>Konsort.org Popular Used Car Videos</title>
+			<source_code />
+			<source_parsed />
+		</block>
+		<block type_id="0" m_connection="research.new-cars" module_id="research" component="popular-new" location="3" is_active="1" ordering="4" disallow_access="" can_move="0">
+			<title>Konsort.org Popular New Car Videos</title>
+			<source_code />
+			<source_parsed />
+		</block>
+		<block type_id="0" m_connection="research.new-cars" module_id="research" component="featured-new" location="3" is_active="1" ordering="2" disallow_access="" can_move="0">
+			<title>Konsort.org Featured New Car Videos</title>
+			<source_code />
+			<source_parsed />
+		</block>
+		<block type_id="0" m_connection="research.used-cars" module_id="research" component="featured-used" location="3" is_active="1" ordering="2" disallow_access="" can_move="0">
+			<title>Konsort.org Featured Used Car Videos</title>
+			<source_code />
+			<source_parsed />
+		</block>
+		<block type_id="0" m_connection="research.new-cars" module_id="research" component="latest-new" location="3" is_active="1" ordering="3" disallow_access="" can_move="0">
+			<title>Konsort.org Latest New Car Videos</title>
+			<source_code />
+			<source_parsed />
+		</block>
+		<block type_id="0" m_connection="research.search" module_id="research" component="search-all" location="3" is_active="1" ordering="1" disallow_access="" can_move="0">
+			<title>Konsort.org Search All</title>
+			<source_code />
+			<source_parsed />
+		</block>
+		<block type_id="0" m_connection="research.used-cars" module_id="research" component="latest-used" location="3" is_active="1" ordering="3" disallow_access="" can_move="0">
+			<title>Konsort.org Latest Used Car Videos</title>
+			<source_code />
+			<source_parsed />
+		</block>
+		<block type_id="0" m_connection="research.index" module_id="research" component="search-all" location="3" is_active="1" ordering="1" disallow_access="a:1:{i:0;s:1:&quot;5&quot;;}" can_move="0">
+			<title>Konsort.org Search All</title>
+			<source_code />
+			<source_parsed />
+		</block>
+		<block type_id="0" m_connection="research.view" module_id="research" component="related" location="3" is_active="1" ordering="2" disallow_access="a:1:{i:0;s:1:&quot;5&quot;;}" can_move="0">
+			<title>Konsort.org Related Videos</title>
+			<source_code />
+			<source_parsed />
+		</block>
+	</blocks>
+	<components>
+		<component module_id="research" component="info" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="used-car-search-block" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="used-cars" m_connection="research.used-cars" module="research" is_controller="1" is_block="0" is_active="1" />
+		<component module_id="research" component="search" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="index" m_connection="research.index" module="research" is_controller="1" is_block="0" is_active="1" />
+		<component module_id="research" component="view" m_connection="research.view" module="research" is_controller="1" is_block="0" is_active="1" />
+		<component module_id="research" component="new-car-search-block" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="new-cars" m_connection="research.new-cars" module="research" is_controller="1" is_block="0" is_active="1" />
+		<component module_id="research" component="latest-used" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="latest-new" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="popular-used" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="popular-new" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="featured-used" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="featured-new" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="featured" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="popular" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="latest" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="related" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+		<component module_id="research" component="search" m_connection="research.search" module="research" is_controller="1" is_block="0" is_active="1" />
+		<component module_id="research" component="search-all" m_connection="" module="research" is_controller="0" is_block="1" is_active="1" />
+	</components>
+	<phrases>
+		<phrase module_id="research" version_id="2.0.6" var_name="module_research" added="1288972966">Wheels Tv Video Player</phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="setting_group_konsortorg_research" added="1289405700"><![CDATA[<title>Konsort.org Research</title><info>Settings for the Konsort.org Research module</info>]]></phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="setting_new_model_year" added="1289405887"><![CDATA[<title>New Model Year</title><info>This value will determine which cars are considered "New".</info>]]></phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="research_new_cars" added="1289419375">Research New Cars</phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="make" added="1289419418">MAKE:</phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="model" added="1289419441">MODEL:</phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="year" added="1289419477">YEAR:</phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="research_new_used" added="1289419499"><![CDATA[Research New & Used]]></phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="find_car" added="1289419711">FIND CAR</phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="search_returned_no_results" added="1289419794"><![CDATA[Your search did not return any results. <a href = "javascript:history.back()">Back to previous page</a>]]></phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="tags" added="1289419827">TAGS:</phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="user_reviews" added="1289419867">User Reviews</phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="search_local_listings" added="1289419890">Search Local Listings</phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="get_a_price" added="1289419921">Get A Price</phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="research_used_cars" added="1289419999">Research Used Cars</phrase>
+		<phrase module_id="research" version_id="2.0.6" var_name="setting_character_max_before_trim" added="1289421471"><![CDATA[<title>Character Maximum Before Trimming</title><info>Sets the amount of characters allowed in the short description before trimming occurs.</info>]]></phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="setting_video_url_prefix" added="1293641216"><![CDATA[<title>Video URL Prefix</title><info>When viewing a video, the URL will contain /research/view/Video_ID where 'Video' is the prefix (this var), and '_ID' is the ID of the video being watched.</info>]]></phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="trim" added="1294339091">Trim</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="drivetrain" added="1294339108">Drivetrain</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="engine" added="1294339137">Engine</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="horsepower" added="1294339154">Horsepower</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="torque" added="1294339169">Torque</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="transmission" added="1294339186">Transmission</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="mpg_city" added="1294339202">MPG City</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="mpg_highway" added="1294339215">MPG Highway</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="passengers" added="1294339231">Passengers</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="more_information" added="1294339251">More Information</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="read_more" added="1294339360">read more</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="bodystyle" added="1294339439">Bodystyle</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="read_less" added="1294339465"><![CDATA[[read less]]]></phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="year_info" added="1294339583">Year</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="make_info" added="1294339597">Make</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="model_info" added="1294339609">Model</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="find_cars" added="1300819195">FIND CARS</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="search_all_cars" added="1300819233">Search All Cars</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="enter_text_to_search" added="1300819248">Enter Text To Search</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="setting_featured_new_playlist" added="1300981663"><![CDATA[<title>Featured New Car Videos</title><info>Set this value to a Brightcove Playlist id for display in the Featured New Car Videos block.</info>]]></phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="setting_featured_used_playlist" added="1300981716"><![CDATA[<title>Featured Used Car Videos</title><info>Set this value to a Brightcove Playlist id for display in the Featured Used Car Videos block.</info>]]></phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="keywords" added="1301067856">Keywords</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="latest_videos" added="1301067883">Latest Videos</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="featured_videos" added="1301067905">Featured Videos</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="related_videos" added="1301067929">Related Videos</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="popular_videos" added="1301067951">Popular Videos</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="latest_new_car_videos" added="1301424702">Latest New Car Videos</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="latest_used_car_videos" added="1301424718">Latest Used Car Videos</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="featured_new_car_videos" added="1301424731">Featured New Car Videos</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="featured_used_car_videos" added="1301424742">Featured Used Car Videos</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="popular_new_car_videos" added="1301424755">Popular New Car Videos</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="popular_used_car_videos" added="1301424767">Popular Used Car Videos</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="setting_used_model_year_exclusion" added="1301425926"><![CDATA[<title>Used Model Year Exclusions</title><info>This value will determine which cars are excluded from the "used" car list.</info>]]></phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="setting_max_search_results_per_page" added="1302205634"><![CDATA[<title>Maximum Search Results Per Page</title><info>This setting controls how many results will be displayed per page from the search controller. This does not affect the amount of videos returned to playlists.</info>]]></phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="search_box_option_display_when_empty" added="1302206551">None</phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="setting_related_limit" added="1322595323"><![CDATA[<title>Related Results Per Video Type</title><info>This value will determine how many related videos are returned by video type (Top200, 1onONE, POV) to the interactive player when viewing a single video.
+
+For example, a setting of 2 (default) will return 6 videos total.</info>]]></phrase>
+		<phrase module_id="research" version_id="2.0.7" var_name="setting_popular_videos" added="1322596608"><![CDATA[<title>Popular Video limit</title><info>This value will determine how many "Popular Videos" are returned for all blocks.</info>]]></phrase>
+	</phrases>
+</module>
