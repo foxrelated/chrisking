@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	 
+<html>
+<head>
+
+<title>README: Konsort.org iDrive - Install</title>
+
+<style type="text/css">
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,input,textarea,p,blockquote {margin:0; padding:0;}
+table {border-collapse:collapse; border-spacing:0;table-layout:fixed;width:100%;}
+td {white-space:nowrap;overflow:hidden;}
+fieldset,img {border:0;}
+address,caption,cite,dfn,em,strong,th,var {font-style:normal; font-weight:normal;}
+ol,ul {list-style:none;}
+caption,th {text-align:left;}
+q:before,q:after {content:'';}
+abbr,acronym {border:0;}
+/* ---------- ---------- ---------- STRUCTURE ---------- ---------- ---------- */
+body {background: #7a7a74;	border-top: 3px solid #cbdc60; font: 14px Arial, Helvetica, sans-serif;	line-height: 1.5em;}
+#wrap {margin: 0 auto; width: 1100px;}
+#content {background: #fff;	clear: left; text-align: left; padding: 15px 20px;}
+#footer {border-top: 3px solid #cbdc60; background:#000; padding-top: 60px; height: 41px; color: #fff; font: 10px Arial, sans-serif; text-align: center;}
+/* ---------- ---------- ---------- LINKS ---------- ---------- ---------- */
+a {color: #8e0b01;}
+a:hover {color: red;}
+#footer a {color: #fff;}
+#footer a:hover {color: orange;}
+/* ---------- ---------- ---------- TEXT: CONTENT ---------- ---------- ---------- */
+p {line-height: 140%;margin-bottom: 18px;}
+h1, h2, h3, h4, h5, h6 {letter-spacing: -.6px;	color: #222;margin: 5px 0;font-family: Arial, sans-serif;}
+h2, h3 {font-size: 14pt;}
+code {font-size: 9pt;letter-spacing: -.1px;}
+.sub {text-indent: 15px;}
+.note {font-size: 11px;}
+.top, table.top tr td {vertical-align: top;}
+.odd_row  {background-color: #f5f5f5; border: 1px solid #ccc;text-overflow: hidden;}
+.even_row {background-color: #ebebeb; border: 1px solid #ccc;text-overflow: hidden;}
+.title_row {background: #000; padding: 20px; border: 1px solid #ccc;}
+.title_column {letter-spacing: -.6px; color: #fff; font-family: Arial, sans-serif; font-size: 14pt; font-weight:bold; vertical-align:bottom;width:100px;}
+table tr td {padding: 15px;}
+strong {font-weight: bold;}
+em {font-style: italic;}
+</style>
+
+</head>
+<body>
+
+<div id="wrap">
+
+	<!-- start:content -->
+	<div id="content">
+
+		<h1>Thank you for your purchase!</h1>
+
+		<br />To further support you, if you have any questions or need help troubleshooting, please visit <a href="http://www.konsort.org/support">Our Support Forums</a><br />
+
+		<table class="top" width="900">
+
+			<tr class="title_row">
+				<td class="title_column">
+					<h2 style="color: #fff;">Installation</h2>
+				</td>
+				<td>
+					<h2 style="color: #fff;">iDrive</h2>
+				</td>
+			</tr>
+
+			<tr class="odd_row">
+				<td class="title_column">
+					<h2>STEP 1</h2>
+				</td>
+				<td>
+					<ul>
+						<li>Create and download a full backup of your site.</li>
+						<li class="sub note">Not that you particularly need to, its just a good habit to make a full backup anytime you make changes to your site!</li>
+					</ul>
+				</td>
+			</tr>
+			
+			<tr class="even_row">
+				<td class="title_column">
+					<h2>STEP 2</h2>
+				</td>
+				<td>
+					<ul>
+						<li>Create a new directory named <strong>logo</strong> inside of the <strong>/file/idrive</strong> directory and <strong>CHMOD</strong> it to <strong>0777</strong>.</li>
+						<li class="sub note">The full path should be <strong>/file/idrive/logo</strong></li>
+					</ul>
+				</td>
+			</tr>
+			
+			<tr class="odd_row">
+				<td class="title_column">
+					<h2>STEP 3</h2>
+				</td>
+				<td>
+					<ul>
+						<li>Move the contents of the <strong>/file/idrive</strong> directory in to the newly created <strong>logo</strong> directory.</li>
+						<li class="sub note">The quickest way to do this may be to download the contents (likely only a folder named 2012), delete from the server, and upload in the logo directory.</li>
+					</ul>
+				</td>
+			</tr>
+			
+			<tr class="even_row">
+				<td class="title_column">
+					<h2>STEP 4</h2>
+				</td>
+				<td>
+					<ul>
+						<li>Create a new directory named <strong>preroll</strong> inside of the <strong>/file/idrive</strong> directory and <strong>CHMOD</strong> it to <strong>0777</strong>.</li>
+						<li class="sub note">The full path should be <strong>/file/idrive/preroll</strong></li>
+					</ul>
+				</td>
+			</tr>
+			
+			<tr class="odd_row">
+				<td class="title_column">
+					<h2>STEP 5</h2>
+				</td>
+				<td>
+					<ul>
+						<li>Remove the previous version of the product.</li>
+						<li>The section can be found by going to the Main Menu <strong>"Extensions"</strong> -> <strong>"Product"</strong> -> <strong>"Mange Products"</strong>.</li>
+						<li>Uninstall the product by selecting the small arrow next to the product name and clicking "Delete".</li>
+						<li class="sub note">Some of the existing phrases have changed (settings and usergroup settings) and new settings were added.</li>
+					</ul>
+				</td>
+			</tr>
+			
+			<tr class="even_row">
+				<td class="title_column">
+					<h2>STEP 6</h2>
+				</td>
+				<td>
+					<ul>
+						<li>Upload the contents of the <strong>/upload</strong> folder to your root phpfox directory directory. Choose to overwrite any existing files.</li>
+						<li class="sub note">Usually, this directory will be <b>/public_html</b>, <b>/www</b>, or <b>/htdocs</b>.</li>
+					</ul>
+				</td>
+			</tr>
+
+			<tr class="odd_row">
+				<td class="title_column">
+					<h2>STEP 7</h2>
+				</td>
+				<td>
+					<ul>
+						<li>Go to the <strong>"Import Products"</strong> section of your Phpfox Admin Panel.</li>
+						<li>The section can be found by going to the Main Menu <strong>"Extensions"</strong> -> <strong>"Products"</strong> -> <strong>"Import Products"</strong>.</li>
+						<li>Install the product by clicking the "Install" link under the "Action" column.</li>
+					</ul>
+				</td>
+			</tr>
+		
+			<tr class="even_row">
+				<td class="title_column">
+					<h2>STEP 8</h2>
+				</td>
+				<td>
+					<ul>
+						<li>Clear the cache.</li>
+						<li>Select <strong>"Tools"</strong> -> <strong>"Maintenance" </strong> -> <strong> "Cache Manager"</strong>.</li>
+						<li>Click the <strong>"Clear All"</strong> button.</li>
+						<li><br />The new installation is now ready to use!</li>
+					</ul>
+				</td>
+			</tr>
+
+		</table>
+	</div>
+	<!-- end:content -->
+
+</div>
+<!-- end:wrap -->
+
+<!-- start:footer -->
+<div id="footer">
+	&copy; <a href="http://www.konsort.org">Konsort.org</a>
+</div>
+<!-- end:footer -->
+
+</body>
+
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	 
+<html>
+<head>
+
+<title>README: Konsort.org DVS - Install</title>
+
+<style type="text/css">
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,input,textarea,p,blockquote {margin:0; padding:0;}
+table {border-collapse:collapse; border-spacing:0;table-layout:fixed;width:100%;}
+td {white-space:nowrap;overflow:hidden;}
+fieldset,img {border:0;}
+address,caption,cite,dfn,em,strong,th,var {font-style:normal; font-weight:normal;}
+ol,ul {list-style:none;}
+caption,th {text-align:left;}
+q:before,q:after {content:'';}
+abbr,acronym {border:0;}
+/* ---------- ---------- ---------- STRUCTURE ---------- ---------- ---------- */
+body {background: #7a7a74;	border-top: 3px solid #cbdc60; font: 14px Arial, Helvetica, sans-serif;	line-height: 1.5em;}
+#wrap {margin: 0 auto; width: 1100px;}
+#content {background: #fff;	clear: left; text-align: left; padding: 15px 20px;}
+#footer {border-top: 3px solid #cbdc60; background:#000; padding-top: 60px; height: 41px; color: #fff; font: 10px Arial, sans-serif; text-align: center;}
+/* ---------- ---------- ---------- LINKS ---------- ---------- ---------- */
+a {color: #8e0b01;}
+a:hover {color: red;}
+#footer a {color: #fff;}
+#footer a:hover {color: orange;}
+/* ---------- ---------- ---------- TEXT: CONTENT ---------- ---------- ---------- */
+p {line-height: 140%;margin-bottom: 18px;}
+h1, h2, h3, h4, h5, h6 {letter-spacing: -.6px;	color: #222;margin: 5px 0;font-family: Arial, sans-serif;}
+h2, h3 {font-size: 14pt;}
+code {font-size: 9pt;letter-spacing: -.1px;}
+.sub {text-indent: 15px;}
+.note {font-size: 11px;}
+.top, table.top tr td {vertical-align: top;}
+.odd_row  {background-color: #f5f5f5; border: 1px solid #ccc;text-overflow: hidden;}
+.even_row {background-color: #ebebeb; border: 1px solid #ccc;text-overflow: hidden;}
+.title_row {background: #000; padding: 20px; border: 1px solid #ccc;}
+.title_column {letter-spacing: -.6px; color: #fff; font-family: Arial, sans-serif; font-size: 14pt; font-weight:bold; vertical-align:bottom;width:100px;}
+table tr td {padding: 15px;}
+strong {font-weight: bold;}
+em {font-style: italic;}
+</style>
+
+</head>
+<body>
+
+<div id="wrap">
+
+	<!-- start:content -->
+	<div id="content">
+
+		<h1>Thank you for your purchase!</h1>
+
+		<br />To further support you, if you have any questions or need help troubleshooting, please visit <a href="http://www.konsort.org/support">Our Support Forums</a><br />
+
+		<table class="top" width="900">
+
+			<tr class="title_row">
+				<td class="title_column">
+					<h2 style="color: #fff;">Readme</h2>
+				</td>
+				<td>
+					<h2 style="color: #fff;">Enable DVS Subdomain Support</h2>
+				</td>
+			</tr>
+
+			<tr class="odd_row">
+				<td class="title_column">
+					<h2>STEP 1</h2>
+				</td>
+				<td>
+					<ul>
+						<li>In order to enable subdomain support on our development servers, certain changes were made to the server configuration.</li>
+						<li class="sub note">Our dev server is running CentOS with cPanel. Different server configurations may require different steps in order to support subdomains.</li>
+					</ul>
+				</td>
+			</tr>
+			
+			<tr class="even_row">
+				<td class="title_column">
+					<h2>STEP 2</h2>
+				</td>
+				<td>
+					<ul>
+						<li>Add a wildcard DNS entry.  This will cause BIND to accept requests for the DVS subdomains.</li>
+						<li class="sub note">We added an A record. A CNAME should work as well, and will propagate quicker.</li>
+						<li><br />
+							<code>
+								&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;14400&nbsp;&nbsp;&nbsp;&nbsp;IN A&nbsp;&nbsp;&nbsp;&nbsp;your.ip.address.0
+							</code>
+						</li>
+					</ul>
+				</td>
+			</tr>
+			
+			<tr class="odd_row">
+				<td class="title_column">
+					<h2>STEP 3</h2>
+				</td>
+				<td>
+					<ul>
+						<li>Add wildcard subdomain server alias to Apache's virtual host configuration file.</li>
+						<li>This will cause the server to accept connections for DVS subdomains, such as test-dvs.domain.com</li>
+						<li class="sub note">Apache will need to be restarted for this change to take effect.</li>
+						<li><br />
+							<code>
+								&nbsp;&nbsp;&nbsp;&nbsp;ServerAlias&nbsp;&nbsp;&nbsp;&nbsp;*.example.com
+							</code>
+						</li>
+					</ul>
+				</td>
+			</tr>
+			
+			<tr class="even_row">
+				<td class="title_column">
+					<h2>STEP 4</h2>
+				</td>
+				<td>
+					<ul>
+						<li>Add wildcard domain server alias to Apache's virtual host configuration file.</li>
+						<li>This will cause the server to accept connections for other domains, such as test-dvs.cardealership.com</li>
+						<li class="sub note">Apache will need to be restarted for this change to take effect.</li>
+						<li><br />
+							<code>
+								&nbsp;&nbsp;&nbsp;&nbsp;ServerAlias&nbsp;&nbsp;&nbsp;&nbsp;*
+							</code>
+						</li>
+					</ul>
+				</td>
+			</tr>
+			
+			<tr class="even_row">
+				<td class="title_column">
+					<h2>STEP 4</h2>
+				</td>
+				<td>
+					<ul>
+						<li>Finally, three phpFox settings need to be edited to enable subdomain mode</li>
+						<li>In the AdminCP, the DVS setting "Enable Subdomain Mode" should be set to "True"</li>
+						<li>In the file /include/setting/server.sett.php, change the following line:</li>
+						<li><br />
+							<code>
+								&nbsp;&nbsp;&nbsp;&nbsp;$_CONF['core.url_rewrite'] = '1';
+							</code>
+						</li>
+						<li>to:</li>
+						<li><br />
+							<code>
+								&nbsp;&nbsp;&nbsp;&nbsp;$_CONF['core.url_rewrite'] = '3';
+							</code>
+						</li>
+						<br />
+						<li>In the same file, make sure that "<strong>$_CONF['core.host']</strong>" begins with "<strong>www.</strong>".</li>
+					</ul>
+				</td>
+			</tr>
+
+		</table>
+	</div>
+	<!-- end:content -->
+
+</div>
+<!-- end:wrap -->
+
+<!-- start:footer -->
+<div id="footer">
+	&copy; <a href="http://www.konsort.org">Konsort.org</a>
+</div>
+<!-- end:footer -->
+
+</body>
+
+</html>
