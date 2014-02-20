@@ -1,5 +1,4 @@
 <?php
-
 /**
  * [PHPFOX_HEADER]
  */
@@ -12,12 +11,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @author  		Konsort.org
  * @package 		DVS
  */
-class Dvs_Component_Controller_View extends Phpfox_Component {
-
+class Dvs_Component_Controller_View extends Phpfox_Component
+{
 	public function process()
 	{
+		// Are subdomains enabled? If yes, our dealer title url is in a different place.
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
-
 		if ($bSubdomainMode)
 		{
 			$sDvsRequest = $this->request()->get('req1');
@@ -120,7 +119,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component {
 				}
 			}
 		}
-		
+
 		if ($aOverrideVideo)
 		{
 			$aFirstVideo = $aOverrideVideo;
@@ -137,7 +136,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component {
 		// Sort videos by name for footer links
 		$aFooterLinks = $aOverviewVideos;
 
-		usort($aFooterLinks, function($a, $b) {
+		usort($aFooterLinks, function($a, $b)
+		{
 			return strcasecmp($a['name'], $b['name']);
 		});
 
@@ -167,18 +167,6 @@ class Dvs_Component_Controller_View extends Phpfox_Component {
 		$aDvs['inventory_url'] = str_replace('{$sMake}', urlencode($aFirstVideo['make']), $aDvs['inventory_url']);
 		$aDvs['inventory_url'] = str_replace('{$sModel}', urlencode($aFirstVideo['model']), $aDvs['inventory_url']);
 		$aDvs['inventory_url'] = str_replace('{$iYear}', urlencode($aFirstVideo['year']), $aDvs['inventory_url']);
-
-		if (!$sOverride)
-		{
-			if ($bSubdomainMode)
-			{
-				//$sDvsJs .= 'window.history.pushState("string", "", "loading-video");';
-			}
-			else
-			{
-				//$sDvsJs .= 'window.history.pushState("string", "", "' . $aDvs['title_url'] . '/loading-video");';
-			}
-		}
 
 		if ($aDvs['dvs_google_id'] || Phpfox::getParam('dvs.global_google_id'))
 		{
@@ -225,18 +213,26 @@ class Dvs_Component_Controller_View extends Phpfox_Component {
 				'<script type="text/javascript">var sDvsTitleUrl = "' . $aDvs['title_url'] . '";</script>',
 				'<script type="text/javascript">var bGoogleAnalytics = true;</script>'));
 
-		// Template specific JS that must load first
+		// Template specific JS and CSS
 		if ($sBrowser == 'mobile')
 		{
 			$this->template()
 				->setHeader(array(
+					'dvs-mobile.css' => 'module_dvs',
+					'player-mobile.css' => 'module_dvs'
 			));
 		}
 		else
 		{
 			$this->template()
 				->setHeader(array(
-					'jcarousellite.js' => 'module_dvs'
+//					'jcarousellite.js' => 'module_dvs',
+//					'dvs.css' => 'module_dvs',
+//					'player.css' => 'module_dvs',
+					'google_maps.js' => 'module_dvs',
+					'overlay.js' => 'module_dvs',
+//					'jquery.dropdown.js' => 'module_dvs',
+//					'jquery.dropdown.css' => 'module_dvs'
 			));
 		}
 
@@ -250,15 +246,15 @@ class Dvs_Component_Controller_View extends Phpfox_Component {
 			->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
 			->setHeader(array(
 				'<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>',
-				'<style type="text/css">' . Phpfox::getService('dvs')->getCss($aDvs, $bSubdomainMode) . '</style>',
-				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aPlayer) . '</style>',
+//				'<style type="text/css">' . Phpfox::getService('dvs')->getCss($aDvs, $bSubdomainMode) . '</style>',
+//				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aPlayer) . '</style>',
 				'player.js' => 'module_dvs',
 				'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
-				'modernizr.js' => 'module_dvs',
+//				'modernizr.js' => 'module_dvs',
 				'<script type="text/javascript">' . $sDvsJs . '</script>',
 				'google_analytics.js' => 'module_dvs',
-				'<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>',
-				'<script type="text/javascript">var jqDvs = jQuery.noConflict();</script>',
+//				'<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>',
+//				'<script type="text/javascript">var jqDvs = jQuery.noConflict();</script>',
 				'<script type="text/javascript">aCurrentVideoMetaData.referenceId ="' . $aFirstVideo['referenceId'] . '";aCurrentVideoMetaData.year ="' . $aFirstVideo['year'] . '";aCurrentVideoMetaData.make ="' . $aFirstVideo['make'] . '";aCurrentVideoMetaData.model ="' . $aFirstVideo['model'] . '";</script> ',
 				'dvs.js' => 'module_dvs',
 				'<meta property = "og:image" content = "' . ($aFirstVideo['video_still_image'] ? Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['video_still_image'] : '') . '"/>'
@@ -278,7 +274,6 @@ class Dvs_Component_Controller_View extends Phpfox_Component {
 				'aOverrideVideo' => $aOverrideVideo,
 				'sLinkBase' => $sLinkBase,
 				'aFirstVideoMeta' => $aFirstVideoMeta,
-				'bDebug' => (Phpfox::getParam('dvs.javascript_debug_mode') ? true : false),
 				'sBrowser' => $sBrowser,
 				'bOverrideOpenGraph' => true,
 				'aVideoSelectYears' => $aValidVSYears,
@@ -288,31 +283,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component {
 				'aFooterLinks' => $aFooterLinks,
 				'sBrowser' => $sBrowser
 		));
-
-		// Template specific JS and CSS
-		if ($sBrowser == 'mobile')
-		{
-			$this->template()
-				->setHeader(array(
-					'dvs-mobile.css' => 'module_dvs',
-					'player-mobile.css' => 'module_dvs'
-			));
-		}
-		else
-		{
-			$this->template()
-				->setHeader(array(
-					'dvs.css' => 'module_dvs',
-					'player.css' => 'module_dvs',
-					'google_maps.js' => 'module_dvs',
-					'overlay.js' => 'module_dvs',
-					'jquery.dropdown.js' => 'module_dvs',
-					'jquery.dropdown.css' => 'module_dvs'
-			));
-		}
 	}
 
-
 }
-
 ?>
