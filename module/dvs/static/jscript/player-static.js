@@ -27,7 +27,7 @@ function enableVideoSelectCarousel() {
 	});
 }
 
-$(document).ready(function() {
+$Behavior.overPlay = function() {
 	$("#overview_playlist").jCarouselLite({
 		btnNext: ".next",
 		btnPrev: ".prev",
@@ -37,7 +37,7 @@ $(document).ready(function() {
 		speed: 900
 	});
 
-});
+}
 
 
 

@@ -16,7 +16,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {if $bCanAddDvss || $bIsEdit}
 {literal}
 <script type="text/javascript">
-	$(document).ready(function() {
+	$Behavior.keyUp = function() {
 		$('#dvs_name').keyup(function()
 		{
 			if($('#dvs_name').val()){
@@ -31,9 +31,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			else
 			{
 				$('#title_url_display').html('Please enter a dealer name.');
-			};
-		});	
-	});
+			}
+		});
+	}
 </script>
 {/literal}
 <form method="post" action="{url link='dvs.index'}" id="add_dvs" name="add_dvs">
@@ -43,7 +43,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.dealer_name'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[dealer_name]" value="{value type='input' id='dealer_name'}" id="dealer_name"/>
+				<input type="text" name="val[dealer_name]" value="{value type='input' id='dealer_name'}" id="dealer_name" maxlength=30 required="required"/>
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.dealer_name_phrase'}
@@ -55,7 +55,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.showroom_name'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[dvs_name]" value="{value type='input' id='dvs_name'}" id="dvs_name" {if $bIsEdit && !Phpfox::isAdmin()}disabled="disabled" style="color:#AAAAAA"{/if}/>
+				<input type="text"  maxlength=30 required="required" name="val[dvs_name]" value="{value type='input' id='dvs_name'}" id="dvs_name" {if $bIsEdit && !Phpfox::isAdmin()}disabled="disabled" style="color:#AAAAAA"{/if}/>
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.showroom_name_phrase'}
@@ -76,7 +76,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.address'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[address]" value="{value type='input' id='address'}" id="address" />
+				<input type="text" name="val[address]" value="{value type='input' id='address'}" id="address" maxlength=30 required="required" />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.address_phrase'}
@@ -88,7 +88,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.city'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[city]" value="{value type='input' id='city'}" id="city" />
+				<input type="text" name="val[city]" value="{value type='input' id='city'}" id="city" maxlength=30 required="required" />
 			</td>
 		</tr>
 		
