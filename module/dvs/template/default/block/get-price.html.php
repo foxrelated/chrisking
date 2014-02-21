@@ -13,11 +13,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 
 ?>
-<style type="text/css">
-	#dvs_contact_container {left_curly}
-		text-align: center;
-	{right_curly}	
-</style>
 
 <div id="dvs_contact_container">
 	<div id="dvs_contact_form">

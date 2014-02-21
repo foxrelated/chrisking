@@ -350,10 +350,30 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</div>
 		</div>
 	{/if}
-	
 	<div id="chapter_buttons">
+		<button type="button" id="chapter_container_Intro" class="disabled display"></button>
+		<button type="button" id="chapter_container_WhatsNew" class="disabled display"></button>
+		<button type="button" id="chapter_container_Exterior" class="disabled no_display"></button>
+		<button type="button" id="chapter_container_Interior" class="disabled no_display"></button>
+		<button type="button" id="chapter_container_Power" class="disabled display"></button>
+		<button type="button" id="chapter_container_Fuel" class="disabled display"></button>
+		<button type="button" id="chapter_container_Features" class="disabled display"></button>
+		<button type="button" id="chapter_container_Safety" class="disabled no_display"></button>
+		<button type="button" id="chapter_container_Warranty" class="disabled display"></button>
+		<button type="button" id="chapter_container_Summary" class="active display"></button>
+		<button type="button" id="chapter_container_Performance" class="disabled no_display"></button>
+		<button type="button" id="chapter_container_MPG" class="disabled no_display"></button>
+		<button type="button" id="chapter_container_Honors" class="disabled no_display"></button>
+		{if $bIsDvs && !$bPreview}
+		<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('get price', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600'));"></button>
+		{elseif !$bIsExternal && !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}
+		<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="getPriceIDrive('{$aPlayer.player_id}');"></button>
+		{elseif $bIsExternal && $bShowGetPrice}
+		<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="getPriceExternal('{$sEmail}');"></button>
+		{/if}
 	<!-- NOTE: The following parent DIVs (#chapter_container_Intro) are loaded in to a JS object and this div (#chapter_buttons) is cleared. No changes to the parent DIV objects will stick -->
-		<div id="chapter_container_Intro" style="display:none;">
+	
+<!--		<div id="chapter_container_Intro" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_Intro" style="display:none;">
 					<img src="{$sImagePath}intro-active.png" alt="">
@@ -368,9 +388,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}intro-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_WhatsNew" style="display:none;">
+<!--		<div id="chapter_container_WhatsNew" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_WhatsNew" style="display:none;">
 					<img src="{$sImagePath}whatsnew-active.png" alt="">
@@ -385,9 +405,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}whatsnew-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_Exterior" style="display:none;">
+<!--		<div id="chapter_container_Exterior" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_Exterior" style="display:none;">
 					<img src="{$sImagePath}exterior-active.png" alt="">
@@ -402,9 +422,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}exterior-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_Interior" style="display:none;">
+<!--		<div id="chapter_container_Interior" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_Interior" style="display:none;">
 					<img src="{$sImagePath}interior-active.png" alt="">
@@ -419,9 +439,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}interior-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_Power" style="display:none;">
+<!--		<div id="chapter_container_Power" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_Power" style="display:none;">
 					<img src="{$sImagePath}power-active.png" alt="">
@@ -436,9 +456,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}power-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_Fuel" style="display:none;">
+<!--		<div id="chapter_container_Fuel" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_Fuel" style="display:none;">
 					<img src="{$sImagePath}fuel-active.png" alt="">
@@ -453,9 +473,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}fuel-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_Features" style="display:none;">
+<!--		<div id="chapter_container_Features" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_Features" style="display:none;">
 					<img src="{$sImagePath}features-active.png" alt="">
@@ -470,9 +490,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}features-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_Safety" style="display:none;">
+<!--		<div id="chapter_container_Safety" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_Safety" style="display:none;">
 					<img src="{$sImagePath}safety-active.png" alt="">
@@ -487,9 +507,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}safety-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_Pricing" style="display:none;">
+<!--		<div id="chapter_container_Pricing" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_Pricing" style="display:none;">
 					<img src="{$sImagePath}pricing-active.png" alt="">
@@ -504,9 +524,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}pricing-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_Warranty" style="display:none;">
+<!--		<div id="chapter_container_Warranty" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_disabled_Warranty">
 					<img src="{$sImagePath}warranty-disabled.png" alt="">
@@ -521,9 +541,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}warranty-watched.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_Summary" style="display:none;">
+<!--		<div id="chapter_container_Summary" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_Summary" style="display:none;">
 					<img src="{$sImagePath}summary-active.png" alt="">
@@ -538,9 +558,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}summary-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_Overview" style="display:none;">
+<!--		<div id="chapter_container_Overview" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_Overview" style="display:none;">
 					<img src="{$sImagePath}overview-active.png" alt="">
@@ -555,9 +575,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}overview-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_Performance" style="display:none;">
+<!--		<div id="chapter_container_Performance" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_Performance" style="display:none;">
 					<img src="{$sImagePath}performance-active.png" alt="">
@@ -572,9 +592,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}performance-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_MPG" style="display:none;">
+<!--		<div id="chapter_container_MPG" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_MPG" style="display:none;">
 					<img src="{$sImagePath}mpg-active.png" alt="">
@@ -589,9 +609,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}mpg-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		<div id="chapter_container_Honors" style="display:none;">
+<!--		<div id="chapter_container_Honors" style="display:none;">
 			<div class="chapter_light">
 				<div id="chapter_light_yellow_Honors" style="display:none;">
 					<img src="{$sImagePath}honors-active.png" alt="">
@@ -606,19 +626,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<img src="{$sImagePath}honors-disabled.png" alt="">
 				</div>
 			</div>
-		</div>
+		</div>-->
 
-		{if $bIsDvs && !$bPreview}
-			<div id="chapter_container_Get_Price" style="display:none;">
-				<div class="chapter_light">
-					<div id="chapter_light_yellow_Get_Price">
+<!--		{if $bIsDvs && !$bPreview}
+			
 						<a href="#" onclick="getPrice({$iDvsId});"><img src="{$sImagePath}get-price.png" alt="get_price"/></a>
-					</div>
-					<div id="chapter_light_disabled_Get_Price">
-						<a href="#" onclick="getPrice({$iDvsId});"><img src="{$sImagePath}getprice-disabled.png" alt="get_price"/></a>
-					</div>
-				</div>
-			</div>
+					
 		{elseif !$bIsExternal && !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}
 			<div id="chapter_container_Get_Price" style="display:none;">
 				<div class="chapter_light">
@@ -641,90 +654,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					</div>
 				</div>
 			</div>
-		{/if}
+		{/if}-->
 	</div>
 
 </div>
-
-{if ($bIsExternal && $bShowGetPrice) || (!$bIsDvs && isset($aPlayer.email) && $aPlayer.email)}
-	<div id="idrive_get_price_container" style="display:none;">
-		<div id="idrive_contact_container">
-			<div id="idrive_contact_form">
-				<form id="contact_dealer" name="contact_dealer">
-					<table style="margin:5px;text-align:center;">
-						<tr>
-							<td style="margin-bottom:10px;font-weight:bold;text-align:center;">
-								{phrase var='dvs.contact_dealer'}
-							</td>
-						</tr>
-						<tr>
-							<td style="margin-bottom:10px;">&nbsp;
-								<div style="font-size:12px;"><p>Thanks for your interest in the <b><span class="vehicle_year">{$aVideo.year}</span> <span class="vehicle_make">{$aVideo.make}</span> <span class="vehicle_model">{$aVideo.model}</span></b>!</p>
-								<p>We're happy to help you find your next car or answer any questions you might have. Please fill out the form below:</p></div>
-							</td>
-						</tr>
-						<tr>
-							<td style="margin-bottom:10px;">&nbsp;
-
-							</td>
-						</tr>
-						<tr>
-							
-							<td class="idrive_add_td">
-								<input type="text" name="val[contact_name]" id="contact_name" placeholder="{phrase var='dvs.get_price_placeholder_name'}" class="idrive_text_field" />
-							</td>
-						</tr>
-						<tr>
-							
-							<td class="idrive_add_td">
-								<input type="text" name="val[contact_email]" id="contact_email" placeholder="{phrase var='dvs.get_price_placeholder_email'}" class="idrive_text_field" />
-							</td>
-						</tr>
-						<tr>
-							
-							<td class="idrive_add_td">
-								<input type="text" name="val[contact_phone]" id="contact_phone" placeholder="{phrase var='dvs.get_price_placeholder_phone'}" class="idrive_text_field" />
-							</td>
-						</tr>
-						<tr>
-							
-							<td class="idrive_add_td">
-								<input type="text" name="val[contact_zip]" id="contact_zip" placeholder="{phrase var='dvs.get_price_placeholder_zip'}" class="idrive_text_field" />
-							</td>
-						</tr>
-						
-						<tr>
-							
-							<td class="idrive_add_td">
-								<textarea id="comments" name="val[contact_comments]" cols="16" rows="3" placeholder="{phrase var='dvs.get_price_placeholder_comments'}" class="idrive_textarea_field"></textarea>
-							</td>
-						</tr>
-						<tr>
-							<td style="">&nbsp;</td>
-						</tr>
-						<tr>
-							
-							<td class="idrive_add_td">
-								<input type="hidden" name="val[contact_video_ref_id]" id="contact_video_ref_id" value="{$aFirstVideoMeta.referenceId}"/>
-								{if !$bIsExternal}
-									<input type="hidden" name="val[contact_idrive_id]" id="contact_idrive_id" value="{$aPlayer.player_id}"/>
-								{else}
-									<input type="hidden" name="val[contact_dealer_address]" id="contact_email_address" value="{$sEmail}"/>
-								{/if}
-								<input type="button" value="{phrase var='dvs.send'}" class="idrive_form_button" onclick="$.ajaxCall('idrive.contactDealer', $('#contact_dealer').serialize());"/>
-								&nbsp;
-								 <input type="button" value="Cancel" class="idrive_form_button" onclick="$('#idrive_get_price_container').hide('fast');"/>
-							</td>
-						</tr>
-					</table>
-				</form>
-			</div>
-			<div id="idrive_contact_success" style="display:none;">
-				{phrase var='dvs.contact_request_sent_thank_you'}
-				<br />
-				<br />
-				<input type="button" value="Continue" class="button" onclick="$('#idrive_get_price_container').hide('fast');"/>
-			</div>
-		</div>
-	</div>
-{/if}

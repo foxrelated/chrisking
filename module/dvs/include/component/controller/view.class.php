@@ -229,7 +229,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		}
 
 		$this->template()
-			->setTemplate('blank')
+			->setTemplate('dvs-view')
 			->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
 			->setMeta(array(
 				'description' => ($aOverrideVideo ? $aDvs['phrase_overrides']['override_meta_description_meta_video_specified'] : $aDvs['phrase_overrides']['override_meta_description_meta']),
@@ -249,7 +249,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 //				'<script type="text/javascript">var jqDvs = jQuery.noConflict();</script>',
 				'<script type="text/javascript">aCurrentVideoMetaData.referenceId ="' . $aFirstVideo['referenceId'] . '";aCurrentVideoMetaData.year ="' . $aFirstVideo['year'] . '";aCurrentVideoMetaData.make ="' . $aFirstVideo['make'] . '";aCurrentVideoMetaData.model ="' . $aFirstVideo['model'] . '";</script> ',
 				'dvs.js' => 'module_dvs',
-				'<meta property = "og:image" content = "' . ($aFirstVideo['video_still_image'] ? Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['video_still_image'] : '') . '"/>'
+				'<meta property = "og:image" content = "' . ($aFirstVideo['video_still_image'] ? Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['video_still_image'] : '') . '"/>',
+				'chapter_buttons.css' => 'module_dvs'
 			))
 			->assign(array(
 				'aDvs' => $aDvs,

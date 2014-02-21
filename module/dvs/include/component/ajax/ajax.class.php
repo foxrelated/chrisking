@@ -977,6 +977,11 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 
 		$this->hide('#sales_team_member_' . $iSalesTeamId);
 	}
+	
+	public function showGetPriceForm()
+	{
+		Phpfox::getBlock('dvs.get-price');
+	}
 
 
 }
