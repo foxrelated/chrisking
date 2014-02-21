@@ -1,0 +1,73 @@
+header
+{
+	width: 1117px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+header img
+{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+nav ul
+{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	height: 30px;
+	font-size: 18px;
+	padding-top: 5px;
+	padding-left: 10px;
+	margin-bottom: 10px;
+	-webkit-border-top-left-radius: 0px;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-top-right-radius: 0px;
+	-webkit-border-bottom-right-radius: 5px;
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-bottomleft: 5px;
+	-moz-border-radius-topright: 0px;
+	-moz-border-radius-bottomright: 5px;
+	behavior: url(border-radius.htc);
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 5px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 5px;
+}
+
+nav ul li
+{
+	display: inline;
+	margin-right: 10px;
+}
+
+nav ul li a
+{
+	text-decoration: none;
+}
+
+article
+{
+	width: 1117px;
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+article #player
+{
+	display: block;
+}
+
+article #select_new
+{
+	display: block;
+}
+
+footer
+{
+	display: block;
+}

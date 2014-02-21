@@ -13,6 +13,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 
 ?>
+{$sJavascript}
 <script type="text/javascript">
 	var aMediaIds=[];
 	var aOverviewMediaIds=[];
@@ -124,7 +125,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{r});
 	{r}
 
-	$(document).ready(function() {l}
+	$Behavior.jCarousel = function() {l}
+	console.log('carousel');
 		{if $bIsDvs}
 			$("#overview_playlist").jCarouselLite({l}
 				btnNext: ".next",
@@ -134,7 +136,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				scroll: 3,
 				speed: 900
 			{r});
-
 		{else}
 			$("#overview_playlist").jCarouselLite({l}
 				btnNext: ".next",
@@ -145,7 +146,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				speed: 900
 			{r});
 		{/if}
-	{r});
+	{r}
 </script>
 
 {if ($bIsExternal || (!$bIsDvs && isset($iChapterButtonLeft)))}

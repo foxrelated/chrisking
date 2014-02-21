@@ -62,11 +62,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </header>
 
 <article>
-	<section>
+	<section id="player">
 		{template file='dvs.controller.player.player}
 	</section>
 
-	<section>
+	<section id="select_new">
 		{if $aVideoSelectYears}
 		<h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
 

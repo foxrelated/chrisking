@@ -61,7 +61,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
 		//Load player data
 		$aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
-
+		
 		if ($aPlayer['featured_model'])
 		{
 			$aFeaturedVideo = Phpfox::getService('dvs.video')->get('', false, $aPlayer['featured_year'], $aPlayer['featured_make'], $aPlayer['featured_model']);
@@ -204,15 +204,6 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
 		$sDvsJs .= 'var sShareLink = "' . $sLinkBase . '";';
 
-		// Template JS vars
-		$this->template()
-			->setHeader(array('<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
-				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
-				'<script type="text/javascript">var bIsDvs = true</script>',
-				'<script type="text/javascript">var sFirstVideoTitleUrl = "' . $aFirstVideo['video_title_url'] . '";</script>',
-				'<script type="text/javascript">var sDvsTitleUrl = "' . $aDvs['title_url'] . '";</script>',
-				'<script type="text/javascript">var bGoogleAnalytics = true;</script>'));
-
 		// Template specific JS and CSS
 		if ($sBrowser == 'mobile')
 		{
@@ -226,9 +217,10 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		{
 			$this->template()
 				->setHeader(array(
-//					'jcarousellite.js' => 'module_dvs',
+					'jcarousellite.js' => 'module_dvs',
 //					'dvs.css' => 'module_dvs',
 //					'player.css' => 'module_dvs',
+					'showroom.css' => 'module_dvs',
 					'google_maps.js' => 'module_dvs',
 					'overlay.js' => 'module_dvs',
 //					'jquery.dropdown.js' => 'module_dvs',
@@ -281,7 +273,13 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				'iLongDescLimit' => Phpfox::getParam('dvs.long_desc_limit'),
 				'bSubdomainMode' => $bSubdomainMode,
 				'aFooterLinks' => $aFooterLinks,
-				'sBrowser' => $sBrowser
+				'sBrowser' => $sBrowser,
+				'sJavascript' => '<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>'
+				. '<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>'
+				. '<script type="text/javascript">var bIsDvs = true</script>'
+				. '<script type="text/javascript">var sFirstVideoTitleUrl = "' . $aFirstVideo['video_title_url'] . '";</script>'
+				. '<script type="text/javascript">var sDvsTitleUrl = "' . $aDvs['title_url'] . '";</script>'
+				. '<script type="text/javascript">var bGoogleAnalytics = true;</script>'
 		));
 	}
 
