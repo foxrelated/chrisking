@@ -16,6 +16,13 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 
 	public function process()
 	{
+		
+		// Is the user allowed to be here?
+		if (!Phpfox::isUser())
+		{
+			$this->url()->send('');
+		}
+		
 		$sDvsTitle = $this->request()->get('req4');
 		$aDvs = Phpfox::getService('dvs')->get($sDvsTitle, true);
 
