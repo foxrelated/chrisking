@@ -14,7 +14,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 ?>
 <script type="text/javascript">
-		$(document).ready(function() {left_curly}
+		$Behavior.file = function() {left_curly}
 			$('#js_upload_file').change(function()
 			{left_curly}
 				if (!empty(this.value))
@@ -22,7 +22,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					$('#js_file_form').ajaxCall('idrive.fileProcess');
 				{right_curly}
 			{right_curly});
-		{right_curly});
+		{right_curly}
 </script>
 <div id="js_file_upload_container" style="background:#FFFFFF;">
 	<div id="js_file_content">

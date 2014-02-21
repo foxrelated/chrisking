@@ -60,9 +60,9 @@ class Idrive_Component_Controller_Add extends Phpfox_Component {
 			}
 			else
 			{
-				$aVals['featured_year'];
-				$aVals['featured_make'] = '';
-				$aVals['featured_model'] = '';
+				$aVals['featured_year'] = null;
+				$aVals['featured_make'] = null;
+				$aVals['featured_model'] = null;
 			}
 
 			if ($oValid->isValid($aVals))
