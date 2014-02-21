@@ -13,13 +13,19 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 ?>
 <div id="dvs_error_messages"></div>
-<script>
-	console.log('here');</script>
 {if $bCanAddPlayers || $bIsEdit}
 <script type="text/javascript">
-			console.log('something3');
+			var iSelectedMakes = 0;
 	{if $bIsEdit}
-	$('document').ready(function() {left_curly}
+	{foreach from = $aMakes item = aMake}
+	{if isset($aMake.selected) && $aMake.selected}
+	iSelectedMakes++;
+	{/if}
+	{/foreach}
+	{/if}
+
+	{if $bIsEdit}
+	$Behavior.colorPick = function() {left_curly}
 	$('#color_picker_player_background').ColorPickerSetColor('#{$aForms.player_background}');
 			$('#color_picker_player_text').ColorPickerSetColor('#{$aForms.player_text}');
 			$('#color_picker_player_buttons').ColorPickerSetColor('#{$aForms.player_buttons}');
@@ -34,9 +40,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	iPreviewWidth = 920;
 			iPreviewHeight = 522;
 	{/if}
-	{right_curly});
+	{right_curly}
 	{ else}
-	$Behavior.add_new = function() {left_curly}
+	$Behavior.colorPicker = function() {left_curly}
 	$('#color_picker_player_background').ColorPickerSetColor('#{$sDefaultColor}');
 			$('#color_picker_player_text').ColorPickerSetColor('#{$sDefaultColor}');
 			$('#color_picker_player_buttons').ColorPickerSetColor('#{$sDefaultColor}');
@@ -46,8 +52,38 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			$('#color_picker_playlist_border').ColorPickerSetColor('#{$sDefaultColor}');
 			iPreviewWidth = 910;
 			iPreviewHeight = 522;
-	{right_curly});
+	{right_curly}
 	{/if}
+
+	{literal}
+	$Behavior.multiSelect = function() {
+	$("#makes").multiselect({
+	header: false,
+			click: function(event, ui){
+			$('#make_select_' + ui.value).val((ui.checked ? 1 : 0));
+					if (ui.checked)
+			{
+			iSelectedMakes++;
+			}
+			else
+			{
+			iSelectedMakes = iSelectedMakes - 1; ;
+			}
+			}
+	});
+	}
+	function validateDvsForm()
+	{
+	clearErrors();
+			if (iSelectedMakes <= 0)
+	{
+	validateError("{/literal}{phrase var='dvs.please_select_a_make_first'}{literal}", 'makes');
+	}
+
+	return window.bIsValid
+	}
+
+	{/literal}
 </script>
 <form id="add_player" method="post" action="{if $bIsDvs}{url link='dvs.player.add'}{else}{url link='idrive.add'}{/if}" onsubmit="return validateDvsForm();">
 
@@ -66,28 +102,31 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{if Phpfox::getUserParam('idrive.enable_interactive_player')}<option value="0" {if isset($aForms) && $aForms.player_type == 0}selected="selected"{/if}}>{phrase var='idrive.interactive'}</option>{/if}
 					{if Phpfox::getUserParam('idrive.single_player')}<option value="1" {if isset($aForms) && $aForms.player_type == 1}selected="selected"{/if}}>{phrase var='idrive.single'}</option>{/if}
 				</select>
-				<a href="#" onclick="tb_show('{phrase var='idrive.player_type' phpfox_squote=true}', $.ajaxBox('idrive.moreInfoPlayerType', 'height=180&amp;width=320'));return false;" />{phrase var='idrive.more_info'}</a>
+				<a href="#" onclick="tb_show('{phrase var='idrive.player_type' phpfox_squote=true}', $.ajaxBox('idrive.moreInfoPlayerType', 'height=180&amp;width=320')); return false;" />{phrase var='idrive.more_info'}</a>
 			</li>
 			<li>
 				<label for="domain">{phrase var='idrive.domain_name'}:</label>
 				<input type="text" name="val[domain]" value="{value type='input' id='domain'}" id="domain" size="40"/>
-				<a href="#" onclick="tb_show('{phrase var='idrive.domain_name' phpfox_squote=true}', $.ajaxBox('idrive.moreInfoDomainName', 'height=180&amp;width=320'));return false;" />{phrase var='idrive.more_info'}</a>
+				<a href="#" onclick="tb_show('{phrase var='idrive.domain_name' phpfox_squote=true}', $.ajaxBox('idrive.moreInfoDomainName', 'height=180&amp;width=320')); return false;" />{phrase var='idrive.more_info'}</a>
 			</li>
 			{else}
 			<input type="hidden" name="val[player_type]" value="0" />
 			{/if}
 			<li>
 				<label for="makes">{phrase var='dvs.make'}:</label>
-				<select name="val[makes]" id="makes" onchange="$.ajaxCall('dvs.getFeaturedModels', 'aMakes=' + $('#makes').val());" multiple="multiple" required="required">
+				<select name="val[makes]" id="makes" onchange="$.ajaxCall('dvs.getFeaturedModels', 'aMakes=' + $('#makes').val());" multiple="multiple">
 					{foreach from=$aMakes item=aMake}
 					<option value="{$aMake.make}"{if $bIsEdit && isset($aMake.selected)} selected="selected"{/if}>{$aMake.make}</option>
 					{/foreach}
 				</select>
+				{foreach from=$aMakes item=aMake}
+				<input type="hidden" value="{if $bIsEdit}{if isset($aMake.selected) && $aMake.selected}1{else}0{/if}{else}0{/if}" name="val[selected_makes][{$aMake.make}]" id="make_select_{$aMake.make}" class="player_make_select"/>
+				{/foreach}
 			</li>
 			<li>
 				<label for="featured_model">{phrase var='dvs.featured_model'}:</label>
 				<div id="dvs_vehicle_select_model_container">
-					<select id="featured_model" name="val[featured_model]" required="required">
+					<select id="featured_model" name="val[featured_model]">
 						{if $bIsEdit}
 						<option>{phrase var='dvs.select_model'}</option>
 						{foreach from=$aModels item=aModel}
@@ -221,13 +260,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{else}
 					{phrase var='dvs.no_pre_roll_swf'}
 					{/if}
-					<a href="#" onclick="window.parent.document.getElementById('preroll_file_label').innerHTML = '{phrase var='dvs.select_file'}:'; window.parent.document.getElementById('js_preroll_upload_frame').style.display = 'block'; window.parent.document.getElementById('preroll_file_preview').style.display = 'none';">{phrase var='dvs.change_pre_roll_swf'}</a> - <a href="#" onclick="if (confirm('Are you sure?')){l}window.parent.document.getElementById('preroll_file_label').innerHTML = '{phrase var='dvs.select_file'}:'; window.parent.document.getElementById('js_preroll_upload_frame').style.display = 'block'; window.parent.document.getElementById('preroll_file_preview').style.display = 'none'; window.parent.document.getElementById('preroll_file_id').value = 0; $.ajaxCall('{if $bIsDvs}dvs{else}idrive{/if}.removePrerollFile', 'iPrerollFileId={$aForms.preroll_file_id}'){r}">{phrase var='dvs.remove_preroll_image'}</a>
+					<a href="#" onclick="window.parent.document.getElementById('preroll_file_label').innerHTML = '{phrase var='dvs.select_file'}:'; window.parent.document.getElementById('js_preroll_upload_frame').style.display = 'block'; window.parent.document.getElementById('preroll_file_preview').style.display = 'none';">{phrase var='dvs.change_pre_roll_swf'}</a> - <a href="#" onclick="if (confirm('Are you sure?')){l}window.parent.d ocument.getElementById('preroll_file_label').innerHTML = '{phrase var='dvs.select_file'}:'; window.parent.document.getElementById('js_preroll_upload_frame').style.display = 'block'; window.parent.document.getElementById('preroll_file_preview').style.display = 'none'; window.parent.document.getElementById('preroll_file_id').value = 0; $.ajaxCall('{if $bIsDvs}dvs{else}idrive{/if}.removePrerollFile', 'iPrerollFileId={$aForms.preroll_file_id}'){r}">{phrase var='dvs.remove_preroll_image'}</a>
 					{/if}
 				</div>
 				<input type="hidden" id="preroll_file_id" name="val[preroll_file_id]" value="{if $bIsEdit}{$aForms.preroll_file_id}{else}0{/if}"/>
 			</li>
 			<li>
-				<a href="#" onclick="tb_show('{phrase var='dvs.pre_roll' phpfox_squote=true}', $.ajaxBox('dvs.moreInfoPrerollSwf', 'height=180&amp;width=320'));return false;">{phrase var='dvs.more_info'}</a>
+				<a href="#" onclick="tb_show('{phrase var='dvs.pre_roll' phpfox_squote=true}', $.ajaxBox('dvs.moreInfoPrerollSwf', 'height=180&amp;width=320')); return false;">{phrase var='dvs.more_info'}</a>
 			</li>
 			<li>
 				<label for="preroll_duration">{phrase var='dvs.pre_roll_duration'}:</label>
@@ -236,7 +275,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<li>
 				<label for="preroll_url">{phrase var='dvs.pre_roll_url'}:</label>
 				<input type="text" name="val[preroll_url]" value="{value type='input' id='preroll_url'}" id="preroll_url" size="40"/>
-				<a href="#" onclick="tb_show('{phrase var='dvs.pre_roll' phpfox_squote=true}', $.ajaxBox('dvs.moreInfoPrerollDuration', 'height=180&amp;width=320'));return false;">{phrase var='dvs.more_info'}</a>
+				<a href="#" onclick="tb_show('{phrase var='dvs.pre_roll' phpfox_squote=true}', $.ajaxBox('dvs.moreInfoPrerollDuration', 'height=180&amp;width=320')); return false;">{phrase var='dvs.more_info'}</a>
 			</li>
 		</ol>
 	</fieldset>
@@ -252,11 +291,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<li>
 					<label for="custom_overlay_1_disabled" class="inline_radio">Disabled:</label> 
 					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras').hide('fast'); ;" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 0 || $bIsEdit && !isset($aForms.custom_overlay_1_type) || !isset($bEdit) || !$bEdit}checked="checked"{/if} value="0" name="val[custom_overlay_1_type]" id="custom_overlay_1_disabled" />
-				
-					<label for="custom_overlay_1_price_overlay" class="inline_radio">Get Price Overlay:</label> 
+
+						   <label for="custom_overlay_1_price_overlay" class="inline_radio">Get Price Overlay:</label> 
 					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras').hide('fast'); ;" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_1_type]" id="custom_overlay_1_price_overlay" />
-				
-					<label for="custom_overlay_1_link_overlay" class="inline_radio">Link Overlay:</label> 
+
+						   <label for="custom_overlay_1_link_overlay" class="inline_radio">Link Overlay:</label> 
 					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras').show('fast'); ;" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 2}checked="checked"{/if} value="2" name="val[custom_overlay_1_type]" id="custom_overlay_1_link_overlay" />
 				</li>
 				<li>
@@ -284,11 +323,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<li>
 					<label for="custom_overlay_2_disabled" class="inline_radio">Disabled:</label> 
 					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras').hide('fast'); ;" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 0 || $bIsEdit && !isset($aForms.custom_overlay_2_type) || !isset($bEdit) || !$bEdit}checked="checked"{/if} value="0" name="val[custom_overlay_2_type]" id="custom_overlay_2_disabled" />
-				
-					<label for="custom_overlay_2_price_overlay" class="inline_radio">Get Price Overlay:</label> 
+
+						   <label for="custom_overlay_2_price_overlay" class="inline_radio">Get Price Overlay:</label> 
 					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras').hide('fast'); ;" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_2_type]" id="custom_overlay_2_price_overlay" />
-				
-					<label for="custom_overlay_2_link_overlay" class="inline_radio">Link Overlay:</label> 
+
+						   <label for="custom_overlay_2_link_overlay" class="inline_radio">Link Overlay:</label> 
 					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras').show('fast'); ;" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 2}checked="checked"{/if} value="2" name="val[custom_overlay_2_type]" id="custom_overlay_2_link_overlay" />
 				</li>
 				<li>
@@ -316,11 +355,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 					<label for="custom_overlay_3_disabled" class="inline_radio">Disabled:</label> 
 					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras').hide('fast'); ;" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 0 || $bIsEdit && !isset($aForms.custom_overlay_3_type) || !isset($bEdit) || !$bEdit}checked="checked"{/if} value="0" name="val[custom_overlay_3_type]" id="custom_overlay_3_disabled" />
-				
-					<label for="custom_overlay_3_price_overlay" class="inline_radio">Get Price Overlay:</label> 
+
+						   <label for="custom_overlay_3_price_overlay" class="inline_radio">Get Price Overlay:</label> 
 					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras').hide('fast'); ;" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_3_type]" id="custom_overlay_3_price_overlay" />
-				
-					<label for="custom_overlay_3_link_overlay" class="inline_radio">Link Overlay:</label> 
+
+						   <label for="custom_overlay_3_link_overlay" class="inline_radio">Link Overlay:</label> 
 					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras').show('fast'); ;" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 2}checked="checked"{/if} value="2" name="val[custom_overlay_3_type]" id="custom_overlay_3_link_overlay" />
 				</li>
 				<li>
@@ -355,9 +394,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{if $bIsEdit && isset($aForms.player_id)}<input type="hidden" name="val[player_id]" value="{$aForms.player_id}" />{/if}
 		<button type="submit" class="button">{phrase var='dvs.save_settings'}</button>
 		{if $bIsDvs}
-		<button class="button" onclick="tb_show('{phrase var='dvs.preview' phpfox_squote=true}', $.ajaxBox('dvs.previewPlayer', 'width=' + iPreviewWidth + '&amp;height=' + iPreviewHeight + '&amp;' + $('#add_player').serialize()));return false;">{phrase var='dvs.preview_player'}</button>
+		<button class="button" onclick="tb_show('{phrase var='dvs.preview' phpfox_squote=true}', $.ajaxBox('dvs.previewPlayer', 'width=' + iPreviewWidth + '&amp;height=' + iPreviewHeight + '&amp;' + $('#add_player').serialize())); return false;">{phrase var='dvs.preview_player'}</button>
 		{else}
-		<button class="button" onclick="tb_show('{phrase var='dvs.preview' phpfox_squote=true}', $.ajaxBox('idrive.previewPlayer', 'width=' + iPreviewWidth + '&amp;height=' + iPreviewHeight + '&amp;' + $('#add_player').serialize()));return false;">{phrase var='idrive.preview_player'}</button>
+		<button class="button" onclick="tb_show('{phrase var='dvs.preview' phpfox_squote=true}', $.ajaxBox('idrive.previewPlayer', 'width=' + iPreviewWidth + '&amp;height=' + iPreviewHeight + '&amp;' + $('#add_player').serialize())); return false;">{phrase var='idrive.preview_player'}</button>
 		{/if}
 	</fieldset>
 </form>

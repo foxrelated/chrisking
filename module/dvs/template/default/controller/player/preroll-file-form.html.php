@@ -14,7 +14,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 ?>
 <script type="text/javascript">
-	$(document).ready(function() {left_curly}
+	$Behavior.preRoll = function() {left_curly}
 		$('#js_preroll_upload_file').change(function()
 			{left_curly}
 				if (!empty(this.value))
@@ -22,7 +22,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					$('#js_preroll_file_form').ajaxCall('dvs.prerollFileProcess');
 				{right_curly}
 			{right_curly});
-	{right_curly});
+	{right_curly}
 </script>
 <div id="js_preroll_file_upload_container" style="background:#FFFFFF;">
 	<div id="js_preroll_file_content">
