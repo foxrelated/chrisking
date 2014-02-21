@@ -1,13 +1,149 @@
-label {
-	display: inline-block;
+h1 {
+	font-size: 28px;
+	margin-bottom: 20px;
+}
+
+form#add_player {
+	background: #ccc;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+	counter-reset: fieldsets;
+	padding: 20px;
+}
+
+form#add_player fieldset {
+	border: none;
+	margin-bottom: 10px;
+}
+
+form#add_player fieldset:last-of-type {
+	margin-bottom: 0;
+}
+
+form#add_player h3 {
+	color: #333;
+	font-size: 18px;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+
+form#add_player legend {
+	color: #666;
+	font-size: 14px;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+.color_selectors legend:before {
+	content: "Step " counter(fieldsets) ": ";
+	counter-increment: fieldsets;
+}
+
+form#add_player fieldset fieldset legend {
+	color: #111111;
+	font-size: 13px;
+	font-weight: normal;
+	padding-bottom: 0;
+}
+
+form#add_player ol li {
+	background: #b9cf6a;
+	background: rgba(255,255,255,.3);
+	border-color: #e3ebc3;
+	border-color: rgba(255,255,255,.6);
+	border-style: solid;
+	border-width: 2px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+	line-height: 30px;
+	list-style: none;
+	padding: 5px 10px;
+	margin-bottom: 2px;
+}
+
+form#add_player ol li a {
+	background: #b9cf6a;
+	background: rgba(255,255,255,.3);
+	border-color: #e3ebc3;
+	border-color: rgba(255,255,255,.6);
+	border-style: solid;
+	border-width: 2px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+	line-height: 30px;
+	list-style: none;
+	padding: 5px 10px;
+	margin-bottom: 2px;
+}
+
+form#add_player ol ol li {
+	background: none;
+	border: none;
+	float: left;
+}
+
+form#add_player label {
+	float: left;
+	font-size: 13px;
 	width: 150px;
 }
 
-input {
+form#add_player label.inline_radio {
+	float: none;
 	display: inline-block;
+	width: inherit;
+}
+
+form#add_player fieldset fieldset label {
+	background:none no-repeat left 50%;
+	line-height: 20px;
+	padding: 0 0 0 30px;
+	width: auto;
+}
+
+form#add_player fieldset fieldset label:hover {
+	cursor: pointer;
+}
+
+form#add_player input:not([type=radio]):not([type=checkbox]),
+form#add_player textarea {
+	background: #ffffff;
+	border: none;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px;
+	font: italic 13px Georgia, "Times New Roman", Times, serif;
+	outline: none;
+	padding: 5px;
 	width: 200px;
 }
 
-h4 {
-	display: block;
+form#add_player input:not([type=submit]):focus,
+form#add_player textarea:focus {
+	background: #eaeaea;
+}
+
+form#add_player input[type=radio] {
+	margin-right: 5px;
+}
+
+form#add_player input[type=radio].inline_radio {
+	margin-right: 20px;
+}
+
+.colorSelector {
+	display: inline-block;
+}
+
+.button {
+	margin-top: 10px;
+	padding: 5px;
 }

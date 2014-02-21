@@ -296,7 +296,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 				'jquery.multiselect.css' => 'module_dvs',
 				'validate.js' => 'module_dvs',
 				'jquery.animate-shadow-min.js' => 'module_dvs',
-				'add.css' => 'module_dvs',
+//				'add.css' => 'module_dvs',
 				'add_player.css' => 'module_dvs'
 			))
 			->assign(array(
