@@ -15,7 +15,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 ?>
 <script type="text/javascript">
 	{if $bIsEdit}
-		$(document).ready(function() {l}
+		$Behavior.colorPicker = function() {l}
 			$('#color_picker_menu_background').ColorPickerSetColor('#{$aForms.menu_background}');
 			$('#color_picker_menu_link').ColorPickerSetColor('#{$aForms.menu_link}');
 			$('#color_picker_page_background').ColorPickerSetColor('#{$aForms.page_background}');
@@ -27,9 +27,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			$('#color_picker_button_border').ColorPickerSetColor('#{$aForms.button_border}');
 			$('#color_picker_text_link').ColorPickerSetColor('#{$aForms.text_link}');
 			$('#color_picker_footer_link').ColorPickerSetColor('#{$aForms.footer_link}');
-		{r});
+			{r}
 	{else}
-		$(document).ready(function() {l}
+		$Behavior.colorPicker = function() {l}
 			$('#color_picker_menu_background').ColorPickerSetColor('#{$sDefaultColor}');
 			$('#color_picker_menu_link').ColorPickerSetColor('#{$sDefaultColor}');
 			$('#color_picker_page_background').ColorPickerSetColor('#{$sDefaultColor}');
@@ -41,7 +41,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			$('#color_picker_button_border').ColorPickerSetColor('#{$sDefaultColor}');
 			$('#color_picker_text_link').ColorPickerSetColor('#{$sDefaultColor}');
 			$('#color_picker_footer_link').ColorPickerSetColor('#{$sDefaultColor}');
-		{r});	
+		{r}
 	{/if}
 </script>
 

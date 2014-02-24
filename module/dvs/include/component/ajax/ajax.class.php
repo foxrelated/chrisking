@@ -324,11 +324,17 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 
 	public function updateTitleUrl()
 	{
-		$sDvsName = Phpfox::getLib('request')->get('dvs_name');
+		$sVanityUrl = Phpfox::getLib('request')->get('vanity_url');
 		$iDvsId = Phpfox::getLib('request')->get('dvs_id');
 
-		$sTitleUrl = Phpfox::getService('dvs')->getTitleUrl($sDvsName, $iDvsId);
-
+		// Are we editing the current Vanity Url?
+		if(!empty($iDvsId)){
+			$sTitleUrl = Phpfox::getService('dvs')->getTitleUrl($sVanityUrl, $iDvsId);
+		}
+		else{
+			$sTitleUrl = Phpfox::getService('dvs')->getTitleUrl($sVanityUrl);
+		}
+		
 		$this->call('$("#title_url").val("' . $sTitleUrl . '");');
 		if (Phpfox::getParam('dvs.enable_subdomain_mode'))
 		{

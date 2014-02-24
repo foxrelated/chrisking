@@ -17,14 +17,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {literal}
 <script type="text/javascript">
 	$Behavior.keyUp = function() {
-		$('#dvs_name').keyup(function()
-		{
-			if($('#dvs_name').val()){
+		$('#vanity_url').keyup(function(){
+			if($('#vanity_url').val()){
 				{/literal}
 					{if $bIsEdit && isset($aForms.dvs_id)}
-						$.ajaxCall('dvs.updateTitleUrl','dvs_name='+this.value+'&dvs_id={$aForms.dvs_id}');
+						$.ajaxCall('dvs.updateTitleUrl','vanity_url='+this.value+'&dvs_id={$aForms.dvs_id}');
 					{else}
-						$.ajaxCall('dvs.updateTitleUrl','dvs_name='+this.value);
+						$.ajaxCall('dvs.updateTitleUrl','vanity_url='+this.value);
 					{/if}
 				{literal}
 			}
@@ -33,6 +32,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				$('#title_url_display').html('Please enter a dealer name.');
 			}
 		});
+		$('#js_country_child_id_value').attr('required','required');
 	}
 </script>
 {/literal}
@@ -40,10 +40,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<table class="dvs_add_table">
 		<tr>
 			<td class="dvs_add_td">
-				{phrase var='dvs.dealer_name'}:
+				{required}{phrase var='dvs.dealer_name'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[dealer_name]" value="{value type='input' id='dealer_name'}" id="dealer_name" maxlength=30 required="required"/>
+				<input type="text" name="val[dealer_name]" value="{value type='input' id='dealer_name'}" id="dealer_name" maxlength=30 required "/>
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.dealer_name_phrase'}
@@ -52,31 +52,56 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		
 		<tr>
 			<td class="dvs_add_td">
-				{phrase var='dvs.showroom_name'}:
+				{required}{phrase var='dvs.showroom_name'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text"  maxlength=30 required="required" name="val[dvs_name]" value="{value type='input' id='dvs_name'}" id="dvs_name" {if $bIsEdit && !Phpfox::isAdmin()}disabled="disabled" style="color:#AAAAAA"{/if}/>
+				{if !$bIsEdit}
+				<input type="text"  maxlength=30 required name="val[dvs_name]" value="{value type='input' id='dvs_name'}" id="dvs_name" />
+				{/if}
+				{if $bIsEdit && Phpfox::isAdmin()}
+				<input type="text"  maxlength=30 required name="val[dvs_name]" value="{value type='input' id='dvs_name'}" id="dvs_name" />
+				{/if}
+				{if $bIsEdit && !Phpfox::isAdmin()}
+				<p>&nbsp;{$aForms.dvs_name}</p>
+				{/if}
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.showroom_name_phrase'}
 			</td>
 		</tr>
 		
+		{if !$bIsEdit || Phpfox::isAdmin()}
+		<tr>
+			<td class="dvs_add_td">
+				{required}{phrase var='dvs.vanity_url'}:
+			</td>
+			<td class="dvs_add_td">
+				{if $bIsEdit}
+				<input type="text"  maxlength=30 required name="val[vanity_url]" value="{value type='input' id='title_url'}" id="vanity_url" />
+				{else}
+				<input type="text"  maxlength=30 required name="val[vanity_url]" value="{value type='input' id='vanity_url'}" id="vanity_url" />
+				{/if}
+			</td>
+			<td class="dvs_add_td">
+			</td>
+		</tr>
+		{/if}
+		
 		<tr>
 			<td class="dvs_add_td">
 				{phrase var='dvs.url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<span id="title_url_display">{if $bIsEdit}{if $bSubdomainMode}{url link=$aForms.title_url}{else}{url link='dvs'}{$aForms.title_url}{/if}{else}{phrase var='dvs.please_enter_a_showroom_name'}{/if}</span>
+				<span id="title_url_display">&nbsp;{if $bIsEdit}{if $bSubdomainMode}{url link=$aForms.title_url}{else}{url link='dvs'}{$aForms.title_url}{/if}{else}{phrase var='dvs.please_enter_a_vanity_url_above'}{/if}</span>
 			</td>
 		</tr>
 		
 		<tr>
 			<td class="dvs_add_td">
-				{phrase var='dvs.address'}:
+				{required}{phrase var='dvs.address'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[address]" value="{value type='input' id='address'}" id="address" maxlength=30 required="required" />
+				<input type="text" name="val[address]" value="{value type='input' id='address'}" id="address" maxlength=30 required />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.address_phrase'}
@@ -85,16 +110,16 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		
 		<tr>
 			<td class="dvs_add_td">
-				{phrase var='dvs.city'}:
+				{required}{phrase var='dvs.city'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[city]" value="{value type='input' id='city'}" id="city" maxlength=30 required="required" />
+				<input type="text" name="val[city]" value="{value type='input' id='city'}" id="city" maxlength=30 required />
 			</td>
 		</tr>
 		
 		<tr>
 			<td class="dvs_add_td">
-				State:
+				{required}State:
 			</td>
 			<td colspan="2" class="dvs_add_td">
 				{if $bIsEdit}
@@ -109,7 +134,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.zip_code'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[postal_code]" value="{value type='input' id='postal_code'}" id="postal_code" size="5"/>
+				<input type="text" name="val[postal_code]" value="{value type='input' id='postal_code'}" id="postal_code" size="5" maxlength="5" />
 			</td>
 		</tr>
 		
@@ -118,7 +143,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.contact_phone'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[phone]" value="{value type='input' id='phone'}" id="phone" />
+				<input type="tel" name="val[phone]" value="{value type='input' id='phone'}" id="phone" />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.phone_phrase'}
@@ -130,7 +155,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.contact_email'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[email]" value="{value type='input' id='email'}" id="email"  size="30"/>
+				<input type="email" name="val[email]" value="{value type='input' id='email'}" id="email"  size="30"/>
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.contact_email_phrase'}
@@ -142,7 +167,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.website_url'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[url]" value="{value type='input' id='url'}" id="url" size="30"/>
+				<input type="url" name="val[url]" value="{value type='input' id='url'}" id="url" size="30"/>
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.website_url_phrase'}
@@ -333,10 +358,16 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 	<div id="dvs_settings_save_button_container">
 		<input type="hidden" name="val[step]" value="settings" />
-		<input type="hidden" name="val[title_url]" id="title_url" value="" />
+		<input type="hidden" name="val[title_url]" id="title_url" value="{if $bIsEdit}{$aForms.title_url}{/if}" />
+		{if $bIsEdit && !Phpfox::isAdmin()}
+		<input type="hidden" name="val[vanity_url]" id="vanity_url" value="{$aForms.title_url}" />
+		{/if}
+		{if $bIsEdit && !Phpfox::isAdmin()}
+		<input type="hidden" name="val[dvs_name]" id="dvs_name" value="{$aForms.dvs_name}" />
+		{/if}
 		<input type="hidden" name="val[is_edit]" value="{if $bIsEdit && isset($aForms.dvs_id)}1{else}0{/if}" />
 		{if $bIsEdit && isset($aForms.dvs_id)}<input type="hidden" name="val[dvs_id]" value="{$aForms.dvs_id}" />{/if}
-		<input type="button" value="{if $bIsEdit && isset($aForms.dvs_id)}{phrase var='dvs.save_changes'}{else}{phrase var='dvs.save_and_continue'}{/if}" class="button" onclick="$('#add_dvs').submit();" />
+		<input type="submit" value="{if $bIsEdit && isset($aForms.dvs_id)}{phrase var='dvs.save_changes'}{else}{phrase var='dvs.save_and_continue'}{/if}" class="button"/>
 	</div>
 </form>
 

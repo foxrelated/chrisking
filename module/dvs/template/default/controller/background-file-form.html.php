@@ -14,15 +14,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 ?>
 <script type="text/javascript">
-		$(document).ready(function() {left_curly}
-			$('#js_background_upload_file').change(function()
-			{left_curly}
+		$Behavior.background = function() {l}
+			$('#js_background_upload_file').change(function(){l}
 				if (!empty(this.value))
-				{left_curly}
+				{l}
 					$('#js_background_file_form').ajaxCall('dvs.backgroundFileProcess');
-				{right_curly}
-			{right_curly});
-		{right_curly});
+				{r}
+			{r});
+		{r}
 </script>
 <div id="js_background_file_upload_container" style="background:#FFFFFF;">
 	<div id="js_background_file_content">

@@ -14,15 +14,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 ?>
 <script type="text/javascript">
-		$(document).ready(function() {left_curly}
-			$('#js_branding_upload_file').change(function()
-			{left_curly}
+		$Behavior.branding = function() {l}
+			$('#js_branding_upload_file').change(function(){l}
 				if (!empty(this.value))
-				{left_curly}
+				{l}
 					$('#js_branding_file_form').ajaxCall('dvs.brandingFileProcess');
-				{right_curly}
-			{right_curly});
-		{right_curly});
+				{r}
+			{r});
+		{r}
 </script>
 <div id="js_branding_file_upload_container" style="background:#FFFFFF;">
 	<div id="js_branding_file_content">

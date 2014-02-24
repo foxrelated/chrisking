@@ -23,11 +23,17 @@ class Dvs_Service_Process extends Phpfox_Service {
 
 	public function add($aDvs)
 	{
-		$sTitleUrl = Phpfox::getService('dvs')->getTitleUrl($aDvs['dvs_name']);
+		$sTitleUrl = Phpfox::getService('dvs')->getTitleUrl($aDvs['title_url']);
 
 		$sAddress = Phpfox::getService('dvs')->makeAddress($aDvs['country_child_id'], $aDvs['city'], $aDvs['postal_code'], $aDvs['address']);
 		$aGeoCode = Phpfox::getService('dvs')->geoCode($sAddress);
-
+		
+		// Did we fail to get a geo location?
+		if(!(!empty($aGeoCode['latitude']) && !empty($aGeoCode['longitude']))){
+			$aGeoCode['latitude'] = 0;
+			$aGeoCode['longitude'] = 0;
+		}
+		
 		$iId = $this->database()->insert($this->_sTable, array(
 			'user_id' => Phpfox::getUserId(),
 			'dvs_name' => $this->preParse()->clean($aDvs['dvs_name'], 255),
@@ -100,11 +106,10 @@ class Dvs_Service_Process extends Phpfox_Service {
 
 		if (Phpfox::isAdmin())
 		{
-			$sTitleUrl = Phpfox::getService('dvs')->getTitleUrl($aDvs['dvs_name'], $aDvs['dvs_id']);
+			$sTitleUrl = Phpfox::getService('dvs')->getTitleUrl($aDvs['vanity_url'], $aDvs['dvs_id']);
 
 			$this->database()->update($this->_sTable, array(
-				'dvs_name' => $this->preParse()->clean($aDvs['dvs_name'], 255),
-				'title_url' => $this->preParse()->clean($sTitleUrl),
+				'title_url' => $this->preParse()->clean($sTitleUrl)
 				), 'dvs_id = ' . (int) $aDvs['dvs_id']);
 		}
 

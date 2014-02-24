@@ -12,7 +12,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @author  		Konsort.org
  * @package 		DVS
  */
-class Dvs_Component_Controller_Index extends Phpfox_Component {
+class Dvs_Component_Controller_Index extends Phpfox_Component
+{
 
 	public function process()
 	{
@@ -84,20 +85,11 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
 
 				$aValidation = array(
 					'dealer_name' => Phpfox::getPhrase('dvs.please_enter_a_dealer_name'),
+					'dvs_name' => Phpfox::getPhrase('dvs.please_enter_a_showroom_name'),
 					'address' => Phpfox::getPhrase('dvs.please_enter_an_address'),
 					'city' => Phpfox::getPhrase('dvs.please_enter_a_city'),
 					'country_child_id' => Phpfox::getPhrase('dvs.please_select_a_state')
 				);
-
-				if (Phpfox::isAdmin())
-				{
-					$aValidation['dvs_name'] = Phpfox::getPhrase('dvs.please_enter_a_showroom_name');
-				}
-				else
-				{
-					$aDvs = Phpfox::getService('dvs')->get($aVals['dvs_id'], false);
-					$aVals['dvs_name'] = $aDvs['dvs_name'];
-				}
 
 				$oValid = Phpfox::getLib('validator')->set(array(
 					'sFormName' => 'add_dvs',
@@ -131,15 +123,15 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
 					Phpfox::getLib('module')->setController('dvs.settings');
 
 					$this->template()
-						->assign(array(
-							'aForms' => $aVals,
-							'bCanAddDvss' => true,
-							'bIsEdit' => true
-						))
-						->setHeader(array(
-						))
-						->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'), Phpfox::getLib('url')->makeUrl('dvs'))
-						->setBreadcrumb(Phpfox::getPhrase('dvs.edit_dealer_video_showroom'));
+							->assign(array(
+								'aForms' => $aVals,
+								'bCanAddDvss' => true,
+								'bIsEdit' => true
+							))
+							->setHeader(array(
+							))
+							->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'), Phpfox::getLib('url')->makeUrl('dvs'))
+							->setBreadcrumb(Phpfox::getPhrase('dvs.edit_dealer_video_showroom'));
 					;
 				}
 			}
@@ -174,21 +166,20 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
 		}
 
 		$this->template()
-			->assign(array(
-				'sMessage' => $sMessage,
-				'aDvss' => $aDvss,
-				'bCanAddDvss' => $bCanAddDvss,
-				'bSubdomainMode' => $bSubdomainMode
-			))
-			->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
-			->setHeader(
-				'cache', array(
-				'pager.css' => 'style_css'
+				->assign(array(
+					'sMessage' => $sMessage,
+					'aDvss' => $aDvss,
+					'bCanAddDvss' => $bCanAddDvss,
+					'bSubdomainMode' => $bSubdomainMode
+				))
+				->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
+				->setHeader(
+						'cache', array(
+					'pager.css' => 'style_css'
 		));
 
 		//Phpfox::getLib('pager')->set(array('page' => $iPage, 'size' => $iPageSize, 'count' => $iCnt));
 	}
-
 
 }
 
