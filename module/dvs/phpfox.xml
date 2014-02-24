@@ -22,7 +22,7 @@
 		<setting group="dvs_dealer_permissions" module_id="dvs" is_hidden="0" type="array" var_name="allowed_preroll_file_types" phrase_var_name="setting_allowed_preroll_file_types" ordering="1" version_id="3.1.0rc1"><![CDATA[s:23:"array(
   0 => 'flv',
 );";]]></setting>
-		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="string" var_name="default_color_picker_color" phrase_var_name="setting_default_color_picker_color" ordering="6" version_id="2.0.7">5c5c5c</setting>
+		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="string" var_name="default_color_picker_color" phrase_var_name="setting_default_color_picker_color" ordering="6" version_id="2.0.7">000000</setting>
 		<setting group="dvs_dealer_permissions" module_id="dvs" is_hidden="0" type="array" var_name="allowed_file_types" phrase_var_name="setting_allowed_file_types" ordering="1" version_id="2.0.7"><![CDATA[s:66:"array(
   0 => 'jpg',
   1 => 'jpeg',
@@ -33,25 +33,25 @@
 		<setting group="dvs_google_maps" module_id="dvs" is_hidden="0" type="integer" var_name="google_maps_default_zoom" phrase_var_name="setting_google_maps_default_zoom" ordering="1" version_id="3.1.0rc1">12</setting>
 		<setting group="dvs_general" module_id="dvs" is_hidden="0" type="boolean" var_name="enable_subdomain_mode" phrase_var_name="setting_enable_subdomain_mode" ordering="1" version_id="3.1.0rc1">1</setting>
 		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="integer" var_name="long_desc_limit" phrase_var_name="setting_long_desc_limit" ordering="1" version_id="3.1.0rc1">130</setting>
-		<setting group="dvs_general" module_id="dvs" is_hidden="0" type="boolean" var_name="javascript_debug_mode" phrase_var_name="setting_javascript_debug_mode" ordering="1" version_id="3.4.1">1</setting>
+		<setting group="dvs_general" module_id="dvs" is_hidden="0" type="boolean" var_name="javascript_debug_mode" phrase_var_name="setting_javascript_debug_mode" ordering="1" version_id="3.4.1">0</setting>
 		<setting group="dvs_general" module_id="dvs" is_hidden="0" type="array" var_name="new_years" phrase_var_name="setting_new_years" ordering="1" version_id="3.4.1"><![CDATA[s:39:"array(
   0 => '2014',
   1 => '2013',
 );";]]></setting>
-		<setting group="dvs_general" module_id="dvs" is_hidden="0" type="string" var_name="global_google_id" phrase_var_name="setting_global_google_id" ordering="1" version_id="3.4.1">UA-45851234-1</setting>
+		<setting group="dvs_general" module_id="dvs" is_hidden="0" type="string" var_name="global_google_id" phrase_var_name="setting_global_google_id" ordering="1" version_id="3.4.1">UA-855650-15</setting>
 		<setting group="dvs_video_filters_overview_video_playlist" module_id="dvs" is_hidden="0" type="array" var_name="vf_overview_allowed_years" phrase_var_name="setting_vf_overview_allowed_years" ordering="1" version_id="3.4.1"><![CDATA[s:39:"array(
   0 => '2014',
   1 => '2013',
 );";]]></setting>
 		<setting group="dvs_video_filters_overview_video_playlist" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_overview_allow_1onone" phrase_var_name="setting_vf_overview_allow_1onone" ordering="2" version_id="3.4.1">1</setting>
 		<setting group="dvs_video_filters_overview_video_playlist" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_overview_allow_top200" phrase_var_name="setting_vf_overview_allow_top200" ordering="3" version_id="3.4.1">0</setting>
-		<setting group="dvs_video_filters_overview_video_playlist" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_overview_allow_pov" phrase_var_name="setting_vf_overview_allow_pov" ordering="4" version_id="3.4.1">1</setting>
-		<setting group="dvs_video_filters_overview_video_playlist" module_id="dvs" is_hidden="0" type="integer" var_name="vf_overview_max_videos_per_make" phrase_var_name="setting_vf_overview_max_videos_per_make" ordering="6" version_id="3.4.1">6</setting>
-		<setting group="dvs_video_filters_overview_video_playlist" module_id="dvs" is_hidden="0" type="integer" var_name="vf_overview_max_videos" phrase_var_name="setting_vf_overview_max_videos" ordering="7" version_id="3.4.1">30</setting>
+		<setting group="dvs_video_filters_overview_video_playlist" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_overview_allow_pov" phrase_var_name="setting_vf_overview_allow_pov" ordering="4" version_id="3.4.1">0</setting>
+		<setting group="dvs_video_filters_overview_video_playlist" module_id="dvs" is_hidden="0" type="integer" var_name="vf_overview_max_videos_per_make" phrase_var_name="setting_vf_overview_max_videos_per_make" ordering="6" version_id="3.4.1">50</setting>
+		<setting group="dvs_video_filters_overview_video_playlist" module_id="dvs" is_hidden="0" type="integer" var_name="vf_overview_max_videos" phrase_var_name="setting_vf_overview_max_videos" ordering="7" version_id="3.4.1">100</setting>
 		<setting group="dvs_video_filters_overview_video_playlist" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_overview_round_robin" phrase_var_name="setting_vf_overview_round_robin" ordering="8" version_id="3.4.1">1</setting>
 		<setting group="dvs_video_filters_video_select_drop_down_search" module_id="dvs" is_hidden="0" type="array" var_name="vf_video_select_allowed_years" phrase_var_name="setting_vf_video_select_allowed_years" ordering="1" version_id="3.4.1"><![CDATA[s:39:"array(
-  0 => '2013',
-  1 => '2014',
+  0 => '2014',
+  1 => '2013',
 );";]]></setting>
 		<setting group="dvs_video_filters_video_select_drop_down_search" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_video_select_allow_1onone" phrase_var_name="setting_vf_video_select_allow_1onone" ordering="2" version_id="3.4.1">1</setting>
 		<setting group="dvs_video_filters_video_select_drop_down_search" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_video_select_allow_top200" phrase_var_name="setting_vf_video_select_allow_top200" ordering="3" version_id="3.4.1">0</setting>
@@ -64,8 +64,8 @@
 		<setting group="dvs_video_filters_related_video_select_drop_down" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_related_allow_1onone" phrase_var_name="setting_vf_related_allow_1onone" ordering="2" version_id="3.4.1">1</setting>
 		<setting group="dvs_video_filters_related_video_select_drop_down" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_related_allow_top200" phrase_var_name="setting_vf_related_allow_top200" ordering="3" version_id="3.4.1">0</setting>
 		<setting group="dvs_video_filters_related_video_select_drop_down" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_related_allow_pov" phrase_var_name="setting_vf_related_allow_pov" ordering="4" version_id="3.4.1">0</setting>
-		<setting group="dvs_video_filters_related_video_select_drop_down" module_id="dvs" is_hidden="0" type="integer" var_name="vf_related_max_videos_per_make" phrase_var_name="setting_vf_related_max_videos_per_make" ordering="6" version_id="3.4.1">6</setting>
-		<setting group="dvs_video_filters_related_video_select_drop_down" module_id="dvs" is_hidden="0" type="integer" var_name="vf_related_max_videos" phrase_var_name="setting_vf_related_max_videos" ordering="7" version_id="3.4.1">30</setting>
+		<setting group="dvs_video_filters_related_video_select_drop_down" module_id="dvs" is_hidden="0" type="integer" var_name="vf_related_max_videos_per_make" phrase_var_name="setting_vf_related_max_videos_per_make" ordering="6" version_id="3.4.1">50</setting>
+		<setting group="dvs_video_filters_related_video_select_drop_down" module_id="dvs" is_hidden="0" type="integer" var_name="vf_related_max_videos" phrase_var_name="setting_vf_related_max_videos" ordering="7" version_id="3.4.1">50</setting>
 		<setting group="dvs_video_filters_related_video_select_drop_down" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_related_round_robin" phrase_var_name="setting_vf_related_round_robin" ordering="8" version_id="3.4.1">1</setting>
 		<setting group="dvs_video_filters_related_video_select_drop_down" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_related_force_same_year" phrase_var_name="setting_vf_related_force_same_year" ordering="9" version_id="3.4.1">0</setting>
 		<setting group="dvs_video_filters_related_video_select_drop_down" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_related_force_same_make" phrase_var_name="setting_vf_related_force_same_make" ordering="10" version_id="3.4.1">1</setting>
@@ -79,21 +79,21 @@
 		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="array" var_name="banner_sizes" phrase_var_name="setting_banner_sizes" ordering="2" version_id="3.4.1"><![CDATA[s:23:"array(
   0 => '600',
 );";]]></setting>
-		<setting group="dvs_video_filters_overview_video_playlist" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_overview_allow_new2u" phrase_var_name="setting_vf_overview_allow_new2u" ordering="5" version_id="3.4.1">1</setting>
-		<setting group="dvs_video_filters_related_video_select_drop_down" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_related_allow_new2u" phrase_var_name="setting_vf_related_allow_new2u" ordering="5" version_id="3.4.1">1</setting>
-		<setting group="dvs_video_filters_video_select_drop_down_search" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_video_select_allow_new2u" phrase_var_name="setting_vf_video_select_allow_new2u" ordering="5" version_id="3.4.1">1</setting>
-		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="integer" var_name="gallery_rows" phrase_var_name="setting_gallery_rows" ordering="3" version_id="3.4.1">4</setting>
-		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="integer" var_name="gallery_columns" phrase_var_name="setting_gallery_columns" ordering="4" version_id="3.4.1">4</setting>
-		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="integer" var_name="welcome_greeting_max_chars" phrase_var_name="setting_welcome_greeting_max_chars" ordering="5" version_id="3.4.1">2000</setting>
+		<setting group="dvs_video_filters_overview_video_playlist" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_overview_allow_new2u" phrase_var_name="setting_vf_overview_allow_new2u" ordering="5" version_id="3.4.1">0</setting>
+		<setting group="dvs_video_filters_related_video_select_drop_down" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_related_allow_new2u" phrase_var_name="setting_vf_related_allow_new2u" ordering="5" version_id="3.4.1">0</setting>
+		<setting group="dvs_video_filters_video_select_drop_down_search" module_id="dvs" is_hidden="0" type="boolean" var_name="vf_video_select_allow_new2u" phrase_var_name="setting_vf_video_select_allow_new2u" ordering="5" version_id="3.4.1">0</setting>
+		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="integer" var_name="gallery_rows" phrase_var_name="setting_gallery_rows" ordering="3" version_id="3.4.1">10</setting>
+		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="integer" var_name="gallery_columns" phrase_var_name="setting_gallery_columns" ordering="4" version_id="3.4.1">10</setting>
+		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="integer" var_name="welcome_greeting_max_chars" phrase_var_name="setting_welcome_greeting_max_chars" ordering="5" version_id="3.4.1">2500</setting>
 		<setting group="dvs_general" module_id="dvs" is_hidden="0" type="integer" var_name="salesteam_usergroup_id" phrase_var_name="setting_salesteam_usergroup_id" ordering="2" version_id="3.4.1">6</setting>
 		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="string" var_name="1onone_video_url_replacement" phrase_var_name="setting_1onone_video_url_replacement" ordering="7" version_id="3.4.1">new-car</setting>
 		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="string" var_name="new2u_video_url_replacement" phrase_var_name="setting_new2u_video_url_replacement" ordering="8" version_id="3.4.1">used-car</setting>
 		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="string" var_name="top200_video_url_replacement" phrase_var_name="setting_top200_video_url_replacement" ordering="9" version_id="3.4.1">test-drive</setting>
 		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="boolean" var_name="dvs_info_video_url_replacement" phrase_var_name="setting_dvs_info_video_url_replacement" ordering="10" version_id="3.4.1">1</setting>
-		<setting group="" module_id="dvs" is_hidden="0" type="integer" var_name="dealer_usergroup_id" phrase_var_name="setting_dealer_usergroup_id" ordering="1" version_id="3.4.1">7</setting>
+		<setting group="" module_id="dvs" is_hidden="0" type="integer" var_name="dealer_usergroup_id" phrase_var_name="setting_dealer_usergroup_id" ordering="1" version_id="3.4.1">2</setting>
 	</settings>
 	<blocks>
-		<block type_id="0" m_connection="core.index-member" module_id="dvs" component="share-links" location="1" is_active="1" ordering="27" disallow_access="a:3:{i:0;s:1:&quot;3&quot;;i:1;s:1:&quot;5&quot;;i:2;s:1:&quot;8&quot;;}" can_move="0">
+		<block type_id="0" m_connection="core.index-member" module_id="dvs" component="share-links" location="1" is_active="1" ordering="27" disallow_access="a:3:{i:0;s:1:&quot;3&quot;;i:1;s:1:&quot;4&quot;;i:2;s:1:&quot;5&quot;;}" can_move="0">
 			<title>Share Links</title>
 			<source_code />
 			<source_parsed />
@@ -399,61 +399,83 @@ Set this to true so that a Video from each make appears on the playlist of Relat
 		<phrase module_id="dvs" version_id="3.4.1" var_name="setting_get_price_validate_zip_code" added="1377628586"><![CDATA[<title>Zip Code</title><info>If enabled, the Zip Code field will required a valid US zip code.</info>]]></phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="setting_get_price_validate_comments" added="1377628601"><![CDATA[<title>Comments</title><info>If enabled, the Comments field will require at least 1 character.</info>]]></phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="setting_banner_sizes" added="1377718130"><![CDATA[<title>Banner Sizes</title><info>Banner images uploaded by dealers will also be converted to these sizes.</info>]]></phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="page_title_display" added="1377735243">Page Title (Display)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="page_title_display_video_specified" added="1377735243">Page Title, Video Specified (Display)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="video_name_display" added="1377735243">Video Name (Display)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="page_title_display" added="1377735243">Homepage Title (Display)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="page_title_display_video_specified" added="1377735243">Video Page Title (video specific)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="page_title_meta" added="1377735243">Homepage Title (Meta title)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="page_title_meta_video_specified" added="1377735243">Video Page Title (video specific, meta title)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="page_title_sitemaps" added="1377735243">Homepage Title (sitemap title)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="page_title_sitemaps_video_specified" added="1377735243">Video Page Title (sitemap title)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="video_name_display" added="1377735243">Video Name (on-page display)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="video_name_meta" added="1377735243">Video Name (Meta)</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="video_name_sitemaps" added="1377735243">Video Name (Sitemaps)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="video_description_display" added="1377735243">Video Description (Display)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="video_description_sitemaps" added="1377735243">Video Description (Sitemaps)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="video_description_display" added="1377735243">Video Description (on-page display)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="video_description_meta" added="1377735243">Video Description (Meta)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="video_description_sitemaps" added="1377735243">Video Description (Sitemap)</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_keywords_meta" added="1377735243">Meta Keywords (Meta)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_keywords_sitemaps" added="1377735243">Meta Keywords (Sitemap)</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_description_meta" added="1377735243">Meta Description (Meta)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_description_meta_video_specified" added="1377735243">Meta Description, Video Specified (Meta)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="open_graph_site_name_meta" added="1377735243">Open Graph Site Name (Meta)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="open_graph_title_meta" added="1377735243">Open Graph Title (Meta)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="open_graph_title_meta_video_specified" added="1377735243">Open Graph Title, Video Specified (Meta)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="open_graph_description_meta_video_specified" added="1377735243">Open Graph Description, Video Specified (Meta)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="open_graph_description_meta" added="1377735243">Open Graph Description (Meta)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_description_meta_video_specified" added="1377735243">Meta Description, Video Specific (Meta)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_description_sitemaps" added="1377735243">Meta Description (Sitemap)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_description_sitemaps_video_specified" added="1377735243">Meta Description, Video Specific (Sitemap)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="open_graph_site_name_meta" added="1377735243">Facebook OG Site Name (Meta)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="open_graph_title_meta" added="1377735243">Facebook OG Title (Meta)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="open_graph_title_meta_video_specified" added="1377735243">Facebook OG Title, Video Specified (Meta)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="open_graph_description_meta_video_specified" added="1377735243">Facebook OG Description, Video Specified (Meta)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="open_graph_description_meta" added="1377735243">Facebook OG Description (Meta)</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_itemprop_creator_meta" added="1377735243">Meta Itemprop Creator (Meta)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_itemprop_creator_sitemaps" added="1377735243">Meta Itemprop Creator (Sitemaps)</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_itemprop_name_meta" added="1377735243">Meta Itemprop Name (Meta)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_itemprop_name_sitemaps" added="1377735243">Meta Itemprop Name (Sitemaps)</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_itemprop_description_meta" added="1377735243">Meta Itemprop Description (Meta)</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_itemprop_description_sitemaps" added="1377735243">Meta Itemprop Description (Sitemaps)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_page_title_display" added="1377735243">{dvs_dealer_name} | {dvs_dvs_name} | {dvs_city}, {dvs_state_string}, {dvs_postal_code}</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_page_title_display_video_specified" added="1377735243">{video_name} - {dvs_dealer_name} - {dvs_city} - {dvs_state_string}</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_video_name_display" added="1377735243">Now Playing: {video_year} {video_make} {video_model}</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_page_title_display" added="1377735243">{dvs_dealer_name} of {dvs_city}, {dvs_state_string} | {dvs_dealer_name}</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_page_title_display_video_specified" added="1377735243">{video_make} {video_model} {dvs_city} Area | {dvs_dealer_name}</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_page_title_meta" added="1377735243">{dvs_dealer_name} of {dvs_city}, {dvs_state_string} | {dvs_dealer_name}</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_page_title_meta_video_specified" added="1377735243">{video_make} {video_model} {dvs_city} Area | {dvs_dealer_name}</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_page_title_sitemaps" added="1377735243">{dvs_dealer_name} of {dvs_city}, {dvs_state_string} | {dvs_dealer_name}</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_page_title_sitemaps_video_specified" added="1377735243">{video_make} {video_model} {dvs_city} Area | {dvs_dealer_name}</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_video_name_display" added="1377735243">{video_year} {video_make} {video_model}</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_video_name_meta" added="1377735243">{video_name}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_video_name_sitemaps" added="1377735243">{video_name}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_video_description_display" added="1377735243">{video_longDescription}</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_video_description_meta" added="1377735243">{video_longDescription}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_video_description_sitemaps" added="1377735243">{video_longDescription}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_keywords_meta" added="1377735243">{dvs_seo_tags}</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_keywords_sitemaps" added="1377735243">{dvs_seo_tags}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_description_meta" added="1377735243">{dvs_text}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_description_meta_video_specified" added="1377735243">{video_shortDescription}</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_open_graph_site_name_meta" added="1377735243">Wheels TV</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_description_sitemaps" added="1377735243">{dvs_text}</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_description_sitemaps_video_specified" added="1377735243">{video_shortDescription}</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_open_graph_site_name_meta" added="1377735243">WheelsTV</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_open_graph_title_meta" added="1377735243">{dvs_dealer_name} | {dvs_dvs_name} | {dvs_city}, {dvs_state_string}, {dvs_postal_code}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_open_graph_title_meta_video_specified" added="1377735243">{video_name} - {dvs_dealer_name} - {dvs_city} - {dvs_state_string}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_open_graph_description_meta_video_specified" added="1377735243">{video_shortDescription}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_open_graph_description_meta" added="1377735243">{dvs_text}</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_itemprop_creator_meta" added="1377735243">Wheels TV</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_itemprop_creator_meta" added="1377735243">WheelsTV</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_itemprop_creator_sitemaps" added="1377735243">WheelsTV</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_itemprop_name_meta" added="1377735243">{video_name}</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_itemprop_name_sitemaps" added="1377735243">{video_name}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_itemprop_description_meta" added="1377735243">{video_shortDescription}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_itemprop_description_sitemaps" added="1377735243">{video_shortDescription}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_keywords_meta_video_specified" added="1377735243">{dvs_seo_tags}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_keywords_meta_video_specified" added="1377735243">Meta Keywords, Video Specified (Meta)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_open_graph_site_name_meta_video_specified" added="1377735243">Wheels TV</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="open_graph_site_name_meta_video_specified" added="1377735243">Open Graph Site Name, Video Specified (Meta)</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="override_open_graph_site_name_meta_video_specified" added="1377735243">WheelsTV</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="open_graph_site_name_meta_video_specified" added="1377735243">Facebook OG Site Name, Video Specified (Meta)</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="please_enter_an_email_address" added="1378062057">Please enter an email address.</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="please_enter_your_friends_name" added="1378062082">Please enter your friends name.</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="share_via_email" added="1378079947">Share Via Email</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="share_via_email" added="1378079947">Email Share</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="your_name" added="1378079957">Your Name</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="friends_email_address" added="1378079970">Friends Email Address</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="friends_name" added="1378079977">Friends Name</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="message_to_friend" added="1378079987">Message to Friend</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="friends_email_address" added="1378079970">Recipient Email</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="friends_name" added="1378079977">Recipient Name</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="message_to_friend" added="1378079987">Your Message</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="email_has_been_sent" added="1378080014">Email has been sent!</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="share_email_subject" added="1378151045">{share_my_share_name} has shared a Video Test Drive with you from {dvs_dealer_name}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="twitter_default_share_text" added="1378158369">Check out this {video_year} {video_make} {video_model} video test drive from {dvs_dealer_name}.</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="get_price_placeholder_name" added="1378215874">Please enter your name.</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="get_price_placeholder_email" added="1378215885">Please enter your email address.</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="get_price_placeholder_phone" added="1378215902">Please enter your phone number.</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="get_price_placeholder_zip" added="1378215911">Please enter your zip code.</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="get_price_placeholder_comments" added="1378236066">Please enter your comments.</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="get_price_placeholder_name" added="1378215874">Your name.</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="get_price_placeholder_email" added="1378215885">Your email address</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="get_price_placeholder_phone" added="1378215902">Your phone number.</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="get_price_placeholder_zip" added="1378215911">Your zip code.</phrase>
+		<phrase module_id="dvs" version_id="3.4.1" var_name="get_price_placeholder_comments" added="1378236066">Your comments.</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="setting_vf_overview_allow_new2u" added="1378236956"><![CDATA[<title>Overview: Allow New2U Videos</title><info>Set this to true to include New2U Videos in the Overview Video Playlist.</info>]]></phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="setting_vf_related_allow_new2u" added="1378236958"><![CDATA[<title>Related: Allow New2U Videos</title><info>Set this to true to include New2U Videos in the playlist of Related Videos as returned with a Video Select Drop Down Search Result.</info>]]></phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="setting_vf_video_select_allow_new2u" added="1378236960"><![CDATA[<title>Video Select: Allow New2U Videos</title><info>Set this to true to include New2U Videos in the Video Select Drop Down Search Result.</info>]]></phrase>
@@ -505,28 +527,6 @@ Set this to true so that a Video from each make appears on the playlist of Relat
 		<phrase module_id="dvs" version_id="3.4.1" var_name="gallery_link" added="1386096971">Gallery Link</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="gallery_iframe_embed_code" added="1386099572">Gallery iFrame Embed Code</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="more_videos" added="1386184694">More Videos</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="page_title_meta" added="1377735243">Homepage Title (Meta title)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="page_title_meta_video_specified" added="1377735243">Video Page Title (video specific, meta title)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="page_title_sitemaps" added="1377735243">Homepage Title (sitemap title)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="page_title_sitemaps_video_specified" added="1377735243">Video Page Title (sitemap title)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="video_name_meta" added="1377735243">Video Name (Meta)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="video_description_meta" added="1377735243">Video Description (Meta)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_keywords_sitemaps" added="1377735243">Meta Keywords (Sitemap)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_description_sitemaps" added="1377735243">Meta Description (Sitemap)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_description_sitemaps_video_specified" added="1377735243">Meta Description, Video Specific (Sitemap)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_itemprop_creator_sitemaps" added="1377735243">Meta Itemprop Creator (Sitemaps)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="meta_itemprop_name_sitemaps" added="1377735243">Meta Itemprop Name (Sitemaps)</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_page_title_meta" added="1377735243">{dvs_dealer_name} of {dvs_city}, {dvs_state_string} | {dvs_dealer_name}</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_page_title_meta_video_specified" added="1377735243">{video_make} {video_model} {dvs_city} Area | {dvs_dealer_name}</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_page_title_sitemaps" added="1377735243">{dvs_dealer_name} of {dvs_city}, {dvs_state_string} | {dvs_dealer_name}</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_page_title_sitemaps_video_specified" added="1377735243">{video_make} {video_model} {dvs_city} Area | {dvs_dealer_name}</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_video_name_meta" added="1377735243">{video_name}</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_video_description_meta" added="1377735243">{video_longDescription}</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_keywords_sitemaps" added="1377735243">{dvs_seo_tags}</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_description_sitemaps" added="1377735243">{dvs_text}</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_description_sitemaps_video_specified" added="1377735243">{video_shortDescription}</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_itemprop_creator_sitemaps" added="1377735243">WheelsTV</phrase>
-		<phrase module_id="dvs" version_id="3.4.1" var_name="override_meta_itemprop_name_sitemaps" added="1377735243">{video_name}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="invite_new_sales_team_member" added="1390048294">Invite New Sales Team Member</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="email_address" added="1390048317">Email Address</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="invite_email_to_sales_team_member_subject" added="1390049820">You have been invited to the Sales Team of a DVS</phrase>
@@ -536,6 +536,8 @@ To join this Sales Team, please click here: <a href="{link}">{link}</a>]]></phra
 		<phrase module_id="dvs" version_id="3.4.1" var_name="setting_dealer_usergroup_id" added="1390050960"><![CDATA[<title>Dealer User Group ID</title><info>Set this to the user group id of the Dealers Usergroup.</info>]]></phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="share_links_for_dvs_name" added="1390053595">Share Links for {dvs_name}</phrase>
 		<phrase module_id="dvs" version_id="3.4.1" var_name="share_links_block_header" added="1390054078">Share Links</phrase>
+		<phrase module_id="dvs" version_id="3.7.5" var_name="vanity_url" added="1393265548">Vanity URL</phrase>
+		<phrase module_id="dvs" version_id="3.7.5" var_name="please_enter_a_vanity_url_above" added="1393266246">Please enter a vanity URL above...</phrase>
 	</phrases>
 	<user_group_settings>
 		<setting is_admin_setting="0" module_id="dvs" type="integer" admin="10" user="10" guest="0" staff="10" module="dvs" ordering="0">file_size_limit</setting>
