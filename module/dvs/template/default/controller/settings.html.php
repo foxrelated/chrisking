@@ -33,6 +33,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			}
 		});
 		$('#js_country_child_id_value').attr('required','required');
+		$('#js_country_child_id_value option:first').attr("value","");
+		$('#js_country_child_id_value option:first').attr("selected",false);
+		$('#js_country_child_id_value option:first').attr("selected",true);
 	}
 </script>
 {/literal}
@@ -143,7 +146,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.contact_phone'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="tel" name="val[phone]" value="{value type='input' id='phone'}" id="phone" />
+				<input type="tel" name="val[phone]" maxlength=11 value="{value type='input' id='phone'}" id="phone" />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.phone_phrase'}
@@ -155,7 +158,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.contact_email'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="email" name="val[email]" value="{value type='input' id='email'}" id="email"  size="30"/>
+				<input type="email" name="val[email]" value="{value type='input' id='email'}" id="email"  size="30" maxlength=30 />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.contact_email_phrase'}
@@ -167,7 +170,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.website_url'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="url" name="val[url]" value="{value type='input' id='url'}" id="url" size="30"/>
+				<input type="url" name="val[url]" value="{value type='input' id='url'}" id="url" size="30" maxlength=60/>
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.website_url_phrase'}
@@ -179,7 +182,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.inventory_url'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[inventory_url]" value="{value type='input' id='inventory_url'}" id="inventory_url"  size="30"/>
+				<input type="url" name="val[inventory_url]" value="{value type='input' id='inventory_url'}" id="inventory_url"  size="30" maxlength=60/>
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.inventory_url_phrase'}
@@ -191,7 +194,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.dealer_specials_url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[specials_url]" value="{value type='input' id='specials_url'}" id="specials_url" size="30"/>
+				<input type="url" name="val[specials_url]" value="{value type='input' id='specials_url'}" id="specials_url" size="30" maxlength=60 />
 			</td>
 		</tr>
 
@@ -200,7 +203,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.youtube_url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[youtube_url]" value="{value type='input' id='youtube_url'}" id="youtube_url" size="30"/>
+				<input type="url" name="val[youtube_url]" value="{value type='input' id='youtube_url'}" id="youtube_url" size="30" maxlength=60 />
 			</td>
 		</tr>
 		
@@ -209,7 +212,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.facebook_url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[facebook_url]" value="{value type='input' id='facebook_url'}" id="facebook_url" size="30"/>
+				<input type="url" name="val[facebook_url]" value="{value type='input' id='facebook_url'}" id="facebook_url" size="30" maxlength=60 />
 			</td>
 		</tr>
 		
@@ -218,7 +221,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.twitter_url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[twitter_url]" value="{value type='input' id='twitter_url'}" id="twitter_url" size="30"/>
+				<input type="url" name="val[twitter_url]" value="{value type='input' id='twitter_url'}" id="twitter_url" size="30" maxlength=60 />
 			</td>
 		</tr>
 		
@@ -227,7 +230,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.google_plus_url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[google_url]" value="{value type='input' id='google_url'}" id="google_url" size="30"/>
+				<input type="url" name="val[google_url]" value="{value type='input' id='google_url'}" id="google_url" size="30" maxlength=60 />
 			</td>
 		</tr>
 		*}
@@ -250,7 +253,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.custom_seo_tags'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[seo_tags]" value="{value type='input' id='seo_tags'}" id="seo_tags" />
+				<input type="text" name="val[seo_tags]" value="{value type='input' id='seo_tags'}" id="seo_tags" maxlength=100 />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.seo_tags_phrase'}
@@ -262,7 +265,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.google_analytics_id'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[dvs_google_id]" value="{value type='input' id='dvs_google_id'}" id="dvs_google_id" />
+				<input type="text" name="val[dvs_google_id]" value="{value type='input' id='dvs_google_id'}" id="dvs_google_id" maxlength=30 />
 			</td>
 		</tr>
 	</table>
@@ -281,7 +284,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{phrase var='dvs.'$sDescriptionPhraseVar}:
 					</div>
 					<div class="phrase_override_input_container">
-						<input class="phrase_override_input" type="text" name="val[phrase_overrides][{$sPhraseVar}]" value="{if $sPhraseText}{$sPhraseText}{/if}" id="{$sPhraseVar}" size="60"/>
+						<input class="phrase_override_input" type="text" name="val[phrase_overrides][{$sPhraseVar}]" value="{if $sPhraseText}{$sPhraseText}{/if}" id="{$sPhraseVar}" size="60" maxlength=60 />
 					</div>
 				</div>
 				<div class="phrase_override_row default_phrase_override_container">
@@ -303,7 +306,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{phrase var='dvs.new_car_videos'}:
 				</div>
 				<div class="phrase_override_input_container">
-					<input class="phrase_override_input" type="text" name="val[1onone_override]" value="{if $bIsEdit && isset($aForms.1onone_override)}{$aForms.1onone_override}{/if}" id="1onone_override" size="60"/>
+					<input class="phrase_override_input" type="text" name="val[1onone_override]" value="{if $bIsEdit && isset($aForms.1onone_override)}{$aForms.1onone_override}{/if}" id="1onone_override" size="60" maxlength=60 />
 				</div>
 			</div>
 			<div class="phrase_override_row default_phrase_override_container">
@@ -321,7 +324,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{phrase var='dvs.used_car_review_videos'}:
 					</div>
 					<div class="phrase_override_input_container">
-						<input class="phrase_override_input" type="text" name="val[new2u_override]" value="{if $bIsEdit && isset($aForms.new2u_override)}{$aForms.new2u_override}{/if}" id="new2u_override" size="60"/>
+						<input class="phrase_override_input" type="text" name="val[new2u_override]" value="{if $bIsEdit && isset($aForms.new2u_override)}{$aForms.new2u_override}{/if}" id="new2u_override" size="60" maxlength=60 />
 					</div>
 				</div>
 				<div class="phrase_override_row default_phrase_override_container">
@@ -340,7 +343,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{phrase var='dvs.test_drive_videos'}:
 					</div>
 					<div class="phrase_override_input_container">
-						<input class="phrase_override_input" type="text" name="val[top200_override]" value="{if $bIsEdit && isset($aForms.top200_override)}{$aForms.top200_override}{/if}" id="top200_override" size="60"/>
+						<input class="phrase_override_input" type="text" name="val[top200_override]" value="{if $bIsEdit && isset($aForms.top200_override)}{$aForms.top200_override}{/if}" id="top200_override" size="60" maxlength=60 />
 					</div>
 				</div>
 				<div class="phrase_override_row default_phrase_override_container">

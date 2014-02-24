@@ -16,10 +16,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {if isset($sMessage) && $sMessage}
 	{literal}
 		<script type="text/javascript">
-			$(document).ready(function() {
+			$Behavior.message = function() {
 				$('#dvs_message').show('slow');
 				$('#dvs_message').animate({top: 0}, 1000).hide('slow');
-			});
+			}
 		</script>
 	{/literal}
 	<div class="message" id="dvs_message" style="display:none;">
