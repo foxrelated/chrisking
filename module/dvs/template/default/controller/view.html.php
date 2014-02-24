@@ -66,79 +66,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{template file='dvs.controller.player.player}
 	</section>
 
-	<section id="select_new">
-		{if $aVideoSelectYears}
-		<h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
-
-		{if isset($aVideoSelectYears.1)}
-		<ul>
-			{foreach from=$aVideoSelectYears item=iYear}
-			<li onclick="$('#dvs_select_box_year_text').html('{$iYear}'); $('#dvs_video_select_year_input').val('{$iYear}'); $.ajaxCall('dvs.getMakes', 'iYear={$iYear}');">
-				{$iYear}
-			</li>
-			{/foreach}
-		</ul>
-		{/if}
-
-		<ul>
-			{if isset($aValidVSMakes.0)}
-			{foreach from=$aValidVSMakes item=aMake}
-			<li onclick="$('#dvs_select_box_make_text').html('{$aMake.make}'); $('#dvs_video_select_make_input').val('{$aMake.make}'); $.ajaxCall('dvs.getModels', 'iYear={$aVideoSelectYears.0}&amp;sMake={$aMake.make}&amp;iDvsId={$Dvs.dvs_id}');">
-				{$aMake.make}
-			</li>
-			{/foreach}
-			{else}
-			<li>
-				{phrase var='dvs.please_select_a_year_first'}
-			</li>
-			{/if}
-		</ul>
-
-		<ul>
-			{if $aVideoSelectModels}
-			{foreach from=$aVideoSelectModels item=aModel}
-			<li onclick="$('#dvs_select_box_model_text').html('{$aModel.model}'); $.ajaxCall('dvs.videoSelect', 'sModel={$aModel.model}&amp;iYear=' + $('#dvs_video_select_year_input').val() + '&amp;sMake=' + $('#dvs_video_select_make_input').val() + '&amp;sPlaylistBorder=' + $('#dvs_playlist_border_color').val());">
-				{$aModel.year} {$aModel.model}
-			</li>
-			{/foreach}
-			{else}
-			<li>
-				{phrase var='dvs.please_select_a_year_first'}
-			</li>
-			{/if}
-		</ul>
-		{/if}
-
-		<a href="./" onclick="menuHome('Call To Action Menu Clicks');">
-			{phrase var='dvs.cta_home'}
-		</a>
-		{if $aDvs.inventory_url}
-		<a href="{$aDvs.inventory_url}" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow">
-			{phrase var='dvs.cta_inventory'}
-		</a>
-		{/if}
-		{if $aDvs.specials_url}
-		<a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow">
-			{phrase var='dvs.cta_specials'}
-		</a>
-		{/if}
-		<a href="#" onclick="menuContact('Call To Action Menu Clicks'); getPrice({$iDvsId});">
-			{phrase var='dvs.cta_contact'}
-		</a>
-
-		<p>Click to Share:</p> 
-		<a href="#" onclick="showShareEmail({$iDvsId});">
-			<img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
-		</a>					
-		<a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), 'facebook-share-dialog', 'width=626,height=436'); facebookShareClick(); return false;">
-			<img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
-		</a>
-		<a href="https://twitter.com/share" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>
-		<a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href)); googleShareClick(); return false;">
-			<img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
-		</a>
-	</section>
-
 	<section>
 		<h3>
 			<a href="location.href">
@@ -146,7 +73,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</a>
 		</h3>
 
-<!--		<div id="video_long_description"{if strlen($aDvs.phrase_overrides.override_video_name_display) > $iLongDescLimit} style="display:none;"{/if}>
+		<div id="video_long_description"{if strlen($aDvs.phrase_overrides.override_video_name_display) > $iLongDescLimit} style="display:none;"{/if}>
 			 <p id="video_long_description_text">
 				{$aDvs.phrase_overrides.override_video_description_display}
 			</p>
@@ -162,7 +89,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<p id="video_long_description_shortened_control">
 				[<a onclick="$('#video_long_description_shortened').hide(); $('#video_long_description').show();" class="text_expander_links" href="#">more</a>]
 			</p>
-		</div>-->
+		</div>
 
 		{if empty($aOverrideVideo.ko_id)}
 		<section>
@@ -179,16 +106,93 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow">{$aDvs.url}</a>
 		{/if}
 		{if $aDvs.phone}<br />{phrase var='dvs.phone'}: <span itemprop="telephone">{$aDvs.phone}</span>{/if}
-		<div itemscope itemtype="http://schema.org/PostalAddress">
+		<p itemscope itemtype="http://schema.org/PostalAddress">
 			{if $aDvs.address}Address: <span itemprop="streetAddress">{$aDvs.address}</span><br />{/if}
 			<span itemprop="addressLocality">{$aDvs.city}</span>, <span itemprop="addressRegion">{$aDvs.state_string}</span>, <span itemprop="postalCode">{$aDvs.postal_code}</span>
-		</div>
+		</p>
 	</aside>
 
+	<div>
+		<section id="select_new">
+			{if $aVideoSelectYears}
+			<h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
+
+			{if isset($aVideoSelectYears.1)}
+			<ul>
+				<li class="init">Select Year</li>
+				{foreach from=$aVideoSelectYears item=iYear}
+				<li onclick="$.ajaxCall('dvs.getMakes', 'iYear={$iYear}&sDvsName={$aDvs.dvs_name}');">
+					{$iYear}
+				</li>
+				{/foreach}
+			</ul>
+			{/if}
+
+			<ul id="makes">
+				{if isset($aValidVSMakes.0)}
+				{foreach from=$aValidVSMakes item=aMake}
+				<li onclick="$('#dvs_select_box_make_text').html('{$aMake.make}'); $('#dvs_video_select_make_input').val('{$aMake.make}'); $.ajaxCall('dvs.getModels', 'iYear={$aVideoSelectYears.0}&amp;sMake={$aMake.make}&amp;iDvsId={$Dvs.dvs_id}');">
+					{$aMake.make}
+				</li>
+				{/foreach}
+				{else}
+				<li class="init">
+					{phrase var='dvs.please_select_a_year_first'}
+				</li>
+				{/if}
+			</ul>
+
+			<ul id="models">
+				{if $aVideoSelectModels}
+				{foreach from=$aVideoSelectModels item=aModel}
+				<li onclick="$('#dvs_select_box_model_text').html('{$aModel.model}'); $.ajaxCall('dvs.videoSelect', 'sModel={$aModel.model}&amp;iYear=' + $('#dvs_video_select_year_input').val() + '&amp;sMake=' + $('#dvs_video_select_make_input').val() + '&amp;sPlaylistBorder=' + $('#dvs_playlist_border_color').val());">
+					{$aModel.year} {$aModel.model}
+				</li>
+				{/foreach}
+				{else}
+				<li class="init">
+					{phrase var='dvs.please_select_a_year_first'}
+				</li>
+				{/if}
+			</ul>
+			{/if}
+		</section>
+		<section>
+			<a href="./" onclick="menuHome('Call To Action Menu Clicks');">
+				{phrase var='dvs.cta_home'}
+			</a>
+			{if $aDvs.inventory_url}
+			<a href="{$aDvs.inventory_url}" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow">
+				{phrase var='dvs.cta_inventory'}
+			</a>
+			{/if}
+			{if $aDvs.specials_url}
+			<a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow">
+				{phrase var='dvs.cta_specials'}
+			</a>
+			{/if}
+			<a href="#" onclick="menuContact('Call To Action Menu Clicks'); getPrice({$iDvsId});">
+				{phrase var='dvs.cta_contact'}
+			</a>
+		</section>
+		<section>
+			<p>Click to Share:</p> 
+			<a href="#" onclick="showShareEmail({$iDvsId});">
+				<img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
+			</a>					
+			<a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), 'facebook-share-dialog', 'width=626,height=436'); facebookShareClick(); return false;">
+				<img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
+			</a>
+			<a href="https://twitter.com/share" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>
+			<a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href)); googleShareClick(); return false;">
+				<img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
+			</a>
+		</section>
+	</div>
 </article>
 
 <footer>
-	<h2>{phrase var='dvs.more_videos'}</h2>
+	<h3>{phrase var='dvs.more_videos'}</h3>
 	<ul>
 		{foreach from=$aFooterLinks key=iKey item=aVideo name=videos}				
 		<li>

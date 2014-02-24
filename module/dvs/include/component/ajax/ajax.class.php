@@ -1,5 +1,4 @@
 <?php
-
 /**
  * [PHPFOX_HEADER]
  */
@@ -12,8 +11,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @author  		James
  * @package 		DVS
  */
-class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
-
+class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
+{
 	public function generateShortUrl()
 	{
 		$iDvsId = $this->get('dvs_id');
@@ -36,14 +35,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		$this->val('#' . $sReturnId, $sUrl);
 	}
 
-
 	public function getPrice()
 	{
 		Phpfox::getBlock('dvs.get-price');
 		$this->html('#dvs_get_price_container', $this->getContent(false));
 		$this->show('#dvs_get_price_container', 'fast');
 	}
-
 
 	public function showShareEmail()
 	{
@@ -52,7 +49,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		$this->call('checkModernizr();');
 		$this->show('#dvs_share_email_wrapper', 'fast');
 	}
-
 
 	public function deletePlayer()
 	{
@@ -66,7 +62,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		Phpfox::getService('dvs.player.process')->remove($iPlayerId);
 	}
 
-
 	public function deleteDvs()
 	{
 		$iDvsId = $this->get('dvs_id');
@@ -79,14 +74,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		Phpfox::getService('dvs.process')->remove($iDvsId);
 	}
 
-
 	public function deleteTheme()
 	{
 		$iThemeId = $this->get('theme_id');
 
 		Phpfox::getService('dvs.theme.process')->remove($iThemeId);
 	}
-
 
 	public function logoFileProcess()
 	{
@@ -119,7 +112,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		}
 	}
 
-
 	public function brandingFileProcess()
 	{
 		$iUserId = $this->get('user_id');
@@ -150,7 +142,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 			$this->show('#js_branding_file_upload_error');
 		}
 	}
-
 
 	public function backgroundFileProcess()
 	{
@@ -183,7 +174,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		}
 	}
 
-
 	public function prerollFileProcess()
 	{
 		$iUserId = $this->get('user_id');
@@ -215,7 +205,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		}
 	}
 
-
 	public function removeBrandingFile()
 	{
 		$iBrandingId = $this->get('iBrandingFileId');
@@ -227,7 +216,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 
 		Phpfox::getService('dvs.file.process')->removeBranding($iBrandingId);
 	}
-
 
 	public function removeBackgroundFile()
 	{
@@ -241,7 +229,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		Phpfox::getService('dvs.file.process')->removeBackground($iBackgroundId);
 	}
 
-
 	public function removeLogoFile()
 	{
 		$iLogoId = $this->get('iLogoFileId');
@@ -253,7 +240,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 
 		Phpfox::getService('dvs.file.process')->removeLogo($iLogoId);
 	}
-
 
 	public function removePrerollFile()
 	{
@@ -267,36 +253,30 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		Phpfox::getService('dvs.file.process')->removePreRoll($iPrerollId);
 	}
 
-
 	public function moreInfoPlayerType()
 	{
 		$this->template()->getTemplate('dvs.block.more-info.player-type');
 	}
-
 
 	public function moreInfoDomainName()
 	{
 		$this->template()->getTemplate('dvs.block.more-info.domain-name');
 	}
 
-
 	public function moreInfoLogoBranding()
 	{
 		$this->template()->getTemplate('dvs.block.more-info.logo-branding');
 	}
-
 
 	public function moreInfoPrerollSwf()
 	{
 		$this->template()->getTemplate('dvs.block.more-info.preroll-swf');
 	}
 
-
 	public function moreInfoPrerollDuration()
 	{
 		$this->template()->getTemplate('dvs.block.more-info.preroll-duration');
 	}
-
 
 	public function previewPlayer()
 	{
@@ -321,7 +301,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		}
 	}
 
-
 	public function updateTitleUrl()
 	{
 		$sDvsName = Phpfox::getLib('request')->get('dvs_name');
@@ -339,7 +318,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 			$this->call('$("#title_url_display").html("' . Phpfox::getLib('url')->makeUrl('dvs', $sTitleUrl) . '");');
 		}
 	}
-
 
 	public function changeVideo()
 	{
@@ -496,7 +474,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		$this->val('#contact_dvs_id', $aDvs['dvs_id']);
 	}
 
-
 	public function contactDealer()
 	{
 		$aVals = Phpfox::getLib('request')->getArray('val');
@@ -591,7 +568,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		}
 	}
 
-
 	public function sendShareEmail()
 	{
 		$aVals = Phpfox::getLib('request')->getArray('val');
@@ -671,7 +647,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		}
 	}
 
-
 	public function chooseTheme()
 	{
 		$iThemeId = Phpfox::getLib('request')->get('theme_id');
@@ -742,140 +717,191 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		}
 	}
 
-
 	public function getMakes()
 	{
-		if (Phpfox::getParam('dvs.enable_subdomain_mode'))
-		{
-			$sDvsTitle = $this->get('req1');
-		}
-		else
-		{
-			$sDvsTitle = $this->get('req1');
-		}
-		$aDvs = Phpfox::getService('dvs')->get($sDvsTitle, true);
+		// Get the variables from the ajax call.
+		$sDvsName = $this->get('sDvsName');
+		$iYear = $this->get('iYear');
+
+		// Get the DVS details based off the DVS name.
+		$aDvs = Phpfox::getService('dvs')->get($sDvsName, true);
 		$aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 
-		$iYear = $this->get('iYear');
-		if (!$iYear || !$aDvs)
-		{
-			return false;
-		}
-
-		$sSelectOptions = '';
-
+		// Get all of the makes for the DVS for the selected year.
 		$aMakes = Phpfox::getService('dvs.video')->getValidVSMakes($iYear, $aPlayer['makes']);
 
-		$sBrowser = Phpfox::getService('dvs')->getBrowser();
+		// The first list item should be one to tell the user to select a make.
+		$sSelectOptions = '<li class="init">' . Phpfox::getPhrase('dvs.select_make') . '</li>';
 
-		if ($sBrowser == 'mobile' || $sBrowser == 'ipad')
+		// Build the ul list items
+		foreach ($aMakes as $aMake)
 		{
-			$sSelect = '<select id="dvs_video_select_make" class="dvs_select" onchange="$.ajaxCall(\'dvs.getModels\', \'sMake=\' + this.value + \'&amp;iYear=\'+$(\'#dvs_video_select_year\').val());"><option value="">' . Phpfox::getPhrase('dvs.select_make') . '</option>';
-			foreach ($aMakes as $aMake)
-			{
-				$sSelect .= '<option value="' . $aMake['make'] . '"' . (count($aMakes) == 1 ? ' selected="selected"' : '') . '>' . $aMake['make'] . '</option>';
-			}
-			$sSelect .= '</select>';
-		}
-		else
-		{
-
-			foreach ($aMakes as $aMake)
-			{
-				$sSelectOptions .= '<li><a href="#" onclick="$(\'#dvs_select_box_make_text\').html(\'' . $aMake['make'] . '\');$.ajaxCall(\'dvs.getModels\', \'iYear=' . $iYear . '&amp;sMake=' . $aMake['make'] . '&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aMake['make'] . '</a></li>';
-			}
-
-			$sSelect = '<div class="dvs_select_box_anchor" data-dropdown="#dvs_video_select_make" data-vertical-offset="15"><div class="dvs_select_box_anchor_text" id="dvs_select_box_make_text">' . Phpfox::getPhrase('dvs.select_make') . '</div></div>';
-			$sSelect .= '<div class="dropdown dvs_select_options_container dropdown-anchor-right dropdown-relative" id="dvs_video_select_make">';
-			$sSelect .= '<ul class="dropdown-menu">';
-
-			if ($sSelectOptions)
-			{
-				$sSelect .= $sSelectOptions;
-			}
-			else
-			{
-				$sSelect .= '<li><a href="#">No Makes Found</a></li>';
-			}
-
-			$sSelect .= '</ul>';
-			$sSelect .= '</div>';
-
-			$this->html('#dvs_select_box_model_text', Phpfox::getPhrase('dvs.select_model'));
-			$this->val('#dvs_video_select_model_input', '');
+			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.getModels\', \'iYear=' . $iYear . '&amp;sMake=' . $aMake['make'] . '\');">' . $aMake['make'] . '</li>';
 		}
 
-		$this->remove('.dvs_year_reset');
-		$this->html('#dvs_vehicle_select_make_container', $sSelect);
-		$this->html('#dvs_vehicle_select_model_placeholder', '<a href="#">' . Phpfox::getPhrase('dvs.please_select_a_make_first') . '</a>');
+		// Replace the old html with the new list items.
+		$this->html('#makes', $sSelectOptions);
+		$this->html('#models', '<li>' . Phpfox::getPhrase('dvs.please_select_a_make_first') . '</li>');
 
-		if (count($aMakes) == 1)
-		{
-			$this->getModels($iYear, $aMakes[0]['make']);
-		}
+//		if (Phpfox::getParam('dvs.enable_subdomain_mode'))
+//		{
+//			$sDvsTitle = $this->get('req1');
+//		}
+//		else
+//		{
+//			$sDvsTitle = $this->get('req1');
+//		}
+//		$aDvs = Phpfox::getService('dvs')->get($sDvsTitle, true);
+//		$aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
+//
+//		$iYear = $this->get('iYear');
+//		
+//		if (!$iYear || !$aDvs)
+//		{
+//			return false;
+//		}
+//
+//		$sSelectOptions = '';
+//
+//		$aMakes = Phpfox::getService('dvs.video')->getValidVSMakes($iYear, $aPlayer['makes']);
+//
+//		$sBrowser = Phpfox::getService('dvs')->getBrowser();
+//
+//		if ($sBrowser == 'mobile' || $sBrowser == 'ipad')
+//		{
+//			$sSelect = '<select id="dvs_video_select_make" class="dvs_select" onchange="$.ajaxCall(\'dvs.getModels\', \'sMake=\' + this.value + \'&amp;iYear=\'+$(\'#dvs_video_select_year\').val());"><option value="">' . Phpfox::getPhrase('dvs.select_make') . '</option>';
+//			foreach ($aMakes as $aMake)
+//			{
+//				$sSelect .= '<option value="' . $aMake['make'] . '"' . (count($aMakes) == 1 ? ' selected="selected"' : '') . '>' . $aMake['make'] . '</option>';
+//			}
+//			$sSelect .= '</select>';
+//		}
+//		else
+//		{
+//
+//			foreach ($aMakes as $aMake)
+//			{
+//				$sSelectOptions .= '<li><a href="#" onclick="$(\'#dvs_select_box_make_text\').html(\'' . $aMake['make'] . '\');$.ajaxCall(\'dvs.getModels\', \'iYear=' . $iYear . '&amp;sMake=' . $aMake['make'] . '&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aMake['make'] . '</a></li>';
+//			}
+//
+//			$sSelect = '<div class="dvs_select_box_anchor" data-dropdown="#dvs_video_select_make" data-vertical-offset="15"><div class="dvs_select_box_anchor_text" id="dvs_select_box_make_text">' . Phpfox::getPhrase('dvs.select_make') . '</div></div>';
+//			$sSelect .= '<div class="dropdown dvs_select_options_container dropdown-anchor-right dropdown-relative" id="dvs_video_select_make">';
+//			$sSelect .= '<ul class="dropdown-menu">';
+//
+//			if ($sSelectOptions)
+//			{
+//				$sSelect .= $sSelectOptions;
+//			}
+//			else
+//			{
+//				$sSelect .= '<li><a href="#">No Makes Found</a></li>';
+//			}
+//
+//			$sSelect .= '</ul>';
+//			$sSelect .= '</div>';
+//
+//			$this->html('#dvs_select_box_model_text', Phpfox::getPhrase('dvs.select_model'));
+//			$this->val('#dvs_video_select_model_input', '');
+//		}
+//		echo 'test';
+//		$this->html('#makes', $sSelectOptions);
+////		$this->remove('.dvs_year_reset');
+////		$this->html('#dvs_vehicle_select_make_container', $sSelect);
+////		$this->html('#dvs_vehicle_select_model_placeholder', '<a href="#">' . Phpfox::getPhrase('dvs.please_select_a_make_first') . '</a>');
+//
+//		if (count($aMakes) == 1)
+//		{
+//			$this->getModels($iYear, $aMakes[0]['make']);
+//		}
 	}
-
 
 	public function getModels($iYear = 0, $sMake = '')
 	{
-		if (!$iYear || !$sMake)
-		{
-			$sMake = $this->get('sMake');
-			$iYear = $this->get('iYear');
-		}
-		else
-		{
-			$this->html('#dvs_select_box_make_text', $sMake);
-			$this->val('#dvs_video_select_make_input', $sMake);
-		}
+		// Set the variables to determine which models to get.
+		$sMake = $this->get('sMake');
+		$iYear = $this->get('iYear');
 
-		if (!$sMake)
-		{
-			return false;
-		}
-
-		$sSelectOptions = '';
-
+		// Get a list of models that belong to the make and year.
 		$aModels = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, '', true);
 
-		$sBrowser = Phpfox::getService('dvs')->getBrowser();
-
-		if ($sBrowser == 'mobile' || $sBrowser == 'ipad')
+		// Are there models to add to the drop down menu?
+		if (!empty($aModels))
 		{
-			$sSelect = '<select id="dvs_video_select_model" class="dvs_select" onchange="$.ajaxCall(\'dvs.videoSelect\', \'sModel=\' + this.value + \'&amp;sMake=' . $sMake . '&amp;iYear=\' + $(\'#dvs_video_select_year\').val() + \'&amp;sPlaylistBorder=\' + $(\'#contact_dvs_id\').val() + \'&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());"><option value="">' . Phpfox::getPhrase('dvs.select_model') . '</option>';
-			foreach ($aModels as $aModel)
-			{
-				$sSelect .= '<option class="dvs_year_reset" value="' . $aModel['model'] . '">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</option>';
-			}
-			$sSelect .= '</select>';
+			// Yes, begin to create the drop down menu.
+			$sSelectOptions = '<li class="init">' . Phpfox::getPhrase('dvs.select_model') . '</li>';
 		}
 		else
 		{
-			foreach ($aModels as $aModel)
-			{
-				$sSelectOptions .= '<li class="dvs_year_reset"><a href="#" class="video_type_' . $aModel['video_type'] . '" onclick="$(\'#dvs_select_box_model_text\').html(\'' . $aModel['year'] . ' ' . $aModel['model'] . '\');$.ajaxCall(\'dvs.videoSelect\', \'sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=\' + $(\'#contact_dvs_id\').val() + \'&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</a></li>';
-			}
-
-			$sSelect = '<div class="dvs_select_box_anchor" data-dropdown="#dvs_video_select_model" data-vertical-offset="15"><div class="dvs_select_box_anchor_text" id="dvs_select_box_model_text">' . Phpfox::getPhrase('dvs.select_model') . '</div></div>';
-			$sSelect .= '<div class="dropdown dvs_select_options_container dropdown-anchor-right dropdown-relative" id="dvs_video_select_model">';
-			$sSelect .= '<ul class="dvs_year_reset dropdown-menu">';
-
-			if ($sSelectOptions)
-			{
-				$sSelect .= $sSelectOptions;
-			}
-			else
-			{
-				$sSelect .= '<li class="dvs_year_reset"><a href="#">No Models Found</a></li>';
-			}
-
-			$sSelect .= '</ul>';
-			$sSelect .= '</div>';
+			// No, let the user know there were no models found.
+			$sSelectOptions = '<li class="init">No Models Found</li>';
 		}
 
-		$this->html('#dvs_vehicle_select_model_container', $sSelect);
-	}
+		// Add each model to the drop down.
+		foreach ($aModels as $aModel)
+		{
+			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.videoSelect\', \'sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=\' + $(\'#contact_dvs_id\').val() + \'&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
+		}
 
+		// Display the dropdown on the page.
+		$this->html('#models', $sSelectOptions);
+
+//		if (!$iYear || !$sMake)
+//		{
+//			$sMake = $this->get('sMake');
+//			$iYear = $this->get('iYear');
+//		}
+//		else
+//		{
+//			$this->html('#dvs_select_box_make_text', $sMake);
+//			$this->val('#dvs_video_select_make_input', $sMake);
+//		}
+//		
+//		if (!$sMake)
+//		{
+//			return false;
+//		}
+//
+//		$sSelectOptions = '';
+//
+//		$aModels = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, '', true);
+//
+//		$sBrowser = Phpfox::getService('dvs')->getBrowser();
+//
+//		if ($sBrowser == 'mobile' || $sBrowser == 'ipad')
+//		{
+//			$sSelect = '<select id="dvs_video_select_model" class="dvs_select" onchange="$.ajaxCall(\'dvs.videoSelect\', \'sModel=\' + this.value + \'&amp;sMake=' . $sMake . '&amp;iYear=\' + $(\'#dvs_video_select_year\').val() + \'&amp;sPlaylistBorder=\' + $(\'#contact_dvs_id\').val() + \'&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());"><option value="">' . Phpfox::getPhrase('dvs.select_model') . '</option>';
+//			foreach ($aModels as $aModel)
+//			{
+//				$sSelect .= '<option class="dvs_year_reset" value="' . $aModel['model'] . '">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</option>';
+//			}
+//			$sSelect .= '</select>';
+//		}
+//		else
+//		{
+//			foreach ($aModels as $aModel)
+//			{
+//				$sSelectOptions .= '<li class="dvs_year_reset"><a href="#" class="video_type_' . $aModel['video_type'] . '" onclick="$(\'#dvs_select_box_model_text\').html(\'' . $aModel['year'] . ' ' . $aModel['model'] . '\');$.ajaxCall(\'dvs.videoSelect\', \'sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=\' + $(\'#contact_dvs_id\').val() + \'&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</a></li>';
+//			}
+//
+//			$sSelect = '<div class="dvs_select_box_anchor" data-dropdown="#dvs_video_select_model" data-vertical-offset="15"><div class="dvs_select_box_anchor_text" id="dvs_select_box_model_text">' . Phpfox::getPhrase('dvs.select_model') . '</div></div>';
+//			$sSelect .= '<div class="dropdown dvs_select_options_container dropdown-anchor-right dropdown-relative" id="dvs_video_select_model">';
+//			$sSelect .= '<ul class="dvs_year_reset dropdown-menu">';
+//
+//			if ($sSelectOptions)
+//			{
+//				$sSelect .= $sSelectOptions;
+//			}
+//			else
+//			{
+//				$sSelect .= '<li class="dvs_year_reset"><a href="#">No Models Found</a></li>';
+//			}
+//
+//			$sSelect .= '</ul>';
+//			$sSelect .= '</div>';
+//		}
+//
+//		$this->html('#dvs_vehicle_select_model_container', $sSelect);
+	}
 
 	public function getFeaturedModels()
 	{
@@ -905,7 +931,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 
 		$this->html('#featured_model', $sSelect);
 	}
-
 
 	/**
 	 * Select a video based on the year, make, and model selected in the video select drop down box
@@ -946,17 +971,16 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 				'max_width' => 145,
 				'max_height' => 82));
 
-			$sPlaylistHtml .= '<li><div class="playlist_thumbnail_image_container">' .
+			$sPlaylistHtml .= '<li>' .
 				'<a href="#" onclick="' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? 'modVid.loadVideoByID' : 'modCon.getMediaAsynch') . '(aMediaIds[' . $iKey . ']);return false;">' .
-				'<div class="playlist_thumbnail_image_overlay"></div>' .
-				'<div class="playlist_thumbnail_image_overlay_text"><table class="playlist_thumbnail_image_overlay_text_table"><tr><td>' . $aVideo['year'] . ' ' . $aVideo['model'] . '</td></tr></table></div>' .
-				$sThumbnailImageHtml . '</a>' .
-				'</div></li>';
+				
+				$sThumbnailImageHtml . '<p>' . $aVideo['year'] . ' ' . $aVideo['model'] . '</p></a>' .
+				'</li>';
 		}
 
-		$sPlaylistHtml .= '<li></li><li></li></ul>';
+		$sPlaylistHtml .= '</ul>';
 
-		$this->html('#video_select_playlist', $sPlaylistHtml);
+		$this->html('#overview_playlist', $sPlaylistHtml);
 		//Enable playlist for jCarousel
 
 		if ($sBrowser != 'mobile')
@@ -968,7 +992,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 		$this->call('watchVideoSelect(aVideoSelectMediaIds);');
 	}
 
-
 	public function removeTeamMember()
 	{
 		$iSalesTeamId = $this->get('salesteam_id');
@@ -977,13 +1000,11 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax {
 
 		$this->hide('#sales_team_member_' . $iSalesTeamId);
 	}
-	
+
 	public function showGetPriceForm()
 	{
 		Phpfox::getBlock('dvs.get-price');
 	}
 
-
 }
-
 ?>

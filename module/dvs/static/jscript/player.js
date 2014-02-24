@@ -30,9 +30,9 @@ if (bDebug) {
 function watchOverviews() {
 	aMediaIds = aOverviewMediaIds;
 	playVideo(1);
-	$('#test_drive_playlist').hide('slow');
-	$('#video_select_playlist').hide('slow');
-	$('#overview_playlist').show('slow');
+//	$('#test_drive_playlist').hide('slow');
+//	$('#video_select_playlist').hide('slow');
+//	$('#overview_playlist').show('slow');
 	if (bDebug) {
 		console.log("Player: Switching to Overviews");
 	}
@@ -44,9 +44,9 @@ function watchOverviews() {
 function watchTestDrives() {
 	aMediaIds = aTestDriveMediaIds;
 	playVideo(0);
-	$('#overview_playlist').hide('slow');
-	$('#video_select_playlist').hide('slow');
-	$('#test_drive_playlist').show('slow');
+//	$('#overview_playlist').hide('slow');
+//	$('#video_select_playlist').hide('slow');
+//	$('#test_drive_playlist').show('slow');
 	if (bDebug) {
 		console.log("Switching to Test Drives");
 	}
@@ -62,9 +62,9 @@ function watchVideoSelect(aVideoSelectMediaIds) {
 
 	playVideo(0);
 
-	$('#overview_playlist').hide('slow');
-	$('#test_drive_playlist').hide('slow');
-	$('#video_select_playlist').show('slow');
+//	$('#overview_playlist').hide('slow');
+//	$('#test_drive_playlist').hide('slow');
+//	$('#video_select_playlist').show('slow');
 	if (bDebug) {
 		console.log("Player: Switching to Video Select");
 	}
@@ -78,7 +78,7 @@ function watchVideoSelect(aVideoSelectMediaIds) {
 
 //Seek to new cue point if it's different than the one we're in, call cueChange
 function changeCuePoint(sCuePoint) {
-	if (sCurrentCuePoint !== sCuePoint) {
+	if (sCurrentCuePoint !== sCuePoint && !$('#chapter_container_' + sCuePoint).hasClass('disabled')) {
 
 		var oCustomVars = {
 			1: {

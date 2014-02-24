@@ -57,14 +57,65 @@ article
 	margin-left: auto;
 }
 
-article #player
+#player
 {
 	display: block;
 }
 
-article #select_new
+#overview_playlist ul
+{
+	margin: 0px;
+	padding: 0px;
+	position: relative;
+	list-style-type: none;
+	z-index: 1;
+	width: 1595px;
+	left: 0px;
+}
+
+#overview_playlist li
+{
+	overflow: hidden;
+	float: left;
+	width: 145px;
+	height: 99px;
+}
+
+#dvs_geomap_container
+{
+	width:350px;;
+	height:240px;
+}
+
+#select_new
 {
 	display: block;
+}
+
+#select_new ul
+{
+	height: 30px;
+	width: 150px;
+	border: 1px #000 solid;
+	display: block;
+}
+
+#select_new ul li 
+{
+	padding: 5px 10px;
+	z-index: 11;
+}
+
+#select_new ul li:not(.init)
+{
+	float: left;
+	width: 130px;
+	display: none;
+}
+
+#select_new ul li.init
+{
+	cursor: pointer;
 }
 
 footer

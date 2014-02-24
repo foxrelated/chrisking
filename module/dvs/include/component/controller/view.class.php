@@ -27,7 +27,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		}
 
 		$aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
-
+		
 		// Try a short URL
 		if (empty($aDvs))
 		{
@@ -223,6 +223,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 					'showroom.css' => 'module_dvs',
 					'google_maps.js' => 'module_dvs',
 					'overlay.js' => 'module_dvs',
+					'dropdown.js' => 'module_dvs',
 //					'jquery.dropdown.js' => 'module_dvs',
 //					'jquery.dropdown.css' => 'module_dvs'
 			));
@@ -237,17 +238,13 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			))
 			->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
 			->setHeader(array(
-				'<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>',
 //				'<style type="text/css">' . Phpfox::getService('dvs')->getCss($aDvs, $bSubdomainMode) . '</style>',
 //				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aPlayer) . '</style>',
 				'player.js' => 'module_dvs',
-				'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
 //				'modernizr.js' => 'module_dvs',
-				'<script type="text/javascript">' . $sDvsJs . '</script>',
 				'google_analytics.js' => 'module_dvs',
 //				'<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>',
 //				'<script type="text/javascript">var jqDvs = jQuery.noConflict();</script>',
-				'<script type="text/javascript">aCurrentVideoMetaData.referenceId ="' . $aFirstVideo['referenceId'] . '";aCurrentVideoMetaData.year ="' . $aFirstVideo['year'] . '";aCurrentVideoMetaData.make ="' . $aFirstVideo['make'] . '";aCurrentVideoMetaData.model ="' . $aFirstVideo['model'] . '";</script> ',
 				'dvs.js' => 'module_dvs',
 				'<meta property = "og:image" content = "' . ($aFirstVideo['video_still_image'] ? Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['video_still_image'] : '') . '"/>',
 				'chapter_buttons.css' => 'module_dvs'
@@ -281,6 +278,10 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				. '<script type="text/javascript">var sFirstVideoTitleUrl = "' . $aFirstVideo['video_title_url'] . '";</script>'
 				. '<script type="text/javascript">var sDvsTitleUrl = "' . $aDvs['title_url'] . '";</script>'
 				. '<script type="text/javascript">var bGoogleAnalytics = true;</script>'
+				. '<script type="text/javascript">aCurrentVideoMetaData.referenceId ="' . $aFirstVideo['referenceId'] . '";aCurrentVideoMetaData.year ="' . $aFirstVideo['year'] . '";aCurrentVideoMetaData.make ="' . $aFirstVideo['make'] . '";aCurrentVideoMetaData.model ="' . $aFirstVideo['model'] . '";</script> '
+				. '<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>'
+				. '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
+				. '<script type="text/javascript">' . $sDvsJs . '</script>'
 		));
 	}
 
