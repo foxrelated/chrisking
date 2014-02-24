@@ -123,7 +123,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{r}
 
 	$Behavior.jCarousel = function() {l}
-	console.log('carousel');
 	{if $bIsDvs}
 	$("#overview_playlist").jCarouselLite({l}
 	btnNext: ".next",

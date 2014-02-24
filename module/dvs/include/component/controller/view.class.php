@@ -241,6 +241,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 //				'<style type="text/css">' . Phpfox::getService('dvs')->getCss($aDvs, $bSubdomainMode) . '</style>',
 //				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aPlayer) . '</style>',
 				'player.js' => 'module_dvs',
+				'shorten.js' => 'module_dvs',
 //				'modernizr.js' => 'module_dvs',
 				'google_analytics.js' => 'module_dvs',
 //				'<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>',

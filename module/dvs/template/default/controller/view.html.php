@@ -12,6 +12,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @package 		DVS
  */
 ?>
+{literal}
+<script type="text/javascript">
+	$Behavior.shortenText = function() {
+			$(".model_description").shorten({
+			"showChars" : {/literal}{$iLongDescLimit}{literal},
+			"ellipsesText" : "...",
+			"moreText"  : "See More",
+			"lessText"  : "See Less",
+		});
+	}</script>
+{/literal}
 {if $sBrowser == 'mobile'}
 {template file='dvs.controller.view-mobile}
 {else}
@@ -73,32 +84,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</a>
 		</h3>
 
-		<div id="video_long_description"{if strlen($aDvs.phrase_overrides.override_video_name_display) > $iLongDescLimit} style="display:none;"{/if}>
-			 <p id="video_long_description_text">
-				{$aDvs.phrase_overrides.override_video_description_display}
-			</p>
-			<p id="video_long_description_control"{if strlen($aDvs.phrase_overrides.override_video_name_display) <= $iLongDescLimit} style="display:none;"{/if}>
-			   [<a onclick="$('#video_long_description').hide(); $('#video_long_description_shortened').show();" class="text_expander_links" href="#">less</a>]
-			</p>
-		</div>
+		<p class="model_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
 
-		<div id="video_long_description_shortened"{if strlen($aDvs.phrase_overrides.override_video_name_display) <= $iLongDescLimit} style="display:none;"{/if}>
-			 <p id="video_long_description_shortened_text">
-				{$aDvs.phrase_overrides.override_video_description_display|shorten:$iLongDescLimit:'...'}
-			</p>
-			<p id="video_long_description_shortened_control">
-				[<a onclick="$('#video_long_description_shortened').hide(); $('#video_long_description').show();" class="text_expander_links" href="#">more</a>]
-			</p>
-		</div>
-
-		{if empty($aOverrideVideo.ko_id)}
-		<section>
-			<h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
-			<span itemprop="description">{$aDvs.text_parsed}</span>
-		</section>
-		{/if}	
+			{if empty($aOverrideVideo.ko_id)}
+			<section>
+				<h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
+				<span itemprop="description">{$aDvs.text_parsed}</span>
+			</section>
+			{/if}	
 	</section>
-
 
 	<aside>
 		<div id="dvs_geomap_container" itemprop="map"></div>
