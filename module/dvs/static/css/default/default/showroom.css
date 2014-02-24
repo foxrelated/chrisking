@@ -69,5 +69,8 @@ article #select_new
 
 footer
 {
+	width: 1117px;
 	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }

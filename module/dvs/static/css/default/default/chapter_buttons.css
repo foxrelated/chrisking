@@ -10,7 +10,7 @@
 	display: none;
 }
 
-/*// CSS for Intro button*/
+/* CSS for Intro button*/
 
 #chapter_container_Intro.active
 {
@@ -32,7 +32,7 @@
 	background:url('../../../image/intro-disabled.png');
 }
 
-/*// CSS for WhatsNew button*/
+/* CSS for WhatsNew button*/
 
 #chapter_container_WhatsNew.active
 {
@@ -54,7 +54,7 @@
 	background:url('../../../image/whatsnew-disabled.png');
 }
 
-/*// CSS for Exterior button*/
+/* CSS for Exterior button*/
 
 #chapter_container_Exterior.active
 {
@@ -76,7 +76,7 @@
 	background:url('../../../image/exterior-disabled.png');
 }
 
-/*// CSS for the Interior button*/
+/* CSS for the Interior button*/
 
 #chapter_container_Interior.active
 {
@@ -98,7 +98,7 @@
 	background:url('../../../image/interior-disabled.png');
 }
 
-/*// CSS for the Power button*/
+/* CSS for the Power button*/
 
 #chapter_container_Power.active
 {
@@ -120,7 +120,7 @@
 	background:url('../../../image/power-disabled.png');
 }
 
-/*// CSS for the Fuel button*/
+/* CSS for the Fuel button*/
 
 #chapter_container_Fuel.active
 {
@@ -142,7 +142,7 @@
 	background:url('../../../image/fuel-disabled.png');
 }
 
-/*// CSS for the Features button*/
+/* CSS for the Features button*/
 
 #chapter_container_Features.active
 {
@@ -164,7 +164,7 @@
 	background:url('../../../image/features-disabled.png');
 }
 
-/*// CSS for the Safety button*/
+/* CSS for the Safety button*/
 
 #chapter_container_Safety.active
 {
@@ -186,7 +186,7 @@
 	background:url('../../../image/safety-disabled.png');
 }
 
-/*// CSS for the Pricing button*/
+/* CSS for the Pricing button*/
 
 #chapter_container_Pricing.active
 {
@@ -208,7 +208,7 @@
 	background:url('../../../image/pricing-disabled.png');
 }
 
-/*// CSS for the Warranty button*/
+/* CSS for the Warranty button*/
 
 #chapter_container_Warranty.active
 {
@@ -230,7 +230,7 @@
 	background:url('../../../image/warranty-disabled.png');
 }
 
-/*// CSS for the Summary button*/
+/* CSS for the Summary button*/
 
 #chapter_container_Summary.active
 {
@@ -252,7 +252,7 @@
 	background:url('../../../image/summary-disabled.png');
 }
 
-/*// CSS for the Overview button*/
+/* CSS for the Overview button*/
 
 #chapter_container_Overview.active
 {
@@ -274,7 +274,7 @@
 	background:url('../../../image/overview-disabled.png');
 }
 
-/*// CSS for the Performance button*/
+/* CSS for the Performance button*/
 
 #chapter_container_Performance.active
 {
@@ -296,7 +296,7 @@
 	background:url('../../../image/performance-disabled.png');
 }
 
-/*// CSS for the MPG button*/
+/* CSS for the MPG button*/
 
 #chapter_container_MPG.active
 {
@@ -340,7 +340,7 @@
 	background:url('../../../image/honors-disabled.png');
 }
 
-/*// CSS for the Get Price button*/
+/* CSS for the Get Price button*/
 
 #chapter_container_Get_Price.active
 {

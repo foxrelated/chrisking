@@ -733,10 +733,11 @@ function changeLights(sCuePoint) {
 //			{
 //				if (cuepoints[i].type === 1)
 //				{
-//					oCuePoints[cuepoints[i].name] = cuepoints[i].time;
+//					$('#chapter_container_' + sCuePoint).attr('onclick', 'changeCuePoint(\'' + cuepoints[i].name + '\');');
+////					oCuePoints[cuepoints[i].name] = cuepoints[i].time;
 ////					$('#chapter_buttons').append('<div id="chapter_container_' + cuepoints[i].name + '" class="chapter_button_container" onclick="changeCuePoint(\'' + cuepoints[i].name + '\');" style="display:none;">' + oChapterDivs[cuepoints[i].name] + '</div>');
 ////					$('#chapter_container_' + cuepoints[i].name).show();
-//					$('#chapter_container_' + cuepoints[i].name).attr('class','display active');
+////					$('#chapter_container_' + cuepoints[i].name).attr('class','display active');
 ////					$('#chapter_light_disabled_' + cuepoints[i].name).hide();
 ////					$('#chapter_light_yellow_' + cuepoints[i].name).show();
 //				}
