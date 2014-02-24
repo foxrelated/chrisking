@@ -1,17 +1,107 @@
-header
-{
-	width: 1117px;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+#site_content {
+	max-width: 1117px;
+	margin: 0 auto;
 }
 
+header a,
 header img
 {
 	display: block;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 0 auto;
 }
+
+nav ul
+{
+	height: 30px;
+	font-size: 18px;
+	padding-top: 5px;
+	padding-left: 10px;
+	margin-bottom: 10px;
+	-webkit-border-top-left-radius: 0px;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-top-right-radius: 0px;
+	-webkit-border-bottom-right-radius: 5px;
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-bottomleft: 5px;
+	-moz-border-radius-topright: 0px;
+	-moz-border-radius-bottomright: 5px;
+	behavior: url(border-radius.htc);
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 5px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 5px;
+}
+
+nav ul li,
+nav a
+{
+	display: inline;
+}
+
+nav li + li:before 
+{
+    content: " | ";
+    padding: 0 10px;
+}
+
+#player
+{
+	display: block;
+	width: 100%;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	behavior: url(border-radius.htc);
+	border-radius: 10px;
+	position: relative;
+	padding: 10px;
+	overflow: auto;
+}
+
+#playlist_wrapper
+{
+	width: 60%;
+	float: left;
+}
+
+.playlist-button
+{
+	height: 145px;
+}
+
+#overview_playlist {
+	display: inline-block;
+}
+
+#overview_playlist ul li {
+	position: relative;
+}
+
+#overview_playlist ul li p {
+	position: absolute;
+	top: 63px;
+	width: 100%;
+	text-align: center;
+	font-weight: bold;
+	color: #fff;
+}
+
+#dvs_bc_player
+{
+	float:left;
+	width: 60%;
+}
+
+#chapter_buttons
+{
+	float:right;
+	width: 20%;
+}
+
+#chapter_buttons button {
+	display: block;
+}
+
+/*
 
 nav ul
 {
@@ -62,6 +152,39 @@ article
 	display: block;
 }
 
+.playlist-button
+{
+	float: left;
+	margin: 0px 10px 0px 10px;
+	font-weight: bold;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	padding: 3px 6px;
+	color: #000000;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+	-webkit-transition-duration: 0.2s;
+	-moz-transition-duration: 0.2s;
+	transition-duration: 0.2s;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	behavior: url(border-radius.htc);
+	border-radius: 8px
+}
+
+#overview_playlist
+{
+	float: left;
+}
+
 #overview_playlist ul
 {
 	margin: 0px;
@@ -79,6 +202,34 @@ article
 	float: left;
 	width: 145px;
 	height: 99px;
+}
+
+.playlist_carousel_image_link
+{
+	height: 86px;
+	width: 149px;
+	padding: 2px;
+	margin: 0px 4px 0px 4px;
+}
+
+.playlist_carousel_image_link p
+{
+	text-align: center;
+	margin-top: -25px;
+	font-weight: bold;
+	color: #fff;
+}
+
+#chapter_buttons
+{
+	width: 150px;
+	clear: left;
+	float: right;
+}
+
+#chapter_buttons button
+{
+	display: block;
 }
 
 #dvs_geomap_container
@@ -124,4 +275,4 @@ footer
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
-}
+}*/
