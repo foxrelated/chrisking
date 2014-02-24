@@ -167,8 +167,11 @@ class Idrive_Component_Controller_Add extends Phpfox_Component {
 			//If there is an ID, we're editing
 			if (($iId = $this->request()->getInt('id')))
 			{
+				
+				// Do we get a player with the id?
 				if (($aPlayer = Phpfox::getService('idrive.player')->get($iId)))
 				{
+					// Is the user allowed to be here?
 					if ($aPlayer['user_id'] == Phpfox::getUserId() || Phpfox::isAdmin())
 					{
 						$bCanAddPlayers = true;
@@ -177,9 +180,11 @@ class Idrive_Component_Controller_Add extends Phpfox_Component {
 					{
 						$bCanAddPlayers = false;
 					}
-
+					
+					// Initialize an empty array.
 					$aPlayerModels = array();
 
+					// Check to see which makes out of all makes need to be selected for this player.
 					foreach ($aMakes as $iKey => $aMake)
 					{
 						foreach ($aPlayer['makes'] as $aPlayerMake)
@@ -190,7 +195,8 @@ class Idrive_Component_Controller_Add extends Phpfox_Component {
 							}
 						}
 					}
-
+					
+					// Check to see which years out of all years needs to be selected.
 					foreach ($aYears as $iYear)
 					{
 						foreach ($aMakes as $aMake)
@@ -263,6 +269,7 @@ class Idrive_Component_Controller_Add extends Phpfox_Component {
 
 		$this->template()->setHeader(array(
 				'jquery.multiselect.min.js' => 'module_dvs',
+				'add_player.css' => 'module_dvs',
 				'jquery.multiselect.css' => 'module_dvs',
 				'validate.js' => 'module_dvs',
 				'jquery.animate-shadow-min.js' => 'module_dvs'

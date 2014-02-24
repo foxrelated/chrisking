@@ -268,6 +268,12 @@ class Idrive_Service_Player_Player extends Phpfox_Service {
 			->where('p.player_id =' . (int) $iPlayerId)
 			->execute('getRow');
 
+		// Does this player have a preroll file?
+		// This table should have been set to null
+		if($aPlayer['preroll_file_id'] == 0){
+			$aPlayer['preroll_file_id'] = null;
+		}
+		
 		if ($aPlayer)
 		{
 			$aPlayer['makes'] = $this->database()

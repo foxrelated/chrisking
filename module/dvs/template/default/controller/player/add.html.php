@@ -237,9 +237,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<ol>
 			<li>
 				{if $bIsEdit}
-				<label>{phrase var='dvs.current_file'}:</label>
+				<label id="preroll_file_label">{phrase var='dvs.current_file'}:</label>
 				{else}
-				<label>{phrase var='dvs.select_file'}:</label>
+				<label id="preroll_file_label">{phrase var='dvs.select_file'}:</label>
 				{/if}
 
 				<div id="js_preroll_file_upload_error" style="display:none;">
@@ -270,7 +270,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</li>
 			<li>
 				<label for="preroll_duration">{phrase var='dvs.pre_roll_duration'}:</label>
-				<input type="text" name="val[preroll_duration]" value="{value type='input' id='preroll_duration'}" id="preroll_duration" size="10"/>
+				<input type="number" name="val[preroll_duration]" value="{value type='input' id='preroll_duration'}" id="preroll_duration" size="10" required />
 			</li>
 			<li>
 				<label for="preroll_url">{phrase var='dvs.pre_roll_url'}:</label>

@@ -82,7 +82,8 @@ class Idrive_Service_Player_Process extends Phpfox_Service
 			Phpfox::getService('idrive.file.process')->removeLogo($aPlayer['logo_file_id']);
 		}
 
-		if ($aPlayer['preroll_file_id'] != (int) $aVals['preroll_file_id'])
+		// Do we have a previous preroll file that we want to remove?
+		if (($aPlayer['preroll_file_id'] != null) && ($aPlayer['preroll_file_id'] != (int) $aVals['preroll_file_id']))
 		{
 			Phpfox::getService('idrive.file.process')->removePreroll($aPlayer['preroll_file_id']);
 		}
