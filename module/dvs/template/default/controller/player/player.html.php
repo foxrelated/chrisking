@@ -226,7 +226,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<param name="templateLoadHandler﻿" value="onTemplateLoad" />
 		<param name="bgcolor" value="#FFFFFF" />
 		{if $bIsDvs}
-		<param name="width" value="720" />
+		<param name="width" value="100%" />
 		<param name="height" value="405" />
 		{else}
 		<param name="width" value="{$iPlayerWidth}" />
@@ -287,40 +287,41 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</object>
 	<script type="text/javascript">brightcove.createExperiences();</script>
 	{/if}
+
+	{if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
+	<section id="playlist_wrapper">
+		<button class="prev playlist-button">&lt;</button>
+		<div class="playlist_carousel" id="overview_playlist">
+			<ul>
+				{if $bIsDvs}
+				{foreach from=$aOverviewVideos key=iKey item=aVideo}
+				<li>
+					<a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});">
+						{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
+						<p>{$aVideo.year} {$aVideo.model}</p>
+					</a>
+				</li>
+				{/foreach}
+				{else}
+				{foreach from=$aVideos key=iKey item=aVideo}
+				<li>
+					<a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});">
+						{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
+						<p>{$aVideo.year} {$aVideo.model}</p>
+					</a>
+				</li>
+				{/foreach}
+				{/if}
+			</ul>
+		</div>
+		<button class="next playlist-button">&gt;</button>
+	</section>
+	{/if}
 </section>
 {else}
 <div class="player_error">{phrase var='dvs.no_videos_error'}</div>
 {/if}
 
-{if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
-<section id="playlist_wrapper">
-	<a href="#" class="prev playlist-button" onclick="return false;">&lt;</a>
-	<div class="playlist_carousel" id="overview_playlist">
-		<ul>
-			{if $bIsDvs}
-			{foreach from=$aOverviewVideos key=iKey item=aVideo}
-			<li>
-				<a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});">
-					{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
-					<p>{$aVideo.year} {$aVideo.model}</p>
-				</a>
-			</li>
-			{/foreach}
-			{else}
-			{foreach from=$aVideos key=iKey item=aVideo}
-			<li>
-				<a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});">
-					{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
-					<p>{$aVideo.year} {$aVideo.model}</p>
-				</a>
-			</li>
-			{/foreach}
-			{/if}
-		</ul>
-	</div>
-	<a href="#" class="next playlist-button" onclick="return false;">&gt;</a>
-</section>
-{/if}
 <section id="chapter_buttons">
 	<button type="button" id="chapter_container_Intro" class="disabled display" onclick="changeCuePoint('Intro');"></button>
 	<button type="button" id="chapter_container_WhatsNew" class="disabled display" onclick="changeCuePoint('WhatsNew');"></button>

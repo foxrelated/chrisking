@@ -15,12 +15,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {literal}
 <script type="text/javascript">
 	$Behavior.shortenText = function() {
-			$(".model_description").shorten({
-			"showChars" : {/literal}{$iLongDescLimit}{literal},
+	$(".model_description").shorten({
+	"showChars" : {/literal}{$iLongDescLimit}{literal},
 			"ellipsesText" : "...",
 			"moreText"  : "See More",
 			"lessText"  : "See Less",
-		});
+	});
 	}</script>
 {/literal}
 {if $sBrowser == 'mobile'}
@@ -77,36 +77,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{template file='dvs.controller.player.player}
 	</section>
 
-	<section>
-		<h3>
-			<a href="location.href">
-				{$aDvs.phrase_overrides.override_video_name_display}
-			</a>
-		</h3>
-
-		<p class="model_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
-
-			{if empty($aOverrideVideo.ko_id)}
-			<section>
-				<h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
-				<span itemprop="description">{$aDvs.text_parsed}</span>
-			</section>
-			{/if}	
-	</section>
-
-	<aside>
-		<div id="dvs_geomap_container" itemprop="map"></div>
-		{if $aDvs.url}
-		{phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow">{$aDvs.url}</a>
-		{/if}
-		{if $aDvs.phone}<br />{phrase var='dvs.phone'}: <span itemprop="telephone">{$aDvs.phone}</span>{/if}
-		<p itemscope itemtype="http://schema.org/PostalAddress">
-			{if $aDvs.address}Address: <span itemprop="streetAddress">{$aDvs.address}</span><br />{/if}
-			<span itemprop="addressLocality">{$aDvs.city}</span>, <span itemprop="addressRegion">{$aDvs.state_string}</span>, <span itemprop="postalCode">{$aDvs.postal_code}</span>
-		</p>
-	</aside>
-
-	<div>
+	<div id="player_left">
 		<section id="select_new">
 			{if $aVideoSelectYears}
 			<h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
@@ -151,7 +122,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</ul>
 			{/if}
 		</section>
-		<section>
+		<section id="dealer_links">
 			<a href="./" onclick="menuHome('Call To Action Menu Clicks');">
 				{phrase var='dvs.cta_home'}
 			</a>
@@ -169,7 +140,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.cta_contact'}
 			</a>
 		</section>
-		<section>
+		<section id="action_links">
 			<p>Click to Share:</p> 
 			<a href="#" onclick="showShareEmail({$iDvsId});">
 				<img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
@@ -183,6 +154,35 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</a>
 		</section>
 	</div>
+
+	<section id="video_information">
+		<h3>
+			<a href="location.href">
+				{$aDvs.phrase_overrides.override_video_name_display}
+			</a>
+		</h3>
+
+		<p class="model_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
+
+		{if empty($aOverrideVideo.ko_id)}
+		<section>
+			<h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
+			<span itemprop="description">{$aDvs.text_parsed}</span>
+		</section>
+		{/if}	
+	</section>
+
+	<aside>
+		<div id="dvs_geomap_container" itemprop="map"></div>
+		{if $aDvs.url}
+		{phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow">{$aDvs.url}</a>
+		{/if}
+		{if $aDvs.phone}<br />{phrase var='dvs.phone'}: <span itemprop="telephone">{$aDvs.phone}</span>{/if}
+		<p itemscope itemtype="http://schema.org/PostalAddress">
+			{if $aDvs.address}Address: <span itemprop="streetAddress">{$aDvs.address}</span><br />{/if}
+			<span itemprop="addressLocality">{$aDvs.city}</span>, <span itemprop="addressRegion">{$aDvs.state_string}</span>, <span itemprop="postalCode">{$aDvs.postal_code}</span>
+		</p>
+	</aside>
 </article>
 
 <footer>
@@ -193,7 +193,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}{$aVideo.video_title_url}">
 				{$aVideo.year} {$aVideo.make} {$aVideo.model}
 			</a>
-		</li>
 		{/foreach}
 	</ul>
 </footer>

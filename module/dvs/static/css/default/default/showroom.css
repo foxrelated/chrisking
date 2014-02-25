@@ -1,39 +1,36 @@
 #site_content {
 	max-width: 1117px;
 	margin: 0 auto;
+	text-align: center;
 }
 
-header a,
-header img
+/* Header image */
+
+header 
 {
-	display: block;
-	margin: 0 auto;
+	display: inline-block;
+	margin: auto;
 }
 
-nav ul
+article
 {
-	height: 30px;
-	font-size: 18px;
-	padding-top: 5px;
-	padding-left: 10px;
-	margin-bottom: 10px;
-	-webkit-border-top-left-radius: 0px;
-	-webkit-border-bottom-left-radius: 5px;
-	-webkit-border-top-right-radius: 0px;
+	text-align: left;
+}
+
+/* Top Navigation */
+
+header nav {
+	background-color: #00A7AD;
 	-webkit-border-bottom-right-radius: 5px;
-	-moz-border-radius-topleft: 0px;
-	-moz-border-radius-bottomleft: 5px;
-	-moz-border-radius-topright: 0px;
+	-webkit-border-bottom-left-radius: 5px;
 	-moz-border-radius-bottomright: 5px;
-	behavior: url(border-radius.htc);
-	border-top-left-radius: 0px;
-	border-bottom-left-radius: 5px;
-	border-top-right-radius: 0px;
+	-moz-border-radius-bottomleft: 5px;
 	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border: 5px solid #00A7AD;
 }
 
-nav ul li,
-nav a
+header nav ul li
 {
 	display: inline;
 }
@@ -44,28 +41,41 @@ nav li + li:before
     padding: 0 10px;
 }
 
+header nav a {
+	display: inline;
+	font-size: 18px;
+	color: #FFF;
+}
+
+/* Main Player Container */
+
 #player
 {
-	display: block;
-	width: 100%;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	behavior: url(border-radius.htc);
-	border-radius: 10px;
-	position: relative;
-	padding: 10px;
-	overflow: auto;
+	display: inline-block;
+	vertical-align:top;
+	margin-top: 10px;
 }
 
-#playlist_wrapper
+/* Main Player Subsections */
+
+/* Left-side Player */
+
+#dvs_bc_player
 {
-	width: 60%;
-	float: left;
+	display:inline-block;
+	vertical-align: top;
 }
 
-.playlist-button
+/* Left-side playlist links */
+
+#playlist_wrapper button.playlist-button
 {
-	height: 145px;
+	display: inline-block;
+	vertical-align: top;
+	width: 20px;
+	margin-top: 30px;
+	padding: 0;
+	border: 0px none;
 }
 
 #overview_playlist {
@@ -85,20 +95,57 @@ nav li + li:before
 	color: #fff;
 }
 
-#dvs_bc_player
+/* Right-side chapter buttons */
+
+#chapter_buttons 
 {
-	float:left;
-	width: 60%;
+	display:inline-block;
+	vertical-align: top;
+	width: 140px;
 }
 
-#chapter_buttons
-{
-	float:right;
-	width: 20%;
+/* Right bar directly to the right of the player */
+
+#player_left {
+	display:inline-block;
+	vertical-align:top;
+	width: 190px;
+	padding-left: 40px;
+	text-align: center;
 }
 
-#chapter_buttons button {
+#dealer_links a {
 	display: block;
+}
+
+#action_links a {
+	display: block;
+}
+
+
+#video_information {
+	float: left;
+	width: 66%
+}
+
+article aside {
+	float: right;
+	width: 33%;
+}
+
+/* Footer */
+
+footer
+{
+	float: left;
+	text-align: left;
+	padding-bottom: 75px;
+}
+
+footer ul li
+{
+	width: 25%;
+	display: inline-block;
 }
 
 /*
