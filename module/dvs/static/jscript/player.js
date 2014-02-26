@@ -30,9 +30,9 @@ if (bDebug) {
 function watchOverviews() {
 	aMediaIds = aOverviewMediaIds;
 	playVideo(1);
-	$('#test_drive_playlist').hide('slow');
-	$('#video_select_playlist').hide('slow');
-	$('#overview_playlist').show('slow');
+//	$('#test_drive_playlist').hide('slow');
+//	$('#video_select_playlist').hide('slow');
+//	$('#overview_playlist').show('slow');
 	if (bDebug) {
 		console.log("Player: Switching to Overviews");
 	}
@@ -44,9 +44,9 @@ function watchOverviews() {
 function watchTestDrives() {
 	aMediaIds = aTestDriveMediaIds;
 	playVideo(0);
-	$('#overview_playlist').hide('slow');
-	$('#video_select_playlist').hide('slow');
-	$('#test_drive_playlist').show('slow');
+//	$('#overview_playlist').hide('slow');
+//	$('#video_select_playlist').hide('slow');
+//	$('#test_drive_playlist').show('slow');
 	if (bDebug) {
 		console.log("Switching to Test Drives");
 	}
@@ -62,9 +62,9 @@ function watchVideoSelect(aVideoSelectMediaIds) {
 
 	playVideo(0);
 
-	$('#overview_playlist').hide('slow');
-	$('#test_drive_playlist').hide('slow');
-	$('#video_select_playlist').show('slow');
+//	$('#overview_playlist').hide('slow');
+//	$('#test_drive_playlist').hide('slow');
+//	$('#video_select_playlist').show('slow');
 	if (bDebug) {
 		console.log("Player: Switching to Video Select");
 	}
@@ -78,7 +78,7 @@ function watchVideoSelect(aVideoSelectMediaIds) {
 
 //Seek to new cue point if it's different than the one we're in, call cueChange
 function changeCuePoint(sCuePoint) {
-	if (sCurrentCuePoint !== sCuePoint) {
+	if (sCurrentCuePoint !== sCuePoint && !$('#chapter_container_' + sCuePoint).hasClass('disabled')) {
 
 		var oCustomVars = {
 			1: {
@@ -121,7 +121,8 @@ function changeCuePoint(sCuePoint) {
 
 function getPrice(iDvsId) {
 	if (aCurrentVideoMetaData) {
-		$('#dvs_get_price_container').show('fast');
+//		$('#dvs_get_price_container').show('fast');
+		
 
 		var oCustomVars = {
 			1: {
@@ -160,7 +161,7 @@ function getPrice(iDvsId) {
 
 function getPriceIDrive(iIDriveId) {
 	if (aCurrentVideoMetaData) {
-		$('#idrive_get_price_container').show('fast');
+//		$('#idrive_get_price_container').show('fast');
 
 		var oCustomVars = {
 			1: {
@@ -199,19 +200,19 @@ function getPriceIDrive(iIDriveId) {
 
 function getPriceExternal(sEmail) {
 	if (aCurrentVideoMetaData) {
-		$('#idrive_get_price_container').show('fast');
+//		$('#idrive_get_price_container').show('fast');
 	}
 }
 
-function resetIDriveGetPriceForm() {
-	$('#idrive_contact_success').hide();
-	$('#idrive_contact_form').show();
-	$('#contact_name').val('');
-	$('#contact_email').val('');
-	$('#contact_phone').val('');
-	$('#contact_zip').val('');
-	$('#comments').val('');
-}
+//function resetIDriveGetPriceForm() {
+//	$('#idrive_contact_success').hide();
+//	$('#idrive_contact_form').show();
+//	$('#contact_name').val('');
+//	$('#contact_email').val('');
+//	$('#contact_phone').val('');
+//	$('#contact_zip').val('');
+//	$('#comments').val('');
+//}
 
 //Called when clicking a chapter or when the video rolls past a chapter, sets lights.
 function cueChange(sCuePoint) {
@@ -239,10 +240,11 @@ function cueChange(sCuePoint) {
 		}
 
 		$.each(oChapterDivs, function(sChapter, sHtml) {
-			$('#chapter_light_disabled_' + sChapter).show();
-			$('#chapter_light_green_' + sChapter).hide();
-			$('#chapter_light_red_' + sChapter).hide();
-			$('#chapter_light_yellow_' + sChapter).hide();
+			$('#chapter_container_' + sChapter).attr('class', 'display disabled');
+//			$('#chapter_light_disabled_' + sChapter).show();
+//			$('#chapter_light_green_' + sChapter).hide();
+//			$('#chapter_light_red_' + sChapter).hide();
+//			$('#chapter_light_yellow_' + sChapter).hide();
 		});
 	}
 }
@@ -351,7 +353,7 @@ function onTemplateLoaded(experienceID)
 	if (!bPreview && bIsDvs || bIdriveGetPrice) {
 		oChapterDivs['Get_Price'] = $('#chapter_container_Get_Price').html();
 	}
-	$('#chapter_buttons').html('');
+//	$('#chapter_buttons').html('');
 }
 
 //Auto called
@@ -394,20 +396,20 @@ function onTemplateReady(oVideo) {
 			console.log('Player: Cueing video: ' + aMediaIds[iCurrentVideo]);
 		}
 
-		$('#chapter_buttons').append('<div id="chapter_container_' + 'Intro' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Intro'] + '</div>');
-		$('#chapter_container_' + 'Intro').show();
-		$('#chapter_buttons').append('<div id="chapter_container_' + 'WhatsNew' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['WhatsNew'] + '</div>');
-		$('#chapter_container_' + 'WhatsNew').show();
-		$('#chapter_buttons').append('<div id="chapter_container_' + 'Features' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Features'] + '</div>');
-		$('#chapter_container_' + 'Features').show();
-		$('#chapter_buttons').append('<div id="chapter_container_' + 'Power' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Power'] + '</div>');
-		$('#chapter_container_' + 'Power').show();
-		$('#chapter_buttons').append('<div id="chapter_container_' + 'Fuel' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Fuel'] + '</div>');
-		$('#chapter_container_' + 'Fuel').show();
-		$('#chapter_buttons').append('<div id="chapter_container_' + 'Warranty' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Warranty'] + '</div>');
-		$('#chapter_container_' + 'Warranty').show();
-		$('#chapter_buttons').append('<div id="chapter_container_' + 'Summary' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Summary'] + '</div>');
-		$('#chapter_container_' + 'Summary').show();
+//		$('#chapter_buttons').append('<div id="chapter_container_' + 'Intro' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Intro'] + '</div>');
+//		$('#chapter_container_Intro').attr('class', 'disabled display');
+//		$('#chapter_buttons').append('<div id="chapter_container_' + 'WhatsNew' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['WhatsNew'] + '</div>');
+//		$('#chapter_container_' + 'WhatsNew').show();
+//		$('#chapter_buttons').append('<div id="chapter_container_' + 'Features' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Features'] + '</div>');
+//		$('#chapter_container_' + 'Features').show();
+//		$('#chapter_buttons').append('<div id="chapter_container_' + 'Power' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Power'] + '</div>');
+//		$('#chapter_container_' + 'Power').show();
+//		$('#chapter_buttons').append('<div id="chapter_container_' + 'Fuel' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Fuel'] + '</div>');
+//		$('#chapter_container_' + 'Fuel').show();
+//		$('#chapter_buttons').append('<div id="chapter_container_' + 'Warranty' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Warranty'] + '</div>');
+//		$('#chapter_container_' + 'Warranty').show();
+//		$('#chapter_buttons').append('<div id="chapter_container_' + 'Summary' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Summary'] + '</div>');
+//		$('#chapter_container_' + 'Summary').show();
 	}
 
 	if (bIsDvs) {
@@ -497,7 +499,8 @@ function onVideoLoad(oMedia) {
 		console.log('Player: Hiding all chapters');
 	}
 
-	$('#chapter_buttons').html('');
+//	$('#chapter_buttons').html('');
+	$('#chapter_buttons button').removeClass('display').addClass('no_display');
 
 	//get new cue points
 	if (sBrowser === 'mobile' || sBrowser === 'ipad')
@@ -637,10 +640,11 @@ function onVideoEnd(oVideo) {
 		}
 
 		$.each(oChapterDivs, function(sChapter, sHtml) {
-			$('#chapter_light_green_' + sChapter).hide();
-			$('#chapter_light_red_' + sChapter).hide();
-			$('#chapter_light_yellow_' + sChapter).hide();
-			$('#chapter_light_disabled_' + sChapter).show();
+//			$('#chapter_light_green_' + sChapter).hide();
+//			$('#chapter_light_red_' + sChapter).hide();
+//			$('#chapter_light_yellow_' + sChapter).hide();
+//			$('#chapter_light_disabled_' + sChapter).show();
+			$('#chapter_light_disabled_' + sChapter).attr('class', 'disabled display');
 		});
 	}
 
@@ -693,16 +697,26 @@ function isPlayingHandler(result) {
 
 //Changes currently playing lights to already played, and lights up currently playing light for current chapter
 function changeLights(sCuePoint) {
-	$.each(oCuePoints, function(sChapter, iTime) {
-		if ($('#chapter_light_green_' + sChapter).is(":visible")) {
-			if (bDebug) {
-				console.log('Player: ' + sChapter + ' shows playing. Changing chapter light to red.');
-			}
-			$('#chapter_light_green_' + sChapter).hide();
-			$('#chapter_light_disabled_' + sChapter).hide();
-			$('#chapter_light_red_' + sChapter).show();
-		}
-	});
+//	$.each(oCuePoints, function(sChapter, iTime) {
+////		if ($('#chapter_light_green_' + sChapter).is(":visible")) {
+////			if (bDebug) {
+////				console.log('Player: ' + sChapter + ' shows playing. Changing chapter light to red.');
+////			}
+////			$('#chapter_light_green_' + sChapter).hide();
+////			$('#chapter_light_disabled_' + sChapter).hide();
+////			$('#chapter_light_red_' + sChapter).show();
+////		}
+//		if ($('#chapter_container_' + sChapter).is(":visible")) {
+//			if (bDebug) {
+//				console.log('Player: ' + sChapter + ' shows playing. Changing chapter light to red.');
+//			}
+////			$('#chapter_light_green_' + sChapter).hide();
+////			$('#chapter_light_disabled_' + sChapter).hide();
+//			$('#chapter_container_' + sChapter).attr('class', 'watched display');
+//		}
+//	});
+	
+	$('#chapter_buttons button.selected').attr('class', 'watched display');
 
 	if (bDebug) {
 		console.log('Player: Showing green for ' + sCuePoint);
@@ -710,43 +724,48 @@ function changeLights(sCuePoint) {
 
 	if (sCuePoint === 'Intro' || sCuePoint === 'Overview')
 	{
-		if ($('#chapter_light_disabled_Intro').is(":visible") || $('#chapter_light_disabled_Overview').is(":visible")) {
-			if (bDebug) {
-				console.log('Player: Resetting chapter buttons...');
-			}
-
-			for (var i = 0; i < cuepoints.length; i++)
-			{
-				if (cuepoints[i].type === 1)
-				{
-					oCuePoints[cuepoints[i].name] = cuepoints[i].time;
-					$('#chapter_buttons').append('<div id="chapter_container_' + cuepoints[i].name + '" class="chapter_button_container" onclick="changeCuePoint(\'' + cuepoints[i].name + '\');" style="display:none;">' + oChapterDivs[cuepoints[i].name] + '</div>');
-					$('#chapter_container_' + cuepoints[i].name).show();
-					$('#chapter_light_disabled_' + cuepoints[i].name).hide();
-					$('#chapter_light_yellow_' + cuepoints[i].name).show();
-				}
-			}
-
-			//Show get price button
-			if (bIsDvs && !bPreview || bIdriveGetPrice) {
-				$('#chapter_buttons').append('<div id="chapter_container_' + 'Get_Price' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Get_Price'] + '</div>');
-				$('#chapter_container_' + 'Get_Price').show();
-				$('#chapter_light_disabled_Get_Price').hide();
-				$('#chapter_light_yellow_Get_Price').show();
-			}
-		}
-		else
-		{
-			if (bDebug) {
-				console.log('Player: Chapter buttons do not need to be reset.');
-			}
-		}
+//		if ($('#chapter_light_disabled_Intro').is(":visible") || $('#chapter_light_disabled_Overview').is(":visible")) {
+//			if (bDebug) {
+//				console.log('Player: Resetting chapter buttons...');
+//			}
+//
+//			for (var i = 0; i < cuepoints.length; i++)
+//			{
+//				if (cuepoints[i].type === 1)
+//				{
+//					$('#chapter_container_' + sCuePoint).attr('onclick', 'changeCuePoint(\'' + cuepoints[i].name + '\');');
+////					oCuePoints[cuepoints[i].name] = cuepoints[i].time;
+////					$('#chapter_buttons').append('<div id="chapter_container_' + cuepoints[i].name + '" class="chapter_button_container" onclick="changeCuePoint(\'' + cuepoints[i].name + '\');" style="display:none;">' + oChapterDivs[cuepoints[i].name] + '</div>');
+////					$('#chapter_container_' + cuepoints[i].name).show();
+////					$('#chapter_container_' + cuepoints[i].name).attr('class','display active');
+////					$('#chapter_light_disabled_' + cuepoints[i].name).hide();
+////					$('#chapter_light_yellow_' + cuepoints[i].name).show();
+//				}
+//			}
+//
+//			//Show get price button
+//			if (bIsDvs && !bPreview || bIdriveGetPrice) {
+////				$('#chapter_buttons').append('<div id="chapter_container_' + 'Get_Price' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Get_Price'] + '</div>');
+//				$('#chapter_container_Get_Price').attr('class', 'display active');
+////				$('#chapter_container_Get_Price').show();
+////				$('#chapter_light_disabled_Get_Price').hide();
+////				$('#chapter_light_yellow_Get_Price').show();
+//			}
+//		}
+//		else
+//		{
+//			if (bDebug) {
+//				console.log('Player: Chapter buttons do not need to be reset.');
+//			}
+//		}
+		$('#chapter_buttons button.disabled').removeClass('disabled').addClass('active');
 	}
 
-	$('#chapter_light_disabled_' + sCuePoint).hide();
-	$('#chapter_light_yellow_' + sCuePoint).hide();
-	$('#chapter_light_red_' + sCuePoint).hide();
-	$('#chapter_light_green_' + sCuePoint).show();
+//	$('#chapter_light_disabled_' + sCuePoint).hide();
+//	$('#chapter_light_yellow_' + sCuePoint).hide();
+//	$('#chapter_light_red_' + sCuePoint).hide();
+//	$('#chapter_light_green_' + sCuePoint).show();
+	$('#chapter_container_' + sCuePoint).attr('class', 'display selected');
 }
 
 function cuePointsHandler(cuepoints) {
@@ -799,36 +818,40 @@ function cuePointsHandler(cuepoints) {
 			if (cuepoints[i].type === 1)
 			{
 				oCuePoints[cuepoints[i].name] = cuepoints[i].time;
-				$('#chapter_buttons').append('<div id="chapter_container_' + cuepoints[i].name + '" class="chapter_button_container" onclick="changeCuePoint(\'' + cuepoints[i].name + '\');" style="display:none;">' + oChapterDivs[cuepoints[i].name] + '</div>');
-				$('#chapter_container_' + cuepoints[i].name).show();
+//				$('#chapter_buttons').append('<div id="chapter_container_' + cuepoints[i].name + '" class="chapter_button_container" onclick="changeCuePoint(\'' + cuepoints[i].name + '\');" style="display:none;">' + oChapterDivs[cuepoints[i].name] + '</div>');
+				$('#chapter_container_' + cuepoints[i].name).attr('class', 'display');
 				if (bIsPlaying)
 				{
-					$('#chapter_light_disabled_' + cuepoints[i].name).hide();
-					$('#chapter_light_yellow_' + cuepoints[i].name).show();
+//					$('#chapter_light_disabled_' + cuepoints[i].name).hide();
+//					$('#chapter_light_yellow_' + cuepoints[i].name).show();
+					$('#chapter_container_' + cuepoints[i].name).addClass('active');
 				}
 				else
 				{
-					$('#chapter_light_disabled_' + cuepoints[i].name).show();
-					$('#chapter_light_yellow_' + cuepoints[i].name).hide();
+					$('#chapter_container_' + cuepoints[i].name).addClass('disabled');
+//					$('#chapter_light_disabled_' + cuepoints[i].name).show();
+//					$('#chapter_light_yellow_' + cuepoints[i].name).hide();
 				}
 			}
 		}
 
 		//Show get price button
 		if (bIsDvs && !bPreview || bIdriveGetPrice) {
-			$('#chapter_buttons').append('<div id="chapter_container_' + 'Get_Price' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Get_Price'] + '</div>');
-			$('#chapter_container_' + 'Get_Price').show();
+//			$('#chapter_buttons').append('<div id="chapter_container_' + 'Get_Price' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Get_Price'] + '</div>');
+			$('#chapter_container_Get_Price').attr('class', 'display');
 			if (bIsPlaying)
 			{
 
-				$('#chapter_light_disabled_Get_Price').hide();
-				$('#chapter_light_yellow_Get_Price').show();
+//				$('#chapter_light_disabled_Get_Price').hide();
+//				$('#chapter_light_yellow_Get_Price').show();
+				$('#chapter_container_Get_Price').addClass('active');
 			}
 			else
 			{
 
-				$('#chapter_light_disabled_Get_Price').show();
-				$('#chapter_light_yellow_Get_Price').hide();
+//				$('#chapter_light_disabled_Get_Price').show();
+//				$('#chapter_light_yellow_Get_Price').hide();
+				$('#chapter_container_Get_Price').addClass('disabled');
 			}
 		}
 
@@ -837,8 +860,8 @@ function cuePointsHandler(cuepoints) {
 	{
 
 		if (!bPreview && bIsDvs || bIdriveGetPrice) {
-			$('#chapter_buttons').append('<div id="chapter_container_' + 'Get_Price' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Get_Price'] + '</div>');
-			$('#chapter_container_' + 'Get_Price').show();
+//			$('#chapter_buttons').append('<div id="chapter_container_' + 'Get_Price' + '" class="chapter_button_container" style="display:none;">' + oChapterDivs['Get_Price'] + '</div>');
+			$('#chapter_container_Get_Price').attr('class', 'display active');
 		}
 
 		if (bDebug) {

@@ -1,0 +1,322 @@
+body
+{
+	background: #000000 url(http://www.wtvdvs-dev.com/file/dvs/background/2013/09/963624e7a2616f81d5238b0c7a5d41d9.png);
+}
+
+#site_content {
+	max-width: 1117px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+/* Header image */
+
+header 
+{
+	display: inline-block;
+	margin: auto;
+}
+
+article
+{
+	text-align: left;
+}
+
+/* Top Navigation */
+
+header nav {
+	background-color: #00A7AD;
+	-webkit-border-bottom-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border: 5px solid #00A7AD;
+}
+
+header nav ul li
+{
+	display: inline;
+}
+
+nav li + li:before 
+{
+    content: " | ";
+    padding: 0 10px;
+}
+
+header nav a,
+header nav a:hover
+{
+	display: inline;
+	font-size: 18px;
+	color: #FFF;
+}
+
+/* Main Player Container */
+
+#player
+{
+	background: #000;
+	display: inline-block;
+	vertical-align:top;
+	margin-top: 10px;
+	padding: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+/* Main Player Subsections */
+
+/* Left-side Player */
+
+#dvs_bc_player
+{
+	display:inline-block;
+	vertical-align: top;
+}
+
+/* Left-side playlist links */
+
+#playlist_wrapper
+{
+	margin-top: 10px;
+}
+
+#playlist_wrapper button.playlist-button
+{
+	background: #00A7AD;
+	display: inline-block;
+	vertical-align: top;
+	width: 20px;
+	height: 20px;
+	margin-top: 30px;
+	padding: 0;
+	border: 0px none;
+	border-radius: 50%;
+	font-weight: bold;
+	color: #000;
+}
+
+#playlist_wrapper button.playlist-button:hover
+{
+	opacity: 0.5;
+}
+
+#overview_playlist {
+	display: inline-block;
+}
+
+#overview_playlist ul li {
+	position: relative;
+}
+
+#overview_playlist li
+{
+	margin-right: 3px;
+	margin-left: 3px;
+	border: 2px #00A7AD solid;
+	height: 82px;
+}
+
+#overview_playlist ul li p {
+	position: absolute;
+	top: 63px;
+	width: 100%;
+	text-align: center;
+	font-weight: bold;
+	color: #fff;
+}
+
+/* Right-side chapter buttons */
+
+#chapter_buttons 
+{
+	display:inline-block;
+}
+
+/* Right bar directly to the right of the player */
+
+#player_left {
+	margin-top: 10px;
+	display:inline-block;
+	vertical-align:top;
+	width: 190px;
+	padding-left: 40px;
+	text-align: center;
+}
+
+#select_new h3
+{
+	font-size: 1.25em;
+	font-weight: bold;
+	border-bottom: none;
+	color: #fff;
+}
+
+#select_new ul li.init
+{
+	background: url("../../../image/dropdown.png");
+	display: block;
+	padding-top: 5px;
+	height: 26px;
+	width: 188px;
+	margin-top: 15px;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+#select_new ul ul
+{
+	min-width: 187px;
+	background: #fff;
+	padding: 4px 0px;
+	border-radius: 5px;
+	border: 1px #000 solid;
+	display: none;
+	position: absolute;
+}
+
+#select_new ul ul li
+{
+	display: block;
+	padding: 4px;
+	font-size: 15px;
+	font-weight: normal;
+}
+
+#select_new li:not(.init):hover
+{
+	background: #EEE;
+}
+
+#dealer_links
+{
+	margin-top: 20px;
+}
+
+#dealer_links a {
+	background: #00bdd6;
+	display: block;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	font-family: arial;
+	font-size: 1.5em;
+	padding: 4px 0px;
+	width: 190px;
+	text-align: center;
+	margin-bottom: 6px;
+	text-decoration: none;
+	background-image: -webkit-linear-gradient(top, #00bdd6, #05918a);
+	background: -moz-linear-gradient( center top, #00bdd6 5%, #05918a 100% );
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00bdd6', endColorstr='#05918a');
+	background-color: #00bdd6;
+	border: 1px solid #6b6b6b;
+	color: #ffffff;
+}
+
+#dealer_links a:hover
+{
+	background-image: -webkit-linear-gradient(top, #05918a, #00bdd6);
+	background: -moz-linear-gradient( center top, #05918a 5%, #00bdd6 100% );
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#05918a', endColorstr='#00bdd6');
+	background-color: #05918a;
+	border: 1px solid #6b6b6b;
+	color: #ffffff;
+}
+
+#action_links
+{
+	margin-top: 30px;
+}
+
+#action_links p
+{
+	color: #fff;
+	font-size: 16px;
+}
+
+#action_links a {
+	display: block;
+}
+
+
+#video_information {
+	margin-top: 25px;
+	float: left;
+	width: 66%
+}
+
+#video_information h3,
+#video_information a
+{
+	text-decoration: none;
+	color: #fff;
+	font-size: 16px;
+	font-weight: bold;
+	padding-bottom: 10px;
+	border-bottom: none;
+}
+
+#model_description
+{
+	font-size: 14px;
+	color: #fff;
+}
+
+article aside {
+	color: #fff;
+	float: right;
+	width: 33%;
+	font-size: 1.25em;
+	margin-top: 10px;
+}
+
+aside a,
+aside a:hover
+{
+	color: #009c05;
+}
+
+#dvs_geomap_container
+{
+	margin-top: 25px;
+	width: 350px;
+	height: 240px;
+}
+
+/* Footer */
+
+footer
+{
+	margin-top: 40px;
+	margin-left: 10px;
+	float: left;
+	text-align: left;
+	padding-bottom: 75px;
+}
+
+footer ul li
+{
+	width: 25%;
+	display: inline-block;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+footer h3
+{
+	color: #fff;
+	font-size: 18px;
+	font-weight: bold;
+	border-bottom: none;
+}
+
+footer a,
+footer a:hover
+{
+	color: #009c05;
+}
