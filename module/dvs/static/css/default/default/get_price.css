@@ -1,0 +1,27 @@
+#contact_dealer legend
+{
+	font-weight: bold;
+	padding-bottom: 5px;
+}
+
+#contact_dealer label
+{
+	display: inline-block;
+	vertical-align: top;
+	width: 60px;
+}
+
+#contact_dealer input:not(.dvs_form_button)
+{
+	width: 200px;
+}
+
+#contact_dealer textarea
+{
+	width: 200px;
+}
+
+#contact_dealer .dvs_form_button
+{
+	padding: 5px 10px;
+}

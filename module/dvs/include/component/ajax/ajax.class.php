@@ -326,13 +326,13 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		Phpfox::getService('dvs.video')->setDvs(Phpfox::getLib('request')->get('iDvsId'));
 		$aVideo = Phpfox::getService('dvs.video')->get($sRefId);
 		$aDvs = Phpfox::getService('dvs')->get(Phpfox::getLib('request')->get('iDvsId'));
-
+		
 		// Change get price form values
-		$this->html('.vehicle_year', $aVideo['year']);
-		$this->html('.vehicle_make', $aVideo['make']);
-		$this->html('.vehicle_model', $aVideo['model']);
+//		$this->html('.vehicle_year', $aVideo['year']);
+//		$this->html('.vehicle_make', $aVideo['make']);
+//		$this->html('.vehicle_model', $aVideo['model']);
 
-		$this->val('#contact_video_ref_id', $aVideo['referenceId']);
+//		$this->val('#contact_video_ref_id', $aVideo['referenceId']);
 
 		if (empty($aDvs) || empty($aVideo))
 		{
@@ -354,23 +354,25 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$sOverrideLink = rtrim($sOverrideLink, '/');
 
 		//Change video information and reset description visibility
-		$this->html('#video_name', '<strong><a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a></strong>');
-		$this->html('#video_long_description_text', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
-		$this->html('#video_long_description_shortened_text', Phpfox::getLib('parse.output')->shorten(Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']), Phpfox::getParam('dvs.long_desc_limit'), '...'));
+		$this->html('#video_name', '<a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a>');
+		$this->html('#model_description', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
+//		$this->html('#video_name', '<strong><a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a></strong>');
+//		$this->html('#video_long_description_text', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
+//		$this->html('#video_long_description_shortened_text', Phpfox::getLib('parse.output')->shorten(Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']), Phpfox::getParam('dvs.long_desc_limit'), '...'));
+//
+//		$this->hide('#video_long_description');
+//		$this->show('#video_long_description_shortened');
 
-		$this->hide('#video_long_description');
-		$this->show('#video_long_description_shortened');
-
-		if (strlen(Phpfox::getLib('parse.output')->clean($aVideo['longDescription'])) > Phpfox::getParam('dvs.long_desc_limit'))
-		{
-			$this->show('#video_long_description_control');
-			$this->show('#video_long_description_shortened_control');
-		}
-		else
-		{
-			$this->hide('#video_long_description_control');
-			$this->hide('#video_long_description_shortened_control');
-		}
+//		if (strlen(Phpfox::getLib('parse.output')->clean($aVideo['longDescription'])) > Phpfox::getParam('dvs.long_desc_limit'))
+//		{
+//			$this->show('#video_long_description_control');
+//			$this->show('#video_long_description_shortened_control');
+//		}
+//		else
+//		{
+//			$this->hide('#video_long_description_control');
+//			$this->hide('#video_long_description_shortened_control');
+//		}
 
 		// Change microdata
 		$this->call('$("#schema_video_thumbnail_url").attr("content", "' . Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.brightcove') . $aVideo['thumbnail_image'] . '");');
@@ -481,27 +483,27 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 		if (!$aVals['contact_name'] && Phpfox::getParam('dvs.get_price_validate_name'))
 		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'));
+			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'). ' ');
 			$bIsError = true;
 		}
 		if (!$aVals['contact_email'] && Phpfox::getParam('dvs.get_price_validate_email'))
 		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'));
+			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'). ' ');
 			$bIsError = true;
 		}
 		if (!$aVals['contact_phone'] && Phpfox::getParam('dvs.get_price_validate_phone'))
 		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_phone_number'));
+			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_phone_number'). ' ');
 			$bIsError = true;
 		}
 		if (!$aVals['contact_zip'] && Phpfox::getParam('dvs.get_price_validate_zip_code'))
 		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_zip_code'));
+			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_zip_code'). ' ');
 			$bIsError = true;
 		}
-		if (!$aVals['comments'] && Phpfox::getParam('dvs.get_price_validate_comments'))
+		if (!$aVals['contact_comments'] && Phpfox::getParam('dvs.get_price_validate_comments'))
 		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_comments'));
+			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_comments'). ' ');
 			$bIsError = true;
 		}
 
@@ -556,10 +558,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 			Phpfox::getService('dvs.process')->updateContactCount($aDvs['dvs_id']);
 
-			$this->hide('#dvs_contact_form');
+			$this->hide('#contact_dealer');
 			$this->show('#dvs_contact_success');
-			$this->call('setTimeout(function() { $("#dvs_get_price_container").fadeOut("fast");}, 3000);');
-			$this->call('setTimeout(function() { resetGetPriceForm(); }, 3500);');
 			$this->call('getPriceEmailSent();');
 		}
 		else
@@ -632,14 +632,19 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$sBody = $this->getContent(false);
 
 			$sDealerEmail = 'noreply@' . str_replace('www.', '', parse_url($aDvs['url'], PHP_URL_HOST));
-			Phpfox::getLibClass('phpfox.mail.interface');
-			$oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
-			$oMail->send($aVals['share_email'], $sSubject, ' ', $sBody, $aVals['my_share_name'], $sDealerEmail);
+//			Phpfox::getLibClass('phpfox.mail.interface');
+//			$oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
+//			$oMail->send($aVals['share_email'], $sSubject, ' ', $sBody, $aVals['my_share_name'], $sDealerEmail);
 
-			$this->hide('#dvs_share_email_form');
+			Phpfox::getLib('mail')
+				->to($aVals['share_email'])
+				->fromEmail($sDealerEmail)
+				->subject($sSubject)
+				->message($sBody)
+				->send();
+			
+			$this->hide('#share_email_dealer');
 			$this->show('#dvs_share_email_success');
-			$this->call('setTimeout(function() { $("#dvs_share_email_wrapper").fadeOut("fast");}, 3000);');
-			$this->call('shareEmailSent();');
 		}
 		else
 		{
@@ -731,17 +736,19 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$aMakes = Phpfox::getService('dvs.video')->getValidVSMakes($iYear, $aPlayer['makes']);
 
 		// The first list item should be one to tell the user to select a make.
-		$sSelectOptions = '<li class="init">' . Phpfox::getPhrase('dvs.select_make') . '</li>';
+		$sSelectOptions = '<li class="init">' . Phpfox::getPhrase('dvs.select_make') . '</li><ul>';
 
 		// Build the ul list items
 		foreach ($aMakes as $aMake)
 		{
 			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.getModels\', \'iYear=' . $iYear . '&amp;sMake=' . $aMake['make'] . '\');">' . $aMake['make'] . '</li>';
 		}
+		
+		$sSelectOptions .= '</ul>';
 
 		// Replace the old html with the new list items.
 		$this->html('#makes', $sSelectOptions);
-		$this->html('#models', '<li>' . Phpfox::getPhrase('dvs.please_select_a_make_first') . '</li>');
+		$this->html('#models', '<li class="init">' . Phpfox::getPhrase('dvs.select_model') . '</li><ul><li>' . Phpfox::getPhrase('dvs.please_select_a_make_first') . '</li></ul>');
 
 //		if (Phpfox::getParam('dvs.enable_subdomain_mode'))
 //		{
@@ -828,12 +835,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		if (!empty($aModels))
 		{
 			// Yes, begin to create the drop down menu.
-			$sSelectOptions = '<li class="init">' . Phpfox::getPhrase('dvs.select_model') . '</li>';
+			$sSelectOptions = '<li class="init">' . Phpfox::getPhrase('dvs.select_model') . '</li><ul>';
 		}
 		else
 		{
 			// No, let the user know there were no models found.
-			$sSelectOptions = '<li class="init">No Models Found</li>';
+			$sSelectOptions = '<li class="init">No Models Found</li><ul>';
 		}
 
 		// Add each model to the drop down.
@@ -841,6 +848,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		{
 			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.videoSelect\', \'sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=\' + $(\'#contact_dvs_id\').val() + \'&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
 		}
+		
+		$sSelectOptions .= '</ul>';
 
 		// Display the dropdown on the page.
 		$this->html('#models', $sSelectOptions);
@@ -1003,7 +1012,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 	public function showGetPriceForm()
 	{
-		Phpfox::getBlock('dvs.get-price');
+		Phpfox::getBlock('dvs.get-price', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
+	}
+	
+	public function emailForm()
+	{
+		Phpfox::getBlock('dvs.share-email', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
 	}
 
 }

@@ -220,6 +220,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 					'jcarousellite.js' => 'module_dvs',
 //					'dvs.css' => 'module_dvs',
 //					'player.css' => 'module_dvs',
+					'get_price.css' => 'module_dvs',
+					'share_email.css' => 'module_dvs',
 					'showroom.css' => 'module_dvs',
 					'google_maps.js' => 'module_dvs',
 					'overlay.js' => 'module_dvs',

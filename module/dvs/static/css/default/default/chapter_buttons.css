@@ -3,6 +3,7 @@
 	height: 45px;
 	width: 140px;
 	border: 0 none;
+	display: block;
 }
 
 #chapter_buttons button.no_display

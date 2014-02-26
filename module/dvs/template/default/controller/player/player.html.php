@@ -182,7 +182,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<div id="dvs_overlay_1" class="dvs_overlay" style="bottom:415px;">
 			{if $aPlayer.custom_overlay_1_type == 1}
 			<div class="dvs_image_overlay">	
-				<a href="#" onclick="getPrice({$iDvsId});"><img src="{$sImagePath}overlay.png" /></a>
+				<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}'));"><img src="{$sImagePath}overlay.png" /></a>
 			</div>
 			{else}
 			<div class="dvs_link_overlay">
@@ -195,7 +195,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<div id="dvs_overlay_2" class="dvs_overlay" style="bottom:415px;">
 			{if $aPlayer.custom_overlay_2_type == 1}
 			<div class="dvs_image_overlay">
-				<a href="#" onclick="getPrice({$iDvsId});"><img src="{$sImagePath}overlay.png"/></a>
+				<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}'));"><img src="{$sImagePath}overlay.png"/></a>
 			</div>
 			{else}
 			<div class="dvs_link_overlay">
@@ -208,7 +208,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<div id="dvs_overlay_3" class="dvs_overlay" style="bottom:415px;">
 			{if $aPlayer.custom_overlay_3_type == 1}
 			<div class="dvs_image_overlay">
-				<a href="#" onclick="getPrice({$iDvsId});"><img src="{$sImagePath}overlay.png"/></a>
+				<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}'));"><img src="{$sImagePath}overlay.png"/></a>
 			</div>
 			{else}
 			<div class="dvs_link_overlay">
@@ -317,12 +317,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<button class="next playlist-button">&gt;</button>
 	</section>
 	{/if}
-</section>
-{else}
-<div class="player_error">{phrase var='dvs.no_videos_error'}</div>
-{/if}
-
-<section id="chapter_buttons">
+</section>{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}<section id="chapter_buttons">
 	<button type="button" id="chapter_container_Intro" class="disabled display" onclick="changeCuePoint('Intro');"></button>
 	<button type="button" id="chapter_container_WhatsNew" class="disabled display" onclick="changeCuePoint('WhatsNew');"></button>
 	<button type="button" id="chapter_container_Exterior" class="disabled no_display" onclick="changeCuePoint('Exterior');"></button>
@@ -337,7 +332,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<button type="button" id="chapter_container_MPG" class="disabled no_display" onclick="changeCuePoint('MPG');"></button>
 	<button type="button" id="chapter_container_Honors" class="disabled no_display" onclick="changeCuePoint('Honors');"></button>
 	{if $bIsDvs && !$bPreview}
-	<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('get price', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600'));"></button>
+	<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));"></button>
 	{elseif !$bIsExternal && !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}
 	<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="getPriceIDrive('{$aPlayer.player_id}');"></button>
 	{elseif $bIsExternal && $bShowGetPrice}

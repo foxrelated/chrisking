@@ -15,13 +15,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {literal}
 <script type="text/javascript">
 	$Behavior.shortenText = function() {
-	$(".model_description").shorten({
-	"showChars" : {/literal}{$iLongDescLimit}{literal},
+		$("#model_description").shorten({
+			"showChars" : {/literal}{$iLongDescLimit}{literal},
 			"ellipsesText" : "...",
 			"moreText"  : "See More",
 			"lessText"  : "See Less",
-	});
-	}</script>
+		});
+	}
+</script>
 {/literal}
 {if $sBrowser == 'mobile'}
 {template file='dvs.controller.view-mobile}
@@ -52,7 +53,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</li>
 			{/if}
 			<li>
-				<a href="#" onclick="menuContact('Top Menu Clicks'); getPrice({$iDvsId});">{phrase var='dvs.contact_dealer'}</a>
+				<a href="#" onclick="menuContact('Top Menu Clicks'); showGetPriceForm({$iDvsId});">{phrase var='dvs.contact_dealer'}</a>
 			</li>
 			{if Phpfox::isUser()}
 			<li>
@@ -83,42 +84,38 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
 
 			{if isset($aVideoSelectYears.1)}
-			<ul>
+			<ul id="year">
 				<li class="init">Select Year</li>
-				{foreach from=$aVideoSelectYears item=iYear}
-				<li onclick="$.ajaxCall('dvs.getMakes', 'iYear={$iYear}&sDvsName={$aDvs.dvs_name}');">
-					{$iYear}
-				</li>
-				{/foreach}
+				<ul>
+					{foreach from=$aVideoSelectYears item=iYear}
+					<li onclick="$.ajaxCall('dvs.getMakes', 'iYear={$iYear}&sDvsName={$aDvs.dvs_name}');">
+						{$iYear}
+					</li>
+					{/foreach}
+				</ul>
 			</ul>
 			{/if}
 
 			<ul id="makes">
-				{if isset($aValidVSMakes.0)}
-				{foreach from=$aValidVSMakes item=aMake}
-				<li onclick="$('#dvs_select_box_make_text').html('{$aMake.make}'); $('#dvs_video_select_make_input').val('{$aMake.make}'); $.ajaxCall('dvs.getModels', 'iYear={$aVideoSelectYears.0}&amp;sMake={$aMake.make}&amp;iDvsId={$Dvs.dvs_id}');">
-					{$aMake.make}
-				</li>
-				{/foreach}
-				{else}
 				<li class="init">
-					{phrase var='dvs.please_select_a_year_first'}
+					{phrase var='dvs.select_make'}
 				</li>
-				{/if}
+				<ul>
+					<li>
+						{phrase var='dvs.please_select_a_year_first'}
+					</li>
+				</ul>
 			</ul>
 
 			<ul id="models">
-				{if $aVideoSelectModels}
-				{foreach from=$aVideoSelectModels item=aModel}
-				<li onclick="$('#dvs_select_box_model_text').html('{$aModel.model}'); $.ajaxCall('dvs.videoSelect', 'sModel={$aModel.model}&amp;iYear=' + $('#dvs_video_select_year_input').val() + '&amp;sMake=' + $('#dvs_video_select_make_input').val() + '&amp;sPlaylistBorder=' + $('#dvs_playlist_border_color').val());">
-					{$aModel.year} {$aModel.model}
-				</li>
-				{/foreach}
-				{else}
 				<li class="init">
-					{phrase var='dvs.please_select_a_year_first'}
+					{phrase var='dvs.select_model'}
 				</li>
-				{/if}
+				<ul>
+					<li>
+						{phrase var='dvs.please_select_a_year_first'}
+					</li>
+				</ul>
 			</ul>
 			{/if}
 		</section>
@@ -136,13 +133,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.cta_specials'}
 			</a>
 			{/if}
-			<a href="#" onclick="menuContact('Call To Action Menu Clicks'); getPrice({$iDvsId});">
+			<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));menuContact('Call To Action Menu Clicks');return false;">
 				{phrase var='dvs.cta_contact'}
 			</a>
 		</section>
 		<section id="action_links">
 			<p>Click to Share:</p> 
-			<a href="#" onclick="showShareEmail({$iDvsId});">
+			<a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));return false;">
 				<img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
 			</a>					
 			<a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), 'facebook-share-dialog', 'width=626,height=436'); facebookShareClick(); return false;">
@@ -156,13 +153,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</div>
 
 	<section id="video_information">
-		<h3>
+		<h3 id="video_name">
 			<a href="location.href">
 				{$aDvs.phrase_overrides.override_video_name_display}
 			</a>
 		</h3>
 
-		<p class="model_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
+		<p id="model_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
 
 		{if empty($aOverrideVideo.ko_id)}
 		<section>

@@ -1,0 +1,10 @@
+#share_email_dealer input
+{
+	display: block;
+}
+
+#share_email_dealer input:not(.dvs_form_button),
+#share_email_dealer textarea
+{
+	width: 200px;
+}
