@@ -45,12 +45,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</td>
 				<td class="share_report_td">
 					<div style="position:relative">
-						{select_date prefix='start_' id='_start' start_year='2013' end_year='current' field_separator=' / ' field_order='MDY' default_all=true}
+						{select_date prefix='start_' id='_start' start_year=$sStartYear end_year=$sEndYear field_separator=' / ' field_order='MDY' default_all=true}
 					</div>
 				</td>
 				<td class="share_report_td">
 					<div style="position:relative">
-						{select_date prefix='end_' id='_start' start_year='2013' end_year='current' field_separator=' / ' field_order='MDY' default_all=true}
+						{select_date prefix='end_' id='_start' start_year=$sStartYear end_year=$sEndYear field_separator=' / ' field_order='MDY' default_all=true}
 					</div>
 				</td>
 				<td class="share_report_td">
