@@ -79,8 +79,9 @@ class Dvs_Service_Process extends Phpfox_Service {
 		$aGeoCode = Phpfox::getService('dvs')->geoCode($sAddress);
 
 		$this->database()->update($this->_sTable, array(
-			'user_id' => Phpfox::getUserId(),
+			//'user_id' => Phpfox::getUserId(),
 			'dealer_name' => $this->preParse()->clean($aDvs['dealer_name'], 255),
+			'dvs_name' => $this->preParse()->clean($aDvs['dvs_name'], 255),
 			'address' => $this->preParse()->clean($aDvs['address'], 255),
 			'city' => $this->preParse()->clean($aDvs['city'], 255),
 			'country_child_id' => (int) $aDvs['country_child_id'],
