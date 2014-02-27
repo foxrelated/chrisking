@@ -32,10 +32,16 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				$('#title_url_display').html('Please enter a dealer name.');
 			}
 		});
+		{/literal}
+		{if !$bIsEdit}
+		{literal}
 		$('#js_country_child_id_value').attr('required','required');
 		$('#js_country_child_id_value option:first').attr("value","");
 		$('#js_country_child_id_value option:first').attr("selected",false);
 		$('#js_country_child_id_value option:first').attr("selected",true);
+		{/literal}
+		{/if}
+		{literal}
 	}
 </script>
 {/literal}

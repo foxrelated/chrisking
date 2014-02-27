@@ -144,11 +144,13 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 					'timestamp' => PHPFOX_TIME
 						), 'player_id =' . (int) $aVals['player_id']);
 
-		if ($aVals['preroll_duration'])
+		if (!empty($aVals['preroll_duration']))
 		{
 			$this->database()
 					->update(Phpfox::getT('ko_dvs_preroll_files'), array(
-						'preroll_duration' => (int) $aVals['preroll_duration']), 'preroll_id =' . (int) $aVals['preroll_file_id']);
+						'preroll_duration' => (int) $aVals['preroll_duration']), 
+						'preroll_id =' . (int) $aVals['preroll_file_id']
+					);
 		}
 
 
