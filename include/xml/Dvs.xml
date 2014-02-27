@@ -628,7 +628,7 @@ Phpfox::getLib('database')->query("CREATE TABLE IF NOT EXISTS `" . Phpfox::getT(
 }
 
 // From DVS 8.7
-Phpfox::getLib('database')->query("CREATE TABLE IF NOT EXISTS `" . Phpfox::getT('phpfox_ko_dvs_salesteam_invites') . "` (
+Phpfox::getLib('database')->query("CREATE TABLE IF NOT EXISTS `" . Phpfox::getT('ko_dvs_salesteam_invites') . "` (
 `invite_id` int(11) NOT NULL AUTO_INCREMENT,
  `dvs_id` int(11) NOT NULL,
  `email_address` varchar(255) NOT NULL,
