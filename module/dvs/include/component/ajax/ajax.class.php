@@ -741,20 +741,31 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		// Get all of the makes for the DVS for the selected year.
 		$aMakes = Phpfox::getService('dvs.video')->getValidVSMakes($iYear, $aPlayer['makes']);
 
-		// The first list item should be one to tell the user to select a make.
-		$sSelectOptions = '<li class="init">' . Phpfox::getPhrase('dvs.select_make') . '</li><ul>';
-
+		// Did we get more than one make?
+		if (count($aMakes) === 1)
+		{
+			$this->call('console.log("'.$aMakes[0]['make'].'");');
+			// Yes, make the only make selected by default.
+			$sSelectOptions = '<li class="init">' . $aMakes[0]['make'] . '</li><ul>';
+			$this->call('$.ajaxCall(\'dvs.getModels\', \'iYear=' . $iYear . '&sMake=' . $aMakes[0]['make'] . '\');');
+		}
+		else
+		{
+			// The first list item should be one to tell the user to select a make.
+			$sSelectOptions = '<li class="init">' . Phpfox::getPhrase('dvs.select_make') . '</li><ul>';
+			$this->html('#models', '<li class="init">' . Phpfox::getPhrase('dvs.select_model') . '</li><ul><li>' . Phpfox::getPhrase('dvs.please_select_a_make_first') . '</li></ul>');
+		}
+		
 		// Build the ul list items
 		foreach ($aMakes as $aMake)
 		{
 			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.getModels\', \'iYear=' . $iYear . '&amp;sMake=' . $aMake['make'] . '\');">' . $aMake['make'] . '</li>';
 		}
-		
+			
 		$sSelectOptions .= '</ul>';
 
 		// Replace the old html with the new list items.
 		$this->html('#makes', $sSelectOptions);
-		$this->html('#models', '<li class="init">' . Phpfox::getPhrase('dvs.select_model') . '</li><ul><li>' . Phpfox::getPhrase('dvs.please_select_a_make_first') . '</li></ul>');
 
 //		if (Phpfox::getParam('dvs.enable_subdomain_mode'))
 //		{
@@ -828,12 +839,13 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 //		}
 	}
 
-	public function getModels($iYear = 0, $sMake = '')
+	public function getModels()
 	{
 		// Set the variables to determine which models to get.
 		$sMake = $this->get('sMake');
 		$iYear = $this->get('iYear');
-
+		$this->call('console.log("'.$iYear.'");');
+		$this->call('console.log("'.$sMake.'");');
 		// Get a list of models that belong to the make and year.
 		$aModels = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, '', true);
 
