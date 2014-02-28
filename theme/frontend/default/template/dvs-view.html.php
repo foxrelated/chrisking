@@ -22,7 +22,7 @@ defined('PHPFOX') or exit('NO DICE!');
 		{/if}
 		<script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.1.js"></script>
 	</head>
-	<body itemscope itemtype="http://schema.org/AutoDealer>
+	<body itemscope itemtype="http://schema.org/AutoDealer">
 		<div id="js_body_width_frame">
 			{if !isset($bNoIFrameHeader)}
 			{body}	

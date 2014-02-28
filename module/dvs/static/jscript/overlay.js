@@ -1,13 +1,10 @@
 var iCustomOverlayActive = 0;
 
 function showOverlay(iOverlayId) {
-	if (bDebug) {
-		console.log('Overlay: Showing overlay: ' + iOverlayId);
-	}
 	resetOverlays();
-
+	$('#dvs_overlay_' + iOverlayId).toggle();
 	$("#dvs_overlay_" + iOverlayId).animate({
-		bottom: 0
+		top: 10
 	},
 	{
 		duration: 1000,
@@ -20,12 +17,10 @@ function showOverlay(iOverlayId) {
 }
 
 function hideOverlay(iOverlayId) {
-	if (bDebug) {
-		console.log('Overlay: Hiding overlay: ' + iOverlayId);
-	}
-	$('#dvs_overlay_' + iOverlayId).css('bottom', 415);
+//	$('#dvs_overlay_' + iOverlayId).css('top', 200);
+	$('#dvs_overlay_' + iOverlayId).toggle();
 	$("#dvs_overlay_" + iOverlayId).animate({
-		bottom: 415
+		top: 0
 	},
 	{
 		duration: 500,
@@ -39,31 +34,43 @@ function hideOverlay(iOverlayId) {
 
 function resetOverlays() {
 	// Make sure all overlays are hidden
-	$('.dvs_overlay').css('bottom', 415);
+	$('.dvs_overlay').css('top', 0);
 	iCustomOverlayActive = 0;
-	bOverlayHold = true;
+//	bOverlayHold = true;
+	
 }
 
 function onProgress(oProgress) {
-	// Overlay 1
+	// Are we ready to display overlay 1?
 	if (
 		bCustomOverlay1 &&
-		!bOverlayHold &&
+//		!bOverlayHold &&
 		!iCustomOverlayActive &&
 		oProgress.position >= iCustomOverlay1Start &&
 		oProgress.position < (iCustomOverlay1Start + iCustomOverlay1Duration)
 		)
 	{
-		if (bDebug) {
-			console.log('Overlay: Position: ' + oProgress.position);
-		}
 		showOverlay(1);
 		iCustomOverlayActive = 1;
 	}
-
+	
+	// Are we ready hide overlay 1?
+//	console.log('bCustomOverlay1');
+//	console.log(bCustomOverlay1);
+////	console.log('bOverlayHold');
+////	console.log(bOverlayHold);
+//	console.log('iCustomOverlayActive');
+//	console.log(iCustomOverlayActive);
+//	console.log('oProgress.position');
+//	console.log(oProgress.position);
+//	console.log('iCustomOverlay1Start');
+//	console.log(iCustomOverlay1Start);
+//	console.log('iCustomOverlay1Duration');
+//	console.log(iCustomOverlay1Duration);
+	
 	if (
 		bCustomOverlay1 &&
-		!bOverlayHold &&
+//		!bOverlayHold &&
 		iCustomOverlayActive == 1 &&
 		oProgress.position > (iCustomOverlay1Start + iCustomOverlay1Duration)
 		)
@@ -78,7 +85,7 @@ function onProgress(oProgress) {
 	// Overlay 2
 	if (
 		bCustomOverlay2 &&
-		!bOverlayHold &&
+//		!bOverlayHold &&
 		!iCustomOverlayActive &&
 		oProgress.position >= iCustomOverlay2Start &&
 		oProgress.position < (iCustomOverlay2Start + iCustomOverlay2Duration)
@@ -93,7 +100,7 @@ function onProgress(oProgress) {
 
 	if (
 		bCustomOverlay2 &&
-		!bOverlayHold &&
+//		!bOverlayHold &&
 		iCustomOverlayActive == 2 &&
 		oProgress.position > (iCustomOverlay2Start + iCustomOverlay2Duration)
 		)
@@ -108,7 +115,7 @@ function onProgress(oProgress) {
 	// Overlay 3
 	if (
 		bCustomOverlay3 &&
-		!bOverlayHold &&
+//		!bOverlayHold &&
 		!iCustomOverlayActive &&
 		oProgress.position >= iCustomOverlay3Start &&
 		oProgress.position < (iCustomOverlay3Start + iCustomOverlay3Duration)
@@ -123,7 +130,7 @@ function onProgress(oProgress) {
 
 	if (
 		bCustomOverlay3 &&
-		!bOverlayHold &&
+//		!bOverlayHold &&
 		iCustomOverlayActive == 3 &&
 		oProgress.position > (iCustomOverlay3Start + iCustomOverlay3Duration)
 		)

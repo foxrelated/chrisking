@@ -22,6 +22,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		// do whatever you want here
 		$.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
 	});
+	
+	function test() {
+		$('#contact_dealer').hide();
+//		$('#dvs_contact_success').show().delay(8000, function() {
+//			console.log('wait');
+//		});
+		$('#dvs_contact_success').show();
+		console.log('wait').delay( 8000 );
+	}
 {/literal}
 </script>
 

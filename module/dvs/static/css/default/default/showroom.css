@@ -1,3 +1,71 @@
+body:before
+{
+/*	content: 
+		url('../../../image/intro-active.png')
+		url('../../../image/intro-selected.png')
+		url('../../../image/intro-watched.png')
+		url('../../../image/intro-disabled.png')
+		url('../../../image/whatsnew-active.png')
+		url('../../../image/whatsnew-selected.png')
+		url('../../../image/whatsnew-watched.png')
+		url('../../../image/whatsnew-disabled.png')
+		url('../../../image/exterior-active.png')
+		url('../../../image/exterior-selected.png')
+		url('../../../image/exterior-watched.png')
+		url('../../../image/exterior-disabled.png')
+		url('../../../image/interior-active.png')
+		url('../../../image/interior-selected.png')
+		url('../../../image/interior-watched.png')
+		url('../../../image/interior-disabled.png')
+		url('../../../image/power-active.png')
+		url('../../../image/power-selected.png')
+		url('../../../image/power-watched.png')
+		url('../../../image/power-disabled.png')
+		url('../../../image/fuel-active.png')
+		url('../../../image/fuel-selected.png')
+		url('../../../image/fuel-watched.png')
+		url('../../../image/fuel-disabled.png')
+		url('../../../image/features-active.png')
+		url('../../../image/features-selected.png')
+		url('../../../image/features-watched.png')
+		url('../../../image/features-disabled.png')
+		url('../../../image/safety-active.png')
+		url('../../../image/safety-selected.png')
+		url('../../../image/safety-watched.png')
+		url('../../../image/safety-disabled.png')
+		url('../../../image/pricing-active.png')
+		url('../../../image/pricing-selected.png')
+		url('../../../image/pricing-watched.png')
+		url('../../../image/pricing-disabled.png')
+		url('../../../image/warranty-active.png')
+		url('../../../image/warranty-selected.png')
+		url('../../../image/warranty-watched.png')
+		url('../../../image/warranty-disabled.png')
+		url('../../../image/summary-active.png')
+		url('../../../image/summary-selected.png')
+		url('../../../image/summary-watched.png')
+		url('../../../image/summary-disabled.png')
+		url('../../../image/overview-active.png')
+		url('../../../image/overview-selected.png')
+		url('../../../image/overview-watched.png')
+		url('../../../image/overview-disabled.png')
+		url('../../../image/performance-active.png')
+		url('../../../image/performance-selected.png')
+		url('../../../image/performance-watched.png')
+		url('../../../image/performance-disabled.png')
+		url('../../../image/mpg-active.png')
+		url('../../../image/mpg-selected.png')
+		url('../../../image/mpg-watched.png')
+		url('../../../image/mpg-disabled.png')
+		url('../../../image/honors-active.png')
+		url('../../../image/honors-selected.png')
+		url('../../../image/honors-watched.png')
+		url('../../../image/honors-disabled.png')
+		url('../../../image/get-price.png')
+		url('../../../image/getprice-disabled.png');
+	display: none;*/
+}
+
 body
 {
 	background: #000000 url(http://www.wtvdvs-dev.com/file/dvs/background/2013/09/963624e7a2616f81d5238b0c7a5d41d9.png);
@@ -71,6 +139,7 @@ header nav a:hover
 
 #player
 {
+	position: relative;
 	background: #000;
 	display: inline-block;
 	vertical-align:top;
@@ -79,6 +148,23 @@ header nav a:hover
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
+}
+
+.dvs_overlay
+{
+	position: absolute;
+	left: 180px;
+	display: none;
+	width: 360px;
+	text-align: center;
+}
+
+.dvs_overlay a
+{
+	color:#FFFFFF;
+	font-size:14px;
+	font-weight:bold;
+	text-shadow: 2px 2px #000000;
 }
 
 /* Main Player Subsections */
@@ -154,7 +240,7 @@ header nav a:hover
 
 /* Right bar directly to the right of the player */
 
-#player_left {
+#player_right {
 	margin-top: 10px;
 	display:inline-block;
 	vertical-align:top;

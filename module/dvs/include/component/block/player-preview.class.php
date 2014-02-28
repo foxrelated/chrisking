@@ -42,7 +42,7 @@ class Dvs_Component_Block_Player_Preview extends Phpfox_Component {
 		$this->template()
 			->assign(array(
 				'aVals' => $aVals,
-				'sIframeUrl' => Phpfox::getLib('url')->makeUrl('dvs.player.preview', $aValsClean)
+				'sIframeUrl' => Phpfox::getLib('url')->makeUrl('dvs.view.preview.' . $aVals['dvs_id'], $aValsClean)
 		));
 	}
 

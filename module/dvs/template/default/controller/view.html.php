@@ -15,12 +15,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {literal}
 <script type="text/javascript">
 	$Behavior.shortenText = function() {
-		$("#car_description").shorten({
-			"showChars" : {/literal}{$iLongDescLimit}{literal},
+	$("#car_description").shorten({
+	"showChars" : {/literal}{$iLongDescLimit}{literal},
 			"ellipsesText" : "...",
 			"moreText"  : "See More",
 			"lessText"  : "See Less",
-		});
+	});
 	}
 </script>
 {/literal}
@@ -78,44 +78,45 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{template file='dvs.controller.player.player}
 	</section>
 
-	<div id="player_left">
+	<div id="player_right">
 		<section id="select_new">
 			{if $aVideoSelectYears}
 			<h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
 
 			{if isset($aVideoSelectYears.1)}
 			<ul id="year">
-				<li class="init">Select Year</li>
-				<ul class="dropdown">
-					{foreach from=$aVideoSelectYears item=iYear}
-					<li onclick="$.ajaxCall('dvs.getMakes', 'iYear={$iYear}&sDvsName={$aDvs.dvs_name}');">
-						{$iYear}
-					</li>
-					{/foreach}
-				</ul>
+				<li class="init"><span class="init_selected">Select Year</span>
+					<ul>
+						{foreach from=$aVideoSelectYears item=iYear}
+						<li onclick="$.ajaxCall('dvs.getMakes', 'iYear={$iYear}&sDvsName={$aDvs.dvs_name}');">
+							{$iYear}
+						</li>
+						{/foreach}
+					</ul>
+				</li>
 			</ul>
 			{/if}
 
 			<ul id="makes">
 				<li class="init">
 					{phrase var='dvs.select_make'}
+					<ul>
+						<li>
+							{phrase var='dvs.please_select_a_year_first'}
+						</li>
+					</ul>
 				</li>
-				<ul>
-					<li>
-						{phrase var='dvs.please_select_a_year_first'}
-					</li>
-				</ul>
 			</ul>
 
 			<ul id="models">
 				<li class="init">
 					{phrase var='dvs.select_model'}
+					<ul>
+						<li>
+							{phrase var='dvs.please_select_a_year_first'}
+						</li>
+					</ul>
 				</li>
-				<ul>
-					<li>
-						{phrase var='dvs.please_select_a_year_first'}
-					</li>
-				</ul>
 			</ul>
 			{/if}
 		</section>
@@ -133,21 +134,21 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.cta_specials'}
 			</a>
 			{/if}
-			<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));menuContact('Call To Action Menu Clicks');return false;">
+			<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); menuContact('Call To Action Menu Clicks'); return false;">
 				{phrase var='dvs.cta_contact'}
 			</a>
 		</section>
 		<section id="action_links">
 			<p>Click to Share:</p> 
-			<a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));return false;">
+			<a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">
 				<img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
 			</a>					
 			<a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), 'facebook-share-dialog', 'width=626,height=436'); facebookShareClick(); return false;">
 				<img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
 			</a>
 			<span id="twitter_button_wrapper">
--				<a href="https://twitter.com/share" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>
--			</span>
+				<a href="https://twitter.com/share" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>
+			</span>
 			<a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href)); googleShareClick(); return false;">
 				<img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
 			</a>
@@ -174,12 +175,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<aside>
 		<div id="dvs_geomap_container" itemprop="map"></div>
 		<p>{if $aDvs.url}
-		{phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow">{$aDvs.url}</a>
-		{/if}
-		{if $aDvs.phone}<br />{phrase var='dvs.phone'}: <span itemprop="telephone">{$aDvs.phone}</span>{/if}</p>
+			{phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow">{$aDvs.url}</a>
+			{/if}
+			{if $aDvs.phone}<br />{phrase var='dvs.phone'}: <span itemprop="telephone">{$aDvs.phone}</span>{/if}</p>
 		<p itemscope itemtype="http://schema.org/PostalAddress">
 			{if $aDvs.address}Address: <span itemprop="streetAddress">{$aDvs.address}</span>{/if}</p>
-			<p><span itemprop="addressLocality">{$aDvs.city}</span>, <span itemprop="addressRegion">{$aDvs.state_string}</span>, <span itemprop="postalCode">{$aDvs.postal_code}</span>
+		<p><span itemprop="addressLocality">{$aDvs.city}</span>, <span itemprop="addressRegion">{$aDvs.state_string}</span>, <span itemprop="postalCode">{$aDvs.postal_code}</span>
 		</p>
 	</aside>
 </article>
@@ -192,7 +193,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}{$aVideo.video_title_url}">
 				{$aVideo.year} {$aVideo.make} {$aVideo.model}
 			</a>
-		{/foreach}
+			{/foreach}
 	</ul>
 </footer>
 {/if}

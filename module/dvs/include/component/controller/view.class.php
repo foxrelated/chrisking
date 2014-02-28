@@ -14,7 +14,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 class Dvs_Component_Controller_View extends Phpfox_Component
 {
 	public function process()
-	{
+	{	
 		// Are subdomains enabled? If yes, our dealer title url is in a different place.
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 		if ($bSubdomainMode)
@@ -25,8 +25,17 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		{
 			$sDvsRequest = $this->request()->get('req2');
 		}
-
-		$aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
+		
+		// Are we loading this as an iFrame?
+		if ($this->request()->get('req3') === 'preview')
+		{
+			$this->template()->setHeader(array('preview.css' => 'module_dvs'));
+			$aDvs = Phpfox::getService('dvs')->get($this->request()->get('req4'), false);
+		}
+		else
+		{
+			$aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
+		}
 		
 		// Try a short URL
 		if (empty($aDvs))
@@ -220,14 +229,15 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 					'jcarousellite.js' => 'module_dvs',
 //					'dvs.css' => 'module_dvs',
 //					'player.css' => 'module_dvs',
-					'get_price.css' => 'module_dvs',
-					'share_email.css' => 'module_dvs',
-					'showroom.css' => 'module_dvs',
 					'google_maps.js' => 'module_dvs',
 					'overlay.js' => 'module_dvs',
 					'dropdown.js' => 'module_dvs',
 //					'jquery.dropdown.js' => 'module_dvs',
 //					'jquery.dropdown.css' => 'module_dvs'
+					// New css files added 2/14
+					'get_price.css' => 'module_dvs',
+					'share_email.css' => 'module_dvs',
+					'showroom.css' => 'module_dvs',
 			));
 		}
 
@@ -250,7 +260,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 //				'<script type="text/javascript">var jqDvs = jQuery.noConflict();</script>',
 				'dvs.js' => 'module_dvs',
 				'<meta property = "og:image" content = "' . ($aFirstVideo['video_still_image'] ? Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['video_still_image'] : '') . '"/>',
-				'chapter_buttons.css' => 'module_dvs'
+				// New css files added 2/14
+				'chapter_buttons.css' => 'module_dvs',
 			))
 			->assign(array(
 				'aDvs' => $aDvs,
@@ -286,6 +297,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				. '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
 				. '<script type="text/javascript">' . $sDvsJs . '</script>'
 		));
+		
+		
 	}
 
 }

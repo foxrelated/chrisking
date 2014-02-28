@@ -162,9 +162,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 {if ($bIsDvs && $aOverviewVideos) || (!$bIsDvs && $aVideos)}
 <section id="dvs_bc_player"{if $bIsDvs} itemscope itemtype="http://schema.org/VideoObject"{/if}>
-		 {if $bIsDvs}
-		 {if !$bPreview}
-		 <meta itemprop="creator" content="{$aDvs.phrase_overrides.override_meta_itemprop_creator_meta}" />
+	{if $bIsDvs}
+	{if !$bPreview}
+	<meta itemprop="creator" content="{$aDvs.phrase_overrides.override_meta_itemprop_creator_meta}" />
 	<meta itemprop="productionCompany" content="WheelsTV" />
 	<meta itemprop="contributor" content="{$aDvs.dealer_name}" />
 	<meta itemprop="url" content="{$aFirstVideoMeta.url}" id="schema_video_url"/>
@@ -176,49 +176,37 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<meta itemprop="name" content="{$aDvs.phrase_overrides.override_meta_itemprop_name_meta}"  id="schema_video_name"/>
 	<meta itemprop="description" content="{$aDvs.phrase_overrides.override_meta_itemprop_description_meta}"  id="schema_video_description"/>
 	{/if}
-	{if $aPlayer.custom_overlay_1_type || $aPlayer.custom_overlay_1_type || $aPlayer.custom_overlay_1_type}
-	<div id="dvs_overlay_container">
-		{if $aPlayer.custom_overlay_1_type}
-		<div id="dvs_overlay_1" class="dvs_overlay" style="bottom:415px;">
-			{if $aPlayer.custom_overlay_1_type == 1}
-			<div class="dvs_image_overlay">	
-				<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}'));"><img src="{$sImagePath}overlay.png" /></a>
-			</div>
-			{else}
-			<div class="dvs_link_overlay">
-				<a href="{$aPlayer.custom_overlay_1_url}" target="_blank">{$aPlayer.custom_overlay_1_text}</a>
-			</div>
-			{/if}
-		</div>
-		{/if}
-		{if $aPlayer.custom_overlay_2_type}
-		<div id="dvs_overlay_2" class="dvs_overlay" style="bottom:415px;">
-			{if $aPlayer.custom_overlay_2_type == 1}
-			<div class="dvs_image_overlay">
-				<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}'));"><img src="{$sImagePath}overlay.png"/></a>
-			</div>
-			{else}
-			<div class="dvs_link_overlay">
-				<a href="{$aPlayer.custom_overlay_2_url}" target="_blank">{$aPlayer.custom_overlay_2_text}</a>
-			</div>
-			{/if}
-		</div>
-		{/if}
-		{if $aPlayer.custom_overlay_3_type}
-		<div id="dvs_overlay_3" class="dvs_overlay" style="bottom:415px;">
-			{if $aPlayer.custom_overlay_3_type == 1}
-			<div class="dvs_image_overlay">
-				<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}'));"><img src="{$sImagePath}overlay.png"/></a>
-			</div>
-			{else}
-			<div class="dvs_link_overlay">
-				<a href="{$aPlayer.custom_overlay_3_url}" target="_blank">{$aPlayer.custom_overlay_3_text}</a>
-			</div>
-			{/if}
-		</div>
+
+
+	{if $aPlayer.custom_overlay_1_type}
+	<div id="dvs_overlay_1" class="dvs_overlay">
+		{if $aPlayer.custom_overlay_1_type == 1}
+		<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}'));"><img src="{$sImagePath}overlay.png" /></a>
+		{else}
+		<a href="{$aPlayer.custom_overlay_1_url}" target="_blank">{$aPlayer.custom_overlay_1_text}</a>
 		{/if}
 	</div>
 	{/if}
+	{if $aPlayer.custom_overlay_2_type}
+	<div id="dvs_overlay_2" class="dvs_overlay">
+		{if $aPlayer.custom_overlay_2_type == 1}
+		<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}'));"><img src="{$sImagePath}overlay.png"/></a>
+		{else}
+		<a href="{$aPlayer.custom_overlay_2_url}" target="_blank">{$aPlayer.custom_overlay_2_text}</a>
+		{/if}
+	</div>
+	{/if}
+	{if $aPlayer.custom_overlay_3_type}
+	<div id="dvs_overlay_3" class="dvs_overlay" >
+		{if $aPlayer.custom_overlay_3_type == 1}
+		<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}'));"><img src="{$sImagePath}overlay.png"/></a>
+		{else}
+		<a href="{$aPlayer.custom_overlay_3_url}" target="_blank">{$aPlayer.custom_overlay_3_text}</a>
+		{/if}
+	</div>
+	{/if}
+
+
 	{/if}
 	{if $sBrowser == 'ipad'}
 	<object id="myExperience" class="BrightcoveExperience">

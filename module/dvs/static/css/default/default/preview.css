@@ -1,0 +1,10 @@
+header, #player_right, #video_information, aside, footer, #select_new, #dealer_links, #action_links
+{
+	display: none;
+}
+
+#player
+{
+	margin-left: 5px;
+}
+

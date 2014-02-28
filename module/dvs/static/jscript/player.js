@@ -20,7 +20,7 @@ var bPlaying;
 var sCuePoint;
 var bIgnoreAutoPlaySetting = false;
 var oCustomVars = [];
-var bOverlayHold = false;
+//var bOverlayHold = false;
 
 if (bDebug) {
 	console.log('Page: ' + (bIsDvs ? 'DVS' : 'iDrive') + ' Browser Detected: ' + sBrowser);
@@ -555,11 +555,11 @@ function onVideoLoad(oMedia) {
 
 //Give brightcove time to reset the position so we dont show an overlay too early.
 	if (bIsDvs) {
-		$(document).ready(function() {
-			checkBackground();
-		});
+//		$(document).ready(function() {
+////			checkBackground();
+//		});
 
-		bOverlayHold = false;
+//		bOverlayHold = false;
 	}
 }
 

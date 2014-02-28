@@ -310,24 +310,79 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 	public function previewPlayer()
 	{
 		$aVals = Phpfox::getLib('request')->getArray('val');
-		$bMakeSelected = false;
+		
+//		$bMakeSelected = false;
+//
+//		foreach ($aVals['selected_makes'] as $sMake => $bSelected)
+//		{
+//			if ($bSelected)
+//			{
+//				$bMakeSelected = true;
+//			}
+//		}
+//
 
-		foreach ($aVals['selected_makes'] as $sMake => $bSelected)
+		$aValidation = array(
+//				'player_name' => Phpfox::getPhrase('dvs.please_enter_a_player_name')
+		);
+
+		if ($aVals['preroll_file_id'])
 		{
-			if ($bSelected)
-			{
-				$bMakeSelected = true;
-			}
+			$aValidation['preroll_duration'] = Phpfox::getPhrase('dvs.please_enter_a_duration_for_the_pre_roll_file');
 		}
 
-		if (!$bMakeSelected)
+		$oValid = Phpfox::getLib('validator')->set(array(
+			'sFormName' => 'add_player',
+			'aParams' => $aValidation
+			)
+		);
+
+		$aFeaturedModel = explode(',', $aVals['featured_model']);
+
+		if (isset($aFeaturedModel[1]))
+		{
+			$aVals['featured_year'] = $aFeaturedModel[0];
+			$aVals['featured_make'] = $aFeaturedModel[1];
+			$aVals['featured_model'] = $aFeaturedModel[2];
+		}
+		else
+		{
+			$aVals['featured_year'] = '';
+			$aVals['featured_make'] = '';
+			$aVals['featured_model'] = '';
+		}
+
+		$aVals['domain'] = '';
+
+		if ($oValid->isValid($aVals))
+		{
+			$iPlayerId = Phpfox::getService('dvs.player')->get($aVals['dvs_id']);
+
+			//DVS Players will always be interactive
+			$aVals['player_type'] = 0;
+
+			if (!$iPlayerId)
+			{
+				$iPlayerId = Phpfox::getService('dvs.player.process')->add($aVals);
+			}
+			else
+			{
+				Phpfox::getService('dvs.player.process')->update($aVals);
+			}
+		}
+			
+		if (!$oValid->isValid($aVals))
 		{
 			echo Phpfox::getPhrase('dvs.strong_error_you_must_select_at_least_1_make_before_previewing_the_player_strong');
 		}
 		else
 		{
+//			print_r($iPlayerId);
+//			print_r($aVals);
+//			exit;
 			Phpfox::getBlock('dvs.player-preview', array('aVals' => $aVals));
 		}
+		
 	}
 
 	public function updateTitleUrl()
@@ -592,9 +647,14 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				->send();
 
 			Phpfox::getService('dvs.process')->updateContactCount($aDvs['dvs_id']);
-
-			$this->hide('#contact_dealer');
-			$this->show('#dvs_contact_success');
+			
+//			$this->call('$("#contact_dealer").hide().("#dvs_contact_success").show().delay(800).tb_remove();');
+			
+//			$this->hide('#contact_dealer');
+//			$this->show('#dvs_contact_success');
+//			$this->call('$("#dvs_contact_success").show().after(function() {});');
+//			$this->call('tb_remove();');
+			$this->call('test();');
 			$this->call('getPriceEmailSent();');
 		}
 		else
@@ -773,15 +833,14 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		// Did we get more than one make?
 		if (count($aMakes) === 1)
 		{
-			$this->call('console.log("'.$aMakes[0]['make'].'");');
 			// Yes, make the only make selected by default.
-			$sSelectOptions = '<li class="init">' . $aMakes[0]['make'] . '</li><ul>';
+			$sSelectOptions = '<li class="init"><span class="init_selected">' . $aMakes[0]['make'] . '</span><ul>';
 			$this->call('$.ajaxCall(\'dvs.getModels\', \'iYear=' . $iYear . '&sMake=' . $aMakes[0]['make'] . '\');');
 		}
 		else
 		{
 			// The first list item should be one to tell the user to select a make.
-			$sSelectOptions = '<li class="init">' . Phpfox::getPhrase('dvs.select_make') . '</li><ul>';
+			$sSelectOptions = '<li class="init"><span class="init_selected">' . Phpfox::getPhrase('dvs.select_make') . '</span><ul>';
 			$this->html('#models', '<li class="init">' . Phpfox::getPhrase('dvs.select_model') . '</li><ul><li>' . Phpfox::getPhrase('dvs.please_select_a_make_first') . '</li></ul>');
 		}
 		
@@ -791,7 +850,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.getModels\', \'iYear=' . $iYear . '&amp;sMake=' . $aMake['make'] . '\');">' . $aMake['make'] . '</li>';
 		}
 			
-		$sSelectOptions .= '</ul>';
+		$sSelectOptions .= '</ul></li>';
 
 		// Replace the old html with the new list items.
 		$this->html('#makes', $sSelectOptions);
@@ -873,8 +932,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		// Set the variables to determine which models to get.
 		$sMake = $this->get('sMake');
 		$iYear = $this->get('iYear');
-		$this->call('console.log("'.$iYear.'");');
-		$this->call('console.log("'.$sMake.'");');
+		
 		// Get a list of models that belong to the make and year.
 		$aModels = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, '', true);
 
@@ -882,12 +940,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		if (!empty($aModels))
 		{
 			// Yes, begin to create the drop down menu.
-			$sSelectOptions = '<li class="init">' . Phpfox::getPhrase('dvs.select_model') . '</li><ul>';
+			$sSelectOptions = '<li class="init"><span class="init_selected">' . Phpfox::getPhrase('dvs.select_model') . '</span><ul>';
 		}
 		else
 		{
 			// No, let the user know there were no models found.
-			$sSelectOptions = '<li class="init">No Models Found</li><ul>';
+			$sSelectOptions = '<li class="init"><span class="init_selected">No Models Found</span><ul>';
 		}
 
 		// Add each model to the drop down.
@@ -896,7 +954,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.videoSelect\', \'sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=\' + $(\'#contact_dvs_id\').val() + \'&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
 		}
 		
-		$sSelectOptions .= '</ul>';
+		$sSelectOptions .= '</ul></li>';
 
 		// Display the dropdown on the page.
 		$this->html('#models', $sSelectOptions);
