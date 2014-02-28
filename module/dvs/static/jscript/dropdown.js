@@ -1,3 +1,5 @@
+
+
 $('#year').on('click', '.init', function() {
 	$(this).closest('ul').children('ul').toggle();
 });
@@ -24,3 +26,4 @@ $("#year").on("click", "li:not(.init)", function() {
     $("#year").children('.init').html($(this).html());
     $("#year").children('ul').toggle();
 });
+

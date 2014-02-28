@@ -27,28 +27,23 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 <form id="contact_dealer" name="contact_dealer" action="javascript:void(0);">
 	<fieldset>
-		<p>Thank you for your interest in the {$aVideo.year} {$aVideo.make} {$aVideo.model}!</p>
+		<p>Thank you for your interest in the <strong>{$aVideo.year} {$aVideo.make} {$aVideo.model}</strong>!</p>
 		<p>We're happy to help you find your next car or answer any questions you might have. Please fill out the form below:</p>
 		<ul>
 			<li>
-				<label for="name">{phrase var='dvs.name'}:</label>
-				<input type="text" name="val[contact_name]" id="name" required/>
+				<input type="text" name="val[contact_name]" id="name" placeholder="{phrase var='dvs.get_price_placeholder_name'}" required/>
 			</li>
 			<li>
-				<label for="email">{phrase var='dvs.email'}:</label>
-				<input type="email" name="val[contact_email]" id="email" required/>
+				<input type="email" name="val[contact_email]" id="email" placeholder="{phrase var='dvs.get_price_placeholder_email'}" required/>
 			</li>
 			<li>
-				<label for="phone">{phrase var='dvs.phone'}:</label>
-				<input type="text" name="val[contact_phone]" id="phone" required/>
+				<input type="text" name="val[contact_phone]" id="phone" placeholder="{phrase var='dvs.get_price_placeholder_phone'}" required/>
 			</li>
 			<li>
-				<label for="zip">{phrase var='dvs.zip_code'}:</label>
-				<input type="text" name="val[contact_zip]" id="zip" required/>
+				<input type="text" name="val[contact_zip]" id="zip" placeholder="{phrase var='dvs.get_price_placeholder_zip'}" required/>
 			</li>
 			<li>
-				<label for="comments">{phrase var='dvs.comments'}:</label>
-				<textarea id="comments" name="val[contact_comments]" cols="16" rows="3" required></textarea>
+				<textarea id="comments" name="val[contact_comments]" cols="16" rows="3" placeholder="{phrase var='dvs.get_price_placeholder_comments'}" required></textarea>
 			</li>
 		</ul>
 

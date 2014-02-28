@@ -1,27 +1,35 @@
-#contact_dealer legend
+#contact_dealer
 {
-	font-weight: bold;
-	padding-bottom: 5px;
+	text-align: center;
 }
 
-#contact_dealer label
+#contact_dealer p
 {
-	display: inline-block;
-	vertical-align: top;
-	width: 60px;
+	font-size: 12px;
+	font-family: Arial;
+}
+
+#name
+{
+	margin-top: 20px;
 }
 
 #contact_dealer input:not(.dvs_form_button)
 {
-	width: 200px;
+	width: 225px;
+	font-size: 16px;
+	padding: 4px;
 }
 
 #contact_dealer textarea
 {
-	width: 200px;
+	width: 225px;
+	margin-bottom: 20px;
+	font-size: 16px;
+	padding: 4px;
 }
 
 #contact_dealer .dvs_form_button
 {
-	padding: 5px 10px;
+	padding: 5px 25px;
 }

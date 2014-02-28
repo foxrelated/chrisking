@@ -15,7 +15,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {literal}
 <script type="text/javascript">
 	$Behavior.shortenText = function() {
-		$("#model_description").shorten({
+		$("#car_description").shorten({
 			"showChars" : {/literal}{$iLongDescLimit}{literal},
 			"ellipsesText" : "...",
 			"moreText"  : "See More",
@@ -53,7 +53,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</li>
 			{/if}
 			<li>
-				<a href="#" onclick="menuContact('Top Menu Clicks'); showGetPriceForm({$iDvsId});">{phrase var='dvs.contact_dealer'}</a>
+				<a href="#" onclick="menuContact('Top Menu Clicks'); tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">{phrase var='dvs.contact_dealer'}</a>
 			</li>
 			{if Phpfox::isUser()}
 			<li>
@@ -86,7 +86,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			{if isset($aVideoSelectYears.1)}
 			<ul id="year">
 				<li class="init">Select Year</li>
-				<ul>
+				<ul class="dropdown">
 					{foreach from=$aVideoSelectYears item=iYear}
 					<li onclick="$.ajaxCall('dvs.getMakes', 'iYear={$iYear}&sDvsName={$aDvs.dvs_name}');">
 						{$iYear}
@@ -133,19 +133,21 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.cta_specials'}
 			</a>
 			{/if}
-			<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));menuContact('Call To Action Menu Clicks');return false;">
+			<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));menuContact('Call To Action Menu Clicks');return false;">
 				{phrase var='dvs.cta_contact'}
 			</a>
 		</section>
 		<section id="action_links">
 			<p>Click to Share:</p> 
-			<a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));return false;">
+			<a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));return false;">
 				<img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
 			</a>					
 			<a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), 'facebook-share-dialog', 'width=626,height=436'); facebookShareClick(); return false;">
 				<img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
 			</a>
-			<a href="https://twitter.com/share" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>
+			<span id="twitter_button_wrapper">
+-				<a href="https://twitter.com/share" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>
+-			</span>
 			<a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href)); googleShareClick(); return false;">
 				<img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
 			</a>
@@ -159,25 +161,25 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</a>
 		</h3>
 
-		<p id="model_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
+		<p class="model_description" id="car_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
 
 		{if empty($aOverrideVideo.ko_id)}
 		<section>
 			<h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
-			<span itemprop="description">{$aDvs.text_parsed}</span>
+			<p itemprop="description" class="model_description">{$aDvs.text_parsed}</p>
 		</section>
 		{/if}	
 	</section>
 
 	<aside>
 		<div id="dvs_geomap_container" itemprop="map"></div>
-		{if $aDvs.url}
+		<p>{if $aDvs.url}
 		{phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow">{$aDvs.url}</a>
 		{/if}
-		{if $aDvs.phone}<br />{phrase var='dvs.phone'}: <span itemprop="telephone">{$aDvs.phone}</span>{/if}
+		{if $aDvs.phone}<br />{phrase var='dvs.phone'}: <span itemprop="telephone">{$aDvs.phone}</span>{/if}</p>
 		<p itemscope itemtype="http://schema.org/PostalAddress">
-			{if $aDvs.address}Address: <span itemprop="streetAddress">{$aDvs.address}</span><br />{/if}
-			<span itemprop="addressLocality">{$aDvs.city}</span>, <span itemprop="addressRegion">{$aDvs.state_string}</span>, <span itemprop="postalCode">{$aDvs.postal_code}</span>
+			{if $aDvs.address}Address: <span itemprop="streetAddress">{$aDvs.address}</span>{/if}</p>
+			<p><span itemprop="addressLocality">{$aDvs.city}</span>, <span itemprop="addressRegion">{$aDvs.state_string}</span>, <span itemprop="postalCode">{$aDvs.postal_code}</span>
 		</p>
 	</aside>
 </article>

@@ -4,6 +4,7 @@
 	width: 140px;
 	border: 0 none;
 	display: block;
+	cursor: pointer;
 }
 
 #chapter_buttons button.no_display
@@ -351,4 +352,12 @@
 #chapter_container_Get_Price.disabled
 {
 	background:url('../../../image/getprice-disabled.png');
+}
+
+/* Remove border on selected buttons */
+
+button:focus, button:active 
+{
+	outline: 0;
+	border: 0;
 }

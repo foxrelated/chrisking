@@ -1,6 +1,12 @@
 body
 {
 	background: #000000 url(http://www.wtvdvs-dev.com/file/dvs/background/2013/09/963624e7a2616f81d5238b0c7a5d41d9.png);
+	font-family: Arial;
+}
+
+a:hover
+{
+	cursor: pointer;
 }
 
 #site_content {
@@ -11,7 +17,7 @@ body
 
 /* Header image */
 
-header 
+header a
 {
 	display: inline-block;
 	margin: auto;
@@ -33,11 +39,18 @@ header nav {
 	border-bottom-right-radius: 5px;
 	border-bottom-left-radius: 5px;
 	border: 5px solid #00A7AD;
+	margin-left: 0px;
+}
+
+nav ul
+{
+	text-align: left;
 }
 
 header nav ul li
 {
 	display: inline;
+	
 }
 
 nav li + li:before 
@@ -98,6 +111,7 @@ header nav a:hover
 	border-radius: 50%;
 	font-weight: bold;
 	color: #000;
+	cursor: pointer;
 }
 
 #playlist_wrapper button.playlist-button:hover
@@ -107,6 +121,7 @@ header nav a:hover
 
 #overview_playlist {
 	display: inline-block;
+	max-height: 86px;
 }
 
 #overview_playlist ul li {
@@ -177,6 +192,7 @@ header nav a:hover
 	border: 1px #000 solid;
 	display: none;
 	position: absolute;
+	text-align: left;
 }
 
 #select_new ul ul li
@@ -261,10 +277,19 @@ header nav a:hover
 	border-bottom: none;
 }
 
-#model_description
+#video_information h2
+{
+	font-size: 16px;
+	color: #fff;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+.model_description
 {
 	font-size: 14px;
 	color: #fff;
+	margin-bottom: 10px;
 }
 
 article aside {
@@ -281,11 +306,21 @@ aside a:hover
 	color: #009c05;
 }
 
+aside p
+{
+	padding-bottom: 10px;
+}
+
 #dvs_geomap_container
 {
 	margin-top: 25px;
 	width: 350px;
 	height: 240px;
+}
+
+#google_maps_info_window_contents
+{
+	color: #000;
 }
 
 /* Footer */

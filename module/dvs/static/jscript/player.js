@@ -500,7 +500,7 @@ function onVideoLoad(oMedia) {
 	}
 
 //	$('#chapter_buttons').html('');
-	$('#chapter_buttons button').removeClass('display').addClass('no_display');
+	$('#chapter_buttons button').addClass('no_display').removeClass('display');
 
 	//get new cue points
 	if (sBrowser === 'mobile' || sBrowser === 'ipad')
@@ -758,7 +758,7 @@ function changeLights(sCuePoint) {
 //				console.log('Player: Chapter buttons do not need to be reset.');
 //			}
 //		}
-		$('#chapter_buttons button.disabled').removeClass('disabled').addClass('active');
+		$('#chapter_buttons button.disabled').addClass('active').removeClass('disabled');
 	}
 
 //	$('#chapter_light_disabled_' + sCuePoint).hide();
