@@ -16,14 +16,26 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 
 	public function process()
 	{
+		$sStartYear = date('Y') - 100;
+		$sEndYear = date('Y') + 100;
 		
 		// Is the user allowed to be here?
 		Phpfox::isUser(true);
 		
-		$sDvsTitle = $this->request()->get('req4');
+		// Are subdomains enabled? If yes, our dealer title url is in a different place.
+		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
+		if ($bSubdomainMode)
+		{
+			$sDvsTitle = $this->request()->get('req3');
+		}else{
+			
+			$sDvsTitle = $this->request()->get('req4');
+		}
+		
 		$aDvs = Phpfox::getService('dvs')->get($sDvsTitle, true);
 
 		$aVals = $this->request()->getArray('val');
+		
 		if (isset($aVals['user_id']) && $aVals['user_id'])
 		{
 			$aShareReport = Phpfox::getService('dvs.salesteam')->getShareReport($aDvs['dvs_id'], $aVals);
@@ -59,6 +71,8 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 				'share-report.css' => 'module_dvs'
 			))
 			->assign(array(
+				'sStartYear' => $sStartYear,
+				'sEndYear' => $sEndYear,
 				'aDvs' => $aDvs,
 				'aForms' => $aVals,
 				'aTeamMembers' => $aTeamMembers,

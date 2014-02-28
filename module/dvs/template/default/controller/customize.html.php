@@ -241,6 +241,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </style>
 <form method="post" action="{url link='dvs.index'}" id="add_dvs_customize" name="add_dvs_customize">
 	<h3>Branding</h3>
+	<div id="error_message" class="error_message" style="display:none"></div>
 	<table>
 		<tr class="tr_interactive">
 			<td class="dvs_add_td">
@@ -254,7 +255,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{phrase var='dvs.select_file'}
 				{/if}:
 				</span>
-				<iframe id="js_branding_upload_frame" name="js_branding_upload_frame" src="{url link='dvs.branding-file-form'}{if $bIsEdit}current-branding-id_{$aForms.branding_file_id}{/if}" scrolling="no" frameborder="0" width="180" height="24" {if $bIsEdit}style="display:none;"{/if}></iframe>
+				<iframe id="js_branding_upload_frame" name="js_branding_upload_frame" src="{url link='dvs.branding-file-form'}{if $bIsEdit}current-branding-id_{$aForms.branding_file_id}{/if}" scrolling="no" frameborder="0" width="250" height="35" {if $bIsEdit}style="display:none;"{/if}></iframe>
 				<div id="branding_file_preview" {if !$bIsEdit}style="display: none"{/if}>
 					 {if $bIsEdit}
 						{if $aForms.branding_file_name}
@@ -284,7 +285,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{phrase var='dvs.select_file'}
 				{/if}:
 				</span>
-				<iframe id="js_background_upload_frame" name="js_background_upload_frame" src="{url link='dvs.background-file-form'}{if $bIsEdit}current-background-id_{$aForms.background_file_id}{/if}" scrolling="no" frameborder="0" width="180" height="24" {if $bIsEdit}style="display:none;"{/if}></iframe>
+				<iframe id="js_background_upload_frame" name="js_background_upload_frame" src="{url link='dvs.background-file-form'}{if $bIsEdit}current-background-id_{$aForms.background_file_id}{/if}" scrolling="no" frameborder="0" width="250" height="35" {if $bIsEdit}style="display:none;"{/if}></iframe>
 				<div id="background_file_preview" {if !$bIsEdit}style="display: none"{/if}>
 					 {if $bIsEdit}
 						{if $aForms.background_file_name}

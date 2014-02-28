@@ -131,6 +131,21 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				}
 			}
 
+			// Do we have an appropriate file extension for an image?
+			$aFilePlusExtension = explode('.', $sBrandingFile);
+			// Make the submission extension lower case.
+			$sLowerCaseSubmission = strtolower($aFilePlusExtension[1]);
+			// Make the approved extension list lower case.
+			$aLowerCaseApproved = array_map('strtolower', Phpfox::getParam('dvs.allowed_file_types'));
+			// Is the extension on the list?
+			if(!in_array($sLowerCaseSubmission,$aLowerCaseApproved)){
+				$this->call('window.parent.document.getElementById(\'error_message\').innerHTML = \''.Phpfox::getPhrase('dvs.please_select_a_valid_banner_image').'\';window.parent.document.getElementById(\'error_message\').setAttribute("style","display:show");');
+				return false;
+			}else{
+				$this->call('window.parent.document.getElementById(\'error_message\').setAttribute("style","display:none");');
+			}
+			
+			
 			$this->attr('#js_view_branding_file_link', 'href', Phpfox::getLib('url')->makeUrl('file', array('redirect' => $iId)))
 				->html('#js_branding_upload_file_name', htmlentities(addslashes($sBrandingFile)))
 				->val('.js_cache_branding_file_id', $iId)
@@ -162,6 +177,20 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				}
 			}
 
+						// Do we have an appropriate file extension for an image?
+			$aFilePlusExtension = explode('.', $sBackgroundFile);
+			// Make the submission extension lower case.
+			$sLowerCaseSubmission = strtolower($aFilePlusExtension[1]);
+			// Make the approved extension list lower case.
+			$aLowerCaseApproved = array_map('strtolower', Phpfox::getParam('dvs.allowed_file_types'));
+			// Is the extension on the list?
+			if(!in_array($sLowerCaseSubmission,$aLowerCaseApproved)){
+				$this->call('window.parent.document.getElementById(\'error_message\').innerHTML = \''.Phpfox::getPhrase('dvs.please_select_a_valid_background_image').'\';window.parent.document.getElementById(\'error_message\').setAttribute("style","display:show");');
+				return false;
+			}else{
+				$this->call('window.parent.document.getElementById(\'error_message\').setAttribute("style","display:none");');
+			}
+			
 			$this->attr('#js_view_background_file_link', 'href', Phpfox::getLib('url')->makeUrl('file', array('redirect' => $iId)))
 				->html('#js_background_upload_file_name', htmlentities(addslashes($sBackgroundFile)))
 				->val('.js_cache_background_file_id', $iId)

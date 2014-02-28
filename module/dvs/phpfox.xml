@@ -31,7 +31,7 @@
 );";]]></setting>
 		<setting group="dvs_google_maps" module_id="dvs" is_hidden="0" type="string" var_name="google_maps_api_key" phrase_var_name="setting_google_maps_api_key" ordering="1" version_id="3.1.0rc1">AIzaSyA8FIrmm-Rz5mQRzuTkyzs5v59zJpZ1eZY</setting>
 		<setting group="dvs_google_maps" module_id="dvs" is_hidden="0" type="integer" var_name="google_maps_default_zoom" phrase_var_name="setting_google_maps_default_zoom" ordering="1" version_id="3.1.0rc1">12</setting>
-		<setting group="dvs_general" module_id="dvs" is_hidden="0" type="boolean" var_name="enable_subdomain_mode" phrase_var_name="setting_enable_subdomain_mode" ordering="1" version_id="3.1.0rc1">1</setting>
+		<setting group="dvs_general" module_id="dvs" is_hidden="0" type="boolean" var_name="enable_subdomain_mode" phrase_var_name="setting_enable_subdomain_mode" ordering="1" version_id="3.1.0rc1">0</setting>
 		<setting group="dvs_display" module_id="dvs" is_hidden="0" type="integer" var_name="long_desc_limit" phrase_var_name="setting_long_desc_limit" ordering="1" version_id="3.1.0rc1">130</setting>
 		<setting group="dvs_general" module_id="dvs" is_hidden="0" type="boolean" var_name="javascript_debug_mode" phrase_var_name="setting_javascript_debug_mode" ordering="1" version_id="3.4.1">0</setting>
 		<setting group="dvs_general" module_id="dvs" is_hidden="0" type="array" var_name="new_years" phrase_var_name="setting_new_years" ordering="1" version_id="3.4.1"><![CDATA[s:39:"array(
@@ -538,6 +538,8 @@ To join this Sales Team, please click here: <a href="{link}">{link}</a>]]></phra
 		<phrase module_id="dvs" version_id="3.4.1" var_name="share_links_block_header" added="1390054078">Share Links</phrase>
 		<phrase module_id="dvs" version_id="3.7.5" var_name="vanity_url" added="1393265548">Vanity URL</phrase>
 		<phrase module_id="dvs" version_id="3.7.5" var_name="please_enter_a_vanity_url_above" added="1393266246">Please enter a vanity URL above...</phrase>
+		<phrase module_id="dvs" version_id="3.7.5" var_name="please_select_a_valid_banner_image" added="1393523507">Please select a valid banner image.</phrase>
+		<phrase module_id="dvs" version_id="3.7.5" var_name="please_select_a_valid_background_image" added="1393524268">Please select a valid background image.</phrase>
 	</phrases>
 	<user_group_settings>
 		<setting is_admin_setting="0" module_id="dvs" type="integer" admin="10" user="10" guest="0" staff="10" module="dvs" ordering="0">file_size_limit</setting>

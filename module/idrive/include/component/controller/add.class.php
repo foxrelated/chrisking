@@ -12,7 +12,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @author  		Konsort.org
  * @package 		iDrive
  */
-class Idrive_Component_Controller_Add extends Phpfox_Component {
+class Idrive_Component_Controller_Add extends Phpfox_Component
+{
 
 	public function process()
 	{
@@ -47,7 +48,7 @@ class Idrive_Component_Controller_Add extends Phpfox_Component {
 			$oValid = Phpfox::getLib('validator')->set(array(
 				'sFormName' => 'add_player',
 				'aParams' => $aValidation
-				)
+					)
 			);
 
 			$aFeaturedModel = explode(',', $aVals['featured_model']);
@@ -95,7 +96,10 @@ class Idrive_Component_Controller_Add extends Phpfox_Component {
 			//Validation failed, reload all JS and pass aVals back to contrller as aForms. We need to load the player JS for preview.
 			else
 			{
-				$aVals['logo_file_name'] = Phpfox::getService('idrive.file')->getLogoFile((int) $aVals['logo_file_id']);
+				if (!empty($aVals['logo_file_id']))
+				{
+					$aVals['logo_file_name'] = Phpfox::getService('idrive.file')->getLogoFile((int) $aVals['logo_file_id']);
+				}
 				$aVals['preroll_file_name'] = Phpfox::getService('idrive.file')->getPrerollFile((int) $aVals['preroll_file_id']);
 
 				if (!isset($aVals['autoplay']))
@@ -134,31 +138,31 @@ class Idrive_Component_Controller_Add extends Phpfox_Component {
 				}
 
 				$this->template()
-					->assign(array(
-						'aForms' => $aVals,
-						'bIsEdit' => true,
-						'bCanAddPlayers' => true,
-						'aMakes' => $aMakes,
-						'aModels' => $aPlayerModels,
-						'sSwfUrl' => $sSwfUrl,
-						'sIdriveUrl' => Phpfox::getParam('core.url_file') . 'idrive/'
-					))
-					->setHeader(array(
-						'colorpicker.js' => 'module_dvs',
-						'eye.js' => 'module_dvs',
-						'utils.js' => 'module_dvs',
-						'layout.js' => 'module_dvs',
-						'colorpicker.css' => 'module_dvs',
-						'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
-						'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
-						'<script type="text/javascript">var bIsDvs = false</script>',
-						'player.js' => 'module_dvs',
-						'jcarousellite.js' => 'module_dvs',
-						'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
-						'add.js' => 'module_idrive'
-					))
-					->setBreadcrumb(Phpfox::getPhrase('idrive.my_players'), Phpfox::getLib('url')->makeUrl('idrive'))
-					->setBreadcrumb(Phpfox::getPhrase('idrive.edit_player'));
+						->assign(array(
+							'aForms' => $aVals,
+							'bIsEdit' => true,
+							'bCanAddPlayers' => true,
+							'aMakes' => $aMakes,
+							'aModels' => $aPlayerModels,
+							'sSwfUrl' => $sSwfUrl,
+							'sIdriveUrl' => Phpfox::getParam('core.url_file') . 'idrive/'
+						))
+						->setHeader(array(
+							'colorpicker.js' => 'module_dvs',
+							'eye.js' => 'module_dvs',
+							'utils.js' => 'module_dvs',
+							'layout.js' => 'module_dvs',
+							'colorpicker.css' => 'module_dvs',
+							'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
+							'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
+							'<script type="text/javascript">var bIsDvs = false</script>',
+							'player.js' => 'module_dvs',
+							'jcarousellite.js' => 'module_dvs',
+							'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
+							'add.js' => 'module_idrive'
+						))
+						->setBreadcrumb(Phpfox::getPhrase('idrive.my_players'), Phpfox::getLib('url')->makeUrl('idrive'))
+						->setBreadcrumb(Phpfox::getPhrase('idrive.edit_player'));
 				;
 			}
 		}
@@ -167,7 +171,7 @@ class Idrive_Component_Controller_Add extends Phpfox_Component {
 			//If there is an ID, we're editing
 			if (($iId = $this->request()->getInt('id')))
 			{
-				
+
 				// Do we get a player with the id?
 				if (($aPlayer = Phpfox::getService('idrive.player')->get($iId)))
 				{
@@ -180,7 +184,7 @@ class Idrive_Component_Controller_Add extends Phpfox_Component {
 					{
 						$bCanAddPlayers = false;
 					}
-					
+
 					// Initialize an empty array.
 					$aPlayerModels = array();
 
@@ -195,7 +199,7 @@ class Idrive_Component_Controller_Add extends Phpfox_Component {
 							}
 						}
 					}
-					
+
 					// Check to see which years out of all years needs to be selected.
 					foreach ($aYears as $iYear)
 					{
@@ -210,15 +214,15 @@ class Idrive_Component_Controller_Add extends Phpfox_Component {
 					}
 
 					$this->template()
-						->assign(array(
-							'aForms' => $aPlayer,
-							'bIsEdit' => true,
-							'bCanAddPlayers' => $bCanAddPlayers,
-							'sSwfUrl' => $sSwfUrl,
-							'aModels' => $aPlayerModels
-						))
-						->setBreadcrumb(Phpfox::getPhrase('idrive.my_players'), Phpfox::getLib('url')->makeUrl('idrive'))
-						->setBreadcrumb(Phpfox::getPhrase('idrive.edit_player'));
+							->assign(array(
+								'aForms' => $aPlayer,
+								'bIsEdit' => true,
+								'bCanAddPlayers' => $bCanAddPlayers,
+								'sSwfUrl' => $sSwfUrl,
+								'aModels' => $aPlayerModels
+							))
+							->setBreadcrumb(Phpfox::getPhrase('idrive.my_players'), Phpfox::getLib('url')->makeUrl('idrive'))
+							->setBreadcrumb(Phpfox::getPhrase('idrive.edit_player'));
 				}
 			}
 			else
@@ -235,51 +239,50 @@ class Idrive_Component_Controller_Add extends Phpfox_Component {
 					$bCanAddPlayers = false;
 				}
 				$this->template()
-					->assign(array(
-						'bIsEdit' => false,
-						'bCanAddPlayers' => $bCanAddPlayers
-					))
-					->setBreadcrumb(Phpfox::getPhrase('idrive.my_players'), Phpfox::getLib('url')->makeUrl('idrive'))
-					->setBreadcrumb(Phpfox::getPhrase('idrive.add_player'));
+						->assign(array(
+							'bIsEdit' => false,
+							'bCanAddPlayers' => $bCanAddPlayers
+						))
+						->setBreadcrumb(Phpfox::getPhrase('idrive.my_players'), Phpfox::getLib('url')->makeUrl('idrive'))
+						->setBreadcrumb(Phpfox::getPhrase('idrive.add_player'));
 			}
 			//Need to load all player JS for preview
 			$this->template()
-				->setHeader(array(
-					'colorpicker.js' => 'module_dvs',
-					'eye.js' => 'module_dvs',
-					'utils.js' => 'module_dvs',
-					'layout.js' => 'module_dvs',
-					'colorpicker.css' => 'module_dvs',
-					'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
-					'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
-					'<script type="text/javascript">var bIsDvs = false</script>',
-					'player.js' => 'module_dvs',
-					'jcarousellite.js' => 'module_dvs',
-					'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
-					'add.js' => 'module_idrive'
-				))
-				->assign(array(
-					'aMakes' => $aMakes,
-					'iUserId' => Phpfox::getUserId(),
-					'sDefaultColor' => Phpfox::getParam('idrive.default_color_picker_color'),
-					'sSwfUrl' => $sSwfUrl,
-					'sIdriveUrl' => Phpfox::getParam('core.url_file') . 'idrive/'
+					->setHeader(array(
+						'colorpicker.js' => 'module_dvs',
+						'eye.js' => 'module_dvs',
+						'utils.js' => 'module_dvs',
+						'layout.js' => 'module_dvs',
+						'colorpicker.css' => 'module_dvs',
+						'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
+						'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
+						'<script type="text/javascript">var bIsDvs = false</script>',
+						'player.js' => 'module_dvs',
+						'jcarousellite.js' => 'module_dvs',
+						'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
+						'add.js' => 'module_idrive'
+					))
+					->assign(array(
+						'aMakes' => $aMakes,
+						'iUserId' => Phpfox::getUserId(),
+						'sDefaultColor' => Phpfox::getParam('idrive.default_color_picker_color'),
+						'sSwfUrl' => $sSwfUrl,
+						'sIdriveUrl' => Phpfox::getParam('core.url_file') . 'idrive/'
 			));
 		}
 
 		$this->template()->setHeader(array(
-				'jquery.multiselect.min.js' => 'module_dvs',
-				'add_player.css' => 'module_dvs',
-				'jquery.multiselect.css' => 'module_dvs',
-				'validate.js' => 'module_dvs',
-				'jquery.animate-shadow-min.js' => 'module_dvs'
-			))
-			->assign(array(
-				'bIsDvs' => false,
-				'bIsExternal' => false
+					'jquery.multiselect.min.js' => 'module_dvs',
+					'add_player.css' => 'module_dvs',
+					'jquery.multiselect.css' => 'module_dvs',
+					'validate.js' => 'module_dvs',
+					'jquery.animate-shadow-min.js' => 'module_dvs'
+				))
+				->assign(array(
+					'bIsDvs' => false,
+					'bIsExternal' => false
 		));
 	}
-
 
 }
 

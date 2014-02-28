@@ -270,7 +270,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</li>
 			<li>
 				<label for="preroll_duration">{phrase var='dvs.pre_roll_duration'}:</label>
-				<input type="number" name="val[preroll_duration]" value="{value type='input' id='preroll_duration'}" id="preroll_duration" size="10" required />
+				<input type="number" name="val[preroll_duration]" value="{value type='input' id='preroll_duration'}" id="preroll_duration" size="10" maxlength=3 />
 			</li>
 			<li>
 				<label for="preroll_url">{phrase var='dvs.pre_roll_url'}:</label>
