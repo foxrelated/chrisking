@@ -171,6 +171,7 @@ header nav a:hover
 #playlist_wrapper
 {
 	margin-top: 10px;
+	height: 86px;
 }
 
 #playlist_wrapper button.playlist-button
@@ -196,7 +197,6 @@ header nav a:hover
 
 #overview_playlist {
 	display: inline-block;
-	max-height: 86px;
 }
 
 #overview_playlist ul li {
