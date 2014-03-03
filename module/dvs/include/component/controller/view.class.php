@@ -213,6 +213,24 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
 		$sDvsJs .= 'var sShareLink = "' . $sLinkBase . '";';
 
+		// Do we have an opacity set?
+		if (!empty($aDvs['background_opacity']))
+		{
+			$iBackgroundAlpha = intval($aDvs['background_opacity']);
+		}
+		else
+		{
+			$iBackgroundAlpha = 100;
+		}
+		
+		// Was the opacity set at 0?
+		if ($iBackgroundAlpha === 0)
+		{
+			$iBackgroundAlpha = 100;
+		}
+		
+		$iBackgroundOpacity = $iBackgroundAlpha / 100;
+		
 		// Template specific JS and CSS
 		if ($sBrowser == 'mobile')
 		{
@@ -265,6 +283,9 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			))
 			->assign(array(
 				'aDvs' => $aDvs,
+				'sBackgroundPath' => Phpfox::getParam('core.url_file') . 'dvs/background/' . $aDvs['background_file_name'],
+				'iBackgroundOpacity' => $iBackgroundOpacity,
+				'iBackgroundAlpha' => $iBackgroundAlpha,
 				'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
 				'aVideoSelectModels' => $aVideoSelect,
 				'aPlayer' => $aPlayer,
@@ -297,8 +318,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				. '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
 				. '<script type="text/javascript">' . $sDvsJs . '</script>'
 		));
-		
-		
+	
 	}
 
 }

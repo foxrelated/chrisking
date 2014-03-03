@@ -175,7 +175,6 @@ class Dvs_Service_Player_Player extends Phpfox_Service {
 		return $sCss;
 	}
 
-
 }
 
 ?>

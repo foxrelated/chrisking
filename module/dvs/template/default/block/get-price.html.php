@@ -21,18 +21,31 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 		// do whatever you want here
 		$.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
+		setTimeout(function() {
+			tb_remove();
+		}, 3000);
 	});
-	
-	function test() {
-		$('#contact_dealer').hide();
-//		$('#dvs_contact_success').show().delay(8000, function() {
-//			console.log('wait');
-//		});
-		$('#dvs_contact_success').show();
-		console.log('wait').delay( 8000 );
-	}
 {/literal}
 </script>
+<style>
+	input.dvs_form_button {l}
+		background-color: #{$aDvs.button_background};
+		background-image: -webkit-linear-gradient(top, #{$aDvs.button_top_gradient}, #{$aDvs.button_bottom_gradient});
+		background: -moz-linear-gradient( center top, #{$aDvs.button_top_gradient} 5%, #{$aDvs.button_bottom_gradient} 100% );
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$aDvs.button_top_gradient}', endColorstr='#{$aDvs.button_bottom_gradient}');
+		border: 1px solid #{$aDvs.button_border};
+		color: #{$aDvs.button_text};
+	{r}
+	
+	input.dvs_form_button:hover {l}
+		background-image: -webkit-linear-gradient(top, #{$aDvs.button_bottom_gradient}, #{$aDvs.button_top_gradient});
+		background: -moz-linear-gradient( center top, #{$aDvs.button_bottom_gradient} 5%, #{$aDvs.button_top_gradient} 100% );
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$aDvs.button_bottom_gradient}', endColorstr='#{$aDvs.button_top_gradient}');
+		background-color: #{$aDvs.button_background};
+		border: 1px solid #{$aDvs.button_border};
+		color: #{$aDvs.button_text};
+	{r}
+</style>
 
 <form id="contact_dealer" name="contact_dealer" action="javascript:void(0);">
 	<fieldset>
@@ -60,7 +73,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<input type="hidden" name="val[contact_dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>
 	</fieldset>
 	<fieldset>
-		<input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button" style="background:#{$aDvs.button_background};color:#{$aDvs.button_text};border:1px solid #{$aDvs.button_border};"/>
+		<input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button" />
 	</fieldset>
 </form>
 <div id="dvs_contact_success" style="display:none;">

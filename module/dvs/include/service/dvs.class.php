@@ -522,7 +522,6 @@ class Dvs_Service_Dvs extends Phpfox_Service {
 		}
 	}
 
-
 }
 
 ?>

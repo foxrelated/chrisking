@@ -60,6 +60,8 @@ class Idrive_Component_Controller_Player extends Phpfox_Component {
 
 		//Here we shift array keys to start at 1 so thumbnails play the proper videos when we load a featured video or override video on to the front of the array
 		$aVideos = Phpfox::getService('idrive.player')->getVideos($iPlayerId);
+		var_dump($aVideos);
+//		exit;
 		array_unshift($aVideos, '');
 		unset($aVideos[0]);
 
@@ -141,7 +143,11 @@ class Idrive_Component_Controller_Player extends Phpfox_Component {
 				'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
 				'<script type="text/javascript">var bGoogleAnalytics = ' . ($aPlayer['google_id'] ? "true" : "false") . ';</script>',
 				'google_analytics.js' => 'module_dvs',
-				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aPlayer) . '</style>'
+				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aPlayer) . '</style>',
+//				'get_price.css' => 'module_dvs',
+//				'share_email.css' => 'module_dvs',
+//				'showroom.css' => 'module_dvs'
+				'chapter_buttons.css' => 'module_dvs',
 			))
 			->assign(array(
 				'aPlayer' => $aPlayer,

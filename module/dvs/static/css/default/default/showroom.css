@@ -68,7 +68,7 @@ body:before
 
 body
 {
-	background: #000000 url(http://www.wtvdvs-dev.com/file/dvs/background/2013/09/963624e7a2616f81d5238b0c7a5d41d9.png);
+/*	background: #000000 url(http://www.wtvdvs-dev.com/file/dvs/background/2013/09/963624e7a2616f81d5238b0c7a5d41d9.png);*/
 	font-family: Arial;
 }
 
@@ -80,7 +80,6 @@ a:hover
 #site_content {
 	max-width: 1117px;
 	margin: 0 auto;
-	text-align: center;
 }
 
 /* Header image */
@@ -91,28 +90,18 @@ header a
 	margin: auto;
 }
 
-article
-{
-	text-align: left;
-}
-
 /* Top Navigation */
 
 header nav {
-	background-color: #00A7AD;
+/*	background-color: #00A7AD;*/
 	-webkit-border-bottom-right-radius: 5px;
 	-webkit-border-bottom-left-radius: 5px;
 	-moz-border-radius-bottomright: 5px;
 	-moz-border-radius-bottomleft: 5px;
 	border-bottom-right-radius: 5px;
 	border-bottom-left-radius: 5px;
-	border: 5px solid #00A7AD;
+/*	border: 5px solid #00A7AD;*/
 	margin-left: 0px;
-}
-
-nav ul
-{
-	text-align: left;
 }
 
 header nav ul li
@@ -132,7 +121,7 @@ header nav a:hover
 {
 	display: inline;
 	font-size: 18px;
-	color: #FFF;
+/*	color: #FFF;*/
 }
 
 /* Main Player Container */
@@ -140,7 +129,7 @@ header nav a:hover
 #player
 {
 	position: relative;
-	background: #000;
+	/*background: #000;*/
 	display: inline-block;
 	vertical-align:top;
 	margin-top: 10px;
@@ -186,7 +175,7 @@ header nav a:hover
 
 #playlist_wrapper button.playlist-button
 {
-	background: #00A7AD;
+/*	background: #00A7AD;*/
 	display: inline-block;
 	vertical-align: top;
 	width: 20px;
@@ -196,7 +185,7 @@ header nav a:hover
 	border: 0px none;
 	border-radius: 50%;
 	font-weight: bold;
-	color: #000;
+/*	color: #000;*/
 	cursor: pointer;
 }
 
@@ -218,7 +207,7 @@ header nav a:hover
 {
 	margin-right: 3px;
 	margin-left: 3px;
-	border: 2px #00A7AD solid;
+/*	border: 2px #00A7AD solid;*/
 	height: 82px;
 }
 
@@ -300,7 +289,7 @@ header nav a:hover
 }
 
 #dealer_links a {
-	background: #00bdd6;
+	/*background: #00bdd6;*/
 	display: block;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -312,22 +301,22 @@ header nav a:hover
 	text-align: center;
 	margin-bottom: 6px;
 	text-decoration: none;
-	background-image: -webkit-linear-gradient(top, #00bdd6, #05918a);
+/*	background-image: -webkit-linear-gradient(top, #00bdd6, #05918a);
 	background: -moz-linear-gradient( center top, #00bdd6 5%, #05918a 100% );
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00bdd6', endColorstr='#05918a');
 	background-color: #00bdd6;
 	border: 1px solid #6b6b6b;
-	color: #ffffff;
+	color: #ffffff;*/
 }
 
 #dealer_links a:hover
 {
-	background-image: -webkit-linear-gradient(top, #05918a, #00bdd6);
+/*	background-image: -webkit-linear-gradient(top, #05918a, #00bdd6);
 	background: -moz-linear-gradient( center top, #05918a 5%, #00bdd6 100% );
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#05918a', endColorstr='#00bdd6');
 	background-color: #05918a;
 	border: 1px solid #6b6b6b;
-	color: #ffffff;
+	color: #ffffff;*/
 }
 
 #action_links
@@ -356,7 +345,7 @@ header nav a:hover
 #video_information a
 {
 	text-decoration: none;
-	color: #fff;
+	/*color: #fff;*/
 	font-size: 16px;
 	font-weight: bold;
 	padding-bottom: 10px;
@@ -366,7 +355,7 @@ header nav a:hover
 #video_information h2
 {
 	font-size: 16px;
-	color: #fff;
+	/*color: #fff;*/
 	font-weight: bold;
 	padding-bottom: 10px;
 }
@@ -374,23 +363,23 @@ header nav a:hover
 .model_description
 {
 	font-size: 14px;
-	color: #fff;
+	/*color: #fff;*/
 	margin-bottom: 10px;
 }
 
 article aside {
-	color: #fff;
+	/*color: #fff;*/
 	float: right;
 	width: 33%;
 	font-size: 1.25em;
 	margin-top: 10px;
 }
 
-aside a,
+/*aside a,
 aside a:hover
 {
 	color: #009c05;
-}
+}*/
 
 aside p
 {
@@ -430,14 +419,14 @@ footer ul li
 
 footer h3
 {
-	color: #fff;
+	/*color: #fff;*/
 	font-size: 18px;
 	font-weight: bold;
 	border-bottom: none;
 }
 
-footer a,
+/*footer a,
 footer a:hover
 {
 	color: #009c05;
-}
+}*/

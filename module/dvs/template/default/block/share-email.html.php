@@ -20,6 +20,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 		// do whatever you want here
 		$.ajaxCall('dvs.sendShareEmail', $('#share_email_dealer').serialize());
+		setTimeout(function() {
+			tb_remove();
+		}, 3000);
 	});
 {/literal}
 </script>
@@ -27,6 +30,24 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	#dvs_share_email_container {left_curly}
 	text-align: center;
 	{right_curly}	
+	
+	input.dvs_form_button {l}
+		background-color: #{$aDvs.button_background};
+		background-image: -webkit-linear-gradient(top, #{$aDvs.button_top_gradient}, #{$aDvs.button_bottom_gradient});
+		background: -moz-linear-gradient( center top, #{$aDvs.button_top_gradient} 5%, #{$aDvs.button_bottom_gradient} 100% );
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$aDvs.button_top_gradient}', endColorstr='#{$aDvs.button_bottom_gradient}');
+		border: 1px solid #{$aDvs.button_border};
+		color: #{$aDvs.button_text};
+	{r}
+	
+	input.dvs_form_button:hover {l}
+		background-image: -webkit-linear-gradient(top, #{$aDvs.button_bottom_gradient}, #{$aDvs.button_top_gradient});
+		background: -moz-linear-gradient( center top, #{$aDvs.button_bottom_gradient} 5%, #{$aDvs.button_top_gradient} 100% );
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$aDvs.button_bottom_gradient}', endColorstr='#{$aDvs.button_top_gradient}');
+		background-color: #{$aDvs.button_background};
+		border: 1px solid #{$aDvs.button_border};
+		color: #{$aDvs.button_text};
+	{r}
 </style>
 <form id="share_email_dealer" name="share_email_dealer">
 	<fieldset>
