@@ -1,6 +1,6 @@
 body:before
 {
-/*	content: 
+	content: 
 		url('../../../image/intro-active.png')
 		url('../../../image/intro-selected.png')
 		url('../../../image/intro-watched.png')
@@ -63,7 +63,7 @@ body:before
 		url('../../../image/honors-disabled.png')
 		url('../../../image/get-price.png')
 		url('../../../image/getprice-disabled.png');
-	display: none;*/
+	display: none;
 }
 
 body
