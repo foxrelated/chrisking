@@ -394,9 +394,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{if $bIsEdit && isset($aForms.player_id)}<input type="hidden" name="val[player_id]" value="{$aForms.player_id}" />{/if}
 		<button type="submit" class="button">{phrase var='dvs.save_settings'}</button>
 		{if $bIsDvs}
-		<button class="button" onclick="tb_show('{phrase var='dvs.preview' phpfox_squote=true}', $.ajaxBox('dvs.previewPlayer', 'width=' + iPreviewWidth + '&amp;height=' + iPreviewHeight + '&amp;' + $('#add_player').serialize())); return false;">{phrase var='dvs.preview_player'}</button>
+		<button class="button" onclick='$.ajaxCall("dvs.previewPlayer",$("#add_player").serialize()); return false;'>{phrase var='dvs.preview_player'}</button>
 		{else}
 		<button class="button" onclick="tb_show('{phrase var='dvs.preview' phpfox_squote=true}', $.ajaxBox('idrive.previewPlayer', 'width=' + iPreviewWidth + '&amp;height=' + iPreviewHeight + '&amp;' + $('#add_player').serialize())); return false;">{phrase var='idrive.preview_player'}</button>
+		
 		{/if}
 	</fieldset>
 </form>

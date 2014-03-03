@@ -17,10 +17,19 @@ class Idrive_Component_Controller_Player extends Phpfox_Component {
 	public function process()
 	{
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
-
+		
 		$iPlayerId = $this->request()->getInt('id');
-		$aPlayer = Phpfox::getService('idrive.player')->get($iPlayerId);
-
+		if (!empty($iPlayerId))
+		{
+			$aPlayer = Phpfox::getService('idrive.player')->get($iPlayerId);
+		}
+		else
+		{
+			$aPlayer['player_name'] = $this->request()->get('player-name');
+			$aPlayer['player_type'] = $this->request()->get('player-type');
+		}
+		
+		
 		// If this is the static player, load up the static controller.
 		if ($aPlayer['player_name'] == Phpfox::getParam('idrive.static_player_slug'))
 		{
@@ -60,8 +69,15 @@ class Idrive_Component_Controller_Player extends Phpfox_Component {
 
 		//Here we shift array keys to start at 1 so thumbnails play the proper videos when we load a featured video or override video on to the front of the array
 		$aVideos = Phpfox::getService('idrive.player')->getVideos($iPlayerId);
-		var_dump($aVideos);
-//		exit;
+		
+		// Determine the number of extra li's to add.
+		$iExtraLi = (count($aVideos) - $iPlaylistThumbnails) % $iScrollAmt;
+		$sExtraLi = '';
+		for ($i=0; $i < $iExtraLi; $i++)
+		{
+			$sExtraLi .= '<li style="display: none;"></li>';
+		}
+		
 		array_unshift($aVideos, '');
 		unset($aVideos[0]);
 
@@ -130,45 +146,54 @@ class Idrive_Component_Controller_Player extends Phpfox_Component {
 			$iDriveJs = 'window.sGlobalGoogleId = "";';
 		}
 
+		
+		
 		$this->template()
 			->setTemplate('blank')
 			->setHeader(array(
-				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
-				($sBrowser == 'mobile' ? 'player-mobile.css' : 'player.css') => 'module_dvs',
-				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
-				'<script type="text/javascript">var bIsDvs = false</script>',
-				'<script type="text/javascript">' . $iDriveJs . '</script>',
+//				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
+//				($sBrowser == 'mobile' ? 'player-mobile.css' : 'player.css') => 'module_dvs',
+//				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
+//				'<script type="text/javascript">var bIsDvs = false</script>',
+//				'<script type="text/javascript">' . $iDriveJs . '</script>',
 				'player.js' => 'module_dvs',
 				'jcarousellite.js' => 'module_dvs',
-				'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
-				'<script type="text/javascript">var bGoogleAnalytics = ' . ($aPlayer['google_id'] ? "true" : "false") . ';</script>',
+//				'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
+//				'<script type="text/javascript">var bGoogleAnalytics = ' . ($aPlayer['google_id'] ? "true" : "false") . ';</script>',
 				'google_analytics.js' => 'module_dvs',
-				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aPlayer) . '</style>',
-//				'get_price.css' => 'module_dvs',
-//				'share_email.css' => 'module_dvs',
-//				'showroom.css' => 'module_dvs'
-				'chapter_buttons.css' => 'module_dvs',
+//				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aPlayer) . '</style>',
+				'get_price.css' => 'module_dvs',
+				'share_email.css' => 'module_dvs',
+				'showroom.css' => 'module_dvs',
+				'chapter_buttons.css' => 'module_dvs'
 			))
 			->assign(array(
-				'aPlayer' => $aPlayer,
-				'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('idrive.prxml', array('id' => $iPlayerId)), '', -1) . '?',
-				'aVideos' => $aVideos,
-				'bPreview' => false,
-				'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
-				'aFeaturedVideo' => $aFeaturedVideo,
-				'bIsDvs' => false,
-				'bIsExternal' => false,
-				'aFirstVideoMeta' => $aFirstVideoMeta,
-				'sLinkBase' => $sLinkBase,
-				'sBrowser' => $sBrowser,
-				'iPlayerWidth' => $iPlayerWidth,
-				'iPlayerHeight' => $iPlayerHeight,
-				'iChapterButtonLeft' => $iPlayerWidth + 10,
-				'iBackgroundWidth' => $iWidth,
-				'iBackgroundHeight' => $iPlayerHeight + 100,
-				'iPlaylistThumbnails' => $iPlaylistThumbnails,
-				'iScrollAmt' => $iScrollAmt
-		));
+					'aPlayer' => $aPlayer,
+					'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('idrive.prxml', array('id' => $iPlayerId)), '', -1) . '?',
+					'aVideos' => $aVideos,
+					'bPreview' => false,
+					'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
+					'aFeaturedVideo' => $aFeaturedVideo,
+					'bIsDvs' => false,
+					'bIsExternal' => false,
+					'aFirstVideoMeta' => $aFirstVideoMeta,
+					'sLinkBase' => $sLinkBase,
+					'sBrowser' => $sBrowser,
+					'iPlayerWidth' => $iPlayerWidth,
+					'iPlayerHeight' => $iPlayerHeight,
+					'iChapterButtonLeft' => $iPlayerWidth + 10,
+					'iBackgroundWidth' => $iWidth,
+					'iBackgroundHeight' => $iPlayerHeight + 100,
+					'iPlaylistThumbnails' => $iPlaylistThumbnails,
+					'iScrollAmt' => $iScrollAmt,
+					'sExtraLi' => $sExtraLi,
+					'sJavascript' => '<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>'
+				. '<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>'
+				. '<script type="text/javascript">var bIsDvs = false</script>'
+				. '<script type="text/javascript">' . $iDriveJs . '</script>'
+				. '<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>'
+				. '<script type="text/javascript">var bGoogleAnalytics = ' . ($aPlayer['google_id'] ? "true" : "false") . ';</script>'
+				));
 	}
 
 

@@ -16,6 +16,18 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 
 	public function process()
 	{
+		$iWidth = $this->request()->getInt('width');
+		$iHeight = $this->request()->getInt('height');
+
+		if (!$iWidth || !$iHeight)
+		{
+			$iWidth = 880;
+			$iHeight = 505;
+		}
+
+		$iPlayerWidth = $iWidth - 160;
+		$iPlayerHeight = $iHeight - 100;
+		
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
 		
@@ -105,7 +117,25 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 			$aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aFirstVideo);
 		}
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
-
+		
+		$iPlaylistThumbnails = floor(($iPlayerWidth - 98 ) / 155);
+		if ($iPlaylistThumbnails > 1)
+		{
+			$iScrollAmt = $iPlaylistThumbnails - 1;
+		}
+		else
+		{
+			$iScrollAmt = 1;
+		}
+		
+		// Determine the number of extra li's to add.
+		$iExtraLi = (count($aOverviewVideos) - $iPlaylistThumbnails) % $iScrollAmt;
+		$sExtraLi = '';
+		for ($i=0; $i < $iExtraLi; $i++)
+		{
+			$sExtraLi .= '<li style="display: none;"></li>';
+		}
+//		var_dump($aVals);exit;
 		$this->template()
 			->assign(array(
 				'aPlayer' => $aVals,
@@ -123,15 +153,17 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 				'sLinkBase' => $sLinkBase,
 				'aFirstVideoMeta' => $aFirstVideoMeta,
 				'bSubdomainMode' => $bSubdomainMode,
-				'sBrowser' => $sBrowser
+				'sBrowser' => $sBrowser,
+				'iPlayerWidth' => $iPlayerWidth,
+				'iPlayerHeight' => $iPlayerHeight,
+				'sExtraLi' => $sExtraLi
 		));
 
 		$this->template()
 			->setTemplate('blank')
-			->setHeader(array('<style>body{background:#FFFFFF !important;}</style>'))
 			->setHeader(array(
-				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aVals) . '</style>',
-				'player.css' => 'module_dvs',
+//				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aVals) . '</style>',
+//				'player.css' => 'module_dvs',
 				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
 				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
 				'<script type="text/javascript">var bIsDvs = ' . ($bIsDvs ? 'true' : 'false') . '</script>',
@@ -142,7 +174,11 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 				'google_analytics.js' => 'module_dvs',
 				'jcarousellite.js' => 'module_dvs',
 				//'cursordivscroll.js' => 'module_dvs',
-				'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>'
+				'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
+				'get_price.css' => 'module_dvs',
+				'share_email.css' => 'module_dvs',
+				'showroom.css' => 'module_dvs',
+				'chapter_buttons.css' => 'module_dvs'
 		));
 	}
 

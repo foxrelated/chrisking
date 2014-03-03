@@ -309,7 +309,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 	public function previewPlayer()
 	{
-		$aVals = Phpfox::getLib('request')->getArray('val');
+		$aVals = $this->get('val');
 		
 //		$bMakeSelected = false;
 //
@@ -324,9 +324,10 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 		$aValidation = array(
 //				'player_name' => Phpfox::getPhrase('dvs.please_enter_a_player_name')
+			'makes' => Phpfox::getPhrase('dvs.please_select_a_make_first')			
 		);
 
-		if ($aVals['preroll_file_id'])
+		if (!empty($aVals['preroll_file_id']))
 		{
 			$aValidation['preroll_duration'] = Phpfox::getPhrase('dvs.please_enter_a_duration_for_the_pre_roll_file');
 		}
@@ -336,9 +337,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			'aParams' => $aValidation
 			)
 		);
-
-		$aFeaturedModel = explode(',', $aVals['featured_model']);
-
+		
+		if (!empty($aVals['featured_model']))
+		{
+			$aFeaturedModel = explode(',', $aVals['featured_model']);
+		}
+		
 		if (isset($aFeaturedModel[1]))
 		{
 			$aVals['featured_year'] = $aFeaturedModel[0];
@@ -353,7 +357,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		}
 
 		$aVals['domain'] = '';
-
+		
 		if ($oValid->isValid($aVals))
 		{
 			$iPlayerId = Phpfox::getService('dvs.player')->get($aVals['dvs_id']);
@@ -369,20 +373,21 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			{
 				Phpfox::getService('dvs.player.process')->update($aVals);
 			}
-		}
-			
-		if (!$oValid->isValid($aVals))
-		{
-			echo Phpfox::getPhrase('dvs.strong_error_you_must_select_at_least_1_make_before_previewing_the_player_strong');
+
+			$this->call("tb_show('" . Phpfox::getPhrase('dvs.preview') . "', $.ajaxBox('dvs.showPreview', 'width=' + iPreviewWidth + '&amp;height=' + iPreviewHeight + '&amp;' + $('#add_player').serialize()));");
 		}
 		else
 		{
-//			print_r($iPlayerId);
-//			print_r($aVals);
-//			exit;
-			Phpfox::getBlock('dvs.player-preview', array('aVals' => $aVals));
+			return false;
 		}
 		
+	}
+	
+	public function showPreview()
+	{
+		$aVals = $this->get('val');
+		
+		Phpfox::getBlock('dvs.player-preview', array('aVals' => $aVals));
 	}
 
 	public function updateTitleUrl()

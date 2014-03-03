@@ -128,8 +128,81 @@ class Idrive_Component_Ajax_Ajax extends Phpfox_Ajax {
 
 	public function previewPlayer()
 	{
+//		$aVals = Phpfox::getLib('request')->getArray('val');
+//		
+//		$aValidation = array(
+////			'player_name' => 'Please enter a Player Name'
+//			'makes' => Phpfox::getPhrase('dvs.please_select_a_make_first')		
+//		);
+//
+//		if (!empty($aVals['preroll_file_id']))
+//		{
+//			$aValidation['preroll_duration'] = Phpfox::getPhrase('dvs.please_enter_a_duration_for_the_pre_roll_file');
+//		}
+//
+//		$oValid = Phpfox::getLib('validator')->set(array(
+//			'sFormName' => 'add_player',
+//			'aParams' => $aValidation
+//				)
+//		);
+//		
+//		if (!empty($aVals['featured_model']))
+//		{
+//			$aFeaturedModel = explode(',', $aVals['featured_model']);
+//		}
+//
+//		if (isset($aFeaturedModel[1]))
+//		{
+//			$aVals['featured_year'] = $aFeaturedModel[0];
+//			$aVals['featured_make'] = $aFeaturedModel[1];
+//			$aVals['featured_model'] = $aFeaturedModel[2];
+//		}
+//		else
+//		{
+//			$aVals['featured_year'] = '';
+//			$aVals['featured_make'] = '';
+//			$aVals['featured_model'] = '';
+//		}
+//		
+//		if ($oValid->isValid($aVals))
+//		{
+//			if ($aVals['action'] == 'add')
+//			{
+//				$iId = Phpfox::getService('idrive.player.process')->add($aVals);
+//			}
+//			else if ($aVals['action'] == 'save')
+//			{
+//				Phpfox::getService('idrive.player.process')->update($aVals);
+//				
+//				$iId = $this->request()->getInt('id');
+//				var_dump($iId);
+//				exit;
+//			}
+//			
+//			$this->call("tb_show('" . Phpfox::getPhrase('dvs.preview') . "', $.ajaxBox('idrive.showPreview', 'id=" . $iId . "&width=' + iPreviewWidth + '&amp;height=' + iPreviewHeight + '&amp;' + $('#add_player').serialize()));");
+//		}
+//			
+//		$bMakeSelected = false;
+//
+//		foreach ($aVals['selected_makes'] as $sMake => $bSelected)
+//		{
+//			if ($bSelected)
+//			{
+//				$bMakeSelected = true;
+//			}
+//		}
+//
+//		if (!$bMakeSelected)
+//		{
+//			echo Phpfox::getPhrase('dvs.strong_error_you_must_select_at_least_1_make_before_previewing_the_player_strong');
+//		}
+//		else
+//		{
+//			Phpfox::getBlock('idrive.player-preview', array('aVals' => $aVals, 'aMakes' => $aVals['selected_makes']));
+//		}
+		
 		$aVals = Phpfox::getLib('request')->getArray('val');
-
+		
 		$bMakeSelected = false;
 
 		foreach ($aVals['selected_makes'] as $sMake => $bSelected)
@@ -146,10 +219,17 @@ class Idrive_Component_Ajax_Ajax extends Phpfox_Ajax {
 		}
 		else
 		{
-			Phpfox::getBlock('dvs.player-preview', array('aVals' => $aVals, 'aMakes' => $aVals['selected_makes']));
+			Phpfox::getBlock('idrive.player-preview', array('aVals' => $aVals, 'aMakes' => $aVals['selected_makes']));
 		}
 	}
 
+	public function showPreview()
+	{
+		$aVals = $this->get('val');
+		$aVals['player_id'] = $this->get('id');
+		
+		Phpfox::getBlock('idrive.player-preview', array('aVals' => $aVals));
+	}
 
 	public function removeLogoFile()
 	{

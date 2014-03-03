@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @package 		DVS
  */
 ?>
-{$sJavascript}
+{if !empty($sJavascript)}{$sJavascript}{/if}
 <script type="text/javascript">
 	var aMediaIds = [];
 			var aOverviewMediaIds = [];
@@ -134,7 +134,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{r});
 	{ else}
 	$("#overview_playlist").jCarouselLite({l}
-	btnNext: ".next",
+		btnNext: ".next",
 			btnPrev: ".prev",
 			circular: false,
 			visible: {if ($bIsExternal || (!$bIsDvs && isset($iPlaylistThumbnails)))}{$iPlaylistThumbnails}{ else}4{/if},
@@ -290,6 +290,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					</a>
 				</li>
 				{/foreach}
+				<li style='display: none;'></li>
 				{else}
 				{foreach from=$aVideos key=iKey item=aVideo}
 				<li>
@@ -299,6 +300,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					</a>
 				</li>
 				{/foreach}
+				{$sExtraLi}
 				{/if}
 			</ul>
 		</div>
