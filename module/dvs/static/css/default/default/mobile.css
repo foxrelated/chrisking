@@ -1,0 +1,108 @@
+#site_content
+{
+	width: 90%;
+	margin: 0 auto;
+}
+
+h1
+{
+	text-align: center;
+}
+
+#select_new h3
+{
+	font-size: 42px;
+	border: 0 none;
+	text-align: center;
+}
+
+#select_new ul li.init
+{
+	/*background: #D7D7D7;*/
+	background: url("../../../image/dropdown.png");
+	background-size: 100% 100%;
+	display: block;
+	padding-top: 5px;
+	padding-bottom: 10px;
+	/*height: 26px;*/
+	width: 100%;
+	margin-top: 15px;
+	font-size: 42px;
+	font-weight: bold;
+	text-align: center;
+}
+
+#select_new ul ul
+{
+	min-width: 187px;
+	background: #fff;
+	padding: 4px 0px;
+	border-radius: 5px;
+	border: 1px #000 solid;
+	display: none;
+	position: absolute;
+	text-align: left;
+	
+}
+
+#select_new ul ul li
+{
+	display: block;
+	padding: 4px;
+	font-size: 42px;
+	font-weight: normal;
+}
+
+#select_new li:not(.init):hover
+{
+	background: #EEE;
+}
+
+#dealer_links a {
+	margin-top: 10px;
+	display: block;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	font-family: arial;
+	padding: 4px 0px;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 6px;
+	text-decoration: none;
+	font-size: 52px;
+}
+
+#video_name
+{
+	font-size: 42px;
+	border: 0 none;
+}
+
+#video_information h2
+{
+	font-size: 42px;
+}
+
+#video_information p
+{
+	font-size: 24px;
+}
+
+aside
+{
+	font-size: 24px;
+	margin-top: 20px;
+}
+
+#action_links p
+{
+	margin-top: 20px;
+	font-size: 42px;
+}
+
+#action_links img
+{
+	height: 100px;
+	width: 200px;
+}

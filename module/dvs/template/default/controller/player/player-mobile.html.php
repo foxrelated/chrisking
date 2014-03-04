@@ -13,6 +13,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 
 ?>
+{$sJavascript}
 <script type="text/javascript">
 	var aMediaIds=[];
 	var aOverviewMediaIds=[];

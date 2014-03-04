@@ -236,8 +236,9 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		{
 			$this->template()
 				->setHeader(array(
-					'dvs-mobile.css' => 'module_dvs',
-					'player-mobile.css' => 'module_dvs'
+//					'dvs-mobile.css' => 'module_dvs',
+//					'player-mobile.css' => 'module_dvs'
+					'mobile.css' => 'module_dvs'
 			));
 		}
 		else
@@ -248,13 +249,9 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 //					'dvs.css' => 'module_dvs',
 //					'player.css' => 'module_dvs',
 					'google_maps.js' => 'module_dvs',
-					'overlay.js' => 'module_dvs',
-					'dropdown.js' => 'module_dvs',
+					'overlay.js' => 'module_dvs',	
 //					'jquery.dropdown.js' => 'module_dvs',
-//					'jquery.dropdown.css' => 'module_dvs'
-					// New css files added 2/14
-					'get_price.css' => 'module_dvs',
-					'share_email.css' => 'module_dvs',
+//					'jquery.dropdown.css' => 'module_dvs',
 					'showroom.css' => 'module_dvs',
 			));
 		}
@@ -278,8 +275,12 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 //				'<script type="text/javascript">var jqDvs = jQuery.noConflict();</script>',
 				'dvs.js' => 'module_dvs',
 				'<meta property = "og:image" content = "' . ($aFirstVideo['video_still_image'] ? Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['video_still_image'] : '') . '"/>',
-				// New css files added 2/14
+				// New css + js files added 2/14
 				'chapter_buttons.css' => 'module_dvs',
+				'get_price.css' => 'module_dvs',
+				'share_email.css' => 'module_dvs',
+				
+				'dropdown.js' => 'module_dvs'
 			))
 			->assign(array(
 				'aDvs' => $aDvs,
