@@ -206,7 +206,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <div id="dvs_share_email_wrapper" style="display:none;"></div>-->
 <header>
 	{if $aDvs.branding_file_name}
-	<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}">{img path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle" max_width=1117 max_height=600}</a>
+	<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}">{img path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle"}</a>
 	{else}
 	<h1>{$aDvs.dealer_name}</h1>
 	{/if}

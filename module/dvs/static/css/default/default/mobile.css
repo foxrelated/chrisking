@@ -9,6 +9,16 @@ h1
 	text-align: center;
 }
 
+header img
+{
+	width: 100%;
+}
+
+#player
+{
+	margin-top: 10px;
+}
+
 #select_new h3
 {
 	font-size: 42px;
