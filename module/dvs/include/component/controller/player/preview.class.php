@@ -159,7 +159,13 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 				'sBrowser' => $sBrowser,
 				'iPlayerWidth' => $iPlayerWidth,
 				'iPlayerHeight' => $iPlayerHeight,
-				'sExtraLi' => $sExtraLi
+				'sExtraLi' => $sExtraLi,
+				'sJavascript' => '<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>'
+				. '<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>'
+				. '<script type="text/javascript">var bIsDvs = ' . ($bIsDvs ? 'true' : 'false') . '</script>'
+				. '<script type="text/javascript">var sFirstVideoTitleUrl = "' . $aFirstVideo['video_title_url'] . '";</script>'
+				. '<script type="text/javascript">var bGoogleAnalytics = false;</script>'
+				. '<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>'
 		));
 
 		$this->template()
@@ -167,17 +173,17 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 			->setHeader(array(
 //				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aVals) . '</style>',
 //				'player.css' => 'module_dvs',
-				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
-				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
-				'<script type="text/javascript">var bIsDvs = ' . ($bIsDvs ? 'true' : 'false') . '</script>',
-				'<script type="text/javascript">var sFirstVideoTitleUrl = "' . $aFirstVideo['video_title_url'] . '";</script>',
-				'<script type="text/javascript">var bGoogleAnalytics = false;</script>',
+//				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
+//				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
+//				'<script type="text/javascript">var bIsDvs = ' . ($bIsDvs ? 'true' : 'false') . '</script>',
+//				'<script type="text/javascript">var sFirstVideoTitleUrl = "' . $aFirstVideo['video_title_url'] . '";</script>',
+//				'<script type="text/javascript">var bGoogleAnalytics = false;</script>',
 				'player.js' => 'module_dvs',
 				'overlay.js' => 'module_dvs',
 				'google_analytics.js' => 'module_dvs',
 				'jcarousellite.js' => 'module_dvs',
 				//'cursordivscroll.js' => 'module_dvs',
-				'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
+//				'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
 				'get_price.css' => 'module_dvs',
 				'share_email.css' => 'module_dvs',
 				'showroom.css' => 'module_dvs',

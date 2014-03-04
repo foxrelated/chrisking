@@ -33,6 +33,7 @@ class Idrive_Component_Controller_Preroll_File_Frame extends Phpfox_Component {
 		if ($iPrerollFileId = Phpfox::getService('idrive.file')->addPrerollFile($this->request()->get('preroll_file_id')))
 		{
 			$sPrerollFilePath = Phpfox::getService('idrive.file')->getPrerollFile($iPrerollFileId);
+			$sPlayerPath = Phpfox::getParam('core.path') . 'module/dvs/static/swf/player.swf';
 
 			echo '<script type="text/javascript">';
 			echo 'window.parent.document.getElementById(\'js_preroll_upload_frame\').style.display = \'none\';';
@@ -43,10 +44,10 @@ class Idrive_Component_Controller_Preroll_File_Frame extends Phpfox_Component {
 			//The preview
 			'<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0">' .
 			'<param name="allowfullscreen" value="true" />' .
-			(Phpfox::getParam('dvs.enable_subdomain_mode') ? '<param name="movie" value="' . Phpfox::getLib('url')->makeUrl('www.module.dvs.static.swf') . 'player.swf" />' : '<param name="movie" value="../../../module/dvs/static/swf/player.swf" />') .
+			'<param name="movie" value="' . $sPlayerPath . '" />' .
 			'<param name="flashvars" value="' . Phpfox::getParam('core.url_file') . 'idrive/preroll/' . $sPrerollFilePath . '" />' .
 			'<param name="wmode" value="opaque" />' .
-			(Phpfox::getParam('dvs.enable_subdomain_mode') ? '<embed wmode="opaque" allowfullscreen="true" type="application/x-shockwave-flash" src="' . Phpfox::getLib('url')->makeUrl('www.module.dvs.static.swf') . 'player.swf" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="file=' . Phpfox::getParam('core.url_file') . 'dvs/preroll/' . $sPrerollFilePath . '" />' : '<embed wmode="opaque" allowfullscreen="true" type="application/x-shockwave-flash" src="../../../../module/dvs/static/swf/player.swf" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="file=' . Phpfox::getParam('core.url_file') . 'dvs/preroll/' . $sPrerollFilePath . '" />' ) .
+			'<embed wmode="opaque" allowfullscreen="true" type="application/x-shockwave-flash" src="' . $sPlayerPath . '" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="file=' . Phpfox::getParam('core.url_file') . 'idrive/preroll/' . $sPrerollFilePath . '" />' .
 			'</object>' .
 			'<br />' .
 			//Link to change again

@@ -88,7 +88,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			var bPreview = {if $bPreview}true{ else}false{/if};
 			var bAutoplay = {if isset($aPlayer.autoplay) && $aPlayer.autoplay}true{ else}false{/if};
 			var bAutoAdvance = {if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{ else}false{/if};
-	{ else}
+	{else}
 	var bPreRoll = false;
 			var iDvsId = 0;
 			var bIdriveGetPrice = {if $bShowGetPrice}true{ else}false{/if};
@@ -324,7 +324,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{if $bIsDvs && !$bPreview}
 	<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));"></button>
 	{elseif !$bIsExternal && !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}
-	<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));"></button>
+	<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;sRefId=' + aCurrentVideoMetaData.referenceId));"></button>
 	{elseif $bIsExternal && $bShowGetPrice}
 	<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="getPriceExternal('{$sEmail}');"></button>
 	{/if}

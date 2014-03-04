@@ -13,6 +13,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 
 ?>
+{$sJavascript}
 <style>
 	#player {l}
 		background-color: #{$aPlayer.player_background};
