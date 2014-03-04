@@ -30,7 +30,7 @@ class Idrive_Component_Controller_Prxml extends Phpfox_Component {
 			$aPlayer['preroll_duration'] = $this->request()->getInt('duration', '15');
 			$aPlayer['preroll_url'] = '';
 		}
-
+		
 		header("Content-type: text/xml");
 		echo '<videoAd trackPointTime="" version="1" trackPointURLs="" duration="' . $aPlayer['preroll_duration'] . '" trackStartURLs="" trackMidURLs="" trackEndURLs="">';
 		echo '<videoURL>' . Phpfox::getParam('core.url_file') . 'idrive/preroll/' . $aPlayer['preroll_file_name'] . '</videoURL>';

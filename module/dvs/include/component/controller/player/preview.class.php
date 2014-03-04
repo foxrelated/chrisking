@@ -143,7 +143,7 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 			->assign(array(
 				'aPlayer' => $aVals,
 				'iDvsId' => ($bIsDvs ? $aVals['dvs_id'] : 0),
-				'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('dvs.player.prxml', array('pr-id' => $aVals['preroll_file_id'], 'duration' => $aVals['preroll_duration'])), '', -1) . '?',
+				'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('idrive.prxml', array('pr-id' => $aVals['preroll_file_id'], 'duration' => $aVals['preroll_duration'])), '', -1) . '?',
 				'aVideos' => $aOverviewVideos,
 				'aOverviewVideos' => $aOverviewVideos,
 				'bPreview' => true,
