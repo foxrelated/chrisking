@@ -61,8 +61,11 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 		//Here we shift array keys to start at 1 so thumbnails play the proper videos when we load a featured video or override video on to the front of the array
 		array_unshift($aOverviewVideos, '');
 		unset($aOverviewVideos[0]);
-
-		$aFeaturedModel = explode(',', $aVals['featured_model']);
+		
+		if (!empty($aVals['featured_model']))
+		{
+			$aFeaturedModel = explode(',', $aVals['featured_model']);
+		}
 
 		if (isset($aFeaturedModel[1]))
 		{
@@ -135,7 +138,7 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 		{
 			$sExtraLi .= '<li style="display: none;"></li>';
 		}
-//		var_dump($aVals);exit;
+
 		$this->template()
 			->assign(array(
 				'aPlayer' => $aVals,

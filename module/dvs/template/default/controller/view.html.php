@@ -178,7 +178,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<li class="init"><span class="init_selected">Select Year</span>
 					<ul>
 						{foreach from=$aVideoSelectYears item=iYear}
-						<li onclick="$.ajaxCall('dvs.getMakes', 'iYear={$iYear}&sDvsName={$aDvs.dvs_name}');">
+						<li onclick="$.ajaxCall('dvs.getMakes', 'iYear={$iYear}&sDvsName={$aDvs.title_url}');">
 							{$iYear}
 						</li>
 						{/foreach}
