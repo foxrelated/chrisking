@@ -20,6 +20,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		event.preventDefault();
 
 		// do whatever you want here
+		$('#contact_dealer').hide();
+		$('#dvs_contact_success').show();
 		$.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
 		setTimeout(function() {
 			tb_remove();
@@ -27,6 +29,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	});
 {/literal}
 </script>
+{if !empty($aDvs)}
 <style>
 	input.dvs_form_button {l}
 		background-color: #{$aDvs.button_background};
@@ -46,6 +49,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		color: #{$aDvs.button_text};
 	{r}
 </style>
+{/if}
 
 <form id="contact_dealer" name="contact_dealer" action="javascript:void(0);">
 	<fieldset>
@@ -70,7 +74,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</ul>
 
 		<input type="hidden" name="val[contact_video_ref_id]" id="video_ref_id" value="{$aVideo.referenceId}"/>
-		<input type="hidden" name="val[contact_dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>
+		{if !empty($aDvs)}<input type="hidden" name="val[contact_dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>{/if}
 	</fieldset>
 	<fieldset>
 		<input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button" />

@@ -659,7 +659,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 //			$this->show('#dvs_contact_success');
 //			$this->call('$("#dvs_contact_success").show().after(function() {});');
 //			$this->call('tb_remove();');
-			$this->call('test();');
+			
 			$this->call('getPriceEmailSent();');
 		}
 		else

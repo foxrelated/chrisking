@@ -260,7 +260,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{else}
 					{phrase var='dvs.no_pre_roll_swf'}
 					{/if}
-					<a href="#" onclick="window.parent.document.getElementById('preroll_file_label').innerHTML = '{phrase var='dvs.select_file'}:'; window.parent.document.getElementById('js_preroll_upload_frame').style.display = 'block'; window.parent.document.getElementById('preroll_file_preview').style.display = 'none';">{phrase var='dvs.change_pre_roll_swf'}</a> - <a href="#" onclick="if (confirm('Are you sure?')){l}window.parent.d ocument.getElementById('preroll_file_label').innerHTML = '{phrase var='dvs.select_file'}:'; window.parent.document.getElementById('js_preroll_upload_frame').style.display = 'block'; window.parent.document.getElementById('preroll_file_preview').style.display = 'none'; window.parent.document.getElementById('preroll_file_id').value = 0; $.ajaxCall('{if $bIsDvs}dvs{else}idrive{/if}.removePrerollFile', 'iPrerollFileId={$aForms.preroll_file_id}'){r}">{phrase var='dvs.remove_preroll_image'}</a>
+					<a href="#" onclick="window.parent.document.getElementById('preroll_file_label').innerHTML = '{phrase var='dvs.select_file'}:'; window.parent.document.getElementById('js_preroll_upload_frame').style.display = 'block'; window.parent.document.getElementById('preroll_file_preview').style.display = 'none'; return false;">{phrase var='dvs.change_pre_roll_swf'}</a> - <a href="#" onclick="if (confirm('Are you sure?')){l}window.parent.document.getElementById('preroll_file_label').innerHTML = '{phrase var='dvs.select_file'}:'; window.parent.document.getElementById('js_preroll_upload_frame').style.display = 'block'; window.parent.document.getElementById('preroll_file_preview').style.display = 'none'; window.parent.document.getElementById('preroll_file_id').value = 0; $.ajaxCall('{if $bIsDvs}dvs{else}idrive{/if}.removePrerollFile', 'iPrerollFileId={$aForms.preroll_file_id}'){r} return false;">{phrase var='dvs.remove_preroll_image'}</a>
 					{/if}
 				</div>
 				<input type="hidden" id="preroll_file_id" name="val[preroll_file_id]" value="{if $bIsEdit}{$aForms.preroll_file_id}{else}0{/if}"/>
@@ -388,7 +388,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<input type="hidden" name="val[step]" value="player" />
 		{else}
 		<input type="hidden" name="val[action]" value="{if $bIsEdit && isset($aForms.player_id)}save{else}add{/if}" />
-		<input type="button" value="{phrase var='idrive.get_code'}" class="button" onclick="$('#forward').val(1); $('#add_player').submit();" />
+		<button class="button" onclick="$('#forward').val(1); $('#add_player').submit();" >{phrase var='idrive.get_code'}</button>
 		{/if}
 		<input type="hidden" name="val[forward]" id="forward" value="0" />
 		{if $bIsEdit && isset($aForms.player_id)}<input type="hidden" name="val[player_id]" value="{$aForms.player_id}" />{/if}
