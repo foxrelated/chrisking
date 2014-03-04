@@ -834,7 +834,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 		// Get all of the makes for the DVS for the selected year.
 		$aMakes = Phpfox::getService('dvs.video')->getValidVSMakes($iYear, $aPlayer['makes']);
-
+		
 		// Did we get more than one make?
 		if (count($aMakes) === 1)
 		{

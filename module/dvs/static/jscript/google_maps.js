@@ -14,8 +14,8 @@ $(document).ready(function() {
 		geoMap = new google.maps.Map(document.getElementById("dvs_geomap_container"), mapOptions);
 
 		infoWindow = new google.maps.InfoWindow({
-			maxWidth: 200,
-			maxHeight: 200
+			maxWidth: 230,
+			maxHeight: 210
 		});
 
 	}

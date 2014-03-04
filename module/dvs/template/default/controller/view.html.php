@@ -62,7 +62,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	#video_information a,
 	.model_description,
 	footer h3,
-	article aside {l}
+	article aside,
+	#video_information section h2 {l}
 		color: #{$aDvs.page_text};
 	{r}
 	

@@ -382,16 +382,12 @@ aside a:hover
 	color: #009c05;
 }*/
 
-aside p
-{
-	padding-bottom: 10px;
-}
-
 #dvs_geomap_container
 {
 	margin-top: 25px;
 	width: 350px;
 	height: 240px;
+	margin-bottom: 10px;
 }
 
 #google_maps_info_window_contents
