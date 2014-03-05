@@ -12,7 +12,6 @@ var oChapterDivs = {};
 var bMediaBegin = false;
 var bVideoChanged = false;
 var bUrlChanged = false;
-var aCurrentVideoMetaData = [];
 var sPlayerName;
 var iCurrentVideo = 0;
 var aVideoSelectMediaIds = [];
@@ -283,6 +282,7 @@ function playVideo(iVideoKey) {
 //Auto called
 function onTemplateLoaded(experienceID)
 {
+	
 	if (bDebug) {
 		console.log('Player: Template Loaded: ' + experienceID);
 	}
@@ -424,11 +424,12 @@ function onTemplateReady(oVideo) {
 //Called when any video loads.
 //Closes the menu, clears chapter div, gets new cuepoints, builds new chapter divs, and shows them, closes menu again if need be, and plays loaded video
 function onVideoLoad(oMedia) {
+	
 	if (bDebug) {
 		console.log('Media: Video Load: ' + oMedia.media.displayName);
 	}
 
-	if (bIsDvs) {
+	if (bIsDvs && sBrowser !== 'mobile') {
 		resetOverlays();
 	}
 
@@ -561,6 +562,7 @@ function onVideoLoad(oMedia) {
 
 //		bOverlayHold = false;
 	}
+	
 }
 
 //Auto called, fires off cueChange

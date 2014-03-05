@@ -1,0 +1,38 @@
+#contact_dealer
+{
+	text-align: center;
+}
+
+#contact_dealer p
+{
+	font-size: 26px;
+	font-family: Arial;
+}
+
+#name
+{
+	margin-top: 20px;
+}
+
+#contact_dealer input:not(.dvs_form_button)
+{
+	width: 400px;
+	font-size: 26px;
+	padding: 14px;
+}
+
+#contact_dealer textarea
+{
+	width: 400px;
+	margin-bottom: 20px;
+	font-size: 26px;
+	padding: 4px;
+}
+
+#contact_dealer .dvs_form_button
+{
+	cursor: pointer;
+	padding: 5px 25px;
+	border-radius: 5px;
+	font-size: 26px;
+}

@@ -1,0 +1,20 @@
+#share_email_dealer
+{
+	text-align: center;
+}
+
+#share_email_dealer input:not(.dvs_form_button),
+#share_email_dealer textarea
+{
+	width: 400px;
+	font-size: 26px;
+	padding: 4px;
+	margin-bottom: 10px;
+}
+
+.dvs_form_button
+{
+	padding: 5px 25px;
+	border-radius: 5px;
+	font-size: 26px;
+}

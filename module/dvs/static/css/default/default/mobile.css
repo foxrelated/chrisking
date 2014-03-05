@@ -1,7 +1,13 @@
+body
+{
+	font-family: Arial;
+}
+
 #site_content
 {
 	width: 90%;
 	margin: 0 auto;
+	position: relative;
 }
 
 h1
@@ -44,7 +50,7 @@ header img
 
 #select_new ul ul
 {
-	min-width: 187px;
+	min-width: 100%;
 	background: #fff;
 	padding: 4px 0px;
 	border-radius: 5px;
@@ -115,4 +121,9 @@ aside
 {
 	height: 100px;
 	width: 200px;
+}
+
+.js_box_title
+{
+	font-size: 26px;
 }

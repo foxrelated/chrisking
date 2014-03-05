@@ -1129,6 +1129,16 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 	{
 		Phpfox::getBlock('dvs.share-email', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
 	}
+	
+	public function showGetPriceFormMobile()
+	{
+		Phpfox::getBlock('dvs.get-price-mobile', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
+	}
+	
+	public function emailFormMobile()
+	{
+		Phpfox::getBlock('dvs.share-email-mobile', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
+	}
 
 }
 ?>

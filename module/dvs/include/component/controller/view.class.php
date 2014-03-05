@@ -152,7 +152,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
 		$sLinkBase = Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'));
 		$sLinkBase .= $aFirstVideo['video_title_url'];
-
+		
 		$aFirstVideoMeta = array(
 			'url' => Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $aFirstVideo['video_title_url']),
 			'thumbnail_url' => Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['thumbnail_image'],
@@ -238,7 +238,9 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				->setHeader(array(
 //					'dvs-mobile.css' => 'module_dvs',
 //					'player-mobile.css' => 'module_dvs'
-					'mobile.css' => 'module_dvs'
+					'mobile.css' => 'module_dvs',
+					'get_price_mobile.css' => 'module_dvs',
+					'share_email_mobile.css' => 'module_dvs',
 			));
 		}
 		else
@@ -253,6 +255,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 //					'jquery.dropdown.js' => 'module_dvs',
 //					'jquery.dropdown.css' => 'module_dvs',
 					'showroom.css' => 'module_dvs',
+					'get_price.css' => 'module_dvs',
+					'share_email.css' => 'module_dvs',
 			));
 		}
 		
@@ -277,8 +281,6 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				'<meta property = "og:image" content = "' . ($aFirstVideo['video_still_image'] ? Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['video_still_image'] : '') . '"/>',
 				// New css + js files added 2/14
 				'chapter_buttons.css' => 'module_dvs',
-				'get_price.css' => 'module_dvs',
-				'share_email.css' => 'module_dvs',
 				
 				'dropdown.js' => 'module_dvs'
 			))
@@ -314,6 +316,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				. '<script type="text/javascript">var sFirstVideoTitleUrl = "' . $aFirstVideo['video_title_url'] . '";</script>'
 				. '<script type="text/javascript">var sDvsTitleUrl = "' . $aDvs['title_url'] . '";</script>'
 				. '<script type="text/javascript">var bGoogleAnalytics = true;</script>'
+				. '<script type="text/javascript">var aCurrentVideoMetaData = [];</script>'
 				. '<script type="text/javascript">aCurrentVideoMetaData.referenceId ="' . $aFirstVideo['referenceId'] . '";aCurrentVideoMetaData.year ="' . $aFirstVideo['year'] . '";aCurrentVideoMetaData.make ="' . $aFirstVideo['make'] . '";aCurrentVideoMetaData.model ="' . $aFirstVideo['model'] . '";</script> '
 				. '<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>'
 				. '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
