@@ -13,7 +13,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 
 ?>
-
+{$sJavascript}
 <script type="text/javascript">
 	var aMediaIds=[];
 	aMediaIds[0]='{$sReferenceId}';
@@ -37,7 +37,24 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{r}
 	
 </script>
-
+<style>
+	body {l}
+		background-color: #{$aPlayer.player_background};
+	{r}
+	
+	#playlist_wrapper button.playlist-button {l}
+		background-color: #{$aPlayer.player_buttons};
+		color: #{$aPlayer.playlist_arrows};
+	{r}
+	
+	#playlist_wrapper button.playlist-button:hover {l}
+		opacity: 0.5;
+	{r}
+	
+	#overview_playlist li {l}
+		border: 2px #{$aPlayer.playlist_border} solid;
+	{r}
+</style>
 <div id="dvs_player_container">
 	<div id="dvs_bc_player"{if $bIsDvs} itemscope itemtype="http://schema.org/VideoObject"{/if}>
 		<div style="display:none;"></div>
