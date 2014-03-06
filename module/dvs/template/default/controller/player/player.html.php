@@ -181,7 +181,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{if $aPlayer.custom_overlay_1_type}
 	<div id="dvs_overlay_1" class="dvs_overlay">
 		{if $aPlayer.custom_overlay_1_type == 1}
-		<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}'));"><img src="{$sImagePath}overlay.png" /></a>
+		<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}'));"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>
 		{else}
 		<a href="{$aPlayer.custom_overlay_1_url}" target="_blank">{$aPlayer.custom_overlay_1_text}</a>
 		{/if}
@@ -190,7 +190,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{if $aPlayer.custom_overlay_2_type}
 	<div id="dvs_overlay_2" class="dvs_overlay">
 		{if $aPlayer.custom_overlay_2_type == 1}
-		<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}'));"><img src="{$sImagePath}overlay.png"/></a>
+		<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=600&amp;iDvsId={$iDvsId}'));"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>
 		{else}
 		<a href="{$aPlayer.custom_overlay_2_url}" target="_blank">{$aPlayer.custom_overlay_2_text}</a>
 		{/if}
