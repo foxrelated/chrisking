@@ -5,15 +5,15 @@ var bPreview = false;
 var bAutoplay = false;
 var bAutoAdvance = false;
 
-function setPlayerStyle() {
-	if (bDebug)
-	{
-		console.log("Player: Setting player style and volume.");
-		modVid.setVolume(0);
-	}
-
-	modVid.setStyles('video-background:#000000;titleText-active:#5c5c5c;titleText-disabled:#5c5c5c;titleText-rollover:#5c5c5c;titleText-selected:#5c5c5c;bodyText-active:#5c5c5c;bodyText-disabled:#5c5c5c;bodyText-rollover:#5c5c5c;bodyText-selected:#5c5c5c;buttons-icons:#426eff;buttons-rolloverIcons:#426eff;buttons-selectedIcons:#426eff;buttons-glow:#426eff;buttons-iconGlow:#426eff;buttons-face:#000000;buttons-rollover:#000000;buttons-selected:#000000;playheadWell-background:#3388ff;playheadWell-watched:#3388ff;playhead-face:#426eff;volumeControl-icons:#426eff;volumeControl-track:#3388ff;volumeControl-face:#000000;linkText-active:#5c5c5c;linkText-disabled:#5c5c5c;linkText-rollover:#5c5c5c;linkText-downState:#5c5c5c;');
-}
+//function setPlayerStyle() {
+//	if (bDebug)
+//	{
+//		console.log("Player: Setting player style and volume.");
+//		modVid.setVolume(0);
+//	}
+//
+//	modVid.setStyles('video-background:#000000;titleText-active:#5c5c5c;titleText-disabled:#5c5c5c;titleText-rollover:#5c5c5c;titleText-selected:#5c5c5c;bodyText-active:#5c5c5c;bodyText-disabled:#5c5c5c;bodyText-rollover:#5c5c5c;bodyText-selected:#5c5c5c;buttons-icons:#426eff;buttons-rolloverIcons:#426eff;buttons-selectedIcons:#426eff;buttons-glow:#426eff;buttons-iconGlow:#426eff;buttons-face:#000000;buttons-rollover:#000000;buttons-selected:#000000;playheadWell-background:#3388ff;playheadWell-watched:#3388ff;playhead-face:#426eff;volumeControl-icons:#426eff;volumeControl-track:#3388ff;volumeControl-face:#000000;linkText-active:#5c5c5c;linkText-disabled:#5c5c5c;linkText-rollover:#5c5c5c;linkText-downState:#5c5c5c;');
+//}
 
 function enableVideoSelectCarousel() {
 	if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
