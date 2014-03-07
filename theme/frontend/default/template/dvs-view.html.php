@@ -88,7 +88,7 @@ defined('PHPFOX') or exit('NO DICE!');
 				border: 1px solid #{$aDvs.button_border};
 				color: #{$aDvs.button_text};
 				border: 1px solid #696;
-				behavior: url('{$sStaticPath}css/default/default/border-radius.htc');
+				behavior: url('./dvs/module/static/css/default/default/border-radius.htc');
 			{r}
 
 			#dealer_links a:hover {l}
