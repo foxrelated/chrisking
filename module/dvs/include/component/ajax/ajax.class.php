@@ -604,6 +604,10 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 		if (!$bIsError)
 		{
+			$this->call("$('#contact_dealer').hide();");
+			$this->call("$('#dvs_contact_success').show();");
+			$this->call("setTimeout(function() { tb_remove(); }, 3000);");
+			
 			$aVideo = Phpfox::getService('dvs.video')->get($aVals['contact_video_ref_id']);
 			$aDvs = Phpfox::getService('dvs')->get($aVals['contact_dvs_id']);
 
@@ -692,6 +696,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 		if (!$bIsError)
 		{
+			
+			
 			$aDvs = Phpfox::getService('dvs')->get($aVals['dvs_id']);
 			Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
 			$aVideo = Phpfox::getService('dvs.video')->get($aVals['video_ref_id']);
@@ -745,6 +751,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			
 			$this->hide('#share_email_dealer');
 			$this->show('#dvs_share_email_success');
+			$this->call("setTimeout(function() { tb_remove(); }, 3000);");
 		}
 		else
 		{

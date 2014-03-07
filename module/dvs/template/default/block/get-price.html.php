@@ -16,23 +16,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <script>
 	{literal}
 	$('#contact_dealer').submit(function(event){
-		if ($('#name').val() === '' || $('#email').val() === '' || $('#phone').val() === '' || $('#zip').val() === '' || $('#comments').val() === '')
-		{
-			alert('Please fill in all of the fields.');
-		}
-		else
-		{
+//		if ($('#name').val() === '' || $('#email').val() === '' || $('#phone').val() === '' || $('#zip').val() === '' || $('#comments').val() === '')
+//		{
+//			alert('Please fill in all of the fields.');
+//		}
+//		else
+//		{
 			// cancels the form submission
 			event.preventDefault();
 
 			// do whatever you want here
-			$('#contact_dealer').hide();
-			$('#dvs_contact_success').show();
 			$.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
-			setTimeout(function() {
-				tb_remove();
-			}, 3000);
-		}
+//		}
 	});
 	$('input, textarea').placeholder();
 {/literal}
