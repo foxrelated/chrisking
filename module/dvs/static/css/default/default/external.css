@@ -1,0 +1,18 @@
+#dvs_bc_player
+{
+	display: inline-block;
+	vertical-align: top;
+	position: static;
+}
+
+#chapter_buttons
+{
+	display: inline-block;
+	vertical-align: top;
+	position: static;
+}
+
+#site_content
+{
+	max-width: none;
+}

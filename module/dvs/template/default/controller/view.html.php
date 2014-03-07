@@ -144,7 +144,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">
 				<img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
 			</a>					
-			<a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u%20' + encodeURIComponent(location.href), '', 'width=626,height=436'); facebookShareClick(); $.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id=' + aCurrentVideoMetaData.referenceId + '&service=facebook&return_id=share_text_box_facebook_{$iKey}'); return false;">
+			<a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '', 'width=626,height=436'); facebookShareClick(); $.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id=' + aCurrentVideoMetaData.referenceId + '&service=facebook&return_id=share_text_box_facebook_{$iKey}'); return false;">
 				<img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
 			</a>
 			<span id="twitter_button_wrapper">

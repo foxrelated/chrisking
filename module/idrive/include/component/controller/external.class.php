@@ -87,7 +87,8 @@ class Idrive_Component_Controller_External extends Phpfox_Component {
 				'dropdown.js' => 'module_dvs',
 				'showroom.css' => 'module_dvs',
 				'get_price.css' => 'module_dvs',
-				'share_email.css' => 'module_dvs'
+				'share_email.css' => 'module_dvs',
+				'external.css' => 'module_dvs'
 			))
 			->assign(array(
 				'aVideos' => $aVideos,
