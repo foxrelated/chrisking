@@ -741,16 +741,16 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$sBody = $this->getContent(false);
 
 			$sDealerEmail = 'noreply@' . str_replace('www.', '', parse_url($aDvs['url'], PHP_URL_HOST));
-//			Phpfox::getLibClass('phpfox.mail.interface');
-//			$oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
-//			$oMail->send($aVals['share_email'], $sSubject, ' ', $sBody, $aVals['my_share_name'], $sDealerEmail);
+			Phpfox::getLibClass('phpfox.mail.interface');
+			$oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
+			$oMail->send($aVals['share_email'], $sSubject, ' ', $sBody, $aVals['my_share_name'], $sDealerEmail);
 
-			Phpfox::getLib('mail')
-				->to($aVals['share_email'])
-				->fromEmail($sDealerEmail)
-				->subject($sSubject)
-				->message($sBody)
-				->send();
+//			Phpfox::getLib('mail')
+//				->to($aVals['share_email'])
+//				->fromEmail($sDealerEmail)
+//				->subject($sSubject)
+//				->message($sBody)
+//				->send();
 			
 			$this->hide('#share_email_dealer');
 			$this->show('#dvs_share_email_success');
