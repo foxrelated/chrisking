@@ -14,11 +14,12 @@
 	margin-top: 20px;
 }
 
-#contact_dealer input:not(.dvs_form_button)
+.inputContact
 {
 	width: 225px;
 	font-size: 16px;
 	padding: 4px;
+	margin-bottom: 4px;
 }
 
 #contact_dealer textarea
@@ -27,6 +28,7 @@
 	margin-bottom: 20px;
 	font-size: 16px;
 	padding: 4px;
+	font-family: Arial;
 }
 
 #contact_dealer .dvs_form_button
@@ -34,4 +36,7 @@
 	cursor: pointer;
 	padding: 5px 25px;
 	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	behavior: url(border-radius.htc);
 }

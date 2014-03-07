@@ -540,6 +540,8 @@ To join this Sales Team, please click here: <a href="{link}">{link}</a>]]></phra
 		<phrase module_id="dvs" version_id="3.7.5" var_name="please_enter_a_vanity_url_above" added="1393266246">Please enter a vanity URL above...</phrase>
 		<phrase module_id="dvs" version_id="3.7.5" var_name="please_select_a_valid_banner_image" added="1393523507">Please select a valid banner image.</phrase>
 		<phrase module_id="dvs" version_id="3.7.5" var_name="please_select_a_valid_background_image" added="1393524268">Please select a valid background image.</phrase>
+		<phrase module_id="dvs" version_id="3.7.5" var_name="please_select_a_model_first" added="1393883463">Please select a Model first.</phrase>
+		<phrase module_id="dvs" version_id="3.7.5" var_name="save_and_preview" added="1394211431">Save and Preview Player</phrase>
 	</phrases>
 	<user_group_settings>
 		<setting is_admin_setting="0" module_id="dvs" type="integer" admin="10" user="10" guest="0" staff="10" module="dvs" ordering="0">file_size_limit</setting>

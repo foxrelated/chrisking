@@ -1,7 +1,7 @@
 var bcExp;
 var modExp;
 var modCon;
-var modCue;
+var modCue = new Object();
 var modVid;
 var modAds;
 var cuepoints;

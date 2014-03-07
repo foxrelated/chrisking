@@ -303,6 +303,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 				'bIsDvs' => true,
 				'bIsExternal' => false
 		));
+		
 	}
 
 }

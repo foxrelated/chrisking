@@ -300,7 +300,6 @@ header nav a:hover
 }
 
 #dealer_links a {
-	/*background: #00bdd6;*/
 	display: block;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -312,22 +311,6 @@ header nav a:hover
 	text-align: center;
 	margin-bottom: 6px;
 	text-decoration: none;
-/*	background-image: -webkit-linear-gradient(top, #00bdd6, #05918a);
-	background: -moz-linear-gradient( center top, #00bdd6 5%, #05918a 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00bdd6', endColorstr='#05918a');
-	background-color: #00bdd6;
-	border: 1px solid #6b6b6b;
-	color: #ffffff;*/
-}
-
-#dealer_links a:hover
-{
-/*	background-image: -webkit-linear-gradient(top, #05918a, #00bdd6);
-	background: -moz-linear-gradient( center top, #05918a 5%, #00bdd6 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#05918a', endColorstr='#00bdd6');
-	background-color: #05918a;
-	border: 1px solid #6b6b6b;
-	color: #ffffff;*/
 }
 
 #action_links
@@ -355,7 +338,6 @@ header nav a:hover
 #video_information a
 {
 	text-decoration: none;
-	/*color: #fff;*/
 	font-size: 16px;
 	font-weight: bold;
 	padding-bottom: 10px;

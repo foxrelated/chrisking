@@ -282,7 +282,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				// New css + js files added 2/14
 				'chapter_buttons.css' => 'module_dvs',
 				
-				'dropdown.js' => 'module_dvs'
+				'dropdown.js' => 'module_dvs',
+				'jquery.placeholder.js' => 'module_dvs'
 			))
 			->assign(array(
 				'aDvs' => $aDvs,
@@ -310,6 +311,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				'bSubdomainMode' => $bSubdomainMode,
 				'aFooterLinks' => $aFooterLinks,
 				'sBrowser' => $sBrowser,
+				'sStaticPath' => Phpfox::getParam('core.path') . '/module/dvs/static/',
 				'sJavascript' => '<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>'
 				. '<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>'
 				. '<script type="text/javascript">var bIsDvs = true</script>'
