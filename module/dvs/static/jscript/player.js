@@ -1,8 +1,8 @@
-var bcExp;
-var modExp;
-var modCon;
-var modCue = new Object();
-var modVid;
+var bcExp = {};
+var modExp = {};
+var modCon = {};
+var modCue = {};
+var modVid = {};
 var modAds;
 var cuepoints;
 var queuedTime;
