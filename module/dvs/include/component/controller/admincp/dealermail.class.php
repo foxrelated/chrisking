@@ -20,7 +20,7 @@ class Dvs_Component_Controller_Admincp_Dealermail extends Phpfox_Component {
 		$iPageSize = 10;
 
 		list($aStats, $iCnt) = Phpfox::getService('dvs')->listDvss($iPage, $iPageSize, 0, true);
-
+		
 		$this->template()
 				->assign(array(
 					'aStats' => $aStats

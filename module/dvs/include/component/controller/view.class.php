@@ -311,6 +311,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				'bSubdomainMode' => $bSubdomainMode,
 				'aFooterLinks' => $aFooterLinks,
 				'sBrowser' => $sBrowser,
+				'sCurrentUrlEncoded' => urlencode(Phpfox::getLib('url')->makeUrl('dvs.' . $aDvs['title_url'])),
 				'sStaticPath' => Phpfox::getParam('core.path') . 'module/dvs/static/',
 				'sJavascript' => '<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>'
 				. '<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>'
