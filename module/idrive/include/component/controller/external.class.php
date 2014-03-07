@@ -68,21 +68,26 @@ class Idrive_Component_Controller_External extends Phpfox_Component {
 		{
 			$aVideos = array();
 		}
-
+		var_dump($aVideos);
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
 
 		$this->template()
 			->setTemplate('blank')
 			->setHeader(array(
-				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
+//				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
 				($sBrowser == 'mobile' ? 'player-mobile.css' : 'player.css') => 'module_dvs',
-				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
-				'<script type="text/javascript">var bIsDvs = false</script>',
+//				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
+//				'<script type="text/javascript">var bIsDvs = false</script>',
 				'player.js' => 'module_dvs',
 				'jcarousellite.js' => 'module_dvs',
-				'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
-				'<script type="text/javascript">var bGoogleAnalytics = false;</script>',
-				'google_analytics.js' => 'module_dvs'
+//				'<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>',
+//				'<script type="text/javascript">var bGoogleAnalytics = false;</script>',
+				'google_analytics.js' => 'module_dvs',
+				'chapter_buttons.css' => 'module_dvs',
+				'dropdown.js' => 'module_dvs',
+				'showroom.css' => 'module_dvs',
+				'get_price.css' => 'module_dvs',
+				'share_email.css' => 'module_dvs'
 			))
 			->assign(array(
 				'aVideos' => $aVideos,
@@ -111,7 +116,12 @@ class Idrive_Component_Controller_External extends Phpfox_Component {
 				'iBackgroundWidth' => $iWidth,
 				'iBackgroundHeight' => $iPlayerHeight + 100,
 				'iPlaylistThumbnails' => $iPlaylistThumbnails,
-				'iScrollAmt' => $iScrollAmt
+				'iScrollAmt' => $iScrollAmt,
+				'sJavascript' => '<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>'
+				. '<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>'
+				. '<script type="text/javascript">var bIsDvs = false</script>'
+				. '<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>'
+				. '<script type="text/javascript">var bGoogleAnalytics = false;</script>'
 		));
 	}
 
