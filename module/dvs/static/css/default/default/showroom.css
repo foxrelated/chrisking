@@ -90,6 +90,12 @@ header a
 	margin: auto;
 }
 
+header h1
+{
+	width: 100%;
+	text-align: center;
+}
+
 /* Top Navigation */
 
 header nav {

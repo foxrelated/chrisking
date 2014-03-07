@@ -68,7 +68,7 @@ class Idrive_Component_Controller_External extends Phpfox_Component {
 		{
 			$aVideos = array();
 		}
-		var_dump($aVideos);
+		
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
 
 		$this->template()
