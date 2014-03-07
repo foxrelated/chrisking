@@ -239,7 +239,11 @@ function cueChange(sCuePoint) {
 		}
 
 		$.each(oChapterDivs, function(sChapter, sHtml) {
-			$('#chapter_container_' + sChapter).attr('class', 'display disabled');
+			// Is the chapter button we are setting to display shown before the video ended?
+			if ($('#chapter_container_' + sChapter).hasClass('display'))
+			{
+				$('#chapter_container_' + sChapter).attr('class', 'display disabled');
+			}
 //			$('#chapter_light_disabled_' + sChapter).show();
 //			$('#chapter_light_green_' + sChapter).hide();
 //			$('#chapter_light_red_' + sChapter).hide();
@@ -608,10 +612,10 @@ function onVideoEnd(oVideo) {
 	if (bDebug) {
 		console.log('Player: Video End');
 	}
-
+	bDebug = true;
 	if (bAutoAdvance) {
 		iCurrentVideo++;
-		bVideoChanged = true;
+		// bVideoChanged = true;
 
 		if (bDebug) {
 			console.log('Player: Auto Advance enabled. Advancing to Video key: ' + iCurrentVideo);
@@ -646,7 +650,11 @@ function onVideoEnd(oVideo) {
 //			$('#chapter_light_red_' + sChapter).hide();
 //			$('#chapter_light_yellow_' + sChapter).hide();
 //			$('#chapter_light_disabled_' + sChapter).show();
-			$('#chapter_light_disabled_' + sChapter).attr('class', 'disabled display');
+			// Is the chapter button we are setting to display shown before the video ended?
+			if ($('#chapter_container_' + sChapter).hasClass('display'))
+			{
+				$('#chapter_light_disabled_' + sChapter).attr('class', 'disabled display');
+			}
 		});
 	}
 

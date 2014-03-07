@@ -1,0 +1,23 @@
+#dvs_player_container
+{
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	display: inline-block;
+	position: relative;
+	vertical-align:top;
+	margin-top: 10px;
+	padding: 10px;
+}
+
+#dvs_bc_player
+{
+	display: inline-block;
+	vertical-align: top;
+}
+
+#chapter_buttons
+{
+	display: inline-block;
+	vertical-align: top;
+}

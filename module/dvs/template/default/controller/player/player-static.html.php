@@ -38,26 +38,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 </script>
 <style>
-	body {l}
+	#dvs_player_container {l}
 		background-color: #{$aPlayer.player_background};
-	{r}
-	
-	#playlist_wrapper button.playlist-button {l}
-		background-color: #{$aPlayer.player_buttons};
-		color: #{$aPlayer.playlist_arrows};
-	{r}
-	
-	#playlist_wrapper button.playlist-button:hover {l}
-		opacity: 0.5;
-	{r}
-	
-	#overview_playlist li {l}
-		border: 2px #{$aPlayer.playlist_border} solid;
 	{r}
 </style>
 <div id="dvs_player_container">
 	<div id="dvs_bc_player"{if $bIsDvs} itemscope itemtype="http://schema.org/VideoObject"{/if}>
-		<div style="display:none;"></div>
 		{if $sBrowser != 'desktop'}
 			<object id="myExperience" class="BrightcoveExperience">
 				<param name="includeAPI" value="true" />
@@ -108,9 +94,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</object>
 			<script type="text/javascript">brightcove.createExperiences();</script>
 		{/if}
-	</div>
-
-	<div id="chapter_buttons">
+	</div><div id="chapter_buttons">
 		<!-- NOTE: The following parent DIVs (#chapter_container_Intro) are loaded in to a JS object and this div (#chapter_buttons) is cleared. No changes to the parent DIV objects will stick -->
 		<div id="chapter_container_Intro" style="display:none;">
 			<div class="chapter_light">

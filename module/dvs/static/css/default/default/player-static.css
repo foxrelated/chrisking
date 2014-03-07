@@ -117,7 +117,7 @@ body{
 	width:140px;
 	height:495px;
 	overflow:hidden;
-	position:absolute;
+	/*position:absolute;*/
 	top:10px;
 	left:730px;
 	width:140px;
@@ -154,9 +154,9 @@ body{
 }
 
 #dvs_bc_player {
-	position:absolute;
-	top:10px;
-	left:10px;
+	/*position:absolute;*/
+/*	top:10px;
+	left:10px;*/
 }
 
 #player_preview_container {

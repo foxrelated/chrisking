@@ -197,11 +197,15 @@ header nav a:hover
 
 #overview_playlist {
 	display: inline-block;
+	overflow: hidden;
+	height: 85px;
+	width: 625px;
 }
 
 #overview_playlist ul li {
 	position: relative;
 	float: left;
+	background-color: #000;
 }
 
 #overview_playlist li
@@ -219,6 +223,13 @@ header nav a:hover
 	text-align: center;
 	font-weight: bold;
 	color: #fff;
+	font-size: 14px;
+}
+
+#overview_playlist ul li img
+{
+	opacity: 0.5;
+	filter:alpha(opacity=50);
 }
 
 /* Right-side chapter buttons */
