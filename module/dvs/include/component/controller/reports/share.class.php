@@ -79,7 +79,7 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 			$aTeamMembers = array_merge($aAdmin, $aTeamMembers);
 		}
 
-
+		print_r($aTeamMembers);
 		$this->template()
 			->setTitle(Phpfox::getPhrase('dvs.share_report'))
 			->setBreadcrumb(Phpfox::getPhrase('dvs.share_report'))
