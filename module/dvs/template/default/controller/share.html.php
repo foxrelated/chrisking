@@ -30,7 +30,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 								<input class="dvs_share_text_box" type="text" id="share_text_box_facebook_{$iKey}">
 							</div>
 							<div class="dvs_share_button_container">
-								<input type="button" class="dvs_share_button" value="Get Facebook Link" onclick="$.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id={$aVideo.referenceId}&service=facebook&return_id=share_text_box_facebook_{$iKey}');"">
+								<input type="button" class="dvs_share_button" value="Get Facebook Link" onclick="facebookShareClick(); $.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id={$aVideo.referenceId}&service=facebook&return_id=share_text_box_facebook_{$iKey}');">
 							</div>
 						</div>
 				
@@ -39,7 +39,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 								<input class="dvs_share_text_box" type="text" id="share_text_box_google_{$iKey}">
 							</div>
 							<div class="dvs_share_button_container">
-								<input type="button" class="dvs_share_button" value="Get Google Link" onclick="$.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id={$aVideo.referenceId}&service=google&return_id=share_text_box_google_{$iKey}');"">
+								<input type="button" class="dvs_share_button" value="Get Google Link" onclick="googleShareClick(); $.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id={$aVideo.referenceId}&service=google&return_id=share_text_box_google_{$iKey}');">
 							</div>
 						</div>
 						
@@ -48,7 +48,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 								<input class="dvs_share_text_box" type="text" id="share_text_box_twitter_{$iKey}">
 							</div>
 							<div class="dvs_share_button_container">
-								<input type="button" class="dvs_share_button" value="Get Twitter Link" onclick="$.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id={$aVideo.referenceId}&service=twitter&return_id=share_text_box_twitter_{$iKey}');"">
+								<input type="button" class="dvs_share_button" value="Get Twitter Link" onclick="$.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id={$aVideo.referenceId}&service=twitter&return_id=share_text_box_twitter_{$iKey}');">
 							</div>
 						</div>
 						
@@ -57,7 +57,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 								<input class="dvs_share_text_box" type="text" id="share_text_box_email_{$iKey}">
 							</div>
 							<div class="dvs_share_button_container">
-								<input type="button" class="dvs_share_button" value="Get Email Link" onclick="$.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id={$aVideo.referenceId}&service=email&return_id=share_text_box_email_{$iKey}');"">
+								<input type="button" class="dvs_share_button" value="Get Email Link" onclick="$.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id={$aVideo.referenceId}&service=email&return_id=share_text_box_email_{$iKey}');">
 							</div>
 						</div>
 						
