@@ -31,7 +31,7 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 			
 			$sDvsTitle = $this->request()->get('req4');
 		}
-		
+		print_r($sDvsTitle);
 		$aDvs = Phpfox::getService('dvs')->get($sDvsTitle, true);
 
 		$aVals = $this->request()->getArray('val');
