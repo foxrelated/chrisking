@@ -55,7 +55,24 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 		}
 
 		$aDvsOwner = array(Phpfox::getService('user')->get($aDvs['user_id']));
-		$aTeamMembers = array_merge($aDvsOwner, Phpfox::getService('dvs.salesteam')->getAll($aDvs['dvs_id']));
+		// Get all of the sales members id's for this DVS.
+		$aSalesMembers = Phpfox::getService('dvs.salesteam')->getAll($aDvs['dvs_id']);
+		// Loop through to pull out their name and email.
+		foreach ($aSalesMembers as $aSalesMember)
+		{
+			$aSalesMembersDetails = Phpfox::getService('user')->get($aSalesMember['user_id']);
+		}
+		// Did we have any sales members to begin with?
+		if (!empty($aSalesMembersDetails))
+		{
+			// Yes, merge the two arrays.
+			$aTeamMembers = array_merge($aDvsOwner, $aSalesMembersDetails);
+		}
+		else
+		{
+			// No, just set it equal to the owner array so this variable can be used below in an array merge.
+			$aTeamMembers = $aDvsOwner;
+		}
 		if (Phpfox::isAdmin() && $aDvs['user_id'] != Phpfox::getUserId())
 		{
 			$aAdmin = array(Phpfox::getService('user')->get($aDvs['user_id']));
