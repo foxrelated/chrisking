@@ -24,13 +24,13 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 		
 		// Are subdomains enabled? If yes, our dealer title url is in a different place.
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
-		if ($bSubdomainMode)
-		{
-			$sDvsTitle = $this->request()->get('req3');
-		}else{
+//		if ($bSubdomainMode)
+//		{
+//			$sDvsTitle = $this->request()->get('req3');
+//		}else{
 			
 			$sDvsTitle = $this->request()->get('req4');
-		}
+//		}
 		print_r($sDvsTitle);
 		$aDvs = Phpfox::getService('dvs')->get($sDvsTitle, true);
 
