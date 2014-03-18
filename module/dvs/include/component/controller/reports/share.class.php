@@ -78,7 +78,7 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 			$aAdmin = array(Phpfox::getService('user')->get($aDvs['user_id']));
 			$aTeamMembers = array_merge($aAdmin, $aTeamMembers);
 		}
-
+		print_r($aDvs);
 		print_r($aDvsOwner);
 		print_r($aTeamMembers);
 		$this->template()
