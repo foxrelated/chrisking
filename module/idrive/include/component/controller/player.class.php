@@ -165,7 +165,8 @@ class Idrive_Component_Controller_Player extends Phpfox_Component {
 				'get_price.css' => 'module_dvs',
 				'share_email.css' => 'module_dvs',
 				'showroom.css' => 'module_dvs',
-				'chapter_buttons.css' => 'module_dvs'
+				'chapter_buttons.css' => 'module_dvs',
+				'jquery.placeholder.js' => 'module_dvs'
 			))
 			->assign(array(
 					'aPlayer' => $aPlayer,

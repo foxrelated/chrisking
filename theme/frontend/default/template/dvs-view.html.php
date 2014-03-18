@@ -87,7 +87,7 @@ defined('PHPFOX') or exit('NO DICE!');
 				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$aDvs.button_top_gradient}', endColorstr='#{$aDvs.button_bottom_gradient}');
 				border: 1px solid #{$aDvs.button_border};
 				color: #{$aDvs.button_text};
-				border: 1px solid #696;
+				border: 1px solid #{$aDvs.button_border};
 				behavior: url('./dvs/module/static/css/default/default/border-radius.htc');
 			{r}
 

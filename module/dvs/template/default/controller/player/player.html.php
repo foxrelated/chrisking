@@ -317,7 +317,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<button type="button" id="chapter_container_Features" class="disabled display" onclick="changeCuePoint('Features');"></button>
 	<button type="button" id="chapter_container_Safety" class="disabled no_display" onclick="changeCuePoint('Safety');"></button>
 	<button type="button" id="chapter_container_Warranty" class="disabled display" onclick="changeCuePoint('Warranty');"></button>
-	<button type="button" id="chapter_container_Summary" class="active display" onclick="changeCuePoint('Summary');"></button>
+	<button type="button" id="chapter_container_Summary" class="disabled display" onclick="changeCuePoint('Summary');"></button>
 	<button type="button" id="chapter_container_Performance" class="disabled no_display" onclick="changeCuePoint('Performance');"></button>
 	<button type="button" id="chapter_container_MPG" class="disabled no_display" onclick="changeCuePoint('MPG');"></button>
 	<button type="button" id="chapter_container_Honors" class="disabled no_display" onclick="changeCuePoint('Honors');"></button>
