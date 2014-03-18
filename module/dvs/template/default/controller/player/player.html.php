@@ -241,7 +241,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<param name="showNoContentMessage" value="false" />
 		<param name="linkBaseURL" value="{$sLinkBase}" id="bc_player_param_linkbase" />
 	</object>
-	<script type="text/javascript">brightcove.createExperiences();</script>
 	{else}
 	<object id="myExperience" class="BrightcoveExperience">
 		<param name="wmode" value="transparent" />
@@ -273,9 +272,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<param name="linkBaseURL" value="{$sLinkBase}" id="bc_player_param_linkbase" />
 		{/if}
 	</object>
-	<script type="text/javascript">brightcove.createExperiences();</script>
 	{/if}
-
+	{literal}<script type="text/javascript">
+		$Behavior.brightCoveCreateExp = function()
+		{
+			brightcove.createExperiences();
+		}</script>{/literal}
 	{if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
 	<section id="playlist_wrapper">
 		<button class="prev playlist-button">&lt;</button>
