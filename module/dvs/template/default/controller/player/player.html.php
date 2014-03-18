@@ -208,43 +208,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 
 	{/if}
-	{if $sBrowser == 'ipad'}
 	<object id="myExperience" class="BrightcoveExperience">
-		<param name="includeAPI" value="true" />
-		<param name="templateLoadHandler﻿" value="onTemplateLoad" />
 		<param name="bgcolor" value="#FFFFFF" />
-		{if $bIsDvs}
-		<param name="width" value="100%" />
-		<param name="height" value="405" />
-		{else}
-		<param name="width" value="{$iPlayerWidth}" />
-		<param name="height" value="{$iPlayerHeight}" />
-		{/if}
 		<param name="wmode" value="transparent" />
-		<param name="playerID" value="1418431455001" />
-		<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
-		<param name="isVid" value="true" />
-		<param name="isUI" value="true" />
-		<param name="dynamicStreaming" value="true" />
-		{if !$bIsExternal && $aPlayer.preroll_file_id}
-		<param name="adServerURL" value="{$sPrerollXmlUrl}" />
-		{/if}
-		{if !$bPreview && !$bIsExternal}
-		{if $bIsDvs}
-		<param name="accountID" value="{$aDvs.dvs_google_id}" />
-		{else if !$bIsExternal}
-		<param name="accountID" value="{$aPlayer.google_id}" />
-		{/if}
-		{/if}
-		<param name="templateLoadHandler" value="onTemplateLoaded" />
-		<param name="templateReadyHandler" value="onTemplateReady" />
-		<param name="showNoContentMessage" value="false" />
-		<param name="linkBaseURL" value="{$sLinkBase}" id="bc_player_param_linkbase" />
-	</object>
-	{else}
-	<object id="myExperience" class="BrightcoveExperience">
-		<param name="wmode" value="transparent" />
-		<param name="bgcolor" value="#FFFFFF" />
 		{if $bIsDvs}
 		<param name="width" value="720" />
 		<param name="height" value="405" />
@@ -268,6 +234,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{/if}
 		{/if}
 		<param name="showNoContentMessage" value="false" />
+	{if $sBrowser == 'ipad'}
+		<param name="includeAPI" value="true" />
+		<param name="templateLoadHandler﻿" value="onTemplateLoad" />
+		<param name="templateLoadHandler" value="onTemplateLoaded" />
+		<param name="templateReadyHandler" value="onTemplateReady" />
+		<param name="linkBaseURL" value="{$sLinkBase}" id="bc_player_param_linkbase" />
+	</object>
+	{else}
 		{if !$bPreview && !$bIsExternal}
 		<param name="linkBaseURL" value="{$sLinkBase}" id="bc_player_param_linkbase" />
 		{/if}
