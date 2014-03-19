@@ -149,7 +149,7 @@ class Idrive_Component_Controller_Player extends Phpfox_Component {
 		
 		
 		$this->template()
-			->setTemplate('blank')
+			->setTemplate('idrive-view')
 			->setHeader(array(
 //				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
 //				($sBrowser == 'mobile' ? 'player-mobile.css' : 'player.css') => 'module_dvs',
