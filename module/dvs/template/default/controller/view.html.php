@@ -148,7 +148,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
 			</a>
 			<span id="twitter_button_wrapper">
-				<a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text'}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
+				<a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
 			</span>
 			<a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href)); return false;">
 				<img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>

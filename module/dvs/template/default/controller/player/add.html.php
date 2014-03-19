@@ -296,7 +296,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras').hide('fast');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_1_type]" id="custom_overlay_1_price_overlay" />
 
 						   <label for="custom_overlay_1_link_overlay" class="inline_radio">Link Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras').show('fast');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 2 || $bIsEdit && !isset($aForms.custom_overlay_1_type) || !isset($bEdit) || !$bEdit}checked="checked"{/if} value="2" name="val[custom_overlay_1_type]" id="custom_overlay_1_link_overlay" />
+					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras').show('fast');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 2 || !isset($aForms.custom_overlay_1_type)}checked="checked"{/if} value="2" name="val[custom_overlay_1_type]" id="custom_overlay_1_link_overlay" />
 				</li>
 				<li class="custom_overlay_1_extras {if isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type != 2}hidden{/if}">
 					<label for="custom_overlay_1_text">Link Text:</label>
@@ -328,7 +328,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras').hide('fast');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_2_type]" id="custom_overlay_2_price_overlay" />
 
 						   <label for="custom_overlay_2_link_overlay" class="inline_radio">Link Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras').show('fast');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 2 || $bIsEdit && !isset($aForms.custom_overlay_2_type) || !isset($bEdit) || !$bEdit}checked="checked"{/if} value="2" name="val[custom_overlay_2_type]" id="custom_overlay_2_link_overlay" />
+					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras').show('fast');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 2 || !isset($aForms.custom_overlay_2_type)}checked="checked"{/if} value="2" name="val[custom_overlay_2_type]" id="custom_overlay_2_link_overlay" />
 				</li>
 				<li class="custom_overlay_2_extras {if isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type != 2}hidden{/if}">
 					<label for="custom_overlay_2_text">Link Text:</label>
@@ -360,7 +360,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras').hide('fast');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_3_type]" id="custom_overlay_3_price_overlay" />
 
 						   <label for="custom_overlay_3_link_overlay" class="inline_radio">Link Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras').show('fast');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 2 || $bIsEdit && !isset($aForms.custom_overlay_3_type) || !isset($bEdit) || !$bEdit}checked="checked"{/if} value="2" name="val[custom_overlay_3_type]" id="custom_overlay_3_link_overlay" />
+					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras').show('fast');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 2 || !isset($aForms.custom_overlay_3_type)}checked="checked"{/if} value="2" name="val[custom_overlay_3_type]" id="custom_overlay_3_link_overlay" />
 				</li>
 				<li class="custom_overlay_3_extras {if isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type != 2}hidden{/if}">
 					<label for="custom_overlay_3_text">Link Text:</label>

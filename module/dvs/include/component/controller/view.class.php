@@ -259,7 +259,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 					'share_email.css' => 'module_dvs',
 			));
 		}
-		
+
 		$this->template()
 			->setTemplate('dvs-view')
 			->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
