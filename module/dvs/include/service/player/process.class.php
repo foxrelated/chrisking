@@ -103,7 +103,6 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 		}
 
 		$oParseInput = Phpfox::getLib('parse.input');
-
 		$this->database()
 				->update($this->_sTable, array(
 					'dvs_id' => (int) $aVals['dvs_id'],

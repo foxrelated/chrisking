@@ -360,17 +360,18 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		
 		if ($oValid->isValid($aVals))
 		{
-			$iPlayerId = Phpfox::getService('dvs.player')->get($aVals['dvs_id']);
-
+			$aPlayer = Phpfox::getService('dvs.player')->get($aVals['dvs_id']);
+			
 			//DVS Players will always be interactive
 			$aVals['player_type'] = 0;
 
-			if (!$iPlayerId)
+			if (empty($aPlayer))
 			{
 				$iPlayerId = Phpfox::getService('dvs.player.process')->add($aVals);
 			}
 			else
 			{
+				$aVals['player_id'] = $aPlayer['player_id'];
 				Phpfox::getService('dvs.player.process')->update($aVals);
 			}
 

@@ -60,7 +60,7 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 		// Loop through to pull out their name and email.
 		foreach ($aSalesMembers as $aSalesMember)
 		{
-			$aSalesMembersDetails = Phpfox::getService('user')->get($aSalesMember['user_id']);
+			$aSalesMembersDetails[] = Phpfox::getService('user')->get($aSalesMember['user_id']);
 		}
 		// Did we have any sales members to begin with?
 		if (!empty($aSalesMembersDetails))
@@ -78,7 +78,7 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 			$aAdmin = array(Phpfox::getService('user')->get($aDvs['user_id']));
 			$aTeamMembers = array_merge($aAdmin, $aTeamMembers);
 		}
-		
+
 		$this->template()
 			->setTitle(Phpfox::getPhrase('dvs.share_report'))
 			->setBreadcrumb(Phpfox::getPhrase('dvs.share_report'))
