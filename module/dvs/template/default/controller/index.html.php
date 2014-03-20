@@ -27,8 +27,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</div>
 {/if}
 
-<h1>Remove me</h1>
-
 <div id="add_dvs_button" {if !$bCanAddDvss}style="display:none;"{/if}>
 	<a href="{url link='dvs.settings'}" class="button-link" style="width:90px;height:10px;padding:2px 2px 15px 2px;margin:0px;">{phrase var='dvs.add_dvs'}</a>
 	<div class="main_break"></div>
