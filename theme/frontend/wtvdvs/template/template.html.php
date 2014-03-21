@@ -53,6 +53,7 @@
 			{block location='11'}
 
 			<div id="main_content_holder">
+			Remove me text again
 			{/if}
 				<div {holder_name}>		
 					<div {is_page_view} class="holder">	
