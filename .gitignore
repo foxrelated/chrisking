@@ -2,5 +2,5 @@
 /include/setting/dev.sett.php
 /include/setting/server.sett.php
 /.htaccess
-nbproject
 /.htpasswd
+/.DS_Store
