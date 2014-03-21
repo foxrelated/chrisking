@@ -73,7 +73,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</ul>
 	</nav>
 </header>
-
 <article>
 	<section id="player">
 		{template file='dvs.controller.player.player}
