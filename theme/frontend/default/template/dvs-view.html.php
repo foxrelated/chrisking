@@ -24,6 +24,15 @@ defined('PHPFOX') or exit('NO DICE!');
 		{if !empty($aDvs)}
 		<style>
 			/* This CSS is generated for the base DVS page */
+			
+			section h1,h2,h3,h4,h5,h6,h7 {l}
+				color: #{$aDvs.page_text};
+			{r}
+			
+			section p {l}
+				color: #{$aDvs.page_text};
+			{r}	
+					
 			header h1 {l}
 				color: #{$aDvs.page_text};
 			{r}
@@ -42,18 +51,20 @@ defined('PHPFOX') or exit('NO DICE!');
 			body {l}
 				background-color: #{$aDvs.page_background};
 			{r}
-
+									
 			#dvs_background {l}
-				position: fixed;
+				position:fixed;
 				top: 0;
 				left: 0;
 				width: 100%;
 				height: 100%;
 				background-image: url('{$sBackgroundPath}');
-				background-attachment: fixed;
+				background-attachment: scroll;
 				opacity: {$iBackgroundOpacity / 100};
 				filter:alpha(opacity={$iBackgroundOpacity});
 				z-index: -1;
+				/* keep the bg image aligned properly */
+				background-position:center top;
 			{r}
 
 			#video_information h3,
