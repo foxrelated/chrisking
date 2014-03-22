@@ -195,6 +195,19 @@ class Dvs_Service_Dvs extends Phpfox_Service {
 		$sCss .= $this->buildCss('h1', array(
 			'color' => '#' . $aDvs['page_text']
 		));
+		
+		//added 3/21 by Collin
+		$sCss .= $this->buildCss('h2', array(
+			'color' => '#' . $aDvs['page_text']
+		));
+		
+		$sCss .= $this->buildCss('h3', array(
+			'color' => '#' . $aDvs['page_text']
+		));
+		
+		$sCss .= $this->buildCss('.dvs-info', array(
+			'color' => '#' . $aDvs['page_text']
+		));
 
 		$sCss .= $this->buildCss('#dvs_branding_container h1', array(
 			'background' => 'none repeat scroll 0 0 #' . $aDvs['page_background'],
