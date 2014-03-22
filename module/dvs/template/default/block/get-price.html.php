@@ -58,7 +58,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <form id="contact_dealer" name="contact_dealer" action="javascript:void(0);">
 	<fieldset>
 		<p>Thank you for your interest in the <strong>{$aVideo.year} {$aVideo.make} {$aVideo.model}</strong>!</p>
-		<p>We're happy to help you find your next car or answer any questions you might have. Please fill out the form below:</p>
+		<p>We're happy to help you find your next car, go over current specials and offer your our very best price. Please let us know how to reach you and we'll get right back to you:</p>
 		<ul>
 			<li>
 				<input type="text" name="val[contact_name]" id="name" placeholder="{phrase var='dvs.get_price_placeholder_name'}" required class="inputContact"/>
