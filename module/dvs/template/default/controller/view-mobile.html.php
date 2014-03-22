@@ -69,9 +69,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			{/if}
 		</section>
 		<section id="dealer_links">
-			<a href="./" onclick="menuHome('Call To Action Menu Clicks');">
+			{*<a href="./" onclick="menuHome('Call To Action Menu Clicks');">
 				{phrase var='dvs.cta_home'}
-			</a>
+			</a>*}
 			{if $aDvs.inventory_url}
 			<a href="{$aDvs.inventory_url}" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow">
 				{phrase var='dvs.cta_inventory'}
@@ -89,14 +89,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</div>
 
 	<section id="video_information">
-		<h3 id="video_name">
+		{*<h3 id="video_name">
 			<a href="location.href">
 				{$aDvs.phrase_overrides.override_video_name_display}
 			</a>
 		</h3>
 
 		<p class="model_description" id="car_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
-
+		*}
 		{if empty($aOverrideVideo.ko_id)}
 		<section>
 			<h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
@@ -117,7 +117,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</p>
 	</aside>
 	
-	<section id="action_links">
+	{*<section id="action_links">
 		<p>Click to Share:</p> 
 		<a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=600&amp;width=520&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">
 			<img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
@@ -128,5 +128,5 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<span id="twitter_button_wrapper">
 			<a href="https://twitter.com/share" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link" ></a>
 		</span>
-	</section>
+	</section>*}
 </article>
