@@ -157,7 +157,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</a>
 		</section>
 	</div>
-
+{if $sBrowser == 'mobile'}
+{else}
 	<section id="video_information">
 		<h3 id="video_name">
 			<a href="location.href">
@@ -174,7 +175,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</section>
 		{/if}	
 	</section>
-
+{/if}
 	<aside>
 		<div id="dvs_geomap_container" itemprop="map"></div>
 		<p>{if $aDvs.url}
