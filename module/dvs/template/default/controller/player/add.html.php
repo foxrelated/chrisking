@@ -233,8 +233,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<h3>{phrase var='dvs.player_branding'}</h3>
 
 	<fieldset>
-		<legend>{phrase var='dvs.pre_roll'}:</legend>
+		<legend>Pre-Roll:</legend>
 		<ol>
+			<li>
+				<a href="#" onclick="tb_show('{phrase var='dvs.pre_roll' phpfox_squote=true}', $.ajaxBox('dvs.moreInfoPrerollSwf', 'height=180&amp;width=320')); return false;">Pre-Roll Help</a>
+			</li>
 			<li>
 				{if $bIsEdit}
 				<label id="preroll_file_label">{phrase var='dvs.current_file'}:</label>
@@ -265,9 +268,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</div>
 				<input type="hidden" id="preroll_file_id" name="val[preroll_file_id]" value="{if $bIsEdit}{$aForms.preroll_file_id}{else}0{/if}"/>
 			</li>
-			<li>
-				<a href="#" onclick="tb_show('{phrase var='dvs.pre_roll' phpfox_squote=true}', $.ajaxBox('dvs.moreInfoPrerollSwf', 'height=180&amp;width=320')); return false;">{phrase var='dvs.more_info'}</a>
-			</li>
+			
 			<li>
 				<label for="preroll_duration">{phrase var='dvs.pre_roll_duration'}:</label>
 				<input type="number" name="val[preroll_duration]" value="{value type='input' id='preroll_duration'}" id="preroll_duration" size="10" maxlength=3 />
@@ -275,7 +276,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<li>
 				<label for="preroll_url">{phrase var='dvs.pre_roll_url'}:</label>
 				<input type="text" name="val[preroll_url]" value="{value type='input' id='preroll_url'}" id="preroll_url" size="40"/>
-				<a href="#" onclick="tb_show('{phrase var='dvs.pre_roll' phpfox_squote=true}', $.ajaxBox('dvs.moreInfoPrerollDuration', 'height=180&amp;width=320')); return false;">{phrase var='dvs.more_info'}</a>
+				
 			</li>
 		</ol>
 	</fieldset>
@@ -382,6 +383,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</fieldset>
 	</div>
 	{/if}
+	<br>
 	<fieldset>
 		{if $bIsDvs}
 		<input type="hidden" name="val[dvs_id]" value="{$iDvsId}">

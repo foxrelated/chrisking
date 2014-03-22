@@ -37,10 +37,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<table style="border-collapse:collapse;">
 			<tr>
 				<th width="300" align="left" style="padding-bottom: .5em; padding-right: 1em;">
-					Player Name
+					<strong>Player Name</strong>
 				</th>
 				<th colspan="2"align="left" style="padding-bottom: .5em; padding-right: 1em;">
-					Action
+					<strong>Action</strong>
 				</th>
 			</tr>
 

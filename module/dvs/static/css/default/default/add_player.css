@@ -4,7 +4,7 @@ h1 {
 }
 
 form#add_player {
-	background: #ccc;
+	
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-khtml-border-radius: 5px;
@@ -31,7 +31,7 @@ form#add_player h3 {
 
 
 form#add_player legend {
-	color: #666;
+	color: #333;
 	font-size: 14px;
 	font-weight: bold;
 	padding-bottom: 10px;
@@ -50,12 +50,12 @@ form#add_player fieldset fieldset legend {
 }
 
 form#add_player ol li {
-	background: #b9cf6a;
-	background: rgba(255,255,255,.3);
-	border-color: #e3ebc3;
-	border-color: rgba(255,255,255,.6);
+	background: #999999;
+	background: rgba(194,194,194,.1);
+	/*border-color: #333333;
+	border-color: rgba(194,194,194,.9);
 	border-style: solid;
-	border-width: 2px;
+	border-width: 2px;*/
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-khtml-border-radius: 5px;
@@ -67,10 +67,10 @@ form#add_player ol li {
 }
 
 form#add_player ol li a {
-	background: #b9cf6a;
-	background: rgba(255,255,255,.3);
-	border-color: #e3ebc3;
-	border-color: rgba(255,255,255,.6);
+	background: #fafafa;
+	background: rgba(250,250,250,.9);
+	border-color: #c8c8c8;
+	border-color: rgba(200,200,200,.9);
 	border-style: solid;
 	border-width: 2px;
 	-moz-border-radius: 5px;
@@ -120,7 +120,7 @@ form#add_player textarea {
 	-webkit-border-radius: 3px;
 	-khtml-border-radius: 3px;
 	border-radius: 3px;
-	font: italic 13px Georgia, "Times New Roman", Times, serif;
+	font: Arial 13px;
 	outline: none;
 	padding: 5px;
 	width: 200px;
@@ -128,7 +128,8 @@ form#add_player textarea {
 
 form#add_player input:not([type=submit]):focus,
 form#add_player textarea:focus {
-	background: #eaeaea;
+	background:#999;
+	color:#fff;
 }
 
 form#add_player input[type=radio] {
