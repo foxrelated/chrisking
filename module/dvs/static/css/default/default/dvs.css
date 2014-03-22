@@ -294,12 +294,14 @@
 	width:320px;
 }
 
-/*.dvs_add_td_label {
-	text-align:;
+.dvs_add_td_label {
+	text-align: left;
+	width:60%;
 }
 .dvs_add_td {
 text-align:left;
-}*/
+width:40%;
+}
 
 /* Collin Custom CSS */
 

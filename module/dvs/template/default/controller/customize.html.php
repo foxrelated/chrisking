@@ -65,8 +65,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		height:22px;
 		text-align:left;
 		background: none repeat scroll 0 0 #{if $bIsEdit}{$aForms.menu_background}{else}c5c5c5{/if};
-		font-size: 1.25em;
-		font-weight:bold;
+		font-size: 1.2em;
 	{r}
 	
 	.dvs_top_menu_link {l}
@@ -108,7 +107,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	
 	#preview_cta_button_container {l}
 		position: absolute;
-		top: 87px;
+		top: 30px;
 		left:500px;
 		width:160px;
 		height:128px;
@@ -142,11 +141,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	
 	#player_mockup {l}
 		text-align:center;
-		color:#222222;
-		font-size:5em;
+		color:#fff;
+		font-size:2em;
 		font-weight:bold;
-		letter-spacing:5px;
-		padding-top:10px;
+		letter-spacing:1px;
+		padding-top:25px;
 	{r}
 	
 	#preview_now_playing_container {l}
@@ -188,10 +187,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{r}
 	
 	.dvs_c2a_button {l}
+		background-color:#{if $bIsEdit}{$aForms.button_top_gradient}{else}ffffff{/if};
 		background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #{if $bIsEdit}{$aForms.button_top_gradient}{else}ffffff{/if};), color-stop(1, #{if $bIsEdit}{$aForms.button_bottom_gradient}{else}000000{/if}) );
 		background:-moz-linear-gradient( center top, #{if $bIsEdit}{$aForms.button_top_gradient}{else}ffffff{/if} 5%, #{if $bIsEdit}{$aForms.button_bottom_gradient}{else}000000{/if} 100% );
 		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#{if $bIsEdit}{$aForms.button_top_gradient}{else}ffffff{/if}', endColorstr='#{if $bIsEdit}{$aForms.button_bottom_gradient}{else}000000{/if}');
-		background-color:#{if $bIsEdit}{$aForms.button_top_gradient}{else}ffffff{/if};
 		border:1px solid #{if $bIsEdit}{$aForms.button_border}{else}000000{/if};
 		color:#{if $bIsEdit}{$aForms.button_text}{else}ffffff{/if};
 		-moz-border-radius:10px;
@@ -214,10 +213,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{r}
 
 	.dvs_c2a_button:hover {l}
+		background-color:#{if $bIsEdit}{$aForms.button_bottom_gradient}{else}000000{/if};
 		background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #{if $bIsEdit}{$aForms.button_bottom_gradient}{else}000000{/if}), color-stop(1, #{if $bIsEdit}{$aForms.button_top_gradient}{else}ffffff{/if}) );
 		background:-moz-linear-gradient( center top, #{if $bIsEdit}{$aForms.button_bottom_gradient}{else}000000{/if} 5%, #{if $bIsEdit}{$aForms.button_top_gradient}{else}ffffff{/if} 100% );
 		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#{if $bIsEdit}{$aForms.button_bottom_gradient}{else}000000{/if}', endColorstr='#{if $bIsEdit}{$aForms.button_top_gradient}{else}ffffff{/if}');
-		background-color:#{if $bIsEdit}{$aForms.button_bottom_gradient}{else}000000{/if};
+		
 		text-decoration:none;
 		color:#{if $bIsEdit}{$aForms.button_text}{else}ffffff{/if};
 	{r}
@@ -342,11 +342,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<div id="preview_container">
 						<div id="dvs_container">
 							<div id="preview_menu_container">
-								<span class="dvs_top_menu_link">{phrase var='dvs.home'}</span>
-								<span class="dvs_top_menu_link">{phrase var='dvs.watch_overviews'}</span>
-								<span class="dvs_top_menu_link">{phrase var='dvs.view_test_drives'}</span>
-								<span class="dvs_top_menu_link">{phrase var='dvs.see_inventory'}</span>
-								<span class="dvs_top_menu_link">{phrase var='dvs.special_offers'}</span>
+								<span class="dvs_top_menu_link">Top Menu Link</span>
+								<span class="dvs_top_menu_link">Top Menu Link</span>
+								<span class="dvs_top_menu_link">Top Menu Link</span>
+								<span class="dvs_top_menu_link">Top Menu Link</span>
 							</div>
 
 							<div id="preview_player_container">
@@ -354,37 +353,22 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 							</div>
 
 							<div id="preview_now_playing_container">
-								<strong>{phrase var='dvs.now_playing_video_name_test_drive'}</strong><br/>
-								{phrase var='dvs.video_description'}
-							</div>
-							
-							<div id="preview_dealer_info_container">
-								<strong><span class="preview_dealer_info">{phrase var='dvs.dealer_info'}</span></strong><br/>
-								<span class="preview_dealer_info">{$aDvs.dealer_name}</span><br/>
-								<span class="preview_dealer_info">{phrase var='dvs.website'}: </span><span id="preview_dealer_website_link">{phrase var='dvs.dealer_website_text_link'}</span><br/>
-								<span class="preview_dealer_info">{phrase var='dvs.street_address'}</span>
+								<span class="preview_dealer_info">This is the Page Text color. This is the Page Text color.</span><br/><br>
+								<span id="preview_dealer_website_link">This is the Text Link color.</span><br/>
 							</div>
 							
 							<div id="preview_cta_button_container">
-								<a href="#" class="dvs_c2a_button">{phrase var='dvs.cta_home'}</a>
-								<a href="#" class="dvs_c2a_button">{phrase var='dvs.cta_overviews'}</a>
-								<a href="#" class="dvs_c2a_button">{phrase var='dvs.cta_test_drives'}</a>
-								<a href="#" class="dvs_c2a_button">{phrase var='dvs.cta_inventory'}</a>
+								<a href="#" class="dvs_c2a_button">Button</a>
+								<a href="#" class="dvs_c2a_button">Button</a>
+								<a href="#" class="dvs_c2a_button">Button</a>
+								<a href="#" class="dvs_c2a_button">Button</a>
+								
 							</div>
-							
-							<div id="preview_social_button_container">
-								<a href="#" class="dvs_social_button_link"><img src="{$sImagePath}google.png"/></a>
-								<a href="#" class="dvs_social_button_link"><img src="{$sImagePath}facebook.png"/></a>
-								<a href="#" class="dvs_social_button_link"><img src="{$sImagePath}twitter.png"/></a>
-								<a href="#" class="dvs_social_button_link"><img src="{$sImagePath}youtube.png"/></a>
-							</div>
-							
 							<div id="preview_footer_container">
-								<span class="dvs_footer_link">{phrase var='dvs.home'}</span>
-								<span class="dvs_footer_link">{phrase var='dvs.watch_overviews'}</span>
-								<span class="dvs_footer_link">{phrase var='dvs.view_test_drives'}</span>
-								<span class="dvs_footer_link">{phrase var='dvs.see_inventory'}</span>
-								<span class="dvs_footer_link">{phrase var='dvs.special_offers'}</span>
+							<span class="dvs_footer_link">Footer Link</span>
+							<span class="dvs_footer_link">Footer Link</span>
+							<span class="dvs_footer_link">Footer Link</span>
+							<span class="dvs_footer_link">Footer Link</span>
 							</div>
 						</div>
 					</div>
@@ -452,7 +436,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 		</tr>
 	</table>
-	
+	<br>
 	<h3>{phrase var='dvs.button_styling'}</h3>
 	<table>
 		<tr class="tr_interactive">
@@ -508,7 +492,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			
 		</tr>
 	</table>
-
+	<br>
 	<input type="hidden" name="val[step]" value="customize" />
 	<input type="hidden" name="val[is_edit]" value="{if $bIsEdit && isset($aForms.dvs_id)}1{else}0{/if}" />
 	<input type="hidden" name="val[dvs_id]" value="{$iDvsId}" />
