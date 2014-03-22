@@ -15,7 +15,7 @@
 }
 
 .dvs_gallery_thumbnail_image_container_inner:hover{
-	outline:1px solid #ccc;
+	outline:0px solid #ccc;
 }
 
 .dvs_gallery_thumbnail_image_container_end{
