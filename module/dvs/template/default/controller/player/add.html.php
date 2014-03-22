@@ -104,11 +104,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</select>
 				<a href="#" onclick="tb_show('{phrase var='idrive.player_type' phpfox_squote=true}', $.ajaxBox('idrive.moreInfoPlayerType', 'height=180&amp;width=320')); return false;" />{phrase var='idrive.more_info'}</a>
 			</li>
-			<li>
+			{*<li>
 				<label for="domain">{phrase var='idrive.domain_name'}:</label>
 				<input type="text" name="val[domain]" value="{value type='input' id='domain'}" id="domain" size="40"/>
 				<a href="#" onclick="tb_show('{phrase var='idrive.domain_name' phpfox_squote=true}', $.ajaxBox('idrive.moreInfoDomainName', 'height=180&amp;width=320')); return false;" />{phrase var='idrive.more_info'}</a>
-			</li>
+			</li>*}
 			{else}
 			<input type="hidden" name="val[player_type]" value="0" />
 			{/if}
@@ -233,7 +233,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<h3>{phrase var='dvs.player_branding'}</h3>
 
 	<fieldset>
-		<legend>Pre-Roll:</legend>
+		<legend>{phrase var='dvs.pre_roll'}:</legend>
 		<ol>
 			<li>
 				<a href="#" onclick="tb_show('{phrase var='dvs.pre_roll' phpfox_squote=true}', $.ajaxBox('dvs.moreInfoPrerollSwf', 'height=180&amp;width=320')); return false;">Pre-Roll Help</a>
