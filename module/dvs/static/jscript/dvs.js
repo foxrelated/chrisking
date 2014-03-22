@@ -15,31 +15,31 @@ function menuContact(sSource) {
 }
 
 function menuShareThis(sSource) {
-	sendToGoogle('DVS Site', sSource, 'Share This');
+	sendToGoogle('DVS Site', sSource, 'Share This Menu Link');
 }
 
 function menuFacebook(sSource) {
-	sendToGoogle('DVS Site', sSource, 'Facebook');
+	sendToGoogle('DVS Site', sSource, 'Facebook Menu Link');
 }
 
 function menuTwitter(sSource) {
-	sendToGoogle('DVS Site', sSource, 'Twitter');
+	sendToGoogle('DVS Site', sSource, 'Twitter Menu Link');
 }
 
 function menuLinkedIn(sSource) {
-	sendToGoogle('DVS Site', sSource, 'LinkedIn');
+	sendToGoogle('DVS Site', sSource, 'LinkedIn Menu Link');
 }
 
 function menuGoogle(sSource) {
-	sendToGoogle('DVS Site', sSource, 'Google');
+	sendToGoogle('DVS Site', sSource, 'Google+ Menu Link');
 }
 
 function menuEmail(sSource) {
-	sendToGoogle('DVS Site', sSource, 'Email');
+	sendToGoogle('DVS Site', sSource, 'Email Menu Link');
 }
 
 function menuYouTube(sSource) {
-	sendToGoogle('DVS Site', sSource, 'YouTube');
+	sendToGoogle('DVS Site', sSource, 'YouTube Menu Link');
 }
 
 function facebookShareClick() {
@@ -67,7 +67,7 @@ function facebookShareClick() {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Social Media Clicks', 'Facebook Link Clicked', oCustomVars);
+		sendToGoogle('DVS Site', 'Share Clicks', 'Facebook Clicked', oCustomVars);
 	}
 	else
 	{
@@ -79,42 +79,42 @@ function facebookShareClick() {
 	}
 }
 
-function facebookShareClick() {
-	if (aCurrentVideoMetaData) {
-		var oCustomVars = {
-			1: {
-				name: 'Video Reference ID',
-				value: aCurrentVideoMetaData.referenceId
-			},
-			2: {
-				name: 'Vehicle Year',
-				value: aCurrentVideoMetaData.year
-			},
-			3: {
-				name: 'Vehicle Make',
-				value: aCurrentVideoMetaData.make
-			},
-			4: {
-				name: 'Vehicle Model',
-				value: aCurrentVideoMetaData.model
-			},
-			5: {
-				name: 'Video Chapter',
-				value: sCurrentCuePoint
-			}
-		};
-
-		sendToGoogle('DVS Site', 'Social Media Clicks', 'Facebook Link Clicked', oCustomVars);
-	}
-	else
-	{
-		if (sBrowser == 'mobile') {
-			alert('Please wait for a video to start.');
-		} else {
-			alert('Please wait for a video to load.');
-		}
-	}
-}
+// function facebookShareClick() {
+// 	if (aCurrentVideoMetaData) {
+// 		var oCustomVars = {
+// 			1: {
+// 				name: 'Video Reference ID',
+// 				value: aCurrentVideoMetaData.referenceId
+// 			},
+// 			2: {
+// 				name: 'Vehicle Year',
+// 				value: aCurrentVideoMetaData.year
+// 			},
+// 			3: {
+// 				name: 'Vehicle Make',
+// 				value: aCurrentVideoMetaData.make
+// 			},
+// 			4: {
+// 				name: 'Vehicle Model',
+// 				value: aCurrentVideoMetaData.model
+// 			},
+// 			5: {
+// 				name: 'Video Chapter',
+// 				value: sCurrentCuePoint
+// 			}
+// 		};
+// 
+// 		sendToGoogle('DVS Site', 'Share Clicks', 'Facebook Clicked', oCustomVars);
+// 	}
+// 	else
+// 	{
+// 		if (sBrowser == 'mobile') {
+// 			alert('Please wait for a video to start.');
+// 		} else {
+// 			alert('Please wait for a video to load.');
+// 		}
+// 	}
+// }
 
 function googleShareClick() {
 	if (aCurrentVideoMetaData) {
@@ -141,7 +141,7 @@ function googleShareClick() {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Social Media Clicks', 'Google Plus Link Clicked', oCustomVars);
+		sendToGoogle('DVS Site', 'Share Clicks', 'Google+ Clicked', oCustomVars);
 	}
 	else
 	{
@@ -179,7 +179,7 @@ function showShareEmail(iDvsId) {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Social Media Clicks', 'Email Link Clicked', oCustomVars);
+		sendToGoogle('DVS Site', 'Share Clicks', 'Email Clicked', oCustomVars);
 	}
 	else
 	{
@@ -216,7 +216,7 @@ function shareEmailSent() {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Social Media Clicks', 'Email Sent', oCustomVars);
+		sendToGoogle('DVS Site', 'Dealer Contact', 'Email Lead Sent', oCustomVars);
 	}
 }
 
@@ -245,7 +245,7 @@ function getPriceEmailSent() {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Dealer Contact', 'Email Sent', oCustomVars);
+		sendToGoogle('DVS Site', 'Dealer Contact', 'Email Lead Sent', oCustomVars);
 	}
 }
 
@@ -344,7 +344,7 @@ $Behavior.dvs = function() {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Social Media Clicks', 'Twitter Link Clicked', oCustomVars);
+		sendToGoogle('DVS Site', 'Share Clicks', 'Twitter Clicked', oCustomVars);
 	}
 
 
@@ -374,7 +374,7 @@ $Behavior.dvs = function() {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Social Media Clicks', 'Twitter Posted', oCustomVars);
+		sendToGoogle('DVS Site', 'Share Clicks', 'Tweet Posted', oCustomVars);
 	}
 
 	function favIntentToAnalytics(intentEvent) {
