@@ -1,0 +1,119 @@
+<phrases>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="admin_menu_manage_players" added="1327335815">Manage Players</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="module_idrive" added="1327335815">iDrive custom module</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="user_setting_single_player" added="1327336116">Single Player Enable</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="user_setting_players" added="1327336173">Maximum Players</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="user_setting_brands" added="1327336210">Maximum Brands</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="user_setting_domains" added="1327336267">Maximum Domains</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="user_type" added="1327341690">User Type</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="player_info" added="1327417426">Player Info</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="player_name" added="1327417444">Player Name</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="player_type" added="1327417462">Player Type</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="interactive" added="1327417488">Interactive</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="single" added="1327417508">Single</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="domain_name" added="1327417524">Domain Name</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="make" added="1327417543">Make</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="player_colors_branding" added="1327417562"><![CDATA[Player Colors & Branding]]></phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="player" added="1327417575">Player</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="background" added="1327417594">Background</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="text" added="1327417628">Text</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="logo_branding" added="1327417641">Logo Branding</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="select_file" added="1327417652">Select File</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="more_info" added="1327417683">More Info</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="logo_branding_url" added="1327417694">Logo Branding URL</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="player_controls" added="1327417708">Player Controls</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="buttons" added="1327417722">Buttons</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="progress_bar" added="1327417734">Progress Bar</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="chapter_buttons" added="1327417747">Chapter Buttons</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="chapter_icons" added="1327417762">Chapter Icons</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="thumbnail_playlist" added="1327417775">Thumbnail Playlist</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="prev_next_arrows" added="1327417785">Prev/Next Arrows</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="thumbnail_border" added="1327417799">Thumbnail Border</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="setting_allowed_file_types" added="1327425738"><![CDATA[<title>Allowed Logo File Types</title><info>This setting controls which files types will be allowed when adding a logo for a player.</info>]]></phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="user_setting_file_size_limit" added="1327425887">Maximum allowed logo file size in MB</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="setting_default_color_picker_color" added="1327503513"><![CDATA[<title>Default Color Picker Color</title><info>This setting controls the default color picker color. When adding a player, all new color pickers will be set to this hex value. Do not start the string with a hash "#" symbol.</info>]]></phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="change_logo_branding_image" added="1327505578">Change Logo Branding Image</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="current_image" added="1327514485">Current Image</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="more_info_player_type" added="1327516796">Single: a basic video player. Interactive: an enhanced video player with chapter buttons, and a dynamic playlist of videos.</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="more_info_domain_name" added="1327516858"><![CDATA[Your website&#039;s domain name the player will reside on.]]></phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="more_info_logo_branding" added="1327516910">Upload a logo to brand your player (Interactive player types only). Maximum size is 150px wide by 75px tall.</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="add_player" added="1327518020">Add Player</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="player_added_successfully" added="1327525906">Player added successfully</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="player_saved_successfully" added="1327525944">Player saved successfully</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="get_code" added="1327530963">Get Code</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="edit_player" added="1327530985">Edit Player</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="error_editing_player" added="1327531038">Error editing player</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="error_adding_player" added="1327531052">Error adding player</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="copy_code" added="1327531166">Copy Code</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="preview" added="1328034043">Preview</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="preview_player" added="1328034054">Preview Player</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="save_settings" added="1328034078">Save Settings</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="frame_src_url" added="1328039438">http://idrive.wtvdvs.com/player/</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="my_dashboard" added="1328039681">My Dashboard</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="user_setting_result_limit" added="1328194746">This setting will limit the amount of videos returned to players. It will have a direct impact on page load time as for each video loaded, a thumbnail is requested from Brightcove.</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="user_setting_reference_id_search" added="1328195034">You can use this setting to filter video results by reference ID. It is case sensitive and wildcarded on both sides. Any portion of a reference ID may be used, for example, a specific year.  Setting it to blank will return all available reference IDs for a specific make. Setting it to anything other than a valid portion of a reference ID will result in an error.</phrase>
+	<phrase module_id="idrive" version_id="2.0.7" var_name="my_players" added="1328198455">My iDrive Players</phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="pre_roll_file" added="1332953199">Pre-Roll File</phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="pre_roll" added="1332953367">Pre-Roll</phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="pre_roll_url" added="1332953417">Pre-Roll URL</phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="current_file" added="1332953465">Current File</phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="change_pre_roll_swf" added="1332953513">Change Pre-Roll</phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="current_pre_roll_swf" added="1332961936">Current Pre-Roll</phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="no_logo_branding_file" added="1332962483">No Logo Branding File</phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="no_pre_roll_swf" added="1332962506">No Pre-Roll</phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="pre_roll_duration" added="1333034358">Pre-Roll Duration</phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="more_info_preroll_swf" added="1333034662">FLV video files only. Max file size is 5MB.</phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="more_info_preroll_duration" added="1333034691"><![CDATA[Your pre-roll video&#039;s duration in seconds.]]></phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="user_setting_max_preroll_size" added="1333039702">Maximum Pre-Roll File Size Allowed</phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="setting_allowed_preroll_file_types" added="1333039895"><![CDATA[<title>Allowed Pre-Roll File Types</title><info>This setting controls which file types will be allowed to be uploaded for Pre-Rolls</info>]]></phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="user_setting_show_advanced_url_parameters" added="1354053949">Show Advanced URL Parameters phrase on Code page?</phrase>
+	<phrase module_id="idrive" version_id="3.1.0rc1" var_name="advanced_url_parameters" added="1354115663" />
+	<phrase module_id="idrive" version_id="3.4.1" var_name="menu_idrive_idrive_fad58de7366495db4650cfefac2fcd61" added="1361313734">iDrive</phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="setting_vf_playlist_allowed_years" added="1371748193"><![CDATA[<title>Playlist: Allowed Years</title><info>Specify Year(s) to include only vehicles from the Year(s) entered here in the Video Playlist. Leave blank to include all Years.</info>]]></phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="setting_vf_playlist_allow_1onone" added="1371748208"><![CDATA[<title>Playlist: Allow 1onOne Videos</title><info>Set this to true to include 1onOne Videos in the Video Playlist.</info>]]></phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="setting_vf_playlist_allow_top200" added="1371748222"><![CDATA[<title>Playlist: Allow Top200 Videos</title><info>Set this to true to include Top200 Videos in the Video Playlist.</info>]]></phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="setting_vf_playlist_allow_pov" added="1371748240"><![CDATA[<title>Playlist: Allow POV Videos</title><info>Set this to true to include POV Videos in the Video Playlist.</info>]]></phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="setting_vf_playlist_max_videos_per_make" added="1371748262"><![CDATA[<title>Playlist: Maximum Videos Per Make</title><info>Set this to limit the number of Videos included in the Video Playlist for each of a dealer&#039;s selected Makes.</info>]]></phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="setting_vf_playlist_max_videos" added="1371748315"><![CDATA[<title>Playlist: Maximum Videos</title><info>Set this to limit the total number of Videos included.
+
+In order for all selected Makes to be represented, if the total number of Videos exceeds this number because of multiple Makes, the number of Videos per Make will be lowered until the total amount of Videos is less than or equal to this number.</info>]]></phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="setting_vf_playlist_round_robin" added="1371748340"><![CDATA[<title>Playlist: Round Robin Sort</title><info>Example: If three makes have been selected by the dealer and eight Videos total are to be included in the Video Playlist, AA, BBB, CCC, set this to false to leave the Videos grouped together on the Video Playlist by make.
+
+Set this to true so that a Video from each make appears on the Video Playlist before two Videos of the same Make are added to the Video Playlist, ABC, ABC, BC.</info>]]></phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="user_setting_enable_interactive_player" added="1371748649">Enable Interactive Player?</phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="setting_vf_playlist_allow_new2u" added="1383225527"><![CDATA[<title>Playlist: Allow New2U Videos</title><info>Set this to true to include New2U Videos in the Video Playlist.</info>]]></phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="email_address" added="1383225910">Email Address</phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="dealer_email_subject" added="1383588761">WheelsTV iDrive Lead for {year} {make} {model}</phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="dealer_email_body" added="1383589070">You have received a lead from your WheelsTV iDrive Video Player.
+
+Customer Contact Information:
+Vehicle: {year} {make} {model}
+Name: {contact_name}
+Email: {contact_email}
+Phone: {contact_phone}
+Zip Code: {contact_zip}
+Comments: {contact_comments}
+
+This lead came from this player:
+iDrive: {player_name}
+URL: {idrive_link}
+
+Please do not reply to this email. This is an automated message sent from the iDrive lead form.</phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="external_dealer_email_subject" added="1383282000">WheelsTV iDrive Lead for {year} {make} {model}</phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="external_dealer_email_body" added="1383282000">You have received a lead from your WheelsTV iDrive Player.
+
+Customer Contact Information:
+Name: {contact_name}
+Email: {contact_email}
+Phone: {contact_phone}
+Zip Code: {contact_zip}
+Comments: {contact_comments}
+
+Regarding the following vehicle:
+{year} {make} {model}
+
+Please do not reply to this email. This is an automated message sent from the iDrive lead form.</phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="menu_idrive_embed_code_generator_9c4b2b0575fde62573edf2a26a0afdc2" added="1386018510">Embed Code Generator</phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="setting_static_player_slug" added="1388417903"><![CDATA[<title>Static Player Name</title><info>This setting controls which player will be set as the static player.</info>]]></phrase>
+	<phrase module_id="idrive" version_id="3.4.1" var_name="setting_static_player_reference_id" added="1388418298"><![CDATA[<title>Static Player Media ID</title><info>This setting controls the media ID of the video to be loaded in to the static player.</info>]]></phrase>
+</phrases>
