@@ -92,6 +92,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{/if}
 			</td>
 			<td class="dvs_add_td">
+			{phrase var='dvs.vanity_url_phrase'}
 			</td>
 		</tr>
 		{/if}
