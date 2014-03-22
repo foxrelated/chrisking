@@ -29,7 +29,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			}
 			else
 			{
-				$('#title_url_display').html('Please enter a dealer name.');
+				$('#title_url_display').html('Enter a vanity URL above to see a preview.');
 			}
 		});
 		{/literal}
@@ -48,7 +48,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <form method="post" action="{url link='dvs.index'}" id="add_dvs" name="add_dvs">
 	<table class="dvs_add_table">
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{required}{phrase var='dvs.dealer_name'}:
 			</td>
 			<td class="dvs_add_td">
@@ -60,7 +60,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{required}{phrase var='dvs.showroom_name'}:
 			</td>
 			<td class="dvs_add_td">
@@ -81,7 +81,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		
 		{if !$bIsEdit || Phpfox::isAdmin()}
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{required}{phrase var='dvs.vanity_url'}:
 			</td>
 			<td class="dvs_add_td">
@@ -98,7 +98,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{/if}
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
@@ -107,19 +107,19 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{required}{phrase var='dvs.address'}:
 			</td>
 			<td class="dvs_add_td">
 				<input type="text" name="val[address]" value="{value type='input' id='address'}" id="address" maxlength=30 required />
 			</td>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.address_phrase'}
 			</td>
 		</tr>
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{required}{phrase var='dvs.city'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
@@ -128,7 +128,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{required}State:
 			</td>
 			<td colspan="2" class="dvs_add_td">
@@ -140,7 +140,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 		</tr>
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.zip_code'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
@@ -149,7 +149,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.contact_phone'}:
 			</td>
 			<td class="dvs_add_td">
@@ -161,7 +161,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.contact_email'}:
 			</td>
 			<td class="dvs_add_td">
@@ -173,7 +173,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.website_url'}:
 			</td>
 			<td class="dvs_add_td">
@@ -185,7 +185,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.inventory_url'}:
 			</td>
 			<td class="dvs_add_td">
@@ -197,7 +197,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.dealer_specials_url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
@@ -206,7 +206,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 
 		{*<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.youtube_url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
@@ -215,7 +215,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.facebook_url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
@@ -224,7 +224,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.twitter_url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
@@ -233,7 +233,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.google_plus_url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
@@ -256,7 +256,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.custom_seo_tags'}:
 			</td>
 			<td class="dvs_add_td">
@@ -268,7 +268,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 		
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td_label">
 				{phrase var='dvs.google_analytics_id'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
