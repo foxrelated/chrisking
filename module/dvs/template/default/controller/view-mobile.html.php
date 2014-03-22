@@ -97,7 +97,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</section>
 
 	<aside>
-		<p><strong>{$aDvs.dealer_name} Contact Information</strong>
+		<p><strong>{$aDvs.dealer_name} Information</strong><br>
 		{if $aDvs.url}
 			{phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow">{$aDvs.url}</a>
 			{/if}
