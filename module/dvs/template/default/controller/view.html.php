@@ -74,6 +74,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</nav>
 </header>
 <article>
+	<section>
+		<div class="dvs-info" style="padding-top:10px;font-size:13px;font-weight:bold;"><p>To start your video test drive, select a year, make and model or click on the play button below. Instantly view what's important to you by clicking the chapter buttons to the right.</p></div>
+	</section>
 	<section id="player">
 		{template file='dvs.controller.player.player}
 	</section>
