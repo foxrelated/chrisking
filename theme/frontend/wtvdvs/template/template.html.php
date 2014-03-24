@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" dir="{$sLocaleDirection}" lang="{$sLocaleCode}">
 	<head>
 		<script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.1.js"></script>
-		<title>{title} - remove me</title>	
+		<title>{title}</title>	
 		{header}
 	</head>
 	<body>
