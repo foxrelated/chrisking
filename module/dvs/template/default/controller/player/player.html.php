@@ -219,9 +219,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<param name="height" value="{$iPlayerHeight}" />
 		{/if}
 		{if $bIsExternal}
+			<!-- external player -->
 			<param name="playerID" value="{$iPlayerId}" />
 			<param name="playerKey" value="{$sPlayerKey}" />
 		{else}
+			<!-- default player -->
 			<param name="playerID" value="1418431455001" />
 			<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
 		{/if}	
