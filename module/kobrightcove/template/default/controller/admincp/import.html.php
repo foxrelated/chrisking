@@ -20,9 +20,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	var job={/literal}"{$sJob}"{literal};
 	var run=true;
 
-	$(document).ready(function(){
+	$Behavior.domReady = function(){
 		autoUpdate(0);
-	});
+	};
+
 	function autoUpdate(offset){
 		if (offset < total && run){
 			$.ajaxCall('kobrightcove.autoUpdate',
