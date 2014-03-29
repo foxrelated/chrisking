@@ -14,35 +14,39 @@ function menuContact(sSource) {
 	sendToGoogle('DVS Site', sSource, 'Contact Dealer');
 }
 
-function menuShareThis(sSource) {
-	sendToGoogle('DVS Site', sSource, 'Share This Menu Link');
-}
+//function menuShareThis(sSource) {
+//	sendToGoogle('DVS Site', sSource, 'Share This Menu Link');
+//}
 
-function menuFacebook(sSource) {
-	sendToGoogle('DVS Site', sSource, 'Facebook Menu Link');
-}
+//function menuFacebook(sSource) {
+//	sendToGoogle('DVS Site', sSource, 'Facebook Share Link');
+//}
 
-function menuTwitter(sSource) {
-	sendToGoogle('DVS Site', sSource, 'Twitter Menu Link');
-}
+//function menuTwitter(sSource) {
+//	sendToGoogle('DVS Site', sSource, 'Twitter Clicked');
+//}
 
-function menuLinkedIn(sSource) {
-	sendToGoogle('DVS Site', sSource, 'LinkedIn Menu Link');
-}
+//function menuLinkedIn(sSource) {
+//	sendToGoogle('DVS Site', sSource, 'LinkedIn Share Link');
+//}
 
-function menuGoogle(sSource) {
-	sendToGoogle('DVS Site', sSource, 'Google+ Menu Link');
-}
+//function menuGoogle(sSource) {
+//	sendToGoogle('DVS Site', sSource, 'Google+ Share Link');
+//}
 
 function menuEmail(sSource) {
-	sendToGoogle('DVS Site', sSource, 'Email Menu Link');
+	sendToGoogle('DVS Site', sSource, 'Email Share Clicked');
 }
 
-function menuYouTube(sSource) {
-	sendToGoogle('DVS Site', sSource, 'YouTube Menu Link');
+//function menuYouTube(sSource) {
+//	sendToGoogle('DVS Site', sSource, 'YouTube Share Link');
+//
+
+function menuFooter(sSource) {
+	sendToGoogle('DVS Site', sSource, 'Footer Link Clicked');
 }
 
-function facebookShareClick() {
+function facebookShareClick(sSource) {
 	if (aCurrentVideoMetaData) {
 		var oCustomVars = {
 			1: {
@@ -67,7 +71,7 @@ function facebookShareClick() {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Share Clicks', 'Facebook Clicked', oCustomVars);
+		sendToGoogle('DVS Site', sSource, 'Facebook Share Clicked', oCustomVars);
 	}
 	else
 	{
@@ -104,7 +108,7 @@ function facebookShareClick() {
 // 			}
 // 		};
 // 
-// 		sendToGoogle('DVS Site', 'Share Clicks', 'Facebook Clicked', oCustomVars);
+// 		sendToGoogle('DVS Site', 'Share Links', 'Facebook Clicked', oCustomVars);
 // 	}
 // 	else
 // 	{
@@ -116,7 +120,7 @@ function facebookShareClick() {
 // 	}
 // }
 
-function googleShareClick() {
+function googleShareClick(sSource) {
 	if (aCurrentVideoMetaData) {
 		var oCustomVars = {
 			1: {
@@ -141,7 +145,7 @@ function googleShareClick() {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Share Clicks', 'Google+ Clicked', oCustomVars);
+		sendToGoogle('DVS Site', sSource, 'Google Share Clicked', oCustomVars);
 	}
 	else
 	{
@@ -179,7 +183,7 @@ function showShareEmail(iDvsId) {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Share Clicks', 'Email Clicked', oCustomVars);
+		sendToGoogle('DVS Site', 'Share Links', 'Email Share Clicked', oCustomVars);
 	}
 	else
 	{
@@ -216,7 +220,7 @@ function shareEmailSent() {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Dealer Contact', 'Email Lead Sent', oCustomVars);
+		sendToGoogle('DVS Site', 'Share Links', 'Email Share Sent', oCustomVars);
 	}
 }
 
@@ -245,7 +249,7 @@ function getPriceEmailSent() {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Dealer Contact', 'Email Lead Sent', oCustomVars);
+		sendToGoogle('DVS Site', 'Dealer Contact', 'Lead Sent', oCustomVars);
 	}
 }
 
@@ -344,7 +348,7 @@ $Behavior.dvs = function() {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Share Clicks', 'Twitter Clicked', oCustomVars);
+		sendToGoogle('DVS Site', 'Share Links', 'Twitter Share Clicked', oCustomVars);
 	}
 
 
@@ -374,7 +378,7 @@ $Behavior.dvs = function() {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Share Clicks', 'Tweet Posted', oCustomVars);
+		sendToGoogle('DVS Site', 'Share Links', 'Tweet Posted', oCustomVars);
 	}
 
 	function favIntentToAnalytics(intentEvent) {
