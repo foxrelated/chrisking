@@ -3,7 +3,7 @@
 /include/setting/server.sett.php
 /.htaccess
 /.htpasswd
-/.DS_Store
+*.DS_Store
 /.project
 /README.md
 /robots.txt
