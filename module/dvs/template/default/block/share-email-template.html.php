@@ -43,7 +43,7 @@
 					</tr>
 					<tr align="center">
 						<td colspan="2" rowspan="1" valign="top">
-							Sent from the {$aDvs.dealer_name} Video Showroom.<br>Powered by <a href="http://wheelstvnetwork.com">WheelsTV</a><br />
+							Sent from the {$aDvs.dealer_name} Video Showroom.<br><br>Powered by <a href="http://wheelstvnetwork.com">WheelsTV</a><br />
 						</td>
 					</tr>
 				</tbody>
