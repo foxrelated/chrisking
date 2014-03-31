@@ -71,7 +71,7 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 				'description' => $aDvs['phrase_overrides']['override_meta_description_meta'],
 				'keywords' => $aDvs['phrase_overrides']['override_meta_keywords_meta'],
 			))
-			->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'), Phpfox::getLib('url')->makeUrl('dvs'))
+			//->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'), Phpfox::getLib('url')->makeUrl('dvs'))
 			->setBreadcrumb(Phpfox::getPhrase('dvs.share_links'))
 			->setHeader(array(
 				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
