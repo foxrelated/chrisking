@@ -13,9 +13,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 ?>
 <script>
-	{
-		literal
-	}
+	{literal}
 	$('#share_email_dealer').submit(function(event) {
 		// cancels the form submission
 		event.preventDefault();
@@ -25,8 +23,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		$.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id=' + aCurrentVideoMetaData.referenceId + '&service=email&return_id=share_text_box_email_{$iKey}');
 	});
 	$('input, textarea').placeholder();
-	{
-		/literal}
+	{/literal}
 </script>
 <style type="text/css">
 	#dvs_share_email_container {left_curly}
@@ -83,7 +80,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<input type="hidden" name="val[dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>
 	</fieldset>
 	<fieldset>
-		<input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button"/>
+		<input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button" onclick="shareEmailSent();"/>
 	</fieldset>
 </form>
 <div id="dvs_share_email_success" style="display:none;">
