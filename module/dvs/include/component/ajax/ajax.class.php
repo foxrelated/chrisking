@@ -701,6 +701,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		if (!$bIsError)
 		{
 			
+			$this->hide('#share_email_dealer');
+			$this->show('#dvs_share_email_success');
+			$this->call("setTimeout(function() { tb_remove(); }, 3000);");
 			
 			$aDvs = Phpfox::getService('dvs')->get($aVals['dvs_id']);
 			Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
@@ -753,9 +756,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 //				->message($sBody)
 //				->send();
 			
-			$this->hide('#share_email_dealer');
-			$this->show('#dvs_share_email_success');
-			$this->call("setTimeout(function() { tb_remove(); }, 3000);");
+			$this->call('shareEmailSent();');
+		
 		}
 		else
 		{
