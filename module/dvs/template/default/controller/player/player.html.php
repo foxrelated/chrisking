@@ -265,7 +265,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{if $bIsDvs}
 				{foreach from=$aOverviewVideos key=iKey item=aVideo}
 				<li>
-					<a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});">
+					<a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});thumbnailClickDvs();">
 						{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
 						<p>{$aVideo.year} {$aVideo.model}</p>
 					</a>
@@ -275,7 +275,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{else}
 				{foreach from=$aVideos key=iKey item=aVideo}
 				<li>
-					<a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});">
+					<a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});thumbnailClickIDrive();">
 						{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
 						<p>{$aVideo.year} {$aVideo.model}</p>
 					</a>
