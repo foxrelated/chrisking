@@ -1,5 +1,6 @@
 /file
 /include/setting/dev.sett.php
+/include/setting/1dev.sett.php
 /include/setting/server.sett.php
 /.htaccess
 /.htpasswd
