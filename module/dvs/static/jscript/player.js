@@ -888,6 +888,7 @@ function thumbnailClick(iKey) {
 	}
 
 	if (bIsDvs) {
+		
 		resetOverlays();
 	}
 
@@ -897,6 +898,7 @@ function thumbnailClick(iKey) {
 
 	bIgnoreAutoPlaySetting = true;
 
+	
 	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
 		modVid.loadVideoByID(aMediaIds[iKey]);
 	}
@@ -904,6 +906,13 @@ function thumbnailClick(iKey) {
 	{
 		modCon.getMediaAsynch(aMediaIds[iKey]);
 	}
-
 	return false;
+}
+
+function thumbnailClickDvs(iDvsId) {
+	sendToGoogle('DVS Site', 'Playlist', 'Thumbnail Clicked');
+}
+
+function thumbnailClickIDrive(iIDriveId) {
+	sendToGoogle(sPlayerName, 'iDrive Player', 'Playlist', 'Thumbnail Clicked');
 }
