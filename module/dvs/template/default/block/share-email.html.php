@@ -80,7 +80,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<input type="hidden" name="val[dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>
 	</fieldset>
 	<fieldset>
-		<input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button" onclick="shareEmailSent();"/>
+		<input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button"/>
 	</fieldset>
 </form>
 <div id="dvs_share_email_success" style="display:none;">
