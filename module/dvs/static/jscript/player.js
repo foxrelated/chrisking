@@ -146,7 +146,7 @@ function getPrice(iDvsId) {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Call To Action Menu Clicks', 'Get Price Chapter Clicked', oCustomVars);
+		sendToGoogle('DVS Site', 'Call To Action Menu Clicks', 'Get Price Clicked', oCustomVars);
 	}
 	else
 	{
@@ -185,7 +185,7 @@ function getPriceIDrive(iIDriveId) {
 			}
 		};
 
-		sendToGoogle(sPlayerName, 'Player', 'Call to Action Clicks', 'Get Price Clicked', oCustomVars);
+		sendToGoogle(sPlayerName, 'iDrive Player', 'Call to Action Clicks', 'Get Price Clicked', oCustomVars);
 	}
 	else
 	{
