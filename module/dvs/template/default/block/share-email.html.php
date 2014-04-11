@@ -7,7 +7,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 /**
  *
  *
- * @copyright		Konsort.org 
+ * @copyright		Konsort.org
  * @author  		Konsort.org
  * @package 		DVS
  */
@@ -20,15 +20,50 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 		// do whatever you want here
 		$.ajaxCall('dvs.sendShareEmail', $('#share_email_dealer').serialize());
-		//$.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id=' + aCurrentVideoMetaData.referenceId + '&service=email&return_id=share_text_box_email_{$iKey}');
+		//$.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id={$aVideo.referenceId}&service=email&return_id=share_link_box');
 	});
-	$('input, textarea').placeholder();
+
+	if( $.isFunction( $('input, textarea').placeholder ) ) {
+		$('input, textarea').placeholder();
+	}
 	{/literal}
 </script>
+
 <style type="text/css">
-	#dvs_share_email_container {left_curly}
-	text-align: center;
-	{right_curly}	
+	{literal}
+	#dvs_share_email_container {
+		text-align: center;
+	}
+
+	#share_email_dealer {
+		text-align: center;
+	}
+
+	#share_email_dealer li {
+		text-align: center;
+	}
+
+	.inputShare {
+		width: 225px;
+		font-size: 16px;
+		padding: 4px;
+		margin-bottom: 4px;
+		font-family: Arial;
+	}
+
+	#share_email_dealer textarea {
+		width: 225px;
+		font-size: 16px;
+		padding: 4px;
+		margin-bottom: 10px;
+		font-family: Arial;
+	}
+
+	.dvs_form_button {
+		padding: 5px 25px;
+		border-radius: 5px;
+	}
+	{/literal}
 
 	input.dvs_form_button {l}
 	background-color: #{$aDvs.button_background};

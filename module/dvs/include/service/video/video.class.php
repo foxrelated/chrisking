@@ -34,7 +34,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 
 	/**
 	 * Get a list of all available makes
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getMakes()
@@ -51,7 +51,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 
 	/**
 	 * Get a video based on the primary id, video title url, or a year make and model.
-	 * 
+	 *
 	 * @param type $mVideoId, reference id or video title url
 	 * @param type $bUseTitle, use title url or otherwise use the ko_id, the primary key
 	 * @param type $iYear
@@ -115,7 +115,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 
 	/**
 	 * Remove duplicates videos
-	 * 
+	 *
 	 * @param type $aVideos
 	 * @return type
 	 */
@@ -143,7 +143,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 
 	/**
 	 * Get Overview videos based on AdminCP settings
-	 * 
+	 *
 	 * @param type $iDvsId
 	 * @return type
 	 */
@@ -235,7 +235,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 
 	/**
 	 * Returns an array of videos based on optional search parameters
-	 * 
+	 *
 	 * @param int $iYear
 	 * @param string $sMake
 	 * @param string $sModel
@@ -320,7 +320,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 
 	/**
 	 * Return videos with a similar year, make, model, and body style
-	 * 
+	 *
 	 * @param type $aVideo
 	 * @return type
 	 */
@@ -434,7 +434,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 
 	/**
 	 * Limits videos based on the total amount of videos and total number of makes
-	 * 
+	 *
 	 * @param type $aVideos
 	 * @param type $ iMaxVideos
 	 * @return type
@@ -471,7 +471,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 
 	/**
 	 * Sorts videos based on round robin setting
-	 * 
+	 *
 	 * @param type $aVideos
 	 * @param type $bRoundRobin
 	 * @return type
@@ -527,7 +527,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 
 	/**
 	 * Get all available models for a specific year and make
-	 * 
+	 *
 	 * @param type $iYear
 	 * @param type $sMake
 	 * @return type
@@ -549,7 +549,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 
 	/**
 	 * Return an array contataining only years with cars associated with them
-	 * 
+	 *
 	 * @param array years
 	 */
 	public function getValidVSYears($aMakes)
@@ -580,8 +580,8 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 
 
 	/**
-	 * Returns makes for the video select box 
-	 * 
+	 * Returns makes for the video select box
+	 *
 	 * @param type $iYear
 	 * @return array of makes
 	 */
@@ -633,7 +633,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 
 	/**
 	 * Sets the video type and if iDvsId is supplied, resets the title_url
-	 * 
+	 *
 	 * @param type $aVideos
 	 * @param type $iDvsId
 	 * @return type

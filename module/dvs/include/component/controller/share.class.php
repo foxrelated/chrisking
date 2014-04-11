@@ -8,7 +8,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 /**
  *
  *
- * @copyright		Konsort.org 
+ * @copyright		Konsort.org
  * @author  		Konsort.org
  * @package 		DVS
  */
@@ -60,9 +60,20 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 			$aFeaturedVideo = array();
 		}
 
+		$iUserId = Phpfox::getUserId();
+		foreach ($aDvsVideos as $iKey => $aVideo) {
+			$aDvsVideos[$iKey]['shorturl'] = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'embed', $iUserId);
+		}
+
 		$aFirstVideo = $aDvsVideos[0];
 
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
+
+		if( stripos($_SERVER['HTTP_USER_AGENT'], 'iphone') !== false or stripos($_SERVER['HTTP_USER_AGENT'], 'ipad') !== false ) {
+			$bIsIPhone = 1;
+		} else {
+			$bIsIPhone = 0;
+		}
 
 		$aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aFirstVideo);
 		$this->template()
@@ -71,7 +82,7 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 				'description' => $aDvs['phrase_overrides']['override_meta_description_meta'],
 				'keywords' => $aDvs['phrase_overrides']['override_meta_keywords_meta'],
 			))
-			//->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'), Phpfox::getLib('url')->makeUrl('dvs'))
+			->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'), Phpfox::getLib('url')->makeUrl('dvs'))
 			->setBreadcrumb(Phpfox::getPhrase('dvs.share_links'))
 			->setHeader(array(
 				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
@@ -80,12 +91,15 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 			))
 			->assign(array(
 				'aDvs' => $aDvs,
+				'sDvsUrl' => Phpfox::getLib('url')->makeUrl($aDvs['title_url']),
 				'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
 				'aPlayer' => $aPlayer,
 				'aDvsVideos' => $aDvsVideos,
 				'aFeaturedVideo' => $aFeaturedVideo,
 				'bDebug' => (Phpfox::getParam('dvs.javascript_debug_mode') ? true : false),
-				'sBrowser' => $sBrowser
+				'sBrowser' => $sBrowser,
+				'bIsIPhone' => $bIsIPhone,
+				'sVideoViewUrl' => Phpfox::getLib('url')->makeUrl(Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : ''),
 		));
 	}
 
