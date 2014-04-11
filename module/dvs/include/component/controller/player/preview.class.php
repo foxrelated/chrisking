@@ -8,7 +8,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 /**
  *
  *
- * @copyright		Konsort.org 
+ * @copyright		Konsort.org
  * @author  		Konsort.org
  * @package 		DVS
  */
@@ -27,10 +27,10 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 
 		$iPlayerWidth = $iWidth - 160;
 		$iPlayerHeight = $iHeight - 100;
-		
+
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
-		
+
 		$aValsClean = Phpfox::getLib('request')->getRequests();
 
 		$aVals = array();
@@ -61,7 +61,7 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 		//Here we shift array keys to start at 1 so thumbnails play the proper videos when we load a featured video or override video on to the front of the array
 		array_unshift($aOverviewVideos, '');
 		unset($aOverviewVideos[0]);
-		
+
 		if (!empty($aVals['featured_model']))
 		{
 			$aFeaturedModel = explode(',', $aVals['featured_model']);
@@ -101,10 +101,12 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 
 		$sLinkBase = Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'));
 		$sLinkBase .= $aFirstVideo['video_title_url'];
+		$sThumbnailUrl = Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['thumbnail_image'];
+		$sThumbnailUrl = str_replace('index.php\?do=\/', '', $sThumbnailUrl);
 
 		$aFirstVideoMeta = array(
 			'url' => Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $aFirstVideo['video_title_url']),
-			'thumbnail_url' => Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['thumbnail_image'],
+			'thumbnail_url' => $sThumbnailUrl,
 			'upload_date' => date('Y-m-d', (int) ($aFirstVideo['publishedDate'] / 1000)),
 			'duration' => 'PT' . (int) ($aFirstVideo['length'] / 1000) . 'S',
 			'name' => $aFirstVideo['name'],
@@ -120,7 +122,7 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 			$aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aFirstVideo);
 		}
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
-		
+
 		$iPlaylistThumbnails = floor(($iPlayerWidth - 98 ) / 155);
 		if ($iPlaylistThumbnails > 1)
 		{
@@ -130,7 +132,7 @@ class Dvs_Component_Controller_Player_Preview extends Phpfox_Component {
 		{
 			$iScrollAmt = 1;
 		}
-		
+
 		// Determine the number of extra li's to add.
 		$iExtraLi = (count($aOverviewVideos) - $iPlaylistThumbnails) % $iScrollAmt;
 		$sExtraLi = '';

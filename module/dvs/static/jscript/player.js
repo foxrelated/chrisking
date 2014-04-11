@@ -121,7 +121,7 @@ function changeCuePoint(sCuePoint) {
 function getPrice(iDvsId) {
 	if (aCurrentVideoMetaData) {
 //		$('#dvs_get_price_container').show('fast');
-		
+
 
 		var oCustomVars = {
 			1: {
@@ -146,7 +146,7 @@ function getPrice(iDvsId) {
 			}
 		};
 
-		sendToGoogle('DVS Site', 'Call To Action Menu Clicks', 'Get Price Clicked', oCustomVars);
+		sendToGoogle('DVS Site', 'Menu', 'Get Price', oCustomVars);
 	}
 	else
 	{
@@ -185,7 +185,7 @@ function getPriceIDrive(iIDriveId) {
 			}
 		};
 
-		sendToGoogle(sPlayerName, 'iDrive Player', 'Call to Action Clicks', 'Get Price Clicked', oCustomVars);
+		sendToGoogle(sPlayerName, 'Player', 'Menu', 'Get Price', oCustomVars);
 	}
 	else
 	{
@@ -227,8 +227,8 @@ function cueChange(sCuePoint) {
 	}
 
 	if (!bVideoChanged && !bUrlChanged && !bPreview && bIsDvs) {
-		window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
-		bUrlChanged = true;
+		//window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
+		//bUrlChanged = true;
 	}
 
 	if (sCuePoint === 'Post-roll') {
@@ -286,7 +286,7 @@ function playVideo(iVideoKey) {
 //Auto called
 function onTemplateLoaded(experienceID)
 {
-	
+
 	if (bDebug) {
 		console.log('Player: Template Loaded: ' + experienceID);
 	}
@@ -428,7 +428,7 @@ function onTemplateReady(oVideo) {
 //Called when any video loads.
 //Closes the menu, clears chapter div, gets new cuepoints, builds new chapter divs, and shows them, closes menu again if need be, and plays loaded video
 function onVideoLoad(oMedia) {
-	
+
 	if (bDebug) {
 		console.log('Media: Video Load: ' + oMedia.media.displayName);
 	}
@@ -566,7 +566,7 @@ function onVideoLoad(oMedia) {
 
 //		bOverlayHold = false;
 	}
-	
+
 }
 
 //Auto called, fires off cueChange
@@ -725,7 +725,7 @@ function changeLights(sCuePoint) {
 //			$('#chapter_container_' + sChapter).attr('class', 'watched display');
 //		}
 //	});
-	
+
 	$('#chapter_buttons button.selected').attr('class', 'watched display');
 
 	if (bDebug) {

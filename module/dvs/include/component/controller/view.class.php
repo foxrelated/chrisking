@@ -7,14 +7,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 /**
  *
  *
- * @copyright		Konsort.org 
+ * @copyright		Konsort.org
  * @author  		Konsort.org
  * @package 		DVS
  */
 class Dvs_Component_Controller_View extends Phpfox_Component
 {
 	public function process()
-	{	
+	{
 		// Are subdomains enabled? If yes, our dealer title url is in a different place.
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 		if ($bSubdomainMode)
@@ -25,18 +25,25 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		{
 			$sDvsRequest = $this->request()->get('req2');
 		}
-		
+		$bPreview = false;
 		// Are we loading this as an iFrame?
 		if ($this->request()->get('req3') === 'preview')
 		{
 			$this->template()->setHeader(array('preview.css' => 'module_dvs'));
 			$aDvs = Phpfox::getService('dvs')->get($this->request()->get('req4'), false);
+			if( $this->request()->get('req5') ) {
+				$aDvs = null;
+				$bPreview = true;
+				$sDvsRequest = $this->request()->get('req5');
+			} else {
+				$aDvs = Phpfox::getService('dvs')->get($this->request()->get('req4'), false);
+			}
 		}
 		else
 		{
 			$aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
 		}
-		
+
 		// Try a short URL
 		if (empty($aDvs))
 		{
@@ -70,7 +77,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
 		//Load player data
 		$aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
-		
+
 		if ($aPlayer['featured_model'])
 		{
 			$aFeaturedVideo = Phpfox::getService('dvs.video')->get('', false, $aPlayer['featured_year'], $aPlayer['featured_make'], $aPlayer['featured_model']);
@@ -152,10 +159,20 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
 		$sLinkBase = Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'));
 		$sLinkBase .= $aFirstVideo['video_title_url'];
-		
+
+		//$sThumbnailUrl = Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['thumbnail_image'];
+
+		/* new thumb path */
+		if( file_exists(PHPFOX_DIR_FILE . "brightcove" . PHPFOX_DS . $aFirstVideo['thumbnail_image']) ) {
+			$sThumbnailUrl = Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['thumbnail_image'];
+		} else {
+			$sThumbnailUrl = Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'theme.frontend.default.style.default.image.noimage') . 'item.png';
+		}
+		$sThumbnailUrl = str_replace('index.php?do=/', '', $sThumbnailUrl);
+
 		$aFirstVideoMeta = array(
 			'url' => Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $aFirstVideo['video_title_url']),
-			'thumbnail_url' => Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['thumbnail_image'],
+			'thumbnail_url' => $sThumbnailUrl,
 			'upload_date' => date('Y-m-d', (int) ($aFirstVideo['publishedDate'] / 1000)),
 			'duration' => 'PT' . (int) ($aFirstVideo['length'] / 1000) . 'S',
 			'name' => $aFirstVideo['name'],
@@ -222,15 +239,15 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		{
 			$iBackgroundAlpha = 100;
 		}
-		
+
 		// Was the opacity set at 0?
 		if ($iBackgroundAlpha === 0)
 		{
 			$iBackgroundAlpha = 100;
 		}
-		
+
 		$iBackgroundOpacity = $iBackgroundAlpha / 100;
-		
+
 		// Template specific JS and CSS
 		if ($sBrowser == 'mobile')
 		{
@@ -251,7 +268,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 //					'dvs.css' => 'module_dvs',
 //					'player.css' => 'module_dvs',
 					'google_maps.js' => 'module_dvs',
-					'overlay.js' => 'module_dvs',	
+					'overlay.js' => 'module_dvs',
 //					'jquery.dropdown.js' => 'module_dvs',
 //					'jquery.dropdown.css' => 'module_dvs',
 					'showroom.css' => 'module_dvs',
@@ -278,10 +295,10 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 //				'<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>',
 //				'<script type="text/javascript">var jqDvs = jQuery.noConflict();</script>',
 				'dvs.js' => 'module_dvs',
-				'<meta property = "og:image" content = "' . ($aFirstVideo['video_still_image'] ? Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['video_still_image'] : '') . '"/>',
+				'<meta property = "og:image" content = "' . $sThumbnailUrl . '"/>',
 				// New css + js files added 2/14
 				'chapter_buttons.css' => 'module_dvs',
-				
+
 				'dropdown.js' => 'module_dvs',
 				'jquery.placeholder.js' => 'module_dvs'
 			))
@@ -296,7 +313,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				'iDvsId' => $aDvs['dvs_id'],
 				'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('dvs.player.prxml', array('id' => $aDvs['dvs_id'])), '', -1) . '  ? ',
 				'aOverviewVideos' => $aOverviewVideos,
-				'bPreview' => false,
+				'bPreview' => $bPreview,
 				'bIsDvs' => true,
 				'bIsExternal' => false,
 				'aFeaturedVideo' => $aFeaturedVideo,
@@ -325,7 +342,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				. '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
 				. '<script type="text/javascript">' . $sDvsJs . '</script>'
 		));
-	
+
 	}
 
 }

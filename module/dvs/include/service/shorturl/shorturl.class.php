@@ -25,7 +25,7 @@ class Dvs_Service_Shorturl_Shorturl extends Phpfox_Service {
 
 	/**
 	 * Returns a specific shorturl
-	 * 
+	 *
 	 * @param string $sShortUrl
 	 * @return array
 	 */
@@ -42,7 +42,7 @@ class Dvs_Service_Shorturl_Shorturl extends Phpfox_Service {
 
 	/**
 	 * Generate an 8 character short URL based on the ID.  Valid up to just over 2.8 trillion keys.
-	 * 
+	 *
 	 * @param int $iShorturlId
 	 * @return string
 	 */
