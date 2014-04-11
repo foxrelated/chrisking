@@ -8,7 +8,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 /**
  *
  *
- * @copyright		Konsort.org 
+ * @copyright		Konsort.org
  * @author  		Konsort.org
  * @package 		DVS
  */
@@ -39,10 +39,15 @@ class Dvs_Component_Block_Player_Preview extends Phpfox_Component {
 
 		$aValsClean['selected-makes'] = rtrim($sMakes, ',');
 
+		$sUrl = 'dvs.view.preview.' . $aVals['dvs_id'];
+		if( isset($aVals['shorturl']) ) {
+			$sUrl .= "." . $aVals['shorturl'];
+		}
+
 		$this->template()
 			->assign(array(
 				'aVals' => $aVals,
-				'sIframeUrl' => Phpfox::getLib('url')->makeUrl('dvs.view.preview.' . $aVals['dvs_id'], $aValsClean)
+				'sIframeUrl' => Phpfox::getLib('url')->makeUrl($sUrl, $aValsClean)
 		));
 	}
 

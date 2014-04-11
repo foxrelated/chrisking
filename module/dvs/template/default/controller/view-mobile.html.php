@@ -87,6 +87,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</div>
 
 	<section id="video_information">
+		
 		{if empty($aOverrideVideo.ko_id)}
 		<section>
 			<h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
