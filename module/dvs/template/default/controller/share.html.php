@@ -17,56 +17,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<div id="dvs_share_container">
 		<input class="dvs_share_text_box" type="hidden" id="share_link_box">
 
-		<style type="text/css">
-				.dvs_share_thumbnail_image_container h3 {l}
-					border: none;
-				{r}
-				.dvs_share_thumbnail_image_container_inner table td {l}
-					vertical-align: top;
-					padding-right: 6px;
-					text-align: left;
-				{r}
-				.dvs_share_thumbnail_image_container_inner table td + td {l}
-					width: 84px;
-					padding-right: 0;
-				{r}
-				.dvs_share_buttons_holder {l}
-					margin-top: -4px;
-				{r}
-				.dvs_share_copy_button_holder {l}
-					position:relative;
-					width: 84px;
-					margin: 0 auto;
-					text-align: left;
-				{r}
-				.dvs_share_copy_button_holder button {l}
-					width: 80px;
-					padding: 5px 0;
-					margin: -1px 0 0;
-					background: grey;
-					border: none;
-					color: white;
-					text-transform: uppercase;
-					font-weight: bold;
-					border-radius: 4px;
-				{r}
-				.dvs_share_image_holder {l}
-					position: relative;
-				{r}
-				.dvs_share_button_overlay {l}
-					position: absolute;
-					top: 50%;
-					left: 50%;
-					margin: -37px 0 0 -38px;
-				{r}
-				.dvs_share_text_box {l}
-					width: 180px;
-				{r}
-		</style>
-
 		{assign var='baseUrl' value=''}
     {if $baseUrl = Phpfox::getParam('core.path')}{/if}
-		<script type="text/javascript" src="static/jscript/clipboard/ZeroClipboard.js"></script>
+		<script type="text/javascript" src="{$baseUrl}static/jscript/clipboard/ZeroClipboard.js"></script>
 
 		{foreach from=$aDvsVideos key=iKey item=aVideo name=videos}
 
@@ -75,7 +28,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<table width="100%">
 						<tr>
 							<td colspan="2">
-								<h3>{$aVideo.name}</h3>
+								<h3>{$aVideo.year} {$aVideo.make} {$aVideo.model}</h3>
 							</td>
 						</tr>
 						<tr>
