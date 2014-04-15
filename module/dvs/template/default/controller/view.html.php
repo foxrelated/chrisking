@@ -23,25 +23,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		});
 	}
 </script>
-<style type="text/css">
-		#js_body_width_frame #site_content {
-			width: auto;
-		}
-</style>
-
 {/literal}
 <div id="dvs_background"></div>
 {if $sBrowser == 'mobile'}
 {template file='dvs.controller.view-mobile}
 {else}
+<header>
 	{if $aDvs.branding_file_name}
 	<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}">
-		{img path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle" max_width=1117 max_height=600}
-	</a>
+	{img path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle" max_width=1117 max_height=600}</a>
 	{else}
 	<h1>{$aDvs.dealer_name}</h1>
 	{/if}
-<header>
 	<nav>
 		<ul>
 			<li>
