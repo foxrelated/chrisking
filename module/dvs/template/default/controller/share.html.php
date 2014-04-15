@@ -112,7 +112,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 									<span id="twitter_button_wrapper">
 										<a href="#" onclick="
 											var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=twitter&return_id=share_link_box';
-											var text = '{phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}';
+											var text = 'Check out this \'{$aVideo.name}\' video test drive from Test Dealership.';
+
 											$.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
 												if( {$bIsIPhone} ) {l}
 													window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent($('#share_link_box').val());
@@ -128,7 +129,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 									<a href="#" onclick="
 											var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=google&return_id=share_link_box';
-											var text = '{phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}';
 											$.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
 												if( {$bIsIPhone} ) {l}
 													window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent( $('#share_link_box').val() );
