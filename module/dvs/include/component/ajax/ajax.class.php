@@ -738,8 +738,14 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$sSubject = str_replace($aFind, $aReplace, $sSubject);
 
 	    $iUserId = Phpfox::getUserId();
-   		$sShortUrl = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'email', $iUserId);
-   		$sVideoLink = Phpfox::getLib('url')->makeUrl($sShortUrl);
+   		if( $aVals['longurl'] ) {
+				$sVideoLink = ( Phpfox::getParam('dvs.enable_subdomain_mode' ) ?
+												Phpfox::getLib('url')->makeUrl( $aDvs['title_url'], $aVideo['video_title_url'] ) :
+												Phpfox::getLib('url')->makeUrl( 'dvs', array($aDvs['title_url'], $aVideo['video_title_url']) ) );
+			} else {
+				$sShortUrl = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'email', $iUserId);
+				$sVideoLink = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . $sShortUrl);
+			}
 
 			Phpfox::getBlock('dvs.share-email-template', array(
 				'iDvsId' => $aDvs['dvs_id'],
@@ -749,7 +755,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				'sShareMessage' => $aVals['share_message'],
 				'sShareEmail' => $aVals['share_email'],
 				'sBackgroundImageUrl' => ($aDvs['background_file_name'] ? Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.dvs.background') . $aDvs['background_file_name'] : ''),
-				//'sVideoLink' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url']) : Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url']))),
 				'sVideoLink' => $sVideoLink,
 				'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image'))
 			));
@@ -1152,7 +1157,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 	public function emailForm()
 	{
-		Phpfox::getBlock('dvs.share-email', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
+		Phpfox::getBlock('dvs.share-email', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bLongUrl' => $this->get('longurl', false) ));
 	}
 
 	public function showGetPriceFormMobile()
@@ -1164,6 +1169,5 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 	{
 		Phpfox::getBlock('dvs.share-email-mobile', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
 	}
-
 }
 ?>

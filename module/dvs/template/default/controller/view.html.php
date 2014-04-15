@@ -34,12 +34,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {if $sBrowser == 'mobile'}
 {template file='dvs.controller.view-mobile}
 {else}
-<header>
 	{if $aDvs.branding_file_name}
-	<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}">{img path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle" max_width=1117 max_height=600}</a>
+	<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}">
+		{img path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle" max_width=1117 max_height=600}
+	</a>
 	{else}
 	<h1>{$aDvs.dealer_name}</h1>
 	{/if}
+<header>
 	<nav>
 		<ul>
 			<li>
@@ -149,7 +151,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</section>
 		<section id="action_links">
 			<p>Click to Share:</p>
-			<a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">
+			<a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">
 				<img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
 			</a>
 			<a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '', 'width=626,height=436'); return false;">
