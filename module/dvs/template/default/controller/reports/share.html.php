@@ -249,7 +249,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</td>
 				<td>
 					<strong>
-						Totals
+						Embed
 					</strong>
 				</td>
 				<td>
@@ -277,7 +277,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					</td>
 					<td>
 						<strong>
-							{$aVideo.total}
+							{$aVideo.embed}
 						</strong>
 					</td>
 					<td>
@@ -336,7 +336,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</td>
 				<td>
 					<strong>
-						Totals
+						Embed
 					</strong>
 				</td>
 				<td>
