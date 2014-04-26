@@ -227,8 +227,8 @@ function cueChange(sCuePoint) {
 	}
 
 	if (!bVideoChanged && !bUrlChanged && !bPreview && bIsDvs) {
-		//window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
-		//bUrlChanged = true;
+		window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
+		bUrlChanged = true;
 	}
 
 	if (sCuePoint === 'Post-roll') {
@@ -888,7 +888,7 @@ function thumbnailClick(iKey) {
 	}
 
 	if (bIsDvs) {
-		
+
 		resetOverlays();
 	}
 
@@ -898,7 +898,7 @@ function thumbnailClick(iKey) {
 
 	bIgnoreAutoPlaySetting = true;
 
-	
+
 	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
 		modVid.loadVideoByID(aMediaIds[iKey]);
 	}

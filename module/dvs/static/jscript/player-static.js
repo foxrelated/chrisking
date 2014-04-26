@@ -209,8 +209,8 @@ function cueChange(sCuePoint) {
 	}
 
 	if (!bVideoChanged && !bUrlChanged && !bPreview && bIsDvs) {
-		//window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
-		//bUrlChanged = true;
+		window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
+		bUrlChanged = true;
 	}
 
 	if (sCuePoint == 'Post-roll') {

@@ -62,7 +62,7 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 
 		$iUserId = Phpfox::getUserId();
 		foreach ($aDvsVideos as $iKey => $aVideo) {
-			$aDvsVideos[$iKey]['shorturl'] = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'embed', $iUserId);
+			$aDvsVideos[$iKey]['shorturl'] = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'embed', $iUserId, 1);
 		}
 
 		$aFirstVideo = $aDvsVideos[0];
@@ -73,6 +73,12 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 			$bIsIPhone = 1;
 		} else {
 			$bIsIPhone = 0;
+		}
+
+		if( $bSubdomainMode ) {
+			$sVideoViewUrl = Phpfox::getLib('url')->makeUrl( 'www' );//$sDvsTitle );
+		} else {
+			$sVideoViewUrl = Phpfox::getLib('url')->makeUrl( '' ) . $sDvsTitle;
 		}
 
 		$aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aFirstVideo);
@@ -99,7 +105,7 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 				'bDebug' => (Phpfox::getParam('dvs.javascript_debug_mode') ? true : false),
 				'sBrowser' => $sBrowser,
 				'bIsIPhone' => $bIsIPhone,
-				'sVideoViewUrl' => Phpfox::getLib('url')->makeUrl(Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : ''),
+				'sVideoViewUrl' => $sVideoViewUrl,
 		));
 	}
 

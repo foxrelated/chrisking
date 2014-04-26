@@ -19,7 +19,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 		{assign var='baseUrl' value=''}
     {if $baseUrl = Phpfox::getParam('core.path')}{/if}
-		<script type="text/javascript" src="{$baseUrl}static/jscript/clipboard/ZeroClipboard.js"></script>
+		<script type="text/javascript" src="{$baseUrl}module/dvs/static/jscript/clipboard/ZeroClipboard.js"></script>
 
 		{foreach from=$aDvsVideos key=iKey item=aVideo name=videos}
 
@@ -35,7 +35,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 							<td>
 								<div class="dvs_share_image_holder">
 									<a href="#" onclick="
-										tb_show('Preview', $.ajaxBox('dvs.showPreview', 'height=640&amp;width=900&amp;val[dvs_id]={$aDvs.dvs_id}&val[shorturl]={$aVideo.shorturl}'));
+										tb_show('Preview', $.ajaxBox('dvs.showPreview', 'height=640&amp;width=900&amp;val[dvs_id]={$aDvs.dvs_id}&amp;val[shorturl]={$aVideo.shorturl}'));
 										return false;">
 										<img src="{$baseUrl}module/dvs/static/image/play_btn_75.png" class="dvs_share_button_overlay" />
 										{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image width="100%"}
@@ -121,6 +121,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 									    clip_{$iKey}.setText( document.getElementById('embed_code_{$iKey}').value );
 									    clip_{$iKey}.glue('copy_button_{$iKey}', "dvs_share_copy_button_holder_{$iKey}");
 									    clip_{$iKey}.addEventListener('onComplete', function(){l}
+									    	$.ajaxCall('dvs.copyCRM', 'shorturl={$aVideo.shorturl}');
 									    	alert('Text has been copied to clipboard!');
 								    	{r});
 									</script>

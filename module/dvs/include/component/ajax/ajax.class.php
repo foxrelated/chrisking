@@ -1141,6 +1141,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$this->call('watchVideoSelect(aVideoSelectMediaIds);');
 	}
 
+	public function copyCRM()
+	{
+		$sShortUrl = $this->get('shorturl');
+		Phpfox::getService('dvs.shorturl.process')->unhideShortUrl($sShortUrl);
+	}
+
 	public function removeTeamMember()
 	{
 		$iSalesTeamId = $this->get('salesteam_id');

@@ -22,7 +22,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 
 	/**
 	 * Get a sales team member by salesteam id
-	 * 
+	 *
 	 * @param int $iTeamMemberId
 	 * @param $iDvsId, look up by dvs id and user_id
 	 * @return array, team member
@@ -39,7 +39,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 
 	/**
 	 * Get a list of sales team members
-	 * 
+	 *
 	 * @return array, list of salesteams
 	 */
 	public function getAll($iDvsId)
@@ -79,7 +79,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 
 	/**
 	 * Gets all sales team members that have already been assigned to other DVSs that the logged in user has created
-	 * 
+	 *
 	 * @param int $iDvsId
 	 * @return array
 	 */
@@ -107,7 +107,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 
 	/**
 	 * Return a list of DVSs to provide links for
-	 * 
+	 *
 	 * @param type $iUserId
 	 */
 	public function getMyLinks($iUserId)
@@ -134,7 +134,8 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 			'email' => 0,
 			'facebook' => 0,
 			'google' => 0,
-			'twitter' => 0
+			'twitter' => 0,
+			'embed' => 0,
 		);
 
 		$aShareReport = array(
@@ -145,7 +146,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 
 		$aTotalGenerated = $this->database()->select('s.service, COUNT(s.shorturl_id) as total_generated')
 			->from(Phpfox::getT('ko_shorturls'), 's')
-			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate)
+			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0')
 			->group('s.service')
 			->execute('getRows');
 
@@ -158,7 +159,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 		$aTotalClicked = $this->database()->select('s.service, COUNT(DISTINCT s.shorturl_id) as total_clicked')
 			->from(Phpfox::getT('ko_shorturls'), 's')
 			->join(Phpfox::getT('ko_shorturl_clicks'), 'c', 'c.shorturl_id = s.shorturl_id')
-			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate)
+			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0')
 			->group('s.service')
 			->execute('getRows');
 
@@ -182,7 +183,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 		$aShareReport['top_generated'] = $this->database()->select('v.video_title_url, v.referenceId, COUNT(s.shorturl_id) as total_generated')
 			->from(Phpfox::getT('ko_shorturls'), 's')
 			->join(Phpfox::getT('ko_brightcove'), 'v', 'v.referenceId = s.video_ref_id')
-			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate)
+			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0')
 			->group('s.video_ref_id')
 			->order('total_generated DESC')
 			->limit($iLimit)
@@ -197,7 +198,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 			->from(Phpfox::getT('ko_shorturls'), 's')
 			->join(Phpfox::getT('ko_brightcove'), 'v', 'v.referenceId = s.video_ref_id')
 			->join(Phpfox::getT('ko_shorturl_clicks'), 'c', 'c.shorturl_id = s.shorturl_id')
-			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate)
+			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0')
 			->group('s.video_ref_id')
 			->order('total_clicked DESC')
 			->limit($iLimit)
@@ -222,7 +223,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 		$aVideoInfo = $this->database()->select('s.service, COUNT(DISTINCT s.shorturl_id) as total')
 			->from(Phpfox::getT('ko_shorturls'), 's')
 			->join(Phpfox::getT('ko_brightcove'), 'v', 'v.referenceId = s.video_ref_id')
-			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.video_ref_id = "' . $sVideoRefId . '"')
+			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0' . ' AND s.video_ref_id = "' . $sVideoRefId . '"')
 			->group('s.service')
 			->order('total DESC')
 			->limit($iLimit)
@@ -248,7 +249,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 
 	/**
 	 * Creates a CSV file ready for output
-	 * 
+	 *
 	 * @param array $aReport
 	 * @return string
 	 */
@@ -272,7 +273,10 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 			'Twitter CTR',
 			'Google Shares Sent',
 			'Google Links Clicked',
-			'Google CTR'
+			'Google CTR',
+			'Embed Shares Sent',
+			'Embed Links Clicked',
+			'Embed CTR',
 		));
 
 		fputcsv($rFilePointer, array(
@@ -287,7 +291,10 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 			$aReport['ctr']['twitter'],
 			$aReport['total_generated']['google'],
 			$aReport['total_clicked']['google'],
-			$aReport['ctr']['google']
+			$aReport['ctr']['google'],
+			$aReport['total_generated']['embed'],
+			$aReport['total_clicked']['embed'],
+			$aReport['ctr']['embed'],
 		));
 
 		fclose($rFilePointer);
@@ -307,7 +314,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 		header("Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate");
 		header("Last-Modified: {$now} GMT");
 
-		// force download  
+		// force download
 		header("Content-Type: application/force-download");
 		header("Content-Type: application/octet-stream");
 		header("Content-Type: application/download");

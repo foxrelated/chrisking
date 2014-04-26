@@ -46,9 +46,9 @@ class Dvs_Service_Shorturl_Shorturl extends Phpfox_Service {
 	 * @param int $iShorturlId
 	 * @return string
 	 */
-	public function generate($iDvsId, $sVideoRefId, $sService, $iUserId = 0)
+	public function generate($iDvsId, $sVideoRefId, $sService, $iUserId = 0, $bIsHidden = 0)
 	{
-		$iShorturlId = Phpfox::getService('dvs.shorturl.process')->add($iDvsId, $sVideoRefId, $sService, $iUserId);
+		$iShorturlId = Phpfox::getService('dvs.shorturl.process')->add($iDvsId, $sVideoRefId, $sService, $iUserId, $bIsHidden);
 		$sShortUrl = base_convert($iShorturlId, 10, 36);
 
 		if (strlen($sShortUrl) < 80)

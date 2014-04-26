@@ -7,7 +7,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 /**
  *
  *
- * @copyright		Konsort.org 
+ * @copyright		Konsort.org
  * @author  		Konsort.org
  * @package 		DVS
  */
@@ -126,14 +126,21 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						Google+
 					</strong>
 				</td>
+				<td width="12%">
+					<strong>
+						Embed
+					</strong>
+				</td>
 				<td width="7%">
 					<strong>
 						Totals
 					</strong>
 				</td>
+				{*
 				<td width="12%">
 					&nbsp;
 				</td>
+				*}
 			</tr>
 			<tr>
 				<td>
@@ -154,13 +161,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{$aShareReport.total_generated.google}
 				</td>
 				<td>
+					{$aShareReport.total_generated.embed}
+				</td>
+				<td>
 					<strong>
 						{$aShareReport.total_generated.total}
 					</strong>
 				</td>
+				{*
 				<td>
 					&nbsp;
 				</td>
+				*}
 			</tr>
 			<tr>
 				<td>
@@ -181,13 +193,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{$aShareReport.total_clicked.google}
 				</td>
 				<td>
+					{$aShareReport.total_clicked.embed}
+				</td>
+				<td>
 					<strong>
 						{$aShareReport.total_clicked.total}
 					</strong>
 				</td>
+				{*
 				<td>
 					&nbsp;
 				</td>
+				*}
 			</tr>
 			<tr>
 				<td>
@@ -208,13 +225,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{$aShareReport.ctr.google}&#37;
 				</td>
 				<td>
+					{$aShareReport.ctr.embed}&#37;
+				</td>
+				<td>
 					<strong>
 						{$aShareReport.ctr.total}&#37;
 					</strong>
 				</td>
+				{*
 				<td>
 					&nbsp;
 				</td>
+				*}
 			</tr>
 			<tr>
 				<td colspan="7">
@@ -249,12 +271,19 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</td>
 				<td>
 					<strong>
-						Totals
+						Embed
 					</strong>
 				</td>
 				<td>
+					<strong>
+						Totals
+					</strong>
+				</td>
+				{*
+				<td>
 					&nbsp;
 				</td>
+				*}
 			</tr>
 			{foreach from=$aShareReport.top_generated item=aVideo}
 				<tr>
@@ -276,13 +305,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{$aVideo.google}
 					</td>
 					<td>
+						{$aVideo.embed}
+					</td>
+					<td>
 						<strong>
 							{$aVideo.total}
 						</strong>
 					</td>
+					{*
 					<td>
 						&nbsp;
 					</td>
+					*}
 				</tr>
 			{/foreach}
 			<tr>
@@ -336,12 +370,19 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</td>
 				<td>
 					<strong>
-						Totals
+						Embed
 					</strong>
 				</td>
 				<td>
+					<strong>
+						Totals
+					</strong>
+				</td>
+				{*
+				<td>
 					&nbsp;
 				</td>
+				*}
 			</tr>
 			{foreach from=$aShareReport.top_clicked item=aVideo}
 				<tr>
@@ -363,13 +404,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{$aVideo.google}
 					</td>
 					<td>
+						{$aVideo.embed}
+					</td>
+					<td>
 						<strong>
 							{$aVideo.total}
 						</strong>
 					</td>
+					{*
 					<td>
 						&nbsp;
 					</td>
+					*}
 				</tr>
 			{/foreach}
 			<tr>
