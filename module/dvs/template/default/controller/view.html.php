@@ -30,190 +30,203 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </style>*}
 {/literal}
 
-<div id="dvs_background"></div>
-{if $sBrowser == 'mobile'}
-  {template file='dvs.controller.view-mobile}
+{if $bc == 'refid'}
+{literal}
+<style type="text/css">
+  #site_content{
+    width: auto;
+  }
+</style>
+{/literal}
+  <section id="player">
+    {template file='dvs.controller.player.player}
+  </section>
 {else}
-
-  {if $aDvs.branding_file_name}
-    <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}">
-      {img path='core.url_file'
-           file='dvs/branding/'.$aDvs.branding_file_name
-           style="vertical-align:middle; max-width: 100% !important; height: auto !important;"
-           max_width=1117}
-    </a>
+  <div id="dvs_background"></div>
+  {if $sBrowser == 'mobile'}
+    {template file='dvs.controller.view-mobile}
   {else}
-    <h1>{$aDvs.dealer_name}</h1>
-  {/if}
 
-  <header>
-    <nav>
-      <ul>
-        <li>
-          <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}" onclick="menuHome('Top Menu Clicks');">{phrase var='dvs.home'}</a>
-        </li>
-        {if $aDvs.inventory_url}
+    {if $aDvs.branding_file_name}
+      <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}">
+        {img path='core.url_file'
+             file='dvs/branding/'.$aDvs.branding_file_name
+             style="vertical-align:middle; max-width: 100% !important; height: auto !important;"
+             max_width=1117}
+      </a>
+    {else}
+      <h1>{$aDvs.dealer_name}</h1>
+    {/if}
+
+    <header>
+      <nav>
+        <ul>
           <li>
-            <a href="{$aDvs.inventory_url}" onclick="menuInventory('Top Menu Clicks');" rel="nofollow">
-              {phrase var='dvs.show_inventory'}
-            </a>
+            <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}" onclick="menuHome('Top Menu Clicks');">{phrase var='dvs.home'}</a>
           </li>
-        {/if}
-
-        {if $aDvs.specials_url}
-          <li>
-            <a href="{$aDvs.specials_url}" onclick="menuOffers('Top Menu Clicks');" rel="nofollow">
-              {phrase var='dvs.special_offers'}
-            </a>
-          </li>
-        {/if}
-
-        <li>
-          <a href="#" onclick="menuContact('Top Menu Clicks'); tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">{phrase var='dvs.contact_dealer'}</a>
-        </li>
-
-        {if Phpfox::isUser()}
-          <li>
-            <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share">
-              {phrase var='dvs.dealer_share_links'}
-            </a>
-          </li>
-          {if Phpfox::getUserId() == $aDvs.user_id || Phpfox::isAdmin()}
+          {if $aDvs.inventory_url}
             <li>
-              <a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}">
-                {phrase var='dvs.manage_sales_team'}
+              <a href="{$aDvs.inventory_url}" onclick="menuInventory('Top Menu Clicks');" rel="nofollow">
+                {phrase var='dvs.show_inventory'}
               </a>
             </li>
           {/if}
-        {/if}
-      </ul>
-    </nav>
-  </header>
 
-  <article>
-    <section>
-      <div class="dvs-info" style="padding-top:10px;font-size:13px;font-weight:bold;"><p>To start your video test drive, select a year, make and model or click on the play button below. Instantly view what's important to you by clicking the chapter buttons to the right.</p></div>
-    </section>
-    <section id="player">
-      {template file='dvs.controller.player.player}
-    </section>
+          {if $aDvs.specials_url}
+            <li>
+              <a href="{$aDvs.specials_url}" onclick="menuOffers('Top Menu Clicks');" rel="nofollow">
+                {phrase var='dvs.special_offers'}
+              </a>
+            </li>
+          {/if}
 
-    <div id="player_right">
-      <section id="select_new">
-        {if $aVideoSelectYears}
-        <h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
-
-        {if isset($aVideoSelectYears.1)}
-        <ul id="year">
-          <li class="init"><span class="init_selected">Select Year</span>
-            <ul>
-              {foreach from=$aVideoSelectYears item=iYear}
-              <li onclick="$.ajaxCall('dvs.getMakes', 'iYear={$iYear}&amp;sDvsName={$aDvs.title_url}');">
-                {$iYear}
-              </li>
-              {/foreach}
-            </ul>
+          <li>
+            <a href="#" onclick="menuContact('Top Menu Clicks'); tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">{phrase var='dvs.contact_dealer'}</a>
           </li>
-        </ul>
-        {/if}
 
-        <ul id="makes">
-          <li class="init">
-            {phrase var='dvs.select_make'}
-            <ul>
+          {if Phpfox::isUser()}
+            <li>
+              <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share">
+                {phrase var='dvs.dealer_share_links'}
+              </a>
+            </li>
+            {if Phpfox::getUserId() == $aDvs.user_id || Phpfox::isAdmin()}
               <li>
-                {phrase var='dvs.please_select_a_year_first'}
+                <a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}">
+                  {phrase var='dvs.manage_sales_team'}
+                </a>
               </li>
-            </ul>
-          </li>
+            {/if}
+          {/if}
         </ul>
+      </nav>
+    </header>
 
-        <ul id="models">
-          <li class="init">
-            {phrase var='dvs.select_model'}
-            <ul>
-              <li>
-                {phrase var='dvs.please_select_a_year_first'}
-              </li>
-            </ul>
-          </li>
-        </ul>
-        {/if}
-      </section>
-      <section id="dealer_links">
-        <a href="./" onclick="menuHome('Call To Action Menu Clicks');">
-          {phrase var='dvs.cta_home'}
-        </a>
-        {if $aDvs.inventory_url}
-        <a href="{$aDvs.inventory_url}" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow">
-          {phrase var='dvs.cta_inventory'}
-        </a>
-        {/if}
-        {if $aDvs.specials_url}
-        <a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow">
-          {phrase var='dvs.cta_specials'}
-        </a>
-        {/if}
-        <a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); menuContact('Call To Action Menu Clicks'); return false;">
-          {phrase var='dvs.cta_contact'}
-        </a>
-      </section>
-      <section id="action_links">
-        <p>Click to Share:</p>
-        <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">
-          <img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
-        </a>
-        <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '', 'width=626,height=436'); return false;">
-          <img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
-        </a>
-        <span id="twitter_button_wrapper">
-          <a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}&url={$sCurrentUrlEncoded}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
-        </span>
-        <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href)); return false;">
-          <img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
-        </a>
-      </section>
-    </div>
-
-    <section id="video_information">
-      <h3 id="video_name">
-        <a href="location.href">
-          {$aDvs.phrase_overrides.override_video_name_display}
-        </a>
-      </h3>
-
-      <p class="model_description" id="car_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
-
-      {if empty($aOverrideVideo.ko_id)}
+    <article>
       <section>
-        <h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
-        <p itemprop="description" class="model_description">{$aDvs.text_parsed}</p>
+        <div class="dvs-info" style="padding-top:10px;font-size:13px;font-weight:bold;"><p>To start your video test drive, select a year, make and model or click on the play button below. Instantly view what's important to you by clicking the chapter buttons to the right.</p></div>
       </section>
-      {/if}
-    </section>
+      <section id="player">
+        {template file='dvs.controller.player.player}
+      </section>
 
-    <aside>
-      <div id="dvs_geomap_container" itemprop="map"></div>
-      <p>{if $aDvs.url}
-        {phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow">{$aDvs.url}</a>
+      <div id="player_right">
+        <section id="select_new">
+          {if $aVideoSelectYears}
+          <h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
+
+          {if isset($aVideoSelectYears.1)}
+          <ul id="year">
+            <li class="init"><span class="init_selected">Select Year</span>
+              <ul>
+                {foreach from=$aVideoSelectYears item=iYear}
+                <li onclick="$.ajaxCall('dvs.getMakes', 'iYear={$iYear}&amp;sDvsName={$aDvs.title_url}');">
+                  {$iYear}
+                </li>
+                {/foreach}
+              </ul>
+            </li>
+          </ul>
+          {/if}
+
+          <ul id="makes">
+            <li class="init">
+              {phrase var='dvs.select_make'}
+              <ul>
+                <li>
+                  {phrase var='dvs.please_select_a_year_first'}
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul id="models">
+            <li class="init">
+              {phrase var='dvs.select_model'}
+              <ul>
+                <li>
+                  {phrase var='dvs.please_select_a_year_first'}
+                </li>
+              </ul>
+            </li>
+          </ul>
+          {/if}
+        </section>
+        <section id="dealer_links">
+          <a href="./" onclick="menuHome('Call To Action Menu Clicks');">
+            {phrase var='dvs.cta_home'}
+          </a>
+          {if $aDvs.inventory_url}
+          <a href="{$aDvs.inventory_url}" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow">
+            {phrase var='dvs.cta_inventory'}
+          </a>
+          {/if}
+          {if $aDvs.specials_url}
+          <a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow">
+            {phrase var='dvs.cta_specials'}
+          </a>
+          {/if}
+          <a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); menuContact('Call To Action Menu Clicks'); return false;">
+            {phrase var='dvs.cta_contact'}
+          </a>
+        </section>
+        <section id="action_links">
+          <p>Click to Share:</p>
+          <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">
+            <img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
+          </a>
+          <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '', 'width=626,height=436'); return false;">
+            <img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
+          </a>
+          <span id="twitter_button_wrapper">
+            <a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}&url={$sCurrentUrlEncoded}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
+          </span>
+          <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href)); return false;">
+            <img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
+          </a>
+        </section>
+      </div>
+
+      <section id="video_information">
+        <h3 id="video_name">
+          <a href="location.href">
+            {$aDvs.phrase_overrides.override_video_name_display}
+          </a>
+        </h3>
+
+        <p class="model_description" id="car_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
+
+        {if empty($aOverrideVideo.ko_id)}
+        <section>
+          <h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
+          <p itemprop="description" class="model_description">{$aDvs.text_parsed}</p>
+        </section>
         {/if}
-        {if $aDvs.phone}<br />{phrase var='dvs.phone'}: <span itemprop="telephone">{$aDvs.phone}</span>{/if}</p>
-      <p itemscope itemtype="http://schema.org/PostalAddress">
-        {if $aDvs.address}Address: <span itemprop="streetAddress">{$aDvs.address}</span>{/if}</p>
-      <p><span itemprop="addressLocality">{$aDvs.city}</span>, <span itemprop="addressRegion">{$aDvs.state_string}</span>, <span itemprop="postalCode">{$aDvs.postal_code}</span>
-      </p>
-    </aside>
-  </article>
+      </section>
 
-  <footer>
-    <h3>{phrase var='dvs.more_videos'}</h3>
-    <ul>
-      {foreach from=$aFooterLinks key=iKey item=aVideo name=videos}
-      <li>
-        <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}{$aVideo.video_title_url}">
-          {$aVideo.year} {$aVideo.make} {$aVideo.model}
-        </a>
-        {/foreach}
-    </ul>
-  </footer>
+      <aside>
+        <div id="dvs_geomap_container" itemprop="map"></div>
+        <p>{if $aDvs.url}
+          {phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow">{$aDvs.url}</a>
+          {/if}
+          {if $aDvs.phone}<br />{phrase var='dvs.phone'}: <span itemprop="telephone">{$aDvs.phone}</span>{/if}</p>
+        <p itemscope itemtype="http://schema.org/PostalAddress">
+          {if $aDvs.address}Address: <span itemprop="streetAddress">{$aDvs.address}</span>{/if}</p>
+        <p><span itemprop="addressLocality">{$aDvs.city}</span>, <span itemprop="addressRegion">{$aDvs.state_string}</span>, <span itemprop="postalCode">{$aDvs.postal_code}</span>
+        </p>
+      </aside>
+    </article>
+
+    <footer>
+      <h3>{phrase var='dvs.more_videos'}</h3>
+      <ul>
+        {foreach from=$aFooterLinks key=iKey item=aVideo name=videos}
+        <li>
+          <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}{$aVideo.video_title_url}">
+            {$aVideo.year} {$aVideo.make} {$aVideo.model}
+          </a>
+          {/foreach}
+      </ul>
+    </footer>
+  {/if}
 {/if}

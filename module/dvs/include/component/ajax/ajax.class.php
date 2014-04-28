@@ -391,6 +391,13 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		Phpfox::getBlock('dvs.player-preview', array('aVals' => $aVals));
 	}
 
+	public function showMiniPreview()
+	{
+		$aVals = $this->get('val');
+
+		Phpfox::getBlock('dvs.playermini-preview', array('aVals' => $aVals));
+	}
+
 	public function updateTitleUrl()
 	{
 		$sVanityUrl = Phpfox::getLib('request')->get('vanity_url');

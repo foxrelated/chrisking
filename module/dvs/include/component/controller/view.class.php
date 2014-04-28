@@ -277,6 +277,12 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			));
 		}
 
+		if($_COOKIE['dev'] == 1){
+			// var_dump($this->request());
+			// var_dump($this->request()->get('bc'));
+			// die();
+		}
+
 		$this->template()
 			->setTemplate('dvs-view')
 			->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -304,6 +310,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			))
 			->assign(array(
 				'aDvs' => $aDvs,
+				'bc' => $this->request()->get('bc'),
 				'sBackgroundPath' => Phpfox::getParam('core.url_file') . 'dvs/background/' . $aDvs['background_file_name'],
 				'iBackgroundOpacity' => $iBackgroundOpacity,
 				'iBackgroundAlpha' => $iBackgroundAlpha,
