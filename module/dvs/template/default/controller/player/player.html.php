@@ -218,8 +218,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<param name="width" value="{$iPlayerWidth}" />
 		<param name="height" value="{$iPlayerHeight}" />
 		{/if}
+		{if $bIsExternal}
+		<param name="playerID" value="{$iPlayerId}" />
+		<param name="playerKey" value="{$sPlayerKey}" />
+		{else}
 		<param name="playerID" value="1418431455001" />
 		<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
+		{/if}
 		<param name="isVid" value="true" />
 		<param name="isUI" value="true" />
 		<param name="dynamicStreaming" value="true" />
@@ -298,9 +303,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<button type="button" id="chapter_container_MPG" class="disabled no_display" onclick="changeCuePoint('MPG');"></button>
 	<button type="button" id="chapter_container_Honors" class="disabled no_display" onclick="changeCuePoint('Honors');"></button>
 	{if $bIsDvs && !$bPreview}
-	<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));"></button>
+	<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPrice();"></button>
 	{elseif !$bIsExternal && !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}
-	<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;sRefId=' + aCurrentVideoMetaData.referenceId));"></button>
+	<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceIDrive();"></button>
 	{elseif $bIsExternal && $bShowGetPrice}
 	<button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="getPriceExternal('{$sEmail}');"></button>
 	{/if}
