@@ -121,8 +121,6 @@ function changeCuePoint(sCuePoint) {
 function getPrice(iDvsId) {
 	if (aCurrentVideoMetaData) {
 //		$('#dvs_get_price_container').show('fast');
-
-
 		var oCustomVars = {
 			1: {
 				name: 'Video Reference ID',
