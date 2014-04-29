@@ -173,7 +173,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </section>
         <section id="action_links">
           <p>Click to Share:</p>
-          <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); menuEmail('Share Links'); return false;">
+          <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); showEmailShare(); return false;">
             <img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
           </a>
           <?php if ($_COOKIE['dev'] == 1 && 0): ?>
@@ -227,7 +227,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
       <ul>
         {foreach from=$aFooterLinks key=iKey item=aVideo name=videos}
         <li>
-          <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}{$aVideo.video_title_url}" onclick="menuFooter('Footer Link Clicks');">
+          <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}{$aVideo.video_title_url}" onclick="menuFooter('Footer Link Clicks'); return false;">
             {$aVideo.year} {$aVideo.make} {$aVideo.model}
           </a>
           {/foreach}
