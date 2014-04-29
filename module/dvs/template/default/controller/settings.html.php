@@ -111,7 +111,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{required}{phrase var='dvs.address'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[address]" value="{value type='input' id='address'}" id="address" maxlength=30 required />
+				<input type="text" name="val[address]" value="{value type='input' id='address'}" id="address" maxlength=60 required />
 			</td>
 			<td class="dvs_add_td_label">
 				{phrase var='dvs.address_phrase'}
@@ -123,7 +123,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{required}{phrase var='dvs.city'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[city]" value="{value type='input' id='city'}" id="city" maxlength=30 required />
+				<input type="text" name="val[city]" value="{value type='input' id='city'}" id="city" maxlength=60 required />
 			</td>
 		</tr>
 		
@@ -153,7 +153,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.contact_phone'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="tel" name="val[phone]" maxlength=11 value="{value type='input' id='phone'}" id="phone" />
+				<input type="tel" name="val[phone]" maxlength="11" value="{value type='input' id='phone'}" id="phone" />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.phone_phrase'}
@@ -165,7 +165,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.contact_email'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="email" name="val[email]" value="{value type='input' id='email'}" id="email"  size="30" maxlength=30 />
+				<input type="email" name="val[email]" value="{value type='input' id='email'}" id="email"  size="30" maxlength="200" />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.contact_email_phrase'}
@@ -177,7 +177,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.website_url'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="url" name="val[url]" value="{value type='input' id='url'}" id="url" size="30" maxlength=60/>
+				<input type="url" name="val[url]" value="{value type='input' id='url'}" id="url" size="30" maxlength="300"/>
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.website_url_phrase'}
@@ -189,7 +189,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.inventory_url'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="url" name="val[inventory_url]" value="{value type='input' id='inventory_url'}" id="inventory_url"  size="30" maxlength=60/>
+				<input type="url" name="val[inventory_url]" value="{value type='input' id='inventory_url'}" id="inventory_url"  size="30" maxlength="300"/>
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.inventory_url_phrase'}
@@ -201,7 +201,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.dealer_specials_url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="url" name="val[specials_url]" value="{value type='input' id='specials_url'}" id="specials_url" size="30" maxlength=60 />
+				<input type="url" name="val[specials_url]" value="{value type='input' id='specials_url'}" id="specials_url" size="30" maxlength="300" />
 			</td>
 		</tr>
 
@@ -260,7 +260,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.custom_seo_tags'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[seo_tags]" value="{value type='input' id='seo_tags'}" id="seo_tags" maxlength=100 />
+				<input type="text" name="val[seo_tags]" value="{value type='input' id='seo_tags'}" id="seo_tags" maxlength="100" />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.seo_tags_phrase'}
@@ -272,7 +272,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.google_analytics_id'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[dvs_google_id]" value="{value type='input' id='dvs_google_id'}" id="dvs_google_id" maxlength=30 />
+				<input type="text" name="val[dvs_google_id]" value="{value type='input' id='dvs_google_id'}" id="dvs_google_id" maxlength="20" />
 			</td>
 		</tr>
 	</table>
