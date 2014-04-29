@@ -73,8 +73,13 @@ class Dvs_Component_Controller_Dvs_Sitemap extends Phpfox_Component {
 				echo '<url>' . "\n" .
 				'<loc>' . $sDvsUrl . $aVideo['video_title_url'] . '</loc>' . "\n" . '<video:video>' . "\n" .
 				'<video:thumbnail_loc>' . Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.brightcove') . $aVideo['thumbnail_image'] . '</video:thumbnail_loc>' . "\n" .
-				'<video:title>' . Phpfox::getLib('parse.input')->clean($aDvs['phrase_overrides']['override_video_name_sitemaps'], 100) . '</video:title>' . "\n" .
-				'<video:description>' . Phpfox::getLib('parse.input')->clean($aDvs['phrase_overrides']['override_video_description_sitemaps'], 2048) . '.</video:description>' . "\n" .
+				
+				//'<video:title>' . Phpfox::getLib('parse.input')->clean($aDvs['phrase_overrides']['override_video_name_sitemaps'], 100) . '</video:title>' . "\n" .
+				'<video:title>' . Phpfox::getLib('parse.input')->clean($aVideo['name'] . ' | ' . $aDvs['dealer_name'] . ' | ' . $aDvs['city'] . ', ' . $aDvs['state_string'] . ' ' . $aDvs['postal_code'], 100) . '</video:title>' .
+
+				//'<video:description>' . Phpfox::getLib('parse.input')->clean($aDvs['phrase_overrides']['override_video_description_sitemaps'], 2048) . '.</video:description>' . "\n" .
+				'<video:description>' . Phpfox::getLib('parse.input')->clean($aVideo['shortDescription'] . ' View more ' . $aDvs['dealer_name'] . ' video test drives at ' . $sDvsUrl, 2048) . '.</video:description>' .
+				
 				'<video:publication_date>' . date('Y-m-d', (int) $aVideo['publishedDate'] / 1000) . '</video:publication_date>' . "\n" .
 				'<video:category>Automotive</video:category>' . "\n" .
 				'<video:tag>' . $aVideo['year'] . '</video:tag>' . "\n" .
