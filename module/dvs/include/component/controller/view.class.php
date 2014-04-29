@@ -29,11 +29,11 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		// Are we loading this as an iFrame?
 		if ($this->request()->get('req3') === 'preview')
 		{
+			$bPreview = true;
 			$this->template()->setHeader(array('preview.css' => 'module_dvs'));
 			$aDvs = Phpfox::getService('dvs')->get($this->request()->get('req4'), false);
 			if( $this->request()->get('req5') ) {
 				$aDvs = null;
-				$bPreview = true;
 				$sDvsRequest = $this->request()->get('req5');
 			} else {
 				$aDvs = Phpfox::getService('dvs')->get($this->request()->get('req4'), false);
@@ -66,7 +66,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				$sOverride = '';
 			}
 
-			Phpfox::getService('dvs.shorturl.clicks.process')->click($aShortUrl['shorturl_id'], Phpfox::getUserId());
+			// Phpfox::getService('dvs.shorturl.clicks.process')->click($aShortUrl['shorturl_id'], Phpfox::getUserId());
 		}
 		else
 		{

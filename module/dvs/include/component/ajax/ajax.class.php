@@ -13,6 +13,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 {
+	public function updateClicks()
+	{
+		$sDvsRequest = $this->get('sDvsRequest');
+		if (Phpfox::getParam('dvs.enable_subdomain_mode')){
+			$sDvsRequest = str_replace(Phpfox::getLib('url')->makeUrl(''), '', $sDvsRequest);
+		}else{
+			$sDvsRequest = str_replace(Phpfox::getLib('url')->makeUrl('dvs'), '', $sDvsRequest);
+		}
+		$aShortUrl = Phpfox::getService('dvs.shorturl')->get($sDvsRequest);
+		Phpfox::getService('dvs.shorturl.clicks.process')->click($aShortUrl['shorturl_id'], Phpfox::getUserId());
+	}
+
 	public function generateShortUrl()
 	{
 		$iDvsId = $this->get('dvs_id');
