@@ -173,20 +173,20 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </section>
         <section id="action_links">
           <p>Click to Share:</p>
-          <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">
+          <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); menuEmail('Share Links'); return false;">
             <img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
           </a>
           <?php if ($_COOKIE['dev'] == 1 && 0): ?>
             <a href="#" id="fb_share_link">
           <?php else: ?>
-            <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '', 'width=626,height=436'); return false;">
+            <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
           <?php endif ?>
             <img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
           </a>
           <span id="twitter_button_wrapper">
             <a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}&url={$sCurrentUrlEncoded}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
           </span>
-          <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href)); return false;">
+          <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href)); googleShareClick('Share Links'); return false;">
             <img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
           </a>
         </section>
@@ -227,7 +227,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
       <ul>
         {foreach from=$aFooterLinks key=iKey item=aVideo name=videos}
         <li>
-          <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}{$aVideo.video_title_url}">
+          <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}{$aVideo.video_title_url}" onclick="menuFooter('Footer Link Clicks');">
             {$aVideo.year} {$aVideo.make} {$aVideo.model}
           </a>
           {/foreach}
