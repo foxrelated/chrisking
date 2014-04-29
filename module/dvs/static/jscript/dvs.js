@@ -157,7 +157,7 @@ function googleShareClick(sSource) {
 	}
 }
 
-function showShareEmail(iDvsId) {
+function showEmailShare(iDvsId) {
 	if (aCurrentVideoMetaData) {
 		$.ajaxCall('dvs.showShareEmail', 'iDvsId=' + iDvsId + '&sRefId=' + aCurrentVideoMetaData['referenceId']);
 		var oCustomVars = {
