@@ -63,7 +63,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
       <nav>
         <ul>
           <li>
-            <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}" onclick="menuHome('Top Menu Clicks');">{phrase var='dvs.home'}</a>
+            <a href="{$aDvs.url}" onclick="menuHome('Top Menu Clicks');">{phrase var='dvs.home'}</a>
           </li>
           {if $aDvs.inventory_url}
             <li>
@@ -154,7 +154,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
           {/if}
         </section>
         <section id="dealer_links">
-          <a href="./" onclick="menuHome('Call To Action Menu Clicks');">
+          <a href="{$aDvs.url}" onclick="menuHome('Call To Action Menu Clicks');">
             {phrase var='dvs.cta_home'}
           </a>
           {if $aDvs.inventory_url}
