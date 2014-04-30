@@ -171,11 +171,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
           <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); showEmailShare(); return false;">
             <img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
           </a>
-          <?php if ($_COOKIE['dev'] == 1 && 0): ?>
-            <a href="#" id="fb_share_link">
-          <?php else: ?>
-            <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
-          <?php endif ?>
+          <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
             <img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
           </a>
           <span id="twitter_button_wrapper">

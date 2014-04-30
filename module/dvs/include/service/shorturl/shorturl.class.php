@@ -39,6 +39,22 @@ class Dvs_Service_Shorturl_Shorturl extends Phpfox_Service {
 		return $aShorturlVals;
 	}
 
+	/**
+	 * Returns a specific shorturl
+	 *
+	 * @param string $sShortUrl
+	 * @return array
+	 */
+	public function getById($dvs_id = 0, $user_id = 0, $service = '')
+	{
+		$aShorturlVals = $this->database()->select('*')
+			->from($this->_tShortUrl)
+			->where('dvs_id = "' . $this->preParse()->clean($dvs_id) . '" AND ' . 'user_id = "' . $this->preParse()->clean($user_id) . '" AND ' . 'service = "' . $this->preParse()->clean($service) . '"')
+			->execute('getRow');
+
+		return $aShorturlVals;
+	}
+
 
 	/**
 	 * Generate an 8 character short URL based on the ID.  Valid up to just over 2.8 trillion keys.

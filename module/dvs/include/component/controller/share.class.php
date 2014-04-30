@@ -63,6 +63,12 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 		$iUserId = Phpfox::getUserId();
 		foreach ($aDvsVideos as $iKey => $aVideo) {
 			$aDvsVideos[$iKey]['shorturl'] = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'embed', $iUserId, 1);
+
+			if (Phpfox::getParam('dvs.enable_subdomain_mode')){
+				$aDvsVideos[$iKey]['entire_shorturl'] = Phpfox::getLib('url')->makeUrl('') . $aDvsVideos[$iKey]['shorturl'];
+			}else{
+				$aDvsVideos[$iKey]['entire_shorturl'] = Phpfox::getLib('url')->makeUrl('dvs') . $aDvsVideos[$iKey]['shorturl'];
+			}
 		}
 
 		$aFirstVideo = $aDvsVideos[0];

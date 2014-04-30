@@ -66,7 +66,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				$sOverride = '';
 			}
 
-			// Phpfox::getService('dvs.shorturl.clicks.process')->click($aShortUrl['shorturl_id'], Phpfox::getUserId());
+      Phpfox::getService('dvs.shorturl.clicks.process')->click($aShortUrl['shorturl_id'], Phpfox::getUserId());
 		}
 		else
 		{
@@ -275,12 +275,6 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 					'get_price.css' => 'module_dvs',
 					'share_email.css' => 'module_dvs',
 			));
-		}
-
-		if($_COOKIE['dev'] == 1){
-			// var_dump($this->request());
-			// var_dump($this->request()->get('bc'));
-			// die();
 		}
 
 		$this->template()

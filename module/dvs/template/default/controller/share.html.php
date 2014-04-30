@@ -13,65 +13,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 
 ?>
-<div id="fb-root"></div>
-{literal}
-  <script>
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '678226488891688',
-        status     : true,
-        xfbml      : true
-      });
-    };
-
-    (function(d, s, id){
-       var js, fjs = d.getElementsByTagName(s)[0];
-       if (d.getElementById(id)) {return;}
-       js = d.createElement(s); js.id = id;
-       js.src = "//connect.facebook.net/en_US/all.js";
-       fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-
-		$Behavior.domReady = function(){
-	    $('#fb_share_link').on('click', function(){
-				var video_id     = $(this).attr('video_id');
-				var dvs_id       = $(this).attr('dvs_id');
-				var dvs_title    = $(this).attr('dvs_title');
-				var video_ref_id = $(this).attr('video_ref_id');
-				var fvideo_title = $(this).attr('fvideo_title_' + video_id);
-				var fvideo_desc  = $(this).attr('fvideo_desc_' + video_id);
-				var fvideo_image = $(this).attr('fvideo_image_' + video_id);
-				var fvideo_capt = $(this).attr('fvideo_capt_' + video_id);
-
-	    	var params = 'dvs_id=' + dvs_id + '&dvs_title=' + dvs_title + '&video_ref_id=' + video_ref_id + '&service=facebook&return_id=share_link_box';
-
-				$.ajaxCall('dvs.generateShortUrl', params).done(function(){
-					var preview_url = $('#share_link_box').val();
-		      FB.ui(
-		        {
-		          method: 'feed',
-		          name: fvideo_title, // name of the product or content you want to share
-		          link: preview_url, // link back to the product or content you are sharing
-		          picture: fvideo_image, // path to an image you would like to share with this content
-		          caption: fvideo_capt,
-		          description: fvideo_desc // description of your product or content
-		        },
-		        function(response) {
-		          if (response && response.post_id) {
-		            $.ajaxCall('dvs.updateClicks', 'sDvsRequest=' + preview_url).done(function(){
-			          });
-		          } else {
-		            console.log('Post was not published.');
-		          }
-		        }
-		      );
-				});
-	    });
-	  };
-
-  </script>  
-{/literal}
-
 <div id="dvs_share_wrapper">
 	<div id="dvs_share_container">
 		<input class="dvs_share_text_box" type="hidden" id="share_link_box">
@@ -82,11 +23,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 		{foreach from=$aDvsVideos key=iKey item=aVideo name=videos}
 			
-			<input type="hidden" id="fvideo_title_{$aVideo.ko_id}" name="fvideo_title" value="{$aVideo.name}">
-			<input type="hidden" id="fvideo_desc_{$aVideo.ko_id}" name="fvideo_desc" value="{$aVideo.shortDescription}">
-			<input type="hidden" id="fvideo_image_{$aVideo.ko_id}" name="fvideo_image" value="{$aVideo.thumbnailURL}">
-			<input type="hidden" id="fvideo_capt_{$aVideo.ko_id}" name="fvideo_capt" value="{$aVideo.linkText}">
-
 			<div class="dvs_share_thumbnail_image_container">
 				<div class="dvs_share_thumbnail_image_container_inner">
 					<table width="100%">
@@ -112,23 +48,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 										<img src="{$baseUrl}module/dvs/static/image/email-share.png" alt="Share Via Email"/>
 									</a>
 
-										<?php if ($_COOKIE['dev'] == 1): ?>
-										{*$aVideo|@print_r*}
-										{*$aDvs|@print_r*}
-										<a href="#" video_id='{$aVideo.ko_id}' dvs_id='{$aDvs.dvs_id}' dvs_title='{$aDvs.title_url}' video_ref_id='{$aVideo.referenceId}' id="fb_share_link">
-										<?php else: ?>
-										<a href="#" onclick="
-										var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=facebook&return_id=share_link_box';
-										$.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
-											if( {$bIsIPhone} ) {l}
-												window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#share_link_box').val());
-											{r} else {l}
-												window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400');
-											{r}
-											return false;
-								  	{r});
-								  	return false;">
-										<?php endif ?>
+									<a href="#" onclick="
+									var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=facebook&return_id=share_link_box';
+									$.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
+										if( {$bIsIPhone} ) {l}
+											window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#share_link_box').val());
+										{r} else {l}
+											window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400');
+										{r}
+										return false;
+							  	{r});
+							  	return false;">
 										<img src="{$baseUrl}module/dvs/static/image/facebook-share.png" alt="Share to Facebook"/>
 									</a>
 

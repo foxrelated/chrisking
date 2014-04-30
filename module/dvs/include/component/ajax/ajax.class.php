@@ -22,6 +22,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$sDvsRequest = str_replace(Phpfox::getLib('url')->makeUrl('dvs'), '', $sDvsRequest);
 		}
 		$aShortUrl = Phpfox::getService('dvs.shorturl')->get($sDvsRequest);
+
 		Phpfox::getService('dvs.shorturl.clicks.process')->click($aShortUrl['shorturl_id'], Phpfox::getUserId());
 	}
 
@@ -756,7 +757,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 			$sSubject = str_replace($aFind, $aReplace, $sSubject);
 
-	    $iUserId = Phpfox::getUserId();
+   		$iUserId = Phpfox::getUserId();
    		if( $aVals['longurl'] ) {
 				$sVideoLink = ( Phpfox::getParam('dvs.enable_subdomain_mode' ) ?
 												Phpfox::getLib('url')->makeUrl( $aDvs['title_url'], $aVideo['video_title_url'] ) :
