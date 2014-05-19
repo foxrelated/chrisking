@@ -64,6 +64,8 @@ class Dvs_Service_Shorturl_Shorturl extends Phpfox_Service {
 	 */
 	public function generate($iDvsId, $sVideoRefId, $sService, $iUserId = 0, $bIsHidden = 0)
 	{
+		if(!in_array($sService, array('facebook','google'))){
+		}
 		$iShorturlId = Phpfox::getService('dvs.shorturl.process')->add($iDvsId, $sVideoRefId, $sService, $iUserId, $bIsHidden);
 		$sShortUrl = base_convert($iShorturlId, 10, 36);
 

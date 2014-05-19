@@ -519,7 +519,7 @@ abstract class Phpfox_Database_Dba implements Phpfox_Database_Interface
 		$sSql .= (isset($this->_aQuery['having']) ? $this->_aQuery['having'] . "\n" : '');
 		$sSql .= (isset($this->_aQuery['order']) ? $this->_aQuery['order'] . "\n" : '');
 		$sSql .= (isset($this->_aQuery['limit']) ? $this->_aQuery['limit'] . "\n" : '');
-		$sSql .= '/* OO Query */';		
+		$sSql .= '/* OO Query */';
 	
 		if (method_exists($this, '_execute'))
 		{

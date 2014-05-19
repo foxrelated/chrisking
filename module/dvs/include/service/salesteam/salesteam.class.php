@@ -156,19 +156,20 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 			$aShareReport['total_generated']['total'] += $aService['total_generated'];
 		}
 
-		$aTotalClicked = $this->database()->select('s.service, COUNT(DISTINCT s.shorturl_id) as total_clicked')
+		$aTotalClicked = $this->database()->select('s.service, COUNT(s.shorturl_id) as total_clicked')
 			->from(Phpfox::getT('ko_shorturls'), 's')
 			->join(Phpfox::getT('ko_shorturl_clicks'), 'c', 'c.shorturl_id = s.shorturl_id')
-			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0')
+			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0 AND c.ip_address REGEXP \'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\'')
 			->group('s.service')
 			->execute('getRows');
 
 		foreach ($aTotalClicked as $aService)
 		{
-			$aShareReport['total_clicked'][$aService['service']] = $aService['total_clicked'];
-			$aShareReport['total_clicked']['total'] += $aService['total_clicked'];
+			$serviceTotalClicked = (!in_array($aService['service'], array('facebook', 'google'))?$aService['total_clicked']:($aService['total_clicked'] - $aShareReport['total_generated'][$aService['service']])); // check if there is facebook or google - subtract 1 point for each shared link
+			$aShareReport['total_clicked'][$aService['service']] = $serviceTotalClicked;
+			$aShareReport['total_clicked']['total'] += $serviceTotalClicked;
 
-			$aShareReport['ctr'][$aService['service']] = round($aService['total_clicked'] / $aShareReport['total_generated'][$aService['service']], 2) * 100;
+			$aShareReport['ctr'][$aService['service']] = round($serviceTotalClicked / $aShareReport['total_generated'][$aService['service']], 2) * 100;
 		}
 
 		if ($aShareReport['total_generated']['total'] != 0)
