@@ -121,7 +121,11 @@ class Addtestuser_Component_Controller_Admincp_Add extends Phpfox_Component
 
 					if ($iId = Phpfox::getService('addtestuser')->add($aVals,$aVals['user_group_id']))
 					{
-						$this->url()->send('http://admincp.wtvdvs-stage.com/addtestuser/add', null, 'User ' . $iId . ' Successfully Created ');
+						//$this->url()->send('http://admincp.wtvdvs-dev.com/addtestuser/add', null, 'User ' . $iId . ' Successfully Created ');
+						
+						$this->url()->send(($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.admincp.addtestuer.add') : Phpfox::getLib('url')->makeUrl('admincp.addtestuser.add')), null, 'User ' . $iId . ' Successfully Created ');
+						
+						
 					}
 
 		}
