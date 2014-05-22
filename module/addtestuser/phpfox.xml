@@ -1,0 +1,39 @@
+<module>
+	<data>
+		<module_id>addtestuser</module_id>
+		<product_id>Add Test User</product_id>
+		<is_core>0</is_core>
+		<is_active>1</is_active>
+		<is_menu>1</is_menu>
+		<menu><![CDATA[a:1:{s:30:"addtestuser.admin_menu_phrase1";a:1:{s:3:"url";a:2:{i:0;s:11:"addtestuser";i:1;s:3:"add";}}}]]></menu>
+		<phrase_var_name>module_addtestuser</phrase_var_name>
+	</data>
+	<settings>
+		<setting group="" module_id="addtestuser" is_hidden="0" type="string" var_name="adduser_gender" phrase_var_name="setting_testuser_gender" ordering="1" version_id="3.3.0">1</setting>
+		<setting group="" module_id="addtestuser" is_hidden="0" type="string" var_name="adduser_birthday" phrase_var_name="setting_adduser_birthday" ordering="1" version_id="3.3.0">15</setting>
+		<setting group="" module_id="addtestuser" is_hidden="0" type="string" var_name="adduser_birthmonth" phrase_var_name="setting_adduser_birthmonth" ordering="1" version_id="3.3.0">06</setting>
+		<setting group="" module_id="addtestuser" is_hidden="0" type="string" var_name="adduser_birthyear" phrase_var_name="setting_adduser_birthyear" ordering="1" version_id="3.3.0">1980</setting>
+		<setting group="" module_id="addtestuser" is_hidden="0" type="string" var_name="adduser_location" phrase_var_name="setting_adduser_location" ordering="1" version_id="3.3.0">US</setting>
+		<setting group="" module_id="addtestuser" is_hidden="0" type="string" var_name="testuser_username" phrase_var_name="setting_testuser_username" ordering="1" version_id="3.3.0">Test User</setting>
+		<setting group="" module_id="addtestuser" is_hidden="0" type="string" var_name="testuser_password" phrase_var_name="setting_testuser_password" ordering="1" version_id="3.3.0">Passforyou</setting>
+		<setting group="" module_id="addtestuser" is_hidden="0" type="string" var_name="adduser_group" phrase_var_name="setting_adduser_group" ordering="1" version_id="3.3.0">2</setting>
+		<setting group="" module_id="addtestuser" is_hidden="0" type="integer" var_name="adduser_custom" phrase_var_name="setting_adduser_custom" ordering="1" version_id="3.3.0">1</setting>
+	</settings>
+	<phrases>
+		<phrase module_id="addtestuser" version_id="3.3.0" var_name="admin_menu_phrase1" added="1346594943">Add a user</phrase>
+		<phrase module_id="addtestuser" version_id="3.3.0" var_name="module_addtestuser" added="1346594943">User this module to add a test user to the site.</phrase>
+		<phrase module_id="addtestuser" version_id="3.3.0" var_name="menu_addtestuser_add_a_test_user_6d33be36dfb782099fb7b6ebc8b13f45" added="1346595823">Add a test user</phrase>
+		<phrase module_id="addtestuser" version_id="3.3.0" var_name="setting_testuser_password" added="1346625626"><![CDATA[<title>Password for Test Users</title><info>This password will apply to all test users added with this module.</info>]]></phrase>
+		<phrase module_id="addtestuser" version_id="3.3.0" var_name="setting_testuser_username" added="1346627099"><![CDATA[<title>Enter the root test user username.</title><info>Test users will have this username plus a number at the end.</info>]]></phrase>
+		<phrase module_id="addtestuser" version_id="3.3.0" var_name="setting_adduser_location" added="1347122480"><![CDATA[<title>Test User&#039;s Country</title><info>Select the country of the test user.</info>]]></phrase>
+		<phrase module_id="addtestuser" version_id="3.3.0" var_name="setting_adduser_birthyear" added="1347124984"><![CDATA[<title>Birthyear</title><info>Set Birthyear</info>]]></phrase>
+		<phrase module_id="addtestuser" version_id="3.3.0" var_name="setting_adduser_birthmonth" added="1347125087"><![CDATA[<title>Birthmonth</title><info>Enter Birthmonth</info>]]></phrase>
+		<phrase module_id="addtestuser" version_id="3.3.0" var_name="setting_adduser_birthday" added="1347125179"><![CDATA[<title>Birthday</title><info>Set Birthday</info>]]></phrase>
+		<phrase module_id="addtestuser" version_id="3.3.0" var_name="setting_testuser_gender" added="1347131455"><![CDATA[<title>Set Gender</title><info>Select the test users gender.</info>]]></phrase>
+		<phrase module_id="addtestuser" version_id="3.3.0" var_name="add_test_user" added="1347133608">Add Test User</phrase>
+		<phrase module_id="addtestuser" version_id="3.3.0" var_name="setting_adduser_group" added="1347135413"><![CDATA[<title>Set Group</title><info>Select a default group</info>]]></phrase>
+		<phrase module_id="addtestuser" version_id="3.3.0" var_name="setting_adduser_custom" added="1348691250"><![CDATA[<title>Enter a user_id# that will be used as a template for custom fields</title><info>This will fill in new user&#039;s required custom fields with the same information as the selected user.</info>]]></phrase>
+		<phrase module_id="addtestuser" version_id="3.4.0" var_name="please_provide_your_first_name" added="1354590641">Please provide your first name</phrase>
+		<phrase module_id="addtestuser" version_id="3.4.0" var_name="please_provide_your_last_name" added="1354590787">Please provide your last name</phrase>
+	</phrases>
+</module>

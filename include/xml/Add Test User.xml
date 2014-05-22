@@ -1,0 +1,17 @@
+<product>
+	<data>
+		<product_id>Add Test User</product_id>
+		<is_core>0</is_core>
+		<title>Add Test User</title>
+		<description>Generate a test user</description>
+		<version>1.3</version>
+		<latest_version>1.2.2</latest_version>
+		<last_check>1352646022</last_check>
+		<is_active>1</is_active>
+		<url>http://webwolfs-foxmods.com/</url>
+		<url_version_check>http://webwolfs-foxmods.info/versions/addtestuser/version.php</url_version_check>
+	</data>
+	<modules>
+		<module_id>addtestuser</module_id>
+	</modules>
+</product>
