@@ -35,7 +35,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 							<td>
 								<div class="dvs_share_image_holder">
 									<a href="#" onclick="
-										tb_show('Preview', $.ajaxBox('dvs.showMiniPreview', 'height=600&amp;width=900&amp;val[dvs_id]={$aDvs.dvs_id}'));{*&amp;val[shorturl]={$aVideo.shorturl}*}
+										tb_show('Preview', $.ajaxBox('dvs.showMiniPreview', 'height=640&amp;width=900&amp;val[dvs_id]={$aDvs.dvs_id}'));{*&amp;val[shorturl]={$aVideo.shorturl}*}
 										return false;">
 										<img src="{$baseUrl}module/dvs/static/image/play_btn_75.png" class="dvs_share_button_overlay" />
 										{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image width="100%"}
@@ -54,7 +54,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 										if( {$bIsIPhone} ) {l}
 											window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#share_link_box').val());
 										{r} else {l}
-											window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#share_link_box').val()),'width=600,height=400');
+											window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400');
 										{r}
 										return false;
 							  	{r});
@@ -71,7 +71,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 												if( {$bIsIPhone} ) {l}
 													window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent($('#share_link_box').val());
 												{r} else {l}
-													window.open('https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent($('#share_link_box').val()), 'width=600,height=400');
+													window.open( 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400' );
 												{r}
 												return false;
 									  	{r});
@@ -84,9 +84,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 											var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=google&return_id=share_link_box';
 											$.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
 												if( {$bIsIPhone} ) {l}
-													window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent($('#share_link_box').val());
+													window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent( $('#share_link_box').val() );
 												{r} else {l}
-													window.open('https://plus.google.com/share?url=' + encodeURIComponent($('#share_link_box').val()),'width=600,height=400');
+													window.open( 'https://plus.google.com/share?url=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400' );
 												{r}
 												return false;
 									  	{r});
