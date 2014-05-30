@@ -300,16 +300,16 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 							<li>
 								<div class="inv_dvs_wrapper">
 									<div class="inv_dvs_avatar">
-										<a href="{$inventoryItem.link}" target="_blank">
+										<a href="{$inventoryItem.link}" onclick="inventoryClickDvs();" target="_blank">
 											{img path='core.url_file' file=$inventoryItem.image max_width=145 max_height=82}
 										</a>
 									</div>
 									<div class="inv_dvs_info">
-										<p><a href="{$inventoryItem.link}" target="_blank">{$inventoryItem.title}</a></p>
+										<p><a href="{$inventoryItem.link}" onclick="inventoryClickDvs();" target="_blank">{$inventoryItem.title}</a></p>
 										<p>{phrase var='dvs.color'}: {$inventoryItem.color}</p>
 										<p>{phrase var='dvs.msrp'}: {$inventoryItem.price}</p>
 										<p class="view_details">
-											<a href="{$inventoryItem.link}" title="{phrase var='dvs.view_details'}" target="_blank">{phrase var='dvs.view_details'}</a>
+											<a href="{$inventoryItem.link}" onclick="inventoryClickDvs();" title="{phrase var='dvs.view_details'}" target="_blank">{phrase var='dvs.view_details'}</a>
 										</p>
 									</div>
 								</div>

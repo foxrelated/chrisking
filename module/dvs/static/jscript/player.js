@@ -914,3 +914,7 @@ function thumbnailClickDvs(iDvsId) {
 function thumbnailClickIDrive(iIDriveId) {
 	sendToGoogle(sPlayerName, 'iDrive Player', 'Playlist', 'Thumbnail Clicked');
 }
+
+function inventoryClickDvs(iDvsId) {
+	sendToGoogle('DVS Site', 'Inventory', 'Inventory Clicked');
+}
