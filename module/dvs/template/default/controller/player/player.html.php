@@ -170,21 +170,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{r}
 </script>
 
-<!--{if ($bIsExternal || (!$bIsDvs && isset($iChapterButtonLeft)))}
-<style type="text/css">
-	#chapter_buttons {l}
-	left: {$iChapterButtonLeft}px;
-	{r}
-	#dvs_player_container {l}
-	width: {$iBackgroundWidth}px;
-	height: {$iBackgroundHeight}px;
-	{r}
-	#playlist_wrapper{l}
-	width: {$iPlayerWidth}px;
-	{r}
-</style>
-{/if}-->
-
 {if ($bIsDvs && $aOverviewVideos) || (!$bIsDvs && $aVideos)}
 <section id="dvs_bc_player"{if $bIsDvs} itemscope itemtype="http://schema.org/VideoObject"{/if}>
 	{if $bIsDvs}
@@ -330,7 +315,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{if $bIsDvs}
 					{foreach from=$aOverviewVideos key=iKey item=aVideo}
 					<li>
-						<a class="playlist_carousel_image_link" {if $aDvs.gallery_target_setting==1}target="_blank" {/if} onclick="thumbnailClick({$iKey});thumbnailClickDvs();"><!-- $.ajaxCall('dvs.blanknew', 'pollval={$aDvs.dvs_id}&refe={$aVideo.referenceId}');-->
+						<a class="playlist_carousel_image_link" {if $aDvs.gallery_target_setting==1}target="_blank" {/if} onclick="thumbnailClick({$iKey});thumbnailClickDvs();">
 							{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
 							<p>{$aVideo.year} {$aVideo.model}</p>
 						</a>

@@ -17,7 +17,6 @@ function showOverlay(iOverlayId) {
 }
 
 function hideOverlay(iOverlayId) {
-//	$('#dvs_overlay_' + iOverlayId).css('top', 200);
 	$('#dvs_overlay_' + iOverlayId).toggle();
 	$("#dvs_overlay_" + iOverlayId).animate({
 		top: 0
@@ -35,16 +34,13 @@ function hideOverlay(iOverlayId) {
 function resetOverlays() {
 	// Make sure all overlays are hidden
 	$('.dvs_overlay').css('top', 0);
-	iCustomOverlayActive = 0;
-//	bOverlayHold = true;
-	
+	iCustomOverlayActive = 0;	
 }
 
 function onProgress(oProgress) {
 	// Are we ready to display overlay 1?
 	if (
 		bCustomOverlay1 &&
-//		!bOverlayHold &&
 		!iCustomOverlayActive &&
 		oProgress.position >= iCustomOverlay1Start &&
 		oProgress.position < (iCustomOverlay1Start + iCustomOverlay1Duration)
@@ -54,23 +50,8 @@ function onProgress(oProgress) {
 		iCustomOverlayActive = 1;
 	}
 	
-	// Are we ready hide overlay 1?
-//	console.log('bCustomOverlay1');
-//	console.log(bCustomOverlay1);
-////	console.log('bOverlayHold');
-////	console.log(bOverlayHold);
-//	console.log('iCustomOverlayActive');
-//	console.log(iCustomOverlayActive);
-//	console.log('oProgress.position');
-//	console.log(oProgress.position);
-//	console.log('iCustomOverlay1Start');
-//	console.log(iCustomOverlay1Start);
-//	console.log('iCustomOverlay1Duration');
-//	console.log(iCustomOverlay1Duration);
-	
 	if (
 		bCustomOverlay1 &&
-//		!bOverlayHold &&
 		iCustomOverlayActive == 1 &&
 		oProgress.position > (iCustomOverlay1Start + iCustomOverlay1Duration)
 		)
@@ -85,7 +66,6 @@ function onProgress(oProgress) {
 	// Overlay 2
 	if (
 		bCustomOverlay2 &&
-//		!bOverlayHold &&
 		!iCustomOverlayActive &&
 		oProgress.position >= iCustomOverlay2Start &&
 		oProgress.position < (iCustomOverlay2Start + iCustomOverlay2Duration)
@@ -100,7 +80,6 @@ function onProgress(oProgress) {
 
 	if (
 		bCustomOverlay2 &&
-//		!bOverlayHold &&
 		iCustomOverlayActive == 2 &&
 		oProgress.position > (iCustomOverlay2Start + iCustomOverlay2Duration)
 		)
@@ -115,7 +94,6 @@ function onProgress(oProgress) {
 	// Overlay 3
 	if (
 		bCustomOverlay3 &&
-//		!bOverlayHold &&
 		!iCustomOverlayActive &&
 		oProgress.position >= iCustomOverlay3Start &&
 		oProgress.position < (iCustomOverlay3Start + iCustomOverlay3Duration)
@@ -130,7 +108,6 @@ function onProgress(oProgress) {
 
 	if (
 		bCustomOverlay3 &&
-//		!bOverlayHold &&
 		iCustomOverlayActive == 3 &&
 		oProgress.position > (iCustomOverlay3Start + iCustomOverlay3Duration)
 		)
