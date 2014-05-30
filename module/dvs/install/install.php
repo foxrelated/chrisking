@@ -623,4 +623,87 @@ Phpfox::getLib('database')->query("CREATE TABLE IF NOT EXISTS `" . Phpfox::getT(
  KEY `dvs_id` (`dvs_id`)
 	) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ");
 
+
+// SocialEngineMarket Changes 28.05.2014
+Phpfox::getLib('database')->query("INSERT INTO `phpfox_language_phrase` (`language_id`, `module_id`, `product_id`, `version_id`, `var_name`, `text`, `text_default`, `added`) VALUES
+( 'en', 'dvs',  'Dvs',  '3.7.5',  'inventory_display_settings', 'Inventory Display Settings', 'Inventory Display Settings', 1398432839),
+('en', 'dvs',  'Dvs',  '3.7.5',  'inventory_settings_feed_type', 'Feed Type',  'Feed Type',  1398432939),
+('en', 'dvs',  'Dvs',  '3.7.5',  'inventory_settings_domain',  'Inventory Domain', 'Inventory Domain', 1398433072),
+('en', 'dvs',  'Dvs',  '3.7.5',  'dvs_inventory_shedule',  'Import Schedule',  'Import Schedule',  1398433163),
+('en', 'dvs',  'Dvs',  '3.7.5',  'dvs_inventory_shedule_every',  'Every',  'Every',  1398433268),
+('en', 'dvs',  'Dvs',  '3.7.5',  'dvs_inventory_shedule_hours',  'Hours',  'Hours',  1398433299),
+('en', 'dvs',  'Dvs',  '3.7.5',  'dvs_inventory_import', 'Import Now', 'Import', 1398433784),
+('en', 'dvs',  'Dvs',  '3.7.5',  'dvs_inventory_status_on',  'On', 'On', 1398433991),
+('en', 'dvs',  'Dvs',  '3.7.5',  'dvs_inventory_status_off', 'Off',  'Off',  1398434017),
+('en', 'dvs',  'Dvs',  '3.7.5',  'dvs_dvs_inventory_title',  'Inventory',  'Inventory',  1398446113),
+('en', 'dvs',  'Dvs',  '3.7.5',  'admin_menu_manage_inventory',  'Inventory',  'Inventory',  1399373996),
+('en', 'dvs',  'Dvs',  '3.7.5',  'importio_settings',  'import.io Settings', 'import.io Settings', 1399379065),
+('en', 'dvs',  'Dvs',  '3.7.5',  'user_guid',  'User GUID',  'User GUID',  1399379095),
+('en', 'dvs',  'Dvs',  '3.7.5',  'api_key',  'API Key',  'API Key',  1399379114),
+('en', 'dvs',  'Dvs',  '3.7.5',  'inventory_connectors', 'Inventory Connectors', 'Inventory Connectors', 1399379141),
+('en', 'dvs',  'Dvs',  '3.7.5',  'inventory_connectors_addnew',  'Add New',  'Add New',  1399384597),
+('en', 'dvs',  'Dvs',  '3.7.5',  'inventory_connectors_name',  'Name', 'Name', 1399384897),
+('en', 'dvs',  'Dvs',  '3.7.5',  'inventory_connectors_guid',  'GUID', 'GUID', 1399384917),
+('en', 'dvs',  'Dvs',  '3.7.5',  'inventory_connectors_notes', 'Notes',  'Notes',  1399384946),
+('en', 'dvs',  'Dvs',  '3.7.5',  'inventory_connectors_action',  'Action', 'Action', 1399384969),
+('en', 'dvs',  'Dvs',  '3.7.5',  'inventory_connectors_edit',  'Edit', 'Edit', 1399385000),
+('en', 'dvs',  'Dvs',  '3.7.5',  'inventory_connectors_delete',  'Delete', 'Delete', 1399385028),
+('en', 'dvs',  'Dvs',  '3.7.5',  'inventory_connectors_addnew_connectorguid',  'Connector GUID', 'Connector GUID', 1399385150),
+('en', 'dvs',  'Dvs',  '3.7.5',  'inventory_connectors_empty', 'You have no connectors', 'You have no connectors', 1399456065),
+('en', 'dvs',  'Dvs',  '3.7.5',  'fields_warning_message', 'Please fill required fields',  'Please fill required fields',  1399457284),
+('en', 'dvs',  'Dvs',  '3.7.5',  'inventory_settings_disclaimer',  'Inventory Settings Disclaimer (phrase name - inventory_settings_disclaimer)',  'Inventory Settings Disclaimer (phrase name - inventory_settings_disclaimer)',  1399892624),
+('en', 'dvs',  'Dvs',  '3.7.5',  'color',  'Color',  'Color',  1400245964),
+('en', 'dvs',  'Dvs',  '3.7.5',  'msrp', 'MSRP', 'MSRP', 1400245988),
+('en', 'dvs',  'Dvs',  '3.7.5',  'view_details', 'View Details', 'View Details', 1400246052),
+('en', 'dvs',  'Dvs',  '3.7.5',  'import_finished_successfully', 'Import finished Successfully', 'Import finished Successfully', 1400254087);
+");
+Phpfox::getLib('database')->query("DROP TABLE IF EXISTS `phpfox_ko_dvs_inventory_settings`;
+CREATE TABLE `phpfox_ko_dvs_inventory_settings` (
+  `setting_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`setting_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO `phpfox_ko_dvs_inventory_settings` (`setting_id`, `name`, `value`) VALUES
+(1, 'dvs_inventory_guid', 'd0b7f325-1768-41ff-9dc8-3db4d95bdfec'),
+(2, 'dvs_inventory_api_key',  'GvBMY5VqnKH2MP8F2rbQHCIiZ23LZbgng8H0le95KONwUTQL3+WHhkChlB+HqOW3aSSV2HRlZ6rLihjp782Kvw==');
+");
+Phpfox::getLib('database')->query("DROP TABLE IF EXISTS `phpfox_ko_dvs_inventory_connectors`;
+CREATE TABLE `phpfox_ko_dvs_inventory_connectors` (
+  `connector_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `guid` varchar(255) NOT NULL,
+  PRIMARY KEY (`connector_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO `phpfox_ko_dvs_inventory_connectors` (`connector_id`, `user_id`, `title`, `description`, `guid`) VALUES
+(9, 46, 'Dealer.com v2014', 'Used by Acton CDJR', '872b0f16-ccac-4de5-a27f-9798fb716efc');
+");
+Phpfox::getLib('database')->query("ALTER TABLE `phpfox_ko_dvs`
+ADD `inv_display_status` tinyint NOT NULL DEFAULT '0' AFTER `longitude`,
+ADD `inv_feed_type` int(11) NOT NULL AFTER `inv_display_status`,
+ADD `inv_domain` varchar(255) COLLATE 'utf8_general_ci' NOT NULL AFTER `inv_feed_type`,
+ADD `inv_schedule_hours` int(3) NOT NULL DEFAULT '24' AFTER `inv_domain`,
+ADD `inv_last_cronjob` int(11) NOT NULL DEFAULT '0' AFTER `inv_schedule_hours`,
+COMMENT='';
+");
+Phpfox::getLib('database')->query("DROP TABLE IF EXISTS `phpfox_ko_dvs_inventory`;
+CREATE TABLE `phpfox_ko_dvs_inventory` (
+  `inventory_id` int(11) NOT NULL AUTO_INCREMENT,
+  `dvs_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `price` varchar(32) NOT NULL,
+  `color` varchar(64) NOT NULL,
+  `link` varchar(255) NOT NULL,
+  `creation_date` int(11) NOT NULL,
+  `modified_date` int(11) NOT NULL,
+  PRIMARY KEY (`inventory_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+");
+
+
 ?>
