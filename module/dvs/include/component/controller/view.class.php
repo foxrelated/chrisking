@@ -131,7 +131,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				if ((!empty($aFeaturedVideo) && $aVideo['id'] == $aFeaturedVideo['id']) || (!empty($aOverrideVideo) && $aVideo['id'] == $aOverrideVideo['id']))
 				{
 					//Remove dupe
-					unset($aOverviewVideos[$iKey]);
+					//unset($aOverviewVideos[$iKey]);
 				}
 			}
 		}
@@ -148,14 +148,40 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		{
 			$aFirstVideo = $aOverviewVideos[1];
 		}
+		/*phpmasterminds Edited for sort in gallery and footer starts*/
+		/*foreach($aOverviewVideos as $ik=>$aVal)
+		{
+			$exp = explode(" ",$aVal['name']);
+			
 
+			$aOverviewVideos[$ik]['my_find'] = $exp[0];
+			
+		}
+		
+		$aOverviewVideos = Phpfox::getService('dvs')->aasort($aOverviewVideos,"ko_id");
+		*/
+		/*phpmasterminds Edited for sort in gallery and footer ends*/
+		
 		// Sort videos by name for footer links
 		$aFooterLinks = $aOverviewVideos;
+	
+		foreach($aFooterLinks as $ik=>$aVal)
+		{
+			$exp = explode(" ",$aVal['name']);
+			
 
-		usort($aFooterLinks, function($a, $b)
+			$aFooterLinks[$ik]['my_find'] = $exp[0];
+			
+		}
+		
+		$aFooterLinks = Phpfox::getService('dvs')->aasort($aFooterLinks,"ko_id");
+		
+		/*usort($aFooterLinks, function($a, $b)
 		{
 			return strcasecmp($a['name'], $b['name']);
-		});
+		});*/
+	
+		
 
 		$sLinkBase = Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'));
 		$sLinkBase .= $aFirstVideo['video_title_url'];
@@ -277,6 +303,9 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			));
 		}
 
+		$inventoryList = Phpfox::getService('dvs')->getModelInventory($aFirstVideo['ko_id']);
+
+		
 		$this->template()
 			->setTemplate('dvs-view')
 			->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -304,6 +333,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			))
 			->assign(array(
 				'aDvs' => $aDvs,
+				'aFirstVideo' => $aFirstVideo,
+				'inventoryList' => $inventoryList,
 				'bc' => $this->request()->get('bc'),
 				'sBackgroundPath' => Phpfox::getParam('core.url_file') . 'dvs/background/' . $aDvs['background_file_name'],
 				'iBackgroundOpacity' => $iBackgroundOpacity,
@@ -345,6 +376,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		));
 
 	}
+	
+	
 
 }
 ?>

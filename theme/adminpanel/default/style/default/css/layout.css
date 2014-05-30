@@ -2587,3 +2587,60 @@ a.hosting_package_upgrade:hover
 	margin:20px 0px 0px 0px;
 	text-align:center;
 }
+
+/*** flit77 changes PhpFoxer 25.04.2014 ****************************/
+.dvs_inventory_guid_table{
+	width: auto;
+	background: none;
+	border: none;
+}
+.dvs_inventory_guid_table th{
+	background: none;
+	border: none;
+	color: #000;
+	padding: 0 0 0 4px;
+}
+.importio_settings_wrapper,
+.importio_addnew_settings_wrapper
+{
+	margin-top: 20px;
+}
+.dvs_inventory_connectors_table tr td{
+	width: 200px;
+}
+#errorwarn{
+	margin: 10px 0 20px 0;
+	color: red;
+	font-weight: bold;
+}
+.warning{
+	background: #fdb3b3;
+}
+
+.edit_connector_popup_wrapper{
+	display: none;
+}
+#edit_connector_popup { 
+	box-shadow: 0 0 30px #969696;
+	top: 20%; 
+	left: 50%; 
+	margin-left: -210px; 
+	position: fixed; 
+	z-index: 1001;
+	background: #fff; 
+	width: 320px; 
+	height: 230px; 
+	border-radius: 15px;
+	border: 3px solid #434343;
+	padding: 15px;
+}
+	
+#edit_connector_popup #popup_title {font-size: 28px; text-align:center;}
+#edit_connector_popup #edit_connector-title {font-size:20px;}
+#edit_connector_popup #edit_connector-form { float:none; margin:auto;}
+#close_edit_connector_popup {text-align:right;cursor:pointer;margin: 5px 10px 0 0;}
+#edit_connectorform_popup {margin-left:65px;}
+#edit_connectorform_popup > input {margin:10px 0 0 15px;}
+#button-edit_connector_popup {width: 137px;}
+
+/*** flit77 changes PhpFoxer 25.04.2014 ****************************/

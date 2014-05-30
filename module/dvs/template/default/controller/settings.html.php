@@ -44,7 +44,142 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{literal}
 	}
 </script>
+<style type="text/css">
+	{/literal}
+		{if $aForms.inv_display_status == 0}
+	{literal}
+		.inv_display_row_wrapper{
+			display: none;
+		}
+	{/literal}
+		{/if}
+	{literal}
+</style>
+
+<script type="text/javascript">
+
+	var total = 100;
+	var totalvideos = 100;
+	var job = "asdf";
+	var run=true;
+	current_progress = 0;
+
+	$Behavior.domReady = function(){
+		$('#inventory_import_button_ajax').on('click', function(){
+			$('.progress_bar_wrapper').show('slow');
+			setInterval(function(){process_increase()}, 1000);
+			$.ajaxCall('dvs.instantImport',
+				'dvs_id={/literal}{$aForms.dvs_id}{literal}'
+			);
+		});
+		$('#inv_display_status_on').on('click', function(){
+			var confirm_res = confirm("{/literal}{phrase var='dvs.inventory_settings_disclaimer'}{literal}");
+			if (confirm_res == true) {
+				$('.inv_display_row_wrapper').css('display', 'block');
+				return true;
+			} else {
+				return false;
+			}
+		});
+		$('#inv_display_status_off').on('click', function(){
+			$('.inv_display_row_wrapper').css('display', 'none');
+		});
+	};
+
+	function autoUpdate(offset){
+		if (offset < total && run){
+			$.ajaxCall('dvs.instantImport',
+				'dvs_id={/literal}{$aForms.dvs_id}{literal}'
+			);
+		};
+		if (run == false){
+			$("#progress_running").toggle("slow");
+			$("#progress_stopped").toggle("slow");
+		};
+		if (offset >= total){
+			$("#progress_running").hide("slow");
+			$("#progress_outer").hide("slow");
+			$("#progress_update").hide("slow");
+			$("#progress_complete").show("slow");
+			
+			$('#dvs_message').show('slow');
+		};
+
+	};
+	function restart(offset){
+		$("#progress_running").show("slow");
+		$("#progress_stopped").hide("slow");
+		run=true;
+		autoUpdate(offset);
+	};
+
+	function finishProgress(){
+		alert('{/literal}{$sMessage}{literal}');
+		current_progress = 100;
+		$('#progress_inner').stop().animate({
+			width: '100%'
+		}, 300, function() {});
+		$("#progress_percentage").html("100%");
+
+		// $("#progress_running").hide("slow");
+		// $("#progress_outer").hide("slow");
+		// $("#progress_update").hide("slow");
+		// $("#progress_complete").show("slow");
+		
+		$('#dvs_message').show('slow');
+	}
+
+	function process_increase(){
+		if(current_progress >= 99){
+			return false;
+		}
+		current_progress = current_progress + 1;
+		$('#progress_inner').stop().animate({
+			width: current_progress + '%'
+		}, 300, function() {});
+		$("#progress_percentage").html(current_progress + "%");
+	};
+</script>
+<style type="text/css">
+	#progress_outer{
+		border: 1px solid #000;
+		width: 600px;
+		height: 15px;
+	}
+	#progress_inner{
+		width: 0%;
+		height: 15px;
+		background: #ff8c22;
+	}
+	#progress_percentage{
+		position: absolute;
+		float: center;
+		width: 600px;
+		height:15px;
+		color:#000;
+		font-weight: bold;
+		text-align: center;
+		padding-top: 2px;
+	}
+</style>
 {/literal}
+
+{if isset($importInventoryRes) && $importInventoryRes}
+	{literal}
+		<script type="text/javascript">
+			$Behavior.message = function() {
+				$('#dvs_message').show('slow');
+				// $('#dvs_message').animate({top: 0}, 1000).hide('slow');
+			}
+		</script>
+	{/literal}
+{/if}
+<div class="message" id="dvs_message" style="display:none;">
+	{$sMessage}
+</div>
+
+<form method="post" action="" id="import_dvs" name="import_dvs">
+</form>
 <form method="post" action="{url link='dvs.index'}" id="add_dvs" name="add_dvs">
 	<table class="dvs_add_table">
 		<tr>
@@ -52,7 +187,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{required}{phrase var='dvs.dealer_name'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[dealer_name]" value="{value type='input' id='dealer_name'}" id="dealer_name" maxlength=30 required "/>
+				<input type="text" name="val[dealer_name]" value="{value type='input' id='dealer_name'}" id="dealer_name" maxlength=30 required />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.dealer_name_phrase'}
@@ -276,7 +411,115 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 		</tr>
 	</table>
+	<!--phpmasterminds added below code for setting on header and footer remover -->
+	<div class="inventory_settings_wrapper">
+		<h1>{phrase var='dvs.banner_and_footer_toggle'}</h1>
+		<table class="dvs_add_table">
+			<tr>
+				<td class="dvs_add_td_label">
+					{phrase var='dvs.banner_toggle'}:
+				</td>
+				<td colspan="2" class="dvs_add_td">
+					<input type="radio" name="val[banner_toggle]" value="1" {if $aForms.banner_toggle == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
+					<input type="radio" name="val[banner_toggle]" value="0" {if $aForms.banner_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+				</td>
+			</tr>
+			<tr>
+				<td class="dvs_add_td_label">
+					{phrase var='dvs.footer_toggle'}:
+				</td>
+				<td colspan="2" class="dvs_add_td">
+					<input type="radio" name="val[footer_toggle]" value="1" {if $aForms.footer_toggle == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
+					<input type="radio" name="val[footer_toggle]" value="0" {if $aForms.footer_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+				</td>
+			</tr>
+			<tr>
+				<td class="dvs_add_td_label">
+					{phrase var='dvs.top_menu_toggle'}:
+				</td>
+				<td colspan="2" class="dvs_add_td">
+					<input type="radio" name="val[topmenu_toggle]" value="1" {if $aForms.topmenu_toggle == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
+					<input type="radio" name="val[topmenu_toggle]" value="0" {if $aForms.topmenu_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+				</td>
+			</tr>
+		</table>
+	</div>
 	
+	<div class="inventory_settings_wrapper">
+		<h1>{phrase var='dvs.gallery_setting'}</h1>
+		<table class="dvs_add_table">
+			<tr>
+				<td colspan="2" class="dvs_add_td">
+					<input type="radio" name="val[gallery_target_setting]" value="0" {if $aForms.gallery_target_setting == 0}checked="checked"{/if} />{phrase var='dvs.open_on_same_page'}
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="val[gallery_target_setting]" value="1" {if $aForms.gallery_target_setting == 1}checked="checked"{/if} />{phrase var='dvs.open_in_new_window'}
+				</td>
+			</tr>
+		</table>
+	</div>
+	<!--phpmasterminds added above code for setting on header and footer remover -->
+	{*** flit77 changes 05052014 *}
+	<div class="inventory_settings_wrapper">
+		<h1>{phrase var='dvs.inventory_display_settings'}</h1>
+		<table class="dvs_add_table">
+			<tr>
+				<td colspan="2" class="dvs_add_td">
+					<input type="radio" name="val[inv_display_status]" value="1" id="inv_display_status_on" {if $aForms.inv_display_status == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
+					<input type="radio" name="val[inv_display_status]" value="0" id="inv_display_status_off" {if $aForms.inv_display_status == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+				</td>
+			</tr>
+			<tr class="inv_display_row_wrapper">
+				<td class="dvs_add_td_label">
+					{phrase var='dvs.inventory_settings_feed_type'}:
+				</td>
+				<td colspan="2" class="dvs_add_td">
+					<select name="val[inv_feed_type]" id="inv_feed_type">
+						<option value=""></option>
+						{if $connectors}
+							{foreach from=$connectors item=connector name=iConnector}
+								<option value="{$connector.connector_id}" {if $aForms.inv_feed_type == $connector.connector_id}selected="selected"{/if}>{$connector.title}</option>
+							{/foreach}
+						{/if}
+					</select>
+				</td>
+			</tr>
+			<tr class="inv_display_row_wrapper">
+				<td class="dvs_add_td_label">
+					{phrase var='dvs.inventory_settings_domain'}:
+				</td>
+				<td colspan="2" class="dvs_add_td">
+					<input type="text" name="val[inv_domain]" value="{value type='input' id='inv_domain'}" id="inv_domain" maxlength=30 />
+				</td>
+			</tr>
+			<tr class="inv_display_row_wrapper">
+				<td class="dvs_add_td_label">
+					{phrase var='dvs.dvs_inventory_shedule'}:
+				</td>
+				<td colspan="2" class="dvs_add_td">
+					{phrase var='dvs.dvs_inventory_shedule_every'} <input type="text" name="val[inv_schedule_hours]" value="{value type='input' id='inv_schedule_hours'}" id="inv_schedule_hours" maxlength=3 /> {phrase var='dvs.dvs_inventory_shedule_hours'}
+				</td>
+			</tr>
+			<tr class="inv_display_row_wrapper" style="margin-top: 15px;">
+				<td colspan="2">
+					<div class="import_button_wrapper">
+						<input type="button" value="{phrase var='dvs.dvs_inventory_import'}" class="button" id="inventory_import_button_ajax" name="inventory_import_button_ajax" />
+					</div>
+					<div class="progress_bar_wrapper">
+						<div id="progress_outer">
+							<div id="progress_percentage">0%</div>
+							<div id="progress_inner"></div>
+						</div>
+						<div id="progress_update"></div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	{*** END flit77 changes 05052014 *}
 	
 	<div id="phrase_override_toggle">
 		<a href="#" onclick="if ($('#phrase_override_wrapper').is(':visible')){l}$('#phrase_override_wrapper').hide('slow');wtvlt='Show Phrase Overrides'{r}else{l}$('#phrase_override_wrapper').show('slow');wtvlt='Hide Phrase Overrides (values will still be saved)';{r}$(this).text(wtvlt);return false;" id="phrase_override_toggle_link">Show Phrase Overrides</a>

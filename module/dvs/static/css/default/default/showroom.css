@@ -246,6 +246,100 @@ header nav a:hover
 	display:inline-block;
 }
 
+/*** flit77 changes PhpFoxer 25.04.2014 ****************************/
+#overview_inventory {
+	display: inline-block;
+	overflow: hidden;
+	height: 85px;
+	width: 625px;
+}
+
+#overview_inventory ul li {
+	position: relative;
+	float: left;
+	background-color: #5c5c5c;
+}
+
+#overview_inventory li
+{
+	margin-right: 3px;
+	margin-left: 3px;
+	height: 82px;
+}
+
+#overview_inventory li .inv_dvs_wrapper
+{
+	width: 300px;
+}
+
+#overview_inventory li .inv_dvs_avatar
+{
+	float: left;
+	overflow: hidden;
+}
+
+#overview_inventory li .inv_dvs_info
+{
+	overflow: hidden;
+	padding: 5px 0 0 10px;
+}
+
+#overview_inventory li .view_details
+{
+	margin-top: 5px;
+}
+
+#overview_inventory li p > a
+{
+	color: #fff;
+}
+
+#overview_inventory li .view_details a
+{
+	color: #d01d12;
+}
+
+#overview_inventory ul li p {
+	color: #fff;
+	font-size: 12px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#inventory_wrapper,
+#playlist_wrapper
+{
+	height: auto;
+}
+.inventory_info_message{
+	margin: 5px 0 5px 10px;
+	font-weight: bold;
+	color: #fff;
+	height:82px;
+}
+
+button.playlist-button
+{
+/*	background: #00A7AD;*/
+	display: inline-block;
+	vertical-align: top;
+	width: 25px;
+	height: 25px;
+	margin-top: 30px;
+	padding: 0;
+	border: 0px none;
+	border-radius: 20%;
+	font-weight: bold;
+/*	color: #000;*/
+	cursor: pointer;
+}
+
+button.playlist-button:hover
+{
+	opacity: 0.5;
+}
+/*** flit77 changes PhpFoxer 25.04.2014 ****************************/
+
 /* Right bar directly to the right of the player */
 
 #player_right {
@@ -286,6 +380,7 @@ header nav a:hover
 	display: none;
 	position: absolute;
 	text-align: left;
+	z-index:9;
 }
 
 #select_new ul ul li

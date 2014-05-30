@@ -72,19 +72,34 @@ class Dvs_Component_Controller_Settings extends Phpfox_Component {
 			'country_child_value' => 'US'
 		));
 
+		$connectors = Phpfox::getService('dvs')->getConnectors();
+
+		$importInventoryRes = null;
+		if($_POST){
+			$importInventoryRes = Phpfox::getService('dvs')->importInventory($iDvsId);
+		}
+		$sMessage           = Phpfox::getPhrase('dvs.import_finished_successfully');
+
+		if($this->request()->get('import') == 1 && 0){
+			Phpfox::getService('dvs')->importInventory($iDvsId);
+		}
+
 		$this->template()
 			->setHeader(array(
 				'add.css' => 'module_dvs',))
 			->assign(array(
-				'aForms' => $aDvs,
-				'bIsEdit' => $bIsEdit,
-				'bCanAddDvss' => $bCanAddDvss,
-				'bSubdomainMode' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? true : false),
-				'aPhraseVars' => $aPhraseVars,
+				'aForms'                   => $aDvs,
+				'connectors'               => $connectors,
+				'importInventoryRes'       => $importInventoryRes,
+				'sMessage'                 => $sMessage,
+				'bIsEdit'                  => $bIsEdit,
+				'bCanAddDvss'              => $bCanAddDvss,
+				'bSubdomainMode'           => (Phpfox::getParam('dvs.enable_subdomain_mode') ? true : false),
+				'aPhraseVars'              => $aPhraseVars,
 				'iWelcomeGreetingMaxChars' => Phpfox::getParam('dvs.welcome_greeting_max_chars'),
-				's1onOneDefault' => (Phpfox::getParam('dvs.1onone_video_url_replacement') ? Phpfox::getParam('dvs.1onone_video_url_replacement') : 'overview'),
-				'sNew2UDefault' => (Phpfox::getParam('dvs.new2u_video_url_replacement') ? Phpfox::getParam('dvs.new2u_video_url_replacement') : 'used-car-review'),
-				'sTop200Default' => (Phpfox::getParam('dvs.top200_video_url_replacement') ? Phpfox::getParam('dvs.top200_video_url_replacement') : 'test-drive')
+				's1onOneDefault'           => (Phpfox::getParam('dvs.1onone_video_url_replacement') ? Phpfox::getParam('dvs.1onone_video_url_replacement') : 'overview'),
+				'sNew2UDefault'            => (Phpfox::getParam('dvs.new2u_video_url_replacement') ? Phpfox::getParam('dvs.new2u_video_url_replacement') : 'used-car-review'),
+				'sTop200Default'           => (Phpfox::getParam('dvs.top200_video_url_replacement') ? Phpfox::getParam('dvs.top200_video_url_replacement') : 'test-drive')
 			))
 			->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'), Phpfox::getLib('url')->makeUrl('dvs'))
 			->setBreadcrumb($sBreadcrumb);

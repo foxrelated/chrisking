@@ -4683,3 +4683,26 @@ a.dislike_count_link:hover
 	width: 60px;
 	height: 60px;
 }
+
+/*** flit77 changes PhpFoxer 25.04.2014 ****************************/
+.inventory_settings_wrapper{
+	margin: 10px 0 20px 0;
+}
+#dvs_inventory_shedule{
+	width: 28px;
+}
+#inventory_import_button{
+	background: #ccc;
+	color: #000;
+}
+.dvs_add_td_label{
+	width: 124px;
+}
+.import_button_wrapper{
+	margin-top: 15px;
+}
+.progress_bar_wrapper{
+	margin-top: 15px;
+	display: none;
+}
+/*** flit77 changes PhpFoxer 25.04.2014 ****************************/

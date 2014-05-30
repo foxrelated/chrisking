@@ -18,7 +18,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{foreach from=$aDvsVideos key=iKey item=aVideo name=videos}
 			<div class="dvs_gallery_thumbnail_image_container{if is_int($phpfox.iteration.videos/$iColumns)} dvs_gallery_thumbnail_image_container_end{/if}">
 				<div class="dvs_gallery_thumbnail_image_container_inner">
-					<a href="{if $bSubdomainMode}{url link=$aDvs.title_url.'.'.$aVideo.video_title_url}{else}{url link='dvs.'$aDvs.title_url.'.'.$aVideo.video_title_url}{/if}" class="dvs_footer_link" target="_blank">
+					<a href="{if $bSubdomainMode}{url link=$aDvs.title_url.'.'.$aVideo.video_title_url}{else}{url link='dvs.'$aDvs.title_url.'.'.$aVideo.video_title_url}{/if}" class="dvs_footer_link" {if $aVideo.targer_href == 1}target="_blank"{else}target="_self"{/if} > <!--phpmasterminds edited this code for self or blank -->
 						<div class="dvs_gallery_image">
 							{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image}
 						</div>

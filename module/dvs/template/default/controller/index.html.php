@@ -112,7 +112,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</div>
 				
 			{/foreach}
-
+{pager}
 		</table>
 	</div>
 {/if}

@@ -54,13 +54,21 @@ class Dvs_Service_Process extends Phpfox_Service {
 //			'facebook_url' => (isset($aDvs['facebook_url']) ? $this->preParse()->clean($aDvs['facebook_url'], 255) : ''),
 //			'twitter_url' => (isset($aDvs['twitter_url']) ? $this->preParse()->clean($aDvs['twitter_url'], 255) : ''),
 //			'google_url' => (isset($aDvs['google_url']) ? $this->preParse()->clean($aDvs['google_url'], 255) : ''),
+			'inv_display_status' => $this->preParse()->clean($aDvs['inv_display_status'], 1),
+			'inv_feed_type'      => $this->preParse()->clean($aDvs['inv_feed_type'], 255),
+			'inv_domain'         => $this->preParse()->clean($aDvs['inv_domain'], 255),
+			'inv_schedule_hours' => $this->preParse()->clean(round($aDvs['inv_schedule_hours']), 255),
 			'specials_url' => $this->preParse()->clean($aDvs['specials_url'], 255),
 			'latitude' => $aGeoCode['latitude'],
 			'longitude' => $aGeoCode['longitude'],
 			'1onone_override' => (isset($aDvs['1onone_override']) ? $this->preParse()->clean($aDvs['1onone_override'], 128) : ''),
 			'new2u_override' => (isset($aDvs['new2u_override']) ? $this->preParse()->clean($aDvs['new2u_override'], 128) : ''),
 			'top200_override' => (isset($aDvs['top200_override']) ? $this->preParse()->clean($aDvs['top200_override'], 128) : ''),
-			'dvs_time_stamp' => PHPFOX_TIME
+			'dvs_time_stamp' => PHPFOX_TIME,
+			'banner_toggle' => $this->preParse()->clean($aDvs['banner_toggle'], 1),
+			'footer_toggle' => $this->preParse()->clean($aDvs['footer_toggle'], 1),
+			'topmenu_toggle' => $this->preParse()->clean($aDvs['topmenu_toggle'], 1),
+			'gallery_target_setting' => $this->preParse()->clean($aDvs['gallery_target_setting'], 1)
 		));
 
 		$this->database()->insert($this->_sTextTable, array(
@@ -96,13 +104,21 @@ class Dvs_Service_Process extends Phpfox_Service {
 //			'facebook_url' => (isset($aDvs['facebook_url']) ? $this->preParse()->clean($aDvs['facebook_url'], 255) : ''),
 //			'twitter_url' => (isset($aDvs['twitter_url']) ? $this->preParse()->clean($aDvs['twitter_url'], 255) : ''),
 //			'google_url' => (isset($aDvs['google_url']) ? $this->preParse()->clean($aDvs['google_url'], 255) : ''),
+			'inv_display_status' => $this->preParse()->clean($aDvs['inv_display_status'], 1),
+			'inv_feed_type'      => $this->preParse()->clean($aDvs['inv_feed_type'], 255),
+			'inv_domain'         => $this->preParse()->clean($aDvs['inv_domain'], 255),
+			'inv_schedule_hours' => $this->preParse()->clean($aDvs['inv_schedule_hours'], 255),
 			'specials_url' => $this->preParse()->clean($aDvs['specials_url'], 255),
 			'latitude' => $aGeoCode['latitude'],
 			'longitude' => $aGeoCode['longitude'],
 			'1onone_override' => (isset($aDvs['1onone_override']) ? $this->preParse()->clean($aDvs['1onone_override'], 128) : ''),
 			'new2u_override' => (isset($aDvs['new2u_override']) ? $this->preParse()->clean($aDvs['new2u_override'], 128) : ''),
 			'top200_override' => (isset($aDvs['top200_override']) ? $this->preParse()->clean($aDvs['top200_override'], 128) : ''),
-			'dvs_time_stamp' => PHPFOX_TIME
+			'dvs_time_stamp' => PHPFOX_TIME,
+			'banner_toggle' => $this->preParse()->clean($aDvs['banner_toggle'], 1),
+			'footer_toggle' => $this->preParse()->clean($aDvs['footer_toggle'], 1),
+			'topmenu_toggle' => $this->preParse()->clean($aDvs['topmenu_toggle'], 1),
+			'gallery_target_setting' => $this->preParse()->clean($aDvs['gallery_target_setting'], 1)
 			), 'dvs_id = ' . (int) $aDvs['dvs_id']);
 
 		if (Phpfox::isAdmin())
