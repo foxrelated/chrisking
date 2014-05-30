@@ -86,7 +86,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 												if( {$bIsIPhone} ) {l}
 													window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent( $('#share_link_box').val() );
 												{r} else {l}
-													window.open( 'https://plus.google.com/share?url=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400,scrollbars=yes,statusbar=yes,menubar=no,toolbar=no' );
+													window.open( 'https://plus.google.com/share?url=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400' );
 												{r}
 												return false;
 									  	{r});
