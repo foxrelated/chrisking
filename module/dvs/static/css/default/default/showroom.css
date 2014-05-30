@@ -368,6 +368,7 @@ button.playlist-button:hover
 	margin-top: 15px;
 	font-size: 15px;
 	font-weight: bold;
+	cursor:pointer;
 }
 
 #select_new ul ul
@@ -381,6 +382,7 @@ button.playlist-button:hover
 	position: absolute;
 	text-align: left;
 	z-index:9;
+	cursor:pointer;
 }
 
 #select_new ul ul li
@@ -389,6 +391,7 @@ button.playlist-button:hover
 	padding: 4px;
 	font-size: 15px;
 	font-weight: normal;
+	cursor:pointer;
 }
 
 #select_new li:not(.init):hover
@@ -520,3 +523,7 @@ footer a:hover
 {
 	color: #009c05;
 }*/
+
+#year ul {
+cursor:pointer;
+}
