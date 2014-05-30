@@ -226,11 +226,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 			}
 		}
 
-		if($_COOKIE['dev'] == 1){
-			$aOverviewVideos = $this->limitVideos($aVideos, 5);
-		}else{
-			$aOverviewVideos = $this->limitVideos($aVideos, Phpfox::getParam('dvs.vf_overview_max_videos'));
-		}
+		$aOverviewVideos = $this->limitVideos($aVideos, Phpfox::getParam('dvs.vf_overview_max_videos'));
 
 		$aOverviewVideos = $this->sortVideos($aOverviewVideos, Phpfox::getParam('dvs.vf_overview_round_robin'));
 

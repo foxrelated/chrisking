@@ -43,17 +43,19 @@ defined('PHPFOX') or exit('No direct script access allowed.');
   {else}
     {if !$bPreview}
       {if $aDvs.branding_file_name}
-        <a href="{$aDvs.url}">
-          {img path='core.url_file'
-               file='dvs/branding/'.$aDvs.branding_file_name
-               style="vertical-align:middle; max-width: 100% !important; height: auto !important;"
-               max_width=1117}
-        </a>
+		{if $aDvs.banner_toggle == 1} <!--phpmasterminds added this code for header toggle -->
+			<a href="{$aDvs.url}">
+			  {img path='core.url_file'
+				   file='dvs/branding/'.$aDvs.branding_file_name
+				   style="vertical-align:middle; max-width: 100% !important; height: auto !important;"
+				   max_width=1117}
+			</a>
+		{/if} <!--phpmasterminds added this code for header toggle -->
       {else}
         <h1><a href="{$aDvs.url}">{$aDvs.dealer_name}</a></h1>
       {/if}
     {/if}
-
+	{if $aDvs.topmenu_toggle == 1} <!--phpmasterminds added this code for Menu toggle -->
     <header>
       <nav>
         <ul>
@@ -62,7 +64,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
           </li>
           {if $aDvs.inventory_url}
             <li>
-              <a href="{$aDvs.inventory_url}" onclick="menuInventory('Top Menu Clicks');" rel="nofollow">
+              <a href="{$aDvs.inventory_url}" class="dvs_inventory_link" onclick="menuInventory('Top Menu Clicks');" rel="nofollow">
                 {phrase var='dvs.show_inventory'}
               </a>
             </li>
@@ -97,7 +99,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </ul>
       </nav>
     </header>
-
+	{/if}<!--phpmasterminds added this code for Menu toggle ends -->
     <article>
       <section>
         <div class="dvs-info" style="padding-top:10px;font-size:13px;font-weight:bold;"><p>To start your video test drive, select a year, make and model or click on the play button below. Instantly view what's important to you by clicking the chapter buttons to the right.</p></div>
@@ -212,7 +214,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </p>
       </aside>
     </article>
-
+	{if $aDvs.footer_toggle == 1} <!--phpmasterminds added this code for footer toggle -->
     <footer>
       <h3>{phrase var='dvs.more_videos'}</h3>
       <ul>
@@ -224,5 +226,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
           {/foreach}
       </ul>
     </footer>
+	{/if} <!--phpmasterminds added this code for footer toggle -->
   {/if}
 {/if}

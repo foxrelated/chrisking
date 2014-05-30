@@ -13,6 +13,89 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 {
+	public function instantImport()
+	{
+		if(!Phpfox::isAdmin()){
+			return false;
+		}
+
+		$dvs_id = $this->get('dvs_id');
+		// echo $dvs_id;die();
+		$res = Phpfox::getService('dvs')->importInventory($dvs_id);
+		$this->call("finishProgress();");
+
+	}
+
+	public function updateInventoryConnector()
+	{
+		if(!Phpfox::isAdmin()){
+			return false;
+		}
+
+		$connector_id = $this->get('connector_id');
+		$title        = $this->get('title');
+		$guid         = $this->get('guid');
+		$description  = $this->get('description');
+
+		if(empty($connector_id)){
+			return false;
+		}
+
+		Phpfox::getLib('database')->update(Phpfox::getT('ko_dvs_inventory_connectors'), array(
+			'title' => Phpfox::getLib('database')->escape($title),
+			'description' => Phpfox::getLib('database')->escape($description),
+			'guid' => Phpfox::getLib('database')->escape($guid)
+			), "connector_id = '".$connector_id."'");
+
+		$this->call("connectorUpdated('{$connector_id}');");
+
+	}
+
+	public function deleteInventoryConnector()
+	{
+		if(!Phpfox::isAdmin()){
+			return false;
+		}
+
+		$connector_id  = $this->get('connector_id');
+
+		if(empty($connector_id)){
+			return false;
+		}
+
+		Phpfox::getLib('database')->delete(Phpfox::getT('ko_dvs_inventory_connectors'), "connector_id = '".Phpfox::getLib('database')->escape($connector_id)."'");
+
+		$this->call("connectorDeleted('{$connector_id}');");
+
+	}
+
+	public function addInventoryConnector()
+	{
+		if(!Phpfox::isAdmin()){
+			return false;
+		}
+
+		$userId              = Phpfox::getUserId();
+		$dvs_inventory_name  = $this->get('dvs_inventory_name');
+		$dvs_inventory_guid  = $this->get('dvs_inventory_guid');
+		$dvs_inventory_notes = $this->get('dvs_inventory_notes');
+
+		if(empty($dvs_inventory_name) && empty($dvs_inventory_guid)){
+			return false;
+		}
+
+		$connector_id = Phpfox::getLib('database')->insert(Phpfox::getT('ko_dvs_inventory_connectors'), array(
+				'user_id'     => Phpfox::getLib('database')->escape($userId),
+				'title'       => Phpfox::getLib('database')->escape($dvs_inventory_name),
+				'description' => Phpfox::getLib('database')->escape($dvs_inventory_notes),
+				'guid'        => Phpfox::getLib('database')->escape($dvs_inventory_guid)
+			)
+		);
+
+    $this->call("connectorCreated('{$connector_id}');");
+
+	}
+
 	public function updateClicks()
 	{
 		$sDvsRequest = $this->get('sDvsRequest');
@@ -435,7 +518,33 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		}
 
 	}
+	/*phpmasterminds added below function */
+	/*public function blanknew()
+	{
+		$aDvs = Phpfox::getService('dvs')->get(Phpfox::getLib('request')->get('pollval'));
+		
+		$aVideo = Phpfox::getService('dvs.video')->get(Phpfox::getLib('request')->get('refe'));
+		
+		if (Phpfox::getParam('dvs.enable_subdomain_mode'))
+		{
+			$sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url']);
+		}
+		else
+		{
+			$sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url']));
+		}
 
+		$sOverrideLink = rtrim($sOverrideLink, '/');
+		if($aDvs['gallery_target_setting'] == 1)
+		{
+			
+
+			//$this->call('window.location.href = \'' . $sOverrideLink . '\';');
+			$this->call('window.open( \'' . $sOverrideLink . '\',"_blank");');
+		}
+	}
+	*/
+	/*phpmasterminds added above function */
 	public function changeVideo()
 	{
 		//Change RefID for contact form
@@ -443,7 +552,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		Phpfox::getService('dvs.video')->setDvs(Phpfox::getLib('request')->get('iDvsId'));
 		$aVideo = Phpfox::getService('dvs.video')->get($sRefId);
 		$aDvs = Phpfox::getService('dvs')->get(Phpfox::getLib('request')->get('iDvsId'));
-
+		
 		// Change get price form values
 //		$this->html('.vehicle_year', $aVideo['year']);
 //		$this->html('.vehicle_make', $aVideo['make']);
@@ -473,7 +582,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		//Change video information and reset description visibility
 		$this->html('#video_name', '<a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a>');
 		$this->html('#car_description', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
-
+		
 //		$this->call('$("#twitter_share").prop("href", "https://twitter.com/intent/tweet?text=Check%20out%20" + sShareLink + "&url=" + sShareLink);');
 //		$this->html('#video_name', '<strong><a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a></strong>');
 //		$this->html('#video_long_description_text', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
@@ -599,6 +708,57 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$this->remove('.twitter_popup');
 			$this->html('#twitter_button_wrapper', '<a href="https://twitter.com/share?url=' . urlencode($sVideoUrl) . '&text=' . urlencode($sTwitterText) . '" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>');
 			$this->call('twttr.widgets.load();');
+		}
+
+		if($aDvs['inv_display_status']){
+			$inventoryList = Phpfox::getService('dvs')->getModelInventory($aVideo['ko_id']);
+			$sPlaylistHtml = '<div class="inventory_info_message">';
+			if(count($inventoryList) > 1){
+				$sPlaylistHtml .= count($inventoryList).' '.$aVideo['model'].'’s available in inventory! Select one below:';
+			}elseif(count($inventoryList) > 1){
+				$sPlaylistHtml .= count($inventoryList).' '.$aVideo['model'].' available in inventory! Select one below:';
+			}else{
+				$sPlaylistHtml .= 'We don’t have the '.$aVideo['model'].' in stock at this time. <a href="#" onclick="tb_show(\'Contact Dealer\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId='.$aDvs['dvs_id'].'&amp;sRefId='.$aVideo['referenceId'].'\')); menuContact(\'Call To Action Menu Clicks\'); return false;">Click here</a> to request this vehicle instead!';
+			}
+			$sPlaylistHtml .= '</div>';
+
+			if($inventoryList){
+				$sPlaylistHtml .= '<button class="prev playlist-button">&lt;</button>';
+				$sPlaylistHtml .= '<div class="playlist_carousel" id="overview_inventory">';
+				$sPlaylistHtml .= '<ul>';
+				foreach ($inventoryList as $iKey => $inventoryItem)
+				{
+					$sThumbnailImageHtml = Phpfox::getLib('image.helper')->display(array(
+						'path' => 'dvs.video_url_image',
+						'file' => Phpfox::getParam('core.path') . '/file/' . $inventoryItem['image'],
+						'max_width' => 145,
+						'max_height' => 82));
+
+					$sPlaylistHtml .= '<li><div class="inv_dvs_wrapper">' .
+							'<div class="inv_dvs_avatar"><a href="'.$inventoryItem['link'].'" target="_blank">' . $sThumbnailImageHtml . '</a></div>' .
+							'<div class="inv_dvs_info">' .
+								'<p><a href="'.$inventoryItem['link'].'" target="_blank">'.$inventoryItem['title'].'</a></p>' .
+								'<p>'.Phpfox::getPhrase('dvs.color').': '.$inventoryItem['color'].'</p>' .
+								'<p>'.Phpfox::getPhrase('dvs.msrp').': '.$inventoryItem['price'].'</p>' .
+								'<p class="view_details">' .
+									'<a href="'.$inventoryItem['link'].'" title="'.Phpfox::getPhrase('dvs.view_details').'" target="_blank">'.Phpfox::getPhrase('dvs.view_details').'</a>' .
+								'</p>' .
+							'</div>' .
+						'</div></li>';
+				}
+
+				$sPlaylistHtml .= '</ul>';
+				$sPlaylistHtml .= '</div>';
+				$sPlaylistHtml .= '<button class="next playlist-button">&gt;</button>';
+
+				$this->html('#playlist_wrapper', $sPlaylistHtml);
+				if ($sBrowser != 'mobile')
+				{
+					$this->call('enableInventoryCarousel();');
+				}
+			}else{
+				$this->html('#playlist_wrapper', $sPlaylistHtml);
+			}
 		}
 
 		$this->val('#contact_dvs_id', $aDvs['dvs_id']);

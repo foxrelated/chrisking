@@ -61,19 +61,19 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<p>We're happy to help you find your next car, go over current specials and offer your our very best price. Please let us know how to reach you and we'll get right back to you:</p>
 		<ul>
 			<li>
-				<input type="text" name="val[contact_name]" id="name" placeholder="{phrase var='dvs.get_price_placeholder_name'}" required class="inputContact"/>
+				<input type="text" name="val[contact_name]" id="name" placeholder="{phrase var='dvs.get_price_placeholder_name'}" {if Phpfox::getParam('dvs.get_price_validate_name')} required {/if} class="inputContact"/>
 			</li>
 			<li>
-				<input type="email" name="val[contact_email]" id="email" placeholder="{phrase var='dvs.get_price_placeholder_email'}" required class="inputContact" />
+				<input type="email" name="val[contact_email]" id="email" placeholder="{phrase var='dvs.get_price_placeholder_email'}" {if Phpfox::getParam('dvs.get_price_validate_email')} required {/if} class="inputContact" />
 			</li>
 			<li>
-				<input type="text" name="val[contact_phone]" id="phone" placeholder="{phrase var='dvs.get_price_placeholder_phone'}" required class="inputContact" />
+				<input type="text" name="val[contact_phone]" id="phone" placeholder="{phrase var='dvs.get_price_placeholder_phone'}" {if Phpfox::getParam('dvs.get_price_validate_phone')} required {/if} class="inputContact" />
 			</li>
 			<li>
-				<input type="text" name="val[contact_zip]" id="zip" placeholder="{phrase var='dvs.get_price_placeholder_zip'}" required class="inputContact" />
+				<input type="text" name="val[contact_zip]" id="zip" placeholder="{phrase var='dvs.get_price_placeholder_zip'}" {if Phpfox::getParam('dvs.get_price_validate_zip_code')} required {/if} class="inputContact" />
 			</li>
 			<li>
-				<textarea id="comments" name="val[contact_comments]" cols="16" rows="3" placeholder="{phrase var='dvs.get_price_placeholder_comments'}" required class="inputContact"></textarea>
+				<textarea id="comments" name="val[contact_comments]" cols="16" rows="3" placeholder="{phrase var='dvs.get_price_placeholder_comments'}" {if Phpfox::getParam('dvs.get_price_validate_comments')} required {/if} class="inputContact"></textarea>
 			</li>
 		</ul>
 

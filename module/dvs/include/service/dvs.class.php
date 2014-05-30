@@ -19,6 +19,416 @@ class Dvs_Service_Dvs extends Phpfox_Service {
 		$this->_sTable = Phpfox::getT('ko_dvs');
 	}
 
+	public function getModelInventory($ko_id = 0)
+	{
+		if(empty($ko_id)){
+			return array();
+		}
+
+		$videoCar = $this->getVideoCar($ko_id);
+		// $videoCar = $this->getVideoCar(3511);// delete this
+
+		$where_arr    = array();
+		$primaryTitle = $videoCar['year'].' '.$videoCar['make'].' '.$videoCar['model'];
+		$where_arr[]  = "(title LIKE '".Phpfox::getLib('database')->escape($primaryTitle)."%')";
+
+		if(strstr($videoCar['model'], ' and ')){
+			// chrysler town and country model
+			$where_arr[]  = "(title LIKE '".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace(' and ', ' & ', $videoCar['model']))."%')";
+		}
+
+		if(strstr($videoCar['model'], '1 Series')){
+			// 1 Series
+			$where_arr[]  = "(title REGEXP '".Phpfox::getLib('database')->escape('.*1[0-9]{2}(i|xi)')."')";
+		}
+
+		if(strstr($videoCar['model'], '2 Series')){
+			// 2 Series
+			$where_arr[]  = "(title REGEXP '".Phpfox::getLib('database')->escape('.*2[0-9]{2}(i|xi)')."')";
+		}
+
+		if(strstr($videoCar['model'], '3 Series')){
+			// 3 Series
+			$where_arr[]  = "(title REGEXP '".Phpfox::getLib('database')->escape('.*3[0-9]{2}(i|xi)')."')";
+		}
+
+		if(strstr($videoCar['model'], '5 Series')){
+			// 5 Series
+			$where_arr[]  = "(title REGEXP '".Phpfox::getLib('database')->escape('.*5[0-9]{2}(i|xi)')."')";
+		}
+
+		if(strstr($videoCar['model'], '6 Series')){
+			// 6 Series
+			$where_arr[]  = "(title REGEXP '".Phpfox::getLib('database')->escape('.*6[0-9]{2}(i|xi)')."')";
+		}
+
+		if(strstr($videoCar['model'], '7 Series')){
+			// 7 Series
+			$where_arr[]  = "(title REGEXP '".Phpfox::getLib('database')->escape('.*7[0-9]{2}(i|xi)')."')";
+		}
+
+		if(strstr($videoCar['model'], 'Hybrid-Energi')){
+			// Ford Fusion Hybrid-Energi
+			$where_arr[]  = "(title LIKE '".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace('Hybrid-Energi', 'Hybrid', $videoCar['model']))."%')";
+			$where_arr[]  = "(title LIKE '".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace('Hybrid-Energi', 'Energi', $videoCar['model']))."%')";
+		}
+
+		if(strstr($videoCar['model'], '2500-3500')){
+			// Chevrolet Silverado 2500-3500
+			$where_arr[]  = "(title LIKE '".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace('2500-3500', '2500', $videoCar['model']))."%')";
+			$where_arr[]  = "(title LIKE '".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace('2500-3500', '3500', $videoCar['model']))."%')";
+		}
+
+		$inventories = Phpfox::getLib('database')->select('*')
+			->from(Phpfox::getT('ko_dvs_inventory'))
+			->where(join(' OR ', $where_arr))
+			// ->limit(0)
+			->execute('getRows');
+
+		return $inventories;
+	}
+	/*phpmasterminds Edited for sort in gallery and footer starts*/
+public function aasort (&$array, $key) {
+    $sorter=array();
+    $ret=array();
+    reset($array);
+    foreach ($array as $ii => $va) {
+        $sorter[$ii]=$va[$key];
+    }
+    arsort($sorter);
+    foreach ($sorter as $ii => $va) {
+        $ret[$ii]=$array[$ii];
+    }
+    $array=$ret;
+	return $array;
+}
+/*phpmasterminds Edited for sort in gallery and footer starts*/
+	public function importInventory($dvs_id)
+	{
+		//global admin cp setting for userGuid and apiKey
+		$userGuid = $this->getSettingValue('dvs_inventory_guid');
+		$apiKey   = $this->getSettingValue('dvs_inventory_api_key');
+		$connector = $this->getInventoryConnector($dvs_id);
+		$dvs      = $this->get($dvs_id);
+
+		if(empty($connector) || empty($connector['guid']) || empty($connector['inventory_url'])){
+			return array('error' => 'Connector Error', 'status' => false);
+		}
+
+		$connector['inventory_url'] = str_replace('http://', '', $dvs['inv_domain']);
+
+		//Load player data
+		$aPlayer       = Phpfox::getService('dvs.player')->get($dvs_id);
+		$aValidVSYears = Phpfox::getService('dvs.video')->getValidVSYears($aPlayer['makes']);
+
+		if(empty($aValidVSYears)){
+			return array('error' => 'Valid Years Error Setting', 'status' => false);
+		}
+
+		$time_start   = microtime(true);
+		$refusedMakes = array();
+		$mcnt         = 0;
+
+		foreach ($aValidVSYears as $yearValue) {
+			// echo "Year - ".$yearValue."\n";
+			$aValidVSMakes = Phpfox::getService('dvs.video')->getValidVSMakes($yearValue, $aPlayer['makes']);
+			if(!empty($aValidVSMakes)){
+				foreach ($aValidVSMakes as $makeValue) {
+
+					// echo "Make - ".$makeValue['make']."\n";
+					// check if this make unavailable by this catalogue, checked previously
+					if(in_array($makeValue['make'], $refusedMakes)){
+						continue;
+					}
+
+					// check if this make unavailable by this catalogue
+					$result = $this->importInventoryQuery($connector['guid'], array(
+						"make"   => $makeValue['make'],
+						"domain" => $connector['inventory_url'],
+					), $userGuid, $apiKey, false);
+
+					// var_dump(count($result->results));
+					$totalResults = $result->totalResults;
+					
+					$pages = ceil($totalResults / 16);
+
+					if(empty($result->results)){
+						$refusedMakes[] = $makeValue['make'];
+						continue;
+					}else{
+						// check if this make unavailable by this catalogue for selected year
+						$result = $this->importInventoryQuery($connector['guid'], array(
+							"year"   => $yearValue,
+							"make"   => $makeValue['make'],
+							"domain" => $connector['inventory_url'],
+						), $userGuid, $apiKey, false);
+						if(empty($result->results)){
+							continue;
+						}else{ // full make import, then filter items on render by regular expressoin
+							// echo 'full import success.'."\n";
+							$mcnt += count($result->results);
+							$this->addDvsInventories($result->results, $dvs_id);
+						}
+					}
+
+					$thinImportMode = null;
+					if($thinImportMode){ // thin import mode - import only certain model car inventory // currently temporary disabled
+						$aVideoSelect = Phpfox::getService('dvs.video')->getVideoSelect($yearValue, $makeValue['make'], '', true);
+						if(!empty($aVideoSelect)){
+							foreach ($aVideoSelect as $videoValue) {
+								$result = $this->importInventoryQuery($connector['guid'], array(
+									"year"   => $videoValue['year'],
+									"make"   => $videoValue['make'],
+									"model"  => $videoValue['model'],
+									"domain" => $connector['inventory_url'],
+								), $userGuid, $apiKey, false);
+								if(!empty($result->results)){
+									$this->addDvsInventories($result->results, $dvs_id, $yearValue);
+								}
+							}
+							$mcnt += count($aValidVSMakes);
+							if($mcnt > 2){
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		$time_end = microtime(true);
+		$execution_time = ($time_end - $time_start);
+		// echo "\n";
+		// echo 'Total Execution Time: '.$execution_time.' sec'."\n";
+		// echo 'finaly - '.$mcnt;die();
+
+		if(isset($result->error)){
+			return array('error' => $result->error, 'status' => false);
+		}
+
+    $res = Phpfox::getLib('database')->update(Phpfox::getT('ko_dvs'), array(
+			'inv_last_cronjob' => time(),
+    ), "dvs_id = '".$dvs_id."'");
+
+		return array('mcnt' => $mcnt, 'status' => true);;
+	}
+
+  /**
+   * Api request to import.io
+   */
+	function importInventoryQuery($connectorGuid, $input, $userGuid, $apiKey, $additionalInput) {
+
+		$url = "https://api.import.io/store/connector/" . $connectorGuid . "/_query?_user=" . urlencode($userGuid) . "&_apikey=" . urlencode($apiKey);
+
+		$data = array("input" => $input);
+		if ($additionalInput) {
+		$data["additionalInput"] = $additionalInput;
+		}
+
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+		curl_setopt($ch, CURLOPT_POSTFIELDS,  json_encode($data));
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		$result = curl_exec($ch);
+		curl_close($ch);
+
+		return json_decode($result);
+	}
+
+  /**
+   * Add multiple dvs invenotry.
+   */
+  public function addDvsInventories($inventories= array(), $dvs_id = 0, $yearValue = null)
+  {
+		if(empty($inventories) || empty($dvs_id)){
+			return false;
+		}
+
+		foreach ($inventories as $item) {
+			$res = $this->addDvsInventory($item, $dvs_id, $yearValue);
+		}
+
+    return $res;
+  }
+
+  /**
+   * Add dvs invenotry. if extists - update
+   */
+  public function addDvsInventory($inventory = array(), $dvs_id = 0, $yearValue = null)
+  {
+    // return false;// delete this
+		if(empty($inventory)){
+			return false;
+		}
+
+		$prev_inventory  = $this->getInventoryItem($inventory, $dvs_id);
+		
+		$image_dest_dir  = Phpfox::getParam('core.dir_file').'static/inventory/';
+		// build server dir structure
+		if (!is_dir($image_dest_dir))
+		{
+			@mkdir($image_dest_dir, 0777);
+			@chmod($image_dest_dir, 0777);
+		}
+
+		$image_dest_dir .= ($yearValue == null?date('Y'):$yearValue).'/';
+		if (!is_dir($image_dest_dir))
+		{
+			@mkdir($image_dest_dir, 0777);
+			@chmod($image_dest_dir, 0777);
+		}
+
+    if(!empty($prev_inventory)){ // delete old image
+    	if(file_exists($image_dest_dir.$prev_inventory['image'])){
+	    	Phpfox::getLib('file')->unlink($image_dest_dir.$prev_inventory['image']);
+    	}
+    }
+
+		$inventory_arr   = get_object_vars($inventory);
+		$inventory_price = (is_array($inventory_arr['msrp/_source'])?array_shift(array_values($inventory_arr['msrp/_source'])):$inventory_arr['msrp/_source']);
+
+		$matches = array();
+		preg_match_all('/([a-zA-Z0-9]*)\.(jpg|gif|jpeg|png)$/im', strtolower($inventory_arr['image']), $matches);
+		$image_full_name = $matches[0][0];
+		$image_name      = $matches[1][0];
+		$image_ext       = $matches[2][0];
+
+		$dest_image_name = $image_name.'_'.uniqid().'.'.$image_ext;
+		$dest_image      = $image_dest_dir.$dest_image_name;
+		
+		$uploaded_image_res  = Phpfox::getLib('file')->copy($inventory_arr['image'], $dest_image);
+
+    if(!empty($prev_inventory)){
+      $res = Phpfox::getLib('database')->update(Phpfox::getT('ko_dvs_inventory'), array(
+				'title'         => Phpfox::getLib('database')->escape($inventory_arr['title']),
+				'image'         => 'static/inventory/'.($yearValue == null?date('Y'):$yearValue).'/'.$dest_image_name,
+				'price'         => Phpfox::getLib('database')->escape($inventory_price),
+				'color'         => Phpfox::getLib('database')->escape($inventory_arr['color']),
+				'link'          => Phpfox::getLib('database')->escape($inventory_arr['link']),
+				'modified_date' => time(),
+      ), "inventory_id = '".$prev_inventory['inventory_id']."'");
+    }else{
+      $res = Phpfox::getLib('database')->insert(Phpfox::getT('ko_dvs_inventory'), array(
+				'dvs_id'        => $dvs_id,
+				'title'         => Phpfox::getLib('database')->escape($inventory_arr['title']),
+				'image'         => 'static/inventory/'.($yearValue == null?date('Y'):$yearValue).'/'.$dest_image_name,
+				'price'         => Phpfox::getLib('database')->escape($inventory_price),
+				'color'         => Phpfox::getLib('database')->escape($inventory_arr['color']),
+				'link'          => Phpfox::getLib('database')->escape($inventory_arr['link']),
+				'creation_date' => time(),
+				'modified_date' => time(),
+        )
+      );
+    }
+
+    return $res;
+  }
+
+  /**
+   * Get single inventory item
+   */
+  public function getScheduledInventory()
+  {
+
+    $dvsRows = Phpfox::getLib('database')->select('*')
+      ->from(Phpfox::getT('ko_dvs'))
+      ->where("(inv_display_status = '1') AND (FROM_UNIXTIME(inv_last_cronjob) < (NOW() - INTERVAL inv_schedule_hours HOUR))")
+      ->limit(50)
+      ->execute('getRows');
+
+    return $dvsRows;
+
+      // 13-05-2014 - 1399939200
+      // 16-05-2014 - 1400255613
+  }
+
+  /**
+   * Get single inventory item
+   */
+  public function getInventoryItem($inventory = null, $dvs_id = 0)
+  {
+  	if(empty($inventory) || empty($dvs_id)){
+  		return false;
+  	}
+
+    $dvsRow = Phpfox::getLib('database')->select('*')
+      ->from(Phpfox::getT('ko_dvs'))
+      ->where("(dvs_id = '".Phpfox::getLib('database')->escape($dvs_id)."')")
+      ->limit(1)
+      ->execute('getRow');
+
+  	$where_arr[] = "(dvs.inv_feed_type = '".Phpfox::getLib('database')->escape($dvsRow['inv_feed_type'])."')";
+  	$where_arr[] = "(inv.title = '".Phpfox::getLib('database')->escape($inventory->title)."')";
+  	$where_arr[] = "(inv.link = '".Phpfox::getLib('database')->escape($inventory->link)."')";
+  	$where_arr[] = "(inv.color = '".Phpfox::getLib('database')->escape($inventory->color)."')";
+  	$extended_search_list = null;
+  	if($extended_search_list){
+	  	$where_arr[] = "(inv.price = '".Phpfox::getLib('database')->escape($inventory->price)."')";
+  	}
+
+    $value = Phpfox::getLib('database')->select('inv.*')
+      ->from(Phpfox::getT('ko_dvs_inventory'), 'inv')
+			->leftjoin(Phpfox::getT('ko_dvs'), 'dvs', 'inv.dvs_id = dvs.dvs_id')
+			->leftjoin(Phpfox::getT('ko_dvs_inventory_connectors'), 'ic', 'ic.connector_id = dvs.inv_feed_type')
+      ->where(join(' AND ', $where_arr))
+      ->execute('getRow');
+
+    return (!empty($value)?$value:null);
+  }
+
+  /**
+   * Get video car item
+   */
+  public function getVideoCar($ko_id = 0)
+  {
+    $value = Phpfox::getLib('database')->select('*')
+      ->from(Phpfox::getT('ko_brightcove'))
+      ->where("ko_id = '".Phpfox::getLib('database')->escape($ko_id)."'")
+      ->execute('getRow');
+
+    return $value;
+  }
+
+  /**
+   * Get inventory settings
+   */
+  public function getSettingValue($name = '')
+  {
+    $value = Phpfox::getLib('database')->select('value')
+      ->from(Phpfox::getT('ko_dvs_inventory_settings'))
+      ->where("name = '".Phpfox::getLib('database')->escape($name)."'")
+      ->execute('getField');
+
+    return $value;
+  }
+
+  /**
+   * Get dvs inventory connector
+   */
+  public function getInventoryConnector($dvs_id = 0)
+  {
+		$connector = $this->database()
+			->select('d.inventory_url, ic.*')
+			->from($this->_sTable, 'd')
+			->leftjoin(Phpfox::getT('ko_dvs_inventory_connectors'), 'ic', 'ic.connector_id = d.inv_feed_type')
+			->where("(d.inv_display_status = '1') AND (d.inv_display_status = '1') AND (d.dvs_id = '".$dvs_id."')")
+			->limit(1)
+			->execute('getRow');
+
+    return $connector;
+  }
+
+	public function getConnectors()
+	{
+    $values = Phpfox::getLib('database')->select('*')
+      ->from(Phpfox::getT('ko_dvs_inventory_connectors'))
+      ->order('connector_id DESC')
+      ->limit(1000)
+      ->execute('getRows');
+
+    return $values;
+	}
 
 	public function listDvss($iPage, $iPageSize, $iUserId, $bPaginate = true)
 	{

@@ -28,7 +28,20 @@ class Dvs_Component_Controller_Gallery extends Phpfox_Component {
 
 		// Load the videos for the DVS
 		$aDvsVideos = Phpfox::getService('dvs.video')->getOverviewVideos($aDvs['dvs_id']);
+		/*phpmasterminds Edited for sort in gallery starts*/
+		
+		foreach($aDvsVideos as $ik=>$aVal)
+		{
+			$exp = explode(" ",$aVal['name']);
 
+			$aDvsVideos[$ik]['my_find'] = $exp[0];
+			
+			$aDvsVideos[$ik]['targer_href'] = $aDvs['gallery_target_setting'];
+			
+		}
+		$aDvsVideos = Phpfox::getService('dvs')->aasort($aDvsVideos,"my_find");
+		
+		/*phpmasterminds Edited for sort in gallery ends*/
 		if ($aPlayer['featured_model'])
 		{
 			$aFeaturedVideo = Phpfox::getService('dvs.video')->get('', false, $aPlayer['featured_year'], $aPlayer['featured_make'], $aPlayer['featured_model']);
@@ -65,10 +78,10 @@ class Dvs_Component_Controller_Gallery extends Phpfox_Component {
 		$iTotalVideos = Phpfox::getParam('dvs.gallery_rows') * Phpfox::getParam('dvs.gallery_columns');
 		$aDvsVideos = array_slice($aDvsVideos, 0, $iTotalVideos - 1);
 
-		usort($aDvsVideos, function($a, $b) {
+		/*usort($aDvsVideos, function($a, $b) {
 			return strcasecmp($a['name'], $b['name']);
 		});
-
+		*/
 		$sDvsGAJs = '';
 
 		if ($aDvs['dvs_google_id'] || Phpfox::getParam('dvs.global_google_id'))
@@ -102,7 +115,8 @@ class Dvs_Component_Controller_Gallery extends Phpfox_Component {
 		}
 
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
-
+	
+	
 		$aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aFirstVideo);
 		$this->template()
 			->setTemplate('blank')

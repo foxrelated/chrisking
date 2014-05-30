@@ -164,7 +164,7 @@ class Dvs_Component_Controller_Index extends Phpfox_Component
 		{
 			$bCanAddDvss = false;
 		}
-
+Phpfox::getLib('pager')->set(array('page' => $iPage, 'size' => $iPageSize, 'count' => $iCnt));
 		$this->template()
 				->assign(array(
 					'sMessage' => $sMessage,
@@ -178,7 +178,7 @@ class Dvs_Component_Controller_Index extends Phpfox_Component
 					'pager.css' => 'style_css'
 		));
 
-		//Phpfox::getLib('pager')->set(array('page' => $iPage, 'size' => $iPageSize, 'count' => $iCnt));
+		
 	}
 
 }
