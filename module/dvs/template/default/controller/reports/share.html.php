@@ -118,7 +118,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<h1>Most Clicked Links</h1>
 				<ul id="list">				
 				{foreach from=$aShareReport.top_clicked item=aVideo}
-					<li>{$aVideo.referenceId}</li>
+					<li>{$aVideo.name}</li>
 				{/foreach}
 				</ul>
 			</td>

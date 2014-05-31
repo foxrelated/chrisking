@@ -197,7 +197,8 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 			$aShareReport['top_generated'][$iKey] = array_merge($aShareReport['top_generated'][$iKey], $this->getVideoCount($aVideo['referenceId'], $iDvsId, $iUserId, false, $iStartDate, $iEndDate, $iLimit));
 		}
 
-		$aShareReport['top_clicked'] = $this->database()->select('v.video_title_url, v.referenceId, COUNT(s.shorturl_id) as total_clicked')
+		//$aShareReport['top_clicked'] = $this->database()->select('v.video_title_url, v.referenceId, COUNT(s.shorturl_id) as total_clicked')
+		$aShareReport['top_clicked'] = $this->database()->select('v.name, v.referenceId, COUNT(s.shorturl_id) as total_clicked')
 			->from(Phpfox::getT('ko_shorturls'), 's')
 			->join(Phpfox::getT('ko_brightcove'), 'v', 'v.referenceId = s.video_ref_id')
 			->join(Phpfox::getT('ko_shorturl_clicks'), 'c', 'c.shorturl_id = s.shorturl_id')
