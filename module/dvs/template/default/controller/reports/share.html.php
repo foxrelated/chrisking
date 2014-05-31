@@ -106,24 +106,25 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<br><br>
 	<table id="top_links_stat_box" width="100%">
 		<tr>
-			<td align="center" valign="middle">
+			<td align="left" valign="middle">
 			<h1>Most Shared Links</h1>
-			<ul id="list">
+			<ol id="list">
 				{foreach from=$aShareReport.top_generated item=aVideo}
 					<li>{$aVideo.name}</li>
 				{/foreach}
-				</ul>
+				</ol>
 			</td>
-			<td align="center" valign="middle">
+			<td align="left" valign="middle">
 			<h1>Most Clicked Links</h1>
-				<ul id="list">				
+				<ol id="list">				
 				{foreach from=$aShareReport.top_clicked item=aVideo}
 					<li>{$aVideo.name}</li>
 				{/foreach}
-				</ul>
+				</ol>
 			</td>
 		</tr>
 	</table>
+	<br>
 	<br>
 		<table width="100%" class="share_report_table">
 			<tr>

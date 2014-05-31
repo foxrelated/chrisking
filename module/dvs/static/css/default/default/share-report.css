@@ -84,9 +84,14 @@ width:100%;
 height:200px;
 }
 
+#list ol {
+
+}
+
 #list li {
 font-size:18px;
-line-height:20px;
+list-style:decimal;
+margin-left:25px;
 }
 
 /*
