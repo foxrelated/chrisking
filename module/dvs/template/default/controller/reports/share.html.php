@@ -42,7 +42,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<input type="hidden" name="val[limit]" value="{if !isset($aForms.limit)}500{else}{$aForms.limit}{/if}" size="5"/>
 				</td>
 				<td class="share_report_td">
-					<input type="submit" value="{phrase var='dvs.display_share_report'}" class="button" />
+					<input type="submit" value="Show Report" class="button" />
 					<input type="hidden" value="0" name="val[csv]" id="export_csv" />
 				</td>
 			</tr>
@@ -110,7 +110,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<h1>Most Shared Links</h1>
 			<ul id="list">
 				{foreach from=$aShareReport.top_generated item=aVideo}
-					<li>{$aVideo.video_title_url} (Email: {$aVideo.email} / Facebook: {$aVideo.facebook} / Twitter: {$aVideo.twitter} / Google+: {$aVideo.google} / CRM Embed: {$aVideo.embed} // {$aVideo.total})</li>
+					<li>{$aVideo.name}</li>
 				{/foreach}
 				</ul>
 			</td>
@@ -118,7 +118,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<h1>Most Clicked Links</h1>
 				<ul id="list">				
 				{foreach from=$aShareReport.top_clicked item=aVideo}
-					<li>{$aVideo.video_title_url} (Email: {$aVideo.email} / Facebook: {$aVideo.facebook} / Twitter: {$aVideo.twitter} / Google+: {$aVideo.google} / CRM Embed: {$aVideo.embed} // {$aVideo.total})</li>
+					<li>{$aVideo.name}</li>
 				{/foreach}
 				</ul>
 			</td>
