@@ -110,7 +110,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<h1>Most Shared Links</h1>
 			<ul id="list">
 				{foreach from=$aShareReport.top_generated item=aVideo}
-					<li>{$aVideo.name}</li>
+					<li>{$aVideo.referenceId}</li>
 				{/foreach}
 				</ul>
 			</td>
@@ -118,7 +118,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<h1>Most Clicked Links</h1>
 				<ul id="list">				
 				{foreach from=$aShareReport.top_clicked item=aVideo}
-					<li>{$aVideo.name}</li>
+					<li>{$aVideo.referenceId}</li>
 				{/foreach}
 				</ul>
 			</td>
