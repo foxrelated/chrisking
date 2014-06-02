@@ -344,7 +344,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.welcome_greeting_max_char_max' max=$iWelcomeGreetingMaxChars}:
 			</td>
 			<td class="dvs_add_td">
-				{phrase var='dvs.welcome_message_phrase'}
+				&nbsp;
 			</td>
 		</tr>
 		<tr>
@@ -352,7 +352,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{editor id='welcome' rows='5'}
 			</td>
 			<td class="dvs_add_td">
-				&nbsp;
+				{phrase var='dvs.welcome_message_phrase'}
 			</td>
 		</tr>
 		
