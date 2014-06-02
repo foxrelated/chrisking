@@ -187,7 +187,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{required}{phrase var='dvs.dealer_name'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[dealer_name]" value="{value type='input' id='dealer_name'}" id="dealer_name" maxlength=30 required />
+				<input type="text" name="val[dealer_name]" value="{value type='input' id='dealer_name'}" id="dealer_name" size="60" maxlength="60" required />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.dealer_name_phrase'}
@@ -200,10 +200,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 			<td class="dvs_add_td">
 				{if !$bIsEdit}
-				<input type="text"  maxlength=30 required name="val[dvs_name]" value="{value type='input' id='dvs_name'}" id="dvs_name" />
+				<input type="text"  size="60" maxlength="60" required name="val[dvs_name]" value="{value type='input' id='dvs_name'}" id="dvs_name" />
 				{/if}
 				{if $bIsEdit && Phpfox::isAdmin()}
-				<input type="text"  maxlength=30 required name="val[dvs_name]" value="{value type='input' id='dvs_name'}" id="dvs_name" />
+				<input type="text" size="60" maxlength="60" required name="val[dvs_name]" value="{value type='input' id='dvs_name'}" id="dvs_name" />
 				{/if}
 				{if $bIsEdit && !Phpfox::isAdmin()}
 				<p>&nbsp;{$aForms.dvs_name}</p>
@@ -221,9 +221,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 			<td class="dvs_add_td">
 				{if $bIsEdit}
-				<input type="text"  maxlength=30 required name="val[vanity_url]" value="{value type='input' id='title_url'}" id="vanity_url" />
+				<input type="text" size="60" maxlength="60" required name="val[vanity_url]" value="{value type='input' id='title_url'}" id="vanity_url" />
 				{else}
-				<input type="text"  maxlength=30 required name="val[vanity_url]" value="{value type='input' id='vanity_url'}" id="vanity_url" />
+				<input type="text" size="60" maxlength="60" required name="val[vanity_url]" value="{value type='input' id='vanity_url'}" id="vanity_url" />
 				{/if}
 			</td>
 			<td class="dvs_add_td">
@@ -246,7 +246,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{required}{phrase var='dvs.address'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[address]" value="{value type='input' id='address'}" id="address" maxlength=60 required />
+				<input type="text" name="val[address]" value="{value type='input' id='address'}" id="address"  size="60" maxlength="60" required />
 			</td>
 			<td class="dvs_add_td_label">
 				{phrase var='dvs.address_phrase'}
@@ -258,7 +258,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{required}{phrase var='dvs.city'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[city]" value="{value type='input' id='city'}" id="city" maxlength=60 required />
+				<input type="text" name="val[city]" value="{value type='input' id='city'}" id="city" size="60" maxlength="60" required />
 			</td>
 		</tr>
 		
@@ -279,7 +279,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.zip_code'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[postal_code]" value="{value type='input' id='postal_code'}" id="postal_code" size="5" maxlength="5" />
+				<input type="text" name="val[postal_code]" value="{value type='input' id='postal_code'}" id="postal_code" size="60" maxlength="5" />
 			</td>
 		</tr>
 		
@@ -288,7 +288,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.contact_phone'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="tel" name="val[phone]" maxlength="11" value="{value type='input' id='phone'}" id="phone" />
+				<input type="tel" name="val[phone]" size="60" maxlength="13" value="{value type='input' id='phone'}" id="phone" />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.phone_phrase'}
@@ -300,7 +300,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.contact_email'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="email" name="val[email]" value="{value type='input' id='email'}" id="email"  size="30" maxlength="200" />
+				<input type="email" name="val[email]" value="{value type='input' id='email'}" id="email"  size="60" maxlength="200" />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.contact_email_phrase'}
@@ -312,7 +312,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.website_url'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="url" name="val[url]" value="{value type='input' id='url'}" id="url" size="30" maxlength="300"/>
+				<input type="url" name="val[url]" value="{value type='input' id='url'}" id="url" size="60" maxlength="300"/>
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.website_url_phrase'}
@@ -324,7 +324,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.inventory_url'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="url" name="val[inventory_url]" value="{value type='input' id='inventory_url'}" id="inventory_url"  size="30" maxlength="300"/>
+				<input type="url" name="val[inventory_url]" value="{value type='input' id='inventory_url'}" id="inventory_url" size="60" maxlength="300"/>
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.inventory_url_phrase'}
@@ -336,57 +336,23 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.dealer_specials_url'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="url" name="val[specials_url]" value="{value type='input' id='specials_url'}" id="specials_url" size="30" maxlength="300" />
+				<input type="url" name="val[specials_url]" value="{value type='input' id='specials_url'}" id="specials_url" size="60" maxlength="300" />
 			</td>
 		</tr>
-
-		{*<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.youtube_url'}:
-			</td>
-			<td colspan="2" class="dvs_add_td">
-				<input type="url" name="val[youtube_url]" value="{value type='input' id='youtube_url'}" id="youtube_url" size="30" maxlength=60 />
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.facebook_url'}:
-			</td>
-			<td colspan="2" class="dvs_add_td">
-				<input type="url" name="val[facebook_url]" value="{value type='input' id='facebook_url'}" id="facebook_url" size="30" maxlength=60 />
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.twitter_url'}:
-			</td>
-			<td colspan="2" class="dvs_add_td">
-				<input type="url" name="val[twitter_url]" value="{value type='input' id='twitter_url'}" id="twitter_url" size="30" maxlength=60 />
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.google_plus_url'}:
-			</td>
-			<td colspan="2" class="dvs_add_td">
-				<input type="url" name="val[google_url]" value="{value type='input' id='google_url'}" id="google_url" size="30" maxlength=60 />
-			</td>
-		</tr>
-		*}
 		<tr>
 			<td colspan="2" class="dvs_add_td">
 				{phrase var='dvs.welcome_greeting_max_char_max' max=$iWelcomeGreetingMaxChars}:
 			</td>
 			<td class="dvs_add_td">
-				{phrase var='dvs.welcome_message_phrase'}
+				&nbsp;
 			</td>
 		</tr>
 		<tr>
-			<td colspan="3" class="dvs_add_td">
+			<td colspan="2" class="dvs_add_td">
 				{editor id='welcome' rows='5'}
+			</td>
+			<td class="dvs_add_td">
+				{phrase var='dvs.welcome_message_phrase'}
 			</td>
 		</tr>
 		
@@ -395,7 +361,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.custom_seo_tags'}:
 			</td>
 			<td class="dvs_add_td">
-				<input type="text" name="val[seo_tags]" value="{value type='input' id='seo_tags'}" id="seo_tags" maxlength="100" />
+				<input type="text" name="val[seo_tags]" value="{value type='input' id='seo_tags'}" id="seo_tags" size="60" maxlength="100" />
 			</td>
 			<td class="dvs_add_td">
 				{phrase var='dvs.seo_tags_phrase'}
@@ -407,11 +373,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.google_analytics_id'}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
-				<input type="text" name="val[dvs_google_id]" value="{value type='input' id='dvs_google_id'}" id="dvs_google_id" maxlength="20" />
+				<input type="text" name="val[dvs_google_id]" value="{value type='input' id='dvs_google_id'}" id="dvs_google_id" size="60" maxlength="20" />
 			</td>
 		</tr>
 	</table>
-	<!--phpmasterminds added below code for setting on header and footer remover -->
+	{* phpmasterminds added below code for setting on header and footer remover *}
 	<div class="inventory_settings_wrapper">
 		<h1>{phrase var='dvs.banner_and_footer_toggle'}</h1>
 		<table class="dvs_add_table">
@@ -420,8 +386,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{phrase var='dvs.banner_toggle'}:
 				</td>
 				<td colspan="2" class="dvs_add_td">
-					<input type="radio" name="val[banner_toggle]" value="1" {if $aForms.banner_toggle == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
-					<input type="radio" name="val[banner_toggle]" value="0" {if $aForms.banner_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+					<input type="radio" name="val[banner_toggle]" value="1" {if $aForms.banner_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+					<input type="radio" name="val[banner_toggle]" value="0" {if $aForms.banner_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
 				</td>
 			</tr>
 			<tr>
@@ -429,8 +395,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{phrase var='dvs.footer_toggle'}:
 				</td>
 				<td colspan="2" class="dvs_add_td">
-					<input type="radio" name="val[footer_toggle]" value="1" {if $aForms.footer_toggle == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
-					<input type="radio" name="val[footer_toggle]" value="0" {if $aForms.footer_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+					<input type="radio" name="val[footer_toggle]" value="1" {if $aForms.footer_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+					<input type="radio" name="val[footer_toggle]" value="0" {if $aForms.footer_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
 				</td>
 			</tr>
 			<tr>
@@ -438,8 +404,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{phrase var='dvs.top_menu_toggle'}:
 				</td>
 				<td colspan="2" class="dvs_add_td">
-					<input type="radio" name="val[topmenu_toggle]" value="1" {if $aForms.topmenu_toggle == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
-					<input type="radio" name="val[topmenu_toggle]" value="0" {if $aForms.topmenu_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+					<input type="radio" name="val[topmenu_toggle]" value="1" {if $aForms.topmenu_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+					<input type="radio" name="val[topmenu_toggle]" value="0" {if $aForms.topmenu_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
 				</td>
 			</tr>
 		</table>
@@ -461,8 +427,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</tr>
 		</table>
 	</div>
-	<!--phpmasterminds added above code for setting on header and footer remover -->
-	{*** flit77 changes 05052014 *}
+	{* phpmasterminds added above code for setting on header and footer remover *}
+	
+	{* BEGIN flit77 changes 05052014 *}
 	<div class="inventory_settings_wrapper">
 		<h1>{phrase var='dvs.inventory_display_settings'}</h1>
 		<table class="dvs_add_table">
@@ -519,7 +486,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</tr>
 		</table>
 	</div>
-	{*** END flit77 changes 05052014 *}
+	{* END flit77 changes 05052014 *}
 	
 	<div id="phrase_override_toggle">
 		<a href="#" onclick="if ($('#phrase_override_wrapper').is(':visible')){l}$('#phrase_override_wrapper').hide('slow');wtvlt='Show Phrase Overrides'{r}else{l}$('#phrase_override_wrapper').show('slow');wtvlt='Hide Phrase Overrides (values will still be saved)';{r}$(this).text(wtvlt);return false;" id="phrase_override_toggle_link">Show Phrase Overrides</a>
@@ -534,7 +501,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{phrase var='dvs.'$sDescriptionPhraseVar}:
 					</div>
 					<div class="phrase_override_input_container">
-						<input class="phrase_override_input" type="text" name="val[phrase_overrides][{$sPhraseVar}]" value="{if $sPhraseText}{$sPhraseText}{/if}" id="{$sPhraseVar}" size="60" maxlength=60 />
+						<input class="phrase_override_input" type="text" name="val[phrase_overrides][{$sPhraseVar}]" value="{if $sPhraseText}{$sPhraseText}{/if}" id="{$sPhraseVar}" size="60" maxlength="60" />
 					</div>
 				</div>
 				<div class="phrase_override_row default_phrase_override_container">
@@ -556,7 +523,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{phrase var='dvs.new_car_videos'}:
 				</div>
 				<div class="phrase_override_input_container">
-					<input class="phrase_override_input" type="text" name="val[1onone_override]" value="{if $bIsEdit && isset($aForms.1onone_override)}{$aForms.1onone_override}{/if}" id="1onone_override" size="60" maxlength=60 />
+					<input class="phrase_override_input" type="text" name="val[1onone_override]" value="{if $bIsEdit && isset($aForms.1onone_override)}{$aForms.1onone_override}{/if}" id="1onone_override" size="60" maxlength="60" />
 				</div>
 			</div>
 			<div class="phrase_override_row default_phrase_override_container">
@@ -574,7 +541,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{phrase var='dvs.used_car_review_videos'}:
 					</div>
 					<div class="phrase_override_input_container">
-						<input class="phrase_override_input" type="text" name="val[new2u_override]" value="{if $bIsEdit && isset($aForms.new2u_override)}{$aForms.new2u_override}{/if}" id="new2u_override" size="60" maxlength=60 />
+						<input class="phrase_override_input" type="text" name="val[new2u_override]" value="{if $bIsEdit && isset($aForms.new2u_override)}{$aForms.new2u_override}{/if}" id="new2u_override" size="60" maxlength="60" />
 					</div>
 				</div>
 				<div class="phrase_override_row default_phrase_override_container">
@@ -593,7 +560,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{phrase var='dvs.test_drive_videos'}:
 					</div>
 					<div class="phrase_override_input_container">
-						<input class="phrase_override_input" type="text" name="val[top200_override]" value="{if $bIsEdit && isset($aForms.top200_override)}{$aForms.top200_override}{/if}" id="top200_override" size="60" maxlength=60 />
+						<input class="phrase_override_input" type="text" name="val[top200_override]" value="{if $bIsEdit && isset($aForms.top200_override)}{$aForms.top200_override}{/if}" id="top200_override" size="60" maxlength="60" />
 					</div>
 				</div>
 				<div class="phrase_override_row default_phrase_override_container">

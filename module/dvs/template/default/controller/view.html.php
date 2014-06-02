@@ -42,18 +42,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     {template file='dvs.controller.view-mobile}
   {else}
     {if !$bPreview}
-      {if $aDvs.branding_file_name}
-		{if $aDvs.banner_toggle == 1} <!--phpmasterminds added this code for header toggle -->
+      {if $aDvs.banner_toggle == 1} <!--phpmasterminds added this code for header toggle -->
+      	{if $aDvs.branding_file_name}
 			<a href="{$aDvs.url}">
 			  {img path='core.url_file'
 				   file='dvs/branding/'.$aDvs.branding_file_name
 				   style="vertical-align:middle; max-width: 100% !important; height: auto !important;"
 				   max_width=1117}
 			</a>
-		{/if} <!--phpmasterminds added this code for header toggle -->
-      {else}
+      	{else}
         <h1><a href="{$aDvs.url}">{$aDvs.dealer_name}</a></h1>
-      {/if}
+      	{/if}
+      {/if} <!--phpmasterminds added this code for header toggle -->
     {/if}
 	{if $aDvs.topmenu_toggle == 1} <!--phpmasterminds added this code for Menu toggle -->
     <header>
