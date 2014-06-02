@@ -420,8 +420,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{phrase var='dvs.banner_toggle'}:
 				</td>
 				<td colspan="2" class="dvs_add_td">
-					<input type="radio" name="val[banner_toggle]" value="1" {if $aForms.banner_toggle == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
-					<input type="radio" name="val[banner_toggle]" value="0" {if $aForms.banner_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+					<input type="radio" name="val[banner_toggle]" value="1" {if $aForms.banner_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+					<input type="radio" name="val[banner_toggle]" value="0" {if $aForms.banner_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
 				</td>
 			</tr>
 			<tr>
@@ -429,8 +429,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{phrase var='dvs.footer_toggle'}:
 				</td>
 				<td colspan="2" class="dvs_add_td">
-					<input type="radio" name="val[footer_toggle]" value="1" {if $aForms.footer_toggle == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
-					<input type="radio" name="val[footer_toggle]" value="0" {if $aForms.footer_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+					<input type="radio" name="val[footer_toggle]" value="1" {if $aForms.footer_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+					<input type="radio" name="val[footer_toggle]" value="0" {if $aForms.footer_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
 				</td>
 			</tr>
 			<tr>
@@ -438,8 +438,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{phrase var='dvs.top_menu_toggle'}:
 				</td>
 				<td colspan="2" class="dvs_add_td">
-					<input type="radio" name="val[topmenu_toggle]" value="1" {if $aForms.topmenu_toggle == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
-					<input type="radio" name="val[topmenu_toggle]" value="0" {if $aForms.topmenu_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+					<input type="radio" name="val[topmenu_toggle]" value="1" {if $aForms.topmenu_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+					<input type="radio" name="val[topmenu_toggle]" value="0" {if $aForms.topmenu_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
 				</td>
 			</tr>
 		</table>
