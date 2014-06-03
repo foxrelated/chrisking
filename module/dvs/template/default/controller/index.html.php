@@ -19,9 +19,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 @charset 'UTF-8';
 /* Starter CSS for Menu */
 #cssmenu {
-  padding: 0;
+  /* 
+padding: 0;
   margin: 0;
   border: 0;
+ */
 }
 #cssmenu ul,
 #cssmenu li {
@@ -211,10 +213,10 @@ border-bottom: 1px solid #252A30;
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-  -moz-box-shadow: 0 2px 1px 1px rgba(0, 0, 0, 0.5);
+   /*-moz-box-shadow: 0 2px 1px 1px rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 0 2px 1px 1px rgba(0, 0, 0, 0.5);
   box-shadow: 0 2px 1px 1px rgba(0, 0, 0, 0.5);
-  /* background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA2CAMAAAAxtAOuAAAAolBMVEXp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enCAApGAAAANXRSTlP9+vf08Ozp5eDc19POycS+ubOuqKOdl5GLhYB6dG5oYlxXUUxGQTs2MSwoIx8aFhMPCwgFAqv7N0MAAABMSURBVHheBcCDEcMAAADAj1Hbtr3/aj0/BEKRWCKVyRVKFVU1dQ1NLW0dXT19A0MjYxNTM3MLSytrG1s7ewdHJ2cXVzd3D08vbx/fP9L5BZigzasGAAAAAElFTkSuQmCC) repeat-x; */
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA2CAMAAAAxtAOuAAAAolBMVEXp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enCAApGAAAANXRSTlP9+vf08Ozp5eDc19POycS+ubOuqKOdl5GLhYB6dG5oYlxXUUxGQTs2MSwoIx8aFhMPCwgFAqv7N0MAAABMSURBVHheBcCDEcMAAADAj1Hbtr3/aj0/BEKRWCKVyRVKFVU1dQ1NLW0dXT19A0MjYxNTM3MLSytrG1s7ewdHJ2cXVzd3D08vbx/fP9L5BZigzasGAAAAAElFTkSuQmCC) repeat-x; */
   background-color: #c3c3c3;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e9e9e9), color-stop(1, #aaaaaa));
   background-image: -webkit-linear-gradient(top, #e9e9e9, #aaaaaa);
@@ -236,7 +238,7 @@ border-bottom: 1px solid #252A30;
   
 }
 #cssmenu ul .has-sub li:hover > a {
-  border-bottom: 1px solid #1D2024;
+  /* border-bottom: 1px solid #1D2024; */
   color: #FFF;
   background-color: #55616f;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #56606f), color-stop(1, #3f4852));
@@ -336,7 +338,7 @@ background-color: #c35f54;
 					Dealership Name
 				</td>
 				<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
-					{*phrase var='dvs.settings'*}
+					Options{*phrase var='dvs.settings'*}
 				</td>
 			</tr>
 			<tr><td colspan="3">&nbsp;</td></tr>
@@ -353,7 +355,7 @@ background-color: #c35f54;
 						<ul>
 						   <li class="has-sub"><a href="#"><span>Settings</span></a>
 							  <ul>
-								 <li><a href="{url link='dvs.settings' id=$aDvs.dvs_id}"><span>Edit Details</span></a></li>
+								 <li><a href="{url link='dvs.settings' id=$aDvs.dvs_id}"><span>Edit Settings</span></a></li>
 								 <li><a href="{url link='dvs.customize' id=$aDvs.dvs_id}"><span>Customize Styling</span></a></li>
 								 <li><a href="{url link='dvs.player.add' id=$aDvs.dvs_id}"><span>Player Settings</span></a></li>
 								 <li><a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}"><span>Manage Sales Team</span></a></li>
@@ -363,7 +365,13 @@ background-color: #c35f54;
 							  <ul>
 								 <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share"><span>Share Links</span></a></li>
 								 <li><a href="{url link='dvs.reports.share.'$aDvs.title_url}"><span>Share Report</span></a></li>
-								 <li><a href="#" onclick="$('#dvs_gallery_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>Gallery Code</span></a></li>
+							  </ul>
+						   </li>
+						   <li class="has-sub"><a href="#"><span>Gallery</span></a>
+							  <ul>
+								 <li><a href="#" onclick="$('#dvs_gallery_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>Embed Code</span></a></li>
+								 {*<li><a href="#"><span>Customize Styling</span></a></li>*}
+								 
 							  </ul>
 						   </li>
 						   <li class="active"><a href="#" onclick="if (confirm('{phrase var='core.are_you_sure' phpfox_squote=true}')) {left_curly} $(this).parents('#dvss:first').find('#dvs_{$aDvs.dvs_id}:first').hide('slow'); $.ajaxCall('dvs.deleteDvs', 'dvs_id={$aDvs.dvs_id}');{right_curly}"><span>Delete</span></a>
