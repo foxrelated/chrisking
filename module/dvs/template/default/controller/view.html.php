@@ -44,14 +44,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     {if !$bPreview}
       {if $aDvs.banner_toggle == 1} <!--phpmasterminds added this code for header toggle -->
       	{if $aDvs.branding_file_name}
-			<a href="{$aDvs.url}">
+			<a href="{$aDvs.url}" target="_parent">
 			  {img path='core.url_file'
 				   file='dvs/branding/'.$aDvs.branding_file_name
 				   style="vertical-align:middle; max-width: 100% !important; height: auto !important;"
 				   max_width=1117}
 			</a>
       	{else}
-        <h1><a href="{$aDvs.url}">{$aDvs.dealer_name}</a></h1>
+        <h1><a href="{$aDvs.url}" target="_parent">{$aDvs.dealer_name}</a></h1>
       	{/if}
       {/if} <!--phpmasterminds added this code for header toggle -->
     {/if}
@@ -60,11 +60,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
       <nav>
         <ul>
           <li>
-            <a href="{$aDvs.url}" onclick="menuHome('Top Menu Clicks');">{phrase var='dvs.home'}</a>
+            <a href="{$aDvs.url}" onclick="menuHome('Top Menu Clicks');" target="_parent">{phrase var='dvs.home'}</a>
           </li>
           {if $aDvs.inventory_url}
             <li>
-              <a href="{$aDvs.inventory_url}" class="dvs_inventory_link" onclick="menuInventory('Top Menu Clicks');" rel="nofollow">
+              <a href="{$aDvs.inventory_url}" class="dvs_inventory_link" onclick="menuInventory('Top Menu Clicks');" rel="nofollow" target="_parent">
                 {phrase var='dvs.show_inventory'}
               </a>
             </li>
@@ -72,7 +72,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
           {if $aDvs.specials_url}
             <li>
-              <a href="{$aDvs.specials_url}" onclick="menuOffers('Top Menu Clicks');" rel="nofollow">
+              <a href="{$aDvs.specials_url}" onclick="menuOffers('Top Menu Clicks');" rel="nofollow" target="_parent">
                 {phrase var='dvs.special_offers'}
               </a>
             </li>
@@ -84,13 +84,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
           {if Phpfox::isUser()}
             <li>
-              <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share">
+              <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" target="_blank">
                 {phrase var='dvs.dealer_share_links'}
               </a>
             </li>
             {if Phpfox::getUserId() == $aDvs.user_id || Phpfox::isAdmin()}
               <li>
-                <a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}">
+                <a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}" target="_blank">
                   {phrase var='dvs.manage_sales_team'}
                 </a>
               </li>
@@ -151,16 +151,16 @@ defined('PHPFOX') or exit('No direct script access allowed.');
           {/if}
         </section>
         <section id="dealer_links">
-          <a href="{$aDvs.url}" onclick="menuHome('Call To Action Menu Clicks');">
+          <a href="{$aDvs.url}" onclick="menuHome('Call To Action Menu Clicks');" target="_parent">
             {phrase var='dvs.cta_home'}
           </a>
           {if $aDvs.inventory_url}
-          <a href="{$aDvs.inventory_url}" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow">
+          <a href="{$aDvs.inventory_url}" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow" target="_parent">
             {phrase var='dvs.cta_inventory'}
           </a>
           {/if}
           {if $aDvs.specials_url}
-          <a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow">
+          <a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow" target="_parent">
             {phrase var='dvs.cta_specials'}
           </a>
           {/if}
@@ -205,7 +205,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
       <aside>
         <div id="dvs_geomap_container" itemprop="map"></div>
         <p>{if $aDvs.url}
-          {phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow">{$aDvs.url}</a>
+          {phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow" target="_parent">{$aDvs.url}</a>
           {/if}
           {if $aDvs.phone}<br />{phrase var='dvs.phone'}: <span itemprop="telephone">{$aDvs.phone}</span>{/if}</p>
         <p itemscope itemtype="http://schema.org/PostalAddress">
@@ -220,7 +220,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
       <ul>
         {foreach from=$aFooterLinks key=iKey item=aVideo name=videos}
         <li>
-          <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}{$aVideo.video_title_url}" onclick="menuFooter('Footer Link Clicks');">
+          <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}{$aVideo.video_title_url}" onclick="menuFooter('Footer Link Clicks');" target="_parent">
             {$aVideo.year} {$aVideo.make} {$aVideo.model}
           </a>
           {/foreach}
