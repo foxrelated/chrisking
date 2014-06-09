@@ -17,6 +17,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 	{
 		// Are subdomains enabled? If yes, our dealer title url is in a different place.
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
+		
 		if ($bSubdomainMode)
 		{
 			$sDvsRequest = $this->request()->get('req1');
@@ -26,6 +27,14 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			$sDvsRequest = $this->request()->get('req2');
 		}
 		$bPreview = false;
+		
+		/*phpmasterminds*/
+		$aBaseUrl = false;
+		if ($this->request()->get('req2'))
+		{
+			$aBaseUrl = true;
+		}
+		/*phpmasterminds*/
 		// Are we loading this as an iFrame?
 		if ($this->request()->get('req3') === 'preview')
 		{
@@ -117,6 +126,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			$aOverrideVideo = array();
 		}
 
+ 
 		//Dupe check
 		if (!empty($aOverrideVideo) || !empty($aFeaturedVideo))
 		{
@@ -160,8 +170,25 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		
 		$aOverviewVideos = Phpfox::getService('dvs')->aasort($aOverviewVideos,"ko_id");
 		*/
+		
+		/*phpmasterminds added below code for player next video*/
+		$aCurrentVideo = 0;
+		foreach ($aOverviewVideos as $iKey => $aVideo)
+		{
+			if( ($aFirstVideo['year'] == $aVideo['year']) AND ($aFirstVideo['make'] == $aVideo['make']) AND ($aFirstVideo['model'] == $aVideo['model']))
+			{
+				$aCurrentVideo = $iKey;
+				break;
+			}
+		}
+		/*phpmasterminds added below code for player next video*/
 		/*phpmasterminds Edited for sort in gallery and footer ends*/
 		
+	
+ 
+			
+
+ 
 		// Sort videos by name for footer links
 		$aFooterLinks = $aOverviewVideos;
 	
@@ -333,6 +360,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			))
 			->assign(array(
 				'aDvs' => $aDvs,
+				'aBaseUrl' => $aBaseUrl,
+				'aCurrentVideo' => $aCurrentVideo,
 				'aFirstVideo' => $aFirstVideo,
 				'inventoryList' => $inventoryList,
 				'bc' => $this->request()->get('bc'),

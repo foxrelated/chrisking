@@ -155,6 +155,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<label for="autoplay">{phrase var='dvs.autoplay'}:</label>
 				<input type="checkbox" name="val[autoplay]" id="autoplay" value="1" {if $bIsEdit}{if $aForms.autoplay}checked=checked{/if}{/if}/>
 			</li>
+			<!--phpmasterminds Auto play setting for base URL -->
+			<li>
+				<label for="autoplay_baseurl">Autoplay Base URL:</label>
+				<input type="checkbox" name="val[autoplay_baseurl]" id="autoplay_baseurl" value="1" {if $bIsEdit}{if $aForms.autoplay_baseurl}checked=checked{/if}{/if}/>
+			</li>
+			<li>
+				<label for="autoplay_videourl">Autoplay Video URL:</label>
+				<input type="checkbox" name="val[autoplay_videourl]" id="autoplay_videourl" value="1" {if $bIsEdit}{if $aForms.autoplay_videourl}checked=checked{/if}{/if}/>
+			</li>
+			<!--phpmasterminds Auto play setting for base URL -->
+			
 			<li>
 				<label for="autoadvance">{phrase var='dvs.auto_advance'}:</label>
 				<input type="checkbox" name="val[autoadvance]" id="autoadvance" value="1" {if $bIsEdit}{if $aForms.autoadvance}checked=checked{/if}{/if}/>
