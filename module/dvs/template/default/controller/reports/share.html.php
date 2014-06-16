@@ -84,12 +84,24 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<tr>
 			<td align="center" valign="middle" width="50%">
 			<h1>Click-Through Rate</h1>
-				<div id="piechart"></div>
+                        <div id="piechart" style="width: 310px; height: 400px;margin: 0 auto">
+                            <script>
+                            {literal}
+                               piechart({/literal}{$aShareReport.total_generated.total}, {$aShareReport.total_clicked.total}{literal});
+                            {/literal}
+                            </script>
+                        </div>
 			</td>
 			
 			<td align="center" valign="middle" width="50%">
 			<h1>Best Performing Share Types</h1>
-				<div id="piechart"></div>
+                        <div id="piechart2" style="width: 310px; height: 400px; margin: 0 auto">
+                             <script>
+                            {literal}
+                                piechart2({/literal}{$aShareReport.ctr.email},{$aShareReport.ctr.facebook},{$aShareReport.ctr.twitter},{$aShareReport.ctr.google},{$aShareReport.ctr.embed}{literal});
+                            {/literal}
+                            </script>       
+                        </div>
 			</td>
 			
 		</tr>
@@ -99,7 +111,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<tr>
 			<td align="center" valign="middle">
 			<h1>Shares vs. Clicks</h1>
-			<div id="linechart"></div>
+                        <div id="linechart">
+                             <script>
+                                 
+                                linechart({$aShareClicks.listtime|@json_encode},{$aShareClicks.shares|@json_encode},{$aShareClicks.clicks|@json_encode})
+                                
+                            </script>
+                        </div>
 			</td>
 		</tr>
 	</table>
