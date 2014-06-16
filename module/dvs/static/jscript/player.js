@@ -13,7 +13,7 @@ var bMediaBegin = false;
 var bVideoChanged = false;
 var bUrlChanged = false;
 var sPlayerName;
-var iCurrentVideo = 0;
+//var iCurrentVideo = 0;
 var aVideoSelectMediaIds = [];
 var bPlaying;
 var sCuePoint;
@@ -588,7 +588,9 @@ function onVideoEnd(oVideo) {
 			}
 			else
 			{
-				modCon.getMediaAsynch(aMediaIds[iCurrentVideo]);
+				//modCon.getMediaAsynch(aMediaIds[iCurrentVideo]);
+				thumbnailClick(iCurrentVideo);
+				thumbnailClickDvs();
 			}
 		}
 	}

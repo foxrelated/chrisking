@@ -458,6 +458,15 @@ class User_Service_Callback extends Phpfox_Service
 		{
 			$this->cache()->remove('featured_users');
 		}
+		/*phpmasterminds on delete remove the sales team*/
+		$iEmail = $this->database()->select('email')
+			->from(Phpfox::getT('user'))
+			->where('user_id = ' . $iUser)
+			->execute('getSlaveField');
+			
+		$this->database()->delete(Phpfox::getT('ko_dvs_salesteam_invites'), 'email_address = "' . $iEmail.'"');
+		
+		/*phpmasterminds on delete remove the sales team*/
 		// This function takes care of all checks and queries if needed.
 		Phpfox::getService('profile.process')->clearProfileCache( (int)$iUser );
 

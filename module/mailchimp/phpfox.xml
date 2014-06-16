@@ -1,0 +1,92 @@
+<module>
+	<data>
+		<module_id>mailchimp</module_id>
+		<product_id>phpfoxplus_mailchimp</product_id>
+		<is_core>0</is_core>
+		<is_active>1</is_active>
+		<is_menu>1</is_menu>
+		<menu><![CDATA[a:4:{s:35:"mailchimp.admin_menu_add_a_new_list";a:1:{s:3:"url";a:2:{i:0;s:9:"mailchimp";i:1;s:4:"list";}}s:33:"mailchimp.admin_menu_manager_list";a:1:{s:3:"url";a:2:{i:0;s:9:"mailchimp";i:1;s:9:"subscribe";}}s:41:"mailchimp.admin_menu_mailchimp_log_browse";a:1:{s:3:"url";a:2:{i:0;s:9:"mailchimp";i:1;s:3:"log";}}s:41:"mailchimp.admin_menu_mailchimp_statistics";a:1:{s:3:"url";a:2:{i:0;s:9:"mailchimp";i:1;s:5:"stats";}}}]]></menu>
+		<phrase_var_name>module_mailchimp</phrase_var_name>
+	</data>
+	<settings>
+		<setting group="" module_id="mailchimp" is_hidden="0" type="string" var_name="api_key" phrase_var_name="setting_api_key" ordering="1" version_id="3.7.7">5ebccd30ec05fb31a686b2b236e3ddb7-us7</setting>
+		<setting group="" module_id="mailchimp" is_hidden="0" type="boolean" var_name="secure" phrase_var_name="setting_secure" ordering="1" version_id="3.7.7">1</setting>
+		<setting group="" module_id="mailchimp" is_hidden="0" type="integer" var_name="limit_subscribe_sent" phrase_var_name="setting_limit_subscribe_sent" ordering="1" version_id="3.7.7">100</setting>
+		<setting group="" module_id="mailchimp" is_hidden="0" type="boolean" var_name="send_notification_to_user_when_we_request_user_to_a_list" phrase_var_name="setting_send_notification_to_user_when_we_request_user_to_a_list" ordering="1" version_id="3.7.7">0</setting>
+		<setting group="" module_id="mailchimp" is_hidden="0" type="boolean" var_name="add_user_to_mailchimp_list_when_user_register" phrase_var_name="setting_add_user_to_mailchimp_list_when_user_register" ordering="1" version_id="3.7.7">1</setting>
+		<setting group="" module_id="mailchimp" is_hidden="0" type="boolean" var_name="update_subscribe_when_users_changed_their_information" phrase_var_name="setting_update_subscribe_when_users_changed_their_information" ordering="1" version_id="3.7.7">1</setting>
+	</settings>
+	<phrases>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="module_mailchimp" added="1401682811">Mailchimp Module - PhpfoxPlus.com</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="mailchimp_list" added="1401693574">Mailchimp List</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="setting_api_key" added="1401698145"><![CDATA[<title>MailChimp API Key</title><info>MailChimp API Key</info>]]></phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="admin_menu_add_a_new_list" added="1401759282">MailChimp List</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="admin_menu_manager_list" added="1401759282">MailChimp Subscribe</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="description" added="1401759864">Description</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="subscribe" added="1401759890">Subscribe</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="group_name" added="1401759906">Group name</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="edit" added="1401759916">Edit</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="refresh" added="1401759958">Refresh</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="account_settings" added="1401760205">Account Settings</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="can_not_connect_to_mailchimp" added="1401760350">Can not connect to mailchimp</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="there_are_no_subscribe_lists" added="1401760551">There are no subscribe lists</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="secure" added="1401762942">Secure</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="overview" added="1401762959">Overview</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="setting_secure" added="1401763404"><![CDATA[<title>Secure</title><info>Use https protocol to secure request from your server to MailChimp Server.</info>]]></phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="mailchimp_field_tag" added="1401764175">Tag</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="mailchimp_field_require" added="1401764207">MailChimp Require</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="phpfox_user_field" added="1401764233">Phpfox Field</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="admin_cp_field_desc" added="1401764252">Description</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="mailchimp_field_label" added="1401764273">Field Label</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="admin_cp_group_desc" added="1401764303">Select user groups to subscribe.</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="user_group_type" added="1401764320">Group Type</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="user_group_name" added="1401764346">Group Name</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="user_default_group" added="1401764369">Default Groups</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="user_count" added="1401764394">Users</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="user_custom_group" added="1401764440">Custom Groups</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="admin_cp_subscribe_label" added="1401764463">Subscribe user to this MailChimp list</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="send_confirm_email" added="1401764483">Send confirm email</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="admin_cp_subscribe_desc" added="1401764508">Subscribe Setting</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="cancel" added="1401764539">Cancel</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="submit" added="1401764563">Submit</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="select_list_status" added="1401765170">Status</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="select_list_number_item_per_page" added="1401765187">Number item per page</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="select_list" added="1401765204">Select MailChimp list</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="there_is_no_list" added="1401765405">There is no list.</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="this_list_has_no_subscribe" added="1401765451">This list has no subscribe.</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="list_filter" added="1401765796">List Filter</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="admin_list_subcribe" added="1401765824">The subcribe list</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="total" added="1401765937">Total</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="total_subscriber" added="1401765951">Total Subscribe</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="subscribed" added="1401766124">Subscribed</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="unsubscribed" added="1401766145">unsubscribed</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="subcribe_number" added="1401766194">No.</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="subcribe_email" added="1401766232">email</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="subcribe_time" added="1401766251">MailChimp Time</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="admin_menu_mailchimp_log_browse" added="1401766950">MailChimp Log Browse</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="admin_menu_mailchimp_statistics" added="1401766976">MailChimp Statistics</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="search_filter" added="1401767527">Search Filter</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="search_for_description" added="1401767567">Search For Description:</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="limit_per_page" added="1401767590">Limit per page:</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="sort" added="1401767611">Sort:</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="mailchimplog_id" added="1401767634">Id</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="created_at" added="1401767676">Created At</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="delete_all" added="1401767694">Delete All</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="no_mailchimp_log_has_been_created" added="1401767716">No MailChimp log has been created.</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="logs_successfully_deleted" added="1401767788">Logs successfully deleted.</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="delete_logs_fail" added="1401767817">Delete logs failure.</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="log_browse" added="1401767841">Log Browse</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="id" added="1401767896">ID</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="are_you_sure" added="1401767970">Are you sure?</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="statistic_number_of_subscribe_unsubscribe" added="1401768345">Statistic: number of subscribe/unsubscribe.</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="list_id" added="1401768368">List Id</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="name" added="1401768389">List Name</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="unsubscribe" added="1401768484">Unsubscribe</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="no_list_has_been_created" added="1401768506">No list has been created!</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="stats_1" added="1401768570">MailChimp Statistics</phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="setting_limit_subscribe_sent" added="1401955366"><![CDATA[<title>Send subscribe limit</title><info>Number of subscribe will be sent per each cron task</info>]]></phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="setting_send_notification_to_user_when_we_request_user_to_a_list" added="1401955462"><![CDATA[<title>Send message to user when admin request users&#039; group to MailChimp list</title><info>Send message to user when admin request users&#039; group to MailChimp list.</info>]]></phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="setting_add_user_to_mailchimp_list_when_user_register" added="1401955513"><![CDATA[<title>Add users to MailChimp when they register</title><info>Add users to MailChimp when they registered automatically.</info>]]></phrase>
+		<phrase module_id="mailchimp" version_id="3.7.7" var_name="setting_update_subscribe_when_users_changed_their_information" added="1401955567"><![CDATA[<title>Update subscriber information on MailChimp list when user changed their profile information</title><info>Update subscriber information on MailChimp list when user changed their profile information.</info>]]></phrase>
+	</phrases>
+</module>

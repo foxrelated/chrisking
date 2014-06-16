@@ -444,7 +444,9 @@ class User_Service_Process extends Phpfox_Service
 		{
 			Phpfox::getService('invite.process')->registerByEmail($aInsert);
 		}
-
+		/*phpmasterminds*/
+		Phpfox::getService('dvs.salesteam.process')->inviteSalesChange($iId,$aInsert['email']);
+		/*phpmasterminds*/
 		(($sPlugin = Phpfox_Plugin::get('user.service_process_add_feed')) ? eval($sPlugin) : false);
 		
 		if (!defined('PHPFOX_INSTALLER') && !Phpfox::getParam('user.verify_email_at_signup') && !Phpfox::getParam('user.approve_users') && !isset($bDoNotAddFeed))
