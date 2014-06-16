@@ -31,7 +31,7 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 		if (isset($aVals['user_id']) && $aVals['user_id'])
 		{
 			$aShareReport = Phpfox::getService('dvs.salesteam')->getShareReport($aDvs['dvs_id'], $aVals);
-            $shares_clicks = Phpfox::getService('dvs.salesteam')->shares_clicks_linechart($aDvs['dvs_id'], $aVals);
+                        $shares_clicks = Phpfox::getService('dvs.salesteam')->shares_clicks_linechart($aDvs['dvs_id'], $aVals);
                         
 			// Export CSV
 			if ($aVals['csv'])
@@ -89,7 +89,7 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 				'aForms' => $aVals,
 				'aTeamMembers' => $aTeamMembers,
 				'aShareReport' => $aShareReport,
-                'aShareClicks' => $shares_clicks,
+                                'aShareClicks' => $shares_clicks,
 				'aMember' => (isset($aVals['user_id']) ? Phpfox::getService('user')->get($aVals['user_id']) : array())
 		));
 	}

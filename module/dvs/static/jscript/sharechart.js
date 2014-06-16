@@ -1,50 +1,5 @@
- function piechart(x,y){
-   var  clicks = y;
-    var shares = x;
- $(function () {
-           /* Highcharts.setOptions({
-            colors: ['#6AF9C4', '#FFF263']
-            
-            });*/
-        $('#piechart').highcharts({
-            chart: {
-                    type: 'pie',
-                    options3d: {
-                        enabled: true,
-                        alpha: 45,
-                        beta: 0
-                    }
-                },
-            title: {
-                text: ''
-            },
-            tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                     showInLegend: true,
-                    depth: 35,
-                    dataLabels: {
-                        enabled: false,
-                        format: '{point.name}'
-                    }
-                }
-            },
-            series: [{
-                type: 'pie',
-                name: 'CTR',
-                data: [
 
-                    ['Shares', shares], 
-                    ['Clicks', clicks]
-                ]
-            }]
-        });
-    });
- }
+
 function piechart2(email,fb,tw,google,embed){
     
  $(function () {

@@ -87,7 +87,55 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                         <div id="piechart" style="width: 310px; height: 400px;margin: 0 auto">
                             <script>
                             {literal}
-                               piechart({/literal}{$aShareReport.total_generated.total}, {$aShareReport.total_clicked.total}{literal});
+                               //piechart({/literal}{$aShareReport.total_generated.total}, {$aShareReport.total_clicked.total}{literal});
+                               //test();
+                                    $Behavior.piechart = function() {
+                                      // var  clicks = y;
+                                       // var shares = x; 
+                                     //$(function () {
+                                               /* Highcharts.setOptions({
+                                                colors: ['#6AF9C4', '#FFF263']
+
+                                                });*/
+                                            $('#piechart').highcharts({
+                                                chart: {
+                                                        type: 'pie',
+                                                        options3d: {
+                                                            enabled: true,
+                                                            alpha: 45,
+                                                            beta: 0
+                                                        }
+                                                    },
+                                                title: {
+                                                    text: ''
+                                                },
+                                                tooltip: {
+                                                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                                },
+                                                plotOptions: {
+                                                    pie: {
+                                                        allowPointSelect: true,
+                                                        cursor: 'pointer',
+                                                         showInLegend: true,
+                                                        depth: 35,
+                                                        dataLabels: {
+                                                            enabled: false,
+                                                            format: '{point.name}'
+                                                        }
+                                                    }
+                                                },
+                                                series: [{
+                                                    type: 'pie',
+                                                    name: 'CTR',
+                                                    data: [
+
+                                                        ['Shares', {/literal}{$aShareReport.total_generated.total}{literal}], 
+                                                        ['Clicks', {/literal}{$aShareReport.total_clicked.total}{literal}]
+                                                    ]
+                                                }]
+                                            });
+                                        //});
+                                     }
                             {/literal}
                             </script>
                         </div>
@@ -98,7 +146,49 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                         <div id="piechart2" style="width: 310px; height: 400px; margin: 0 auto">
                              <script>
                             {literal}
-                                piechart2({/literal}{$aShareReport.ctr.email},{$aShareReport.ctr.facebook},{$aShareReport.ctr.twitter},{$aShareReport.ctr.google},{$aShareReport.ctr.embed}{literal});
+                            $Behavior.piechart2 = function() {
+                               // piechart2({/literal}{$aShareReport.ctr.email},{$aShareReport.ctr.facebook},{$aShareReport.ctr.twitter},{$aShareReport.ctr.google},{$aShareReport.ctr.embed}{literal});
+                               $('#piechart2').highcharts({
+                                        chart: {
+                                               type: 'pie',
+                                               options3d: {
+                                                   enabled: true,
+                                                   alpha: 45,
+                                                   beta: 0
+                                               }
+                                           },
+                                       title: {
+                                           text: ''
+                                       },
+                                       tooltip: {
+                                               pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                       },
+                                       plotOptions: {
+                                           pie: {
+                                               allowPointSelect: true,
+                                               cursor: 'pointer',
+                                                showInLegend: true,
+                                               depth: 35,
+                                               dataLabels: {
+                                                   enabled: false,
+                                                   format: '{point.name}'
+                                               }
+                                           }
+                                       },
+                                       series: [{
+                                           type: 'pie',
+                                           name: 'CTR',
+                                           data: [
+
+                                               ['Email', {/literal}{$aShareReport.ctr.email}{literal}], 
+                                               ['Facebook', {/literal}{$aShareReport.ctr.facebook}{literal}],
+                                               ['Twitter', {/literal}{$aShareReport.ctr.twitter}{literal}],
+                                               ['Google+', {/literal}{$aShareReport.ctr.google}{literal}],
+                                               ['Embed', {/literal}{$aShareReport.ctr.embed}{literal}]
+                                           ]
+                                       }]
+                                   });
+                                }
                             {/literal}
                             </script>       
                         </div>
@@ -113,9 +203,46 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<h1>Shares vs. Clicks</h1>
                         <div id="linechart">
                              <script>
-                                 
-                                linechart({$aShareClicks.listtime|@json_encode},{$aShareClicks.shares|@json_encode},{$aShareClicks.clicks|@json_encode})
-                                
+                                                 
+                               // linechart({$aShareClicks.listtime|@json_encode},{$aShareClicks.shares|@json_encode},{$aShareClicks.clicks|@json_encode})
+                               {literal}
+                               $Behavior.linechart = function() {
+                               $('#linechart').highcharts({
+                                        chart: {
+                                            type: 'line'
+                                        },
+                                        title: {
+                                            text: ''
+                                        },
+                                      /*  subtitle: {
+                                            text: 'Source: WorldClimate.com'
+                                        },*/
+                                        xAxis: {
+                                            categories: {/literal}{$aShareClicks.listtime|@json_encode}{literal}
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: ''
+                                            }
+                                        },
+                                        plotOptions: {
+                                            line: {
+                                                dataLabels: {
+                                                    enabled: true
+                                                },
+                                                enableMouseTracking: false
+                                            }
+                                        },
+                                        series: [{
+                                            name: 'Shares',
+                                            data: {/literal}{$aShareClicks.shares|@json_encode}{literal}
+                                        }, {
+                                            name: 'Clicks',
+                                            data: {/literal}{$aShareClicks.clicks|@json_encode}{literal}
+                                        }]
+                                    });
+                                }
+                               {/literal}
                             </script>
                         </div>
 			</td>
