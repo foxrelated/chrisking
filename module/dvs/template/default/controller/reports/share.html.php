@@ -271,7 +271,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</table>
 	<br>
 	<br>
-		<table width="100%" class="share_report_table">
+		{*<table width="100%" class="share_report_table">
 			<tr>
 				<td width="28%">
 					<strong>
@@ -568,7 +568,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<input type="submit" value="Export CSV" class="button" onclick="$('#export_csv').val(1);$('#generate_sales_report').submit();"/>	
 				</td>
 			</tr>
-		</table>
+		</table>*}
 	</div>
 {else}
 	{if empty($aForms)}
