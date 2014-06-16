@@ -181,7 +181,9 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 			$aShareReport['ctr']['total'] = 0;
 		}
 
-		$aShareReport['top_generated'] = $this->database()->select('v.video_title_url, v.referenceId, COUNT(s.shorturl_id) as total_generated')
+		//$aShareReport['top_generated'] = $this->database()->select('v.video_title_url, v.referenceId, COUNT(s.shorturl_id) as total_generated')
+		$aShareReport['top_generated'] = $this->database()->select('v.name, v.referenceId, COUNT(s.shorturl_id) as total_generated')
+
 			->from(Phpfox::getT('ko_shorturls'), 's')
 			->join(Phpfox::getT('ko_brightcove'), 'v', 'v.referenceId = s.video_ref_id')
 			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0')
@@ -195,7 +197,8 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 			$aShareReport['top_generated'][$iKey] = array_merge($aShareReport['top_generated'][$iKey], $this->getVideoCount($aVideo['referenceId'], $iDvsId, $iUserId, false, $iStartDate, $iEndDate, $iLimit));
 		}
 
-		$aShareReport['top_clicked'] = $this->database()->select('v.video_title_url, v.referenceId, COUNT(s.shorturl_id) as total_clicked')
+		//$aShareReport['top_clicked'] = $this->database()->select('v.video_title_url, v.referenceId, COUNT(s.shorturl_id) as total_clicked')
+		$aShareReport['top_clicked'] = $this->database()->select('v.name, v.referenceId, COUNT(s.shorturl_id) as total_clicked')
 			->from(Phpfox::getT('ko_shorturls'), 's')
 			->join(Phpfox::getT('ko_brightcove'), 'v', 'v.referenceId = s.video_ref_id')
 			->join(Phpfox::getT('ko_shorturl_clicks'), 'c', 'c.shorturl_id = s.shorturl_id')
@@ -213,8 +216,106 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 		return $aShareReport;
 	}
 
+        //caculator for line chart
+        public function shares_clicks_linechart($iDvsId,$aVals)
+        {
+                $iDvsId = (int) $iDvsId;
+		$iUserId = (int) $aVals['user_id'];
+		//$iLimit = (int) $aVals['limit'];
 
-	public function getVideoCount($sVideoRefId, $iDvsId, $iUserId, $bClicked, $iStartDate, $iEndDate, $iLimit)
+		$iStartDate = Phpfox::getLib('date')->convertToGmt(Phpfox::getLib('date')->mktime(0, 0, 0, $aVals['start_month'], $aVals['start_day'], $aVals['start_year']));
+		$iEndDate = Phpfox::getLib('date')->convertToGmt(Phpfox::getLib('date')->mktime(23, 59, 59, $aVals['end_month'], $aVals['end_day'], $aVals['end_year']));
+
+		$aServices = array(
+			'total' => 0,
+			'email' => 0,
+			'facebook' => 0,
+			'google' => 0,
+			'twitter' => 0,
+			'embed' => 0,
+		);
+
+		$aShareReport = array(
+			'total_generated' => $aServices,
+			'total_clicked' => $aServices,
+			//'ctr' => $aServices
+		);
+                $iTime = $iEndDate - $iStartDate; 
+                //check > 3 month
+                $monthTimestamp =  30*86400;
+                $weekTimestamp = 7*86400;
+                $check3 = $iTime/$monthTimestamp;    
+                $checkweek = $iTime/$weekTimestamp;
+                $montharr_stamp = array();
+                $montharr = array();
+                //echo $check3;
+                if($check3 > 3){
+                    for($m =0; $m < $check3; $m++){
+                        $montharr[$m] = date('m/d/Y',$iStartDate+86400*30*$m);
+                        $montharr_stamp[$m] =  $iStartDate+86400*30*$m;
+                    }
+                    $montharr[$check3] = date('m/d/Y',$iEndDate);
+                    $montharr_stamp[$check3] = $iEndDate;
+                }else{
+                   for($m =0; $m < $checkweek; $m++){
+                        $montharr[$m] = date('m/d/Y',$iStartDate+86400*7*$m);
+                        $montharr_stamp[$m] = $iStartDate+86400*7*$m;
+                    }
+                    $montharr[$checkweek] = date('m/d/Y',$iEndDate); 
+                    $montharr_stamp[$checkweek] = $iEndDate;
+                }
+                $aShareReport['listtime']= $montharr;
+                $sharearr = array();
+                $clickarr = array();
+                //var_dump($aShareReport);exit;
+                //var_dump($montharr_stamp);
+               
+                for($i=0;$i<count($montharr_stamp);$i++)
+                {
+                    $aShareReport['total_generated']['total'] =0;
+                    $aShareReport['total_clicked']['total'] =0;
+                    $aTotalGenerated = $this->database()->select('s.service, COUNT(s.shorturl_id) as total_generated')
+                            ->from(Phpfox::getT('ko_shorturls'), 's')
+                            ->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $montharr_stamp[$i] . ' AND ' . $montharr_stamp[$i+1] . ' AND s.hidden = 0')
+                            ->group('s.service')
+                            ->execute('getRows');
+                    //var_dump(date('m/d/Y',1400812614));
+                   
+                    foreach ($aTotalGenerated as $aService)
+                    {
+                            $aShareReport['total_generated'][$aService['service']] = $aService['total_generated'];
+                            $aShareReport['total_generated']['total'] += $aService['total_generated'];
+                    }
+                    //$sharearr[$i] =  count($aTotalGenerated);
+                    $sharearr[$i] = $aShareReport['total_generated']['total'];
+                    $aTotalClicked = $this->database()->select('s.service, COUNT(s.shorturl_id) as total_clicked')
+                            ->from(Phpfox::getT('ko_shorturls'), 's')
+                            ->join(Phpfox::getT('ko_shorturl_clicks'), 'c', 'c.shorturl_id = s.shorturl_id')
+                            ->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND c.timestamp BETWEEN ' . $montharr_stamp[$i] . ' AND ' . $montharr_stamp[$i+1] . ' AND s.hidden = 0 AND c.ip_address REGEXP \'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\'')
+                            ->group('s.service')
+                            ->execute('getRows');
+                  
+                   foreach ($aTotalClicked as $aService)
+                    {
+                            $serviceTotalClicked = (!in_array($aService['service'], array('facebook', 'google'))?$aService['total_clicked']:($aService['total_clicked'] - $aShareReport['total_generated'][$aService['service']])); // check if there is facebook or google - subtract 1 point for each shared link
+                            $aShareReport['total_clicked'][$aService['service']] = $serviceTotalClicked;
+                            $aShareReport['total_clicked']['total'] += $serviceTotalClicked;
+
+                            //$aShareReport['ctr'][$aService['service']] = round($serviceTotalClicked / $aShareReport['total_generated'][$aService['service']], 2) * 100;
+                    }
+                    $clickarr[$i] =$aShareReport['total_clicked']['total'];
+                }
+                $aShareReport['shares'] = $sharearr;
+                $aShareReport['clicks'] = $clickarr;
+               /* echo '<pre>';
+                print_r($aShareReport);
+                echo '</pre>';exit;
+                 */
+                return $aShareReport;
+                 
+        }
+
+        public function getVideoCount($sVideoRefId, $iDvsId, $iUserId, $bClicked, $iStartDate, $iEndDate, $iLimit)
 	{
 		if ($bClicked)
 		{

@@ -14,50 +14,35 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 ?>
 <div id="sales_team_members">
-	<h3>{phrase var='dvs.team_members'}</h3>
 	<form method="post" action="{url link='current'}" id="generate_sales_report" name="select_team_member">
-		<table id="select_team_member_table">
-			<tr>
-				<th>
-					{phrase var='dvs.member_name'}:
-				</th>
-				<th>
-					{phrase var='dvs.start_date'}:
-				</th>
-				<th>
-					{phrase var='dvs.end_date'}:
-				</th>
-				<th>
-					{phrase var='dvs.limit_video_entries'}:
-				</th>
-				<th>
-					{phrase var='dvs.generate_report'}:
-				</th>
-			</tr>
+		<table id="select_team_member_table" width="100%">
 			<tr>
 				<td class="share_report_td">
+				Name: 
 					<select name="val[user_id]" id="user_id">
-						<option value="">{phrase var='dvs.select_a_member'}</option>
+						<option value="">-- Select a User --</option>
 						{foreach from=$aTeamMembers item=aUser}
 							<option value="{$aUser.user_id}"{if isset($aForms.user_id) && $aUser.user_id == $aForms.user_id} selected="selected"{/if}>{$aUser.full_name} ({$aUser.email})</option>
 						{/foreach}
 					</select>
 				</td>
 				<td class="share_report_td">
-					<div style="position:relative">
+					<table><tr><td>Start Date:&nbsp;&nbsp;</td><td>
+					<div style="position:relative;">
 						{select_date prefix='start_' id='_start' start_year=$sStartYear end_year=$sEndYear field_separator=' / ' field_order='MDY' default_all=true}
 					</div>
+					</td></tr></table>
 				</td>
 				<td class="share_report_td">
+				<table><tr><td>End Date:&nbsp;&nbsp;</td><td>
 					<div style="position:relative">
 						{select_date prefix='end_' id='_start' start_year=$sStartYear end_year=$sEndYear field_separator=' / ' field_order='MDY' default_all=true}
 					</div>
+					</td></tr></table>
+					<input type="hidden" name="val[limit]" value="{if !isset($aForms.limit)}500{else}{$aForms.limit}{/if}" size="5"/>
 				</td>
 				<td class="share_report_td">
-					<input type="text" name="val[limit]" value="{if !isset($aForms.limit)}5{else}{$aForms.limit}{/if}" size="5"/>
-				</td>
-				<td class="share_report_td">
-					<input type="submit" value="{phrase var='dvs.display_share_report'}" class="button" />
+					<input type="submit" value="Show Report" class="button" />
 					<input type="hidden" value="0" name="val[csv]" id="export_csv" />
 				</td>
 			</tr>
@@ -68,38 +53,225 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</div>
 	</form>
 </div>
-
-<h3>Share Report</h3>
 {if !empty($aShareReport)}
-	<div id="dvs_share_report_container">
-		<table width="792" class="share_report_table">
-			<tr>
-				<td colspan="7">
-					<strong>
-						{phrase var='dvs.share_report_for_name' name=$aMember.full_name}
-					</strong>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="7">
-					&nbsp;
-				</td>
-			</tr>
-			<tr>
-				<td colspan="7">
-					<em>
-						Date Range: From: {$aForms.start_month}/{$aForms.start_day}/{$aForms.start_year}
-						To: {$aForms.end_month}/{$aForms.end_day}/{$aForms.end_year}
-					</em>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="7">
-					&nbsp;
-				</td>
-			</tr>
-			<tr>
-			</tr>
+	<div id="dvs_share_report_container" style="padding-top:30px;">
+	<h1 align="center" style="font-size:34px;font-weight:bold;">{phrase var='dvs.share_report_for_name' name=$aMember.full_name}<br> <span style="color:#666666;">{$aForms.start_month}/{$aForms.start_day}/{$aForms.start_year} to {$aForms.end_month}/{$aForms.end_day}/{$aForms.end_year}</span></h1>
+	<br>
+	<table id="stats_box" width="100%">
+		<tr>
+			<td align="center" valign="middle" width="33%">
+			<div id="totals_box">
+				<div class="stat_label_big">{$aShareReport.total_generated.total}</div>
+				<div class="stat_label_small">Total Shares</div>
+			</div>
+		</td>
+		<td align="center" valign="middle" width="33%">
+			<div id="totals_box">
+				<div class="stat_label_big">{$aShareReport.total_clicked.total}</div>
+				<div class="stat_label_small">Total Clicks</div>
+			</div>
+		</td>
+		<td align="center" valign="middle" width="33%">
+			<div id="totals_box">
+				<div class="stat_label_big">{$aShareReport.ctr.total}&#37;</div>
+				<div class="stat_label_small">Average CTR</div>
+			</div>
+		</td>
+	</tr>
+	</table>
+	<br>
+	<table id="piechart_stats_box" width="100%">
+		<tr>
+			<td align="center" valign="middle" width="50%">
+			<h1>Click-Through Rate</h1>
+                        <div id="piechart" style="width: 310px; height: 400px;margin: 0 auto">
+                            <script>
+                            {literal}
+                               //piechart({/literal}{$aShareReport.total_generated.total}, {$aShareReport.total_clicked.total}{literal});
+                               //test();
+                                    $Behavior.piechart = function() {
+                                      // var  clicks = y;
+                                       // var shares = x; 
+                                     //$(function () {
+                                               /* Highcharts.setOptions({
+                                                colors: ['#6AF9C4', '#FFF263']
+
+                                                });*/
+                                            $('#piechart').highcharts({
+                                                chart: {
+                                                        type: 'pie',
+                                                        options3d: {
+                                                            enabled: true,
+                                                            alpha: 45,
+                                                            beta: 0
+                                                        }
+                                                    },
+                                                title: {
+                                                    text: ''
+                                                },
+                                                tooltip: {
+                                                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                                },
+                                                plotOptions: {
+                                                    pie: {
+                                                        allowPointSelect: true,
+                                                        cursor: 'pointer',
+                                                         showInLegend: true,
+                                                        depth: 35,
+                                                        dataLabels: {
+                                                            enabled: false,
+                                                            format: '{point.name}'
+                                                        }
+                                                    }
+                                                },
+                                                series: [{
+                                                    type: 'pie',
+                                                    name: 'CTR',
+                                                    data: [
+
+                                                        ['Shares', {/literal}{$aShareReport.total_generated.total}{literal}], 
+                                                        ['Clicks', {/literal}{$aShareReport.total_clicked.total}{literal}]
+                                                    ]
+                                                }]
+                                            });
+                                        //});
+                                     }
+                            {/literal}
+                            </script>
+                        </div>
+			</td>
+			
+			<td align="center" valign="middle" width="50%">
+			<h1>Best Performing Share Types</h1>
+                        <div id="piechart2" style="width: 310px; height: 400px; margin: 0 auto">
+                             <script>
+                            {literal}
+                            $Behavior.piechart2 = function() {
+                               // piechart2({/literal}{$aShareReport.ctr.email},{$aShareReport.ctr.facebook},{$aShareReport.ctr.twitter},{$aShareReport.ctr.google},{$aShareReport.ctr.embed}{literal});
+                               $('#piechart2').highcharts({
+                                        chart: {
+                                               type: 'pie',
+                                               options3d: {
+                                                   enabled: true,
+                                                   alpha: 45,
+                                                   beta: 0
+                                               }
+                                           },
+                                       title: {
+                                           text: ''
+                                       },
+                                       tooltip: {
+                                               pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                       },
+                                       plotOptions: {
+                                           pie: {
+                                               allowPointSelect: true,
+                                               cursor: 'pointer',
+                                                showInLegend: true,
+                                               depth: 35,
+                                               dataLabels: {
+                                                   enabled: false,
+                                                   format: '{point.name}'
+                                               }
+                                           }
+                                       },
+                                       series: [{
+                                           type: 'pie',
+                                           name: 'CTR',
+                                           data: [
+
+                                               ['Email', {/literal}{$aShareReport.ctr.email}{literal}], 
+                                               ['Facebook', {/literal}{$aShareReport.ctr.facebook}{literal}],
+                                               ['Twitter', {/literal}{$aShareReport.ctr.twitter}{literal}],
+                                               ['Google+', {/literal}{$aShareReport.ctr.google}{literal}],
+                                               ['Embed', {/literal}{$aShareReport.ctr.embed}{literal}]
+                                           ]
+                                       }]
+                                   });
+                                }
+                            {/literal}
+                            </script>       
+                        </div>
+			</td>
+			
+		</tr>
+	</table>
+	<br><br>
+	<table id="shares_vs_clicks_stats_box" width="100%">
+		<tr>
+			<td align="center" valign="middle">
+			<h1>Shares vs. Clicks</h1>
+                        <div id="linechart">
+                             <script>
+                                                 
+                               // linechart({$aShareClicks.listtime|@json_encode},{$aShareClicks.shares|@json_encode},{$aShareClicks.clicks|@json_encode})
+                               {literal}
+                               $Behavior.linechart = function() {
+                               $('#linechart').highcharts({
+                                        chart: {
+                                            type: 'line'
+                                        },
+                                        title: {
+                                            text: ''
+                                        },
+                                      /*  subtitle: {
+                                            text: 'Source: WorldClimate.com'
+                                        },*/
+                                        xAxis: {
+                                            categories: {/literal}{$aShareClicks.listtime|@json_encode}{literal}
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: ''
+                                            }
+                                        },
+                                        plotOptions: {
+                                            line: {
+                                                dataLabels: {
+                                                    enabled: true
+                                                },
+                                                enableMouseTracking: false
+                                            }
+                                        },
+                                        series: [{
+                                            name: 'Shares',
+                                            data: {/literal}{$aShareClicks.shares|@json_encode}{literal}
+                                        }, {
+                                            name: 'Clicks',
+                                            data: {/literal}{$aShareClicks.clicks|@json_encode}{literal}
+                                        }]
+                                    });
+                                }
+                               {/literal}
+                            </script>
+                        </div>
+			</td>
+		</tr>
+	</table>
+	<br><br>
+	<table id="top_links_stat_box" width="100%">
+		<tr>
+			<td align="left" valign="middle">
+			<h1>Most Shared Links</h1>
+			<ol id="list">
+				{foreach from=$aShareReport.top_generated item=aVideo}
+					<li>{$aVideo.name}</li>
+				{/foreach}
+				</ol>
+			</td>
+			<td align="left" valign="middle">
+			<h1>Most Clicked Links</h1>
+				<ol id="list">				
+				{foreach from=$aShareReport.top_clicked item=aVideo}
+					<li>{$aVideo.name}</li>
+				{/foreach}
+				</ol>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<br>
+		{*<table width="100%" class="share_report_table">
 			<tr>
 				<td width="28%">
 					<strong>
@@ -136,11 +308,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						Totals
 					</strong>
 				</td>
-				{*
-				<td width="12%">
-					&nbsp;
-				</td>
-				*}
 			</tr>
 			<tr>
 				<td>
@@ -168,11 +335,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{$aShareReport.total_generated.total}
 					</strong>
 				</td>
-				{*
-				<td>
-					&nbsp;
-				</td>
-				*}
 			</tr>
 			<tr>
 				<td>
@@ -200,11 +362,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{$aShareReport.total_clicked.total}
 					</strong>
 				</td>
-				{*
-				<td>
-					&nbsp;
-				</td>
-				*}
 			</tr>
 			<tr>
 				<td>
@@ -232,11 +389,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{$aShareReport.ctr.total}&#37;
 					</strong>
 				</td>
-				{*
-				<td>
-					&nbsp;
-				</td>
-				*}
 			</tr>
 			<tr>
 				<td colspan="7">
@@ -274,11 +426,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						Embed
 					</strong>
 				</td>
-				{*
-				<td>
-					&nbsp;
-				</td>
-				*}
 			</tr>
 			{foreach from=$aShareReport.top_generated item=aVideo}
 				<tr>
@@ -307,11 +454,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 							{$aVideo.embed}
 						</strong>
 					</td>
-					{*
-					<td>
-						&nbsp;
-					</td>
-					*}
 				</tr>
 			{/foreach}
 			<tr>
@@ -368,11 +510,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						Embed
 					</strong>
 				</td>
-				{*
-				<td>
-					&nbsp;
-				</td>
-				*}
 			</tr>
 			{foreach from=$aShareReport.top_clicked item=aVideo}
 				<tr>
@@ -401,11 +538,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 							{$aVideo.total}
 						</strong>
 					</td>
-					{*
-					<td>
-						&nbsp;
-					</td>
-					*}
 				</tr>
 			{/foreach}
 			<tr>
@@ -433,15 +565,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</tr>
 			<tr>
 				<td colspan="7">
-					<input type="submit" value="Export CSV"  onclick="$('#export_csv').val(1);$('#generate_sales_report').submit();"/>
+				<input type="submit" value="Export CSV" class="button" onclick="$('#export_csv').val(1);$('#generate_sales_report').submit();"/>	
 				</td>
 			</tr>
-		</table>
+		</table>*}
 	</div>
 {else}
 	{if empty($aForms)}
-		Please select a Sales Team Member and a date range to display a Share Report.
+		<br><div class="share_report_message" align="center">Please select a user and date range to display their sharing activity.</div><br>
 	{else}
-		No data to display
+		<br><div class="share_report_message" align="center"><span style="color:#ff0000;">No user selected.</span> Please select a user and date range to display their sharing activity.</div><br>
 	{/if}
 {/if}

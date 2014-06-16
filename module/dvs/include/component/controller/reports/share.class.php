@@ -22,15 +22,7 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 		// Is the user allowed to be here?
 		Phpfox::isUser(true);
 		
-		// Are subdomains enabled? If yes, our dealer title url is in a different place.
-//		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
-//		if ($bSubdomainMode)
-//		{
-//			$sDvsTitle = $this->request()->get('req3');
-//		}else{
-			
-			$sDvsTitle = $this->request()->get('req4'); // Subdomain mode does not matter. DVS Title is req 4 in both cases.
-//		}
+		$sDvsTitle = $this->request()->get('req4'); // Subdomain mode does not matter. DVS Title is req 4 in both cases.
 
 		$aDvs = Phpfox::getService('dvs')->get($sDvsTitle, true);
 
@@ -39,7 +31,8 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 		if (isset($aVals['user_id']) && $aVals['user_id'])
 		{
 			$aShareReport = Phpfox::getService('dvs.salesteam')->getShareReport($aDvs['dvs_id'], $aVals);
-
+                        $shares_clicks = Phpfox::getService('dvs.salesteam')->shares_clicks_linechart($aDvs['dvs_id'], $aVals);
+                        
 			// Export CSV
 			if ($aVals['csv'])
 			{
@@ -78,13 +71,16 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 			$aAdmin = array(Phpfox::getService('user')->get($aDvs['user_id']));
 			$aTeamMembers = array_merge($aAdmin, $aTeamMembers);
 		}
-
+                
 		$this->template()
 			->setTitle(Phpfox::getPhrase('dvs.share_report'))
 			->setBreadcrumb(Phpfox::getPhrase('dvs.share_report'))
 			->setHeader(array(
 				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
-				'share-report.css' => 'module_dvs'
+				'share-report.css' => 'module_dvs',
+                                'highcharts.js' => 'module_dvs',
+                                'highcharts-3d.js' => 'module_dvs',
+                                'sharechart.js' => 'module_dvs'
 			))
 			->assign(array(
 				'sStartYear' => $sStartYear,
@@ -93,6 +89,7 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 				'aForms' => $aVals,
 				'aTeamMembers' => $aTeamMembers,
 				'aShareReport' => $aShareReport,
+                                'aShareClicks' => $shares_clicks,
 				'aMember' => (isset($aVals['user_id']) ? Phpfox::getService('user')->get($aVals['user_id']) : array())
 		));
 	}
