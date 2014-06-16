@@ -57,16 +57,20 @@ color:#ffffff;
 padding:0px;
 }
 
-#piechart {
-border:0px solid #003366;
-background-color:#cccccc;
--webkit-border-radius: 50%;
--moz-border-radius: 50%;
-border-radius: 50%;
+#piechart1 {
 text-align:center;
 cursor:default;
-width:300px;
-height:300px;
+width: 310px; 
+height: 400px;
+margin: 0 auto;
+}
+
+#piechart2 {
+text-align:center;
+cursor:default;
+width: 310px; 
+height: 400px;
+margin: 0 auto;
 }
 
 #shares_vs_clicks_stats_box td {

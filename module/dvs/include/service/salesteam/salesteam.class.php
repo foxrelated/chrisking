@@ -216,10 +216,10 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 		return $aShareReport;
 	}
 
-        //caculator for line chart
+        //calculator for line chart
         public function shares_clicks_linechart($iDvsId,$aVals)
         {
-                $iDvsId = (int) $iDvsId;
+        $iDvsId = (int) $iDvsId;
 		$iUserId = (int) $aVals['user_id'];
 		//$iLimit = (int) $aVals['limit'];
 
@@ -336,7 +336,8 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 			'email' => 0,
 			'facebook' => 0,
 			'google' => 0,
-			'twitter' => 0
+			'twitter' => 0,
+			'embed' => 0
 		);
 
 		foreach ($aVideoInfo as $aService)

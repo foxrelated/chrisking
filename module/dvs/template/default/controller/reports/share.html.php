@@ -83,8 +83,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<table id="piechart_stats_box" width="100%">
 		<tr>
 			<td align="center" valign="middle" width="50%">
-			<h1>Click-Through Rate</h1>
-                        <div id="piechart" style="width: 310px; height: 400px;margin: 0 auto">
+			{*<h1>Click-Through Rate</h1>*}
+                        <div id="piechart1">
                             <script>
                             {literal}
                                //piechart({/literal}{$aShareReport.total_generated.total}, {$aShareReport.total_clicked.total}{literal});
@@ -97,7 +97,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                                                 colors: ['#6AF9C4', '#FFF263']
 
                                                 });*/
-                                            $('#piechart').highcharts({
+                                            $('#piechart1').highcharts({
                                                 chart: {
                                                         type: 'pie',
                                                         options3d: {
@@ -107,10 +107,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                                                         }
                                                     },
                                                 title: {
-                                                    text: ''
+                                                    text: 'Click-Through Rate'
                                                 },
                                                 tooltip: {
-                                                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                                        //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                                		pointFormat: '{point.y}'
                                                 },
                                                 plotOptions: {
                                                     pie: {
@@ -120,13 +121,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                                                         depth: 35,
                                                         dataLabels: {
                                                             enabled: false,
-                                                            format: '{point.name}'
+                                                            format: 'Total {point.name}'
                                                         }
                                                     }
                                                 },
                                                 series: [{
                                                     type: 'pie',
-                                                    name: 'CTR',
+                                                    name: '',
                                                     data: [
 
                                                         ['Shares', {/literal}{$aShareReport.total_generated.total}{literal}], 
@@ -142,8 +143,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 			
 			<td align="center" valign="middle" width="50%">
-			<h1>Best Performing Share Types</h1>
-                        <div id="piechart2" style="width: 310px; height: 400px; margin: 0 auto">
+			{*<h1>Best Performing Share Types</h1>*}
+                        <div id="piechart2">
                              <script>
                             {literal}
                             $Behavior.piechart2 = function() {
@@ -158,10 +159,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                                                }
                                            },
                                        title: {
-                                           text: ''
+                                           text: 'Top Share Types'
                                        },
                                        tooltip: {
                                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                       			//pointFormat: '{point.x}'
                                        },
                                        plotOptions: {
                                            pie: {
@@ -177,7 +179,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                                        },
                                        series: [{
                                            type: 'pie',
-                                           name: 'CTR',
+                                           name: '% of total',
                                            data: [
 
                                                ['Email', {/literal}{$aShareReport.ctr.email}{literal}], 

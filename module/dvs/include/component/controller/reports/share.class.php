@@ -78,9 +78,9 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 			->setHeader(array(
 				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
 				'share-report.css' => 'module_dvs',
-                                'highcharts.js' => 'module_dvs',
-                                'highcharts-3d.js' => 'module_dvs',
-                                'sharechart.js' => 'module_dvs'
+                'highcharts.js' => 'module_dvs',
+                'highcharts-3d.js' => 'module_dvs',
+                //'sharechart.js' => 'module_dvs'
 			))
 			->assign(array(
 				'sStartYear' => $sStartYear,
@@ -89,7 +89,7 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 				'aForms' => $aVals,
 				'aTeamMembers' => $aTeamMembers,
 				'aShareReport' => $aShareReport,
-                                'aShareClicks' => $shares_clicks,
+                'aShareClicks' => $shares_clicks,
 				'aMember' => (isset($aVals['user_id']) ? Phpfox::getService('user')->get($aVals['user_id']) : array())
 		));
 	}
