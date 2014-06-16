@@ -1,0 +1,92 @@
+<module>
+	<data>
+		<module_id>dvstour</module_id>
+		<product_id>dvstour</product_id>
+		<is_core>0</is_core>
+		<is_active>1</is_active>
+		<is_menu>1</is_menu>
+		<menu><![CDATA[a:3:{s:33:"dvstour.admin_menu_manage_dvstour";a:1:{s:3:"url";a:2:{i:0;s:7:"dvstour";i:1;s:5:"index";}}s:34:"dvstour.admin_menu_setting_dvstour";a:1:{s:3:"url";a:2:{i:0;s:7:"dvstour";i:1;s:7:"setting";}}s:30:"dvstour.admin_menu_add_dvstour";a:1:{s:3:"url";a:2:{i:0;s:7:"dvstour";i:1;s:7:"addtour";}}}]]></menu>
+		<phrase_var_name>module_dvstour</phrase_var_name>
+	</data>
+	<settings>
+		<setting group="" module_id="dvstour" is_hidden="0" type="string" var_name="add_new_tour_block_position" phrase_var_name="setting_add_new_tour_block_position" ordering="1" version_id="3.7.7"><![CDATA[{"top":41,"left":1249}]]></setting>
+		<setting group="" module_id="dvstour" is_hidden="0" type="string" var_name="play_tour_button_play_position" phrase_var_name="setting_play_tour_button_play_position" ordering="1" version_id="3.7.7"><![CDATA[{"top":17,"left":34}]]></setting>
+	</settings>
+	<blocks>
+		<block type_id="0" m_connection="" module_id="dvstour" component="addtour" location="2" is_active="1" ordering="2" disallow_access="" can_move="0">
+			<title>DVS Tour</title>
+			<source_code />
+			<source_parsed />
+		</block>
+	</blocks>
+	<components>
+		<component module_id="dvstour" component="addtour" m_connection="" module="dvstour" is_controller="0" is_block="1" is_active="1" />
+	</components>
+	<phrases>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="module_dvstour" added="1401901096">DVS Tour</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="setting_add_new_tour_block_position" added="1401901231"><![CDATA[<title>Position of button Add new Tour</title><info>Position of button Add new Tour</info>]]></phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="setting_play_tour_button_play_position" added="1401901263"><![CDATA[<title>Position of button Play Tour</title><info>Position of button Play Tour</info>]]></phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="add_new_step" added="1401903535">Add New Step</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="cancel_setup_step" added="1401903562">Cancel Setup Step</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="preview_tour" added="1401903578">Preview Tour</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="save_tour" added="1401903591">Save Tour</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="reset_tour" added="1401903608">Reset Tour</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="manage_sitetour_step" added="1401991815">Mamage Steps</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="manate_tours" added="1401991889">Manage Tours</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="active" added="1401992280">Active</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="title" added="1401992351">Title</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="link" added="1401992368">Link</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="delete" added="1401992394">Delete</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="edit" added="1401992492">Edit</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="manage_step" added="1401992560">Manage Steps ({total})</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="are_you_sure" added="1401993215">Are you sure you want to delete this tour?</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="deactivate" added="1401993345">Deactive</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="update_sitetour_sucessfully" added="1401993623">Update sitetour successfully.</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="update_step_succesfully" added="1401993659">Update step successfully.</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="edit_sitetour" added="1401993692">Edit Sitetour</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="sitetour_detail" added="1401993764">Sitetour Detail</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="change_step_info" added="1401993784">Change step information.</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="notice_please_go_to_above_link_search_with_varname_and_change_phrase" added="1401993822">Please go to admincp to chagne phrase</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="content" added="1401993842">Content</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="submit" added="1401994012">Submit</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="admin_menu_manage_dvstour" added="1402066680">Manage DVSTour</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="admin_menu_setting_dvstour" added="1402066680">Setting DVSTour</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="please_add_tour_name" added="1402152698">Please add tour name!</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="please_enter_url" added="1402152739">Please enter URL!</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="add_new_tour_backend" added="1402152759">Add New Tour</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="tour_name" added="1402152792">Tour Name</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="site_tour_link" added="1402152819">DVSTour URL</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="visiable_with_user_group" added="1402152887">User Group</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="is_auto_run" added="1402152911">Autorun</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="add" added="1402152932">Add</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="please_add_new_step" added="1402153335">Please Add New Step</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="admin_menu_add_dvstour" added="1402153672">Add DVSTour</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="add_a_new_step_for_tour_in_site" added="1402153820">Add a new step for tour in site</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="url" added="1402153856">URL</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="element" added="1402153895">Element</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="auto_transition" added="1402153930">Auto transition:</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="time_duration" added="1402153957">Time duration</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="autorun" added="1402154017">Autorun</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="tour_mode" added="1402155637">Tour Mode</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="auto_play_or_manual" added="1402155669">Auto play or manual.</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="manual" added="1402155698">Manual</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="automotive" added="1402155880">Automatic</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="default_time" added="1402155899">Default Time</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="default_time_for_each_step" added="1402155916">Default time for each step.</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="show_backdrop" added="1402155939">Show Backdrop</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="if_this_setting_is_true_when_tour_play_it_s_hightlight_current_step" added="1402155955"><![CDATA[If this setting is true, when tour play, it&#039;s hightlight current step.]]></phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="false" added="1402155970">False</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="true" added="1402155990">True</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="custom_theme" added="1402156009">Custom Theme</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="if_this_setting_is_true_dvstour_will_use_custom_theme_default_it_uses_theme_of_bootstrap_theme" added="1402156043">If this setting is true, DVSTour will use custom theme. Default it uses theme of bootstrap theme.</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="show_step_number" added="1402156074">Show Step Number</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="if_this_setting_is_true_when_dvstour_play_it_will_show_number_step_and_hightlight_it" added="1402156095">If this setting is true, when DVSTour play, it will show number step and hightlight it.</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="show_tour_first_time" added="1402156136">Show Tour First Time</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="if_this_setting_is_true_dvstour_only_show_first_time_when_user_visit_site" added="1402156159">If this setting is true, DVSTour only show first time when user visit site.</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="manage_steps_for_tour" added="1402156703">Manage Steps for Tour</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="step_detail" added="1402156922">Step Detail</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="set_a_expiration_time_for_the_steps_when_the_step_expires_the_next_step_is_automatically_shown_se" added="1402159471">Set a expiration time for the steps. When the step expires, the next step is automatically shown. Set empty to disable automatically next step.</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="user_group" added="1402159817">User Group</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="anybody" added="1402159853">Anybody</phrase>
+	</phrases>
+</module>
