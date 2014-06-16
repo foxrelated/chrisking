@@ -159,7 +159,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 		$aTotalClicked = $this->database()->select('s.service, COUNT(s.shorturl_id) as total_clicked')
 			->from(Phpfox::getT('ko_shorturls'), 's')
 			->join(Phpfox::getT('ko_shorturl_clicks'), 'c', 'c.shorturl_id = s.shorturl_id')
-			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND c.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0 AND c.ip_address REGEXP \'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\'')
+			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0 AND c.ip_address REGEXP \'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\'')
 			->group('s.service')
 			->execute('getRows');
 
@@ -186,7 +186,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 
 			->from(Phpfox::getT('ko_shorturls'), 's')
 			->join(Phpfox::getT('ko_brightcove'), 'v', 'v.referenceId = s.video_ref_id')
-			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND c.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0')
+			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0')
 			->group('s.video_ref_id')
 			->order('total_generated DESC')
 			->limit($iLimit)
@@ -202,7 +202,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 			->from(Phpfox::getT('ko_shorturls'), 's')
 			->join(Phpfox::getT('ko_brightcove'), 'v', 'v.referenceId = s.video_ref_id')
 			->join(Phpfox::getT('ko_shorturl_clicks'), 'c', 'c.shorturl_id = s.shorturl_id')
-			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND c.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0')
+			->where('s.dvs_id = ' . $iDvsId . ' AND s.user_id = ' . $iUserId . ' AND s.timestamp BETWEEN ' . $iStartDate . ' AND ' . $iEndDate . ' AND s.hidden = 0')
 			->group('s.video_ref_id')
 			->order('total_clicked DESC')
 			->limit($iLimit)
@@ -212,9 +212,10 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 		{
 			$aShareReport['top_clicked'][$iKey] = array_merge($aShareReport['top_clicked'][$iKey], $this->getVideoCount($aVideo['referenceId'], $iDvsId, $iUserId, false, $iStartDate, $iEndDate, $iLimit));
 		}
-               
+
 		return $aShareReport;
 	}
+
         //caculator for line chart
         public function shares_clicks_linechart($iDvsId,$aVals)
         {
