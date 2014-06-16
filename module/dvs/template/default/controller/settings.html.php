@@ -501,7 +501,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{phrase var='dvs.'$sDescriptionPhraseVar}:
 					</div>
 					<div class="phrase_override_input_container">
-						<input class="phrase_override_input" type="text" name="val[phrase_overrides][{$sPhraseVar}]" value="{if $sPhraseText}{$sPhraseText}{/if}" id="{$sPhraseVar}" size="60" maxlength="60" />
+						<input class="phrase_override_input" type="text" name="val[phrase_overrides][{$sPhraseVar}]" value="{if $sPhraseText}{$sPhraseText}{/if}" id="{$sPhraseVar}" size="60" />
 					</div>
 				</div>
 				<div class="phrase_override_row default_phrase_override_container">
@@ -523,7 +523,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					{phrase var='dvs.new_car_videos'}:
 				</div>
 				<div class="phrase_override_input_container">
-					<input class="phrase_override_input" type="text" name="val[1onone_override]" value="{if $bIsEdit && isset($aForms.1onone_override)}{$aForms.1onone_override}{/if}" id="1onone_override" size="60" maxlength="60" />
+					<input class="phrase_override_input" type="text" name="val[1onone_override]" value="{if $bIsEdit && isset($aForms.1onone_override)}{$aForms.1onone_override}{/if}" id="1onone_override" size="60" />
 				</div>
 			</div>
 			<div class="phrase_override_row default_phrase_override_container">
@@ -541,7 +541,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{phrase var='dvs.used_car_review_videos'}:
 					</div>
 					<div class="phrase_override_input_container">
-						<input class="phrase_override_input" type="text" name="val[new2u_override]" value="{if $bIsEdit && isset($aForms.new2u_override)}{$aForms.new2u_override}{/if}" id="new2u_override" size="60" maxlength="60" />
+						<input class="phrase_override_input" type="text" name="val[new2u_override]" value="{if $bIsEdit && isset($aForms.new2u_override)}{$aForms.new2u_override}{/if}" id="new2u_override" size="60" />
 					</div>
 				</div>
 				<div class="phrase_override_row default_phrase_override_container">
@@ -560,7 +560,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						{phrase var='dvs.test_drive_videos'}:
 					</div>
 					<div class="phrase_override_input_container">
-						<input class="phrase_override_input" type="text" name="val[top200_override]" value="{if $bIsEdit && isset($aForms.top200_override)}{$aForms.top200_override}{/if}" id="top200_override" size="60" maxlength="60" />
+						<input class="phrase_override_input" type="text" name="val[top200_override]" value="{if $bIsEdit && isset($aForms.top200_override)}{$aForms.top200_override}{/if}" id="top200_override" size="60" />
 					</div>
 				</div>
 				<div class="phrase_override_row default_phrase_override_container">

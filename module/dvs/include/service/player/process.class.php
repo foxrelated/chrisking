@@ -45,6 +45,8 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 			'featured_year' => $oParseInput->clean($aVals['featured_year'], 4),
 			'featured_model' => $oParseInput->clean($aVals['featured_model'], 64),
 			'autoplay' => (isset($aVals['autoplay']) && $aVals['autoplay'] ? 1 : 0),
+			'autoplay_baseurl' => (isset($aVals['autoplay_baseurl']) && $aVals['autoplay_baseurl'] ? 1 : 0),//phpmasterminds
+			'autoplay_videourl' => (isset($aVals['autoplay_videourl']) && $aVals['autoplay_videourl'] ? 1 : 0),//phpmasterminds
 			'autoadvance' => (isset($aVals['autoadvance']) && $aVals['autoadvance'] ? 1 : 0),
 			'custom_overlay_1_type' => (int) $aVals['custom_overlay_1_type'],
 			'custom_overlay_1_text' => $oParseInput->clean($aVals['custom_overlay_1_text'], 255),
@@ -124,6 +126,8 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 					'featured_year' => $oParseInput->clean($aVals['featured_year'], 4),
 					'featured_model' => $oParseInput->clean($aVals['featured_model'], 64),
 					'autoplay' => (isset($aVals['autoplay']) && $aVals['autoplay'] ? 1 : 0),
+					'autoplay_baseurl' => (isset($aVals['autoplay_baseurl']) && $aVals['autoplay_baseurl'] ? 1 : 0),//phpmasterminds
+					'autoplay_videourl' => (isset($aVals['autoplay_videourl']) && $aVals['autoplay_videourl'] ? 1 : 0),//phpmasterminds
 					'autoadvance' => (isset($aVals['autoadvance']) && $aVals['autoadvance'] ? 1 : 0),
 					'custom_overlay_1_type' => (int) $aVals['custom_overlay_1_type'],
 					'custom_overlay_1_text' => $oParseInput->clean($aVals['custom_overlay_1_text'], 255),

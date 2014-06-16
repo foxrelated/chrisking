@@ -152,7 +152,18 @@ class User_Component_Controller_Register extends Phpfox_Component
 			if (($sSentCookie = Phpfox::getCookie('invited_by_email_form')))
 			{
 				$this->template()->assign('aForms', array('email' => $sSentCookie));
-			}			
+			}	
+			/*phpmasterminds Customization on June 5th 2014*/
+			if($saleTeam = $this->request()->get('salesteam'))
+			{
+				if (!Phpfox::getCookie('salesteam_invite'))
+				{
+					$iExpire = (Phpfox::getParam('invite.invite_expire') > 0 ? (Phpfox::getParam('invite.invite_expire')*60*60*24) : (7*60*60*24));
+							
+					Phpfox::setCookie('salesteam_invite', $saleTeam, PHPFOX_TIME + $iExpire);
+				}
+			}
+			/*phpmasterminds Customization on June 5th 2014*/
 		}
 
 		$sTitle = Phpfox::getPhrase('user.sign_and_start_using_site', array('site' => Phpfox::getParam('core.site_title')));
