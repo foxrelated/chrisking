@@ -83,72 +83,59 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<table id="piechart_stats_box" width="100%">
 		<tr>
 			<td align="center" valign="middle" width="50%">
-			{*<h1>Click-Through Rate</h1>*}
                         <div id="piechart1">
                             <script>
                             {literal}
-                               //piechart({/literal}{$aShareReport.total_generated.total}, {$aShareReport.total_clicked.total}{literal});
-                               //test();
-                                    $Behavior.piechart = function() {
-                                      // var  clicks = y;
-                                       // var shares = x; 
-                                     //$(function () {
-                                               /* Highcharts.setOptions({
-                                                colors: ['#6AF9C4', '#FFF263']
+							$Behavior.piechart = function() {
+								$('#piechart1').highcharts({
+									chart: {
+											type: 'pie',
+											options3d: {
+												enabled: true,
+												alpha: 45,
+												beta: 0
+											}
+										},
+									title: {
+										text: 'Shares vs. Clicks'
+									},
+									tooltip: {
+											//pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+											pointFormat: '{point.y}'
+									},
+									plotOptions: {
+										pie: {
+											allowPointSelect: true,
+											cursor: 'pointer',
+											 showInLegend: true,
+											depth: 35,
+											dataLabels: {
+												enabled: false,
+												format: 'Total {point.name}'
+											}
+										}
+									},
+									series: [{
+										type: 'pie',
+										name: '',
+										data: [
 
-                                                });*/
-                                            $('#piechart1').highcharts({
-                                                chart: {
-                                                        type: 'pie',
-                                                        options3d: {
-                                                            enabled: true,
-                                                            alpha: 45,
-                                                            beta: 0
-                                                        }
-                                                    },
-                                                title: {
-                                                    text: 'Click-Through Rate'
-                                                },
-                                                tooltip: {
-                                                        //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                                                		pointFormat: '{point.y}'
-                                                },
-                                                plotOptions: {
-                                                    pie: {
-                                                        allowPointSelect: true,
-                                                        cursor: 'pointer',
-                                                         showInLegend: true,
-                                                        depth: 35,
-                                                        dataLabels: {
-                                                            enabled: false,
-                                                            format: 'Total {point.name}'
-                                                        }
-                                                    }
-                                                },
-                                                series: [{
-                                                    type: 'pie',
-                                                    name: '',
-                                                    data: [
-
-                                                        ['Shares', {/literal}{$aShareReport.total_generated.total}{literal}], 
-                                                        ['Clicks', {/literal}{$aShareReport.total_clicked.total}{literal}]
-                                                    ]
-                                                }]
-                                            });
-                                        //});
-                                     }
+											['Shares', {/literal}{$aShareReport.total_generated.total}{literal}], 
+											['Clicks', {/literal}{$aShareReport.total_clicked.total}{literal}]
+										]
+									}]
+								});
+							 }
                             {/literal}
                             </script>
                         </div>
 			</td>
 			
 			<td align="center" valign="middle" width="50%">
-			{*<h1>Best Performing Share Types</h1>*}
                         <div id="piechart2">
                              <script>
                             {literal}
                             $Behavior.piechart2 = function() {
-                               // piechart2({/literal}{$aShareReport.ctr.email},{$aShareReport.ctr.facebook},{$aShareReport.ctr.twitter},{$aShareReport.ctr.google},{$aShareReport.ctr.embed}{literal});
                                $('#piechart2').highcharts({
                                         chart: {
                                                type: 'pie',
@@ -163,7 +150,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                                        },
                                        tooltip: {
                                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                                       			//pointFormat: '{point.x}'
                                        },
                                        plotOptions: {
                                            pie: {
@@ -202,11 +188,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<table id="shares_vs_clicks_stats_box" width="100%">
 		<tr>
 			<td align="center" valign="middle">
-			<h1>Shares vs. Clicks</h1>
+			<h1>Shares vs. Clicks Timeline</h1>
                         <div id="linechart">
                              <script>
-                                                 
-                               // linechart({$aShareClicks.listtime|@json_encode},{$aShareClicks.shares|@json_encode},{$aShareClicks.clicks|@json_encode})
                                {literal}
                                $Behavior.linechart = function() {
                                $('#linechart').highcharts({
@@ -216,9 +200,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                                         title: {
                                             text: ''
                                         },
-                                      /*  subtitle: {
-                                            text: 'Source: WorldClimate.com'
-                                        },*/
                                         xAxis: {
                                             categories: {/literal}{$aShareClicks.listtime|@json_encode}{literal}
                                         },
