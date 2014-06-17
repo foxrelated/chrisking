@@ -293,13 +293,14 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 					'jcarousellite.js' => 'module_dvs',
 //					'dvs.css' => 'module_dvs',
 //					'player.css' => 'module_dvs',
-					'google_maps.js' => 'module_dvs',
+					//'google_maps.js' => 'module_dvs',
 					'overlay.js' => 'module_dvs',
 //					'jquery.dropdown.js' => 'module_dvs',
 //					'jquery.dropdown.css' => 'module_dvs',
-					'showroom.css' => 'module_dvs',
+					
 					'get_price.css' => 'module_dvs',
 					'share_email.css' => 'module_dvs',
+					'iframe-showroom.css' => 'module_dvs',
 			));
 		}
 
@@ -315,19 +316,14 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 			))
 			->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
 			->setHeader(array(
-//				'<style type="text/css">' . Phpfox::getService('dvs')->getCss($aDvs, $bSubdomainMode) . '</style>',
-//				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aPlayer) . '</style>',
 				'player.js' => 'module_dvs',
 				'shorten.js' => 'module_dvs',
 //				'modernizr.js' => 'module_dvs',
 				'google_analytics.js' => 'module_dvs',
-//				'<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>',
-//				'<script type="text/javascript">var jqDvs = jQuery.noConflict();</script>',
 				'dvs.js' => 'module_dvs',
 				'<meta property = "og:image" content = "' . $sThumbnailUrl . '"/>',
 				// New css + js files added 2/14
 				'chapter_buttons.css' => 'module_dvs',
-
 				'dropdown.js' => 'module_dvs',
 				'jquery.placeholder.js' => 'module_dvs'
 			))
@@ -338,16 +334,16 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 				'aFirstVideo' => $aFirstVideo,
 				'inventoryList' => $inventoryList,
 				'bc' => $this->request()->get('bc'),
-				'sBackgroundPath' => Phpfox::getParam('core.url_file') . 'dvs/background/' . $aDvs['background_file_name'],
-				'iBackgroundOpacity' => $iBackgroundOpacity,
-				'iBackgroundAlpha' => $iBackgroundAlpha,
+				//'sBackgroundPath' => Phpfox::getParam('core.url_file') . 'dvs/background/' . $aDvs['background_file_name'],
+				//'iBackgroundOpacity' => $iBackgroundOpacity,
+				//'iBackgroundAlpha' => $iBackgroundAlpha,
 				'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
 				'aVideoSelectModels' => $aVideoSelect,
 				'aPlayer' => $aPlayer,
 				'iDvsId' => $aDvs['dvs_id'],
 				'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('dvs.player.prxml', array('id' => $aDvs['dvs_id'])), '', -1) . '  ? ',
 				'aOverviewVideos' => $aOverviewVideos,
-				'bPreview' => $bPreview,
+				//'bPreview' => $bPreview,
 				'bIsDvs' => true,
 				'bIsExternal' => false,
 				'aFeaturedVideo' => $aFeaturedVideo,
@@ -360,7 +356,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 				'aValidVSMakes' => $aValidVSMakes,
 				'iLongDescLimit' => Phpfox::getParam('dvs.long_desc_limit'),
 				'bSubdomainMode' => $bSubdomainMode,
-				'aFooterLinks' => $aFooterLinks,
+				//'aFooterLinks' => $aFooterLinks,
 				'sBrowser' => $sBrowser,
 				'sCurrentUrlEncoded' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? urlencode(Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url'])) : urlencode(Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url'])))),
 				'sStaticPath' => Phpfox::getParam('core.path') . 'module/dvs/static/',
@@ -373,7 +369,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 				. '<script type="text/javascript">var aCurrentVideoMetaData = [];</script>'
 				. '<script type="text/javascript">aCurrentVideoMetaData.referenceId ="' . $aFirstVideo['referenceId'] . '";aCurrentVideoMetaData.year ="' . $aFirstVideo['year'] . '";aCurrentVideoMetaData.make ="' . $aFirstVideo['make'] . '";aCurrentVideoMetaData.model ="' . $aFirstVideo['model'] . '";</script> '
 				. '<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>'
-				. '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
+				//. '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
 				. '<script type="text/javascript">' . $sDvsJs . '</script>'
 		));
 	}
