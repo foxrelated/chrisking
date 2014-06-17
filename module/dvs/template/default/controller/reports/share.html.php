@@ -182,11 +182,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                                            name: '% of total',
                                            data: [
 
-                                               ['Email', {/literal}{$aShareReport.ctr.email}{literal}], 
-                                               ['Facebook', {/literal}{$aShareReport.ctr.facebook}{literal}],
-                                               ['Twitter', {/literal}{$aShareReport.ctr.twitter}{literal}],
-                                               ['Google+', {/literal}{$aShareReport.ctr.google}{literal}],
-                                               ['Embed', {/literal}{$aShareReport.ctr.embed}{literal}]
+                                               ['Email', {/literal}{$aShareReport.total_generated.email}{literal}], 
+                                               ['Facebook', {/literal}{$aShareReport.total_generated.facebook}{literal}],
+                                               ['Twitter', {/literal}{$aShareReport.total_generated.twitter}{literal}],
+                                               ['Google+', {/literal}{$aShareReport.total_generated.google}{literal}],
+                                               ['Embed', {/literal}{$aShareReport.total_generated.embed}{literal}]
                                            ]
                                        }]
                                    });
