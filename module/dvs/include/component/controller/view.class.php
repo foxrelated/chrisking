@@ -17,7 +17,6 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 	{
 		// Are subdomains enabled? If yes, our dealer title url is in a different place.
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
-		
 		if ($bSubdomainMode)
 		{
 			$sDvsRequest = $this->request()->get('req1');

@@ -33,6 +33,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
   }
 </style>
 {/literal}
+{module name='dvstour.addtour'}
   <section id="player">
     {template file='dvs.controller.player.player}
   </section>
@@ -229,3 +230,4 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{/if} <!--phpmasterminds added this code for footer toggle -->
   {/if}
 {/if}
+{module name='dvstour.addtour'} <!--nplkoder add this line-->
