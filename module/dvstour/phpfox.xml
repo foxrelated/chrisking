@@ -88,5 +88,7 @@
 		<phrase module_id="dvstour" version_id="3.7.7" var_name="set_a_expiration_time_for_the_steps_when_the_step_expires_the_next_step_is_automatically_shown_se" added="1402159471">Set a expiration time for the steps. When the step expires, the next step is automatically shown. Set empty to disable automatically next step.</phrase>
 		<phrase module_id="dvstour" version_id="3.7.7" var_name="user_group" added="1402159817">User Group</phrase>
 		<phrase module_id="dvstour" version_id="3.7.7" var_name="anybody" added="1402159853">Anybody</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="delete_site_successfully" added="1402939821">Delete tour successful!</phrase>
+		<phrase module_id="dvstour" version_id="3.7.7" var_name="delete_step_succesfully" added="1402939870">Delete step successful!</phrase>
 	</phrases>
 </module>

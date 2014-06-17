@@ -26,10 +26,10 @@ class DVSTour_Component_Controller_Admincp_Index extends Phpfox_Component
 			$bStep = true;
 			if (($iDelete = $this->request()->getInt('delete')))
 			{
-                $aTour = Phpfox::getService('sitetour')->getStep($iDelete);
-				if (Phpfox::getService('sitetour.process')->deleteTourOrStep($iDelete, true))
+                $aTour = Phpfox::getService('dvstour')->getStep($iDelete);
+				if (Phpfox::getService('dvstour.process')->deleteTourOrStep($iDelete, true))
 				{
-					$this->url()->send('admincp.sitetour', array('tour' => $aTour['sitetour_id']), Phpfox::getPhrase('sitetour.delete_step_succesfully'));
+					$this->url()->send('admincp.dvstour', array('tour' => $aTour['sitetour_id']), Phpfox::getPhrase('dvstour.delete_step_succesfully'));
 				}
 			}
 		}
@@ -37,10 +37,10 @@ class DVSTour_Component_Controller_Admincp_Index extends Phpfox_Component
 		{
 			if (($iDelete = $this->request()->getInt('delete')))
 			{
-                $aTour = Phpfox::getService('sitetour')->getTour($iDelete);
-				if (Phpfox::getService('sitetour.process')->deleteTourOrStep($iDelete))
+                $aTour = Phpfox::getService('dvstour')->getTour($iDelete);
+				if (Phpfox::getService('dvstour.process')->deleteTourOrStep($iDelete))
 				{
-					$this->url()->send('admincp.sitetour', null, Phpfox::getPhrase('sitetour.delete_site_successfully'));
+					$this->url()->send('admincp.dvstour', null, Phpfox::getPhrase('dvstour.delete_site_successfully'));
 				}
 			}			
 		}
@@ -49,7 +49,7 @@ class DVSTour_Component_Controller_Admincp_Index extends Phpfox_Component
 			->setBreadcrumb(($bStep ?  Phpfox::getPhrase('dvstour.manage_sitetour_step') : Phpfox::getPhrase('dvstour.manate_tours')))
 			->setHeader(array(
 					'drag.js' => 'static_script',
-					'<script type="text/javascript">$Behavior.coreDragInit = function() { Core_drag.init({table: \'#js_drag_drop\', ajax: \'' . ($bStep ? 'sitetour.categorySubOrdering' : 'sitetour.categoryOrdering' ) . '\'}); }</script>'
+					'<script type="text/javascript">$Behavior.coreDragInit = function() { Core_drag.init({table: \'#js_drag_drop\', ajax: \'' . ($bStep ? 'dvstour.categorySubOrdering' : 'dvstour.categoryOrdering' ) . '\'}); }</script>'
 				)
 			)
             ->assign(array(

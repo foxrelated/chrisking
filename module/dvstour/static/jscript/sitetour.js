@@ -111,7 +111,7 @@ $Core.siteTourMenu = function(){
             $.ajaxCall('dvstour.updateAddTourPosition','position=' + sPosition);
             setTimeout(function(){
                 $(event.target).data('dragging', false);
-            }, 100);
+                }, 100);
         },
         start: function(event, ui){
             $(this).data('dragging', true);
@@ -125,7 +125,7 @@ $Core.siteTourMenu = function(){
             $.ajaxCall('dvstour.updatePlayTourPosition','position=' + sPosition);
             setTimeout(function(){
                 $(event.target).data('dragging', false);
-            }, 100);
+                }, 100);
         },
         start: function(event, ui){
             $(this).data('dragging', true);
@@ -194,9 +194,11 @@ $Core.siteTourMenu = function(){
 
     $('.bt_preview_tour').unbind('click').bind('click',function(){
         $('.active_element').hide();
-        $Core.myDomOutline.stop();
-        $Core.isSelecting = false;
-        $Core.startTour(true);
+        if($Core.TempSteps.length > 0){
+            $Core.myDomOutline.stop();
+            $Core.isSelecting = false;
+            $Core.startTour(true);
+        }
     });
 
     $('.bt_stop_setup_tour').unbind('click').bind('click',function(){
