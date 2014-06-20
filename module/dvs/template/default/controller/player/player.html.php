@@ -269,7 +269,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			brightcove.createExperiences();
 		}</script>{/literal}
 	{if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
-	<section id="playlist_wrapper{if $inventoryList} inventory_wrapper{/if}">
+	<section id="playlist_wrapper">
 		{if $aDvs.inv_display_status}
 			{if $inventoryList}
 				<div class="inventory_info_message">
@@ -306,7 +306,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<button class="next playlist-button">&gt;</button>
 			{else}
 				<div class="inventory_info_message">
-					No {$aFirstVideo.model} in stock at this time. <a href="#" onclick="tb_show('Contact Dealer', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId={$aFirstVideo.referenceId}')); menuContact('Call To Action Menu Clicks'); return false;">Click here</a> to request this vehicle!
+					{phrase var='dvs.we_dont_have'} {$aFirstVideo.model} {phrase var='dvs.in_stock_at_this_time'}. <a href="#" onclick="tb_show('Contact Dealer', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId={$aFirstVideo.referenceId}')); menuContact('Call To Action Menu Clicks'); return false;">Click here</a> to request this vehicle!
 				</div>
 			{/if}
 		{else}

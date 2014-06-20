@@ -718,7 +718,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			}elseif(count($inventoryList) > 1){
 				$sPlaylistHtml .= count($inventoryList).' '.$aVideo['model'].' available in inventory! Select one below:';
 			}else{
-				$sPlaylistHtml .= 'We don’t have the '.$aVideo['model'].' in stock at this time. <a href="#" onclick="tb_show(\'Contact Dealer\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId='.$aDvs['dvs_id'].'&amp;sRefId='.$aVideo['referenceId'].'\')); menuContact(\'Call To Action Menu Clicks\'); return false;">Click here</a> to request this vehicle instead!';
+				$sPlaylistHtml .= Phpfox::getPhrase('dvs.we_dont_have').' '.$aVideo['model'].' '.Phpfox::getPhrase('dvs.in_stock_at_this_time').'. <a href="#" onclick="tb_show(\'Contact Dealer\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId='.$aDvs['dvs_id'].'&amp;sRefId='.$aVideo['referenceId'].'\')); menuContact(\'Call To Action Menu Clicks\'); return false;">Click here</a> to request this vehicle instead!';
 			}
 			$sPlaylistHtml .= '</div>';
 

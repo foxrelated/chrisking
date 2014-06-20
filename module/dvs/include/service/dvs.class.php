@@ -103,103 +103,157 @@ public function aasort (&$array, $key) {
 	return $array;
 }
 /*phpmasterminds Edited for sort in gallery and footer starts*/
+
+	public function cleanImages()
+	{
+		return true;
+
+		$inventories = Phpfox::getLib('database')->select('*')
+			->from(Phpfox::getT('ko_dvs_inventory'))
+			->limit(500)
+			->execute('getRows');
+
+			if($inventories){
+				$image_dest_dir  = Phpfox::getParam('core.dir_file');
+				foreach ($inventories as $inv) {
+		    	if(file_exists($image_dest_dir.$inv['image']) && 0){
+		    		$new_path = str_replace('inventory/2014/', 'inventory/2014a/', $inv['image']);
+						Phpfox::getLib('file')->copy(Phpfox::getParam('core.path').'file/'.$inv['image'], $image_dest_dir.$new_path);
+			    }
+	    		$new_path = str_replace('inventory/2014/', 'inventory/2014a/', $inv['image']);
+		    	if(!file_exists($image_dest_dir.$new_path && 0)){
+		    		var_dump($new_path);
+			    }
+				}
+			}
+			return true;
+	}
+
 	public function importInventory($dvs_id)
 	{
 		//global admin cp setting for userGuid and apiKey
-		$userGuid = $this->getSettingValue('dvs_inventory_guid');
-		$apiKey   = $this->getSettingValue('dvs_inventory_api_key');
-		$connector = $this->getInventoryConnector($dvs_id);
-		$dvs      = $this->get($dvs_id);
-
-		if(empty($connector) || empty($connector['guid']) || empty($connector['inventory_url'])){
-			return array('error' => 'Connector Error', 'status' => false);
-		}
+    $userGuid  = $this->getSettingValue('dvs_inventory_guid');
+    $apiKey    = $this->getSettingValue('dvs_inventory_api_key');
+    $connector = $this->getInventoryConnector($dvs_id);
+    $dvs       = $this->get($dvs_id);
 
 		$connector['inventory_url'] = str_replace('http://', '', $dvs['inv_domain']);
 
+    if(empty($connector) || empty($connector['guid']) || empty($connector['inventory_url'])){
+      return array('error' => 'Connector Error', 'status' => false);
+    }
+
 		//Load player data
-		$aPlayer       = Phpfox::getService('dvs.player')->get($dvs_id);
-		$aValidVSYears = Phpfox::getService('dvs.video')->getValidVSYears($aPlayer['makes']);
+    $aPlayer            = Phpfox::getService('dvs.player')->get($dvs_id);
+    $detailedImportType = false;
 
-		if(empty($aValidVSYears)){
-			return array('error' => 'Valid Years Error Setting', 'status' => false);
-		}
+    $time_start    = microtime(true);
+    $refusedMakes  = array();
+    $mcnt          = 0;
+    $firstItemLink = '';
 
-		$time_start   = microtime(true);
-		$refusedMakes = array();
-		$mcnt         = 0;
+    if(!$detailedImportType){
+      $start = 0;
+      do {
+        $result = $this->importInventoryQuery($apiKey, $connector['guid'], array(
+          "start"   => $start,
+        ));
+        $carsArr = array_shift($result['results']);
+        if(empty($carsArr[1]['name']['href']) || $firstItemLink == $carsArr[1]['name']['href']){
+          break;
+        }
+        if($start >= 640){ // @todo delete this
+          break;
+        }
+        if(empty($firstItemLink) && !empty($carsArr[1]['name']['href'])){
+          $firstItemLink = $carsArr[1]['name']['href'];
+        }
+        if(!empty($result)){
+          $mcnt += $result['count'];
+          $addedCount = $this->addDvsInventories($carsArr, $dvs_id);
+          $start += $addedCount;
+        }
+      }while (!empty($carsArr));
 
-		foreach ($aValidVSYears as $yearValue) {
-			// echo "Year - ".$yearValue."\n";
-			$aValidVSMakes = Phpfox::getService('dvs.video')->getValidVSMakes($yearValue, $aPlayer['makes']);
-			if(!empty($aValidVSMakes)){
-				foreach ($aValidVSMakes as $makeValue) {
+    }else{
+  		$aValidVSYears = Phpfox::getService('dvs.video')->getValidVSYears($aPlayer['makes']);
 
-					// echo "Make - ".$makeValue['make']."\n";
-					// check if this make unavailable by this catalogue, checked previously
-					if(in_array($makeValue['make'], $refusedMakes)){
-						continue;
-					}
+  		if(empty($aValidVSYears)){
+  			return array('error' => 'Valid Years Error Setting', 'status' => false);
+  		}
 
-					// check if this make unavailable by this catalogue
-					$result = $this->importInventoryQuery($connector['guid'], array(
-						"make"   => $makeValue['make'],
-						"domain" => $connector['inventory_url'],
-					), $userGuid, $apiKey, false);
+  		foreach ($aValidVSYears as $yearValue) {
+  			$aValidVSMakes = Phpfox::getService('dvs.video')->getValidVSMakes($yearValue, $aPlayer['makes']);
+  			if(!empty($aValidVSMakes)){
+  				foreach ($aValidVSMakes as $makeValue) {
 
-					// var_dump(count($result->results));
-					$totalResults = $result->totalResults;
-					
-					$pages = ceil($totalResults / 16);
+  					// check if this make unavailable by this catalogue, checked previously
+  					if(in_array($makeValue['make'], $refusedMakes)){
+  						continue;
+  					}
 
-					if(empty($result->results)){
-						$refusedMakes[] = $makeValue['make'];
-						continue;
-					}else{
-						// check if this make unavailable by this catalogue for selected year
-						$result = $this->importInventoryQuery($connector['guid'], array(
-							"year"   => $yearValue,
-							"make"   => $makeValue['make'],
-							"domain" => $connector['inventory_url'],
-						), $userGuid, $apiKey, false);
-						if(empty($result->results)){
-							continue;
-						}else{ // full make import, then filter items on render by regular expressoin
-							// echo 'full import success.'."\n";
-							$mcnt += count($result->results);
-							$this->addDvsInventories($result->results, $dvs_id);
-						}
-					}
+  					// check if this make unavailable by this catalogue
+  					$result = $this->importInventoryQuery($apiKey, $connector['guid'], array(
+  						"make"   => $makeValue['make'],
+  					));
 
-					$thinImportMode = null;
-					if($thinImportMode){ // thin import mode - import only certain model car inventory // currently temporary disabled
-						$aVideoSelect = Phpfox::getService('dvs.video')->getVideoSelect($yearValue, $makeValue['make'], '', true);
-						if(!empty($aVideoSelect)){
-							foreach ($aVideoSelect as $videoValue) {
-								$result = $this->importInventoryQuery($connector['guid'], array(
-									"year"   => $videoValue['year'],
-									"make"   => $videoValue['make'],
-									"model"  => $videoValue['model'],
-									"domain" => $connector['inventory_url'],
-								), $userGuid, $apiKey, false);
-								if(!empty($result->results)){
-									$this->addDvsInventories($result->results, $dvs_id, $yearValue);
-								}
-							}
-							$mcnt += count($aValidVSMakes);
-							if($mcnt > 2){
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
+  					$totalResults = $result->totalResults;
+  					
+  					$pages = ceil($totalResults / 16);
+
+  					if(empty($result->results)){
+  						$refusedMakes[] = $makeValue['make'];
+  						continue;
+  					}else{
+  						// check if this make unavailable by this catalogue for selected year
+  						$result = $this->importInventoryQuery($connector['guid'], array(
+  							"year"   => $yearValue,
+  							"make"   => $makeValue['make'],
+  							"domain" => $connector['inventory_url'],
+  						), $userGuid, $apiKey, false);
+  						if(empty($result->results)){
+  							continue;
+  						}else{ // full make import, then filter items on render by regular expressoin
+  							// echo 'full import success.'."\n";
+  							$mcnt += count($result->results);
+  							$this->addDvsInventories($result->results, $dvs_id);
+  						}
+  					}
+
+  					$thinImportMode = null;
+  					if($thinImportMode){ // thin import mode - import only certain model car inventory // currently temporary disabled
+  						$aVideoSelect = Phpfox::getService('dvs.video')->getVideoSelect($yearValue, $makeValue['make'], '', true);
+  						if(!empty($aVideoSelect)){
+  							foreach ($aVideoSelect as $videoValue) {
+  								$result = $this->importInventoryQuery($connector['guid'], array(
+  									"year"   => $videoValue['year'],
+  									"make"   => $videoValue['make'],
+  									"model"  => $videoValue['model'],
+  									"domain" => $connector['inventory_url'],
+  								), $userGuid, $apiKey, false);
+  								if(!empty($result->results)){
+  									$this->addDvsInventories($result->results, $dvs_id, $yearValue);
+  								}
+  							}
+  							$mcnt += count($aValidVSMakes);
+  							if($mcnt > 2){
+  								break;
+  							}
+  						}
+  					}
+  				}
+  			}
+  		}
+    }
 		$time_end = microtime(true);
 		$execution_time = ($time_end - $time_start);
-		// echo "\n";
-		// echo 'Total Execution Time: '.$execution_time.' sec'."\n";
-		// echo 'finaly - '.$mcnt;die();
+		$trackingDevMode = false;
+		if($trackingDevMode){
+			echo "\n";
+			echo 'Total Execution Time: '.$execution_time.' sec'."\n";
+			echo 'finaly - '.$mcnt;
+      die();
+		}
 
 		if(isset($result->error)){
 			return array('error' => $result->error, 'status' => false);
@@ -209,31 +263,32 @@ public function aasort (&$array, $key) {
 			'inv_last_cronjob' => time(),
     ), "dvs_id = '".$dvs_id."'");
 
-		return array('mcnt' => $mcnt, 'status' => true);;
+		return array('mcnt' => $mcnt, 'status' => true);
 	}
 
   /**
    * Api request to import.io
    */
-	function importInventoryQuery($connectorGuid, $input, $userGuid, $apiKey, $additionalInput) {
+	function importInventoryQuery($apiKey, $userGuid, $params) {
 
-		$url = "https://api.import.io/store/connector/" . $connectorGuid . "/_query?_user=" . urlencode($userGuid) . "&_apikey=" . urlencode($apiKey);
+    $request = "http://www.kimonolabs.com/api/{$userGuid}?apikey={$apiKey}";
 
-		$data = array("input" => $input);
-		if ($additionalInput) {
-		$data["additionalInput"] = $additionalInput;
-		}
+    if(!empty($params['year'])){
+      $request .= "&year=".$params['year'];
+    }
+    if(!empty($params['make'])){
+      $request .= "&make=".$params['make'];
+    }
+    if(!empty($params['model'])){
+      $request .= "&model=".$params['model'];
+    }
+    if(!empty($params['start'])){
+      $request .= "&start=".$params['start'];
+    }
 
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-		curl_setopt($ch, CURLOPT_POSTFIELDS,  json_encode($data));
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		$result = curl_exec($ch);
-		curl_close($ch);
+    $response = file_get_contents($request);
+    return json_decode($response, TRUE);
 
-		return json_decode($result);
 	}
 
   /**
@@ -245,8 +300,14 @@ public function aasort (&$array, $key) {
 			return false;
 		}
 
+    $res = 0;
+
 		foreach ($inventories as $item) {
-			$res = $this->addDvsInventory($item, $dvs_id, $yearValue);
+      if(empty($item['name'])) continue;
+
+			if($this->addDvsInventory($item, $dvs_id, $yearValue)){
+        $res++;
+      }
 		}
 
     return $res;
@@ -257,10 +318,19 @@ public function aasort (&$array, $key) {
    */
   public function addDvsInventory($inventory = array(), $dvs_id = 0, $yearValue = null)
   {
-    // return false;// delete this
-		if(empty($inventory)){
+		if(empty($inventory) || empty($inventory['name'])){
 			return false;
 		}
+
+    if(empty($yearValue)){
+    	$invTitleArr = explode(' ', $inventory['name']['text']);
+    	$invTitleArrCpy = array_values($invTitleArr);
+    	$firstInvItem = array_shift($invTitleArrCpy);
+      $yearValue = intval($firstInvItem);
+      if(empty($yearValue)){
+        $yearValue = date('Y');
+      }
+    }
 
 		$prev_inventory  = $this->getInventoryItem($inventory, $dvs_id);
 		
@@ -280,16 +350,13 @@ public function aasort (&$array, $key) {
 		}
 
     if(!empty($prev_inventory)){ // delete old image
-    	if(file_exists($image_dest_dir.$prev_inventory['image'])){
-	    	Phpfox::getLib('file')->unlink($image_dest_dir.$prev_inventory['image']);
+    	if(file_exists(Phpfox::getParam('core.dir_file').$prev_inventory['image'])){
+	    	Phpfox::getLib('file')->unlink(Phpfox::getParam('core.dir_file').$prev_inventory['image']);
     	}
     }
 
-		$inventory_arr   = get_object_vars($inventory);
-		$inventory_price = (is_array($inventory_arr['msrp/_source'])?array_shift(array_values($inventory_arr['msrp/_source'])):$inventory_arr['msrp/_source']);
-
 		$matches = array();
-		preg_match_all('/([a-zA-Z0-9]*)\.(jpg|gif|jpeg|png)$/im', strtolower($inventory_arr['image']), $matches);
+		preg_match_all('/([a-zA-Z0-9]*)\.(jpg|gif|jpeg|png)$/im', strtolower($inventory['image']['src']), $matches);
 		$image_full_name = $matches[0][0];
 		$image_name      = $matches[1][0];
 		$image_ext       = $matches[2][0];
@@ -297,25 +364,47 @@ public function aasort (&$array, $key) {
 		$dest_image_name = $image_name.'_'.uniqid().'.'.$image_ext;
 		$dest_image      = $image_dest_dir.$dest_image_name;
 		
-		$uploaded_image_res  = Phpfox::getLib('file')->copy($inventory_arr['image'], $dest_image);
+		$uploaded_image_res  = Phpfox::getLib('file')->copy($inventory['image']['src'], $dest_image);
+		if(is_array($inventory['price'])){
+			$invPriceValues  = array_values($inventory['price']);
+			$inventory_price = array_shift($invPriceValues);
+		}else{
+			$inventory_price = $inventory['price'];
+		}
+
+    if(!empty($inventory['name']) && is_string($inventory['name'])){
+      $inventory_name = trim(preg_replace('/\s+/', ' ', $inventory['name']));
+    }elseif(!empty($inventory['name']['text']) && is_string($inventory['name']['text'])){
+      $inventory_name = trim(preg_replace('/\s+/', ' ', $inventory['name']['text']));
+    }else{
+      $inventory_name = '';
+    }
+
+    if(!empty($inventory['name']['href']) && is_string($inventory['name']['href'])){
+      $inventory_href = $inventory['image']['href'];
+    }elseif(!empty($inventory['name']['href']) && is_string($inventory['name']['href'])){
+      $inventory_href = $inventory['name']['href'];
+    }else{
+      $inventory_href = '';
+    }
 
     if(!empty($prev_inventory)){
       $res = Phpfox::getLib('database')->update(Phpfox::getT('ko_dvs_inventory'), array(
-				'title'         => Phpfox::getLib('database')->escape($inventory_arr['title']),
+				'title'         => Phpfox::getLib('database')->escape($inventory_name),
 				'image'         => 'static/inventory/'.($yearValue == null?date('Y'):$yearValue).'/'.$dest_image_name,
 				'price'         => Phpfox::getLib('database')->escape($inventory_price),
-				'color'         => Phpfox::getLib('database')->escape($inventory_arr['color']),
-				'link'          => Phpfox::getLib('database')->escape($inventory_arr['link']),
+				'color'         => Phpfox::getLib('database')->escape($inventory['color']),
+				'link'          => Phpfox::getLib('database')->escape($inventory_href),
 				'modified_date' => time(),
       ), "inventory_id = '".$prev_inventory['inventory_id']."'");
     }else{
       $res = Phpfox::getLib('database')->insert(Phpfox::getT('ko_dvs_inventory'), array(
 				'dvs_id'        => $dvs_id,
-				'title'         => Phpfox::getLib('database')->escape($inventory_arr['title']),
+				'title'         => Phpfox::getLib('database')->escape($inventory_name),
 				'image'         => 'static/inventory/'.($yearValue == null?date('Y'):$yearValue).'/'.$dest_image_name,
 				'price'         => Phpfox::getLib('database')->escape($inventory_price),
-				'color'         => Phpfox::getLib('database')->escape($inventory_arr['color']),
-				'link'          => Phpfox::getLib('database')->escape($inventory_arr['link']),
+				'color'         => Phpfox::getLib('database')->escape($inventory['color']),
+				'link'          => Phpfox::getLib('database')->escape($inventory_href),
 				'creation_date' => time(),
 				'modified_date' => time(),
         )
@@ -352,6 +441,29 @@ public function aasort (&$array, $key) {
   		return false;
   	}
 
+    if(is_array($inventory['price'])){
+      $invPriceValues  = array_values($inventory['price']);
+      $inventory_price = array_shift($invPriceValues);
+    }else{
+      $inventory_price = $inventory['price'];
+    }
+
+    if(!empty($inventory['name']) && is_string($inventory['name'])){
+      $inventory_name = trim(preg_replace('/\s+/', ' ', $inventory['name']));
+    }elseif(!empty($inventory['name']['text']) && is_string($inventory['name']['text'])){
+      $inventory_name = trim(preg_replace('/\s+/', ' ', $inventory['name']['text']));
+    }else{
+      $inventory_name = '';
+    }
+
+    if(!empty($inventory['name']['href']) && is_string($inventory['name']['href'])){
+      $inventory_href = $inventory['image']['href'];
+    }elseif(!empty($inventory['name']['href']) && is_string($inventory['name']['href'])){
+      $inventory_href = $inventory['name']['href'];
+    }else{
+      $inventory_href = '';
+    }
+
     $dvsRow = Phpfox::getLib('database')->select('*')
       ->from(Phpfox::getT('ko_dvs'))
       ->where("(dvs_id = '".Phpfox::getLib('database')->escape($dvs_id)."')")
@@ -359,12 +471,12 @@ public function aasort (&$array, $key) {
       ->execute('getRow');
 
   	$where_arr[] = "(dvs.inv_feed_type = '".Phpfox::getLib('database')->escape($dvsRow['inv_feed_type'])."')";
-  	$where_arr[] = "(inv.title = '".Phpfox::getLib('database')->escape($inventory->title)."')";
-  	$where_arr[] = "(inv.link = '".Phpfox::getLib('database')->escape($inventory->link)."')";
-  	$where_arr[] = "(inv.color = '".Phpfox::getLib('database')->escape($inventory->color)."')";
-  	$extended_search_list = null;
-  	if($extended_search_list){
-	  	$where_arr[] = "(inv.price = '".Phpfox::getLib('database')->escape($inventory->price)."')";
+    $where_arr[] = "(inv.link = '".Phpfox::getLib('database')->escape($inventory_href)."')";
+    $extended_search_list = null;
+    if($extended_search_list){
+    	$where_arr[] = "(inv.title = '".Phpfox::getLib('database')->escape($inventory_name)."')";
+    	$where_arr[] = "(inv.color = '".Phpfox::getLib('database')->escape($inventory['color'])."')";
+	  	$where_arr[] = "(inv.price = '".Phpfox::getLib('database')->escape($inventory_price)."')";
   	}
 
     $value = Phpfox::getLib('database')->select('inv.*')
