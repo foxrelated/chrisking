@@ -57,7 +57,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 <form id="contact_dealer" name="contact_dealer" action="javascript:void(0);">
 	<fieldset>
-		<p>Thank you for your interest in the <strong>{$aVideo.year} {$aVideo.make} {$aVideo.model}</strong>!</p>
+		{if $sBrowser == 'mobile'}
+		<p>Thank you for your interest in this vehicle!</p>
+		{else}
+		<p>Thank you for your interest in the <strong>{$aVideo.year} {$aVideo.make} {$aVideo.model}</strong>!</p>{/if}
 		<p>We're happy to help you find your next car, go over current specials and offer your our very best price. Please let us know how to reach you and we'll get right back to you:</p>
 		<ul>
 			<li>
