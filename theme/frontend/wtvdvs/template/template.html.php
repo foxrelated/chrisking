@@ -130,7 +130,8 @@
 								{menu_footer}
 							</nav>					
 							<div id="copyright">
-								{copyright}
+								{param var='core.site_copyright'}
+								{*copyright*}
 							</div>
 							<div class="clear"></div>				
 							{block location='5'}
