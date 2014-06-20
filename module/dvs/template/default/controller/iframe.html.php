@@ -1,4 +1,3 @@
-<div id="dvs_background"></div>
 {if $sBrowser == 'mobile'}
 	{template file='dvs.controller.view-mobile}
 {else}
@@ -104,15 +103,19 @@
 	</section>
 	
 	<section id="share_links">
+        <input type="hidden" value="{$sNewParentUrl}" id="parent_ur">
+        <input type="hidden" value="{$sVideoUrl}" id="video_url">
+        <input type="hidden" value="{phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}" id="share_title">
+
 		<table>
 			<tr>
 				<td>
-					<a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); showEmailShare(); return false;">
+					<a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailFormIframe', 'height=400&amp;width=360&amp;sParentUrl=' + encodeURIComponent($('#parent_ur').val().replace('WTVDVS_VIDEO_TEMP', $('#video_url').val())) + '&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">
 					<img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
 					</a>
 				</td>
 				<td>
-					<a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent({$sParentUrl}), '', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
+					<a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#parent_ur').val().replace('WTVDVS_VIDEO_TEMP', $('#video_url').val())), '', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
 					<img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
 					</a>
 				</td>
@@ -122,7 +125,7 @@
 					</span>
 				</td>
 				<td>
-					<a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent($sParentUrl)); googleShareClick('Share Links'); return false;">
+					<a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent($('#parent_ur').val().replace('WTVDVS_VIDEO_TEMP', $('#video_url').val()))); googleShareClick('Share Links'); return false;">
 					<img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
 					</a>
 				</td>
@@ -132,3 +135,16 @@
 </article>
 <footer></footer>
 {/if}
+
+{literal}
+<script type="text/javascript">
+    $Behavior.loadUrlVideo = function() {
+        setInterval(function() {
+            if (!bUpdatedShareUrl) {
+                $.ajaxCall('dvs.updateShareUrl', 'ref-id='+ aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId);
+                bUpdatedShareUrl = true;
+            }
+        }, 1000);
+    }
+</script>
+{/literal}

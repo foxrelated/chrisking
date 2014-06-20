@@ -13,18 +13,20 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 
 ?>
-<script>
+<script type="text/javascript">
 	{literal}
-	$('#contact_dealer').submit(function(event){
+    $Behavior.contactIframeInit = function() {
+        $('#contact_dealer').submit(function(event){
 
-		// cancels the form submission
-		event.preventDefault();
+            // cancels the form submission
+            event.preventDefault();
 
-		// do whatever you want here
-		$.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
+            // do whatever you want here
+            $.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
 
-	});
-	$('input, textarea').placeholder();
+        });
+        $('input, textarea').placeholder();
+    }
 {/literal}
 </script>
 {if !empty($aDvs)}

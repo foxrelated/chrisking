@@ -1355,5 +1355,140 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 	{
 		Phpfox::getBlock('dvs.share-email-mobile', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
 	}
+
+    public function updateShareUrl() {
+        $sRefId = $this->get('ref-id');
+
+        Phpfox::getService('dvs.video')->setDvs(Phpfox::getLib('request')->get('iDvsId'));
+        $aVideo = Phpfox::getService('dvs.video')->get($sRefId);
+        $aDvs = Phpfox::getService('dvs')->get(Phpfox::getLib('request')->get('iDvsId'));
+
+        $aFindReplace = array();
+        foreach ($aDvs as $sKey => $sValue) {
+            if ($sKey == 'phrase_overrides') {
+                continue;
+            }
+
+            $aFind[] = '{dvs_' . $sKey . '}';
+            $aReplace[] = '' . $sValue . '';
+        }
+
+        foreach ($aVideo as $sKey => $sValue) {
+            $aFind[] = '{video_' . $sKey . '}';
+            $aReplace[] = '' . $sValue . '';
+        }
+
+        $sTwitterText = Phpfox::getPhrase('dvs.twitter_default_share_text');
+        $sTwitterText = str_replace($aFind, $aReplace, $sTwitterText);
+
+        $this->remove('.twitter_popup');
+        $this->call('$(\'#twitter_button_wrapper\').html(\'<a href="https://twitter.com/share?url=\' + encodeURIComponent($(\'#parent_ur\').val().replace(\'WTVDVS_VIDEO_TEMP\', \'' . $aVideo['video_title_url'] . '\')) + \'&text=\' + encodeURIComponent(\'' . $sTwitterText . '\') + \'" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>\');');
+        $this->call('twttr.widgets.load();');
+
+        $this->val('#video_url', $aVideo['video_title_url']);
+        $this->val('#share_title', $sTwitterText);
+    }
+
+    public function emailFormIframe() {
+        Phpfox::getBlock('dvs.share-email-iframe', array('sParentUrl' => $this->get('sParentUrl'), 'iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bLongUrl' => $this->get('longurl', false) ));
+    }
+
+    public function sendShareEmailIframe()
+    {
+        $aVals = Phpfox::getLib('request')->getArray('val');
+        $bIsError = false;
+
+        if (!$aVals['share_name'])
+        {
+            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_an_email_address'));
+            $bIsError = true;
+        }
+        if (!$aVals['my_share_name'])
+        {
+            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'));
+            $bIsError = true;
+        }
+
+        if (!$aVals['share_email'])
+        {
+            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_friends_name'));
+            $bIsError = true;
+        }
+
+        if (!$bIsError)
+        {
+
+
+            $aDvs = Phpfox::getService('dvs')->get($aVals['dvs_id']);
+            Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
+            $aVideo = Phpfox::getService('dvs.video')->get($aVals['video_ref_id']);
+
+            $sSubject = Phpfox::getPhrase('dvs.share_email_subject');
+
+            // Repllace variables in the subject
+            $aFindReplace = array();
+            foreach ($aVals as $sKey => $sValue)
+            {
+                $aFind[] = '{share_' . $sKey . '}';
+                $aReplace[] = '' . $sValue . '';
+            }
+            foreach ($aDvs as $sKey => $sValue)
+            {
+                $aFind[] = '{dvs_' . $sKey . '}';
+                $aReplace[] = '' . $sValue . '';
+            }
+            foreach ($aVideo as $sKey => $sValue)
+            {
+                $aFind[] = '{video_' . $sKey . '}';
+                $aReplace[] = '' . $sValue . '';
+            }
+
+            $sSubject = str_replace($aFind, $aReplace, $sSubject);
+
+            $iUserId = Phpfox::getUserId();
+            /*if( $aVals['longurl'] ) {
+                $sVideoLink = ( Phpfox::getParam('dvs.enable_subdomain_mode' ) ?
+                    Phpfox::getLib('url')->makeUrl( $aDvs['title_url'], $aVideo['video_title_url'] ) :
+                    Phpfox::getLib('url')->makeUrl( 'dvs', array($aDvs['title_url'], $aVideo['video_title_url']) ) );
+            } else {
+                $sShortUrl = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'email', $iUserId);
+                $sVideoLink = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . $sShortUrl);
+            }*/
+            $sVideoLink = $aVals['parent_url'];
+
+            Phpfox::getBlock('dvs.share-email-template', array(
+                'iDvsId' => $aDvs['dvs_id'],
+                'sReferenceId' => $aVideo['referenceId'],
+                'sShareName' => $aVals['share_name'],
+                'sMyShareName' => $aVals['my_share_name'],
+                'sShareMessage' => $aVals['share_message'],
+                'sShareEmail' => $aVals['share_email'],
+                'sBackgroundImageUrl' => ($aDvs['background_file_name'] ? Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.dvs.background') . $aDvs['background_file_name'] : ''),
+                'sVideoLink' => $sVideoLink,
+                'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image'))
+            ));
+            $sBody = $this->getContent(false);
+
+            $sDealerEmail = 'noreply@' . str_replace('www.', '', parse_url($aDvs['url'], PHP_URL_HOST));
+            Phpfox::getLibClass('phpfox.mail.interface');
+            $oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
+            $oMail->send($aVals['share_email'], $sSubject, ' ', $sBody, $aVals['my_share_name'], $sDealerEmail);
+
+//			Phpfox::getLib('mail')
+//				->to($aVals['share_email'])
+//				->fromEmail($sDealerEmail)
+//				->subject($sSubject)
+//				->message($sBody)
+//				->send();
+
+            $this->hide('#share_email_dealer');
+            $this->show('#dvs_share_email_success');
+            $this->call("setTimeout(function() { tb_remove(); }, 3000);");
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
 ?>
