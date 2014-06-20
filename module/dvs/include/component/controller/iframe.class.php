@@ -4,6 +4,24 @@ defined('PHPFOX') or exit('NO DICE!');
 
 class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 	public function process() {
+		$sParentUrl = $this->request()->get('parent', '');
+		if($sParentUrl) {
+			$sParentUrl = urldecode(base64_decode($sParentUrl));
+		} else {
+			$sParentUrl = 'http';
+			if ($_SERVER["HTTPS"] == "on") {
+				$sParentUrl .= "s";
+			}
+			$sParentUrl .= "://";
+			if ($_SERVER["SERVER_PORT"] != "80") {
+				$sParentUrl .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+			} else {
+				$sParentUrl .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+			}
+		}
+		echo $sParentUrl;
+	
+	
 		// Are subdomains enabled? If yes, our dealer title url is in a different place.
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 		
@@ -329,6 +347,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 				'jquery.placeholder.js' => 'module_dvs'
 			))
 			->assign(array(
+				'sParentUrl' => $sParentUrl,
 				'aDvs' => $aDvs,
 				'aBaseUrl' => $aBaseUrl,
 				'aCurrentVideo' => $aCurrentVideo,

@@ -112,17 +112,17 @@
 					</a>
 				</td>
 				<td>
-					<a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
+					<a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent({$sParentUrl}), '', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
 					<img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
 					</a>
 				</td>
 				<td>
 					<span id="twitter_button_wrapper">
-					<a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}&url={$sCurrentUrlEncoded}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
+					<a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}&url={$sParentUrl}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
 					</span>
 				</td>
 				<td>
-					<a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href)); googleShareClick('Share Links'); return false;">
+					<a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent($sParentUrl)); googleShareClick('Share Links'); return false;">
 					<img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
 					</a>
 				</td>
