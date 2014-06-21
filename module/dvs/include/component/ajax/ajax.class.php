@@ -1387,6 +1387,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
         $this->val('#video_url', $aVideo['video_title_url']);
         $this->val('#share_title', $sTwitterText);
+        $this->val('#video_thumbnail', Phpfox::getLib('image.helper')->display(array(
+            'server_id' => $aVideo['server_id'],
+            'path' => 'core.url_file',
+            'file' => 'brightcove/' . $aVideo['thumbnail_image'],
+            'return_url' => true
+        )));
     }
 
     public function emailFormIframe() {
