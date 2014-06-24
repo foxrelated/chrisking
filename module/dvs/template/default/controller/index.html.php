@@ -371,7 +371,6 @@ background-color: #c35f54;
 							  <ul>
 								 <li><a href="#" onclick="$('#dvs_gallery_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Gallery Code</span></a></li>
 								  <li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS iFrame Code</span></a></li>
-								 {*<li><a href="#"><span>Customize Styling</span></a></li>*}
 								 
 							  </ul>
 						   </li>
@@ -384,12 +383,12 @@ background-color: #c35f54;
 					
 				</tr>
 				<tr><td colspan="3">&nbsp;</td></tr>
-				<div id="dvs_gallery_link_{$aDvs.dvs_id}" title="{phrase var='dvs.gallery_iframe_embed_code'}" class="dvs_gallery_link_popup" style="display:none;">
+				<div id="dvs_gallery_link_{$aDvs.dvs_id}" title="DVS Gallery Embed Code" class="dvs_gallery_link_popup" style="display:none;">
 					<p>
 						<textarea rows="4" cols="71">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}gallery" scrolling="no" frameborder="0" width="800" height="600"&gt;&lt;/iframe&gt;</textarea>
 					</p>
 				</div>
-				<div id="dvs_iframe_link_{$aDvs.dvs_id}" title="DVS iFrame Javascript Embed Code" class="dvs_iframe_link_popup" style="display:none;">
+				<div id="dvs_iframe_link_{$aDvs.dvs_id}" title="DVS iFrame Embed Code" class="dvs_iframe_link_popup" style="display:none;">
 					<p>
 						<textarea rows="4" cols="71">dvs iframe js embed code goes here</textarea>
 					</p>
