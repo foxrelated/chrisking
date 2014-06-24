@@ -136,8 +136,8 @@ class Dvs_Component_Controller_Salesteam extends Phpfox_Component {
 							->send();
 						/*phpmasterminds phpfox Invite process*/
 						$iInvite = Phpfox::getService('invite.process')->addInvite($aVals['email'], Phpfox::getUserId());			
-					$sLink = Phpfox::getLib('url')->makeUrl('invite', array('id' => $iInvite));
-					$bSent = Phpfox::getLib('mail')->to($sMail)		
+						$sLink = Phpfox::getLib('url')->makeUrl('invite', array('id' => $iInvite));
+						$bSent = Phpfox::getLib('mail')->to($sMail)		
 						->fromEmail(Phpfox::getUserBy('email'))				
 						->fromName(Phpfox::getUserBy('full_name'))				
 						->subject(array('invite.full_name_invites_you_to_site_title', array('full_name' => Phpfox::getUserBy('full_name'), 'site_title' => Phpfox::getParam('core.site_title'))))
@@ -145,11 +145,11 @@ class Dvs_Component_Controller_Salesteam extends Phpfox_Component {
 						->send();
 						
 						/*phpmasterminds phpfox Invite process*/
-						$this->url()->send('dvs.salesteam', array('id' => $iDvsId), 'Successfully Invited Email Address.');
+						$this->url()->send('dvs.salesteam', array('id' => $iDvsId), 'Invite sent! They will be added to the DVS upon sign up.');
 					}
 					else
 					{
-						$this->url()->send('dvs.salesteam', array('id' => $iDvsId), 'User already invited.');
+						$this->url()->send('dvs.salesteam', array('id' => $iDvsId), 'This user has already been invited.');
 					}
 				}
 			}
