@@ -360,6 +360,12 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 				'sNewParentUrl' => $sNewParentUrl,
                 'sParentUrl' => $sParentUrl,
                 'sVideoUrl' => $aVideo['video_title_url'],
+                'sVideoThumb' => Phpfox::getLib('image.helper')->display(array(
+                    'server_id' => $aVideo['server_id'],
+                    'path' => 'core.url_file',
+                    'file' => 'brightcove/' . $aVideo['thumbnail_image'],
+                    'return_url' => true
+                )),
 				'aDvs' => $aDvs,
 				'aBaseUrl' => $aBaseUrl,
 				'aCurrentVideo' => $aCurrentVideo,
