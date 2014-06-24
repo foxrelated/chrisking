@@ -13,15 +13,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 
 ?>
+<br>
 <div id="sales_team_members">
-	<h3>{phrase var='dvs.team_members'}</h3>
 	<table class="dvs_sales_team_table">
 		<tr>
 			<th>
-				{phrase var='dvs.sales_team_member'}
+				Current Team{*phrase var='dvs.sales_team_member'*}
 			</th>
 			<th>
-				{phrase var='dvs.remove'}
+				Action{*phrase var='dvs.remove'*}
 			</th>
 		</tr>
 		{foreach from=$aSalesteam key=iKey item=aTeamMember}
@@ -37,34 +37,35 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</table>
 </div>
 
-<h3>{phrase var='dvs.add_new_team_member'}</h3>
+<h3>Add Existing User{*phrase var='dvs.add_new_team_member'*}</h3>
 <form method="post" action="{url link='current'}" id="add_sales_team_member" name="add_sales_team_member">
 	<table class="dvs_add_table">
 		<tr>
-			<td class="dvs_add_td">
+			{*<td class="dvs_add_td" style="width:auto;">
 				{phrase var='dvs.member_name'}:
-			</td>
-			<td class="dvs_add_td">
+			</td>*}
+			<td class="dvs_add_td" style="width:auto;">
 				<select name="val[user_id]" id="user_id">
-					<option value="">{phrase var='dvs.select_a_member'}</option>
+					<option value="">Select a user{*phrase var='dvs.select_a_member'*}</option>
 					{foreach from=$aUsers item=aUser}
 						<option value="{$aUser.user_id}">{$aUser.full_name} ({$aUser.email})</option>
 					{/foreach}
 				</select>
+				
 			</td>
 		</tr>
 	</table>
-
+<i>Note: These are users you've already added to other DVS Sales Teams you manage.</i>
 	<div id="dvs_settings_save_button_container">
-		<input type="submit" value="Add Team Member" class="button" />
+		<input type="submit" value="Add User" class="button" />
 	</div>
 </form>
-
-<h3>{phrase var='dvs.invite_new_sales_team_member'}</h3>
+<br>
+<h3>Invite New User via Email{*phrase var='dvs.invite_new_sales_team_member'*}</h3>
 <form method="post" action="{url link='current'}" id="invite_sales_team_member" name="invite_sales_team_member">
 	<table class="dvs_add_table">
 		<tr>
-			<td class="dvs_add_td">
+			<td class="dvs_add_td" style="width:auto;">
 				{phrase var='dvs.email_address'}:
 			</td>
 			<td class="dvs_add_td">
@@ -74,6 +75,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</table>
 
 	<div id="dvs_settings_save_button_container">
-		<input type="submit" value="Invite Team Member" class="button" />
+		<input type="submit" value="Invite User" class="button" />
 	</div>
 </form>
+<br>
