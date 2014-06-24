@@ -26,7 +26,7 @@
 							"{$sShareMessage}"
 							<br />
 							<br />
-							Drive Safe!<br />
+							Drive Safely!<br />
 							&nbsp;{$aDvs.dealer_name}</td>
 						<td valign="top">
 							<div style="position: relative;width:300px;overflow:hidden">
