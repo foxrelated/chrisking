@@ -126,7 +126,6 @@
         <p class="model_description" id="car_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
 	</section>
 </article>
-<footer></footer>
 <div class="clear"></div>
 {/if}
 
