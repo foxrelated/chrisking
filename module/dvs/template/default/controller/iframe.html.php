@@ -124,12 +124,6 @@
             {$aDvs.phrase_overrides.override_video_name_display}
         </h3>
         <p class="model_description" id="car_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
-        {*if empty($aOverrideVideo.ko_id)}
-        <section>
-          <h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
-          <p itemprop="description" class="model_description">{$aDvs.text_parsed}</p>
-        </section>
-        {/if*}
 	</section>
 </article>
 <footer></footer>
