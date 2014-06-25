@@ -57,6 +57,13 @@
 	<section id="player">
 		{template file='dvs.controller.player.player}
 	</section>
+
+    <aside>
+        <div id="contact_box">
+            <h2>Contact {$aDvs.dealer_name}</h2>
+            {template file='dvs.block.contact-iframe}
+        </div>
+    </aside>
 	
 	<section id="dealer_links">
 	  <table>
@@ -79,6 +86,21 @@
 	  </tr>
 	  </table>
 	</section>
+
+    <section id="video_information">
+        <h3 id="video_name">
+            <a href="location.href">
+                {$aDvs.phrase_overrides.override_video_name_display}
+            </a>
+        </h3>
+        <p class="model_description" id="car_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
+        {*if empty($aOverrideVideo.ko_id)}
+        <section>
+            <h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
+            <p itemprop="description" class="model_description">{$aDvs.text_parsed}</p>
+        </section>
+        {/if*}
+    </section>
 
     <section id="share_links">
         <input type="hidden" value="{$sNewParentUrl}" id="parent_ur">
@@ -112,30 +134,8 @@
         </table>
     </section>
 
-    <aside>
-        <div id="contact_box">
-            <h2>Contact {$aDvs.dealer_name}</h2>
-            {template file='dvs.block.contact-iframe}
-        </div>
-    </aside>
-	
-	<section id="video_information">
-        <h3 id="video_name">
-          <a href="location.href">
-            {$aDvs.phrase_overrides.override_video_name_display}
-          </a>
-        </h3>
-        <p class="model_description" id="car_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
-        {*if empty($aOverrideVideo.ko_id)}
-        <section>
-          <h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
-          <p itemprop="description" class="model_description">{$aDvs.text_parsed}</p>
-        </section>
-        {/if*}
-	</section>
 </article>
 <footer></footer>
-<div class="clear"></div>
 {/if}
 
 {literal}
