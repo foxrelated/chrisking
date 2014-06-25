@@ -390,7 +390,18 @@ background-color: #c35f54;
 				</div>
 				<div id="dvs_iframe_link_{$aDvs.dvs_id}" title="DVS iFrame Embed Code" class="dvs_iframe_link_popup" style="display:none;">
 					<p>
-						<textarea rows="4" cols="71">dvs iframe js embed code goes here</textarea>
+						<textarea rows="4" cols="71">
+&lt;div id="dvs_wrapper">&lt;/div&gt;
+&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/embed.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+    WTVDVS.render_iframe({l}
+        "id" : "dvs_wrapper",
+        "width" : 952,
+        "height" : 1000,
+        "iframeUrl" : "{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}iframe/"
+    {r});
+&lt;/script&gt;
+						</textarea>
 					</p>
 				</div>
 				

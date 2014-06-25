@@ -22,7 +22,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             event.preventDefault();
 
             // do whatever you want here
-            $.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
+            $.ajaxCall('dvs.contactDealerIframe', $('#contact_dealer').serialize());
 
         });
         $('input, textarea').placeholder();
