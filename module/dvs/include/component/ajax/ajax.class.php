@@ -1497,5 +1497,106 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             return false;
         }
     }
+
+    public function contactDealerIframe()
+    {
+        $aVals = Phpfox::getLib('request')->getArray('val');
+        $bIsError = false;
+
+        if (!$aVals['contact_name'] && Phpfox::getParam('dvs.get_price_validate_name'))
+        {
+            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'). ' ');
+            $bIsError = true;
+        }
+        if (!$aVals['contact_email'] && Phpfox::getParam('dvs.get_price_validate_email'))
+        {
+            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'). ' ');
+            $bIsError = true;
+        }
+        if (!$aVals['contact_phone'] && Phpfox::getParam('dvs.get_price_validate_phone'))
+        {
+            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_phone_number'). ' ');
+            $bIsError = true;
+        }
+        if (!$aVals['contact_zip'] && Phpfox::getParam('dvs.get_price_validate_zip_code'))
+        {
+            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_zip_code'). ' ');
+            $bIsError = true;
+        }
+        if (!$aVals['contact_comments'] && Phpfox::getParam('dvs.get_price_validate_comments'))
+        {
+            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_comments'). ' ');
+            $bIsError = true;
+        }
+
+        if (!$bIsError)
+        {
+            $this->call("$('#contact_dealer').hide();");
+            $this->call("$('#dvs_contact_success').show();");
+            $this->call("setTimeout(function() { $('#dvs_contact_success').hide(); $('#contact_dealer').show(); $('.inputContact').val(''); }, 3000);");
+
+            $aVideo = Phpfox::getService('dvs.video')->get($aVals['contact_video_ref_id']);
+            $aDvs = Phpfox::getService('dvs')->get($aVals['contact_dvs_id']);
+
+            $sSubject = Phpfox::getPhrase('dvs.dealer_email_subject', array(
+                'contact_name' => $aVals['contact_name'],
+                'contact_email' => $aVals['contact_email'],
+                'contact_phone' => $aVals['contact_phone'],
+                'contact_zip' => $aVals['contact_zip'],
+                'contact_comments' => $aVals['contact_comments'],
+                'year' => $aVideo['year'],
+                'make' => $aVideo['make'],
+                'model' => $aVideo['model'],
+                'bodyStyle' => $aVideo['bodyStyle'],
+                'dvs_name' => $aDvs['dvs_name'],
+                'dealer_name' => $aDvs['dealer_name'],
+                'title_url' => $aDvs['title_url'],
+                'address' => $aDvs['address'],
+                'city' => $aDvs['city'],
+                'state_string' => $aDvs['state_string'],
+                'phone' => $aDvs['phone']
+            ));
+
+            $sBody = Phpfox::getPhrase('dvs.dealer_email_body', array(
+                'contact_name' => $aVals['contact_name'],
+                'contact_email' => $aVals['contact_email'],
+                'contact_phone' => $aVals['contact_phone'],
+                'contact_zip' => $aVals['contact_zip'],
+                'contact_comments' => $aVals['contact_comments'],
+                'year' => $aVideo['year'],
+                'make' => $aVideo['make'],
+                'model' => $aVideo['model'],
+                'bodyStyle' => $aVideo['bodyStyle'],
+                'dvs_name' => $aDvs['dvs_name'],
+                'dealer_name' => $aDvs['dealer_name'],
+                'title_url' => $aDvs['title_url'],
+                'address' => $aDvs['address'],
+                'city' => $aDvs['city'],
+                'state_string' => $aDvs['state_string'],
+                'phone' => $aDvs['phone']
+            ));
+
+            Phpfox::getLib('mail')
+                ->to($aDvs['email'])
+                ->subject($sSubject)
+                ->message($sBody)
+                ->send();
+
+            Phpfox::getService('dvs.process')->updateContactCount($aDvs['dvs_id']);
+
+//			$this->call('$("#contact_dealer").hide().("#dvs_contact_success").show().delay(800).tb_remove();');
+
+//			$this->hide('#contact_dealer');
+//			$this->show('#dvs_contact_success');
+//			$this->call('$("#dvs_contact_success").show().after(function() {});');
+//			$this->call('tb_remove();');
+
+            $this->call('getPriceEmailSent();');
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
 ?>
