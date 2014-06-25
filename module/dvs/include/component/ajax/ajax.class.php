@@ -1533,7 +1533,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         {
             $this->call("$('#contact_dealer').hide();");
             $this->call("$('#dvs_contact_success').show();");
-            $this->call("setTimeout(function() { $('#dvs_contact_success').hide(); $('#contact_dealer').show(); $('.inputContact').val(''); }, 3000);");
+            $this->call("setTimeout(function() { $('#dvs_contact_success').hide(); $('#contact_dealer').show(); $('.inputContact').val(''); }, 2000);");
 
             $aVideo = Phpfox::getService('dvs.video')->get($aVals['contact_video_ref_id']);
             $aDvs = Phpfox::getService('dvs')->get($aVals['contact_dvs_id']);
