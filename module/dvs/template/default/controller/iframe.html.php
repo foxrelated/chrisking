@@ -134,26 +134,8 @@
         </table>
     </section>
 
-<<<<<<< HEAD
 </article>
 <footer></footer>
-=======
-    <aside>
-        <div id="contact_box">
-            <h2>Contact {$aDvs.dealer_name}</h2>
-            {template file='dvs.block.contact-iframe}
-        </div>
-    </aside>
-	
-	<section id="video_information">
-        <h3 id="video_name">
-            {$aDvs.phrase_overrides.override_video_name_display}
-        </h3>
-        <p class="model_description" id="car_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
-	</section>
-</article>
-<div class="clear"></div>
->>>>>>> 38c593969753871c3133b2de1ad837443bad2a4a
 {/if}
 
 {literal}
