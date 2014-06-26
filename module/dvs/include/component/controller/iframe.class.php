@@ -373,19 +373,11 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component
                 'sParentUrl' => $sParentUrl,
                 'sVideoUrl' => $aVideo['video_title_url'],
                 'sVideoThumb' => Phpfox::getLib('image.helper')->display(array(
-<<<<<<< HEAD
-                        'server_id' => $aVideo['server_id'],
-                        'path' => 'core.url_file',
-                        'file' => 'brightcove/' . $aVideo['thumbnail_image'],
-                        'return_url' => true
-                    )),
-=======
                     'server_id' => $aVideo['server_id'],
                     'path' => 'core.url_file',
                     'file' => 'brightcove/' . $aVideo['thumbnail_image'],
                     'return_url' => true
                 )),
->>>>>>> origin/dvsiframe-v3
                 'aDvs' => $aDvs,
                 'aBaseUrl' => $aBaseUrl,
                 'aCurrentVideo' => $aCurrentVideo,
