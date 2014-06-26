@@ -43,6 +43,10 @@ class Dvs_Component_Controller_Index extends Phpfox_Component
 			{
 				return Phpfox::getLib('module')->setController('dvs.player.player');
 			}
+            else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'iframe')
+            {
+                return Phpfox::getLib('module')->setController('dvs.iframe');
+            }
 			else
 			{
 				return Phpfox::getLib('module')->setController('dvs.view');
