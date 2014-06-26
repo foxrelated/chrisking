@@ -23,8 +23,6 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 			}
 		}
         $sNewParentUrl = $sParentUrl;
-		echo $sParentUrl;
-	
 	
 		// Are subdomains enabled? If yes, our dealer title url is in a different place.
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
