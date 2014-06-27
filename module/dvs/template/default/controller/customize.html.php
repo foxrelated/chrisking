@@ -27,6 +27,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			$('#color_picker_button_border').ColorPickerSetColor('#{$aForms.button_border}');
 			$('#color_picker_text_link').ColorPickerSetColor('#{$aForms.text_link}');
 			$('#color_picker_footer_link').ColorPickerSetColor('#{$aForms.footer_link}');
+            $('#color_picker_iframe_background').ColorPickerSetColor('#{$aForms.iframe_background}');
+            $('#color_picker_iframe_text').ColorPickerSetColor('#{$aForms.iframe_text}');
+            $('#color_picker_iframe_contact_background').ColorPickerSetColor('#{$aForms.iframe_contact_background}');
+            $('#color_picker_iframe_contact_text').ColorPickerSetColor('#{$aForms.iframe_contact_text}');
 			{r}
 	{else}
 		$Behavior.colorPicker = function() {l}
@@ -41,6 +45,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			$('#color_picker_button_border').ColorPickerSetColor('#{$sDefaultColor}');
 			$('#color_picker_text_link').ColorPickerSetColor('#{$sDefaultColor}');
 			$('#color_picker_footer_link').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_iframe_background').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_iframe_text').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_iframe_contact_background').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_iframe_contact_text').ColorPickerSetColor('#{$sDefaultColor}');
 		{r}
 	{/if}
 </script>
@@ -493,6 +501,52 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 	</table>
 	<br>
+    <h3>iFrame Styling</h3>
+    <table>
+        <tr class="tr_interactive">
+            <td class="dvs_add_td_label">
+                iFrame Background:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_iframe_background" class="colorSelector">
+                    <div style="background-color: #{if $bIsEdit}{$aForms.iframe_background}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_iframe_background_input" name="val[iframe_background]" {if $bIsEdit}value="{$aForms.iframe_background}"{else}value="{$sDefaultColor}"{/if}/>
+            </td>
+
+            <td class="dvs_add_td_label">
+                iFrame Text:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_iframe_text" class="colorSelector">
+                    <div style="background-color: #{if $bIsEdit}{$aForms.iframe_text}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_iframe_text_input" name="val[iframe_text]" {if $bIsEdit}value="{$aForms.iframe_text}"{else}value="{$sDefaultColor}"{/if}/>
+            </td>
+
+            <td class="dvs_add_td_label">
+                Contact Form Background:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_iframe_contact_background" class="colorSelector">
+                    <div style="background-color: #{if $bIsEdit}{$aForms.iframe_contact_background}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_iframe_contact_background_input" name="val[iframe_contact_background]" {if $bIsEdit}value="{$aForms.iframe_contact_background}"{else}value="{$sDefaultColor}"{/if}/>
+            </td>
+
+            <td class="dvs_add_td_label">
+                Contact Form Text:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_iframe_contact_text" class="colorSelector">
+                    <div style="background-color: #{if $bIsEdit}{$aForms.iframe_contact_text}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_iframe_contact_text_input" name="val[iframe_contact_text]" {if $bIsEdit}value="{$aForms.iframe_contact_text}"{else}value="{$sDefaultColor}"{/if}/>
+            </td>
+
+        </tr>
+    </table>
+    <br>
 	<input type="hidden" name="val[step]" value="customize" />
 	<input type="hidden" name="val[is_edit]" value="{if $bIsEdit && isset($aForms.dvs_id)}1{else}0{/if}" />
 	<input type="hidden" name="val[dvs_id]" value="{$iDvsId}" />

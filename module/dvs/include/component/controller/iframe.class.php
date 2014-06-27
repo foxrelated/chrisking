@@ -333,7 +333,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
         $sParentUrl = str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $sNewParentUrl);
 
 		$this->template()
-			->setTemplate('dvs-view')
+			->setTemplate('dvs-iframe-view')
 			->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
 			->setMeta(array(
 				'description' => ($aOverrideVideo ? $aDvs['phrase_overrides']['override_meta_description_meta_video_specified'] : $aDvs['phrase_overrides']['override_meta_description_meta']),
