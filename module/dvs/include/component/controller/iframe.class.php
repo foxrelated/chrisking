@@ -4,6 +4,26 @@ defined('PHPFOX') or exit('NO DICE!');
 
 class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 	public function process() {
+        $bIsIframe = false;
+		$sParentUrl = $this->request()->get('parent', '');
+
+		if($sParentUrl) {
+            $bIsIframe = true;
+			$sParentUrl = urldecode(base64_decode($sParentUrl));
+		} else {
+			$sParentUrl = 'http';
+			if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on")) {
+				$sParentUrl .= "s";
+			}
+			$sParentUrl .= "://";
+			if ($_SERVER["SERVER_PORT"] != "80") {
+				$sParentUrl .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+			} else {
+				$sParentUrl .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+			}
+		}
+        $sNewParentUrl = $sParentUrl;
+	
 		// Are subdomains enabled? If yes, our dealer title url is in a different place.
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 		
@@ -52,8 +72,13 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 		}
 		else
 		{
-			$sOverride = ($bSubdomainMode ? $this->request()->get('req2') : $this->request()->get('req3'));
+			if ($bIsIframe) {
+                list($sOverride, $sNewParentUrl) = Phpfox::getService('dvs.iframe')->parseUrl($sParentUrl);
+            } else {
+                $sOverride = ($bSubdomainMode ? $this->request()->get('req3') : $this->request()->get('req4'));
+            }
 		}
+
 
 		Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
 
@@ -305,9 +330,10 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 
 		$inventoryList = Phpfox::getService('dvs')->getModelInventory($aFirstVideo['ko_id']);
 
-		
+        $sParentUrl = str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $sNewParentUrl);
+
 		$this->template()
-			->setTemplate('dvs-view')
+			->setTemplate('dvs-iframe-view')
 			->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
 			->setMeta(array(
 				'description' => ($aOverrideVideo ? $aDvs['phrase_overrides']['override_meta_description_meta_video_specified'] : $aDvs['phrase_overrides']['override_meta_description_meta']),
@@ -329,6 +355,15 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 				'jquery.placeholder.js' => 'module_dvs'
 			))
 			->assign(array(
+				'sNewParentUrl' => $sNewParentUrl,
+                'sParentUrl' => $sParentUrl,
+                'sVideoUrl' => $aVideo['video_title_url'],
+                'sVideoThumb' => Phpfox::getLib('image.helper')->display(array(
+                    'server_id' => $aVideo['server_id'],
+                    'path' => 'core.url_file',
+                    'file' => 'brightcove/' . $aVideo['thumbnail_image'],
+                    'return_url' => true
+                )),
 				'aDvs' => $aDvs,
 				'aBaseUrl' => $aBaseUrl,
 				'aCurrentVideo' => $aCurrentVideo,
@@ -344,7 +379,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 				'iDvsId' => $aDvs['dvs_id'],
 				'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('dvs.player.prxml', array('id' => $aDvs['dvs_id'])), '', -1) . '  ? ',
 				'aOverviewVideos' => $aOverviewVideos,
-				//'bPreview' => $bPreview,
+				'bPreview' => $bPreview,
 				'bIsDvs' => true,
 				'bIsExternal' => false,
 				'aFeaturedVideo' => $aFeaturedVideo,
@@ -372,6 +407,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 				. '<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>'
 				//. '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
 				. '<script type="text/javascript">' . $sDvsJs . '</script>'
+                . '<script type="text/javascript">var bUpdatedShareUrl = true;</script>'
 		));
 	}
 	

@@ -516,6 +516,8 @@ function onVideoLoad(oMedia) {
 	// Change vehicle info in dealer contact form
 	$.ajaxCall('dvs.changeVideo', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + oMedia.media.referenceId + '&iDvsId=' + iDvsId);
 
+    bUpdatedShareUrl = false;
+
 //Give brightcove time to reset the position so we dont show an overlay too early.
 	if (bIsDvs) {
 //		$(document).ready(function() {

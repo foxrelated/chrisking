@@ -174,7 +174,8 @@ Phpfox::getLib('pager')->set(array('page' => $iPage, 'size' => $iPageSize, 'coun
 					'sMessage' => $sMessage,
 					'aDvss' => $aDvss,
 					'bCanAddDvss' => $bCanAddDvss,
-					'bSubdomainMode' => $bSubdomainMode
+					'bSubdomainMode' => $bSubdomainMode,
+                    'sCorePath' => Phpfox::getParam('core.path')
 				))
 				->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
 				->setHeader(

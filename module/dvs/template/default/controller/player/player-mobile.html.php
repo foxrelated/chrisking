@@ -13,69 +13,68 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 
 ?>
-{$sJavascript}
+{if !empty($sJavascript)}{$sJavascript}{/if}
 <script type="text/javascript">
-	var aMediaIds=[];
-	var aOverviewMediaIds=[];
-	var aTestDriveMediaIds=[];
+	var aMediaIds = [];
+			var aOverviewMediaIds = [];
+			var aTestDriveMediaIds = [];
 	
 	{if $bIsDvs}
 
-		{foreach from=$aOverviewVideos key=iKey item=aVideo}
-			aOverviewMediaIds[{$iKey}] = {$aVideo.id};
-		{/foreach}
+	{foreach from = $aOverviewVideos key = iKey item = aVideo}
+		aOverviewMediaIds[{$iKey}] = {$aVideo.id};
+	{/foreach}
 
-		aMediaIds=aOverviewMediaIds;
+	aMediaIds = aOverviewMediaIds;
 
-		{if isset($aOverrideVideo.id)}
-			if (bDebug) console.log('Media: Override is set. aMediaIds:');
-			aMediaIds[0] = {$aOverrideVideo.id};
-		{else}
-			{if isset($aFeaturedVideo.id)}
-				if (bDebug) console.log('Media: Featured Video is set. aMediaIds:');
+	{if isset($aOverrideVideo.id)}
+		if (bDebug) console.log('Media: Override is set. aMediaIds:');
+		aMediaIds[0] = {$aOverrideVideo.id};
+	{else}
+		{if isset($aFeaturedVideo.id)}
+			if (bDebug) console.log('Media: Featured Video is set. aMediaIds:');
 				aMediaIds[0] = {$aFeaturedVideo.id};
 			{else}
-				if (bDebug) console.log('Media: No override or featuerd. aMediaIds:');
-				aMediaIds = aOverviewMediaIds;
+			if (bDebug) console.log('Media: No override or featuerd. aMediaIds:');
+			aMediaIds = aOverviewMediaIds;
 			{/if}
 		{/if}
-		if (bDebug) {l}
-			console.log(aMediaIds);
-		{r}
-		
-		{if $aPlayer.custom_overlay_1_type}
-			if (bDebug) console.log('Overlay: Overlay 1 is active. Type: {$aPlayer.custom_overlay_1_type}. Start: {$aPlayer.custom_overlay_1_start}. Duration: {$aPlayer.custom_overlay_1_duration}.');
-			var bCustomOverlay1 = true;
-			var iCustomOverlay1Start = {$aPlayer.custom_overlay_1_start};
-			var iCustomOverlay1Duration = {$aPlayer.custom_overlay_1_duration};
-		{else}
-			var bCustomOverlay1 = false;
-			if (bDebug) console.log('Overlay: Overlay 1 is inactive.');
-		{/if}
-			
-		{if $aPlayer.custom_overlay_2_type}
-			if (bDebug) console.log('Overlay: Overlay 2 is active. Type: {$aPlayer.custom_overlay_2_type}. Start: {$aPlayer.custom_overlay_2_start}. Duration: {$aPlayer.custom_overlay_2_duration}.');
-			var bCustomOverlay2 = true;
-			var iCustomOverlay2Start = {$aPlayer.custom_overlay_2_start};
-			var iCustomOverlay2Duration = {$aPlayer.custom_overlay_2_duration};
-		{else}
-			var bCustomOverlay2 = false;
-			if (bDebug) console.log('Overlay: Overlay 2 is inactive.');
-		{/if}
-			
-		{if $aPlayer.custom_overlay_3_type}
-			if (bDebug) console.log('Overlay: Overlay 3 is active. Type: {$aPlayer.custom_overlay_3_type}. Start: {$aPlayer.custom_overlay_3_start}. Duration: {$aPlayer.custom_overlay_3_duration}.');
-			var bCustomOverlay3 = true;
-			var iCustomOverlay3Start = {$aPlayer.custom_overlay_3_start};
-			var iCustomOverlay3Duration = {$aPlayer.custom_overlay_3_duration};
-		{else}
-			var bCustomOverlay3 = false;
-			if (bDebug) console.log('Overlay: Overlay 3 is inactive.');
-		{/if}
-		
-		
+	if (bDebug) {l}
+		console.log(aMediaIds);
+	{r}
+	
+	{if $aPlayer.custom_overlay_1_type}
+		if (bDebug) console.log('Overlay: Overlay 1 is active. Type: {$aPlayer.custom_overlay_1_type}. Start: {$aPlayer.custom_overlay_1_start}. Duration: {$aPlayer.custom_overlay_1_duration}.');
+		var bCustomOverlay1 = true;
+		var iCustomOverlay1Start = {$aPlayer.custom_overlay_1_start};
+		var iCustomOverlay1Duration = {$aPlayer.custom_overlay_1_duration};
 	{else}
-		{foreach from=$aVideos key=iKey item=aVideo}
+		var bCustomOverlay1 = false;
+		if (bDebug) console.log('Overlay: Overlay 1 is inactive.');
+	{/if}
+		
+	{if $aPlayer.custom_overlay_2_type}
+		if (bDebug) console.log('Overlay: Overlay 2 is active. Type: {$aPlayer.custom_overlay_2_type}. Start: {$aPlayer.custom_overlay_2_start}. Duration: {$aPlayer.custom_overlay_2_duration}.');
+		var bCustomOverlay2 = true;
+		var iCustomOverlay2Start = {$aPlayer.custom_overlay_2_start};
+		var iCustomOverlay2Duration = {$aPlayer.custom_overlay_2_duration};
+	{else}
+		var bCustomOverlay2 = false;
+		if (bDebug) console.log('Overlay: Overlay 2 is inactive.');
+	{/if}
+		
+	{if $aPlayer.custom_overlay_3_type}
+		if (bDebug) console.log('Overlay: Overlay 3 is active. Type: {$aPlayer.custom_overlay_3_type}. Start: {$aPlayer.custom_overlay_3_start}. Duration: {$aPlayer.custom_overlay_3_duration}.');
+		var bCustomOverlay3 = true;
+		var iCustomOverlay3Start = {$aPlayer.custom_overlay_3_start};
+		var iCustomOverlay3Duration = {$aPlayer.custom_overlay_3_duration};
+	{else}
+		var bCustomOverlay3 = false;
+		if (bDebug) console.log('Overlay: Overlay 3 is inactive.');
+	{/if}
+			
+	{else}
+		{foreach from = $aVideos key = iKey item = aVideo}
 			aMediaIds[{$iKey}] = {$aVideo.id};
 		{/foreach}
 		
@@ -89,7 +88,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		var iDvsId = {if $bIsDvs}{$iDvsId}{else}0{/if};
 		var bIdriveGetPrice = {if !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}true{else}false{/if};
 		var bPreview = {if $bPreview}true{else}false{/if};
-		var bAutoplay ={if isset($aPlayer.autoplay) && $aPlayer.autoplay}true{else}false{/if};
+		var bAutoplay = {if (isset($aPlayer.autoplay) && $aPlayer.autoplay) || (isset($aPlayer.autoplay_baseurl) && $aPlayer.autoplay_baseurl && !$aBaseUrl) || (isset($aPlayer.autoplay_videourl) && $aPlayer.autoplay_videourl && $aBaseUrl)}true{ else}false{/if};
+		//var bAutoplay =true;
+		var iCurrentVideo = {$aCurrentVideo};
 		var bAutoAdvance ={if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
 	{else}
 		var bPreRoll = false;
@@ -114,7 +115,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	
 	function enableVideoSelectCarousel(){l}
 		if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
-
 	{r}
 </script>
 
@@ -153,9 +153,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			{/if}
 			<div style="display:none;"></div>
 			<object id="myExperience" class="BrightcoveExperience">
-				<param name="includeAPI" value="true" />
-				<param name="templateLoadHandlerï»¿" value="onTemplateLoad" />
-				<param name="bgcolor" value="#FFFFFF" />
+				<param name="bgcolor" value="#000000" />
 				{if $bIsDvs}
 					<param name="width" value="580" />
 					<param name="height" value="320" />
@@ -179,6 +177,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						<param name="accountID" value="{$aPlayer.google_id}" />
 					{/if}
 				{/if}
+				<param name="includeAPI" value="true" />
+				<param name="templateLoadHandler" value="onTemplateLoad" />
 				<param name="templateLoadHandler" value="onTemplateLoaded" />
 				<param name="templateReadyHandler" value="onTemplateReady" />
 				<param name="showNoContentMessage" value="false" />
