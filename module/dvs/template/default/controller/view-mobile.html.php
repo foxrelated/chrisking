@@ -22,7 +22,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{/if}
 </header>
 <article>
-    Mobile Template
 	<section id="player">
 		{template file='dvs.controller.player.player-mobile}
 	</section>

@@ -1,5 +1,6 @@
 {if $sBrowser == 'mobile'}
 	{template file='dvs.controller.view-mobile}
+1
 {else}
 <header>
 	<section id="select_new">
@@ -136,6 +137,7 @@
 
 </article>
 <footer></footer>
+2
 {/if}
 
 {literal}
