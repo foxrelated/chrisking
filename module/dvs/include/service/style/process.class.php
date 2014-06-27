@@ -37,7 +37,11 @@ class Dvs_Service_Style_Process extends Phpfox_Service {
 			'button_bottom_gradient' => $this->preParse()->clean($aDvs['button_bottom_gradient'], 6),
 			'button_border' => $this->preParse()->clean($aDvs['button_border'], 6),
 			'text_link' => $this->preParse()->clean($aDvs['text_link'], 6),
-			'footer_link' => $this->preParse()->clean($aDvs['footer_link'], 6)
+			'footer_link' => $this->preParse()->clean($aDvs['footer_link'], 6),
+            'iframe_background' => $this->preParse()->clean($aDvs['iframe_background'], 6),
+            'iframe_text' => $this->preParse()->clean($aDvs['iframe_text'], 6),
+            'iframe_contact_background' => $this->preParse()->clean($aDvs['iframe_contact_background'], 6),
+            'iframe_contact_text' => $this->preParse()->clean($aDvs['iframe_contact_text'], 6)
 		));
 	}
 
@@ -58,7 +62,11 @@ class Dvs_Service_Style_Process extends Phpfox_Service {
 			'button_bottom_gradient' => $this->preParse()->clean($aDvs['button_bottom_gradient'], 6),
 			'button_border' => $this->preParse()->clean($aDvs['button_border'], 6),
 			'text_link' => $this->preParse()->clean($aDvs['text_link'], 6),
-			'footer_link' => $this->preParse()->clean($aDvs['footer_link'], 6)
+			'footer_link' => $this->preParse()->clean($aDvs['footer_link'], 6),
+            'iframe_background' => $this->preParse()->clean($aDvs['iframe_background'], 6),
+            'iframe_text' => $this->preParse()->clean($aDvs['iframe_text'], 6),
+            'iframe_contact_background' => $this->preParse()->clean($aDvs['iframe_contact_background'], 6),
+            'iframe_contact_text' => $this->preParse()->clean($aDvs['iframe_contact_text'], 6)
 			), 'dvs_id = ' . (int) $aDvs['dvs_id']);
 	}
 

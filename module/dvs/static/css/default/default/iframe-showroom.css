@@ -1,0 +1,460 @@
+body:before
+{
+	content: 
+		url('../../../image/intro-active.png')
+		url('../../../image/intro-selected.png')
+		url('../../../image/intro-watched.png')
+		url('../../../image/intro-disabled.png')
+		url('../../../image/whatsnew-active.png')
+		url('../../../image/whatsnew-selected.png')
+		url('../../../image/whatsnew-watched.png')
+		url('../../../image/whatsnew-disabled.png')
+		url('../../../image/exterior-active.png')
+		url('../../../image/exterior-selected.png')
+		url('../../../image/exterior-watched.png')
+		url('../../../image/exterior-disabled.png')
+		url('../../../image/interior-active.png')
+		url('../../../image/interior-selected.png')
+		url('../../../image/interior-watched.png')
+		url('../../../image/interior-disabled.png')
+		url('../../../image/power-active.png')
+		url('../../../image/power-selected.png')
+		url('../../../image/power-watched.png')
+		url('../../../image/power-disabled.png')
+		url('../../../image/fuel-active.png')
+		url('../../../image/fuel-selected.png')
+		url('../../../image/fuel-watched.png')
+		url('../../../image/fuel-disabled.png')
+		url('../../../image/features-active.png')
+		url('../../../image/features-selected.png')
+		url('../../../image/features-watched.png')
+		url('../../../image/features-disabled.png')
+		url('../../../image/safety-active.png')
+		url('../../../image/safety-selected.png')
+		url('../../../image/safety-watched.png')
+		url('../../../image/safety-disabled.png')
+		url('../../../image/pricing-active.png')
+		url('../../../image/pricing-selected.png')
+		url('../../../image/pricing-watched.png')
+		url('../../../image/pricing-disabled.png')
+		url('../../../image/warranty-active.png')
+		url('../../../image/warranty-selected.png')
+		url('../../../image/warranty-watched.png')
+		url('../../../image/warranty-disabled.png')
+		url('../../../image/summary-active.png')
+		url('../../../image/summary-selected.png')
+		url('../../../image/summary-watched.png')
+		url('../../../image/summary-disabled.png')
+		url('../../../image/overview-active.png')
+		url('../../../image/overview-selected.png')
+		url('../../../image/overview-watched.png')
+		url('../../../image/overview-disabled.png')
+		url('../../../image/performance-active.png')
+		url('../../../image/performance-selected.png')
+		url('../../../image/performance-watched.png')
+		url('../../../image/performance-disabled.png')
+		url('../../../image/mpg-active.png')
+		url('../../../image/mpg-selected.png')
+		url('../../../image/mpg-watched.png')
+		url('../../../image/mpg-disabled.png')
+		url('../../../image/honors-active.png')
+		url('../../../image/honors-selected.png')
+		url('../../../image/honors-watched.png')
+		url('../../../image/honors-disabled.png')
+		/*url('../../../image/get-price.png')
+		url('../../../image/getprice-disabled.png')*/
+		;
+	display: none;
+}
+
+body
+{
+/*	background: #000000 url(http://www.wtvdvs-dev.com/file/dvs/background/2013/09/963624e7a2616f81d5238b0c7a5d41d9.png);*/
+	font-family: Arial;
+}
+
+a:hover
+{
+	cursor: pointer;
+}
+
+#site_content {
+	width: 880px;
+	margin: 0 auto;
+}
+
+/* Main Player Container */
+
+#player
+{
+	position: relative;
+	/*background: #000;*/
+	display: inline-block;
+	vertical-align:top;
+	margin-top: 10px;
+	padding: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.dvs_overlay
+{
+	position: absolute;
+	left: 180px;
+	display: none;
+	width: 360px;
+	text-align: center;
+}
+
+.dvs_overlay a
+{
+	color:#FFFFFF;
+	font-size:14px;
+	font-weight:bold;
+	text-shadow: 2px 2px #000000;
+}
+
+/* Main Player Subsections */
+
+/* Left-side Player */
+
+#dvs_bc_player
+{
+	display:inline-block;
+	vertical-align: top;
+}
+
+/* Left-side playlist links */
+
+#playlist_wrapper
+{
+	margin-top: 10px;
+	height: 86px;
+}
+
+#playlist_wrapper button.playlist-button
+{
+/*	background: #00A7AD;*/
+	display: inline-block;
+	vertical-align: top;
+	width: 25px;
+	height: 25px;
+	margin-top: 30px;
+	padding: 0;
+	border: 0px none;
+	border-radius: 20%;
+	font-weight: bold;
+/*	color: #000;*/
+	cursor: pointer;
+}
+
+#playlist_wrapper button.playlist-button:hover
+{
+	opacity: 0.5;
+}
+
+#overview_playlist {
+	display: inline-block;
+	overflow: hidden;
+	height: 85px;
+	width: 625px;
+}
+
+#overview_playlist ul li {
+	position: relative;
+	float: left;
+	background-color: #000;
+}
+
+#overview_playlist li
+{
+	margin-right: 3px;
+	margin-left: 3px;
+/*	border: 2px #00A7AD solid;*/
+	height: 82px;
+}
+
+#overview_playlist ul li p {
+	position: absolute;
+	top: 35px;
+	width: 100%;
+	text-align: center;
+	font-weight: bold;
+	color: #fff;
+	font-size: 14px;
+}
+
+#overview_playlist ul li img
+{
+	opacity: 0.5;
+	filter:alpha(opacity=50);
+}
+
+/* Right-side chapter buttons */
+
+#chapter_buttons 
+{
+	display:inline-block;
+}
+
+/*** flit77 changes PhpFoxer 25.04.2014 ****************************/
+#overview_inventory {
+	display: inline-block;
+	overflow: hidden;
+	height: 85px;
+	width: 625px;
+}
+
+#overview_inventory ul li {
+	position: relative;
+	float: left;
+	background-color: #5c5c5c;
+}
+
+#overview_inventory li
+{
+	margin-right: 3px;
+	margin-left: 3px;
+	height: 82px;
+}
+
+#overview_inventory li .inv_dvs_wrapper
+{
+	width: 300px;
+}
+
+#overview_inventory li .inv_dvs_avatar
+{
+	float: left;
+	overflow: hidden;
+}
+
+#overview_inventory li .inv_dvs_info
+{
+	overflow: hidden;
+	padding: 5px 0 0 10px;
+}
+
+#overview_inventory li .view_details
+{
+	margin-top: 5px;
+}
+
+#overview_inventory li p > a
+{
+	color: #fff;
+}
+
+#overview_inventory li .view_details a
+{
+	color: #d01d12;
+}
+
+#overview_inventory ul li p {
+	color: #fff;
+	font-size: 12px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#inventory_wrapper,
+#playlist_wrapper
+{
+	height: auto;
+}
+.inventory_info_message{
+	margin: 5px 0 5px 10px;
+	font-weight: bold;
+	color: #fff;
+	height:82px;
+}
+
+button.playlist-button
+{
+/*	background: #00A7AD;*/
+	display: inline-block;
+	vertical-align: top;
+	width: 25px;
+	height: 25px;
+	margin-top: 30px;
+	padding: 0;
+	border: 0px none;
+	border-radius: 20%;
+	font-weight: bold;
+/*	color: #000;*/
+	cursor: pointer;
+}
+
+button.playlist-button:hover
+{
+	opacity: 0.5;
+}
+/*** flit77 changes PhpFoxer 25.04.2014 ****************************/
+
+/* Right bar directly to the right of the player */
+
+#player_right {
+	margin-top: 10px;
+	display:inline-block;
+	vertical-align:top;
+	width: 190px;
+	padding-left: 60px;
+	text-align: center;
+}
+
+#select_new h3
+{
+	font-size: 1.25em;
+	font-weight: bold;
+	border-bottom: none;
+}
+
+#select_new ul li.init
+{
+	background: url("../../../image/dropdown.png");
+	display: block;
+	padding-top: 5px;
+	height: 26px;
+	width: 188px;
+	margin-top: 15px;
+	font-size: 15px;
+	font-weight: bold;
+	cursor:pointer;
+}
+
+span.init_selected {
+margin-left:10px;
+margin-top:5px;
+}
+
+
+
+#select_new ul ul
+{
+	min-width: 187px;
+	background: #fff;
+	padding: 4px 0px;
+	border-radius: 5px;
+	border: 1px #000 solid;
+	display: none;
+	position: absolute;
+	text-align: left;
+	z-index:9;
+	cursor:pointer;
+}
+
+#select_new ul ul li
+{
+	display: block;
+	padding: 4px;
+	font-size: 15px;
+	font-weight: normal;
+	cursor:pointer;
+}
+
+#select_new li:not(.init):hover
+{
+	background: #EEE;
+}
+
+#dealer_links
+{
+	margin-top: 20px;
+}
+
+#dealer_links a {
+	display: block;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	font-family: arial;
+	font-size: 1.5em;
+	padding: 4px 0px;
+	width: 190px;
+	text-align: center;
+	margin-bottom: 6px;
+	text-decoration: none;
+}
+
+#share_links
+{
+	margin-top: 23px;
+}
+
+#share_links p
+{
+	font-size: 16px;
+}
+
+#share_links a {
+	display: block;
+}
+
+#video_information {
+	margin-top: 25px;
+	float: left;
+	width: 66%
+}
+
+#video_information h3,
+#video_information a
+{
+	text-decoration: none;
+	font-size: 26px;
+	font-weight: bold;
+	padding-bottom: 10px;
+	border-bottom: none;
+}
+
+#video_information h2
+{
+	font-size: 16px;
+	/*color: #fff;*/
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+.model_description
+{
+	font-size: 18px;
+	/*color: #fff;*/
+	margin-bottom: 10px;
+}
+
+article aside {
+	/*color: #fff;*/
+	float: right;
+	width: 28%;
+	font-size: 1.25em;
+	margin-top: 10px;
+}
+
+aside h2 {
+font-size:18px;
+font-weight:bold;
+margin:0;
+text-align:center;
+}
+
+/*aside a,
+aside a:hover
+{
+	color: #009c05;
+}
+*/
+
+#year ul {
+cursor:pointer;
+}
+
+#contact_box {
+background: #000;
+display: inline-block;
+vertical-align:top;
+margin-top: 10px;
+padding: 10px;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+}

@@ -43,6 +43,10 @@ class Dvs_Component_Controller_Index extends Phpfox_Component
 			{
 				return Phpfox::getLib('module')->setController('dvs.player.player');
 			}
+			else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'iframe')
+			{
+				return Phpfox::getLib('module')->setController('dvs.iframe');
+			}
 			else
 			{
 				return Phpfox::getLib('module')->setController('dvs.view');
@@ -170,7 +174,8 @@ Phpfox::getLib('pager')->set(array('page' => $iPage, 'size' => $iPageSize, 'coun
 					'sMessage' => $sMessage,
 					'aDvss' => $aDvss,
 					'bCanAddDvss' => $bCanAddDvss,
-					'bSubdomainMode' => $bSubdomainMode
+					'bSubdomainMode' => $bSubdomainMode,
+                    'sCorePath' => Phpfox::getParam('core.path')
 				))
 				->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
 				->setHeader(

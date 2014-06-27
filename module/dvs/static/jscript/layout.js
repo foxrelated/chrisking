@@ -326,6 +326,78 @@
 			}
 		});
 
+        $('#color_picker_iframe_background').ColorPicker({
+            onShow: function (colpkr) {
+                $(colpkr).fadeIn(500);
+                return false;
+            },
+            onHide: function (colpkr) {
+                $(colpkr).fadeOut(500);
+                return false;
+            },
+            onChange: function (hsb, hex, rgb) {
+                $('#color_picker_iframe_background div').css('backgroundColor', '#' + hex);
+                $('#color_picker_iframe_background_input').val(hex);
+
+                //For preview
+                $('.preview_select').css('backgroundColor', '#' + hex);
+            }
+        });
+
+        $('#color_picker_iframe_text').ColorPicker({
+            onShow: function (colpkr) {
+                $(colpkr).fadeIn(500);
+                return false;
+            },
+            onHide: function (colpkr) {
+                $(colpkr).fadeOut(500);
+                return false;
+            },
+            onChange: function (hsb, hex, rgb) {
+                $('#color_picker_iframe_text div').css('backgroundColor', '#' + hex);
+                $('#color_picker_iframe_text_input').val(hex);
+
+                //For preview
+                $('.preview_select').css('backgroundColor', '#' + hex);
+            }
+        });
+
+        $('#color_picker_iframe_contact_background').ColorPicker({
+            onShow: function (colpkr) {
+                $(colpkr).fadeIn(500);
+                return false;
+            },
+            onHide: function (colpkr) {
+                $(colpkr).fadeOut(500);
+                return false;
+            },
+            onChange: function (hsb, hex, rgb) {
+                $('#color_picker_iframe_contact_background div').css('backgroundColor', '#' + hex);
+                $('#color_picker_iframe_contact_background_input').val(hex);
+
+                //For preview
+                $('.preview_select').css('backgroundColor', '#' + hex);
+            }
+        });
+
+        $('#color_picker_iframe_contact_text').ColorPicker({
+            onShow: function (colpkr) {
+                $(colpkr).fadeIn(500);
+                return false;
+            },
+            onHide: function (colpkr) {
+                $(colpkr).fadeOut(500);
+                return false;
+            },
+            onChange: function (hsb, hex, rgb) {
+                $('#color_picker_iframe_contact_text div').css('backgroundColor', '#' + hex);
+                $('#color_picker_iframe_contact_text_input').val(hex);
+
+                //For preview
+                $('.preview_select').css('backgroundColor', '#' + hex);
+            }
+        });
+
 	};
 	
 	EYE.register(initLayout, 'init');
