@@ -278,7 +278,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			{if $inventoryList}
 				<div class="inventory_info_message">
 					{if $inventoryList|count > 1}
-						{$inventoryList|count} {$aFirstVideo.model}’s available in inventory! Select one below:
+						{$inventoryList|count} {$aFirstVideo.model}'s available in inventory! Select one below:
 					{elseif $inventoryList|count == 1}
 						{$inventoryList|count} {$aFirstVideo.model} available in inventory! Select one below:
 					{/if}
