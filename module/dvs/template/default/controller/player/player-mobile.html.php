@@ -91,7 +91,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		var bAutoplay = {if (isset($aPlayer.autoplay) && $aPlayer.autoplay) || (isset($aPlayer.autoplay_baseurl) && $aPlayer.autoplay_baseurl && !$aBaseUrl) || (isset($aPlayer.autoplay_videourl) && $aPlayer.autoplay_videourl && $aBaseUrl)}true{ else}false{/if};
 		//var bAutoplay =true;
 		var iCurrentVideo = {$aCurrentVideo};
-		var bAutoAdvance = {if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{ else}false{/if};
+		var bAutoAdvance ={if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
 	{else}
 		var bPreRoll = false;
 		var iDvsId = 0;
