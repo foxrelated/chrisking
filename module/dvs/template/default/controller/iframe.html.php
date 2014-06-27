@@ -1,5 +1,5 @@
 {if $sBrowser == 'mobile'}
-	{template file='dvs.controller.view-mobile}
+	{template file='dvs.controller.iframe-mobile-view}
 {else}
 <header>
 	<section id="select_new">

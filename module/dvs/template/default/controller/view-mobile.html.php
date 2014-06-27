@@ -110,5 +110,3 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	
 	
 </article>
-
-Mobile template
