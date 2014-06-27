@@ -135,7 +135,7 @@ defined('PHPFOX') or exit('NO DICE!');
         background-color: #{$aDvs.iframe_contact_background};
         {r}
 
-        #contact_dealer textarea, #contact_dealer input {l}
+        #contact_box h2 {l}
         color: #{$aDvs.iframe_contact_text};
         {r}
     </style>
