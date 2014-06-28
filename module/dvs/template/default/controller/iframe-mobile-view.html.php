@@ -80,29 +80,4 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </section>
     </div>
 
-    <section id="video_information">
-
-        {if empty($aOverrideVideo.ko_id)}
-        <section>
-            <h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
-            <p itemprop="description" class="model_description">{$aDvs.text_parsed}</p>
-        </section>
-        {/if}
-    </section>
-
-    <aside>
-        <p><strong>{$aDvs.dealer_name} Information</strong><br>
-            {if $aDvs.url}
-            {phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow">{$aDvs.url}</a>
-            {/if}
-            {if $aDvs.phone}<br />{phrase var='dvs.phone'}: <span itemprop="telephone">{$aDvs.phone}</span>{/if}</p>
-        <p itemscope itemtype="http://schema.org/PostalAddress">
-            {if $aDvs.address}Address: <span itemprop="streetAddress">{$aDvs.address}</span>{/if}</p>
-        <p><span itemprop="addressLocality">{$aDvs.city}</span>, <span itemprop="addressRegion">{$aDvs.state_string}</span>, <span itemprop="postalCode">{$aDvs.postal_code}</span>
-        </p>
-    </aside>
-
-
 </article>
-
-New template file
