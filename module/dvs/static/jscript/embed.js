@@ -1,29 +1,16 @@
 if (!window.WTVDVS) {
     window.WTVDVS = {
         render_iframe:function (params) {
-            //conflict A begin
-            //var height = params.height, width = params.width;
-            //delete params.height;
-            //delete params.width;
-            //var sIframe = '<iframe src="' + params.iframeUrl + '/parent_' + encodeURI(window.location.pathname + //window.location.search) + '"></iframe>';
-            //conflict A end
-
-            //conflict B begin
             var sParentUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + window.location.search;
             var height = params.height, width = params.width;
             delete params.height;
             delete params.width;
             var sIframe = '<iframe frameborder="0" width="100%" height="100%" src="' + params.iframeUrl + 'parent_' + this.encode_base64(encodeURIComponent(sParentUrl)) + '/"></iframe>';
-            //conflict B end
-            
+
             var wrapper = document.getElementById(params.id);
             if (wrapper) {
                 wrapper.innerHTML = sIframe, wrapper.style.width = parseInt(width) + 'px', wrapper.style.height = parseInt(height) + 'px', wrapper.style.padding = 0, wrapper.style.display = 'block';
             } else if (window.console && console.error)console.error('TrialPay: Could not find DOM element with ID: ' + id)
-//conflict C begin 
-//(blank)
-//conflict C end
-//conflict D begin
         },
 
         encode_base64: function(data) {
@@ -58,7 +45,6 @@ if (!window.WTVDVS) {
             var r = data.length % 3;
 
             return (r ? enc.slice(0, r - 3) : enc) + '==='.slice(r || 3);
-//conflict D end
         }
     }
 }
