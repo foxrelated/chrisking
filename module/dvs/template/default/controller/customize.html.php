@@ -379,15 +379,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 Font family
             </td>
             <td>
-                <table>
+                <select name="val[font_family_id]">
                     {foreach from=$aFontFamilies key=iKey item=sFontFamily}
-                    <tr>
-                        <td>
-                            <input type="radio" name="val[font_family_id]" value="{$iKey}" {if $bIsEdit && $aForms.font_family_id == $iKey}checked="checked"{/if}>{$sFontFamily}
-                        </td>
-                    </tr>
+                    <option value="{$iKey}" {if $bIsEdit && $aForms.font_family_id == $iKey}selected="selected"{elseif !$bIsEdit && $aForms.font_family_id == 3}selected="selected"{/if}>{$sFontFamily}</option>
                     {/foreach}
-                </table>
+                </select>
             </td>
         </tr>
     </table>
