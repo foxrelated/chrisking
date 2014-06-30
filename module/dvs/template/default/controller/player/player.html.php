@@ -318,8 +318,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<li>
 						<a class="playlist_carousel_image_link" {if $aDvs.gallery_target_setting==1}target="_blank" {/if} onclick="thumbnailClick({$iKey});thumbnailClickDvs();">
 							{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
-							<p>{$aVideo.year} {$aVideo.model}</p>
+							
 						</a>
+						<p>{$aVideo.year} {$aVideo.model}</p>
 					</li>
 					{/foreach}
 					<li style='display: none;'></li>
@@ -328,8 +329,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<li>
 						<a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});thumbnailClickIDrive();">
 							{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
-							<p>{$aVideo.year} {$aVideo.model}</p>
+						
 						</a>
+						<p>{$aVideo.year} {$aVideo.model}</p>
 					</li>
 					{/foreach}
 					{$sExtraLi}

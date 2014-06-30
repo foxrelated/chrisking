@@ -308,7 +308,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<input type="hidden" id="background_file_id" name="val[background_file_id]" value="{if $bIsEdit}{$aForms.background_file_id}{else}0{/if}"/>
 			</td>
 		</tr>
-		<tr>
+
+		<tr style="display: none;">
 			<td class="dvs_add_td">
 				{phrase var='dvs.background_opacity'}:
 			</td>
@@ -318,23 +319,73 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 		
 	</table>
-	
+
+    <table>
+        <tr class="tr_interactive">
+            <td class="dvs_add_td">
+                Background Repeat:
+            </td>
+            <td class="dvs_add_td_label">
+                <input type="radio" name="val[background_repeat_type]" value="repeat" {if $bIsEdit}{if $aForms.background_repeat_type == 'repeat'}checked="checked"{/if}{else}checked="checked"{/if}>repeat<br>
+            </td>
+            <td class="dvs_add_td_label">
+                <input type="radio" name="val[background_repeat_type]" value="no-repeat" {if $bIsEdit && $aForms.background_repeat_type == 'no-repeat'}checked="checked"{/if}>no-repeat<br>
+            </td>
+            <td class="dvs_add_td_label">
+                <input type="radio" name="val[background_repeat_type]" value="repeat-x" {if $bIsEdit && $aForms.background_repeat_type == 'repeat-x'}checked="checked"{/if}>repeat-x<br>
+            </td>
+            <td class="dvs_add_td_label">
+                <input type="radio" name="val[background_repeat_type]" value="repeat-y" {if $bIsEdit && $aForms.background_repeat_type == 'repeat-y'}checked="checked"{/if}>repeat-y<br>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <tr class="tr_interactive">
+            <td class="dvs_add_td">
+                Background Attachment:
+            </td>
+            <td class="dvs_add_td_label">
+                <input type="radio" name="val[background_attachment_type]" value="scroll" {if $bIsEdit}{if $aForms.background_attachment_type == 'scroll'}checked="checked"{/if}{else}checked="checked"{/if}>scroll<br>
+            </td>
+            <td class="dvs_add_td_label">
+                <input type="radio" name="val[background_attachment_type]" value="fixed" {if $bIsEdit && $aForms.background_attachment_type == 'fixed'}checked="checked"{/if}>fixed<br>
+            </td>
+        </tr>
+    </table>
+	<br>
 	<h3>Page Styling</h3>
+
+    <table>
+        <tr>
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.select_a_theme'}:
+            </td>
+            <td class="dvs_add_td">
+                <select name="val[theme_select]" id="theme_select" onchange="$.ajaxCall('dvs.chooseTheme', 'theme_id='+this.value);">
+                    <option value="0">Select a Theme</option>
+                    {foreach from=$aThemes item=aTheme}
+                    <option value="{$aTheme.theme_id}">{$aTheme.theme_name}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dvs_add_td_label">
+                Font Family:
+            </td>
+            <td>
+                <select name="val[font_family_id]">
+                    {foreach from=$aFontFamilies key=iKey item=sFontFamily}
+                    <option value="{$iKey}" {if $bIsEdit && $aForms.font_family_id == $iKey}selected="selected"{elseif !$bIsEdit && $aForms.font_family_id == 3}selected="selected"{/if}>{$sFontFamily}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>
+    </table>
+
 	<table>
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.select_a_theme'}:
-			</td>
-			<td class="dvs_add_td">
-				<select name="val[theme_select]" id="theme_select" onchange="$.ajaxCall('dvs.chooseTheme', 'theme_id='+this.value);">
-					<option value="0">Select a Theme</option>
-					{foreach from=$aThemes item=aTheme}
-						<option value="{$aTheme.theme_id}">{$aTheme.theme_name}</option>
-					{/foreach}
-				</select>
-			</td>
-		</tr>
-		
 		<tr>
 			<td class="dvs_add_td_label">
 				{phrase var='dvs.menu_background'}:
@@ -347,6 +398,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 			<td rowspan="6" style="vertical-align:middle;">
 				<div id="preview_wrapper">
+				<h1 align="center">Live Preview</h1>
 					<div id="preview_container">
 						<div id="dvs_container">
 							<div id="preview_menu_container">
@@ -543,7 +595,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 </div>
                 <input type="hidden" id="color_picker_iframe_contact_text_input" name="val[iframe_contact_text]" {if $bIsEdit}value="{$aForms.iframe_contact_text}"{else}value="{$sDefaultColor}"{/if}/>
             </td>
-
         </tr>
     </table>
     <br>

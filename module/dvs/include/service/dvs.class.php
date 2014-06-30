@@ -629,6 +629,10 @@ public function aasort (&$array, $key) {
 			->join(Phpfox::getT('user'), 'u', 'u.user_id = d.user_id')
 			->execute('getRow');
 
+        if(isset($aDvs['font_family_id'])) {
+            $aDvs['font_family'] = Phpfox::getService('dvs.style')->getFontFamily($aDvs['font_family_id']);
+        }
+
 		return $aDvs;
 	}
 

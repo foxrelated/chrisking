@@ -378,8 +378,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 	</table>
 	{* phpmasterminds added below code for setting on header and footer remover *}
+	{if Phpfox::isAdmin()}
+	<br><h1>Admin Only Settings</h1>
 	<div class="inventory_settings_wrapper">
-		<h1>{phrase var='dvs.banner_and_footer_toggle'}</h1>
+		<h3>Layout Toggles</h3>
 		<table class="dvs_add_table">
 			<tr>
 				<td class="dvs_add_td_label">
@@ -412,7 +414,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</div>
 	
 	<div class="inventory_settings_wrapper">
-		<h1>{phrase var='dvs.gallery_setting'}</h1>
+		<h3>Gallery Link Target</h3>
 		<table class="dvs_add_table">
 			<tr>
 				<td colspan="2" class="dvs_add_td">
@@ -431,7 +433,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	
 	{* BEGIN flit77 changes 05052014 *}
 	<div class="inventory_settings_wrapper">
-		<h1>{phrase var='dvs.inventory_display_settings'}</h1>
+		<h3>{phrase var='dvs.inventory_display_settings'}</h3>
 		<table class="dvs_add_table">
 			<tr>
 				<td colspan="2" class="dvs_add_td">
@@ -487,6 +489,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</table>
 	</div>
 	{* END flit77 changes 05052014 *}
+	{/if}
 	
 	<div id="phrase_override_toggle">
 		<a href="#" onclick="if ($('#phrase_override_wrapper').is(':visible')){l}$('#phrase_override_wrapper').hide('slow');wtvlt='Show Phrase Overrides'{r}else{l}$('#phrase_override_wrapper').show('slow');wtvlt='Hide Phrase Overrides (values will still be saved)';{r}$(this).text(wtvlt);return false;" id="phrase_override_toggle_link">Show Phrase Overrides</a>

@@ -24,6 +24,20 @@ defined('PHPFOX') or exit('NO DICE!');
     {if !empty($aDvs)}
     <style>
         /* This CSS is generated for the base DVS page */
+        html, body {l}
+            font-family: {$aDvs.font_family};
+        {r}
+
+        body {l}
+            background-attachment: {$aDvs.background_attachment_type};
+            opacity: {$iBackgroundOpacity / 100};
+            filter:alpha(opacity={$iBackgroundOpacity});
+            z-index: -1;
+            /* keep the bg image aligned properly */
+            background-position:center top;
+            background-repeat:{$aDvs.background_repeat_type};
+            background-color: #{$aDvs.iframe_background};
+        {r}
 
         section h1,h2,h3,h4,h5,h6,h7 {l}
         color: #{$aDvs.iframe_text};
@@ -46,24 +60,6 @@ defined('PHPFOX') or exit('NO DICE!');
         header nav a:hover,
         nav li + li:before {l}
         color: #{$aDvs.menu_link};
-        {r}
-
-        body {l}
-        background-color: #{$aDvs.iframe_background};
-        {r}
-
-        #dvs_background {l}
-        position:fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-attachment: scroll;
-        opacity: {$iBackgroundOpacity / 100};
-        filter:alpha(opacity={$iBackgroundOpacity});
-        z-index: -1;
-        /* keep the bg image aligned properly */
-        background-position:center top;
         {r}
 
         #video_information h3,

@@ -41,7 +41,10 @@ class Dvs_Service_Style_Process extends Phpfox_Service {
             'iframe_background' => $this->preParse()->clean($aDvs['iframe_background'], 6),
             'iframe_text' => $this->preParse()->clean($aDvs['iframe_text'], 6),
             'iframe_contact_background' => $this->preParse()->clean($aDvs['iframe_contact_background'], 6),
-            'iframe_contact_text' => $this->preParse()->clean($aDvs['iframe_contact_text'], 6)
+            'iframe_contact_text' => $this->preParse()->clean($aDvs['iframe_contact_text'], 6),
+            'background_repeat_type' => $this->preParse()->clean($aDvs['background_repeat_type']),
+            'background_attachment_type' => $this->preParse()->clean($aDvs['background_attachment_type']),
+            'font_family_id' => (int)$aDvs['font_family_id']
 		));
 	}
 
@@ -66,8 +69,11 @@ class Dvs_Service_Style_Process extends Phpfox_Service {
             'iframe_background' => $this->preParse()->clean($aDvs['iframe_background'], 6),
             'iframe_text' => $this->preParse()->clean($aDvs['iframe_text'], 6),
             'iframe_contact_background' => $this->preParse()->clean($aDvs['iframe_contact_background'], 6),
-            'iframe_contact_text' => $this->preParse()->clean($aDvs['iframe_contact_text'], 6)
-			), 'dvs_id = ' . (int) $aDvs['dvs_id']);
+            'iframe_contact_text' => $this->preParse()->clean($aDvs['iframe_contact_text'], 6),
+            'background_repeat_type' => $this->preParse()->clean($aDvs['background_repeat_type']),
+            'background_attachment_type' => $this->preParse()->clean($aDvs['background_attachment_type']),
+            'font_family_id' => (int)$aDvs['font_family_id']
+		), 'dvs_id = ' . (int) $aDvs['dvs_id']);
 	}
 
 
