@@ -24,7 +24,10 @@ defined('PHPFOX') or exit('NO DICE!');
     {if !empty($aDvs)}
     <style>
         /* This CSS is generated for the base DVS page */
-
+        html, body {l}
+            height: 100%;
+            font-family: {$aDvs.font_family};
+        {r}
         section h1,h2,h3,h4,h5,h6,h7 {l}
         color: #{$aDvs.iframe_text};
         {r}

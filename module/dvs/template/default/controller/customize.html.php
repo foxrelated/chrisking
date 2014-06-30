@@ -358,21 +358,41 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     </table>
 	
 	<h3>Page Styling</h3>
+
+    <table>
+        <tr>
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.select_a_theme'}:
+            </td>
+            <td class="dvs_add_td">
+                <select name="val[theme_select]" id="theme_select" onchange="$.ajaxCall('dvs.chooseTheme', 'theme_id='+this.value);">
+                    <option value="0">Select a Theme</option>
+                    {foreach from=$aThemes item=aTheme}
+                    <option value="{$aTheme.theme_id}">{$aTheme.theme_name}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dvs_add_td_label">
+                Font family
+            </td>
+            <td>
+                <table>
+                    {foreach from=$aFontFamilies key=iKey item=sFontFamily}
+                    <tr>
+                        <td>
+                            <input type="radio" name="val[font_family_id]" value="{$iKey}" {if $bIsEdit && $aForms.font_family_id == $iKey}checked="checked"{/if}>{$sFontFamily}
+                        </td>
+                    </tr>
+                    {/foreach}
+                </table>
+            </td>
+        </tr>
+    </table>
+
 	<table>
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.select_a_theme'}:
-			</td>
-			<td class="dvs_add_td">
-				<select name="val[theme_select]" id="theme_select" onchange="$.ajaxCall('dvs.chooseTheme', 'theme_id='+this.value);">
-					<option value="0">Select a Theme</option>
-					{foreach from=$aThemes item=aTheme}
-						<option value="{$aTheme.theme_id}">{$aTheme.theme_name}</option>
-					{/foreach}
-				</select>
-			</td>
-		</tr>
-		
 		<tr>
 			<td class="dvs_add_td_label">
 				{phrase var='dvs.menu_background'}:

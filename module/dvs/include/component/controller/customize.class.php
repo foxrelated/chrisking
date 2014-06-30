@@ -71,6 +71,7 @@ class Dvs_Component_Controller_Customize extends Phpfox_Component {
 				'bIsEdit' => $bIsEdit,
 				'aThemes' => Phpfox::getService('dvs.theme')->listThemes(),
 				'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
+                'aFontFamilies' => Phpfox::getService('dvs.style')->getFontFamilies()
 			))
 			->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'), Phpfox::getLib('url')->makeUrl('dvs'))
 			->setBreadcrumb($sBreadcrumb);
