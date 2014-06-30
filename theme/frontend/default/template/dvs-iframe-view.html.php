@@ -36,7 +36,7 @@ defined('PHPFOX') or exit('NO DICE!');
             /* keep the bg image aligned properly */
             background-position:center top;
             background-repeat:{$aDvs.background_repeat_type};
-            background-color: #{$aDvs.page_background};
+            background-color: #{$aDvs.iframe_background};
         {r}
 
         section h1,h2,h3,h4,h5,h6,h7 {l}
