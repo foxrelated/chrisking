@@ -103,6 +103,7 @@
         {/if*}
     </section>
 
+
     <section id="share_links">
         <input type="hidden" value="{$sNewParentUrl}" id="parent_ur">
         <input type="hidden" value="{$sVideoUrl}" id="video_url">

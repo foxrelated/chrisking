@@ -377,19 +377,21 @@ margin-top:5px;
 	text-decoration: none;
 }
 
-#share_links
+section#share_links
 {
+	display:block;
 	margin-top: 23px;
+	float:left;
 }
 
-#share_links p
+/*#share_links p
 {
 	font-size: 16px;
 }
 
 #share_links a {
 	display: block;
-}
+}*/
 
 #video_information {
 	margin-top: 25px;
