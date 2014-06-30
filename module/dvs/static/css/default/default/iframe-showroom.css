@@ -140,7 +140,7 @@ a:hover
 	vertical-align: top;
 	width: 25px;
 	height: 25px;
-	margin-top: 30px;
+	margin-top: 40px;
 	padding: 0;
 	border: 0px none;
 	border-radius: 20%;
@@ -157,8 +157,8 @@ a:hover
 #overview_playlist {
 	display: inline-block;
 	overflow: hidden;
-	height: 85px;
-	width: 625px;
+	height: 105px;
+	width: 725px;
 }
 
 #overview_playlist ul li {
@@ -172,12 +172,12 @@ a:hover
 	margin-right: 3px;
 	margin-left: 3px;
 /*	border: 2px #00A7AD solid;*/
-	height: 82px;
+	height: 102px;
 }
 
 #overview_playlist ul li p {
 	position: absolute;
-	top: 35px;
+	/*top: 35px;*/
 	width: 100%;
 	text-align: center;
 	font-weight: bold;
@@ -187,8 +187,8 @@ a:hover
 
 #overview_playlist ul li img
 {
-	opacity: 0.5;
-	filter:alpha(opacity=50);
+	/*opacity: 0.5;
+	filter:alpha(opacity=50);*/
 }
 
 /* Right-side chapter buttons */
