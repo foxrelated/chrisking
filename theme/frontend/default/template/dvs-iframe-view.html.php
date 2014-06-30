@@ -28,7 +28,7 @@ defined('PHPFOX') or exit('NO DICE!');
             font-family: {$aDvs.font_family};
         {r}
 
-        html {l}
+        body {l}
             background-attachment: {$aDvs.background_attachment_type};
             opacity: {$iBackgroundOpacity / 100};
             filter:alpha(opacity={$iBackgroundOpacity});

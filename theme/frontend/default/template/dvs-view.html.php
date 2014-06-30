@@ -30,7 +30,7 @@ defined('PHPFOX') or exit('NO DICE!');
             {r}
 
             {if $bc != 'refid' && !$bPreview}
-            html {l}
+            body {l}
                 background-image: url('{$sBackgroundPath}');
                 background-attachment: {$aDvs.background_attachment_type};
                 opacity: {$iBackgroundOpacity / 100};
