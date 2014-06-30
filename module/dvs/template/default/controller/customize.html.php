@@ -322,11 +322,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
     <table>
         <tr class="tr_interactive">
-            <td colspan="4">
+            <td class="dvs_add_td">
                 Background Repeat:
             </td>
-        </tr>
-        <tr>
             <td class="dvs_add_td_label">
                 <input type="radio" name="val[background_repeat_type]" value="repeat" {if $bIsEdit}{if $aForms.background_repeat_type == 'repeat'}checked="checked"{/if}{else}checked="checked"{/if}>repeat<br>
             </td>
@@ -344,11 +342,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
     <table>
         <tr class="tr_interactive">
-            <td colspan="4">
+            <td class="dvs_add_td">
                 Background Attachment:
             </td>
-        </tr>
-        <tr>
             <td class="dvs_add_td_label">
                 <input type="radio" name="val[background_attachment_type]" value="scroll" {if $bIsEdit}{if $aForms.background_attachment_type == 'scroll'}checked="checked"{/if}{else}checked="checked"{/if}>scroll<br>
             </td>
@@ -357,7 +353,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </td>
         </tr>
     </table>
-	
+	<br>
 	<h3>Page Styling</h3>
 
     <table>
@@ -377,7 +373,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
         <tr>
             <td class="dvs_add_td_label">
-                Font family
+                Font Family:
             </td>
             <td>
                 <select name="val[font_family_id]">
@@ -402,6 +398,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 			<td rowspan="6" style="vertical-align:middle;">
 				<div id="preview_wrapper">
+				<h1 align="center">Live Preview</h1>
 					<div id="preview_container">
 						<div id="dvs_container">
 							<div id="preview_menu_container">
