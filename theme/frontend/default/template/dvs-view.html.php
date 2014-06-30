@@ -28,6 +28,22 @@ defined('PHPFOX') or exit('NO DICE!');
                 height: 100%;
                 font-family: {$aDvs.font_family};
             {r}
+
+            {if $bc != 'refid' && !$bPreview}
+            html {l}
+                background-image: url('{$sBackgroundPath}');
+                background-attachment: {$aDvs.background_attachment_type};
+                opacity: {$iBackgroundOpacity / 100};
+                filter:alpha(opacity={$iBackgroundOpacity});
+                z-index: -1;
+                /* keep the bg image aligned properly */
+                background-position:center top;
+                background-repeat:{$aDvs.background_repeat_type};
+                background-color: #{$aDvs.page_background};
+            {r}
+            {/if}
+
+            {r}
 			section h1,h2,h3,h4,h5,h6,h7 {l}
 				color: #{$aDvs.page_text};
 			{r}
@@ -50,27 +66,6 @@ defined('PHPFOX') or exit('NO DICE!');
 			nav li + li:before {l}
 				color: #{$aDvs.menu_link};
 			{r}
-
-			body {l}
-				background-color: #{$aDvs.page_background};
-			{r}
-
-            {if $bc != 'refid' && !$bPreview}
-			#js_body_width_frame {l}
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background-image: url('{$sBackgroundPath}');
-                background-attachment: {$aDvs.background_attachment_type};
-				opacity: {$iBackgroundOpacity / 100};
-				filter:alpha(opacity={$iBackgroundOpacity});
-				z-index: -1;
-				/* keep the bg image aligned properly */
-				background-position:center top;
-                background-repeat:{$aDvs.background_repeat_type};
-			{r}
-            {/if}
 
 			#video_information h3,
 			#video_information a,
