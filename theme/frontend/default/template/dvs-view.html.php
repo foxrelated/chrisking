@@ -43,7 +43,6 @@ defined('PHPFOX') or exit('NO DICE!');
             {r}
             {/if}
 
-            {r}
 			section h1,h2,h3,h4,h5,h6,h7 {l}
 				color: #{$aDvs.page_text};
 			{r}
