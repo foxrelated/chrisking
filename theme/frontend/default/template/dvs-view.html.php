@@ -33,8 +33,8 @@ defined('PHPFOX') or exit('NO DICE!');
             body {l}
                 background-image: url('{$sBackgroundPath}');
                 background-attachment: {$aDvs.background_attachment_type};
-                opacity: {$iBackgroundOpacity / 100};
-                filter:alpha(opacity={$iBackgroundOpacity});
+                /*opacity: {$iBackgroundOpacity / 100};
+                filter:alpha(opacity={$iBackgroundOpacity});*/
                 z-index: -1;
                 /* keep the bg image aligned properly */
                 background-position:center top;

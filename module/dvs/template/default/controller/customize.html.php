@@ -308,7 +308,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<input type="hidden" id="background_file_id" name="val[background_file_id]" value="{if $bIsEdit}{$aForms.background_file_id}{else}0{/if}"/>
 			</td>
 		</tr>
-		<tr>
+
+		<tr style="display: none;">
 			<td class="dvs_add_td">
 				{phrase var='dvs.background_opacity'}:
 			</td>
