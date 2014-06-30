@@ -38,7 +38,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     {template file='dvs.controller.player.player}
   </section>
 {else}
-  <div id="dvs_background"></div>
   {if $sBrowser == 'mobile'}
     {template file='dvs.controller.view-mobile}
   {else}

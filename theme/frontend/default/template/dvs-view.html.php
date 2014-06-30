@@ -51,21 +51,23 @@ defined('PHPFOX') or exit('NO DICE!');
 			body {l}
 				background-color: #{$aDvs.page_background};
 			{r}
-									
-			#dvs_background {l}
-				position:fixed;
+
+            {if $bc != 'refid' && !$bPreview}
+			#js_body_width_frame {l}
 				top: 0;
 				left: 0;
 				width: 100%;
 				height: 100%;
 				background-image: url('{$sBackgroundPath}');
-				background-attachment: scroll;
+                background-attachment: {$aDvs.background_attachment_type};
 				opacity: {$iBackgroundOpacity / 100};
 				filter:alpha(opacity={$iBackgroundOpacity});
 				z-index: -1;
 				/* keep the bg image aligned properly */
 				background-position:center top;
+                background-repeat:{$aDvs.background_repeat_type};
 			{r}
+            {/if}
 
 			#video_information h3,
 			#video_information a,

@@ -58,12 +58,13 @@ defined('PHPFOX') or exit('NO DICE!');
         left: 0;
         width: 100%;
         height: 100%;
-        background-attachment: scroll;
+        background-attachment: {$aDvs.background_attachment_type};
         opacity: {$iBackgroundOpacity / 100};
         filter:alpha(opacity={$iBackgroundOpacity});
         z-index: -1;
         /* keep the bg image aligned properly */
         background-position:center top;
+        background-repeat:{$aDvs.background_repeat_type};
         {r}
 
         #video_information h3,

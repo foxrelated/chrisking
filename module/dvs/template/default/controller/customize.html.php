@@ -543,7 +543,45 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 </div>
                 <input type="hidden" id="color_picker_iframe_contact_text_input" name="val[iframe_contact_text]" {if $bIsEdit}value="{$aForms.iframe_contact_text}"{else}value="{$sDefaultColor}"{/if}/>
             </td>
+        </tr>
+    </table>
 
+    <h3>Repeat &amp; Attachment</h3>
+    <table>
+        <tr class="tr_interactive">
+            <td colspan="4">
+                Background Repeat:
+            </td>
+        </tr>
+        <tr>
+            <td class="dvs_add_td_label">
+                <input type="radio" name="val[background_repeat_type]" value="repeat" {if $bIsEdit}{if $aForms.background_repeat_type == 'repeat'}checked="checked"{/if}{else}checked="checked"{/if}>repeat<br>
+            </td>
+            <td class="dvs_add_td_label">
+                <input type="radio" name="val[background_repeat_type]" value="no-repeat" {if $bIsEdit && $aForms.background_repeat_type == 'no-repeat'}checked="checked"{/if}>no-repeat<br>
+            </td>
+            <td class="dvs_add_td_label">
+                <input type="radio" name="val[background_repeat_type]" value="repeat-x" {if $bIsEdit && $aForms.background_repeat_type == 'repeat-x'}checked="checked"{/if}>repeat-x<br>
+            </td>
+            <td class="dvs_add_td_label">
+                <input type="radio" name="val[background_repeat_type]" value="repeat-y" {if $bIsEdit && $aForms.background_repeat_type == 'repeat-y'}checked="checked"{/if}>repeat-y<br>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <tr class="tr_interactive">
+            <td colspan="4">
+                Background Attachment:
+            </td>
+        </tr>
+        <tr>
+            <td class="dvs_add_td_label">
+                <input type="radio" name="val[background_attachment_type]" value="scroll" {if $bIsEdit}{if $aForms.background_attachment_type == 'scroll'}checked="checked"{/if}{else}checked="checked"{/if}>scroll<br>
+            </td>
+            <td class="dvs_add_td_label">
+                <input type="radio" name="val[background_attachment_type]" value="fixed" {if $bIsEdit && $aForms.background_attachment_type == 'fixed'}checked="checked"{/if}>fixed<br>
+            </td>
         </tr>
     </table>
     <br>
