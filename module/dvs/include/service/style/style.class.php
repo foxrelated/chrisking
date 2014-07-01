@@ -71,7 +71,7 @@ class Dvs_Service_Style_Style extends Phpfox_Service {
 	}
 
     public function getFontFamilies() {
-        return $this->_aFontRepresents;
+        return $this->_aFontFamilies;
     }
 
     public function getFontFamily($iId) {
