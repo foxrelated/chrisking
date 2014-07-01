@@ -112,14 +112,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 							<td><br/>
 								{if !$bIsIPhone}
 									<div id="dvs_share_copy_button_holder1_{$iKey}" class="dvs_share_copy_button_holder">
-										<button id="copy_button_{$iKey}">Copy Code</button>
+										<button id="copy_button1_{$iKey}">Copy Code</button>
 									</div>
 									<script type="text/javascript">
-									    var clip_{$iKey} = new ZeroClipboard.Client();
-									    clip_{$iKey}.setHandCursor(true);
-									    clip_{$iKey}.setText( document.getElementById('embed_code_{$iKey}').value );
-									    clip_{$iKey}.glue('copy_button_{$iKey}', "dvs_share_copy_button_holder1_{$iKey}");
-									    clip_{$iKey}.addEventListener('onComplete', function(){l}
+									    var clip1_{$iKey} = new ZeroClipboard.Client();
+									    clip1_{$iKey}.setHandCursor(true);
+									    clip1_{$iKey}.setText( document.getElementById('embed_code_{$iKey}').value );
+									    clip1_{$iKey}.glue('copy_button1_{$iKey}', "dvs_share_copy_button_holder1_{$iKey}");
+									    clip1_{$iKey}.addEventListener('onComplete', function(){l}
 									    	$.ajaxCall('dvs.copyCRM', 'shorturl={$aVideo.shorturl}');
 									    	alert('Embed code has been copied to clipboard!');
 								    	{r});
@@ -137,14 +137,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 							<td><br/>
 								{if !$bIsIPhone}
 									<div id="dvs_share_copy_button_holder2_{$iKey}" class="dvs_share_copy_button_holder">
-										<button id="copy_button_{$iKey}">Copy Link</button>
+										<button id="copy_button2_{$iKey}">Copy Link</button>
 									</div>
 									<script type="text/javascript">
-									    var clip_{$iKey} = new ZeroClipboard.Client();
-									    clip_{$iKey}.setHandCursor(true);
-									    clip_{$iKey}.setText( document.getElementById('link_code_{$iKey}').value );
-									    clip_{$iKey}.glue('copy_button_{$iKey}', "dvs_share_copy_button_holder2_{$iKey}");
-									    clip_{$iKey}.addEventListener('onComplete', function(){l}
+									    var clip2_{$iKey} = new ZeroClipboard.Client();
+									    clip2_{$iKey}.setHandCursor(true);
+									    clip2_{$iKey}.setText( document.getElementById('link_code_{$iKey}').value );
+									    clip2_{$iKey}.glue('copy_button2_{$iKey}', "dvs_share_copy_button_holder2_{$iKey}");
+									    clip2_{$iKey}.addEventListener('onComplete', function(){l}
 									    	$.ajaxCall('dvs.copyCRM', 'shorturl={$aVideo.shorturl}');
 									    	alert('Link has been copied to clipboard!');
 								    	{r});
