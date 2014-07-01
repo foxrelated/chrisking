@@ -940,7 +940,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			));
 			$sBody = $this->getContent(false);
 
-			$sDealerEmail = 'noreply@' . str_replace('www.', '', parse_url($aDvs['url'], PHP_URL_HOST));
+			//$sDealerEmail = 'noreply@' . str_replace('www.', '', parse_url($aDvs['url'], PHP_URL_HOST));
+			$sDealerEmail = $aDvs['email'];
 			Phpfox::getLibClass('phpfox.mail.interface');
 			$oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
 			$oMail->send($aVals['share_email'], $sSubject, ' ', $sBody, $aVals['my_share_name'], $sDealerEmail);
