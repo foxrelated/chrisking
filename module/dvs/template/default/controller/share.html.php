@@ -35,8 +35,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 							<td>
 								<div class="dvs_share_image_holder">
 									<a href="#" onclick="
-										tb_show('Preview', $.ajaxBox('dvs.showMiniPreview', 'height=640&amp;width=900&amp;val[dvs_id]={$aDvs.dvs_id}'));{*&amp;val[shorturl]={$aVideo.shorturl}*}
-										return false;">
+										tb_show('Preview', $.ajaxBox('dvs.showMiniPreview', 'height=640&amp;width=900&amp;val[dvs_id]={$aDvs.dvs_id}')); return false;">
 										<img src="{$baseUrl}module/dvs/static/image/play_btn_75.png" class="dvs_share_button_overlay" />
 										{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image width="100%"}
 									</a>
@@ -112,17 +111,42 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 							</td>
 							<td><br/>
 								{if !$bIsIPhone}
-									<div id="dvs_share_copy_button_holder_{$iKey}" class="dvs_share_copy_button_holder">
-										<button id="copy_button_{$iKey}">Copy</button>
+									<div id="dvs_share_copy_button_holder1_{$iKey}" class="dvs_share_copy_button_holder">
+										<button id="copy_button_{$iKey}">Copy Code</button>
 									</div>
 									<script type="text/javascript">
 									    var clip_{$iKey} = new ZeroClipboard.Client();
 									    clip_{$iKey}.setHandCursor(true);
 									    clip_{$iKey}.setText( document.getElementById('embed_code_{$iKey}').value );
-									    clip_{$iKey}.glue('copy_button_{$iKey}', "dvs_share_copy_button_holder_{$iKey}");
+									    clip_{$iKey}.glue('copy_button_{$iKey}', "dvs_share_copy_button_holder1_{$iKey}");
 									    clip_{$iKey}.addEventListener('onComplete', function(){l}
 									    	$.ajaxCall('dvs.copyCRM', 'shorturl={$aVideo.shorturl}');
-									    	alert('Text has been copied to clipboard!');
+									    	alert('Embed code has been copied to clipboard!');
+								    	{r});
+									</script>
+								{/if}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Direct Video Link
+								<input class="dvs_share_text_box" type="text" id="link_code_{$iKey}"
+											 value='{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&utm_medium=LinkShare&utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&utm_campaign=dvs_id_{$aDvs.dvs_id}'
+								/>
+							</td>
+							<td><br/>
+								{if !$bIsIPhone}
+									<div id="dvs_share_copy_button_holder2_{$iKey}" class="dvs_share_copy_button_holder">
+										<button id="copy_button_{$iKey}">Copy Link</button>
+									</div>
+									<script type="text/javascript">
+									    var clip_{$iKey} = new ZeroClipboard.Client();
+									    clip_{$iKey}.setHandCursor(true);
+									    clip_{$iKey}.setText( document.getElementById('link_code_{$iKey}').value );
+									    clip_{$iKey}.glue('copy_button_{$iKey}', "dvs_share_copy_button_holder2_{$iKey}");
+									    clip_{$iKey}.addEventListener('onComplete', function(){l}
+									    	$.ajaxCall('dvs.copyCRM', 'shorturl={$aVideo.shorturl}');
+									    	alert('Link has been copied to clipboard!');
 								    	{r});
 									</script>
 								{/if}
