@@ -9,7 +9,7 @@ if (!window.WTVDVS) {
 
             var wrapper = document.getElementById(params.id);
             if (wrapper) {
-                wrapper.innerHTML = sIframe, wrapper.style.width = parseInt(width) + 'px', wrapper.style.height = parseInt(height) + 'px', wrapper.style.padding = 0, wrapper.style.display = 'block';
+                wrapper.innerHTML = sIframe, wrapper.style.width = '100%', wrapper.style.height = '100%', wrapper.style.padding = 0, wrapper.style.display = 'block';
             } else if (window.console && console.error)console.error('TrialPay: Could not find DOM element with ID: ' + id)
         },
 
