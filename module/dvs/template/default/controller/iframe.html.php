@@ -55,7 +55,7 @@
 </header>
 <article>
 	<section id="player">
-		{template file='dvs.controller.player.player}
+		{template file='dvs.controller.player.iframe-player}
 	</section>
 
     <aside>
