@@ -373,5 +373,3 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     {/if}
 </section>
 {/if}
-
-123

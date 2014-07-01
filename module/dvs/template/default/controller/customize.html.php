@@ -407,7 +407,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             <td>
                 <select id="font_family_id" name="val[font_family_id]">
                     {foreach from=$aFontFamilies key=iKey item=sFontFamily}
-                    <option style="font-family: {$sFontFamily}" value="{$iKey}" {if $bIsEdit && $aForms.font_family_id == $iKey}selected="selected"{elseif !$bIsEdit && $aForms.font_family_id == 3}selected="selected"{/if}>{$sFontFamily}</option>
+                    <option value="{$iKey}" {if $bIsEdit && $aForms.font_family_id == $iKey}selected="selected"{elseif !$bIsEdit && $aForms.font_family_id == 3}selected="selected"{/if}>{$sFontFamily}</option>
                     {/foreach}
                 </select>
             </td>
