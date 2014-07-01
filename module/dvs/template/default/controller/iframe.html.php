@@ -55,7 +55,7 @@
 </header>
 <article>
 	<section id="player">
-		{template file='dvs.controller.player.player}
+		{template file='dvs.controller.player.iframe-player}
 	</section>
 
     <aside>
@@ -112,7 +112,7 @@
         <table cellpadding="4" cellspacing="4" border="0">
             <tr>
                 <td>
-                    <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailFormIframe', 'height=400&amp;width=360&amp;sParentUrl=' + encodeURIComponent($('#parent_ur').val().replace('WTVDVS_VIDEO_TEMP', $('#video_url').val())) + '&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">
+                    <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailFormIframe', 'height=400&amp;width=360&amp;sParentUrl=' + encodeURIComponent($('#parent_ur').val().replace('WTVDVS_VIDEO_TEMP', $('#video_url').val())) + '&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));  showEmailShare(); return false;">
                         <img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
                     </a>
                 </td>

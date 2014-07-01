@@ -14,6 +14,35 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 ?>
 <script type="text/javascript">
+    {literal}
+    $Behavior.changeFontFamilyInit = function() {
+        var aFontFamilies = [
+            'Georgia, serif',
+            '"Palatino Linotype", "Book Antiqua", Palatino, serif',
+            '"Times New Roman", Times, serif',
+            'Arial, Helvetica, sans-serif',
+            '"Arial Black", Gadget, sans-serif',
+            '"Comic Sans MS", cursive, sans-serif',
+            'Impact, Charcoal, sans-serif',
+            '"Lucida Sans Unicode", "Lucida Grande", sans-serif',
+            'Tahoma, Geneva, sans-serif',
+            '"Trebuchet MS", Helvetica, sans-serif',
+            'Verdana, Geneva, sans-serif',
+            '"Courier New", Courier, monospace','"Lucida Console", Monaco, monospace'
+        ];
+
+        var iStart = parseInt($('#font_family_id').val());
+        $('#preview_wrapper').css('fontFamily', aFontFamilies.slice(iStart, iStart + 1).toString());
+
+
+        $('#font_family_id').change(function() {
+            iStart = parseInt($('#font_family_id').val());
+            $('#preview_wrapper').css('fontFamily', aFontFamilies.slice(iStart, iStart + 1).toString());
+        });
+    };
+    {/literal}
+
+
 	{if $bIsEdit}
 		$Behavior.colorPicker = function() {l}
 			$('#color_picker_menu_background').ColorPickerSetColor('#{$aForms.menu_background}');
@@ -376,7 +405,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 Font Family:
             </td>
             <td>
-                <select name="val[font_family_id]">
+                <select id="font_family_id" name="val[font_family_id]">
                     {foreach from=$aFontFamilies key=iKey item=sFontFamily}
                     <option value="{$iKey}" {if $bIsEdit && $aForms.font_family_id == $iKey}selected="selected"{elseif !$bIsEdit && $aForms.font_family_id == 3}selected="selected"{/if}>{$sFontFamily}</option>
                     {/foreach}

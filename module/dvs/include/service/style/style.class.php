@@ -30,6 +30,22 @@ class Dvs_Service_Style_Style extends Phpfox_Service {
         12 => '"Lucida Console", Monaco, monospace'
     );
 
+    private $_aFontRepresents = array(
+        0 => 'Georgia',
+        1 => 'Palatino Linotype',
+        2 => 'Times New Roman',
+        3 => 'Arial',
+        4 => 'Arial Black',
+        5 => 'Comic Sans MS',
+        6 => 'Impact',
+        7 => 'Lucida Sans Unicode',
+        8 => 'Tahoma',
+        9 => 'Trebuchet MS',
+        10 => 'Verdana',
+        11 => 'Courier New',
+        12 => 'Lucida Console'
+    );
+
 	public function __construct()
 	{
 		$this->_sTable = Phpfox::getT('ko_dvs_style');
@@ -55,7 +71,7 @@ class Dvs_Service_Style_Style extends Phpfox_Service {
 	}
 
     public function getFontFamilies() {
-        return $this->_aFontFamilies;
+        return $this->_aFontRepresents;
     }
 
     public function getFontFamily($iId) {
