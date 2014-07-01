@@ -182,7 +182,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <meta itemprop="url" content="{$aFirstVideoMeta.url}" id="schema_video_url"/>
 <meta itemprop="thumbnailUrl" content="{$aFirstVideoMeta.thumbnail_url}"  id="schema_video_thumbnail_url"/>
 <meta itemprop="image" content="{$aFirstVideoMeta.thumbnail_url}"  id="schema_video_image"/>
-<meta itemprop="embedUrl" content="http://c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&amp;isUI=1&amp;domain=embed&amp;playerID=1970101121001&amp;publisherID=607012070001&amp;videoID={$aFirstVideoMeta.referenceId}" id="schema_video_embed_url"/>
+{*<meta itemprop="embedUrl" content="http://c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&amp;isUI=1&amp;domain=embed&amp;playerID=1970101121001&amp;publisherID=607012070001&amp;videoID={$aFirstVideoMeta.referenceId}" id="schema_video_embed_url"/>*}
 <meta itemprop="uploadDate" content="{$aFirstVideoMeta.upload_date}"  id="schema_video_upload_date"/>
 <meta itemprop="duration" content="{$aFirstVideoMeta.duration}"  id="schema_video_duration"/>
 <meta itemprop="name" content="{$aDvs.phrase_overrides.override_meta_itemprop_name_meta}"  id="schema_video_name"/>
@@ -223,47 +223,27 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <object id="myExperience" class="BrightcoveExperience">
     <param name="bgcolor" value="#FFFFFF" />
     <param name="wmode" value="transparent" />
-    {if $bIsDvs}
     <param name="width" value="720" />
     <param name="height" value="405" />
-    {else}
-    <param name="width" value="{$iPlayerWidth}" />
-    <param name="height" value="{$iPlayerHeight}" />
-    {/if}
-    {if $bIsExternal}
-    <param name="playerID" value="{$iPlayerId}" />
-    <param name="playerKey" value="{$sPlayerKey}" />
-    {else}
     <param name="playerID" value="1418431455001" />
     <param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
-    {/if}
     <param name="isVid" value="true" />
     <param name="isUI" value="true" />
     <param name="dynamicStreaming" value="true" />
-    {if !$bIsExternal && $aPlayer.preroll_file_id}
+    {if $aPlayer.preroll_file_id}
     <param name="adServerURL" value="{$sPrerollXmlUrl}" />
     {/if}
-    {if !$bPreview && !$bIsExternal}
-    {if $bIsDvs}
     <param name="accountID" value="{$aDvs.dvs_google_id}" />
-    {else if !$bIsExternal}
-    <param name="accountID" value="{$aPlayer.google_id}" />
-    {/if}
-    {/if}
     <param name="showNoContentMessage" value="false" />
-    {if $sBrowser == 'ipad'}
+	{if $sBrowser == 'ipad'}
     <param name="includeAPI" value="true" />
     <param name="templateLoadHandler﻿" value="onTemplateLoad" />
     <param name="templateLoadHandler" value="onTemplateLoaded" />
     <param name="templateReadyHandler" value="onTemplateReady" />
+    {/if}
     <param name="linkBaseURL" value="{$sLinkBase}" id="bc_player_param_linkbase" />
 </object>
-{else}
-{if !$bPreview && !$bIsExternal}
-<param name="linkBaseURL" value="{$sLinkBase}" id="bc_player_param_linkbase" />
-{/if}
-</object>
-{/if}
+
 {literal}
 <script type="text/javascript">
     $Behavior.brightCoveCreateExp = function()
