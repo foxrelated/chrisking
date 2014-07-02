@@ -379,6 +379,7 @@ public function aasort (&$array, $key) {
     }else{
       $inventory_name = '';
     }
+    $inventory_name = str_replace('\n', ' ', $inventory_name);
 
     if(!empty($inventory['name']['href']) && is_string($inventory['name']['href'])){
       $inventory_href = $inventory['image']['href'];
