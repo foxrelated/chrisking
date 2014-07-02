@@ -134,6 +134,14 @@ defined('PHPFOX') or exit('NO DICE!');
         #contact_box h2 {l}
         color: #{$aDvs.iframe_contact_text};
         {r}
+
+        #dealer_links a {l}
+        font-family: {$aDvs.font_family};
+        {r}
+
+        input.dvs_form_button, input.inputContact {l}
+        font-family: {$aDvs.font_family};
+        {r}
     </style>
     {/if}
 </head>
