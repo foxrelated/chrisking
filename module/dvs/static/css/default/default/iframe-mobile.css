@@ -1,0 +1,8 @@
+#select_new h3,
+#select_new ul li.init {
+    font-size: 15px !important;
+}
+
+#dealer_links a {
+    font-size: 18px !important;
+}
