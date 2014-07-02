@@ -138,6 +138,10 @@ defined('PHPFOX') or exit('NO DICE!');
         #dealer_links a {l}
         font-family: {$aDvs.font_family};
         {r}
+
+        input.dvs_form_button, input.inputContact {l}
+        font-family: {$aDvs.font_family};
+        {r}
     </style>
     {/if}
 </head>
