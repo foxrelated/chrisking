@@ -5,10 +5,12 @@ defined('PHPFOX') or exit('NO DICE!');
 class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 	public function process() {
         $bIsIframe = false;
+        $bIsFindWidth = false;
 		$sParentUrl = $this->request()->get('parent', '');
 
 		if($sParentUrl) {
             $bIsIframe = true;
+            $bIsFindWidth = true;
 			$sParentUrl = urldecode(base64_decode($sParentUrl));
 		} else {
 			$sParentUrl = 'http';
@@ -23,6 +25,9 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 			}
 		}
         $sNewParentUrl = $sParentUrl;
+
+        $iMaxWidth = $this->request()->get('maxwidth', 580) - 32;
+        $iMaxHeight = (int)($iMaxWidth / 29 * 16);
 	
 		// Are subdomains enabled? If yes, our dealer title url is in a different place.
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
@@ -302,7 +307,10 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 		// Template specific JS and CSS
 		if ($sBrowser == 'mobile')
 		{
-			$this->template()
+            if ($bIsFindWidth) {
+                $this->template()->setHeader(array('iframe-mobile.css' => 'module_dvs'));
+            }
+            $this->template()
 				->setHeader(array(
 //					'dvs-mobile.css' => 'module_dvs',
 //					'player-mobile.css' => 'module_dvs'
@@ -383,6 +391,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 				'bPreview' => $bPreview,
 				'bIsDvs' => true,
 				'bIsExternal' => false,
+                'bIsFindWidth' => $bIsFindWidth,
 				'aFeaturedVideo' => $aFeaturedVideo,
 				'aOverrideVideo' => $aOverrideVideo,
 				'sLinkBase' => $sLinkBase,
@@ -395,6 +404,9 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 				'bSubdomainMode' => $bSubdomainMode,
 				//'aFooterLinks' => $aFooterLinks,
 				'sBrowser' => $sBrowser,
+                'iMaxPlayerHeight' => $iMaxHeight,
+                'iMaxPlayerWidth' => $iMaxWidth,
+
 				'sCurrentUrlEncoded' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? urlencode(Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url'])) : urlencode(Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url'])))),
 				'sStaticPath' => Phpfox::getParam('core.path') . 'module/dvs/static/',
 				'sJavascript' => '<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>'
