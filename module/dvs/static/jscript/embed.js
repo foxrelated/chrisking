@@ -1,6 +1,7 @@
 if (!window.WTVDVS) {
     window.WTVDVS = {
         render_iframe:function (params) {
+            var iMaxWidth = window.innerWidth;
             var sParentUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + window.location.search;
             var height = params.height, width = params.width;
             delete params.height;
@@ -9,7 +10,7 @@ if (!window.WTVDVS) {
 
             var wrapper = document.getElementById(params.id);
             if (wrapper) {
-                wrapper.innerHTML = sIframe, wrapper.style.width = '100%', wrapper.style.height = '100%', wrapper.style.padding = 0, wrapper.style.display = 'block';
+                wrapper.innerHTML = sIframe, wrapper.style.width = '100%', wrapper.style.height = '100%', wrapper.style.padding = 0, wrapper.style.display = 'block'; wrapper.style.maxWidth = iMaxWidth;
             } else if (window.console && console.error)console.error('TrialPay: Could not find DOM element with ID: ' + id)
         },
 
