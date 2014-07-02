@@ -307,7 +307,10 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 		// Template specific JS and CSS
 		if ($sBrowser == 'mobile')
 		{
-			$this->template()
+            if ($bIsFindWidth) {
+                $this->template()->setHeader(array('iframe-mobile.css' => 'module_dvs'));
+            }
+            $this->template()
 				->setHeader(array(
 //					'dvs-mobile.css' => 'module_dvs',
 //					'player-mobile.css' => 'module_dvs'
