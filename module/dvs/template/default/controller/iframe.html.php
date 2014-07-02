@@ -90,7 +90,7 @@
 
     <section id="video_information">
         <h3 id="video_name">
-            <a href="location.href">
+            <a href="">
                 {$aDvs.phrase_overrides.override_video_name_display}
             </a>
         </h3>
