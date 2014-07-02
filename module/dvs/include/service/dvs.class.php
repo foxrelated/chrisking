@@ -938,7 +938,7 @@ public function aasort (&$array, $key) {
 		{
 			$this->_bIsMobile = true;
 		}
-        $this->_bIsMobile = true;
+
 		if ($sAgent == 'ipad')
 		{
 			return 'ipad';
