@@ -99,6 +99,7 @@ defined('PHPFOX') or exit('NO DICE!');
 				color: #{$aDvs.button_text};
 				border: 1px solid #{$aDvs.button_border};
 				behavior: url('./dvs/module/static/css/default/default/border-radius.htc');
+                font-family: {$aDvs.font_family};
 			{r}
 
 			#dealer_links a:hover {l}
@@ -130,6 +131,10 @@ defined('PHPFOX') or exit('NO DICE!');
 			#overview_playlist li {l}
 				border: 2px #{$aDvs.playlist_border} solid;
 			{r}
+
+            input.dvs_form_button, input.inputContact {l}
+            font-family: {$aDvs.font_family};
+            {r}
 		</style>
 		{/if}
 	</head>
