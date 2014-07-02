@@ -154,9 +154,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<div style="display:none;"></div>
 			<object id="myExperience" class="BrightcoveExperience">
 				<param name="bgcolor" value="#000000" />
-				{if $bIsDvs}
-					<param name="width" value="580" />
-					<param name="height" value="320" />
+                {if $bIsFindWidth}
+                    <param name="width" value="{$iMaxPlayerWidth}" />
+                    <param name="height" value="{$iMaxPlayerHeight}" />
+				{elseif $bIsDvs}
+                    <param name="width" value="580" />
+                    <param name="height" value="320" />
 				{else}
 					<param name="width" value="{$iPlayerWidth}" />
 					<param name="height" value="{$iPlayerHeight}" />
