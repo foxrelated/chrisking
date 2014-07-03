@@ -81,6 +81,10 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			$sOverride = ($bSubdomainMode ? $this->request()->get('req2') : $this->request()->get('req3'));
 		}
 
+        if($bPreview && $this->request()->get('video-title-url', false)) {
+            $sOverride = $this->request()->get('video-title-url');
+        }
+
 		Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
 
 		//Load player data
@@ -403,8 +407,5 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		));
 
 	}
-	
-	
-
 }
 ?>
