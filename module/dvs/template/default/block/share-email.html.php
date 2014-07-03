@@ -93,7 +93,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </style>
 <form id="share_email_dealer" name="share_email_dealer">
 
-    aaaa
 	<fieldset>
 		<ul>
 			<li>
