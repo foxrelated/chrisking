@@ -344,21 +344,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </section>{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}<section id="chapter_buttons">
 	<button type="button" id="chapter_container_Intro" class="disabled display" onclick="changeCuePoint('Intro');"></button>
 	<button type="button" id="chapter_container_WhatsNew" class="disabled display" onclick="changeCuePoint('WhatsNew');"></button>
-<<<<<<< HEAD
-	<button type="button" id="chapter_container_Exterior" class="disabled no_display" onclick="changeCuePoint('Exterior');"></button>
-	<button type="button" id="chapter_container_Interior" class="disabled no_display" onclick="changeCuePoint('Interior');"></button>
-	<button type="button" id="chapter_container_Power" class="disabled display" onclick="changeCuePoint('Power');"></button>
-	<button type="button" id="chapter_container_Fuel" class="disabled display" onclick="changeCuePoint('Fuel');"></button>
-	<button type="button" id="chapter_container_Features" class="disabled display" onclick="changeCuePoint('Features');"></button>
-	<button type="button" id="chapter_container_Safety" class="disabled no_display" onclick="changeCuePoint('Safety');"></button>
-=======
 	<button type="button" id="chapter_container_Exterior" class="disabled display" onclick="changeCuePoint('Exterior');"></button>
 	<button type="button" id="chapter_container_Interior" class="disabled display" onclick="changeCuePoint('Interior');"></button>
 	<button type="button" id="chapter_container_Features" class="disabled no_display" onclick="changeCuePoint('Features');"></button>
 	<button type="button" id="chapter_container_Power" class="disabled display" onclick="changeCuePoint('Power');"></button>
 	<button type="button" id="chapter_container_Fuel" class="disabled display" onclick="changeCuePoint('Fuel');"></button>
 	<button type="button" id="chapter_container_Safety" class="disabled display" onclick="changeCuePoint('Safety');"></button>
->>>>>>> master
 	<button type="button" id="chapter_container_Warranty" class="disabled display" onclick="changeCuePoint('Warranty');"></button>
 	<button type="button" id="chapter_container_Summary" class="disabled display" onclick="changeCuePoint('Summary');"></button>
 	<button type="button" id="chapter_container_Performance" class="disabled no_display" onclick="changeCuePoint('Performance');"></button>
