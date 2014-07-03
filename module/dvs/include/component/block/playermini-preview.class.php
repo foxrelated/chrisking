@@ -216,9 +216,16 @@ class Dvs_Component_Block_Playermini_Preview extends Phpfox_Component {
       }
     }
 
+    $sVideoTitleUrl = $this->getParam('video_title_url', '');
+
     $aValsClean['selected-makes'] = rtrim($sMakes, ',');
 
     $sUrl = 'dvs.view.preview.' . $aVals['dvs_id'];
+
+    if($sVideoTitleUrl) {
+        $aValsClean['video-title-url'] = $sVideoTitleUrl;
+    }
+
     $sIframeUrl = Phpfox::getLib('url')->makeUrl($sUrl, $aValsClean);
 
     if( isset($aVals['shorturl']) and !empty($aVals['shorturl']) ) {
