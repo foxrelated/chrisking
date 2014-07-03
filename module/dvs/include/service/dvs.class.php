@@ -30,7 +30,7 @@ class Dvs_Service_Dvs extends Phpfox_Service {
 
 		$where_arr    = array();
 		$primaryTitle = $videoCar['year'].' '.$videoCar['make'].' '.$videoCar['model'];
-		$where_arr[]  = "(title LIKE '".Phpfox::getLib('database')->escape($primaryTitle)."%')";
+		$where_arr[]  = "(title LIKE '%".Phpfox::getLib('database')->escape($primaryTitle)."%')";
 
 		if(strstr($videoCar['model'], ' and ')){
 			// chrysler town and country model
@@ -147,31 +147,52 @@ public function aasort (&$array, $key) {
     $aPlayer            = Phpfox::getService('dvs.player')->get($dvs_id);
     $detailedImportType = false;
 
-    $time_start    = microtime(true);
-    $refusedMakes  = array();
-    $mcnt          = 0;
-    $firstItemLink = '';
+    $time_start      = microtime(true);
+    $refusedMakes    = array();
+    $mcnt            = 0;
+    $firstItemLink   = '';
+    $lastItemLink    = '';
+    $trackingDevMode = (($_COOKIE['dev'] == 1)?true:false);
+    $trackingDevMode = false;
 
     if(!$detailedImportType){
-      $start = 0;
+      if($connector['pagination_type'] == 0){ // is offset
+        $paginator = 0;
+      }else{ // is page
+        $paginator = 1;
+      }
+
       do {
         $result = $this->importInventoryQuery($apiKey, $connector['guid'], array(
-          "start"   => $start,
+          "paginator"       => $paginator,
+          "pagination_name" => ($connector['pagination_name']?$connector['pagination_name']:'start'),
         ));
         $carsArr = array_shift($result['results']);
-        if(empty($carsArr[1]['name']['href']) || $firstItemLink == $carsArr[1]['name']['href']){
+        if(empty($carsArr[1]['image']['href']) || $firstItemLink == $carsArr[1]['image']['href']){
           break;
         }
-        if($start >= 640){ // @todo delete this
+        if(!empty($lastItemLink) && $lastItemLink == $carsArr[1]['image']['href']){
           break;
         }
-        if(empty($firstItemLink) && !empty($carsArr[1]['name']['href'])){
-          $firstItemLink = $carsArr[1]['name']['href'];
+        if($connector['pagination_type'] == 0){ // is offset
+          if($paginator >= 640) break;
+        }else{ // is page
+          if($paginator >= 30) break;
+        }
+        if(empty($firstItemLink) && !empty($carsArr[1]['image']['href'])){
+          $firstItemLink = $carsArr[1]['image']['href'];
+        }
+        if(!empty($carsArr[1]['image']['href'])){
+          $lastItemLink = $carsArr[1]['image']['href'];
         }
         if(!empty($result)){
           $mcnt += $result['count'];
           $addedCount = $this->addDvsInventories($carsArr, $dvs_id);
-          $start += $addedCount;
+          if($connector['pagination_type'] == 0){ // is offset
+            $paginator += $addedCount;
+          }else{ // is page
+            $paginator++;
+          }
         }
       }while (!empty($carsArr));
 
@@ -247,7 +268,6 @@ public function aasort (&$array, $key) {
     }
 		$time_end = microtime(true);
 		$execution_time = ($time_end - $time_start);
-		$trackingDevMode = false;
 		if($trackingDevMode){
 			echo "\n";
 			echo 'Total Execution Time: '.$execution_time.' sec'."\n";
@@ -282,11 +302,17 @@ public function aasort (&$array, $key) {
     if(!empty($params['model'])){
       $request .= "&model=".$params['model'];
     }
-    if(!empty($params['start'])){
-      $request .= "&start=".$params['start'];
+    if(!empty($params['paginator']) && !empty($params['pagination_name'])){
+      $request .= "&".$params['pagination_name']."=".$params['paginator'];
     }
 
     $response = file_get_contents($request);
+
+    if(json_decode($response, TRUE) == NULL){
+      sleep(2);
+      $response = file_get_contents($request);
+    }
+
     return json_decode($response, TRUE);
 
 	}
@@ -381,7 +407,7 @@ public function aasort (&$array, $key) {
     }
     $inventory_name = str_replace('\n', ' ', $inventory_name);
 
-    if(!empty($inventory['name']['href']) && is_string($inventory['name']['href'])){
+    if(!empty($inventory['image']['href']) && is_string($inventory['image']['href'])){
       $inventory_href = $inventory['image']['href'];
     }elseif(!empty($inventory['name']['href']) && is_string($inventory['name']['href'])){
       $inventory_href = $inventory['name']['href'];
@@ -457,7 +483,7 @@ public function aasort (&$array, $key) {
       $inventory_name = '';
     }
 
-    if(!empty($inventory['name']['href']) && is_string($inventory['name']['href'])){
+    if(!empty($inventory['image']['href']) && is_string($inventory['image']['href'])){
       $inventory_href = $inventory['image']['href'];
     }elseif(!empty($inventory['name']['href']) && is_string($inventory['name']['href'])){
       $inventory_href = $inventory['name']['href'];

@@ -147,7 +147,7 @@ defined('PHPFOX') or exit('NO DICE!');
       $('#edit_connector-name_popup').val(con_title);
       $('#edit_connector-guid_popup').val(con_guid);
       $('#edit_connector-pagination_name').val(con_pagination_name);
-      $('#edit_connector-pagination_type').val(con_pagination_type);
+      $("#edit_connector-pagination_type option:contains('" + con_pagination_type + "')").attr('selected', 'selected')
       $('#edit_connector-notes_popup').val(con_description);
       $('#dvs_inventory_connector_id').val(connector_id);
 
