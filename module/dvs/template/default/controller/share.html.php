@@ -35,7 +35,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 							<td>
 								<div class="dvs_share_image_holder">
 									<a href="#" onclick="
-										tb_show('Preview', $.ajaxBox('dvs.showMiniPreview', 'height=640&amp;width=900&amp;val[dvs_id]={$aDvs.dvs_id}')); return false;">
+										tb_show('Preview', $.ajaxBox('dvs.showMiniPreview', 'height=640&amp;width=900&amp;val[dvs_id]={$aDvs.dvs_id}&video_title_url={$aVideo.video_title_url}')); return false;">
 										<img src="{$baseUrl}module/dvs/static/image/play_btn_75.png" class="dvs_share_button_overlay" />
 										{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image width="100%"}
 									</a>

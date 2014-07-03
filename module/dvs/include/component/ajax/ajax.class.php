@@ -491,7 +491,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 	{
 		$aVals = $this->get('val');
 
-		Phpfox::getBlock('dvs.playermini-preview', array('aVals' => $aVals));
+		Phpfox::getBlock('dvs.playermini-preview', array('aVals' => $aVals, 'video_title_url' => $this->get('video_title_url')));
 	}
 
 	public function updateTitleUrl()
@@ -1344,7 +1344,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 	public function emailForm()
 	{
-		Phpfox::getBlock('dvs.share-email', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bLongUrl' => $this->get('longurl', false) ));
+		Phpfox::getBlock('dvs.share-email', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bLongUrl' => $this->get('longurl', false)), false);
 	}
 
 	public function showGetPriceFormMobile()
@@ -1398,7 +1398,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
     }
 
     public function emailFormIframe() {
-        Phpfox::getBlock('dvs.share-email-iframe', array('sParentUrl' => $this->get('sParentUrl'), 'iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bLongUrl' => $this->get('longurl', false) ));
+        Phpfox::getBlock('dvs.share-email-iframe', array('sParentUrl' => $this->get('sParentUrl'), 'iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bLongUrl' => $this->get('longurl', false) ), false);
     }
 
     public function sendShareEmailIframe()
