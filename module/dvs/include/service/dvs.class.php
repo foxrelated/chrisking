@@ -34,7 +34,7 @@ class Dvs_Service_Dvs extends Phpfox_Service {
 
 		if(strstr($videoCar['model'], ' and ')){
 			// chrysler town and country model
-			$where_arr[]  = "(title LIKE '".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace(' and ', ' & ', $videoCar['model']))."%')";
+			$where_arr[]  = "(title LIKE '%".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace(' and ', ' & ', $videoCar['model']))."%')";
 		}
 
 		if(strstr($videoCar['model'], '1 Series')){
@@ -69,14 +69,14 @@ class Dvs_Service_Dvs extends Phpfox_Service {
 
 		if(strstr($videoCar['model'], 'Hybrid-Energi')){
 			// Ford Fusion Hybrid-Energi
-			$where_arr[]  = "(title LIKE '".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace('Hybrid-Energi', 'Hybrid', $videoCar['model']))."%')";
-			$where_arr[]  = "(title LIKE '".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace('Hybrid-Energi', 'Energi', $videoCar['model']))."%')";
+			$where_arr[]  = "(title LIKE '%".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace('Hybrid-Energi', 'Hybrid', $videoCar['model']))."%')";
+			$where_arr[]  = "(title LIKE '%".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace('Hybrid-Energi', 'Energi', $videoCar['model']))."%')";
 		}
 
 		if(strstr($videoCar['model'], '2500-3500')){
 			// Chevrolet Silverado 2500-3500
-			$where_arr[]  = "(title LIKE '".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace('2500-3500', '2500', $videoCar['model']))."%')";
-			$where_arr[]  = "(title LIKE '".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace('2500-3500', '3500', $videoCar['model']))."%')";
+			$where_arr[]  = "(title LIKE '%".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace('2500-3500', '2500', $videoCar['model']))."%')";
+			$where_arr[]  = "(title LIKE '%".Phpfox::getLib('database')->escape($videoCar['year'].' '.$videoCar['make'].' '.str_replace('2500-3500', '3500', $videoCar['model']))."%')";
 		}
 
 		$inventories = Phpfox::getLib('database')->select('*')
@@ -87,6 +87,7 @@ class Dvs_Service_Dvs extends Phpfox_Service {
 
 		return $inventories;
 	}
+  
 	/*phpmasterminds Edited for sort in gallery and footer starts*/
 public function aasort (&$array, $key) {
     $sorter=array();
