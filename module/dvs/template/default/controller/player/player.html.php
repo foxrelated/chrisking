@@ -224,46 +224,45 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<param name="bgcolor" value="#FFFFFF" />
 		<param name="wmode" value="transparent" />
 		{if $bIsDvs}
-		<param name="width" value="720" />
-		<param name="height" value="405" />
+			<param name="width" value="720" />
+			<param name="height" value="405" />
 		{else}
-		<param name="width" value="{$iPlayerWidth}" />
-		<param name="height" value="{$iPlayerHeight}" />
+			<param name="width" value="{$iPlayerWidth}" />
+			<param name="height" value="{$iPlayerHeight}" />
 		{/if}
 		{if $bIsExternal}
-		<param name="playerID" value="{$iPlayerId}" />
-		<param name="playerKey" value="{$sPlayerKey}" />
+			<param name="playerID" value="{$iPlayerId}" />
+			<param name="playerKey" value="{$sPlayerKey}" />
 		{else}
-		<param name="playerID" value="1418431455001" />
-		<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
+			<param name="playerID" value="1418431455001" />
+			<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
 		{/if}
 		<param name="isVid" value="true" />
 		<param name="isUI" value="true" />
 		<param name="dynamicStreaming" value="true" />
 		{if !$bIsExternal && $aPlayer.preroll_file_id}
-		<param name="adServerURL" value="{$sPrerollXmlUrl}" />
+			<param name="adServerURL" value="{$sPrerollXmlUrl}" />
 		{/if}
 		{if !$bPreview && !$bIsExternal}
-		{if $bIsDvs}
-		<param name="accountID" value="{$aDvs.dvs_google_id}" />
-		{else if !$bIsExternal}
-		<param name="accountID" value="{$aPlayer.google_id}" />
+			{if $bIsDvs}
+				<param name="accountID" value="{$aDvs.dvs_google_id}" />
+			{else if !$bIsExternal}
+				<param name="accountID" value="{$aPlayer.google_id}" />
+			{/if}
 		{/if}
+		<param name="showNoContentMessage" value="false" />	
+		{if $sBrowser == 'ipad'}
+			<param name="includeAPI" value="true" />
+			<param name="templateLoadHandler﻿" value="onTemplateLoad" />
+			<param name="templateLoadHandler" value="onTemplateLoaded" />
+			<param name="templateReadyHandler" value="onTemplateReady" />
+		{else}
+			{if !$bPreview && !$bIsExternal}
+				<param name="linkBaseURL" value="{$sLinkBase}" id="bc_player_param_linkbase" />
+			{/if}
 		{/if}
-		<param name="showNoContentMessage" value="false" />
-	{if $sBrowser == 'ipad'}
-		<param name="includeAPI" value="true" />
-		<param name="templateLoadHandler﻿" value="onTemplateLoad" />
-		<param name="templateLoadHandler" value="onTemplateLoaded" />
-		<param name="templateReadyHandler" value="onTemplateReady" />
-		<param name="linkBaseURL" value="{$sLinkBase}" id="bc_player_param_linkbase" />
 	</object>
-	{else}
-		{if !$bPreview && !$bIsExternal}
-		<param name="linkBaseURL" value="{$sLinkBase}" id="bc_player_param_linkbase" />
-		{/if}
-	</object>
-	{/if}
+	
 	{literal}
 	<script type="text/javascript">
 		$Behavior.brightCoveCreateExp = function()
