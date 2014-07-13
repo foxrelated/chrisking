@@ -1,7 +1,6 @@
 <meta itemprop="creator" content="{$aDvs.dealer_user_full_name}" />
 <meta itemprop="productionCompany" content="WheelsTV" />
 <meta itemprop="contributor" content="{$aDvs.dealer_name}" />
-<meta itemprop="url" content="{$sRedirectUrl}" id="schema_video_url"/>
 <meta itemprop="thumbnailUrl" content="{$aFirstVideoMeta.thumbnail_url}"  id="schema_video_thumbnail_url"/>
 <meta itemprop="image" content="{$aFirstVideoMeta.thumbnail_url}"  id="schema_video_image"/>
 <meta itemprop="uploadDate" content="{$aFirstVideoMeta.upload_date}"  id="schema_video_upload_date"/>
