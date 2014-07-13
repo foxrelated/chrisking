@@ -122,11 +122,13 @@
 					<a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}&url={$sParentUrl}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
 					</span>
                 </td>
-                {*<td>
-                    <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent($('#parent_url').val().replace('WTVDVS_VIDEO_TEMP', $('#video_url').val()))); googleShareClick('Share Links'); return false;">
+                {if Phpfox::isModule('redirect')}
+                <td>
+                    <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURI('{url link='redirect.'$sDvsRequest}parent_{$sParentUrlEncode}/video_' + $('#video_url').val())); googleShareClick('Share Links'); return false;">
                         <img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
                     </a>
-                </td>*}
+                </td>
+                {/if}
             </tr>
         </table>
     </section>
