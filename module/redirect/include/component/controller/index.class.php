@@ -98,7 +98,6 @@ class Redirect_Component_Controller_Index extends Phpfox_Component {
                 'sRedirectUrl' => $sRedirectUrl
             ));
 
-            $this->url()->send($sRedirectUrl);
         } else {
             $this->url()->send('');
         }
