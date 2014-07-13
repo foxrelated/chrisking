@@ -4,7 +4,7 @@ class Redirect_Component_Controller_Index extends Phpfox_Component {
     public function process() {
         $bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 
-        $sDvsRequest = $this->request()->get(($bSubdomainMode ? 'req1' : 'req2'));
+        $sDvsRequest = $this->request()->get('req2');
 
         if ($aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true)) {
             $sParentUrl = base64_decode($this->request()->get('parent'));
