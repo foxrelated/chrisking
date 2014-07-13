@@ -10,9 +10,19 @@
 <meta itemprop="description" content="{$aFirstVideoMeta.description}"  id="schema_video_description"/>
 
 
+<p>Redirect...</p>
+
 <article>
     <section id="video_information">
         <h3 id="video_name">{$aFirstVideo.name}</h3>
         <p class="model_description" id="car_description">{$aFirstVideo.longDescription}</p>
     </section>
 </article>
+
+<script type="text/javascript">
+    window.onload=function() {l}
+    setTimeout(function () {l}
+    window.location.href= '{$sRedirectUrl}';
+    {r}, 10);
+    {r}
+</script>
