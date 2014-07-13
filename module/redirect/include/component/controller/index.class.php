@@ -94,7 +94,8 @@ class Redirect_Component_Controller_Index extends Phpfox_Component {
             $this->template()->assign(array(
                 'aDvs' => $aDvs,
                 'aFirstVideo' => $aFirstVideo,
-                'aFirstVideoMeta' => $aFirstVideoMeta
+                'aFirstVideoMeta' => $aFirstVideoMeta,
+                'sRedirectUrl' => $sRedirectUrl
             ));
 
             $this->url()->send($sRedirectUrl);
