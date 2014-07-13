@@ -16,6 +16,7 @@ defined('PHPFOX') or exit('NO DICE!');
     <meta property="og:title" content="{$aFirstVideoMeta.name}" />
     <meta property="og:site_name" content="WheelsTV" />
     <meta property="og:description" content="{$aFirstVideoMeta.description}" />
+    <meta itemprop="og:url" content="{$sRedirectUrl}"/>
     <meta property="og:image" content="{$aFirstVideoMeta.thumbnail_url}" />
     <meta property="article:author" content="{$aDvs.dealer_user_full_name}" />
     <title>{title}</title>
