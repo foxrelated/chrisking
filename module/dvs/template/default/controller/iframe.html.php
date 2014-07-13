@@ -110,11 +110,13 @@
                         <img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
                     </a>
                 </td>
-               {*<td>
-                    <a href="#" onclick="window.open('https://www.facebook.com/dialog/feed?app_id=243763679155069&display=popup&caption=' + encodeURIComponent($('#share_title').val()) + '&link=' + encodeURIComponent($('#parent_url').val().replace('WTVDVS_VIDEO_TEMP', $('#video_url').val())) + '&redirect_uri=' + encodeURIComponent($('#parent_url').val().replace('WTVDVS_VIDEO_TEMP', $('#video_url').val())) + '&picture=' + encodeURIComponent('http://www.wtvdvs-dev.com/file/brightcove/2014-bmw-x6-overview_thumb.jpg'), '', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
+                {if Phpfox::isModule('redirect')}
+               <td>
+                    <a href="#" onclick="window.open('https://www.facebook.com/share.php?u=' + encodeURI('{url link='redirect.'$sDvsRequest}parent_{$sParentUrlEncode}/video_' + $('#video_url').val()), 'Facebook Share', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
                         <img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
                     </a>
-                </td>*}
+                </td>
+                {/if}
                 <td>
 					<span id="twitter_button_wrapper">
 					<a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}&url={$sParentUrl}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>

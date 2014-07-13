@@ -1,0 +1,14 @@
+<module>
+	<data>
+		<module_id>redirect</module_id>
+		<product_id>phpfoxplus_redirect</product_id>
+		<is_core>0</is_core>
+		<is_active>1</is_active>
+		<is_menu>0</is_menu>
+		<menu></menu>
+		<phrase_var_name>module_redirect</phrase_var_name>
+	</data>
+	<phrases>
+		<phrase module_id="redirect" version_id="3.7.5" var_name="module_redirect" added="1405225342">Redirect Module - PhpfoxPlus.com</phrase>
+	</phrases>
+</module>
