@@ -14,13 +14,10 @@ defined('PHPFOX') or exit('NO DICE!');
 <html dir="{$sLocaleDirection}" lang="{$sLocaleCode}">
 <head>
     <title>{title}</title>
-    {header}
 </head>
 <body itemscope itemtype="http://schema.org/AutoDealer">
 <div id="js_body_width_frame">
-    {body}
     {content}
-    {footer}
 </div>
 </body>
 </html>
