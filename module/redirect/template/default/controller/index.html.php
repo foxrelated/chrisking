@@ -9,6 +9,7 @@
 <meta itemprop="name" content="{$aFirstVideoMeta.name}"  id="schema_video_name"/>
 <meta itemprop="description" content="{$aFirstVideoMeta.description}"  id="schema_video_description"/>
 
+
 <article>
     <section id="video_information">
         <h3 id="video_name">{$aFirstVideo.name}</h3>
