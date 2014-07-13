@@ -88,7 +88,6 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 $sNewParentUrl = $sParentUrl . 'WTVDVS_VIDEO_TEMP';
             }
         }
-vdd($sNewParentUrl);
 
         Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
 
