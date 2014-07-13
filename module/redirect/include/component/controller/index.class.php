@@ -91,11 +91,13 @@ class Redirect_Component_Controller_Index extends Phpfox_Component {
                 'referenceId' => $aFirstVideo['referenceId']
             );
 
-            $this->template()->assign(array(
-                'aDvs' => $aDvs,
-                'aFirstVideo' => $aFirstVideo,
-                'aFirstVideoMeta' => $aFirstVideoMeta,
-                'sRedirectUrl' => $sRedirectUrl
+            $this->template()
+                ->setTemplate('redirect-template')
+                ->assign(array(
+                    'aDvs' => $aDvs,
+                    'aFirstVideo' => $aFirstVideo,
+                    'aFirstVideoMeta' => $aFirstVideoMeta,
+                    'sRedirectUrl' => $sRedirectUrl
             ));
 
         } else {
