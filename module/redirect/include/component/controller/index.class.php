@@ -7,7 +7,7 @@ class Redirect_Component_Controller_Index extends Phpfox_Component {
         $sDvsRequest = $this->request()->get('req2');
 
         if ($aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true)) {
-            $sParentUrl = base64_decode($this->request()->get('parent'));
+            $sParentUrl = urldecode(base64_decode($this->request()->get('parent')));
             $sOverride = $this->request()->get('video');
 
             $sRedirectUrl = str_replace('WTVDVS_VIDEO_TEMP', $sOverride, $sParentUrl);
