@@ -341,7 +341,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
         }
 
         $inventoryList = Phpfox::getService('dvs')->getModelInventory($aFirstVideo['ko_id']);
-        $sParentUrlEncode = urlencode(base64_encode($sNewParentUrl));
+        $sParentUrlEncode = base64_encode(urlencode($sNewParentUrl));
 
         $sParentUrl = str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $sNewParentUrl);
 
