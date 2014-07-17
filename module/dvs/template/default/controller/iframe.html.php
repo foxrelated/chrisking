@@ -57,7 +57,6 @@
 	<section id="player">
 		{template file='dvs.controller.player.iframe-player}
 	</section>
-
     <aside>
         <div id="contact_box">
             <h2>Contact {$aDvs.dealer_name}</h2>
@@ -86,8 +85,7 @@
 	  </tr>
 	  </table>
 	</section>
-
-
+	
     <section id="video_information">
         <h3 id="video_name">
             <a id="current_video_link" href="{$sNewParentUrl}" onclick="return false;">
@@ -132,7 +130,6 @@
             </tr>
         </table>
     </section>
-
 </article>
 <footer></footer>
 {/if}
