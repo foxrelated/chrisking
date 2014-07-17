@@ -36,17 +36,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{/foreach}
 	</table>
 </div>
+
 {*
-<h3>Add Existing User{*phrase var='dvs.add_new_team_member'*}</h3>
+<h3>Add Existing User {phrase var='dvs.add_new_team_member'}</h3>
 <form method="post" action="{url link='current'}" id="add_sales_team_member" name="add_sales_team_member">
 	<table class="dvs_add_table">
 		<tr>
-			{*<td class="dvs_add_td" style="width:auto;">
+			<td class="dvs_add_td" style="width:auto;">
 				{phrase var='dvs.member_name'}:
-			</td>*}
+			</td>
 			<td class="dvs_add_td" style="width:auto;">
 				<select name="val[user_id]" id="user_id">
-					<option value="">Select a user{*phrase var='dvs.select_a_member'*}</option>
+					<option value="">Select a user {phrase var='dvs.select_a_member'}</option>
 					{foreach from=$aUsers item=aUser}
 						<option value="{$aUser.user_id}">{$aUser.full_name} ({$aUser.email})</option>
 					{/foreach}
@@ -61,8 +62,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</div>
 </form>
 *}
+
 <br>
-<h3>Add Sales Associate by Email{*phrase var='dvs.invite_new_sales_team_member'*}</h3>
+<h3>Add Sales Associate by Email {phrase var='dvs.invite_new_sales_team_member'}</h3>
 <form method="post" action="{url link='current'}" id="invite_sales_team_member" name="invite_sales_team_member">
 	<table class="dvs_add_table">
 		<tr>
