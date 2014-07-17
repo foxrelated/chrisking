@@ -30,7 +30,7 @@ class Idrive_Component_Controller_External extends Phpfox_Component {
 		$bShowGetPrice = ($this->request()->get('showgetprice') == 'true' ? true : false);
 		$sEmail = $this->request()->get('email');
 		$sReferenceId = $this->request()->get('refid');
-
+		
 		$iPlayerWidth = $iWidth - 160;
 
 		if ($bShowPlaylist)
@@ -61,8 +61,10 @@ class Idrive_Component_Controller_External extends Phpfox_Component {
 		{
 			//Here we shift array keys to start at 1 so thumbnails play the proper videos when we load a featured video or override video on to the front of the array
 			$aVideos = Phpfox::getService('idrive.player')->getExternalVideos($sReferenceId, $bAllowNew2U, $bAllow1onOne, $bAllowTop200, $bAllowPOV);
+			
 			array_unshift($aVideos, '');
 			unset($aVideos[0]);
+			
 		}
 		else
 		{

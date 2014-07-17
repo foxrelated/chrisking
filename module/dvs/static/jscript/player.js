@@ -768,6 +768,34 @@ function cuePointsHandler(cuepoints) {
 
 }
 
+function exteralthumbnailClick(iKey) {
+	if (bDebug) {
+		console.log('Player: Playlist Thumbnail Click: #' + iKey);
+	}
+
+	if (bIsDvs) {
+
+		resetOverlays();
+	}
+
+	bVideoChanged = true;
+
+	iCurrentVideo = iKey;
+
+	//bIgnoreAutoPlaySetting = true;
+
+
+	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+		modVid.loadVideoByID(aMediaIds[iKey]);
+	}
+	else
+	{
+		modCon.getMediaAsynch(aMediaIds[iKey]);
+	}
+	return false;
+}
+
+
 function thumbnailClick(iKey) {
 	if (bDebug) {
 		console.log('Player: Playlist Thumbnail Click: #' + iKey);
