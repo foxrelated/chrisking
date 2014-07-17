@@ -12,11 +12,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             $bIsIframe = true;
             $bIsFindWidth = true;
             $sParentUrl = urldecode(base64_decode($sParentUrl));
-<<<<<<< HEAD
         } elseif(!empty($_SERVER["HTTP_REFERER"])) {
-=======
-        } elseif($_SERVER["HTTP_REFERER"]) {
->>>>>>> hotfixes
             $bIsIframe = true;
             $bIsFindWidth = true;
             $sParentUrl = $_SERVER["HTTP_REFERER"];
@@ -93,10 +89,6 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             }
         }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> hotfixes
         Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
 
         //Load player data
@@ -349,10 +341,8 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
         }
 
         $inventoryList = Phpfox::getService('dvs')->getModelInventory($aFirstVideo['ko_id']);
-<<<<<<< HEAD
+
         $sParentUrlEncode = base64_encode(urlencode($sNewParentUrl));
-=======
->>>>>>> hotfixes
 
         $sParentUrl = str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $sNewParentUrl);
 
@@ -379,10 +369,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 'jquery.placeholder.js' => 'module_dvs'
             ))
             ->assign(array(
-<<<<<<< HEAD
                 'sDvsRequest' => $sDvsRequest,
-=======
->>>>>>> hotfixes
                 'sNewParentUrl' => $sNewParentUrl,
                 'sParentUrl' => $sParentUrl,
                 'sParentUrlEncode' => $sParentUrlEncode,
