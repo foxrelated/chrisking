@@ -64,7 +64,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 *}
 
 <br>
-<h3>Add Sales Associate by Email {phrase var='dvs.invite_new_sales_team_member'}</h3>
+<h3>Add Sales Associate by Email {*phrase var='dvs.invite_new_sales_team_member'*}</h3>
 <form method="post" action="{url link='current'}" id="invite_sales_team_member" name="invite_sales_team_member">
 	<table class="dvs_add_table">
 		<tr>
