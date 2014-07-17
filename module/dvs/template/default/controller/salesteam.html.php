@@ -18,7 +18,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<table class="dvs_sales_team_table">
 		<tr>
 			<th>
-				Current Team{*phrase var='dvs.sales_team_member'*}
+				Sales Associates{*phrase var='dvs.sales_team_member'*}
 			</th>
 			<th>
 				Action{*phrase var='dvs.remove'*}
@@ -36,7 +36,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{/foreach}
 	</table>
 </div>
-
+{*
 <h3>Add Existing User{*phrase var='dvs.add_new_team_member'*}</h3>
 <form method="post" action="{url link='current'}" id="add_sales_team_member" name="add_sales_team_member">
 	<table class="dvs_add_table">
@@ -60,8 +60,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<input type="submit" value="Add User" class="button" />
 	</div>
 </form>
+*}
 <br>
-<h3>Invite New User via Email{*phrase var='dvs.invite_new_sales_team_member'*}</h3>
+<h3>Add Sales Associate by Email{*phrase var='dvs.invite_new_sales_team_member'*}</h3>
 <form method="post" action="{url link='current'}" id="invite_sales_team_member" name="invite_sales_team_member">
 	<table class="dvs_add_table">
 		<tr>
