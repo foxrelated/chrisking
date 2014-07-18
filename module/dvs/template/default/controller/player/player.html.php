@@ -177,7 +177,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{if $bIsDvs}
 	{if !$bPreview}
 	<meta itemprop="creator" content="{$aDvs.phrase_overrides.override_meta_itemprop_creator_meta}" />
-	<meta itemprop="productionCompany" content="WheelsTV" />
+	<meta itemprop="productionCompany" content="{$aDvs.dealer_name}" />
 	<meta itemprop="contributor" content="{$aDvs.dealer_name}" />
 	<meta itemprop="url" content="{$aFirstVideoMeta.url}" id="schema_video_url"/>
 	<meta itemprop="thumbnailUrl" content="{$aFirstVideoMeta.thumbnail_url}"  id="schema_video_thumbnail_url"/>
@@ -237,6 +237,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<param name="playerID" value="1418431455001" />
 			<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
 		{/if}
+		{if $bIsExternal}
+			<!-- external player -->
+			<param name="playerID" value="{$iPlayerId}" />
+			<param name="playerKey" value="{$sPlayerKey}" />
+		{else}
+			<!-- default player -->
+			<param name="playerID" value="1418431455001" />
+			<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
+		{/if}	
 		<param name="isVid" value="true" />
 		<param name="isUI" value="true" />
 		<param name="dynamicStreaming" value="true" />

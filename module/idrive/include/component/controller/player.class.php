@@ -18,7 +18,9 @@ class Idrive_Component_Controller_Player extends Phpfox_Component {
 	{
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 		
-		$iPlayerId = $this->request()->getInt('id');
+		$sPlayerKey = $this->request()->get('key');
+		$iPlayerId = $this->request()->get('id');
+		
 		if (!empty($iPlayerId))
 		{
 			$aPlayer = Phpfox::getService('idrive.player')->get($iPlayerId);
