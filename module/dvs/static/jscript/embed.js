@@ -14,7 +14,7 @@ if (!window.WTVDVS) {
 
             if (wrapper) {
                 wrapper.innerHTML = sIframe, wrapper.style.width = '100%', wrapper.style.height = '100%', wrapper.style.padding = 0, wrapper.style.display = 'block'; wrapper.style.maxWidth = iMaxWidth;
-            } else if (window.console && console.error)console.error('TrialPay: Could not find DOM element with ID: ' + id)
+            } else if (window.console && console.error)console.error('DVS: Could not find DOM element with ID: ' + id)
         },
 
         encode_base64: function(data) {
