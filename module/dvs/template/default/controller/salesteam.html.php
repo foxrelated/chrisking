@@ -18,10 +18,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<table class="dvs_sales_team_table">
 		<tr>
 			<th>
-				Current Team{*phrase var='dvs.sales_team_member'*}
+				Sales Associates {*phrase var='dvs.sales_team_member'*}
 			</th>
 			<th>
-				Action{*phrase var='dvs.remove'*}
+				Action {*phrase var='dvs.remove'*}
 			</th>
 		</tr>
 		{foreach from=$aSalesteam key=iKey item=aTeamMember}
@@ -36,8 +36,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{/foreach}
 	</table>
 </div>
-
-<h3>Add Existing User{*phrase var='dvs.add_new_team_member'*}</h3>
+{if Phpfox::isAdmin()}
+<h3>Add Existing User {*phrase var='dvs.add_new_team_member'*}</h3>
 <form method="post" action="{url link='current'}" id="add_sales_team_member" name="add_sales_team_member">
 	<table class="dvs_add_table">
 		<tr>
@@ -46,7 +46,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>*}
 			<td class="dvs_add_td" style="width:auto;">
 				<select name="val[user_id]" id="user_id">
-					<option value="">Select a user{*phrase var='dvs.select_a_member'*}</option>
+					<option value="">Select a user {*phrase var='dvs.select_a_member'*}</option>
 					{foreach from=$aUsers item=aUser}
 						<option value="{$aUser.user_id}">{$aUser.full_name} ({$aUser.email})</option>
 					{/foreach}
@@ -55,13 +55,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 		</tr>
 	</table>
-<i>Note: These are users you've already added to other DVS Sales Teams you manage.</i>
+<i>Note: This is an admin-only tool to add existing DVS users.</i>
 	<div id="dvs_settings_save_button_container">
 		<input type="submit" value="Add User" class="button" />
 	</div>
 </form>
+{/if}
 <br>
-<h3>Invite New User via Email{*phrase var='dvs.invite_new_sales_team_member'*}</h3>
+<h3>Add Sales Associate by Email {*phrase var='dvs.invite_new_sales_team_member'*}</h3>
 <form method="post" action="{url link='current'}" id="invite_sales_team_member" name="invite_sales_team_member">
 	<table class="dvs_add_table">
 		<tr>
