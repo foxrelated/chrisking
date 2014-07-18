@@ -12,6 +12,10 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             $bIsIframe = true;
             $bIsFindWidth = true;
 			$sParentUrl = urldecode(base64_decode($sParentUrl));
+		} elseif($_SERVER["HTTP_REFERER"]) {
+			$bIsIframe = true;
+            $bIsFindWidth = true;
+			$sParentUrl = $_SERVER["HTTP_REFERER"];
 		} else {
 			$sParentUrl = 'http';
 			if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on")) {
