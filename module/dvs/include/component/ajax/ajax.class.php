@@ -580,7 +580,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$sOverrideLink = rtrim($sOverrideLink, '/');
 
 		//Change video information and reset description visibility
-		$this->html('#video_name', '<a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a>');
+		$this->html('#video_name', '<a href="' . $sOverrideLink . '" target="_parent">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a>');
 		$this->html('#car_description', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
 		
 //		$this->call('$("#twitter_share").prop("href", "https://twitter.com/intent/tweet?text=Check%20out%20" + sShareLink + "&url=" + sShareLink);');

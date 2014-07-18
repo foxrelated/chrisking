@@ -370,3 +370,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         {/if}
     {/if}
 </section>
+{if $bIsExternal}
+{literal}
+<script type="text/javascript">
+
+$Behavior.thumgs = function() {
+var bAutoplay = false;
+exteralthumbnailClick(1);
+}
+</script>
+{/literal}
+{/if}
