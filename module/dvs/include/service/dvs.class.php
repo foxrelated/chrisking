@@ -82,6 +82,7 @@ class Dvs_Service_Dvs extends Phpfox_Service {
 		$inventories = Phpfox::getLib('database')->select('*')
 			->from(Phpfox::getT('ko_dvs_inventory'))
 			->where(join(' OR ', $where_arr))
+      ->group('link')
 			// ->limit(0)
 			->execute('getRows');
 
@@ -162,6 +163,8 @@ public function aasort (&$array, $key) {
       }else{ // is page
         $paginator = 1;
       }
+
+      $this->emptyDvsInventories($dvs_id); // purge old entries
 
       do {
         $result = $this->importInventoryQuery($apiKey, $connector['guid'], array(
@@ -323,21 +326,46 @@ public function aasort (&$array, $key) {
    */
   public function addDvsInventories($inventories= array(), $dvs_id = 0, $yearValue = null)
   {
-		if(empty($inventories) || empty($dvs_id)){
-			return false;
-		}
+    if(empty($inventories) || empty($dvs_id)){
+      return false;
+    }
 
     $res = 0;
 
-		foreach ($inventories as $item) {
+    foreach ($inventories as $item) {
       if(empty($item['name'])) continue;
 
-			if($this->addDvsInventory($item, $dvs_id, $yearValue)){
+      if($this->addDvsInventory($item, $dvs_id, $yearValue)){
         $res++;
+      }
+    }
+
+    return $res;
+  }
+
+  /**
+   * Add multiple dvs invenotry.
+   */
+  public function emptyDvsInventories($dvs_id = 0)
+  {
+		if(empty($dvs_id)){
+			return false;
+		}
+
+    $items = Phpfox::getLib('database')->select('inv.*')
+      ->from(Phpfox::getT('ko_dvs_inventory'), 'inv')
+      ->where('dvs_id = ' . (int) $dvs_id)
+      ->execute('getRows');
+
+		foreach ($items as $item) {
+      if(file_exists(Phpfox::getParam('core.dir_file').$item['image'])){
+        Phpfox::getLib('file')->unlink(Phpfox::getParam('core.dir_file').$item['image']);
       }
 		}
 
-    return $res;
+    $this->database()->delete(Phpfox::getT('ko_dvs_inventory'), 'dvs_id = ' . (int) $dvs_id);
+
+    return true;
   }
 
   /**
