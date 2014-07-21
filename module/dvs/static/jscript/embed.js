@@ -9,7 +9,7 @@ if (!window.WTVDVS) {
             delete params.height;
             delete params.width;
 
-            var sIframe = '<iframe frameborder="0" width="100%" height="100%" src="' + params.iframeUrl + 'parent_' + this.encode_base64(encodeURIComponent(sParentUrl)) + '/maxwidth_' + iMaxWidth + '/"></iframe>';
+            var sIframe = '<iframe frameborder="0" width="100%" height="1000px" src="' + params.iframeUrl + 'parent_' + this.encode_base64(encodeURIComponent(sParentUrl)) + '/maxwidth_' + iMaxWidth + '/"></iframe>';
 
 
             if (wrapper) {
