@@ -57,6 +57,7 @@
 	<section id="player">
 		{template file='dvs.controller.player.iframe-player}
 	</section>
+
     <aside>
         <div id="contact_box">
             <h2>Contact {$aDvs.dealer_name}</h2>
@@ -85,12 +86,13 @@
 	  </tr>
 	  </table>
 	</section>
-	
+
+
     <section id="video_information">
         <h3 id="video_name">
-            {*<a id="current_video_link" href="{$sParentUrl}" onclick="return false;">*}
+            <a id="current_video_link" href="{$sNewParentUrl}" onclick="return false;">
                 {$aDvs.phrase_overrides.override_video_name_display}
-            {*</a>*}
+            </a>
         </h3>
         <p class="model_description" id="car_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
     </section>
@@ -101,40 +103,38 @@
         <input type="hidden" value="{phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}" id="share_title">
         <input type="hidden" value="{$sVideoThumb}" id="video_thumbnail">
 
-        <table id="share-video" cellpadding="0" cellspacing="0" border="0" style="vertical-align:middle;">
+        <table cellpadding="4" cellspacing="4" border="0">
             <tr>
-            <td style="vertical-align:middle;padding-top:2px;">
-            <p><b>Share This:</b>&nbsp;</p>
-            </td>
-                <td style="vertical-align:middle;">
+                <td>
                     <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailFormIframe', 'height=400&amp;width=360&amp;sParentUrl=' + encodeURIComponent($('#parent_url').val().replace('WTVDVS_VIDEO_TEMP', $('#video_url').val())) + '&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));  showEmailShare(); return false;">
-                        <img src="{$sImagePath}email-share.png" alt="Share Via Email" style="padding-top:6px;"/>
+                        <img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
                     </a>
                 </td>
                 {if Phpfox::isModule('redirect')}
-               <td style="vertical-align:middle;">
-                    <a href="#" onclick="window.open('https://www.facebook.com/share.php?u=' + encodeURI('{url link='redirect.'$sDvsRequest}parent_{$sParentUrlEncode}/video_' + $('#video_url').val()), 'Facebook Share', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
-                        <img src="{$sImagePath}facebook-share.png" alt="Share to Facebook" style="padding-top:6px;"/>
+               <td>
+                    <a href="#" onclick="window.open('https://www.facebook.com/share.php?u=' + encodeURI('{url link='share.'$sDvsRequest}parent_{$sParentUrlEncode}/video_' + $('#video_url').val()), 'Facebook Share', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
+                        <img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
                     </a>
                 </td>
                 {/if}
-                <td style="vertical-align:middle;padding-top:6px;padding-left:2px;padding-right:2px;">
+                <td>
 					<span id="twitter_button_wrapper">
 					<a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}&url={$sParentUrl}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
 					</span>
                 </td>
                 {if Phpfox::isModule('redirect')}
-                <td style="vertical-align:middle;">
-                    <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURI('{url link='redirect.'$sDvsRequest}parent_{$sParentUrlEncode}/video_' + $('#video_url').val())); googleShareClick('Share Links'); return false;">
-                        <img src="{$sImagePath}google-share.png" alt="Google+" title="Google+" style="padding-top:6px;"/>
+                <td>
+                    <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURI('{url link='share.'$sDvsRequest}parent_{$sParentUrlEncode}/video_' + $('#video_url').val())); googleShareClick('Share Links'); return false;">
+                        <img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
                     </a>
                 </td>
                 {/if}
             </tr>
         </table>
     </section>
+
 </article>
-<footer><br></footer>
+<footer></footer>
 {/if}
 
 {literal}
