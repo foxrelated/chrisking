@@ -514,7 +514,7 @@ function onVideoLoad(oMedia) {
 	}
 
 	// Change vehicle info in dealer contact form
-	$.ajaxCall('dvs.iframeChangeVideo', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + oMedia.media.referenceId + '&iDvsId=' + iDvsId);
+	$.ajaxCall('dvs.changeVideo', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + oMedia.media.referenceId + '&iDvsId=' + iDvsId);
 
     bUpdatedShareUrl = false;
 
