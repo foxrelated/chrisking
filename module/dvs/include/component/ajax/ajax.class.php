@@ -764,7 +764,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$this->val('#contact_dvs_id', $aDvs['dvs_id']);
 	}
 
-    public function changeVideo()
+    public function iframeChangeVideo()
     {
         //Change RefID for contact form
         $sRefId = Phpfox::getLib('request')->get('sRefId');
