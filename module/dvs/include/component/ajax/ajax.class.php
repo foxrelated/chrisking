@@ -32,18 +32,26 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			return false;
 		}
 
-		$connector_id = $this->get('connector_id');
-		$title        = $this->get('title');
-		$guid         = $this->get('guid');
-		$description  = $this->get('description');
+		$connector_id    = $this->get('connector_id');
+		$title           = $this->get('title');
+		$guid            = $this->get('guid');
+		$pagination_name = $this->get('pagination_name');
+		$pagination_type = $this->get('pagination_type');
+		$description     = $this->get('description');
 
 		if(empty($connector_id)){
 			return false;
 		}
 
+		if(empty($pagination_name)){
+			$pagination_name = 'start';
+		}
+
 		Phpfox::getLib('database')->update(Phpfox::getT('ko_dvs_inventory_connectors'), array(
 			'title' => Phpfox::getLib('database')->escape($title),
 			'description' => Phpfox::getLib('database')->escape($description),
+			'pagination_name' => Phpfox::getLib('database')->escape($pagination_name),
+			'pagination_type' => Phpfox::getLib('database')->escape($pagination_type),
 			'guid' => Phpfox::getLib('database')->escape($guid)
 			), "connector_id = '".$connector_id."'");
 
@@ -75,20 +83,28 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			return false;
 		}
 
-		$userId              = Phpfox::getUserId();
-		$dvs_inventory_name  = $this->get('dvs_inventory_name');
-		$dvs_inventory_guid  = $this->get('dvs_inventory_guid');
-		$dvs_inventory_notes = $this->get('dvs_inventory_notes');
+		$userId                        = Phpfox::getUserId();
+		$dvs_inventory_name            = $this->get('dvs_inventory_name');
+		$dvs_inventory_guid            = $this->get('dvs_inventory_guid');
+		$dvs_inventory_notes           = $this->get('dvs_inventory_notes');
+		$dvs_inventory_pagination_name = $this->get('dvs_inventory_pagination_name');
+		$dvs_inventory_pagination_type = $this->get('dvs_inventory_pagination_type');
 
 		if(empty($dvs_inventory_name) && empty($dvs_inventory_guid)){
 			return false;
 		}
 
+		if(empty($dvs_inventory_pagination_name)){
+			$dvs_inventory_pagination_name = 'start';
+		}
+
 		$connector_id = Phpfox::getLib('database')->insert(Phpfox::getT('ko_dvs_inventory_connectors'), array(
-				'user_id'     => Phpfox::getLib('database')->escape($userId),
-				'title'       => Phpfox::getLib('database')->escape($dvs_inventory_name),
-				'description' => Phpfox::getLib('database')->escape($dvs_inventory_notes),
-				'guid'        => Phpfox::getLib('database')->escape($dvs_inventory_guid)
+				'user_id'         => Phpfox::getLib('database')->escape($userId),
+				'title'           => Phpfox::getLib('database')->escape($dvs_inventory_name),
+				'description'     => Phpfox::getLib('database')->escape($dvs_inventory_notes),
+				'pagination_name' => Phpfox::getLib('database')->escape($dvs_inventory_pagination_name),
+				'pagination_type' => Phpfox::getLib('database')->escape($dvs_inventory_pagination_type),
+				'guid'            => Phpfox::getLib('database')->escape($dvs_inventory_guid)
 			)
 		);
 
@@ -714,11 +730,11 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$inventoryList = Phpfox::getService('dvs')->getModelInventory($aVideo['ko_id']);
 			$sPlaylistHtml = '<div class="inventory_info_message">';
 			if(count($inventoryList) > 1){
-				$sPlaylistHtml .= count($inventoryList).' '.$aVideo['model'].'�s available in inventory! Select one below:';
-			}elseif(count($inventoryList) > 1){
+				$sPlaylistHtml .= count($inventoryList).' '.$aVideo['model'].'\'s available in inventory! Select one below:';
+			}elseif(count($inventoryList) == 1){
 				$sPlaylistHtml .= count($inventoryList).' '.$aVideo['model'].' available in inventory! Select one below:';
 			}else{
-				$sPlaylistHtml .= 'We don�t have the '.$aVideo['model'].' in stock at this time. <a href="#" onclick="tb_show(\'Contact Dealer\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId='.$aDvs['dvs_id'].'&amp;sRefId='.$aVideo['referenceId'].'\')); menuContact(\'Call To Action Menu Clicks\'); return false;">Click here</a> to request this vehicle instead!';
+				$sPlaylistHtml .= Phpfox::getPhrase('dvs.we_dont_have').' '.$aVideo['model'].' '.Phpfox::getPhrase('dvs.in_stock_at_this_time').'. <a href="#" onclick="tb_show(\'Contact Dealer\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId='.$aDvs['dvs_id'].'&amp;sRefId='.$aVideo['referenceId'].'\')); menuContact(\'Call To Action Menu Clicks\'); return false;">Click here</a> to request this vehicle instead!';
 			}
 			$sPlaylistHtml .= '</div>';
 

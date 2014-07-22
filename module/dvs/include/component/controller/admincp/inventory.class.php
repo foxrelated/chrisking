@@ -54,6 +54,10 @@ class Dvs_Component_Controller_Admincp_Inventory extends Phpfox_Component
     // connectors
     $connectors            = $this->getConnectors();
     // var_dump($connectors);die();
+    $pagination_types = array(
+      0 => Phpfox::getPhrase('dvs.pagination_type_is_offset'),
+      1 => Phpfox::getPhrase('dvs.pagination_type_is_page')
+    );
 
     $this->template()->setTitle(Phpfox::getPhrase('dvs.dvs_dvs_inventory_title'))
       ->setBreadcrumb(Phpfox::getPhrase('dvs.dvs_dvs_inventory_title'))
@@ -61,6 +65,7 @@ class Dvs_Component_Controller_Admincp_Inventory extends Phpfox_Component
           'dvs_inventory_guid'    => $dvs_inventory_guid,
           'dvs_inventory_api_key' => $dvs_inventory_api_key,
           'connectors'            => $connectors,
+          'pagination_types'      => $pagination_types,
         )
       );
   }

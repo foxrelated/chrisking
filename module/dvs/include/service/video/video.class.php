@@ -588,9 +588,12 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 	 */
 	public function getValidVSMakes($iYear, $aMakes)
 	{
-		$aWhere = array('year = ' . (int) $iYear);
+		$aWhere = array();
+		if(!empty($iYear)){
+			$aWhere[] = 'year = ' . (int) $iYear;
+		}
 
-		$sPlayerMakes = 'AND (';
+		$sPlayerMakes = ($aWhere?'AND ':'').'(';
 		foreach ($aMakes as $iKey => $aMake)
 		{
 			$sPlayerMakes .= 'make LIKE "' . $aMake['make'] . '"';
