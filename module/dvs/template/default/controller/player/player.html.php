@@ -274,9 +274,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			{if $inventoryList}
 				<div class="inventory_info_message">
 					{if $inventoryList|count > 1}
-						{$inventoryList|count} {$aFirstVideo.model}'s available in inventory! Select one below:
+						{$inventoryList|count} {$aFirstVideo.make} {$aFirstVideo.model}'s available in inventory! Select one below:
 					{elseif $inventoryList|count == 1}
-						{$inventoryList|count} {$aFirstVideo.model} available in inventory! Select one below:
+						{$inventoryList|count} {$aFirstVideo.make} {$aFirstVideo.model} available in inventory! Select it below:
 					{/if}
 				</div>
 				<button class="prev playlist-button">&lt;</button>
@@ -306,7 +306,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<button class="next playlist-button">&gt;</button>
 			{else}
 				<div class="inventory_info_message">
-					{phrase var='dvs.we_dont_have'} {$aFirstVideo.model} {phrase var='dvs.in_stock_at_this_time'}. <a href="#" onclick="tb_show('Contact Dealer', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId={$aFirstVideo.referenceId}')); menuContact('Call To Action Menu Clicks'); return false;">Click here</a> to request this vehicle!
+					{phrase var='dvs.we_dont_have'} {$aFirstVideo.make} {$aFirstVideo.model} {phrase var='dvs.in_stock_at_this_time'}. <a href="#" onclick="tb_show('Contact Dealer', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId={$aFirstVideo.referenceId}')); menuContact('Call To Action Menu Clicks'); return false;">Click here</a> to request this vehicle!
 				</div>
 			{/if}
 		{else}
