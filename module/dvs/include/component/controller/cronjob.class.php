@@ -24,6 +24,11 @@ class Dvs_Component_Controller_Cronjob extends Phpfox_Component
         Phpfox::getService('dvs')->importInventory($aDvsRow['dvs_id']);
       }
     }
+    ob_start();
+    echo 'cronjob completed ('.date('Y-m-d H:i:s').')';
+    echo "\n";
+    $c = ob_get_clean();
+    file_put_contents($_SERVER['DOCUMENT_ROOT'].'/file/static/cronjob_log.txt', $c, FILE_APPEND);
     echo 'success!';die();
   }
 
