@@ -127,3 +127,20 @@ aside
 {
 	font-size: 26px;
 }
+
+#contact_box {
+    background: none repeat scroll 0 0 #000;
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
+    vertical-align: top;
+    width: 90%;
+}
+
+#contact_box .inputContact {
+    margin-bottom: 4px;
+    padding: 4px !important;
+    width: 90% !important;
+}

@@ -139,7 +139,7 @@ defined('PHPFOX') or exit('NO DICE!');
         font-family: {$aDvs.font_family};
         {r}
 
-        input.dvs_form_button, input.inputContact {l}
+        input.dvs_form_button, input.inputContact, textarea.inputContact {l}
         font-family: {$aDvs.font_family};
         {r}
     </style>

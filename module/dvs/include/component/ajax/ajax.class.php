@@ -1601,6 +1601,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         $sTwitterText = Phpfox::getPhrase('dvs.twitter_default_share_text');
         $sTwitterText = str_replace($aFind, $aReplace, $sTwitterText);
 
+        $this->val('#video_ref_id', $aVideo['referenceId']);
+
         $this->remove('.twitter_popup');
         $this->call('$(\'#twitter_button_wrapper\').html(\'<a href="https://twitter.com/share?url=\' + encodeURIComponent($(\'#parent_url\').val().replace(\'WTVDVS_VIDEO_TEMP\', \'' . $aVideo['video_title_url'] . '\')) + \'&text=\' + encodeURIComponent(\'' . $sTwitterText . '\') + \'" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>\');');
         $this->call('twttr.widgets.load();');
@@ -1615,7 +1617,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             'return_url' => true
         )));
         $this->call('$("#video_name a").attr("href", $(\'#parent_url\').val().replace(\'WTVDVS_VIDEO_TEMP\', \'' . $aVideo['video_title_url'] . '\'));');
-        $this->val('#video_ref_id', $aVideo['referenceId']);
     }
 
     public function emailFormIframe() {

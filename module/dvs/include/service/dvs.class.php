@@ -861,7 +861,7 @@ public function aasort (&$array, $key) {
 	public function getBrowser()
 	{
 		static $sAgent;
-		$this->_bIsMobile = false;
+		$this->_bIsMobile = true;
 
 		$sAgent = Phpfox::getLib('request')->getServer('HTTP_USER_AGENT');
 

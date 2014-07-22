@@ -74,9 +74,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 {phrase var='dvs.cta_specials'}
             </a>
             {/if}
-            {*<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=600&amp;width=520&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); menuContact('Call To Action Menu Clicks'); return false;">
-                {phrase var='dvs.cta_contact'}
-            </a>*}
+            <aside>
+                <div id="contact_box">
+                    <h2>Contact {$aDvs.dealer_name}</h2>
+                    {template file='dvs.block.contact-iframe}
+                </div>
+            </aside>
+            {*module name='dvs.get-price' iDvsId=$iDvsId  sRefId=$aFirstVideoMeta.referenceId*}
+            </a>
         </section>
     </div>
 
