@@ -213,6 +213,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         <p><span itemprop="addressLocality">{$aDvs.city}</span>, <span itemprop="addressRegion">{$aDvs.state_string}</span>, <span itemprop="postalCode">{$aDvs.postal_code}</span>
         </p>
       </aside>
+      <div class="clear"></div>
     </article>
 	{if $aDvs.footer_toggle == 1} <!--phpmasterminds added this code for footer toggle -->
     <footer>
