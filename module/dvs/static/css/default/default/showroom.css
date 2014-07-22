@@ -312,10 +312,11 @@ header nav a:hover
 	height: auto;
 }
 .inventory_info_message{
-	margin: 5px 0 5px 10px;
+	margin: 10px 0 10px 10px;
 	font-weight: bold;
 	color: #fff;
-	height:82px;
+	/*height:82px;*/
+	height: 85px;
 }
 
 button.playlist-button
@@ -436,7 +437,7 @@ button.playlist-button:hover
 #video_information {
 	margin-top: 25px;
 	float: left;
-	width: 66%
+	width: 62%
 }
 
 #video_information h3,

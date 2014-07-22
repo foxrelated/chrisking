@@ -334,7 +334,6 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		}
 
 		$inventoryList = Phpfox::getService('dvs')->getModelInventory($aFirstVideo['ko_id']);
-
 		
 		$this->template()
 			->setTemplate('dvs-view')
@@ -408,8 +407,5 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		));
 
 	}
-	
-	
-
 }
 ?>

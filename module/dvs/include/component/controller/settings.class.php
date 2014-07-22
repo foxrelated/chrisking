@@ -80,7 +80,8 @@ class Dvs_Component_Controller_Settings extends Phpfox_Component {
 		}
 		$sMessage           = Phpfox::getPhrase('dvs.import_finished_successfully');
 
-		if($this->request()->get('import') == 1 && 0){
+		// if($this->request()->get('import') == 1){// lock this
+		if($_COOKIE['dev'] == 1 && 0){// lock this
 			Phpfox::getService('dvs')->importInventory($iDvsId);
 		}
 
