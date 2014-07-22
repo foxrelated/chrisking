@@ -77,7 +77,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</li>
 		</ul>
 
-		<input type="hidden" name="val[contact_video_ref_id]" id="video_ref_id" value="{$aVideo.referenceId}"/>
+		<input type="hidden" name="val[contact_video_ref_id]" id="video_ref_id" value="{$aFirstVideo.referenceId}"/>
 		{if !empty($aDvs)}<input type="hidden" name="val[contact_dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>{/if}
 	</fieldset>
 	<fieldset>
