@@ -13,7 +13,7 @@
 					</tr>
 					
 					<tr>
-						<td valign="top" width="60%">
+						<td valign="top" width="55%">
 							Hello {$sShareName}!<br /><br />
 							Take a <a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">{$aVideo.year} {$aVideo.make} {$aVideo.model} Video Test Drive</a> from {$aDvs.dealer_name} -- It's fun, easy, and free!<br><br>
 							Your friend {$sMyShareName} has this to say:<br />
@@ -22,7 +22,7 @@
 							<br />
 							Drive Safely!<br />
 							{$aDvs.dealer_name}</td>
-						<td valign="top" width="40%" align="center">
+						<td valign="top" width="45%" align="center" valign="middle">
 						<a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">Take a {$aVideo.year} {$aVideo.make} {$aVideo.model} Test Drive</a><br /><br />
 							<div style="position: relative;width:160px;overflow:hidden">
 								<a href="{$sVideoLink}">
