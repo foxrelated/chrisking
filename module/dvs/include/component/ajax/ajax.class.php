@@ -1211,24 +1211,28 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
         if (!$aVals['share_name'])
         {
-            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_an_email_address'));
+            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_an_email_address'));
+            $this->call('$("#share_email_dealer #share_name").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['my_share_name'])
         {
-            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'));
+            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'));
+            $this->call('$("#share_email_dealer #my_share_name").addClass("required");');
             $bIsError = true;
         }
 
         if (!$aVals['my_share_email'])
         {
-            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'));
+            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'));
+            $this->call('$("#share_email_dealer #my_share_email").addClass("required");');
             $bIsError = true;
         }
 
         if (!$aVals['share_email'])
         {
-            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_friends_name'));
+            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_friends_name'));
+            $this->call('$("#share_email_dealer #share_email").addClass("required");');
             $bIsError = true;
         }
 
