@@ -140,6 +140,10 @@ aside
     width: 95%;
 }
 
+#contact_box h2 {
+font-size:32px;
+}
+
 #contact_box .inputContact {
     margin-bottom: 4px;
     padding: 8px !important;
@@ -148,5 +152,5 @@ aside
 }
 
 #dvs_contact_success {
-font-size:42px;
+font-size:32px;
 }
