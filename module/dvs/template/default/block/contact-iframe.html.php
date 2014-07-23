@@ -81,7 +81,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{if !empty($aDvs)}<input type="hidden" name="val[contact_dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>{/if}
 	</fieldset>
 	<fieldset>
-		<input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button" />
+		<input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button" style="padding:20px;font-size:40px;width:95%;" />
 	</fieldset>
 </form>
 <div id="dvs_contact_success" style="display:none;">

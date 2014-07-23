@@ -81,8 +81,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 </div>
             </aside>
             {*module name='dvs.get-price' iDvsId=$iDvsId  sRefId=$aFirstVideoMeta.referenceId*}
-            </a>
         </section>
     </div>
-
+    <br><br>
 </article>
