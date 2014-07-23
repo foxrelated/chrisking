@@ -119,7 +119,7 @@
 					{/if}
 				</td>
 			</tr>
-			<tr><td colspan="4"><i>*Dealer-Only Links (and this message) are not seen by the public. You are seeing these because you are logged into the DVS backend at http://www.wtvdvs.com</i></td></tr>
+			<tr><td colspan="4"><p><i>*Dealer-Only Links (and this message) are not seen by the public. You are seeing this because you are logged into the DVS backend at http://www.wtvdvs.com</i></p></td></tr>
 		</table>
 	</section>
 	{else}

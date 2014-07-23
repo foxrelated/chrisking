@@ -782,6 +782,10 @@ public function aasort (&$array, $key) {
 			'color' => '#' . $aDvs['text_link']
 		));
 		
+		$sCss .= $this->buildCss('#dealer-links', array(
+			'color' => '#' . $aDvs['page_text']
+		));
+		
 		$sCss .= $this->buildCss('.inventory_info_message a', array(
 			'color' => '#' . $aDvs['text_link']
 		));
