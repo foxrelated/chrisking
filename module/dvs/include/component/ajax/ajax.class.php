@@ -1236,6 +1236,13 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             $bIsError = true;
         }
 
+        if (!$aVals['share_message'])
+        {
+            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_friends_name'));
+            $this->call('$("#share_email_dealer #share_message").addClass("required");');
+            $bIsError = true;
+        }
+
         if (!$bIsError)
         {
 
