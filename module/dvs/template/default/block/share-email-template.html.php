@@ -22,8 +22,8 @@
 							<br />
 							Drive Safely!<br />
 							{$aDvs.dealer_name}</td>
-						<td valign="top" width="40%">
-						<a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">Take a {$aVideo.year} {$aVideo.make} {$aVideo.model} Test Drive</a><br />
+						<td valign="top" width="40%" align="center">
+						<a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">Take a {$aVideo.year} {$aVideo.make} {$aVideo.model} Test Drive</a><br /><br />
 							<div style="position: relative;width:160px;overflow:hidden">
 								<a href="{$sVideoLink}">
 									<div style="display: block; width: 160px; height: 90px; background: url({img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image return_url=true}) scroll no-repeat top left transparent;">
