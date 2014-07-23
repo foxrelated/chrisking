@@ -111,6 +111,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </ul>
         <ul>
             <li>
+                <input type="text" name="val[my_share_email]" id="my_share_email" placeholder="{phrase var='dvs.your_email'}" required class="inputShare"/>
+            </li>
+        </ul>
+        <ul>
+            <li>
                 <textarea id="share_message" name="val[share_message]" placeholder="{phrase var='dvs.message_to_friend'}" cols="18" rows="5" required></textarea>
             </li>
         </ul>
