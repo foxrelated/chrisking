@@ -1757,31 +1757,31 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         if (!$aVals['contact_name'] && Phpfox::getParam('dvs.get_price_validate_name'))
         {
             //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'). ' ');
-            $this->call('$("#contact_dealer name").addClass("required");');
+            $this->call('$("#contact_dealer #name").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['contact_email'] && Phpfox::getParam('dvs.get_price_validate_email'))
         {
             //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'). ' ');
-            $this->call('$("#contact_dealer email").addClass("required");');
+            $this->call('$("#contact_dealer #email").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['contact_phone'] && Phpfox::getParam('dvs.get_price_validate_phone'))
         {
             //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_phone_number'). ' ');
-            $this->call('$("#contact_dealer name").addClass("required");');
+            $this->call('$("#contact_dealer #phone").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['contact_zip'] && Phpfox::getParam('dvs.get_price_validate_zip_code'))
         {
             //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_zip_code'). ' ');
-            $this->call('$("#contact_dealer name").addClass("required");');
+            $this->call('$("#contact_dealer #zip").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['contact_comments'] && Phpfox::getParam('dvs.get_price_validate_comments'))
         {
             //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_comments'). ' ');
-            $this->call('$("#contact_dealer name").addClass("required");');
+            $this->call('$("#contact_dealer #comments").addClass("required");');
             $bIsError = true;
         }
 
