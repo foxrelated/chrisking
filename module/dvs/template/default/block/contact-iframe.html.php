@@ -22,10 +22,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             event.preventDefault();
 
             // do whatever you want here
+            $('#contact_dealer input, #contact_dealer textarea').removeClass('required');
             $.ajaxCall('dvs.contactDealerIframe', $('#contact_dealer').serialize());
 
         });
         $('input, textarea').placeholder();
+
+        $('#contact_dealer input, #contact_dealer textarea').removeClass('required');
     }
 {/literal}
 </script>

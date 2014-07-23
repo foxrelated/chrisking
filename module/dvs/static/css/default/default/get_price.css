@@ -40,3 +40,8 @@
 	-moz-border-radius: 5px;
 	behavior: url(border-radius.htc);
 }
+
+#contact_dealer .required
+{
+    border-color: #FF0000;
+}
