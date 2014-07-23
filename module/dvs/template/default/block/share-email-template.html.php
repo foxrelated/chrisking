@@ -32,7 +32,7 @@
 							<div style="position: relative;width:160px;overflow:hidden">
 								<a href="{$sVideoLink}">
 									<div style="display: block; width: 160px; height: 90px; background: url({img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image return_url=true}) scroll no-repeat top left transparent;">
-                                        <img src="{$sImagePath}play_btn_75.png" style="display:block; margin: 0 auto; padding-top: 8px;"/>
+                                        <img src="{$sImagePath}play_btn_50.png" style="display:block; margin: 0 auto; padding-top: 20px;"/>
 									</div>
 								</a>
 							</div>
