@@ -1744,27 +1744,27 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
         if (!$aVals['contact_name'] && Phpfox::getParam('dvs.get_price_validate_name'))
         {
-            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'). ' ');
+            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'). ' ');
             $bIsError = true;
         }
         if (!$aVals['contact_email'] && Phpfox::getParam('dvs.get_price_validate_email'))
         {
-            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'). ' ');
+            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'). ' ');
             $bIsError = true;
         }
         if (!$aVals['contact_phone'] && Phpfox::getParam('dvs.get_price_validate_phone'))
         {
-            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_phone_number'). ' ');
+            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_phone_number'). ' ');
             $bIsError = true;
         }
         if (!$aVals['contact_zip'] && Phpfox::getParam('dvs.get_price_validate_zip_code'))
         {
-            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_zip_code'). ' ');
+            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_zip_code'). ' ');
             $bIsError = true;
         }
         if (!$aVals['contact_comments'] && Phpfox::getParam('dvs.get_price_validate_comments'))
         {
-            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_comments'). ' ');
+            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_comments'). ' ');
             $bIsError = true;
         }
 
