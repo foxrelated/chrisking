@@ -433,6 +433,14 @@ button.playlist-button:hover
 	display: block;
 }
 
+#sharelink-access {
+padding:10px;
+font-size:14px;
+}
+
+#sharelink-access a{
+
+}
 
 #video_information {
 	margin-top: 25px;

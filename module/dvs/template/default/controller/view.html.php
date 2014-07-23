@@ -81,21 +81,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
           <li>
             <a href="#" onclick="menuContact('Top Menu Clicks'); tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); return false;">{phrase var='dvs.contact_dealer'}</a>
           </li>
-
-          {if Phpfox::isUser()}
-            <li>
-              <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" target="_blank">
-                {phrase var='dvs.dealer_share_links'}
-              </a>
-            </li>
-            {if Phpfox::getUserId() == $aDvs.user_id || Phpfox::isAdmin()}
-              <li>
-                <a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}" target="_blank">
-                  {phrase var='dvs.manage_sales_team'}
-                </a>
-              </li>
-            {/if}
-          {/if}
         </ul>
       </nav>
     </header>
@@ -167,21 +152,36 @@ defined('PHPFOX') or exit('No direct script access allowed.');
           <a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); menuContact('Call To Action Menu Clicks'); return false;">
             {phrase var='dvs.cta_contact'}
           </a>
+          {if Phpfox::isUser()}
+          	<br /><br />
+            <p><b>Dealer-Only Links:</b></p><br />
+            <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="" rel="nofollow" target="_blank" style="font-size:14px;">
+            {phrase var='dvs.dealer_share_links'}
+          	</a>
+            {if Phpfox::getUserId() == $aDvs.user_id || Phpfox::isAdmin()}
+            <a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}" onclick="" rel="nofollow" target="_blank"  style="font-size:14px;">
+            {phrase var='dvs.manage_sales_team'}
+          	</a>
+            {/if}
+          {/if}
         </section>
+        
         <section id="action_links">
-          <p>Click to Share:</p>
-          <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); showEmailShare(); return false;">
-            <img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
-          </a>
-          <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
-            <img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
-          </a>
-          <span id="twitter_button_wrapper">
-            <a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}&url={$sCurrentUrlEncoded}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
-          </span>
-          <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href)); googleShareClick('Share Links'); return false;">
-            <img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
-          </a>
+			 {if !Phpfox::isUser()}
+			  <p>Click to Share:</p>
+			  <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); showEmailShare(); return false;">
+				<img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
+			  </a>
+			  <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
+				<img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
+			  </a>
+			  <span id="twitter_button_wrapper">
+				<a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}&url={$sCurrentUrlEncoded}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
+			  </span>
+			  <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href)); googleShareClick('Share Links'); return false;">
+				<img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
+			  </a>
+			  {/if}
         </section>
       </div>
 
