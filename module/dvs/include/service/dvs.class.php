@@ -388,7 +388,7 @@ public function aasort (&$array, $key) {
   }
 
   /**
-   * Add dvs invenotry. if extists - update
+   * Add dvs invenotry. if exists - update
    */
   public function addDvsInventory($inventory = array(), $dvs_id = 0, $yearValue = null)
   {
@@ -795,6 +795,18 @@ public function aasort (&$array, $key) {
 
 		$sCss .= $this->buildCss('h1', array(
 			'color' => '#' . $aDvs['page_text']
+		));
+		//added 7/23 by Collin
+		$sCss .= $this->buildCss('#sharelink-access a', array(
+			'color' => '#' . $aDvs['text_link']
+		));
+		
+		$sCss .= $this->buildCss('#dealer-links', array(
+			'color' => '#' . $aDvs['page_text']
+		));
+		
+		$sCss .= $this->buildCss('.inventory_info_message a', array(
+			'color' => '#' . $aDvs['text_link']
 		));
 		
 		//added 3/21 by Collin
