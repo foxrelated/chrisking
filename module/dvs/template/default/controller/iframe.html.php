@@ -103,7 +103,7 @@
 			<tr><td colspan="4">&nbsp;</td></tr>
 			<tr>
 				<td>
-					<b>Dealer-Only Links:</b>&nbsp;
+					<p><b>Dealer-Only Links:</b>&nbsp;</p>
 				</td>
 				<td>
 					<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="" rel="nofollow" target="_blank" style="font-size:16px;">
