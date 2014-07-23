@@ -20,15 +20,15 @@
 						</td>
 					</tr>
 					<tr>
-						<td valign="top">
+						<td valign="top" width="50%">
 							Take a <a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">{$aVideo.year} {$aVideo.make} {$aVideo.model} Video Test Drive</a> from {$aDvs.dealer_name} -- It's fun, easy, and free!<br><br>
 							Your friend {$sMyShareName} has this to say:<br />
 							"{$sShareMessage}"
 							<br />
 							<br />
 							Drive Safely!<br />
-							&nbsp;{$aDvs.dealer_name}</td>
-						<td valign="top">
+							{$aDvs.dealer_name}</td>
+						<td valign="top" width="50%">
 							<div style="position: relative;width:160px;overflow:hidden">
 								<a href="{$sVideoLink}">
 									<div style="display: block; width: 160px; height: 90px; background: url({img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image return_url=true}) scroll no-repeat top left transparent;">
