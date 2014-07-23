@@ -29,10 +29,10 @@
 							Drive Safely!<br />
 							&nbsp;{$aDvs.dealer_name}</td>
 						<td valign="top">
-							<div style="position: relative;width:300px;overflow:hidden">
+							<div style="position: relative;width:160px;overflow:hidden">
 								<a href="{$sVideoLink}">
-									<div style="display: block; width: 300px; height: 300px; background: url({img path='core.url_file' file='brightcove/'.$aVideo.video_still_image max_width=300 max_height=300 return_url=true}) scroll no-repeat top left transparent;">
-                                        <img src="{$sImagePath}play_btn_75.png" style="display:block; margin: 0 auto; padding-top: 40px;"/>
+									<div style="display: block; width: 160px; height: 90px; background: url({img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image return_url=true}) scroll no-repeat top left transparent;">
+                                        <img src="{$sImagePath}play_btn_75.png" style="display:block; margin: 0 auto; padding-top: 8px;"/>
 									</div>
 								</a>
 							</div>
