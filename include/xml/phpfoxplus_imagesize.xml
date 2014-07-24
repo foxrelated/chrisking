@@ -1,0 +1,28 @@
+<product>
+	<data>
+		<product_id>phpfoxplus_imagesize</product_id>
+		<is_core>0</is_core>
+		<title>Image Sizes for DVS - PhpfoxPlus.com</title>
+		<description>Image Sizes for DVS - PhpfoxPlus.com</description>
+		<version>1.0</version>
+		<latest_version></latest_version>
+		<last_check>1406199543</last_check>
+		<is_active>1</is_active>
+		<url>http://www.phpfoxplus.com</url>
+		<url_version_check>http://www.phpfoxplus.com</url_version_check>
+	</data>
+	<installs>
+		<install>
+			<version>1.0</version>
+			<install_code><![CDATA[$aModules = array('imagesize');
+$sVersion = '1.0';
+require PHPFOX_DIR . 'module/imagesize/include/static/installer.php';]]></install_code>
+			<uninstall_code><![CDATA[$aModules = array('imagesize');
+$sVersion = '1.0';
+require PHPFOX_DIR . 'module/imagesize/include/static/installer.php';]]></uninstall_code>
+		</install>
+	</installs>
+	<modules>
+		<module_id>imagesize</module_id>
+	</modules>
+</product>
