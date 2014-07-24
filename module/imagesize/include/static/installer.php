@@ -50,6 +50,7 @@ if (!class_exists('PhpfoxplusImagesizeInstaller')) {
         function uninstall () {
             $oDb = Phpfox::getLib('phpfox.database');
             $aSql = array(
+                "ALTER TABLE `" . Phpfox::getT('ko_brightcove') . "` DROP `image_path`, DROP `image_server_id`, DROP `is_resize`"
             );
             foreach($aSql as $sSql) {
                 $oDb->query($sSql);
