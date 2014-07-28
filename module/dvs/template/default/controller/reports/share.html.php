@@ -185,7 +185,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 	</table>
 	<br><br>
-	<table id="shares_vs_clicks_stats_box" width="100%">
+	{*<table id="shares_vs_clicks_stats_box" width="100%">
 		<tr>
 			<td align="center" valign="middle">
 			<h1>Shares vs. Clicks Timeline</h1>
@@ -231,7 +231,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 		</tr>
 	</table>
-	<br><br>
+	<br><br>*}
 	<table id="top_links_stat_box" width="100%">
 		<tr>
 			<td align="left" valign="middle">
