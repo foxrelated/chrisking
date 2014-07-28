@@ -88,6 +88,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                             {literal}
 							$Behavior.piechart = function() {
 								$('#piechart1').highcharts({
+								colors: ['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE', 
+   '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92'],
 									chart: {
 											type: 'pie',
 											options3d: {
@@ -107,7 +109,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 										pie: {
 											allowPointSelect: true,
 											cursor: 'pointer',
-											 showInLegend: true,
+											showInLegend: true,
 											depth: 35,
 											dataLabels: {
 												enabled: false,
@@ -137,6 +139,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                             {literal}
                             $Behavior.piechart2 = function() {
                                $('#piechart2').highcharts({
+                               colors: ['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE', 
+   '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92'],
                                         chart: {
                                                type: 'pie',
                                                options3d: {
