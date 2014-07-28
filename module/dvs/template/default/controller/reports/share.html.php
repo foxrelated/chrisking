@@ -153,7 +153,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                                            text: 'Top Share Types'
                                        },
                                        tooltip: {
-                                               pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                               //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                               pointFormat: '{point.y}'
                                        },
                                        plotOptions: {
                                            pie: {
