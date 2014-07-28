@@ -87,7 +87,6 @@
 	  </table>
 	</section>
 
-
     <section id="video_information">
         <h3 id="video_name">
             <a id="current_video_link" href="{$sNewParentUrl}" onclick="return false;">
@@ -96,13 +95,39 @@
         </h3>
         <p class="model_description" id="car_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
     </section>
-
+	
+	{if Phpfox::isUser()}
+	
+	<section id="dealer_links">
+		<table style="border-top:1px solid #ccc;">
+			<tr><td colspan="4">&nbsp;</td></tr>
+			<tr>
+				<td>
+					<p><b>Dealer-Only Links:</b>&nbsp;</p>
+				</td>
+				<td>
+					<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="" rel="nofollow" target="_blank" style="font-size:16px;">
+					{phrase var='dvs.dealer_share_links'}
+					</a>
+				</td>
+				<td>&nbsp;</td>
+				<td>
+					{if Phpfox::getUserId() == $aDvs.user_id || Phpfox::isAdmin()}
+					<a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}" onclick="" rel="nofollow" target="_blank"  style="font-size:16px;">
+					{phrase var='dvs.manage_sales_team'}
+					</a>
+					{/if}
+				</td>
+			</tr>
+			<tr><td colspan="4"><p><i>*Dealer-Only Links (and this message) are not seen by the public. You are seeing this because you are logged into the DVS backend at http://www.wtvdvs.com</i></p></td></tr>
+		</table>
+	</section>
+	{else}
     <section id="share_links">
         <input type="hidden" value="{$sNewParentUrl}" id="parent_url">
         <input type="hidden" value="{$sVideoUrl}" id="video_url">
         <input type="hidden" value="{phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}" id="share_title">
         <input type="hidden" value="{$sVideoThumb}" id="video_thumbnail">
-
         <table cellpadding="4" cellspacing="4" border="0">
             <tr>
             	<td style="vertical-align:middle;">
@@ -135,7 +160,7 @@
             </tr>
         </table>
     </section>
-
+	{/if}
 </article>
 <footer></footer>
 {/if}

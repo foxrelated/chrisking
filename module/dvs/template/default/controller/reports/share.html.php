@@ -73,8 +73,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</td>
 		<td align="center" valign="middle" width="33%">
 			<div id="totals_box">
-				<div class="stat_label_big">{$aShareReport.ctr.total}&#37;</div>
-				<div class="stat_label_small">Average CTR</div>
+				<div class="stat_label_big">{$aShareReport.ctr.total}x</div>
+				<div class="stat_label_small">Response Rate</div>
 			</div>
 		</td>
 	</tr>
@@ -88,6 +88,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                             {literal}
 							$Behavior.piechart = function() {
 								$('#piechart1').highcharts({
+								colors: ['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE', 
+   '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92'],
 									chart: {
 											type: 'pie',
 											options3d: {
@@ -107,7 +109,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 										pie: {
 											allowPointSelect: true,
 											cursor: 'pointer',
-											 showInLegend: true,
+											showInLegend: true,
 											depth: 35,
 											dataLabels: {
 												enabled: false,
@@ -137,6 +139,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                             {literal}
                             $Behavior.piechart2 = function() {
                                $('#piechart2').highcharts({
+                               colors: ['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE', 
+   '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92'],
                                         chart: {
                                                type: 'pie',
                                                options3d: {
@@ -185,7 +189,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</tr>
 	</table>
 	<br><br>
-	<table id="shares_vs_clicks_stats_box" width="100%">
+	{*<table id="shares_vs_clicks_stats_box" width="100%">
 		<tr>
 			<td align="center" valign="middle">
 			<h1>Shares vs. Clicks Timeline</h1>
@@ -231,7 +235,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 		</tr>
 	</table>
-	<br><br>
+	<br><br>*}
 	<table id="top_links_stat_box" width="100%">
 		<tr>
 			<td align="left" valign="middle">

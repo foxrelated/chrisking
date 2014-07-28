@@ -11,31 +11,23 @@
 							<a href="{$sVideoLink}">{img path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle" max_width=600 max_height=300 suffix='_600'}</a>
 						</td>
 					</tr>
+					
 					<tr>
-						<td valign="top">
-							Hello {$sShareName}!<br />
-						</td>
-						<td valign="top" style="text-align:center;">
-							<a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">Take a {$aVideo.year} {$aVideo.make} {$aVideo.model} Test Drive</a><br />
-						</td>
-					</tr>
-					<tr>
-						<td valign="top">
+						<td valign="top" width="55%">
+							Hello {$sShareName}!<br /><br />
 							Take a <a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">{$aVideo.year} {$aVideo.make} {$aVideo.model} Video Test Drive</a> from {$aDvs.dealer_name} -- It's fun, easy, and free!<br><br>
 							Your friend {$sMyShareName} has this to say:<br />
 							"{$sShareMessage}"
 							<br />
 							<br />
 							Drive Safely!<br />
-							&nbsp;{$aDvs.dealer_name}</td>
-						<td valign="top">
-							<div style="position: relative;width:300px;overflow:hidden">
+							{$aDvs.dealer_name}</td>
+						<td valign="top" width="45%" align="center" valign="middle">
+						<a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">Take a {$aVideo.year} {$aVideo.make} {$aVideo.model} Test Drive</a><br /><br />
+							<div style="position: relative;width:160px;overflow:hidden">
 								<a href="{$sVideoLink}">
-									<div>
-										{img path='core.url_file' file='brightcove/'.$aVideo.video_still_image style="vertical-align:middle" max_width=300 max_height=300}
-									</div>
-									<div style="height: 100%;left: 0;position: absolute;top: 0;width: 300px;">
-										<img src="{$sImagePath}play_btn_75.png" style="display:block;margin-left: auto;margin-right: auto;padding-top: 40px;"/>
+									<div style="display: block; width: 160px; height: 90px; background: url({img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image return_url=true}) scroll no-repeat top left transparent;">
+                                        <img src="{$sImagePath}play_btn_50.png" style="display:block; margin: 0 auto; padding-top: 20px;"/>
 									</div>
 								</a>
 							</div>
