@@ -172,9 +172,21 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 			$aShareReport['ctr'][$aService['service']] = round($serviceTotalClicked / $aShareReport['total_generated'][$aService['service']], 2) * 100;
 		}
 
+		//avg ctr %
+		//if ($aShareReport['total_generated']['total'] != 0)
+		//{
+		//	$aShareReport['ctr']['total'] = round($aShareReport['total_clicked']['total'] / //$aShareReport['total_generated']['total'], 2) * 100;
+		//}
+		//else
+		//{
+		//	$aShareReport['ctr']['total'] = 0;
+		//}
+		
+		//response rate
 		if ($aShareReport['total_generated']['total'] != 0)
 		{
-			$aShareReport['ctr']['total'] = round($aShareReport['total_clicked']['total'] / $aShareReport['total_generated']['total'], 2) * 100;
+			$aShareReport['ctr']['total'] = round($aShareReport['total_generated']['total'] / 
+			$aShareReport['total_clicked']['total'] , 2);
 		}
 		else
 		{

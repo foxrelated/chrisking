@@ -73,8 +73,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</td>
 		<td align="center" valign="middle" width="33%">
 			<div id="totals_box">
-				<div class="stat_label_big">{$aShareReport.ctr.total}&#37;</div>
-				<div class="stat_label_small">Average CTR</div>
+				<div class="stat_label_big">{$aShareReport.ctr.total}x</div>
+				<div class="stat_label_small">Response Rate</div>
 			</div>
 		</td>
 	</tr>
