@@ -234,7 +234,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		
 		<tr>
 			<td class="dvs_add_td_label">
-				{phrase var='dvs.url'}:
+				Preview{*phrase var='dvs.url'*}:
 			</td>
 			<td colspan="2" class="dvs_add_td">
 				<span id="title_url_display">&nbsp;{if $bIsEdit}{if $bSubdomainMode}{url link=$aForms.title_url}{else}{url link='dvs'}{$aForms.title_url}{/if}{else}{phrase var='dvs.please_enter_a_vanity_url_above'}{/if}</span>
@@ -348,7 +348,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2" class="dvs_add_td">
+			<td colspan="2" class="dvs_add_td" style="width:200px;">
 				{editor id='welcome' rows='5'}
 			</td>
 			<td class="dvs_add_td">
