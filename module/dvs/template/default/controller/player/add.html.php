@@ -397,6 +397,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</li>
 			</ol>
 		</fieldset>
+		<br><p><i>Note: Custom Overlays are not HTML5 compatible so they will not work on mobile or tablet devices.</i></p>
 	</div>
 	{/if}
 	<br>
