@@ -11,7 +11,6 @@ if (!window.WTVDVS) {
 
             var sIframe = '<iframe frameborder="0" width="100%" height="1000px" src="' + params.iframeUrl + 'parent_' + this.encode_base64(encodeURIComponent(sParentUrl)) + '/maxwidth_' + iMaxWidth + '/"></iframe>';
 
-
             if (wrapper) {
                 wrapper.innerHTML = sIframe, wrapper.style.width = '100%', wrapper.style.height = '100%', wrapper.style.padding = 0, wrapper.style.display = 'block'; wrapper.style.maxWidth = iMaxWidth;
             } else if (window.console && console.error)console.error('DVS: Could not find DOM element with ID: ' + id)
