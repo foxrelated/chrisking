@@ -112,8 +112,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			{else}
 			<input type="hidden" name="val[player_type]" value="0" />
 			{/if}
-			{if Phpfox::isAdmin()}
-			<li>
+			
+			<li {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
 				<label for="makes">{phrase var='dvs.make'}:</label>
 				<select name="val[makes]" id="makes" onchange="$.ajaxCall('dvs.getFeaturedModels', 'aMakes=' + $('#makes').val());" multiple="multiple">
 					{foreach from=$aMakes item=aMake}
@@ -124,7 +124,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<input type="hidden" value="{if $bIsEdit}{if isset($aMake.selected) && $aMake.selected}1{else}0{/if}{else}0{/if}" name="val[selected_makes][{$aMake.make}]" id="make_select_{$aMake.make}" class="player_make_select"/>
 				{/foreach}
 			</li>
-			{/if}
+			
 			<li>
 				<label for="featured_model">{phrase var='dvs.featured_model'}:</label>
 				<div id="dvs_vehicle_select_model_container">
