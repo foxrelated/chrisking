@@ -1,0 +1,277 @@
+/* 
+.dvs_add_td_label {
+	padding-top: .5em;
+	padding-bottom: .5em;
+	padding-right: 1em;
+}
+
+.dvs_add_td{
+	padding-top: .5em;
+	padding-bottom: .5em;
+	padding-right: 1em;
+	
+}
+
+.dvs_add_table{
+	border-collapse: collapse;
+}
+ */
+
+
+.phrase_override_container{
+	margin-bottom:10px;
+}
+
+.phrase_override_label{
+	float:left;
+	width:270px;
+	padding-top: 4px;
+	overflow: hidden;
+    white-space: nowrap;
+}
+
+.phrase_override_row {
+    border: 1px solid #D5D5D5;
+    margin: 1px;
+    padding: 10px 5px;
+}
+
+.phrase_override_container{
+    background: none repeat scroll 0 0 #FAFAFA;	
+}
+
+.default_phrase_override_container{
+    background: none repeat scroll 0 0 #F0F0F0;	
+}
+.phrase_override_input{
+	color:#000000;
+	width: 680px;
+}
+
+.phrase_override_default_input{
+	color: #666666;
+	width: 665px;
+}
+
+.phrase_override_default_label {
+    color: #666666;
+    padding-left: 15px;
+}
+
+#phrase_override_toggle_link{
+	font-size:1.5em;
+}
+
+#dvs_settings_save_button_container{
+	margin-top:10px;
+}
+
+.dvs_sales_team_table{
+	width:400px;
+}
+
+.dvs_sales_team_table tr{
+	border:1px solid #cccccc;
+	padding:5px;
+}
+
+.dvs_sales_team_table th{
+	padding:5px;
+	font-weight:bold;
+	text-align: left;
+}
+
+.dvs_sales_team_table td{
+	text-align:left;
+	padding:5px;
+}
+
+#sales_team_members{
+	padding:5px 0 20px 10px;
+}
+
+.custom_overlay_extras_label_container{
+	margin-left:40px;
+}
+
+.m_top_left_5{
+	margin:5px 0 0 5px;;
+}
+
+.underline_tr{   
+	border-bottom:1px solid #CCCCCC;
+}
+
+.override_input_label_td{
+	text-align:right;
+}
+
+.m_left_5{
+	margin-left:5px;
+}
+
+/* new styling */
+
+h1 {
+	font-size: 28px;
+	margin-bottom: 20px;
+}
+
+form#add_dvs {
+	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+	counter-reset: fieldsets;
+	padding: 20px;
+}
+
+form#add_dvs fieldset {
+	border: none;
+	margin-bottom: 10px;
+}
+
+form#add_dvs fieldset:last-of-type {
+	margin-bottom: 0;
+}
+
+form#add_dvs h3 {
+	color: #333;
+	font-size: 18px;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+form#add_dvs legend {
+	color: #333;
+	font-size: 14px;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+/* 
+.color_selectors legend:before {
+	content: "Step " counter(fieldsets) ": ";
+	counter-increment: fieldsets;
+}
+ */
+
+form#add_dvs fieldset fieldset legend {
+	color: #111111;
+	font-size: 13px;
+	font-weight: normal;
+	padding-bottom: 0;
+}
+
+form#add_dvs ol li {
+	background: #999999;
+	background: rgba(194,194,194,.1);
+	/*border-color: #333333;
+	border-color: rgba(194,194,194,.9);
+	border-style: solid;
+	border-width: 2px;*/
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+	line-height: 30px;
+	list-style: none;
+	padding: 5px 10px;
+	margin-bottom: 2px;
+}
+
+/* 
+form#add_dvs ol li a {
+	background: #fafafa;
+	background: rgba(250,250,250,.9);
+	border-color: #c8c8c8;
+	border-color: rgba(200,200,200,.9);
+	border-style: solid;
+	border-width: 2px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+	line-height: 30px;
+	list-style: none;
+	padding: 5px 10px;
+	margin-bottom: 2px;
+}
+ */
+
+form#add_dvs ol ol li {
+	background: none;
+	border: none;
+	float: left;
+}
+
+form#add_dvs label {
+	float: left;
+	font-size: 13px;
+	width: 150px;
+}
+
+form#add_dvs label.inline_radio {
+	float: none;
+	display: inline-block;
+	width: inherit;
+}
+
+form#add_dvs fieldset fieldset label {
+	background:none no-repeat left 50%;
+	line-height: 20px;
+	padding: 0 0 0 30px;
+	width: auto;
+}
+
+form#add_dvs fieldset fieldset label:hover {
+	cursor: pointer;
+}
+
+form#add_dvs input:not([type=radio]):not([type=checkbox]),
+form#add_dvs textarea {
+	background: #ffffff;
+	border: none;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px;
+	font: Arial 13px;
+	outline: none;
+	padding: 5px;
+	width: 400px;
+}
+
+form#add_dvs input:not([type=submit]):not([type=button]):focus,
+form#add_dvs textarea:focus {
+	background:#999;
+	color:#fff;
+}
+
+form#add_dvs input[type=radio] {
+	margin-right: 5px;
+}
+
+form#add_dvs input[type=radio].inline_radio {
+	margin-right: 20px;
+}
+
+/* 
+.colorSelector {
+	display: inline-block;
+}
+ */
+
+.hidden
+{
+	display: none;
+}
+
+.button {
+	margin-top: 10px;
+	padding: 5px;
+}
+
+
+
