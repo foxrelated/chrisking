@@ -158,6 +158,7 @@ class Imagesize_Service_Imagesize extends Phpfox_Service {
 
     public function createImage($iBrightcoveId, $bIsUpdate = false) {
         $aSql = array();
+        $oFile = Phpfox::getLib('file');
         $sFileName = $this->upload($iBrightcoveId, Phpfox::getParam('brightcove.dir_image'), $bIsUpdate);
 
         if($sFileName) {
@@ -169,6 +170,12 @@ class Imagesize_Service_Imagesize extends Phpfox_Service {
             foreach ($aSizes as $iSize) {
                 $oImage->createThumbnail(Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, ''), Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_' . $iSize), $iSize, $iSize);
             }
+
+            /** BUILD EMAIL THUMBNAIL IMAGE */
+            $oImage->createThumbnail(Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, ''), Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_300'), 300, 300);
+            $this->createEmailThumb(Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_300'), Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_email'));
+
+
             $aSql['is_resize'] = 1;
         } else {
             $aSql['is_resize'] = 1;
@@ -205,6 +212,64 @@ class Imagesize_Service_Imagesize extends Phpfox_Service {
             ->where('is_resize = 0')
             ->execute('getRow');
         return $aRow;
+    }
+
+    public function createEmailThumb($sFile, $sNewFile) {
+        $oFile = Phpfox::getLib('file');
+        $oStamp = imagecreatefrompng(PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'static' . PHPFOX_DS . 'image' .PHPFOX_DS . 'play_btn_50.png');
+
+        if ($this->_sExt) {
+            if(!$aMeta = $oFile->getMeta($sFile)) {
+                return false;
+            }
+            $this->_sExt = $aMeta['fileformat'];
+        }
+
+        if (!PHPFOX_SAFE_MODE) {
+            @ini_set('memory_limit', '500M');
+        }
+
+        switch ($this->_sExt)
+        {
+            case 'gif':
+                $oImage = @imageCreateFromGif($sFile);
+                break;
+            case 'png':
+                $oImage = @imageCreateFromPng($sFile);
+                break;
+            default:
+                $oImage = @imageCreateFromJpeg($sFile);
+                break;
+        }
+
+        $iImageW = imagesx($oImage);
+        $iImageH = imagesy($oImage);
+
+        $iStampW = imagesx($oStamp);
+        $iStampH = imagesy($oStamp);
+
+        @imagecopy($oImage, $oStamp, (int)(($iImageW - $iStampW) / 2), (int)(($iImageH - $iStampH) / 2), 0, 0, $iStampW, $iStampH);
+
+        if (file_exists($sNewFile))
+        {
+            if (@unlink($sNewFile) != true)
+            {
+                @rename($sNewFile, $sNewFile . '_' . rand(10,99));
+            }
+        }
+
+        switch ($this->_sExt) {
+            case 'gif':
+                @imagegif($oImage, $sNewFile);
+                break;
+            case 'png':
+                @imagepng($oImage, $sNewFile);
+                break;
+            default:
+                @imagejpeg($oImage, $sNewFile);
+                break;
+        }
+        imagedestroy($oImage);
     }
 }
 ?>
