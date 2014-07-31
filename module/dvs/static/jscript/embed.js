@@ -13,8 +13,7 @@ if (!window.WTVDVS) {
 	            	sWrapperWidth = '980px';
 	            }
             }
-            
-            
+
             delete params.height;
             delete params.width;
 

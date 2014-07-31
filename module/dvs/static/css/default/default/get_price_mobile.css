@@ -40,3 +40,7 @@
 	width:95%;
 }
 
+#contact_dealer .required
+{
+    border-color: #FF0000;
+}

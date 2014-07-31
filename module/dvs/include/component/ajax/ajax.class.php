@@ -1102,6 +1102,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 	public function sendShareEmail()
 	{
+        Phpfox::getLib('setting')->setParam('brightcove.dir_image', PHPFOX_DIR_FILE . 'pic' . PHPFOX_DS . 'brightcove' . PHPFOX_DS);
+        Phpfox::getLib('setting')->setParam('brightcove.url_image', Phpfox::getParam('core.url_pic') . 'brightcove/');
+
 		$aVals = Phpfox::getLib('request')->getArray('val');
 		$bIsError = false;
 
@@ -1206,6 +1209,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
     public function sendShareEmailIframe()
     {
+        Phpfox::getLib('setting')->setParam('brightcove.dir_image', PHPFOX_DIR_FILE . 'pic' . PHPFOX_DS . 'brightcove' . PHPFOX_DS);
+        Phpfox::getLib('setting')->setParam('brightcove.url_image', Phpfox::getParam('core.url_pic') . 'brightcove/');
+
         $aVals = Phpfox::getLib('request')->getArray('val');
         $bIsError = false;
 
@@ -1233,13 +1239,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         {
             //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_friends_name'));
             $this->call('$("#share_email_dealer #share_email").addClass("required");');
-            $bIsError = true;
-        }
-
-        if (!$aVals['share_message'])
-        {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_friends_name'));
-            $this->call('$("#share_email_dealer #share_message").addClass("required");');
             $bIsError = true;
         }
 
