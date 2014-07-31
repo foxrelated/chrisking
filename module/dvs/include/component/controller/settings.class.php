@@ -87,7 +87,8 @@ class Dvs_Component_Controller_Settings extends Phpfox_Component {
 
 		$this->template()
 			->setHeader(array(
-				'add.css' => 'module_dvs',))
+				//'add.css' => 'module_dvs',
+				'settings.css' => 'module_dvs',))
 			->assign(array(
 				'aForms'                   => $aDvs,
 				'connectors'               => $connectors,
