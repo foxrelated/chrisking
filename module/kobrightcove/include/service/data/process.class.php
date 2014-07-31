@@ -68,6 +68,10 @@ class Kobrightcove_Service_Data_Process extends Phpfox_Service {
 			'video_still_image' => ($sVideoStillImage ? $sVideoStillImage : '')
 		));
 
+        if($iKoId && Phpfox::isModule('imagesize')) {
+            Phpfox::getService('imagesize')->createImage($iKoId);
+        }
+
 		return $iKoId;
 	}
 
@@ -108,7 +112,7 @@ class Kobrightcove_Service_Data_Process extends Phpfox_Service {
 		$sVideoStillImage = Phpfox::getService('kobrightcove.image')->download($aBcVideo['videoStillURL'], $aCurrentVideo['video_title_url'] . '_still');
 
 		// Update the db
-		return $this->database()->update($this->_tVideos, array(
+		$iId = $this->database()->update($this->_tVideos, array(
 				'id' => $aBcVideo['id'],
 				'name' => $aBcVideo['name'],
 				'adKeys' => $aBcVideo['adKeys'],
@@ -135,6 +139,12 @@ class Kobrightcove_Service_Data_Process extends Phpfox_Service {
 				'thumbnail_image' => ($sThumbnailImage ? $sThumbnailImage : ''),
 				'video_still_image' => ($sVideoStillImage ? $sVideoStillImage : '')
 				), 'ko_id = ' . (int) $aCurrentVideo['ko_id']);
+
+        if($iId && Phpfox::isModule('imagesize')) {
+            Phpfox::getService('imagesize')->createImage($aBcVideo['id'], true);
+        }
+
+        return $iId;
 	}
 
 
