@@ -216,7 +216,7 @@ class Imagesize_Service_Imagesize extends Phpfox_Service {
 
     public function createEmailThumb($sFile, $sNewFile) {
         $oFile = Phpfox::getLib('file');
-        $oStamp = imagecreatefrompng(PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'static' . PHPFOX_DS . 'image' .PHPFOX_DS . 'play_btn_50.png');
+        $oStamp = imagecreatefrompng(PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'static' . PHPFOX_DS . 'image' .PHPFOX_DS . 'play_btn_75.png');
 
         if ($this->_sExt) {
             if(!$aMeta = $oFile->getMeta($sFile)) {
