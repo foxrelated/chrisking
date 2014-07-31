@@ -6,13 +6,21 @@ if (!window.WTVDVS) {
             var height = params.height, width = params.width;
             var wrapper = document.getElementById(params.id);
             var iMaxWidth = wrapper.offsetWidth;
+            var sWrapperWidth = '100%';
+            if(iMaxWidth == 0) {
+                iMaxWidth = window.innerWidth;
+                if (iMaxWidth > 980) {
+                    sWrapperWidth = '980px';
+                }
+            }
+
             delete params.height;
             delete params.width;
 
             var sIframe = '<iframe frameborder="0" width="100%" height="1000px" src="' + params.iframeUrl + 'parent_' + this.encode_base64(encodeURIComponent(sParentUrl)) + '/maxwidth_' + iMaxWidth + '/"></iframe>';
 
             if (wrapper) {
-                wrapper.innerHTML = sIframe, wrapper.style.width = '100%', wrapper.style.height = '100%', wrapper.style.padding = 0, wrapper.style.display = 'block'; wrapper.style.maxWidth = iMaxWidth;
+                wrapper.innerHTML = sIframe, wrapper.style.width = sWrapperWidth, wrapper.style.height = '100%', wrapper.style.padding = 0, wrapper.style.display = 'block'; wrapper.style.maxWidth = iMaxWidth;
             } else if (window.console && console.error)console.error('DVS: Could not find DOM element with ID: ' + id)
         },
 
