@@ -58,7 +58,8 @@ class Dvs_Component_Controller_Customize extends Phpfox_Component {
 				'<script type="text/javascript">var sFirstVideoTitleUrl = "";</script>',
 				'player.js' => 'module_dvs',
 				'jcarousellite.js' => 'module_dvs',
-				'add.css' => 'module_dvs',
+				//'add.css' => 'module_dvs',
+				'settings.css' => 'module_dvs',
 			))
 			->assign(array(
 				'iDvsId' => $iDvsId,
