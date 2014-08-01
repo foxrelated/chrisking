@@ -58,6 +58,14 @@ class Dvs_Component_Controller_Dvs_Sitemap extends Phpfox_Component {
 			$sDealerSeoTags .= '<video:tag>' . trim($sTag) . '</video:tag>';
 		}
 
+        if(!$aDvs['parent_url']) {
+            $aDvs['parent_url'] = $sDvsUrl;
+        }
+
+        if(!$aDvs['parent_video_url']) {
+            $aDvs['parent_video_url'] = $sDvsUrl . 'WTVDVS_VIDEO_TEMP/';
+        }
+
 		echo '<url>' . "\n" .
 		'<loc>' . $aDvs['parent_url'] . '</loc>' . "\n" .
 		'<lastmod>' . date('Y-m-d', $aDvs['dvs_time_stamp']) . '</lastmod>' . "\n" .
