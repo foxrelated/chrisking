@@ -82,7 +82,10 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
         else
         {
             if ($bIsIframe) {
-                list($sOverride, $sNewParentUrl) = Phpfox::getService('dvs.iframe')->parseUrl($sParentUrl);
+                list($sOverride, $sNewParentUrl, $sOriginParentUrl) = Phpfox::getService('dvs.iframe')->parseUrl($sParentUrl);
+                if(($aDvs['parent_url'] != $sOriginParentUrl) || ($aDvs['parent_video_url'] != $sNewParentUrl)) {
+                    Phpfox::getService('dvs.iframe')->updateSitemapUrl($aDvs['dvs_id'], $sNewParentUrl, $sOriginParentUrl);
+                }
             } else {
                 $sOverride = ($bSubdomainMode ? $this->request()->get('req3') : $this->request()->get('req4'));
                 $sNewParentUrl = $sParentUrl . 'WTVDVS_VIDEO_TEMP';

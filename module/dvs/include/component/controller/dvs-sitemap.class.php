@@ -59,7 +59,7 @@ class Dvs_Component_Controller_Dvs_Sitemap extends Phpfox_Component {
 		}
 
 		echo '<url>' . "\n" .
-		'<loc>' . $sDvsUrl . '</loc>' . "\n" .
+		'<loc>' . $aDvs['parent_url'] . '</loc>' . "\n" .
 		'<lastmod>' . date('Y-m-d', $aDvs['dvs_time_stamp']) . '</lastmod>' . "\n" .
 		'<changefreq>daily</changefreq>' . "\n" .
 		'</url>' . "\n";
@@ -71,7 +71,7 @@ class Dvs_Component_Controller_Dvs_Sitemap extends Phpfox_Component {
 				$aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aVideo);
 
 				echo '<url>' . "\n" .
-				'<loc>' . $sDvsUrl . $aVideo['video_title_url'] . '</loc>' . "\n" . '<video:video>' . "\n" .
+				'<loc>' . str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $aDvs['parent_video_url']) . '</loc>' . "\n" . '<video:video>' . "\n" .
 				'<video:thumbnail_loc>' . Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.brightcove') . $aVideo['thumbnail_image'] . '</video:thumbnail_loc>' . "\n" .
 				
 				'<video:title>' . Phpfox::getLib('parse.input')->clean($aDvs['phrase_overrides']['override_video_name_sitemaps'], 100) . '</video:title>' . "\n" .
@@ -93,8 +93,8 @@ class Dvs_Component_Controller_Dvs_Sitemap extends Phpfox_Component {
 				'<video:duration>' . (int) ($aVideo['length'] / 1000) . '</video:duration>' . "\n" .
 				'<video:rating>5.0</video:rating>' . "\n" .
 				'<video:family_friendly>yes</video:family_friendly>' . "\n" .
-				'<video:gallery_loc title="' . $aDvs['dealer_name'] . '">' . $sDvsUrl . '</video:gallery_loc>' . "\n" .
-				'<video:uploader info="' . $sDvsUrl . '">' . $aDvs['dealer_name'] . '</video:uploader>' . "\n" .
+				'<video:gallery_loc title="' . $aDvs['dealer_name'] . '">' . $aDvs['parent_url'] . '</video:gallery_loc>' . "\n" .
+				'<video:uploader info="' . $aDvs['parent_url'] . '">' . $aDvs['dealer_name'] . '</video:uploader>' . "\n" .
 				'</video:video>' . "\n" . '</url>' . "\n";
 			}
 		}
