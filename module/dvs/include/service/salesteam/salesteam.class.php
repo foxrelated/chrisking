@@ -185,8 +185,7 @@ class Dvs_Service_Salesteam_Salesteam extends Phpfox_Service {
 		//response rate
 		if ($aShareReport['total_generated']['total'] != 0)
 		{
-			$aShareReport['ctr']['total'] = round($aShareReport['total_generated']['total'] / 
-			$aShareReport['total_clicked']['total'] , 2);
+			$aShareReport['ctr']['total'] = round($aShareReport['total_clicked']['total'] / $aShareReport['total_generated']['total'], 2);
 		}
 		else
 		{
