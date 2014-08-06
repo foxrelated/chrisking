@@ -319,13 +319,12 @@ background-color: #c35f54;
 	</div>
 {/if}
 
+
 <div id="add_dvs_button" {if !$bCanAddDvss}style="display:none;"{/if}>
 	<a href="{url link='dvs.settings'}" class="button-link" style="width:90px;height:10px;padding:2px 2px 15px 2px;margin:0px;">{phrase var='dvs.add_dvs'}</a>
 	<div class="main_break"></div>
 	<div class="main_break"></div>
 </div>
-
-
 
 {if $aDvss}
 	<div id="dvss" {*if $bCanAddDvss}class="separate"{/if*} style="margin:15px 0px 0px 0px;">
@@ -374,9 +373,10 @@ background-color: #c35f54;
 								 
 							  </ul>
 						   </li>
+						   {if Phpfox::isAdmin()}
 						   <li class="active"><a href="#" onclick="if (confirm('{phrase var='core.are_you_sure' phpfox_squote=true}')) {left_curly} $(this).parents('#dvss:first').find('#dvs_{$aDvs.dvs_id}:first').hide('slow'); $.ajaxCall('dvs.deleteDvs', 'dvs_id={$aDvs.dvs_id}');{right_curly}"><span>Delete</span></a>
-							  
 						   </li>
+						   {/if}
 						</ul>
 						</div>
 					</td>

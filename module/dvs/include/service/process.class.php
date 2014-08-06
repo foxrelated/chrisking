@@ -68,7 +68,8 @@ class Dvs_Service_Process extends Phpfox_Service {
 			'banner_toggle' => $this->preParse()->clean($aDvs['banner_toggle'], 1),
 			'footer_toggle' => $this->preParse()->clean($aDvs['footer_toggle'], 1),
 			'topmenu_toggle' => $this->preParse()->clean($aDvs['topmenu_toggle'], 1),
-			'gallery_target_setting' => $this->preParse()->clean($aDvs['gallery_target_setting'], 1)
+			'gallery_target_setting' => $this->preParse()->clean($aDvs['gallery_target_setting'], 1),
+            'sitemap_parent_url' => $this->preParse()->clean($aDvs['sitemap_parent_url'], 1)
 		));
 
 		$this->database()->insert($this->_sTextTable, array(
@@ -118,7 +119,8 @@ class Dvs_Service_Process extends Phpfox_Service {
 			'banner_toggle' => $this->preParse()->clean($aDvs['banner_toggle'], 1),
 			'footer_toggle' => $this->preParse()->clean($aDvs['footer_toggle'], 1),
 			'topmenu_toggle' => $this->preParse()->clean($aDvs['topmenu_toggle'], 1),
-			'gallery_target_setting' => $this->preParse()->clean($aDvs['gallery_target_setting'], 1)
+			'gallery_target_setting' => $this->preParse()->clean($aDvs['gallery_target_setting'], 1),
+            'sitemap_parent_url' => $this->preParse()->clean($aDvs['sitemap_parent_url'], 1)
 			), 'dvs_id = ' . (int) $aDvs['dvs_id']);
 
 		if (Phpfox::isAdmin())

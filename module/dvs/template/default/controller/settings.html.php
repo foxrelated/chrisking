@@ -181,24 +181,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <form method="post" action="" id="import_dvs" name="import_dvs">
 </form>
 <form method="post" action="{url link='dvs.index'}" id="add_dvs" name="add_dvs">
-	<table class="dvs_add_table">
-		<tr>
-			<td class="dvs_add_td_label">
-				{required}{phrase var='dvs.dealer_name'}:
-			</td>
-			<td class="dvs_add_td">
+	<fieldset>
+		<ol>
+			<li>
+				<label for="dealer_name">{required}{phrase var='dvs.dealer_name'}:</label>
 				<input type="text" name="val[dealer_name]" value="{value type='input' id='dealer_name'}" id="dealer_name" size="60" maxlength="60" required />
-			</td>
-			<td class="dvs_add_td">
-				{phrase var='dvs.dealer_name_phrase'}
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{required}{phrase var='dvs.showroom_name'}:
-			</td>
-			<td class="dvs_add_td">
+				{*phrase var='dvs.dealer_name_phrase'*}
+			</li>
+			<li>
+				<label for="showroom_name">{required}{phrase var='dvs.showroom_name'}:</label>
 				{if !$bIsEdit}
 				<input type="text"  size="60" maxlength="60" required name="val[dvs_name]" value="{value type='input' id='dvs_name'}" id="dvs_name" />
 				{/if}
@@ -206,295 +197,198 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<input type="text" size="60" maxlength="60" required name="val[dvs_name]" value="{value type='input' id='dvs_name'}" id="dvs_name" />
 				{/if}
 				{if $bIsEdit && !Phpfox::isAdmin()}
-				<p>&nbsp;{$aForms.dvs_name}</p>
+				&nbsp;{$aForms.dvs_name}
 				{/if}
-			</td>
-			<td class="dvs_add_td">
-				{phrase var='dvs.showroom_name_phrase'}
-			</td>
-		</tr>
-		
-		{if !$bIsEdit || Phpfox::isAdmin()}
-		<tr>
-			<td class="dvs_add_td_label">
-				{required}{phrase var='dvs.vanity_url'}:
-			</td>
-			<td class="dvs_add_td">
+				{*phrase var='dvs.showroom_name_phrase'*}
+			</li>
+	
+			{if !$bIsEdit || Phpfox::isAdmin()}
+			<li>
+				<label for="vanity_url">{required}{phrase var='dvs.vanity_url'}:</label>
 				{if $bIsEdit}
 				<input type="text" size="60" maxlength="60" required name="val[vanity_url]" value="{value type='input' id='title_url'}" id="vanity_url" />
 				{else}
 				<input type="text" size="60" maxlength="60" required name="val[vanity_url]" value="{value type='input' id='vanity_url'}" id="vanity_url" />
 				{/if}
-			</td>
-			<td class="dvs_add_td">
-			{phrase var='dvs.vanity_url_phrase'}
-			</td>
-		</tr>
-		{/if}
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.url'}:
-			</td>
-			<td colspan="2" class="dvs_add_td">
+				{*phrase var='dvs.vanity_url_phrase'*}	
+			</li>
+			{/if}
+	
+			<li>
+				<label for="preview_url">Preview URL{*phrase var='dvs.url'*}:</label>
 				<span id="title_url_display">&nbsp;{if $bIsEdit}{if $bSubdomainMode}{url link=$aForms.title_url}{else}{url link='dvs'}{$aForms.title_url}{/if}{else}{phrase var='dvs.please_enter_a_vanity_url_above'}{/if}</span>
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{required}{phrase var='dvs.address'}:
-			</td>
-			<td class="dvs_add_td">
+			</li>
+	
+			<li>
+				<label for="address">{required}{phrase var='dvs.address'}:</label>
 				<input type="text" name="val[address]" value="{value type='input' id='address'}" id="address"  size="60" maxlength="60" required />
-			</td>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.address_phrase'}
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{required}{phrase var='dvs.city'}:
-			</td>
-			<td colspan="2" class="dvs_add_td">
+				{*phrase var='dvs.address_phrase'*}
+			</li>
+	
+			<li>
+				<label for="city">{required}{phrase var='dvs.city'}:</label>
 				<input type="text" name="val[city]" value="{value type='input' id='city'}" id="city" size="60" maxlength="60" required />
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{required}State:
-			</td>
-			<td colspan="2" class="dvs_add_td">
+			</li>
+	
+			<li>
+				<label for="state">{required}State:</label>
 				{if $bIsEdit}
 					{module name='core.country-child' country_child_id=$aForms.country_child_id}
 				{else}
 					{module name='core.country-child'}
 				{/if}
-			</td>
-		</tr>
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.zip_code'}:
-			</td>
-			<td colspan="2" class="dvs_add_td">
+			</li>
+	
+			<li>
+				<label for="zip_code">{phrase var='dvs.zip_code'}:</label>
 				<input type="text" name="val[postal_code]" value="{value type='input' id='postal_code'}" id="postal_code" size="60" maxlength="5" />
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.contact_phone'}:
-			</td>
-			<td class="dvs_add_td">
+			</li>
+	
+			<li>
+				<label for="contact_phone">{phrase var='dvs.contact_phone'}:</label>
 				<input type="tel" name="val[phone]" size="60" maxlength="13" value="{value type='input' id='phone'}" id="phone" />
-			</td>
-			<td class="dvs_add_td">
-				{phrase var='dvs.phone_phrase'}
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.contact_email'}:
-			</td>
-			<td class="dvs_add_td">
+				{*phrase var='dvs.phone_phrase'*}
+			</li>
+	
+			<li>
+				<label for="contact_email">{phrase var='dvs.contact_email'}:</label>
 				<input type="email" name="val[email]" value="{value type='input' id='email'}" id="email"  size="60" maxlength="200" />
-			</td>
-			<td class="dvs_add_td">
-				{phrase var='dvs.contact_email_phrase'}
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.website_url'}:
-			</td>
-			<td class="dvs_add_td">
+				{*phrase var='dvs.contact_email_phrase'*}
+			</li>
+	
+			<li>
+				<label for="website_url">{phrase var='dvs.website_url'}:</label>
 				<input type="url" name="val[url]" value="{value type='input' id='url'}" id="url" size="60" maxlength="300"/>
-			</td>
-			<td class="dvs_add_td">
-				{phrase var='dvs.website_url_phrase'}
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.inventory_url'}:
-			</td>
-			<td class="dvs_add_td">
+				{*phrase var='dvs.website_url_phrase'*}
+			</li>
+	
+			<li>
+				<label for="inventory_url">{phrase var='dvs.inventory_url'}:</label>
 				<input type="url" name="val[inventory_url]" value="{value type='input' id='inventory_url'}" id="inventory_url" size="60" maxlength="300"/>
-			</td>
-			<td class="dvs_add_td">
-				{phrase var='dvs.inventory_url_phrase'}
-			</td>
-		</tr>
-
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.dealer_specials_url'}:
-			</td>
-			<td colspan="2" class="dvs_add_td">
+				{*phrase var='dvs.inventory_url_phrase'*}
+			</li>
+	
+			<li>
+				<label for="dealer_specials_url">{phrase var='dvs.dealer_specials_url'}:</label>
 				<input type="url" name="val[specials_url]" value="{value type='input' id='specials_url'}" id="specials_url" size="60" maxlength="300" />
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" class="dvs_add_td">
-				{phrase var='dvs.welcome_greeting_max_char_max' max=$iWelcomeGreetingMaxChars}:
-			</td>
-			<td class="dvs_add_td">
-				&nbsp;
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" class="dvs_add_td">
+			</li>
+	
+			<li>
+				<label for="welcome_greeting" style="width:250px;">{phrase var='dvs.welcome_greeting_max_char_max' max=$iWelcomeGreetingMaxChars}:</label>
 				{editor id='welcome' rows='5'}
-			</td>
-			<td class="dvs_add_td">
-				{phrase var='dvs.welcome_message_phrase'}
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.custom_seo_tags'}:
-			</td>
-			<td class="dvs_add_td">
+				{*phrase var='dvs.welcome_message_phrase'*}
+			</li>
+	
+			<li>
+				<label for="custom_seo_tags">{phrase var='dvs.custom_seo_tags'}:</label>
 				<input type="text" name="val[seo_tags]" value="{value type='input' id='seo_tags'}" id="seo_tags" size="60" maxlength="100" />
-			</td>
-			<td class="dvs_add_td">
-				{phrase var='dvs.seo_tags_phrase'}
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="dvs_add_td_label">
-				{phrase var='dvs.google_analytics_id'}:
-			</td>
-			<td colspan="2" class="dvs_add_td">
+				&nbsp;Note: Separate tags with commas{*phrase var='dvs.seo_tags_phrase'*}
+			</li>
+	
+			<li>
+				<label for="google_analytics_id">{phrase var='dvs.google_analytics_id'}:</label>
 				<input type="text" name="val[dvs_google_id]" value="{value type='input' id='dvs_google_id'}" id="dvs_google_id" size="60" maxlength="20" />
-			</td>
-		</tr>
-	</table>
-	{* phpmasterminds added below code for setting on header and footer remover *}
-	{if Phpfox::isAdmin()}
-	<br><h1>Admin Only Settings</h1>
-	<div class="inventory_settings_wrapper">
+			</li>
+		</ol>
+		</fieldset>
+
+		{if Phpfox::isAdmin()}
+		<h1>Admin Only Settings</h1>
 		<h3>Layout Toggles</h3>
-		<table class="dvs_add_table">
-			<tr>
-				<td class="dvs_add_td_label">
-					{phrase var='dvs.banner_toggle'}:
-				</td>
-				<td colspan="2" class="dvs_add_td">
-					<input type="radio" name="val[banner_toggle]" value="1" {if $aForms.banner_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
-					<input type="radio" name="val[banner_toggle]" value="0" {if $aForms.banner_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
-				</td>
-			</tr>
-			<tr>
-				<td class="dvs_add_td_label">
-					{phrase var='dvs.footer_toggle'}:
-				</td>
-				<td colspan="2" class="dvs_add_td">
-					<input type="radio" name="val[footer_toggle]" value="1" {if $aForms.footer_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
-					<input type="radio" name="val[footer_toggle]" value="0" {if $aForms.footer_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
-				</td>
-			</tr>
-			<tr>
-				<td class="dvs_add_td_label">
-					{phrase var='dvs.top_menu_toggle'}:
-				</td>
-				<td colspan="2" class="dvs_add_td">
-					<input type="radio" name="val[topmenu_toggle]" value="1" {if $aForms.topmenu_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
-					<input type="radio" name="val[topmenu_toggle]" value="0" {if $aForms.topmenu_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
-				</td>
-			</tr>
-		</table>
-	</div>
+		<fieldset>
+		<ol>
+			<li>
+				<label for="banner_toggle">{phrase var='dvs.banner_toggle'}:</label>
+				<input type="radio" name="val[banner_toggle]" value="1" {if $aForms.banner_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+				<input type="radio" name="val[banner_toggle]" value="0" {if $aForms.banner_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}		
+			</li>
 	
-	<div class="inventory_settings_wrapper">
+			<li>
+				<label for="footer_toggle">{phrase var='dvs.footer_toggle'}:</label>
+				<input type="radio" name="val[footer_toggle]" value="1" {if $aForms.footer_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+				<input type="radio" name="val[footer_toggle]" value="0" {if $aForms.footer_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+			</li>
+	
+			<li>
+				<label for="top_menu_toggle">{phrase var='dvs.top_menu_toggle'}:</label>
+				<input type="radio" name="val[topmenu_toggle]" value="1" {if $aForms.topmenu_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+				<input type="radio" name="val[topmenu_toggle]" value="0" {if $aForms.topmenu_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+			</li>
+		</ol>
+		</fieldset>
+
 		<h3>Gallery Link Target</h3>
-		<table class="dvs_add_table">
-			<tr>
-				<td colspan="2" class="dvs_add_td">
-					<input type="radio" name="val[gallery_target_setting]" value="0" {if $aForms.gallery_target_setting == 0}checked="checked"{/if} />{phrase var='dvs.open_on_same_page'}
-					
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="radio" name="val[gallery_target_setting]" value="1" {if $aForms.gallery_target_setting == 1}checked="checked"{/if} />{phrase var='dvs.open_in_new_window'}
-				</td>
-			</tr>
-		</table>
-	</div>
-	{* phpmasterminds added above code for setting on header and footer remover *}
-	
-	{* BEGIN flit77 changes 05052014 *}
-	<div class="inventory_settings_wrapper">
+		<fieldset>
+		<ol>
+			<li>
+				<input type="radio" name="val[gallery_target_setting]" value="0" {if $aForms.gallery_target_setting == 0}checked="checked"{/if} />{phrase var='dvs.open_on_same_page'}
+			</li>
+		
+			<li>
+				<input type="radio" name="val[gallery_target_setting]" value="1" {if $aForms.gallery_target_setting == 1}checked="checked"{/if} />{phrase var='dvs.open_in_new_window'}		
+			</li>
+		</ol>
+		</fieldset>
+
 		<h3>{phrase var='dvs.inventory_display_settings'}</h3>
-		<table class="dvs_add_table">
-			<tr>
-				<td colspan="2" class="dvs_add_td">
-					<input type="radio" name="val[inv_display_status]" value="1" id="inv_display_status_on" {if $aForms.inv_display_status == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
-					<input type="radio" name="val[inv_display_status]" value="0" id="inv_display_status_off" {if $aForms.inv_display_status == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
-				</td>
-			</tr>
-			<tr class="inv_display_row_wrapper">
-				<td class="dvs_add_td_label">
-					{phrase var='dvs.inventory_settings_feed_type'}:
-				</td>
-				<td colspan="2" class="dvs_add_td">
-					<select name="val[inv_feed_type]" id="inv_feed_type">
-						<option value=""></option>
-						{if $connectors}
-							{foreach from=$connectors item=connector name=iConnector}
-								<option value="{$connector.connector_id}" {if $aForms.inv_feed_type == $connector.connector_id}selected="selected"{/if}>{$connector.title}</option>
-							{/foreach}
-						{/if}
-					</select>
-				</td>
-			</tr>
-			<tr class="inv_display_row_wrapper">
-				<td class="dvs_add_td_label">
-					{phrase var='dvs.inventory_settings_domain'}:
-				</td>
-				<td colspan="2" class="dvs_add_td">
-					<input type="text" name="val[inv_domain]" value="{value type='input' id='inv_domain'}" id="inv_domain" maxlength=30 />
-				</td>
-			</tr>
-			<tr class="inv_display_row_wrapper">
-				<td class="dvs_add_td_label">
-					{phrase var='dvs.dvs_inventory_shedule'}:
-				</td>
-				<td colspan="2" class="dvs_add_td">
-					{phrase var='dvs.dvs_inventory_shedule_every'} <input type="text" name="val[inv_schedule_hours]" value="{value type='input' id='inv_schedule_hours'}" id="inv_schedule_hours" maxlength=3 /> {phrase var='dvs.dvs_inventory_shedule_hours'}
-				</td>
-			</tr>
-			<tr class="inv_display_row_wrapper" style="margin-top: 15px;">
-				<td colspan="2">
-					<div class="import_button_wrapper">
-						<input type="button" value="{phrase var='dvs.dvs_inventory_import'}" class="button" id="inventory_import_button_ajax" name="inventory_import_button_ajax" />
+
+		<fieldset>
+		<ol>
+			<li>
+				<input type="radio" name="val[inv_display_status]" value="0" id="inv_display_status_off" {if $aForms.inv_display_status == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+				<input type="radio" name="val[inv_display_status]" value="1" id="inv_display_status_on" {if $aForms.inv_display_status == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
+			</li>
+			<div class="inv_display_row_wrapper">
+			<li>
+				<label for="inventory_settings_feed_type">{phrase var='dvs.inventory_settings_feed_type'}:</label>
+				<select name="val[inv_feed_type]" id="inv_feed_type">
+					<option value=""></option>
+					{if $connectors}
+						{foreach from=$connectors item=connector name=iConnector}
+							<option value="{$connector.connector_id}" {if $aForms.inv_feed_type == $connector.connector_id}selected="selected"{/if}>{$connector.title}</option>
+						{/foreach}
+					{/if}
+				</select>
+			</li>
+			<li>
+				<label for="inventory_settings_domain">{phrase var='dvs.inventory_settings_domain'}:</label>
+				<input type="text" name="val[inv_domain]" value="{value type='input' id='inv_domain'}" id="inv_domain" maxlength=30 />
+			</li>
+			<li>
+				<label for="dvs_inventory_schedule">{phrase var='dvs.dvs_inventory_shedule'}:</label>
+				{phrase var='dvs.dvs_inventory_shedule_every'} <input type="text" name="val[inv_schedule_hours]" value="{value type='input' id='inv_schedule_hours'}" id="inv_schedule_hours" maxlength=3 style="width:20px;" /> {phrase var='dvs.dvs_inventory_shedule_hours'}
+			</li>
+			<li>
+				<div class="import_button_wrapper">
+					<button class="button" id="inventory_import_button_ajax" name="inventory_import_button_ajax">{phrase var='dvs.dvs_inventory_import'}</button>
+				</div>
+				<div class="progress_bar_wrapper">
+					<div id="progress_outer">
+						<div id="progress_percentage">0%</div>
+						<div id="progress_inner"></div>
 					</div>
-					<div class="progress_bar_wrapper">
-						<div id="progress_outer">
-							<div id="progress_percentage">0%</div>
-							<div id="progress_inner"></div>
-						</div>
-						<div id="progress_update"></div>
-					</div>
-				</td>
-			</tr>
-		</table>
-	</div>
-	{* END flit77 changes 05052014 *}
+					<div id="progress_update"></div>
+				</div>
+			</li>
+			</div>
+		</ol>
+	</fieldset>
+
+    <h3>Use Parent Url for Sitemap</h3>
+    <fieldset>
+        <ol>
+
+            <li>
+                <input type="radio" name="val[sitemap_parent_url]" value="0" {if $aForms.sitemap_parent_url == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+                <input type="radio" name="val[sitemap_parent_url]" value="1" {if $aForms.sitemap_parent_url == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
+            </li>
+        </ol>
+    </fieldset>
 	{/if}
-	
+<br>
 	<div id="phrase_override_toggle">
 		<a href="#" onclick="if ($('#phrase_override_wrapper').is(':visible')){l}$('#phrase_override_wrapper').hide('slow');wtvlt='Show Phrase Overrides'{r}else{l}$('#phrase_override_wrapper').show('slow');wtvlt='Hide Phrase Overrides (values will still be saved)';{r}$(this).text(wtvlt);return false;" id="phrase_override_toggle_link">Show Phrase Overrides</a>
 	</div>
-	
 	<div id="phrase_override_wrapper" style="display:none;">
 		{foreach from=$aPhraseVars key=sPhraseVar item=sPhraseText}
 			<div class="phrase_override_container">		
@@ -590,7 +484,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{/if}
 		<input type="hidden" name="val[is_edit]" value="{if $bIsEdit && isset($aForms.dvs_id)}1{else}0{/if}" />
 		{if $bIsEdit && isset($aForms.dvs_id)}<input type="hidden" name="val[dvs_id]" value="{$aForms.dvs_id}" />{/if}
-		<input type="submit" value="{if $bIsEdit && isset($aForms.dvs_id)}{phrase var='dvs.save_changes'}{else}{phrase var='dvs.save_and_continue'}{/if}" class="button"/>
+		<button class="button">{if $bIsEdit && isset($aForms.dvs_id)}{phrase var='dvs.save_changes'}{else}{phrase var='dvs.save_and_continue'}{/if}</button>
 	</div>
 </form>
 

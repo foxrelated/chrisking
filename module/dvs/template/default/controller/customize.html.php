@@ -383,6 +383,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </tr>
     </table>
 	<br>
+	{if Phpfox::isAdmin()}
 	<h3>Page Styling</h3>
 
     <table>
@@ -626,6 +627,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </td>
         </tr>
     </table>
+    {/if}
     <br>
 	<input type="hidden" name="val[step]" value="customize" />
 	<input type="hidden" name="val[is_edit]" value="{if $bIsEdit && isset($aForms.dvs_id)}1{else}0{/if}" />
