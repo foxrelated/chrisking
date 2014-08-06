@@ -373,6 +373,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</div>
 		</ol>
 	</fieldset>
+
+    <h3>Use Parent Url for Sitemap</h3>
+    <fieldset>
+        <ol>
+
+            <li>
+                <input type="radio" name="val[sitemap_parent_url]" value="0" {if $aForms.sitemap_parent_url == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+                <input type="radio" name="val[sitemap_parent_url]" value="1" {if $aForms.sitemap_parent_url == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
+            </li>
+        </ol>
+    </fieldset>
 	{/if}
 <br>
 	<div id="phrase_override_toggle">

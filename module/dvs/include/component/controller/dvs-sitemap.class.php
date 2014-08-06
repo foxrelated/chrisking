@@ -58,11 +58,11 @@ class Dvs_Component_Controller_Dvs_Sitemap extends Phpfox_Component {
 			$sDealerSeoTags .= '<video:tag>' . trim($sTag) . '</video:tag>';
 		}
 
-        if(!$aDvs['parent_url']) {
+        if(!$aDvs['parent_url'] || !$aDvs['sitemap_parent_url']) {
             $aDvs['parent_url'] = $sDvsUrl;
         }
 
-        if(!$aDvs['parent_video_url']) {
+        if(!$aDvs['parent_video_url'] || !$aDvs['sitemap_parent_url']) {
             $aDvs['parent_video_url'] = $sDvsUrl . 'WTVDVS_VIDEO_TEMP/';
         }
 
@@ -76,18 +76,18 @@ class Dvs_Component_Controller_Dvs_Sitemap extends Phpfox_Component {
 		{
 			if (isset($aVideo['id']))
 			{
-				$aDvsPhraseOveride = Phpfox::getService('dvs.override')->getAll($aDvs, $aVideo);
+				$aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aVideo);
 
 				echo '<url>' . "\n" .
 				'<loc>' . str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $aDvs['parent_video_url']) . '</loc>' . "\n" . '<video:video>' . "\n" .
 				'<video:thumbnail_loc>' . Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.brightcove') . $aVideo['thumbnail_image'] . '</video:thumbnail_loc>' . "\n" .
 				
-				'<video:title>' . Phpfox::getLib('parse.input')->clean($aVideo['name'], 100) . '</video:title>' . "\n" .
+				'<video:title>' . Phpfox::getLib('parse.input')->clean($aDvs['phrase_overrides']['override_video_name_sitemaps'], 100) . '</video:title>' . "\n" .
 				//'<video:title>' . Phpfox::getLib('parse.input')->clean($aVideo['name'] . ' | ' . $aDvs['dealer_name'] . ' | ' . $aDvs['city'] . ', ' . $aDvs['state_string'] . ' ' . $aDvs['postal_code'], 100) . '</video:title>' .
 				//'<video:title>' .$aVideo['year'].' '. $aVideo['model']. '</video:title>' . "\n" .
 				
 
-				'<video:description>' . Phpfox::getLib('parse.input')->clean($aVideo['shortDescription'], 2048) . '.</video:description>' . "\n" .
+				'<video:description>' . Phpfox::getLib('parse.input')->clean($aDvs['phrase_overrides']['override_video_description_sitemaps'], 2048) . '.</video:description>' . "\n" .
 				//'<video:description>' . Phpfox::getLib('parse.input')->clean($aVideo['shortDescription'] . ' View more ' . $aDvs['dealer_name'] . ' video test drives at ' . $sDvsUrl, 2048) . '.</video:description>' .
 				
 				'<video:publication_date>' . date('Y-m-d', (int) $aVideo['publishedDate'] / 1000) . '</video:publication_date>' . "\n" .
