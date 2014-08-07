@@ -8,10 +8,10 @@ if (!window.WTVDVS) {
             var iMaxWidth = wrapper.offsetWidth;
             var sWrapperWidth = '100%';
             if(iMaxWidth == 0) {
-                iMaxWidth = window.innerWidth;
-                if (iMaxWidth > 980) {
-                    sWrapperWidth = '980px';
-                }
+	            iMaxWidth = window.innerWidth;
+	            if (iMaxWidth > 980) {
+	            	sWrapperWidth = '980px';
+	            }
             }
 
             delete params.height;

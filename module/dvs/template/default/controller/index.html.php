@@ -373,9 +373,10 @@ background-color: #c35f54;
 								 
 							  </ul>
 						   </li>
+						   {if Phpfox::isAdmin()}
 						   <li class="active"><a href="#" onclick="if (confirm('{phrase var='core.are_you_sure' phpfox_squote=true}')) {left_curly} $(this).parents('#dvss:first').find('#dvs_{$aDvs.dvs_id}:first').hide('slow'); $.ajaxCall('dvs.deleteDvs', 'dvs_id={$aDvs.dvs_id}');{right_curly}"><span>Delete</span></a>
-							  
 						   </li>
+						   {/if}
 						</ul>
 						</div>
 					</td>
