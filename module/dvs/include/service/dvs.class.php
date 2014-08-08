@@ -598,7 +598,7 @@ public function aasort (&$array, $key) {
     return $values;
 	}
 
-	public function listDvss($iPage, $iPageSize, $iUserId, $bPaginate = true)
+	public function listDvss($iPage, $iPageSize, $iUserId, $bPaginate = true, $bGetAll = false)
 	{
 		$iPage = (int) $iPage;
 		$iPageSize = (int) $iPageSize;
@@ -606,7 +606,7 @@ public function aasort (&$array, $key) {
 
 		if ($bPaginate)
 		{
-			if ($iUserId)
+			if ($iUserId && !$bGetAll)
 			{
 				$this->database()->where('user_id =' . $iUserId);
 			}
@@ -617,7 +617,7 @@ public function aasort (&$array, $key) {
 			$this->database()->limit($iPage, $iPageSize, $iCnt);
 		}
 
-		if ($iUserId)
+		if ($iUserId && !$bGetAll)
 		{
 			$this->database()->where('d.user_id =' . $iUserId);
 		}
