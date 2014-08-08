@@ -106,7 +106,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             $aFeaturedVideo = array();
         }
 
-        $aValidVSYears = Phpfox::getService('dvs.video')->getValidVSYears($aPlayer['makes']);
+        $aValidVSYears = Phpfox::getService('dvs.video')->getValidVSYears($aPlayer['makes'], $aDvs['dvs_id']);
 
         $aVideoSelect = array();
         $aValidVSMakes = array();

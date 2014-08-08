@@ -700,16 +700,17 @@ public function aasort (&$array, $key) {
 		// output
 		$aOutput = array();
 
-		$sRequestUrl = "http://maps.googleapis.com/maps/api/geocode/xml?sensor=false" . "&address=" . urlencode($sAddress);
+		$sRequestUrl = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false" . "&address=" . urlencode($sAddress);
 
-		$oXml = simplexml_load_file($sRequestUrl);
+		$oXml = file_get_contents($sRequestUrl);
+        $oXml = json_decode($oXml, true);
 
-		$sStatusCode = (string) $oXml->status;
+		$sStatusCode = (string) $oXml['status'];
 
 		if (strcmp($sStatusCode, "OK") == 0)
 		{
-			$aOutput['latitude'] = (string) $oXml->result->geometry->location->lat;
-			$aOutput['longitude'] = (string) $oXml->result->geometry->location->lng;
+			$aOutput['latitude'] = (string) $oXml['results'][0]['geometry']['location']['lat'];
+			$aOutput['longitude'] = (string) $oXml['results'][0]['geometry']['location']['lat'];
 		}
 		else if (strcmp($sStatusCode, "620") == 0)
 		{
