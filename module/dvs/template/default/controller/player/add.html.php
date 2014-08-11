@@ -153,17 +153,16 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</li>
 			{/if}
 			
-			{if Phpfox::isAdmin()}
 			<li>
 				<label for="autoplay">{phrase var='dvs.autoplay'}:</label>
 				<input type="checkbox" name="val[autoplay]" id="autoplay" value="1" {if $bIsEdit}{if $aForms.autoplay}checked=checked{/if}{/if}/>
 			</li>
 			<!--phpmasterminds Auto play setting for base URL -->
-			<li>
+			<li {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
 				<label for="autoplay_baseurl">Autoplay Base URL:</label>
 				<input type="checkbox" name="val[autoplay_baseurl]" id="autoplay_baseurl" value="1" {if $bIsEdit}{if $aForms.autoplay_baseurl}checked=checked{/if}{/if}/>
 			</li>
-			<li>
+			<li {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
 				<label for="autoplay_videourl">Autoplay Video URL:</label>
 				<input type="checkbox" name="val[autoplay_videourl]" id="autoplay_videourl" value="1" {if $bIsEdit}{if $aForms.autoplay_videourl}checked=checked{/if}{/if}/>
 			</li>
@@ -172,11 +171,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<label for="autoadvance">{phrase var='dvs.auto_advance'}:</label>
 				<input type="checkbox" name="val[autoadvance]" id="autoadvance" value="1" {if $bIsEdit}{if $aForms.autoadvance}checked=checked{/if}{/if}/>
 			</li>
-			{/if}
 		</ol>
 	</fieldset>
 	
-	{if Phpfox::isAdmin()}
+	<div {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
 	<h3>{phrase var='dvs.player_colors'}</h3>
 
 	<fieldset class="color_selectors">
@@ -244,7 +242,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</li>
 		</ol>
 	</fieldset>
-	{/if}
+	<div>
 	
 	<h3>{phrase var='dvs.player_branding'}</h3>
 
