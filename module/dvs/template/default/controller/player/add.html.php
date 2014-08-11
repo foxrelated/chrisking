@@ -242,7 +242,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</li>
 		</ol>
 	</fieldset>
-	<div>
+	</div>
 	
 	<h3>{phrase var='dvs.player_branding'}</h3>
 
