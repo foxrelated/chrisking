@@ -88,6 +88,22 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 		}
 
 		$aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aFirstVideo);
+
+        $aValidVSYears = Phpfox::getService('dvs.video')->getValidVSYears($aPlayer['makes']);
+
+        /*$aVideoSelect = array();
+        $aValidVSMakes = array();
+
+        if (!empty($aValidVSYears) && count($aValidVSYears) == 1)
+        {
+            $aValidVSMakes = Phpfox::getService('dvs.video')->getValidVSMakes($aValidVSYears[0], $aPlayer['makes']);
+
+            if (!empty($aValidVSMakes) && count($aValidVSMakes == 1))
+            {
+                $aVideoSelect = Phpfox::getService('dvs.video')->getVideoSelect('', $aValidVSMakes[0]['make'], '', true);
+            }
+        }*/
+
 		$this->template()
 			//->setTitle($aDvs['phrase_overrides']['override_page_title_display'])
 			->setTitle(Phpfox::getPhrase('dvs.share_links'))
@@ -100,7 +116,8 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 			->setHeader(array(
 				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
 				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
-				'share.css' => 'module_dvs'
+				'share.css' => 'module_dvs',
+                'dropdown.js' => 'module_dvs'
 			))
 			->assign(array(
 				'aDvs' => $aDvs,
@@ -113,6 +130,7 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 				'sBrowser' => $sBrowser,
 				'bIsIPhone' => $bIsIPhone,
 				'sVideoViewUrl' => $sVideoViewUrl,
+                'aVideoSelectYears' => $aValidVSYears,
 		));
 	}
 
