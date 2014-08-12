@@ -163,6 +163,17 @@ class User_Component_Controller_Register extends Phpfox_Component
 					Phpfox::setCookie('salesteam_invite', $saleTeam, PHPFOX_TIME + $iExpire);
 				}
 			}
+
+
+            if($bManagerTeam = $this->request()->get('managersteam'))
+            {
+                if (!Phpfox::getCookie('managersteam_invite'))
+                {
+                    $iExpire = (Phpfox::getParam('invite.invite_expire') > 0 ? (Phpfox::getParam('invite.invite_expire')*60*60*24) : (7*60*60*24));
+
+                    Phpfox::setCookie('managersteam_invite', $bManagerTeam, PHPFOX_TIME + $iExpire);
+                }
+            }
 			/*phpmasterminds Customization on June 5th 2014*/
 		}
 

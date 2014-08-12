@@ -446,6 +446,7 @@ class User_Service_Process extends Phpfox_Service
 		}
 		/*phpmasterminds*/
 		Phpfox::getService('dvs.salesteam.process')->inviteSalesChange($iId,$aInsert['email']);
+        Phpfox::getService('dvs.manager.process')->inviteManagerChange($iId,$aInsert['email']);
 		/*phpmasterminds*/
 		(($sPlugin = Phpfox_Plugin::get('user.service_process_add_feed')) ? eval($sPlugin) : false);
 		

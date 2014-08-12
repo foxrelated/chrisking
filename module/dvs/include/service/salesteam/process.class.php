@@ -31,7 +31,7 @@ class Dvs_Service_Salesteam_Process extends Phpfox_Service {
 	{
 		$aInvites = $this->database()->select('i.*')
 				->from(Phpfox::getT('ko_dvs_salesteam_invites'),'i')
-				->where('i.email_address = "'. $Email.'"')
+				->where('i.email_address = "'. $Email.'" AND i.manager_invite = 0')
 				->execute('getSlaveRow');
 				
 		$iSalesteamId = $this->database()->insert($this->_tSalesTeam, array(

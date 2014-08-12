@@ -47,19 +47,19 @@ class Dvs_Component_Controller_Manager extends Phpfox_Component {
 
                     if (empty($aTeamMember)) {
                         Phpfox::getService('dvs.manager.process')->add($aDvs['dvs_id'], $iUserId);
-                        $this->url()->send('dvs.managersteam', array('id' => $iDvsId), 'User added');
+                        $this->url()->send('dvs.manager', array('id' => $iDvsId), 'User added');
                     } else {
-                        $this->url()->send('dvs.managersteam', array('id' => $iDvsId), 'User already added.');
+                        $this->url()->send('dvs.manager', array('id' => $iDvsId), 'User already added.');
                     }
                 } else {
                     // Send an invite if one does not already exist for this email address for this dvs
-                    /*$aInvite = Phpfox::getService('dvs.invite')->get($aDvs['dvs_id'], $aVals['email']);
+                    $aInvite = Phpfox::getService('dvs.invite')->get($aDvs['dvs_id'], $aVals['email'], true);
 
                     if (empty($aInvite)) {
-                        Phpfox::getService('dvs.invite.process')->add($aDvs['dvs_id'], $aVals['email']);
+                        Phpfox::getService('dvs.invite.process')->add($aDvs['dvs_id'], $aVals['email'], true);
 
                         // Send email to invited team member
-                        $sSubject = Phpfox::getPhrase('dvs.invite_email_to_sales_team_member_subject', array(
+                        $sSubject = Phpfox::getPhrase('dvs.invite_email_to_manager_team_member_subject', array(
                             'dvs_name' => $aDvs['dvs_name'],
                             'dealer_name' => $aDvs['dealer_name'],
                             'title_url' => $aDvs['title_url'],
@@ -69,20 +69,15 @@ class Dvs_Component_Controller_Manager extends Phpfox_Component {
                             'phone' => $aDvs['phone']
                         ));
 
-                        //$this->url()->send(($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.admincp.addtestuer.add') : Phpfox::getLib('url')->makeUrl('admincp.addtestuser.add')), null, 'User ' . $iId . ' Successfully Created ');
 
-
-                        if(Phpfox::getParam('dvs.enable_subdomain_mode'))
-                        {
-                            $sLink = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'user.' : '') . 'register', array('salesteam' => '1'));
-                        }
-                        else
-                        {
-                            $sLink = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'user.register', array('salesteam' => '1'));
+                        if(Phpfox::getParam('dvs.enable_subdomain_mode')) {
+                            $sLink = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'user.' : '') . 'register', array('managersteam' => '1'));
+                        } else {
+                            $sLink = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'user.register', array('managersteam' => '1'));
                         }
 
 
-                        $sBody = Phpfox::getPhrase('dvs.invite_email_to_sales_team_member_body', array(
+                        $sBody = Phpfox::getPhrase('dvs.invite_email_to_manager_team_member_body', array(
                             'dvs_name' => $aDvs['dvs_name'],
                             'dealer_name' => $aDvs['dealer_name'],
                             'title_url' => $aDvs['title_url'],
@@ -101,20 +96,20 @@ class Dvs_Component_Controller_Manager extends Phpfox_Component {
 
                         $iInvite = Phpfox::getService('invite.process')->addInvite($aVals['email'], Phpfox::getUserId());
                         $sLink = Phpfox::getLib('url')->makeUrl('invite', array('id' => $iInvite));
-                        $bSent = Phpfox::getLib('mail')->to($sMail)
+                        /*$bSent = Phpfox::getLib('mail')->to()
                             ->fromEmail(Phpfox::getUserBy('email'))
                             ->fromName(Phpfox::getUserBy('full_name'))
                             ->subject(array('invite.full_name_invites_you_to_site_title', array('full_name' => Phpfox::getUserBy('full_name'), 'site_title' => Phpfox::getParam('core.site_title'))))
                             ->message(array('invite.full_name_invites_you_to_site_title_link', array('full_name' => Phpfox::getUserBy('full_name'), 'site_title' => Phpfox::getParam('core.site_title'), 'link' => $sLink)))
-                            ->send();
+                            ->send();*/
 
 
-                        $this->url()->send('dvs.salesteam', array('id' => $iDvsId), 'Invite sent! They will be added to the DVS upon sign up.');
+                        $this->url()->send('dvs.manager', array('id' => $iDvsId), 'Invite sent! They will be added to the DVS upon sign up.');
                     }
                     else
                     {
-                        $this->url()->send('dvs.salesteam', array('id' => $iDvsId), 'This user has already been invited.');
-                    }*/
+                        $this->url()->send('dvs.manager', array('id' => $iDvsId), 'This user has already been invited.');
+                    }
                 }
             }
         }

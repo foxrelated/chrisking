@@ -24,37 +24,28 @@ class Dvs_Service_Manager_Process extends Phpfox_Service {
         $this->database()->delete($this->_sTable, 'managersteam_id = ' . (int) $iTeamMemberId);
     }
 
-
-
-
-
-
-
-
-    /** UPDATED CODE */
-
     /**
-     * Add a sales team member
+     * Add a manager team member
      *
      * @param int $iDvsId
      * @param int $iUserId
      * @return int, salesteam id
      */
-    public function inviteSalesChange($iUserId,$Email)
+    public function inviteManagerChange($iUserId,$Email)
     {
         $aInvites = $this->database()->select('i.*')
             ->from(Phpfox::getT('ko_dvs_salesteam_invites'),'i')
-            ->where('i.email_address = "'. $Email.'"')
+            ->where('i.email_address = "'. $Email.'" AND i.manager_invite = 1')
             ->execute('getSlaveRow');
 
-        $iSalesteamId = $this->database()->insert($this->_tSalesTeam, array(
+        $iManagerTeamId = $this->database()->insert($this->_sTable, array(
             'dvs_id' => (int) $aInvites['dvs_id'],
             'user_id' => (int) $iUserId
         ));
 
         $this->database()->delete(Phpfox::getT('ko_dvs_salesteam_invites'), 'invite_id = ' . (int) $aInvites['invite_id']);
 
-        Phpfox::setCookie('salesteam_invite', 0, '-1');
+        Phpfox::setCookie('managersteam_invite', 0, '-1');
         return true;
     }
 }
