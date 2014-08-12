@@ -193,9 +193,9 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
  
 		// Sort videos by name for footer links
-		$aFooterLinks = $aOverviewVideos;
+
 	
-		foreach($aFooterLinks as $ik=>$aVal)
+		/*foreach($aFooterLinks as $ik=>$aVal)
 		{
 			$exp = explode(" ",$aVal['name']);
 			
@@ -204,7 +204,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			
 		}
 		
-		$aFooterLinks = Phpfox::getService('dvs')->aasort($aFooterLinks,"ko_id");
+		$aFooterLinks = Phpfox::getService('dvs')->aasort($aFooterLinks,"ko_id");*/
 		
 		/*usort($aFooterLinks, function($a, $b)
 		{
@@ -389,7 +389,6 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				'aValidVSMakes' => $aValidVSMakes,
 				'iLongDescLimit' => Phpfox::getParam('dvs.long_desc_limit'),
 				'bSubdomainMode' => $bSubdomainMode,
-				'aFooterLinks' => $aFooterLinks,
 				'sBrowser' => $sBrowser,
 				'sCurrentUrlEncoded' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? urlencode(Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url'])) : urlencode(Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url'])))),
 				'sStaticPath' => Phpfox::getParam('core.path') . 'module/dvs/static/',

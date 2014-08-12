@@ -764,6 +764,43 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
         return $this->prepareVideos($aOverviewVideos);
 
     }
+
+    public function getRelatedVideo($aVideo, $iDvsId) {
+        $sWhere = '1';
+        $aPlayer = Phpfox::getService('dvs.player')->get($iDvsId);
+        $aMakes = array();
+        foreach($aPlayer['makes'] as $aMake) {
+            $aMakes[] = '\'' . $aMake['make'] . '\'';
+        }
+        $sWhere .= ' AND make IN (' . implode(',' , $aMakes) . ')';
+
+
+        if(Phpfox::getParam('dvs.vf_related_force_same_year')) {
+            $sWhere .= ' AND year = ' . (int)$aVideo['year'];
+        }
+
+        if(Phpfox::getParam('dvs.vf_related_force_same_make')) {
+            $sWhere .= ' AND make = \'' . $aVideo['make'] . '\'';
+        }
+
+        if(Phpfox::getParam('dvs.vf_related_force_same_model')) {
+            $sWhere .= ' AND model = \'' . $aVideo['model'] . '\'';
+        }
+
+        if(Phpfox::getParam('dvs.vf_related_force_same_body_style')) {
+            $sWhere .= ' AND bodyStyle = \'' . $aVideo['bodyStyle'] . '\'';
+        }
+
+        $aRows = $this->database()
+            ->select('*')
+            ->from($this->_tVideos)
+            ->order('year DESC')
+            ->where($sWhere)
+            ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
+            ->execute('getRows');
+
+        return $aRows;
+    }
 }
 
 ?>

@@ -218,13 +218,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{if $aDvs.footer_toggle == 1} <!--phpmasterminds added this code for footer toggle -->
     <footer>
       <h3>{phrase var='dvs.more_videos'}</h3>
-      <ul>
-        {foreach from=$aFooterLinks key=iKey item=aVideo name=videos}
-        <li>
-          <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}{$aVideo.video_title_url}" onclick="menuFooter('Footer Link Clicks');" target="_parent">
-            {$aVideo.year} {$aVideo.make} {$aVideo.model}
-          </a>
-          {/foreach}
+      <ul id="related_videos">
+          {module name='dvs.related-video' aDvs=$aDvs aVideo=$aFirstVideo}
       </ul>
     </footer>
 	{/if} <!--phpmasterminds added this code for footer toggle -->

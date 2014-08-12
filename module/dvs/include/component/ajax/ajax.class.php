@@ -778,6 +778,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		}
 
 		$this->val('#contact_dvs_id', $aDvs['dvs_id']);
+
+
+        if($aDvs['footer_toggle']) {
+            Phpfox::getBlock('dvs.related-video', array('aDvs' => $aDvs, 'aVideo' => $aVideo));
+            $this->html('#related_videos', $this->getContent('false'));
+        }
 	}
 
     public function iframeChangeVideo()
