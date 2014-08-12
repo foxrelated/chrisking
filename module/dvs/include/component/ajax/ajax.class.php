@@ -1864,5 +1864,102 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             return false;
         }
     }
+
+    public function getShareMakes()
+    {
+        // Get the variables from the ajax call.
+        $sDvsName = $this->get('sDvsName');
+        $iYear = $this->get('iYear');
+
+        // Get the DVS details based off the DVS name.
+        $aDvs = Phpfox::getService('dvs')->get($sDvsName, true);
+        $aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
+
+        // Get all of the makes for the DVS for the selected year.
+        $aMakes = Phpfox::getService('dvs.video')->getValidVSMakes($iYear, $aPlayer['makes']);
+
+        // Did we get more than one make?
+        if (count($aMakes) === 1) {
+            // Yes, make the only make selected by default.
+            $sSelectOptions = '<li class="init"><span class="init_selected">' . $aMakes[0]['make'] . '</span><ul>';
+            $this->call('$.ajaxCall(\'dvs.getShareModels\', \'sDvsName=' . $aDvs['title_url'] . '&iYear=' . $iYear . '&sMake=' . $aMakes[0]['make'] . '\');');
+        } else {
+            // The first list item should be one to tell the user to select a make.
+            $sSelectOptions = '<li class="init"><span class="init_selected">' . Phpfox::getPhrase('dvs.select_make') . '</span><ul>';
+            $this->html('#models', '<li class="init">' . Phpfox::getPhrase('dvs.select_model') . '</li><ul><li>' . Phpfox::getPhrase('dvs.please_select_a_make_first') . '</li></ul>');
+        }
+
+        // Build the ul list items
+        foreach ($aMakes as $aMake) {
+            $sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.getShareModels\', \'sDvsName=' . $aDvs['title_url'] . '&iYear=' . $iYear . '&amp;sMake=' . $aMake['make'] . '\');">' . $aMake['make'] . '</li>';
+        }
+
+        $sSelectOptions .= '</ul></li>';
+
+        // Replace the old html with the new list items.
+        $this->html('#makes', $sSelectOptions);
+
+        $aShareVideos = Phpfox::getService('dvs.video')->getShareVideos($aDvs['dvs_id'], $iYear, $aPlayer['makes'], '');
+        Phpfox::getBlock('dvs.share-video', array('aShareVideos' => $aShareVideos, 'aDvs' => $aDvs));
+
+        $this->html('#video_items', $this->getContent(false));
+    }
+
+    public function getShareModels()
+    {
+        // Set the variables to determine which models to get.
+        $sMake = $this->get('sMake');
+        $iYear = $this->get('iYear');
+        $sDvsName = $this->get('sDvsName');
+
+        // Get the DVS details based off the DVS name.
+        $aDvs = Phpfox::getService('dvs')->get($sDvsName, true);
+
+
+        // Get a list of models that belong to the make and year.
+        $aModels = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, '', true);
+
+        // Are there models to add to the drop down menu?
+        if (!empty($aModels))
+        {
+            // Yes, begin to create the drop down menu.
+            $sSelectOptions = '<li class="init"><span class="init_selected">' . Phpfox::getPhrase('dvs.select_model') . '</span><ul>';
+        }
+        else
+        {
+            // No, let the user know there were no models found.
+            $sSelectOptions = '<li class="init"><span class="init_selected">No Models Found</span><ul>';
+        }
+
+        // Add each model to the drop down.
+        foreach ($aModels as $aModel)
+        {
+            $sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.getShareItem\', \'sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=' . $aDvs['dvs_id'] . '&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
+        }
+
+        $sSelectOptions .= '</ul></li>';
+
+        // Display the dropdown on the page.
+        $this->html('#models', $sSelectOptions);
+
+        $aShareVideos = Phpfox::getService('dvs.video')->getShareVideos($aDvs['dvs_id'], $iYear, $sMake, '');
+        Phpfox::getBlock('dvs.share-video', array('aShareVideos' => $aShareVideos, 'aDvs' => $aDvs));
+
+        $this->html('#video_items', $this->getContent(false));
+    }
+
+    public function getShareItem() {
+        $sMake = $this->get('sMake');
+        $iYear = $this->get('iYear');
+        $iDvsId = $this->get('iDvsId');
+        $sModel = $this->get('sModel');
+
+        $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+
+        $aShareVideos = Phpfox::getService('dvs.video')->getShareVideos($aDvs['dvs_id'], $iYear, $sMake, $sModel);
+        Phpfox::getBlock('dvs.share-video', array('aShareVideos' => $aShareVideos, 'aDvs' => $aDvs));
+
+        $this->html('#video_items', $this->getContent(false));
+    }
 }
 ?>

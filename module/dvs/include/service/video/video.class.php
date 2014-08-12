@@ -687,7 +687,83 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 		return ($bSingleVideo ? $aVideos[0] : $aVideos);
 	}
 
+    public function getShareVideos($iDvsId, $iYear, $aSelectedMakes = array(), $sModel = '') {
+        if (is_array($aSelectedMakes)) {
+            $aMakes = $aSelectedMakes;
+        } elseif($aSelectedMakes) {
+            $aMakes = array();
+            $aMakes[]['make'] = $aSelectedMakes;
+        } else {
+            $aPlayer = Phpfox::getService('dvs.player')->get($iDvsId);
+            $aMakes = $aPlayer['makes'];
+        }
 
+        $aFilters = array();
+
+        $aFilters[] = 'year = ' . (int)$iYear;
+
+        if ($sModel) {
+            $aFilters[] = ' AND model = \'' . $sModel . '\'';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_1onone'))
+        {
+            $aFilters[] = 'AND referenceId NOT LIKE "1onONE%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_top200'))
+        {
+            $aFilters[] = 'AND referenceId NOT LIKE "Top200%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_pov'))
+        {
+            $aFilters[] = 'AND referenceId NOT LIKE "POV%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_new2u'))
+        {
+            $aFilters[] = 'AND referenceId NOT LIKE "New2U%"';
+        }
+
+        $aVideos = array();
+
+        foreach ($aMakes as $aMake)
+        {
+            $aWhere = array_merge($aFilters, array('AND make = "' . $this->preParse()->clean($aMake['make']) . '"'));
+
+            $aRows = $this->database()
+                ->select('*')
+                ->from($this->_tVideos)
+                ->order('year DESC')
+                ->where($aWhere)
+                ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
+                ->execute('getRows');
+
+            if ($aRows)
+            {
+                $aVideos[] = $aRows;
+            }
+        }
+
+        $aOverviewVideos = $this->limitVideos($aVideos, Phpfox::getParam('dvs.vf_overview_max_videos'));
+
+        $aOverviewVideos = $this->sortVideos($aOverviewVideos, Phpfox::getParam('dvs.vf_overview_round_robin'));
+
+        $iUserId = Phpfox::getUserId();
+        foreach ($aOverviewVideos as $iKey => $aVideo) {
+            $aOverviewVideos[$iKey]['shorturl'] = Phpfox::getService('dvs.shorturl')->generate($iDvsId, $aVideo['referenceId'], 'embed', $iUserId, 1);
+
+            if (Phpfox::getParam('dvs.enable_subdomain_mode')){
+                $aOverviewVideos[$iKey]['entire_shorturl'] = Phpfox::getLib('url')->makeUrl('') . $aOverviewVideos[$iKey]['shorturl'];
+            }else{
+                $aOverviewVideos[$iKey]['entire_shorturl'] = Phpfox::getLib('url')->makeUrl('dvs') . $aOverviewVideos[$iKey]['shorturl'];
+            }
+        }
+
+        return $this->prepareVideos($aOverviewVideos);
+
+    }
 }
 
 ?>
