@@ -12,12 +12,12 @@ defined('PHPFOX') or exit('NO DICE!');
 
 if (!defined('PHPFOX_DEBUG'))
 {
-	define('PHPFOX_DEBUG', false);
+	define('PHPFOX_DEBUG', true);
 }
 
 if (!defined('PHPFOX_DEBUG_LEVEL'))
 {
-	define('PHPFOX_DEBUG_LEVEL', 1);
+	define('PHPFOX_DEBUG_LEVEL', 3);
 }
 
 define('PHPFOX_SAFE_MODE', ((@ini_get('safe_mode') == 1 || strtolower(@ini_get('safe_mode')) == 'on') ? true : false));

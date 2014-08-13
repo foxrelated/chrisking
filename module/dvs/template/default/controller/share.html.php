@@ -16,9 +16,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <div id="dvs_share_wrapper">
     <section id="select_new">
         {if $aVideoSelectYears}
-        <h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
-
+		<table width="650px">
+		<tr>
+		<td style="vertical-align:bottom;padding-right:10px;"><h1>Filter Videos:</h1></td>
+		
         {if isset($aVideoSelectYears.1)}
+        <td style="vertical-align:top;">
         <ul id="year">
             <li class="init"><span class="init_selected">{if isset($iYear) && ($iYear > 0)}{$iYear}{else}Select Year{/if}</span>
                 <ul>
@@ -30,8 +33,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 </ul>
             </li>
         </ul>
+        </td>
         {/if}
-
+		<td style="vertical-align:top;">
         <ul id="makes">
             <li class="init">
                 {if isset($sMake) && $sMake}<span class="init_selected">{$sMake}</span>{else}{phrase var='dvs.select_make'}{/if}
@@ -48,10 +52,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 </ul>
             </li>
         </ul>
-        <div class="clear"></div>
+        </td>
+        </tr>
+        </table>
+        
         {/if}
+        <div class="clear"></div>
     </section>
-
+<br>
 
 	<div id="dvs_share_container">
 		<input class="dvs_share_text_box" type="hidden" id="share_link_box">
