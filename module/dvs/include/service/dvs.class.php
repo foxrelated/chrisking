@@ -104,6 +104,22 @@ public function aasort (&$array, $key) {
     $array=$ret;
 	return $array;
 }
+public function aaasort (&$array, $key) {
+    $sorter=array();
+    $ret=array();
+    reset($array);
+    foreach ($array as $ii => $va) {
+        $sorter[$ii]=$va[$key];
+    }
+    //asort($sorter);
+    arsort($sorter);
+	
+    foreach ($sorter as $ii => $va) {
+        $ret[$ii]=$array[$ii];
+    }
+    $array=$ret;
+	return $array;
+}
 /*phpmasterminds Edited for sort in gallery and footer starts*/
 
 	public function cleanImages()
@@ -785,9 +801,17 @@ public function aasort (&$array, $key) {
 		return implode(', ', $aAddress);
 	}
 
+	public function getinvCss($aDvs)
+	{
+	
+		return $this->buildCss('#overview_inventory li .view_details a', array(
+		'color' => '#' . $aDvs['text_link']
+		), true);
 
+	}
 	public function getCss($aDvs, $bSubdomainMode)
 	{
+
 		$sCss = $this->buildCss('body', array(
 			'background' => 'none repeat scroll 0 0 #' . $aDvs['page_background'] . ' !important',
 			'color' => '#' . $aDvs['page_text']

@@ -18,7 +18,20 @@ class Dvs_Component_Block_Share_Email_Template extends Phpfox_Component {
 	{
 		$sReferenceId = $this->getParam('sReferenceId');
 		$iDvsId = $this->getParam('iDvsId');
-
+		
+		$aForms = Phpfox::getService('dvs.style')->get($iDvsId);
+		
+		$selected = Phpfox::getService('dvs.style')->getFontFamilies();
+		$ses='';
+		foreach($selected as $ik=>$sele)
+		{
+			if($ik == $aForms['font_family_id'])
+			{
+				$ses = $sele;
+				break;
+			}
+		}
+		
 		$this->template()
 			->assign(array(
 				'aVideo' => Phpfox::getService('dvs.video')->get($sReferenceId),
@@ -29,7 +42,9 @@ class Dvs_Component_Block_Share_Email_Template extends Phpfox_Component {
 				'sBackgroundImageUrl' => $this->getParam('sBackgroundImageUrl'),
 				'sVideoLink' => $this->getParam('sVideoLink'),
 				'sImagePath' => $this->getParam('sImagePath'),
-				'sShareEmail' => $this->getParam('sShareEmail')
+				'sShareEmail' => $this->getParam('sShareEmail'),
+				'aForms'	=> $aForms,
+				'ses'		=> $ses
 		));
 	}
 

@@ -70,7 +70,10 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 				$aDvsVideos[$iKey]['entire_shorturl'] = Phpfox::getLib('url')->makeUrl('dvs') . $aDvsVideos[$iKey]['shorturl'];
 			}
 		}
-
+		
+		/*phpmasterminds Sort*/
+		$aDvsVideos = Phpfox::getService('dvs')->aaasort($aDvsVideos,"year");
+		/*phpmasterminds Sort*/
 		$aFirstVideo = $aDvsVideos[0];
 
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
