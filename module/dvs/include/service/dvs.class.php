@@ -111,7 +111,9 @@ public function aaasort (&$array, $key) {
     foreach ($array as $ii => $va) {
         $sorter[$ii]=$va[$key];
     }
-    asort($sorter);
+    //asort($sorter);
+    arsort($sorter);
+	
     foreach ($sorter as $ii => $va) {
         $ret[$ii]=$array[$ii];
     }

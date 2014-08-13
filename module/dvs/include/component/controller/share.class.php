@@ -72,7 +72,7 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 		}
 		
 		/*phpmasterminds Sort*/
-		$aDvsVideos = Phpfox::getService('dvs')->aaasort($aDvsVideos,"make");
+		$aDvsVideos = Phpfox::getService('dvs')->aaasort($aDvsVideos,"year");
 		/*phpmasterminds Sort*/
 		$aFirstVideo = $aDvsVideos[0];
 
