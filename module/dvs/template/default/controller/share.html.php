@@ -20,7 +20,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
         {if isset($aVideoSelectYears.1)}
         <ul id="year">
-            <li class="init"><span class="init_selected">Select Year</span>
+            <li class="init"><span class="init_selected">{if isset($iYear) && ($iYear > 0)}{$iYear}{else}Select Year{/if}</span>
                 <ul>
                     {foreach from=$aVideoSelectYears item=iYear}
                     <li onclick="$.ajaxCall('dvs.getShareMakes', 'iYear={$iYear}&amp;sDvsName={$aDvs.title_url}');">
@@ -34,22 +34,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
         <ul id="makes">
             <li class="init">
-                {phrase var='dvs.select_make'}
+                {if isset($sMake) && $sMake}<span class="init_selected">{$sMake}</span>{else}{phrase var='dvs.select_make'}{/if}
                 <ul>
+                    {if isset($aMakes) && count($aMakes)}
+                    {foreach from=$aMakes item=aMake}
+                    <li onclick="$.ajaxCall('dvs.getShareModels', 'sDvsName={$aDvs.title_url}&amp;iYear={$iYear}&amp;sMake={$aMake.make}');">BMW</li></ul>
+                    {/foreach}
+                    {else}
                     <li>
                         {phrase var='dvs.please_select_a_year_first'}
                     </li>
-                </ul>
-            </li>
-        </ul>
-
-        <ul id="models">
-            <li class="init">
-                {phrase var='dvs.select_model'}
-                <ul>
-                    <li>
-                        {phrase var='dvs.please_select_a_year_first'}
-                    </li>
+                    {/if}
                 </ul>
             </li>
         </ul>
