@@ -1698,7 +1698,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
         Phpfox::getService('dvs.manager.process')->remove($iManagerTeamId);
 
-        $this->hide('#manager_team_member_' . $iManagerTeamId);
+        $this->hide('#managers_team_member_' . $iManagerTeamId);
+        $this->alert('User removed');
     }
 
 	public function showGetPriceForm()
