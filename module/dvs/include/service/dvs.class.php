@@ -155,7 +155,7 @@ public function aasort (&$array, $key) {
     $firstItemLink   = '';
     $lastItemLink    = '';
     $trackingDevMode = (($_COOKIE['dev'] == 1)?true:false);
-    $trackingDevMode = false;
+    // $trackingDevMode = false;
 
     if(!$detailedImportType){
       if($connector['pagination_type'] == 0){ // is offset
@@ -172,10 +172,23 @@ public function aasort (&$array, $key) {
           "pagination_name" => ($connector['pagination_name']?$connector['pagination_name']:'start'),
         ));
         $carsArr = array_shift($result['results']);
-        if(empty($carsArr[1]['image']['href']) || $firstItemLink == $carsArr[1]['image']['href']){
-          break;
+        if($_COOKIE['dev'] == 1){
+          // var_dump($firstItemLink);
+          // var_dump($lastItemLink);
+          // var_dump($carsArr);
+          // die();
         }
-        if(!empty($lastItemLink) && $lastItemLink == $carsArr[1]['image']['href']){
+        if(empty($carsArr[1]['image']['href']) || $firstItemLink == $carsArr[1]['image']['href']){
+          if(empty($carsArr[1]['name']['href']) || $firstItemLink == $carsArr[1]['name']['href']){
+            break;
+          }else{
+            $carsarr_first_href = $carsArr[1]['name']['href'];
+          }
+        }else{
+          $carsarr_first_href = $carsArr[1]['image']['href'];
+        }
+
+        if(!empty($lastItemLink) && $lastItemLink == $carsarr_first_href){
           break;
         }
         if($connector['pagination_type'] == 0){ // is offset
@@ -183,11 +196,17 @@ public function aasort (&$array, $key) {
         }else{ // is page
           if($paginator >= 30) break;
         }
-        if(empty($firstItemLink) && !empty($carsArr[1]['image']['href'])){
-          $firstItemLink = $carsArr[1]['image']['href'];
+        if(empty($firstItemLink) && !empty($carsarr_first_href)){
+          $firstItemLink = $carsarr_first_href;
         }
-        if(!empty($carsArr[1]['image']['href'])){
-          $lastItemLink = $carsArr[1]['image']['href'];
+        if(!empty($carsarr_first_href)){
+          $lastItemLink = $carsarr_first_href;
+        }
+        if($_COOKIE['dev'] == 1){
+          // var_dump($firstItemLink);
+          // var_dump($lastItemLink);
+          // var_dump($carsArr);
+          // die();
         }
         if(!empty($result)){
           $mcnt += $result['count'];
