@@ -86,7 +86,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
         }
 
 		Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
-
+		
 		//Load player data
 		$aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 
@@ -335,6 +335,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
 		$inventoryList = Phpfox::getService('dvs')->getModelInventory($aFirstVideo['ko_id']);
 		
+		
 		$this->template()
 			->setTemplate('dvs-view')
 			->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -344,6 +345,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			))
 			->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
 			->setHeader(array(
+				'<style type="text/css">' . Phpfox::getService('dvs')->getinvCss($aDvs) . '</style>',
 //				'<style type="text/css">' . Phpfox::getService('dvs')->getCss($aDvs, $bSubdomainMode) . '</style>',
 //				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aPlayer) . '</style>',
 				'player.js' => 'module_dvs',

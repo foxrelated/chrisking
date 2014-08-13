@@ -37,6 +37,7 @@ class Dvs_Component_Controller_Customize extends Phpfox_Component {
 			{
 				$bIsEdit = false;
 			}
+			
 		}
 		else
 		{
@@ -45,6 +46,8 @@ class Dvs_Component_Controller_Customize extends Phpfox_Component {
 
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
 
+		
+		
 		$this->template()
 			->setHeader(array(
 				'colorpicker.js' => 'module_dvs',

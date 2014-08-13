@@ -66,6 +66,7 @@
 
 .dvs_share_thumbnail_image_container h3 {
 	border: none;
+	min-height:42px;
 }
 .dvs_share_thumbnail_image_container_inner table td {
 	vertical-align: top;

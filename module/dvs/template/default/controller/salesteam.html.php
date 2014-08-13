@@ -27,7 +27,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{foreach from=$aSalesteam key=iKey item=aTeamMember}
 			<tr id="sales_team_member_{$aTeamMember.salesteam_id}">
 				<td>
-					{$aTeamMember|user}
+					{*$aTeamMember|user*}
+					{$aTeamMember.full_name}
 				</td>
 				<td>
 					<a href="#" onclick="$.ajaxCall('dvs.removeTeamMember', 'salesteam_id={$aTeamMember.salesteam_id}');">{phrase var='dvs.remove'}</a>

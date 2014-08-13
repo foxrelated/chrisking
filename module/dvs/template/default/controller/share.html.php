@@ -28,7 +28,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<table width="100%">
 						<tr>
 							<td colspan="2">
-								<h3>{$aVideo.year} {$aVideo.make} {$aVideo.model}</h3>
+								<h3>{$aVideo.year} {$aVideo.make} {$aVideo.model} testing added</h3>
 							</td>
 						</tr>
 						<tr>
