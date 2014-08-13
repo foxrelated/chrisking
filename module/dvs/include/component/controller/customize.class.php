@@ -44,6 +44,10 @@ class Dvs_Component_Controller_Customize extends Phpfox_Component {
 			$this->url()->send('dvs');
 		}
 
+        if(!isset($aForms['font_family_id'])) {
+            $aForms['font_family_id'] = 3;
+        }
+
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
 
 		

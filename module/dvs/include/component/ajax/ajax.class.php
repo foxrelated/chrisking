@@ -1711,6 +1711,16 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$this->hide('#sales_team_member_' . $iSalesTeamId);
 	}
 
+    public function removeManagerTeamMember()
+    {
+        $iManagerTeamId = $this->get('managersteam_id');
+
+        Phpfox::getService('dvs.manager.process')->remove($iManagerTeamId);
+
+        $this->hide('#managers_team_member_' . $iManagerTeamId);
+        $this->alert('User removed');
+    }
+
 	public function showGetPriceForm()
 	{
 		Phpfox::getBlock('dvs.get-price', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));

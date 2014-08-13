@@ -160,7 +160,7 @@ class Dvs_Component_Controller_Index extends Phpfox_Component
 		$iPage = $this->request()->getInt('page');
 		$iPageSize = 20;
 
-		list($aDvss, $iCnt) = Phpfox::getService('dvs')->listDvss($iPage, $iPageSize, Phpfox::getUserId());
+		list($aDvss, $iCnt) = Phpfox::getService('dvs')->listDvss($iPage, $iPageSize, Phpfox::getUserId(), true, Phpfox::getUserParam('dvs.can_view_other_dvs'));
 
 		if ($iCnt < Phpfox::getUserParam('dvs.dvss'))
 		{
