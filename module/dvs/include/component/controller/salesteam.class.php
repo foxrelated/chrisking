@@ -34,7 +34,11 @@ class Dvs_Component_Controller_Salesteam extends Phpfox_Component {
 				}
 				else
 				{
-					$this->url()->send('dvs');
+                    if (Phpfox::getService('dvs.manager')->get(Phpfox::getUserId(), $iDvsId)) {
+
+                    } else {
+                        $this->url()->send('dvs');
+                    }
 				}
 			}
 			else

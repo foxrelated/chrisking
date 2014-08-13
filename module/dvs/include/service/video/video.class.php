@@ -166,6 +166,32 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 		$aFilters = array();
 
 		$aAllowedYears = Phpfox::getParam('dvs.vf_overview_allowed_years');
+
+        if($iDvsId > 0) {
+            $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+
+            if(!$aDvs['new_car_videos']) {
+                $sYears = Phpfox::getParam('research.new_model_year');
+                $aYears = explode(',', $sYears);
+                foreach($aAllowedYears as $iKey => $sYear) {
+                    if(in_array($sYear, $aYears)) {
+                        unset($aAllowedYears[$iKey]);
+                    }
+                }
+            }
+
+            if(!$aDvs['used_car_videos']) {
+                $sYears = Phpfox::getParam('research.used_model_year_exclusion');
+                $aYears = explode(',', $sYears);
+                foreach($aAllowedYears as $iKey => $sYear) {
+                    if(!in_array($sYear, $aYears)) {
+                        unset($aAllowedYears[$iKey]);
+                    }
+                }
+            }
+        }
+
+
 		if ($aAllowedYears)
 		{
 			$iLoops = 0;
@@ -184,7 +210,11 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 				}
 			}
 			$aFilters[] = $sWhere;
-		}
+		} else {
+            $aFilters[] = '0';
+        }
+
+
 
 		if (!Phpfox::getParam('dvs.vf_overview_allow_1onone'))
 		{
@@ -553,9 +583,34 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 	 *
 	 * @param array years
 	 */
-	public function getValidVSYears($aMakes)
+	public function getValidVSYears($aMakes, $iDvsId = 0)
 	{
 		$aAllowedYears = Phpfox::getParam('dvs.vf_video_select_allowed_years');
+
+        if($iDvsId > 0) {
+            $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+
+            if(!$aDvs['new_car_videos']) {
+                $sYears = Phpfox::getParam('research.new_model_year');
+                $aYears = explode(',', $sYears);
+                foreach($aAllowedYears as $iKey => $sYear) {
+                    if(in_array($sYear, $aYears)) {
+                        unset($aAllowedYears[$iKey]);
+                    }
+                }
+            }
+
+            if(!$aDvs['used_car_videos']) {
+                $sYears = Phpfox::getParam('research.used_model_year_exclusion');
+                $aYears = explode(',', $sYears);
+                foreach($aAllowedYears as $iKey => $sYear) {
+                    if(!in_array($sYear, $aYears)) {
+                        unset($aAllowedYears[$iKey]);
+                    }
+                }
+            }
+        }
+
 		foreach ($aAllowedYears as $iYearKey => $iYear)
 		{
 			$bHasData = false;

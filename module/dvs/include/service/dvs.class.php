@@ -598,28 +598,29 @@ public function aasort (&$array, $key) {
     return $values;
 	}
 
-	public function listDvss($iPage, $iPageSize, $iUserId, $bPaginate = true)
+	public function listDvss($iPage, $iPageSize, $iUserId, $bPaginate = true, $bGetAll = false)
 	{
 		$iPage = (int) $iPage;
 		$iPageSize = (int) $iPageSize;
 		$iUserId = (int) $iUserId;
 
-		if ($bPaginate)
-		{
-			if ($iUserId)
-			{
-				$this->database()->where('user_id =' . $iUserId);
-			}
+        $sWhere = '1';
+	    if ($iUserId && !$bGetAll) {
+            $sWhere .= ' AND d.user_id =' . $iUserId;
+            $aIsManagerDvs = Phpfox::getService('dvs.manager')->getAllDvs($iUserId);
+
+            if(count($aIsManagerDvs)) {
+                $sWhere .= ' OR d.dvs_id IN (' . implode(',', $aIsManagerDvs) . ')';
+            }
+        }
+
+		if ($bPaginate) {
 			$iCnt = $this->database()->select('COUNT(*)')
-				->from($this->_sTable)
+				->from($this->_sTable, 'd')
+                ->where($sWhere)
 				->execute('getField');
 
 			$this->database()->limit($iPage, $iPageSize, $iCnt);
-		}
-
-		if ($iUserId)
-		{
-			$this->database()->where('d.user_id =' . $iUserId);
 		}
 
 		$aDvss = $this->database()
@@ -634,6 +635,7 @@ public function aasort (&$array, $key) {
 			//->leftjoin(Phpfox::getT('ko_dvs_logo_files'), 'l', 'l.logo_id = p.logo_file_id')
 			->leftjoin(Phpfox::getT('ko_dvs_preroll_files'), 'pr', 'pr.preroll_id = p.preroll_file_id')
 			->join(Phpfox::getT('user'), 'u', 'u.user_id = d.user_id')
+            ->where($sWhere)
 			->execute('getRows');
 
 		if ($bPaginate)
@@ -700,17 +702,18 @@ public function aasort (&$array, $key) {
 		// output
 		$aOutput = array();
 
-		$sRequestUrl = "http://maps.googleapis.com/maps/api/geocode/xml?sensor=false" . "&address=" . urlencode($sAddress);
+        $sRequestUrl = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false" . "&address=" . urlencode($sAddress);
 
-		$oXml = simplexml_load_file($sRequestUrl);
+        $oXml = file_get_contents($sRequestUrl);
+        $oXml = json_decode($oXml, true);
 
-		$sStatusCode = (string) $oXml->status;
+        $sStatusCode = (string) $oXml['status'];
 
-		if (strcmp($sStatusCode, "OK") == 0)
-		{
-			$aOutput['latitude'] = (string) $oXml->result->geometry->location->lat;
-			$aOutput['longitude'] = (string) $oXml->result->geometry->location->lng;
-		}
+        if (strcmp($sStatusCode, "OK") == 0)
+        {
+            $aOutput['latitude'] = (string) $oXml['results'][0]['geometry']['location']['lat'];
+            $aOutput['longitude'] = (string) $oXml['results'][0]['geometry']['location']['lat'];
+        }
 		else if (strcmp($sStatusCode, "620") == 0)
 		{
 			if ($bRecursion === true)
@@ -977,6 +980,10 @@ public function aasort (&$array, $key) {
 			{
 				return true;
 			}
+
+            if (Phpfox::getService('dvs.manager')->get($iUserId, $iId)) {
+                return true;
+            }
 		}
 
 		if ($sIdSource == 'branding')
