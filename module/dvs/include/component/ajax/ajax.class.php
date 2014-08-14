@@ -1594,6 +1594,35 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$sMakes = Phpfox::getLib('request')->get('aMakes');
 		$aMakes = explode(',', $sMakes);
 
+        $aAllowedYears = $aYears;
+
+        if($iDvsId = $this->get('iDvs')) {
+            $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+            if($aDvs) {
+                if(!$aDvs['new_car_videos']) {
+                    $sYears = Phpfox::getParam('research.new_model_year');
+                    $aYears2 = explode(',', $sYears);
+                    foreach($aAllowedYears as $iKey => $sYear) {
+                        if(in_array($sYear, $aYears2)) {
+                            unset($aAllowedYears[$iKey]);
+                        }
+                    }
+                }
+
+                if(!$aDvs['used_car_videos']) {
+                    $sYears = Phpfox::getParam('research.used_model_year_exclusion');
+                    $aYears2 = explode(',', $sYears);
+                    foreach($aAllowedYears as $iKey => $sYear) {
+                        if(!in_array($sYear, $aYears2)) {
+                            unset($aAllowedYears[$iKey]);
+                        }
+                    }
+                }
+            }
+        }
+
+        $aYears = $aAllowedYears;
+
 		$aPlayerModels = array();
 
 		foreach ($aYears as $iYear)

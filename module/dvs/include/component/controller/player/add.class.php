@@ -30,6 +30,37 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 
 		$aYears = Phpfox::getParam('dvs.new_years');
 
+        /*$aAllowedYears = Phpfox::getParam('dvs.vf_video_select_allowed_years');*/
+
+        $aAllowedYears = $aYears;
+
+        if($iDvsId = $this->request()->get('id')) {
+            $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+            if($aDvs) {
+                if(!$aDvs['new_car_videos']) {
+                    $sYears = Phpfox::getParam('research.new_model_year');
+                    $aYears2 = explode(',', $sYears);
+                    foreach($aAllowedYears as $iKey => $sYear) {
+                        if(in_array($sYear, $aYears2)) {
+                            unset($aAllowedYears[$iKey]);
+                        }
+                    }
+                }
+
+                if(!$aDvs['used_car_videos']) {
+                    $sYears = Phpfox::getParam('research.used_model_year_exclusion');
+                    $aYears2 = explode(',', $sYears);
+                    foreach($aAllowedYears as $iKey => $sYear) {
+                        if(!in_array($sYear, $aYears2)) {
+                            unset($aAllowedYears[$iKey]);
+                        }
+                    }
+                }
+            }
+        }
+
+        $aYears = $aAllowedYears;
+
 		$aMakes = Phpfox::getService('dvs.video')->getMakes();
 
 		//If there is an array 'val', attempt to validate and save player, otheriwse, display add/edit page.
