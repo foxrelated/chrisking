@@ -18,7 +18,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         {if $aVideoSelectYears}
 		<table width="650px">
 		<tr>
-		<td style="vertical-align:bottom;padding-right:10px;"><h1>Filter Videos:</h1></td>
+		<td style="vertical-align:bottom;padding-right:10px;"><h1 style="font-size:14px;font-weight:bold;">Filter Videos:</h1></td>
 		
         {if isset($aVideoSelectYears.1)}
         <td style="vertical-align:top;">
