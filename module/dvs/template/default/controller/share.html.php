@@ -19,7 +19,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<table width="650px">
 		<tr>
 		<td style="vertical-align:bottom;padding-right:10px;"><h1 style="font-size:14px;font-weight:bold;">Filter Videos:</h1></td>
-		
+        
         {if isset($aVideoSelectYears.1)}
         <td style="vertical-align:top;">
         <ul id="year">
@@ -55,7 +55,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </td>
         </tr>
         </table>
-        
         {/if}
         <div class="clear"></div>
     </section>
