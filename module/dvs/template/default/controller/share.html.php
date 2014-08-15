@@ -16,9 +16,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <div id="dvs_share_wrapper">
     <section id="select_new">
         {if $aVideoSelectYears}
-        <table width="650px">
-        <tr>
-        <td style="vertical-align:bottom;padding-right:10px;"><h1 style="font-size:14px;font-weight:bold;">Filter Videos:</h1></td>
+		<table width="650px">
+		<tr>
+		<td style="vertical-align:bottom;padding-right:10px;"><h1 style="font-size:14px;font-weight:bold;">Filter Videos:</h1></td>
+        
         {if isset($aVideoSelectYears.1)}
         <td style="vertical-align:top;">
         <ul id="year">
@@ -54,10 +55,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </td>
         </tr>
         </table>
-        <div class="clear"></div>
         {/if}
+        <div class="clear"></div>
     </section>
-
+<br>
 
 	<div id="dvs_share_container">
 		<input class="dvs_share_text_box" type="hidden" id="share_link_box">
