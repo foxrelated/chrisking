@@ -43,11 +43,18 @@ class Dvs_Service_Invite_Invite extends Phpfox_Service {
 	 * @param string  $sEmailAddress
 	 * @return array, invite
 	 */
-	public function get($iDvsId, $sEmailAddress)
+	public function get($iDvsId, $sEmailAddress, $bIsManageInvite = false)
 	{
+        $sWhere = 'i.email_address = "' . $this->preParse()->clean($sEmailAddress) . '" AND i.dvs_id = ' . (int) $iDvsId;
+        if($bIsManageInvite) {
+            $sWhere .= ' AND i.manager_invite = 1';
+        } else {
+            $sWhere .= ' AND i.manager_invite = 0';
+        }
+
 		return $this->database()->select('i.*')
 				->from($this->_tInvite, 'i')
-				->where('i.email_address = "' . $this->preParse()->clean($sEmailAddress) . '" AND i.dvs_id = ' . (int) $iDvsId)
+				->where($sWhere)
 				->execute('getRows');
 	}
 
@@ -66,11 +73,17 @@ class Dvs_Service_Invite_Invite extends Phpfox_Service {
 		// Add member to the DVSs if he's not already a member
 		foreach ($aInvites as $aInvite)
 		{
-			$aTeamMember = Phpfox::getService('dvs.salesteam')->get($iUserId, $aInvite['dvs_id']);
-			if (empty($aTeamMember))
-			{
-				Phpfox::getService('dvs.salesteam.process')->add($aInvite['dvs_id'], $iUserId);
-			}
+			if($aInvite['manager_invite']) {
+                $aTeamMember = Phpfox::getService('dvs.manager')->get($iUserId, $aInvite['dvs_id']);
+                if (empty($aTeamMember)) {
+                    Phpfox::getService('dvs.manager.process')->add($aInvite['dvs_id'], $iUserId);
+                }
+            } else {
+                $aTeamMember = Phpfox::getService('dvs.salesteam')->get($iUserId, $aInvite['dvs_id']);
+                if (empty($aTeamMember)) {
+                    Phpfox::getService('dvs.salesteam.process')->add($aInvite['dvs_id'], $iUserId);
+                }
+            }
 		}
 	}
 

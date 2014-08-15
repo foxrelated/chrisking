@@ -358,6 +358,9 @@ background-color: #c35f54;
 								 <li><a href="{url link='dvs.customize' id=$aDvs.dvs_id}"><span>Customize Styling</span></a></li>
 								 <li><a href="{url link='dvs.player.add' id=$aDvs.dvs_id}"><span>Player Settings</span></a></li>
 								 <li><a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}"><span>Manage Sales Team</span></a></li>
+                                 {if Phpfox::isAdmin()}
+                                 <li><a href="{url link='dvs.manager' id=$aDvs.dvs_id}"><span>Manage Managers Team</span></a></li>
+                                 {/if}
 							  </ul>
 						   </li>
 						   <li class="has-sub"><a href="#"><span>Sharing</span></a>

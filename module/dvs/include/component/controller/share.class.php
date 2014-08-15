@@ -27,6 +27,71 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 		//Load player data
 		$aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 
+		// Load the videos for the DVS
+		$aDvsVideos = Phpfox::getService('dvs.video')->getOverviewVideos($aDvs['dvs_id']);
+
+		if ($aPlayer['featured_model'])
+		{
+			$aFeaturedVideo = Phpfox::getService('dvs.video')->get('', false, $aPlayer['featured_year'], $aPlayer['featured_make'], $aPlayer['featured_model']);
+			array_unshift($aDvsVideos, '');
+			$aDvsVideos[0] = $aFeaturedVideo;
+
+			// Make sure the featured video is not duped
+			foreach ($aDvsVideos as $iKey => $aVideo)
+			{
+				if ($iKey == 0)
+				{
+					//Don't unset the featured video
+					continue;
+				}
+
+				if ($aVideo['id'] == $aFeaturedVideo['id'])
+				{
+					//Remove dupe
+					unset($aDvsVideos[$iKey]);
+
+					//Reset keys
+					$aDvsVideos = array_values($aDvsVideos);
+				}
+			}
+		}
+		else
+		{
+			$aFeaturedVideo = array();
+		}
+
+		$iUserId = Phpfox::getUserId();
+		foreach ($aDvsVideos as $iKey => $aVideo) {
+			$aDvsVideos[$iKey]['shorturl'] = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'embed', $iUserId, 1);
+
+			if (Phpfox::getParam('dvs.enable_subdomain_mode')){
+				$aDvsVideos[$iKey]['entire_shorturl'] = Phpfox::getLib('url')->makeUrl('') . $aDvsVideos[$iKey]['shorturl'];
+			}else{
+				$aDvsVideos[$iKey]['entire_shorturl'] = Phpfox::getLib('url')->makeUrl('dvs') . $aDvsVideos[$iKey]['shorturl'];
+			}
+		}
+		
+		/*phpmasterminds Sort*/
+		$aDvsVideos = Phpfox::getService('dvs')->aaasort($aDvsVideos,"year");
+		/*phpmasterminds Sort*/
+		$aFirstVideo = $aDvsVideos[0];
+
+		$sBrowser = Phpfox::getService('dvs')->getBrowser();
+
+		if( stripos($_SERVER['HTTP_USER_AGENT'], 'iphone') !== false or stripos($_SERVER['HTTP_USER_AGENT'], 'ipad') !== false ) {
+			$bIsIPhone = 1;
+		} else {
+			$bIsIPhone = 0;
+		}
+
+		if( $bSubdomainMode ) {
+			$sVideoViewUrl = Phpfox::getLib('url')->makeUrl( 'www' );//$sDvsTitle );
+		} else {
+			$sVideoViewUrl = Phpfox::getLib('url')->makeUrl( '' ) . $sDvsTitle;
+		}
+
+		$aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aFirstVideo);
+
         $aValidVSYears = Phpfox::getService('dvs.video')->getValidVSYears($aPlayer['makes']);
 
         if(count($aValidVSYears)) {

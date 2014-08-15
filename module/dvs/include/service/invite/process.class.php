@@ -27,11 +27,12 @@ class Dvs_Service_Invite_Process extends Phpfox_Service {
 	 * @param int $sEmail
 	 * @return int, invite id
 	 */
-	public function add($iDvsId, $sEmail)
+	public function add($iDvsId, $sEmail, $bIsManager = false)
 	{
 		$iInviteId = $this->database()->insert($this->_tInvite, array(
 			'dvs_id' => (int) $iDvsId,
-			'email_address' => $this->preParse()->clean($sEmail)
+			'email_address' => $this->preParse()->clean($sEmail),
+            'manager_invite' => ($bIsManager ? 1 : 0)
 		));
 
 		return $iInviteId;

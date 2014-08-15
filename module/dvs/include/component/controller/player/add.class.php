@@ -31,10 +31,14 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 		$aYears = Phpfox::getParam('dvs.new_years');
 
 		$aMakes = Phpfox::getService('dvs.video')->getMakes();
-
+		foreach($aMakes as $ik=>$amk)
+		{
+			$aMakes[$ik]['remake'] = str_replace(" ","-",$amk['make']); 
+		}
 		//If there is an array 'val', attempt to validate and save player, otheriwse, display add/edit page.
 		if ($aVals = $this->request()->getArray('val'))
 		{
+			
 			if (!isset($aVals['dvs_id']) || !Phpfox::getService('dvs')->hasAccess($aVals['dvs_id'], Phpfox::getUserId()))
 			{
 				$this->url()->send('');
@@ -82,6 +86,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 
 				if (!$iPlayerId)
 				{
+					
 					$iPlayerId = Phpfox::getService('dvs.player.process')->add($aVals);
 
 					if ($aVals['forward'])

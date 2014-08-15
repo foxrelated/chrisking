@@ -37,14 +37,21 @@ class Dvs_Component_Controller_Customize extends Phpfox_Component {
 			{
 				$bIsEdit = false;
 			}
+			
 		}
 		else
 		{
 			$this->url()->send('dvs');
 		}
 
+        if(!isset($aForms['font_family_id'])) {
+            $aForms['font_family_id'] = 3;
+        }
+
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
 
+		
+		
 		$this->template()
 			->setHeader(array(
 				'colorpicker.js' => 'module_dvs',
