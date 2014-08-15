@@ -91,6 +91,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	color: #{$aDvs.button_text};
 	{r}
 </style>
+
 <form id="share_email_dealer" name="share_email_dealer">
 
 	<fieldset>
@@ -106,17 +107,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</ul>
 		<ul>
 			<li>
-				<input type="text" name="val[my_share_name]" id="my_share_name" placeholder="{phrase var='dvs.your_name'}" required class="inputShare"/>
+				<input type="text" name="val[my_share_name]" id="my_share_name" placeholder="{phrase var='dvs.your_name'}" value="{$your_name}" required class="inputShare"/>
 			</li>
 		</ul>
         <ul>
             <li>
-                <input type="text" name="val[my_share_email]" id="my_share_email" placeholder="{phrase var='dvs.your_email'}" required class="inputShare"/>
+                <input type="text" name="val[my_share_email]" id="my_share_email" placeholder="{phrase var='dvs.your_email'}" value="{$your_email}" required class="inputShare"/>
             </li>
         </ul>
 		<ul>
 			<li>
-				<textarea id="share_message" name="val[share_message]" placeholder="{phrase var='dvs.message_to_friend'}" cols="18" rows="5" required></textarea>
+				<textarea id="share_message" name="val[share_message]" placeholder="{phrase var='dvs.message_to_friend'}" cols="18" rows="5"></textarea>
 			</li>
 		</ul>
 		<input type="hidden" name="val[video_ref_id]" id="video_ref_id" value="{$aVideo.referenceId}"/>
