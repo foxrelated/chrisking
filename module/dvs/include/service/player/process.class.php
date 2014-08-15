@@ -92,6 +92,7 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 	{
 		$aPlayer = Phpfox::getService('dvs.player')->get((int) $aVals['player_id']);
 
+		
 		//if ($aPlayer['user_id'] != Phpfox::getUserId() && !Phpfox::isAdmin()) return false;
 		// Do we need to remove our old logo file?
 		if (!empty($aPlayer['logo_file_id']) && !empty($aVals['logo_file_id']) && $aPlayer['logo_file_id'] != (int) $aVals['logo_file_id'])
@@ -158,8 +159,11 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 
 
 		//Update makes
+		
 		foreach ($aVals['selected_makes'] as $sMake => $bSelected)
 		{
+			
+			
 			if ($bSelected)
 			{
 				$iPlayerMakeId = $this->database()->select('pmake_id')

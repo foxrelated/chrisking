@@ -304,7 +304,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</ol>
 		</fieldset>
 
-		{if Phpfox::isAdmin()}
+		<div {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
 		<h1>Admin Only Settings</h1>
 		<h3>Layout Toggles</h3>
 		<fieldset>
@@ -413,7 +413,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </li>
         </ol>
     </fieldset>
-	{/if}
+	</div>
 <br>
 	<div id="phrase_override_toggle">
 		<a href="#" onclick="if ($('#phrase_override_wrapper').is(':visible')){l}$('#phrase_override_wrapper').hide('slow');wtvlt='Show Phrase Overrides'{r}else{l}$('#phrase_override_wrapper').show('slow');wtvlt='Hide Phrase Overrides (values will still be saved)';{r}$(this).text(wtvlt);return false;" id="phrase_override_toggle_link">Show Phrase Overrides</a>

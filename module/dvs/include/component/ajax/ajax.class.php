@@ -1189,12 +1189,25 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image'))
 			));
 			$sBody = $this->getContent(false);
-
+			
+			Phpfox::getBlock('dvs.share-email-plain-template', array(
+				'iDvsId' => $aDvs['dvs_id'],
+				'sReferenceId' => $aVideo['referenceId'],
+				'sShareName' => $aVals['share_name'],
+				'sMyShareName' => $aVals['my_share_name'],
+				'sShareMessage' => $aVals['share_message'],
+				'sShareEmail' => $aVals['share_email'],
+				'sBackgroundImageUrl' => ($aDvs['background_file_name'] ? Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.dvs.background') . $aDvs['background_file_name'] : ''),
+				'sVideoLink' => $sVideoLink,
+				'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image'))
+			));
+			$sBodyPlain = $this->getContent(false);
+			
 			//$sDealerEmail = 'noreply@' . str_replace('www.', '', parse_url($aDvs['url'], PHP_URL_HOST));
 			$sDealerEmail = $aDvs['email'];
 			Phpfox::getLibClass('phpfox.mail.interface');
 			$oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
-			$oMail->send($aVals['share_email'], $sSubject, ' ', $sBody, $aVals['my_share_name'], $aVals['my_share_email']);
+			$oMail->send($aVals['share_email'], $sSubject, $sBodyPlain, $sBody, $aVals['my_share_name'], $aVals['my_share_email']);
 
 //			Phpfox::getLib('mail')
 //				->to($aVals['share_email'])
@@ -1599,6 +1612,35 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$aYears = Phpfox::getParam('dvs.new_years');
 		$sMakes = Phpfox::getLib('request')->get('aMakes');
 		$aMakes = explode(',', $sMakes);
+
+        $aAllowedYears = $aYears;
+
+        if($iDvsId = $this->get('iDvs')) {
+            $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+            if($aDvs) {
+                if(!$aDvs['new_car_videos']) {
+                    $sYears = Phpfox::getParam('research.new_model_year');
+                    $aYears2 = explode(',', $sYears);
+                    foreach($aAllowedYears as $iKey => $sYear) {
+                        if(in_array($sYear, $aYears2)) {
+                            unset($aAllowedYears[$iKey]);
+                        }
+                    }
+                }
+
+                if(!$aDvs['used_car_videos']) {
+                    $sYears = Phpfox::getParam('research.used_model_year_exclusion');
+                    $aYears2 = explode(',', $sYears);
+                    foreach($aAllowedYears as $iKey => $sYear) {
+                        if(!in_array($sYear, $aYears2)) {
+                            unset($aAllowedYears[$iKey]);
+                        }
+                    }
+                }
+            }
+        }
+
+        $aYears = $aAllowedYears;
 
 		$aPlayerModels = array();
 
