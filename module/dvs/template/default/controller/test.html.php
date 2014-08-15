@@ -1,0 +1,1 @@
+{module name='dvs.share-video' aShareVideos=$aShareVideos aDvs=$aDvs}
