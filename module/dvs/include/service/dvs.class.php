@@ -747,7 +747,7 @@ public function aaasort (&$array, $key) {
         if (strcmp($sStatusCode, "OK") == 0)
         {
             $aOutput['latitude'] = (string) $oXml['results'][0]['geometry']['location']['lat'];
-            $aOutput['longitude'] = (string) $oXml['results'][0]['geometry']['location']['lat'];
+            $aOutput['longitude'] = (string) $oXml['results'][0]['geometry']['location']['lng'];
         }
 		else if (strcmp($sStatusCode, "620") == 0)
 		{
