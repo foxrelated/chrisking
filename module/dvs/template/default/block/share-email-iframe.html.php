@@ -19,6 +19,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         event.preventDefault();
 
         // do whatever you want here
+        $('#share_email_error').hide();
         $('#share_email_dealer input, #share_email_dealer textarea').removeClass('required');
         $.ajaxCall('dvs.sendShareEmailIframe', $('#share_email_dealer').serialize());
         //$.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id={$aVideo.referenceId}&service=email&return_id=share_link_box');
@@ -34,6 +35,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 <style type="text/css">
     {literal}
+    #share_email_error {
+        background-color: #FF0000;
+        color: #FFFFFF;
+        line-height: 24px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
     #dvs_share_email_container {
         text-align: center;
     }
@@ -92,6 +101,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     color: #{$aDvs.button_text};
     {r}
 </style>
+
+<div style="display: none" id="share_email_error"></div>
 
 <form id="share_email_dealer" name="share_email_dealer">
     <fieldset>

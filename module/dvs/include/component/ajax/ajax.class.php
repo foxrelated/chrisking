@@ -1232,39 +1232,43 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         Phpfox::getLib('setting')->setParam('brightcove.url_image', Phpfox::getParam('core.url_pic') . 'brightcove/');
 
         $aVals = Phpfox::getLib('request')->getArray('val');
+        $sErrorText = '';
         $bIsError = false;
+
 
         if (!$aVals['share_name'])
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_an_email_address'));
+            $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_friends_name');
             $this->call('$("#share_email_dealer #share_name").addClass("required");');
+            $bIsError = true;
+        }
+        if (!$aVals['share_email'])
+        {
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_an_email_address');
+            }
+            $this->call('$("#share_email_dealer #share_email").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['my_share_name'])
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'));
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_name');
+            }
             $this->call('$("#share_email_dealer #my_share_name").addClass("required");');
             $bIsError = true;
         }
-
         if (!$aVals['my_share_email'])
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'));
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_email_address');
+            }
             $this->call('$("#share_email_dealer #my_share_email").addClass("required");');
-            $bIsError = true;
-        }
-
-        if (!$aVals['share_email'])
-        {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_friends_name'));
-            $this->call('$("#share_email_dealer #share_email").addClass("required");');
             $bIsError = true;
         }
 
         if (!$bIsError)
         {
-
-
             $aDvs = Phpfox::getService('dvs')->get($aVals['dvs_id']);
             Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
             $aVideo = Phpfox::getService('dvs.video')->get($aVals['video_ref_id']);
@@ -1333,6 +1337,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         }
         else
         {
+            $this->html('#share_email_error', $sErrorText)
+                ->show('#share_email_error');
             return false;
         }
     }
@@ -1820,35 +1826,44 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
     public function contactDealerIframe()
     {
         $aVals = Phpfox::getLib('request')->getArray('val');
+        $sErrorText = '';
         $bIsError = false;
 
         if (!$aVals['contact_name'] && Phpfox::getParam('dvs.get_price_validate_name'))
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'). ' ');
+            $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_name');
             $this->call('$("#contact_dealer #name").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['contact_email'] && Phpfox::getParam('dvs.get_price_validate_email'))
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'). ' ');
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_email_address');
+            }
             $this->call('$("#contact_dealer #email").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['contact_phone'] && Phpfox::getParam('dvs.get_price_validate_phone'))
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_phone_number'). ' ');
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_phone_number');
+            }
             $this->call('$("#contact_dealer #phone").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['contact_zip'] && Phpfox::getParam('dvs.get_price_validate_zip_code'))
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_zip_code'). ' ');
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_zip_code');
+            }
             $this->call('$("#contact_dealer #zip").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['contact_comments'] && Phpfox::getParam('dvs.get_price_validate_comments'))
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_comments'). ' ');
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_comments');
+            }
             $this->call('$("#contact_dealer #comments").addClass("required");');
             $bIsError = true;
         }
@@ -1919,6 +1934,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         }
         else
         {
+            $this->html('#contact_dealer_error', $sErrorText)
+                ->show('#contact_dealer_error');
             return false;
         }
     }

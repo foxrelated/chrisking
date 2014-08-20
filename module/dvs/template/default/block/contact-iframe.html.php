@@ -22,6 +22,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             event.preventDefault();
 
             // do whatever you want here
+            $('#contact_dealer_error').hide();
             $('#contact_dealer input, #contact_dealer textarea').removeClass('required');
             $.ajaxCall('dvs.contactDealerIframe', $('#contact_dealer').serialize());
 
@@ -34,6 +35,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </script>
 {if !empty($aDvs)}
 <style>
+    #contact_dealer_error {l}
+        background-color: #FF0000;
+        color: #FFFFFF;
+        line-height: 24px;
+        text-align: center;
+        margin-top: 10px;
+    {r}
+
 	input.dvs_form_button {l}
 		background-color: #{$aDvs.button_background};
 		background-image: -webkit-linear-gradient(top, #{$aDvs.button_top_gradient}, #{$aDvs.button_bottom_gradient});
@@ -59,6 +68,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{r}
 </style>
 {/if}
+
+<div style="display: none" id="contact_dealer_error"></div>
 
 <form id="contact_dealer" name="contact_dealer" action="javascript:void(0);">
 	<fieldset>

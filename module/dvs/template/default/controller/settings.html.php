@@ -391,8 +391,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         <ol>
 
             <li>
-                <input type="radio" name="val[sitemap_parent_url]" value="0" {if $bIsEdit && $aForms.sitemap_parent_url == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
-                <input type="radio" name="val[sitemap_parent_url]" value="1" {if $bIsEdit && $aForms.sitemap_parent_url == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked"{/if}/>{phrase var='dvs.dvs_inventory_status_on'}
+                {if !isset($aForms.parent_url)}
+                <h1 style="background: #FF0000; color: #FFFFFF; padding-left: 10px; font-size: 14px; line-height: 25px; height: 25px;">You need to embed the iframe code on the dealer site first!</h1>
+                {/if}
+                <input type="radio" name="val[sitemap_parent_url]" value="0" {if !$bIsEdit || !isset($aForms.parent_url) || ($bIsEdit && $aForms.sitemap_parent_url == 0)}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+                <input {if !isset($aForms.parent_url)}disabled="disabled"{/if} type="radio" name="val[sitemap_parent_url]" value="1" {if $bIsEdit && $aForms.sitemap_parent_url == 1 && isset($aForms.parent_url)}checked="checked"{/if}/>{phrase var='dvs.dvs_inventory_status_on'}
             </li>
         </ol>
     </fieldset>
