@@ -42,7 +42,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 <ul>
                     {if isset($aMakes) && count($aMakes)}
                     {foreach from=$aMakes item=aMake}
-                    <li onclick="$.ajaxCall('dvs.getShareModels', 'sDvsName={$aDvs.title_url}&amp;iYear={$iYear}&amp;sMake={$aMake.make}');">{$aMake.make}</li></ul>
+                    <li onclick="$.ajaxCall('dvs.getShareModels', 'sDvsName={$aDvs.title_url}&amp;iYear={$iYear}&amp;sMake={$aMake.make}');">{$aMake.make}</li>
                     {/foreach}
                     {else}
                     <li>
