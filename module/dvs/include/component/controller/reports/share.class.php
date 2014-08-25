@@ -18,7 +18,7 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 	{
 		$sStartYear = date('Y') - 100;
 		$sEndYear = date('Y') + 100;
-		
+        $shares_clicks = '';
 		// Is the user allowed to be here?
 		Phpfox::isUser(true);
 		
@@ -70,18 +70,25 @@ class Dvs_Component_Controller_Reports_Share extends Phpfox_Component {
 		// Did we have any sales members to begin with?
 		if (!empty($aSalesMembersDetails)) {
 			// Yes, merge the two arrays.
-			$aTeamMembers = array_merge($aDvsOwner, $aSalesMembersDetails);
-		}
-		else
-		{
+            if(!in_array($aDvs['user_id'], $aAllMembers)) {
+                $aTeamMembers = array_merge($aDvsOwner, $aSalesMembersDetails);
+            }
+		} else {
 			// No, just set it equal to the owner array so this variable can be used below in an array merge.
 			$aTeamMembers = $aDvsOwner;
 		}
-		if (Phpfox::isAdmin() && $aDvs['user_id'] != Phpfox::getUserId())
-		{
+		/*if (Phpfox::isAdmin() && $aDvs['user_id'] != Phpfox::getUserId()) {
 			$aAdmin = array(Phpfox::getService('user')->get($aDvs['user_id']));
 			$aTeamMembers = array_merge($aAdmin, $aTeamMembers);
-		}
+		}*/
+
+        if(!Phpfox::isAdmin()) {
+            foreach($aTeamMembers as $iKey => $aTeamMember) {
+                if($aTeamMember['user_group_id'] == 1) {
+                    unset($aTeamMembers[$iKey]);
+                }
+            }
+        }
                 
 		$this->template()
 			->setTitle(Phpfox::getPhrase('dvs.share_report'))

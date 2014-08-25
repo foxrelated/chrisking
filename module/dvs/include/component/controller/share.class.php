@@ -153,7 +153,7 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
             $sVideoViewUrl = Phpfox::getLib('url')->makeUrl( '' ) . $sDvsTitle;
         }
 
-        $aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aFirstVideo);
+        //$aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aFirstVideo);
 
 		$this->template()
 			//->setTitle($aDvs['phrase_overrides']['override_page_title_display'])
