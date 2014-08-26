@@ -16,7 +16,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <div id="dvs_share_wrapper">
     <section id="select_new">
         {if $aVideoSelectYears}
-		<table width="650px">
+		<table width="650">
 		<tr>
 		<td style="vertical-align:bottom;padding-right:10px;"><h1 style="font-size:14px;font-weight:bold;">Filter Videos:</h1></td>
         

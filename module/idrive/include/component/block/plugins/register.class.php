@@ -18,29 +18,21 @@ class Idrive_Component_Block_Plugins_Register extends Phpfox_Component {
 	{
 		/*phpmasterminds Customization on June 5th 2014*/
 		$salesteam_invite = false;
-		if (!Phpfox::getCookie('salesteam_invite'))
-		{
-			$iExpire = (Phpfox::getParam('invite.invite_expire') > 0 ? (Phpfox::getParam('invite.invite_expire')*60*60*24) : (7*60*60*24));
+		if (!Phpfox::getCookie('salesteam_invite')) {
+			/*$iExpire = (Phpfox::getParam('invite.invite_expire') > 0 ? (Phpfox::getParam('invite.invite_expire')*60*60*24) : (7*60*60*24));
 					
 			Phpfox::setCookie('salesteam_invite', null, PHPFOX_TIME + $iExpire);
-			$salesteam_invite = true;
-		}
-		else
-		{
+			$salesteam_invite = true;*/
+		} else {
 			$salesteam_invite = true;
 		}
 
-
-        $managersteam_invite = false;
-        if (!Phpfox::getCookie('managersteam_invite'))
-        {
+        if (!Phpfox::getCookie('managersteam_invite')) {
             $iExpire = (Phpfox::getParam('invite.invite_expire') > 0 ? (Phpfox::getParam('invite.invite_expire')*60*60*24) : (7*60*60*24));
 
             Phpfox::setCookie('managersteam_invite', null, PHPFOX_TIME + $iExpire);
             $managersteam_invite = true;
-        }
-        else
-        {
+        } else {
             $managersteam_invite = true;
         }
 		/*phpmasterminds Customization on June 5th 2014*/
@@ -48,9 +40,10 @@ class Idrive_Component_Block_Plugins_Register extends Phpfox_Component {
 			->assign(array(
 				'aUserTypes' => Phpfox::getService('idrive')->getUserGroups(),
 				'iSalesTeamUserGroup' => Phpfox::getParam('dvs.salesteam_usergroup_id'),
+                'iManagerTeamUserGroup' => Phpfox::getParam('dvs.managerteam_usergroup_id'),
 				'iDealerUserGroup' => Phpfox::getParam('dvs.dealer_usergroup_id'),
 				'bSalesTeamInvite' => $this->request()->get('salesteam'),
-                'bSalesTeamInvite' => $this->request()->get('salesteam'),
+                'bManagerTeamInvite' => $this->request()->get('managersteam'),
 				'salesteam_invite' => $salesteam_invite,
                 'managersteam_invite' => $managersteam_invite
 		));
