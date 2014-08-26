@@ -1,4 +1,5 @@
-{$aDvs.dealer_name}
+You have received a Virtual Test Drive from {$aDvs.dealer_name}!
+
 
 Hello {$sShareName}! 
 
