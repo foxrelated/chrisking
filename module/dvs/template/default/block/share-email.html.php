@@ -77,6 +77,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$aDvs.button_top_gradient}', endColorstr='#{$aDvs.button_bottom_gradient}');
 	border: 1px solid #{$aDvs.button_border};
 	color: #{$aDvs.button_text};
+	cursor:pointer;
 	{r}
 
 	input.dvs_form_button:hover {l}
@@ -89,22 +90,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	background-color: #{$aDvs.button_background};
 	border: 1px solid #{$aDvs.button_border};
 	color: #{$aDvs.button_text};
+	cursor:pointer;
 	{r}
 </style>
 
 <form id="share_email_dealer" name="share_email_dealer">
 
 	<fieldset>
-		<ul>
-			<li>
-				<input type="text" name="val[share_name]" id="share_name" placeholder="{phrase var='dvs.friends_name'}" class="inputShare" required />
-			</li>
-		</ul>
-		<ul>
-			<li>
-				<input type="email" name="val[share_email]" id="share_email" placeholder="{phrase var='dvs.friends_email_address'}" required class="inputShare"/>
-			</li>
-		</ul>
 		<ul>
 			<li>
 				<input type="text" name="val[my_share_name]" id="my_share_name" placeholder="{phrase var='dvs.your_name'}" value="{$your_name}" required class="inputShare"/>
@@ -115,6 +107,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 <input type="text" name="val[my_share_email]" id="my_share_email" placeholder="{phrase var='dvs.your_email'}" value="{$your_email}" required class="inputShare"/>
             </li>
         </ul>
+        <ul>
+			<li>
+				<input type="text" name="val[share_name]" id="share_name" placeholder="{phrase var='dvs.friends_name'}" class="inputShare" required />
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<input type="email" name="val[share_email]" id="share_email" placeholder="{phrase var='dvs.friends_email_address'}" required class="inputShare"/>
+			</li>
+		</ul>
+		
 		<ul>
 			<li>
 				<textarea id="share_message" name="val[share_message]" placeholder="{phrase var='dvs.message_to_friend'}" cols="18" rows="5"></textarea>
