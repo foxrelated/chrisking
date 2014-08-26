@@ -243,7 +243,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			'window.aSettings[\'latitude\']=\'' . $aDvs['latitude'] . '\';' .
 			'window.aSettings[\'longitude\']=\'' . $aDvs['longitude'] . '\';' .
 			'window.aSettings[\'zoom\']=\'' . Phpfox::getParam('dvs.google_maps_default_zoom') . '\';' .
-			'window.aSettings[\'infoWindow\']=\'<div id="google_maps_info_window_contents"><strong>' . $aDvs['dealer_name'] . '</strong><br/>' . $aDvs['address'] . '<br/>' . $aDvs['city'] . ', ' . $aDvs['state_string'] . '<br/>Phone: ' . $aDvs['phone'] . '<br/>Website: <a href="' . $aDvs['url'] . '">' . $aDvs['url'] . '</a></div>\';';
+			'window.aSettings[\'infoWindow\']=\'<div id="google_maps_info_window_contents"><strong>' . $aDvs['dealer_name'] . '</strong><br/>' . $aDvs['address'] . '<br/>' . $aDvs['city'] . ', ' . $aDvs['state_string'] . '</div>\';';
 
 		// Set inventory URL
 		$aDvs['inventory_url'] = str_replace('{$sMake}', urlencode($aFirstVideo['make']), $aDvs['inventory_url']);
