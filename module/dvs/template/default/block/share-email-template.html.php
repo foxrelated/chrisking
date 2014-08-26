@@ -24,7 +24,7 @@
             <td valign="top">
                 {$sShareMessage}
                 <br /><br />
-                Take a <a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">{$aVideo.year} {$aVideo.make} {$aVideo.model} Video Test Drive</a> from {$aDvs.dealer_name} -- It's fun, easy, and free!
+                Take your <a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">{$aVideo.year} {$aVideo.make} {$aVideo.model} Virtual Test Drive</a> from {$aDvs.dealer_name} -- It's fun, easy, and free!
                 <br /><br />
                 If you have any questions, please reply to this email.
                 <br /><br />
