@@ -14,7 +14,7 @@
         </tr>
         <tr>
             <td valign="top">
-                Hello {$sShareName},<br />
+                Hello {$sShareName},
             </td>
             <td valign="top" style="text-align:center;">
                 <a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">Take your {$aVideo.year} {$aVideo.make} {$aVideo.model} Virtual Test Drive</a><br />
