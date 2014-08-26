@@ -7,7 +7,7 @@ $(document).ready(function() {
 	function initializeGeoMap()
 	{
 		var mapOptions = {
-			zoom: parseInt(window.aSettings['zoom'], 10),
+			zoom: parseInt(window.aSettings['zoom'], 5),
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 
