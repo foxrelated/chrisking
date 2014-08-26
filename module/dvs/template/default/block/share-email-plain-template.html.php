@@ -10,7 +10,7 @@ Take your {$aVideo.year} {$aVideo.make} {$aVideo.model} Virtual Test Drive by cl
 {$sVideoLink}
 
 If you have any questions, please reply to this email.
-
+<br>
 Thanks,
 {$sMyShareName}
 
