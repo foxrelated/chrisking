@@ -20,15 +20,17 @@ class Dvs_Component_Block_Share_Video extends Phpfox_Component {
             $sVideoViewUrl = Phpfox::getLib('url')->makeUrl( '' ) . $sDvsTitle;
         }
 
-        $this->template()->assign(array(
-            'aShareVideos' => $aShareVideos,
+        $this->template()
+        	->assign(array(
+				'aShareVideos' => $aShareVideos,
 
-            'aDvs' => $aDvs,
-            'sDvsUrl' => Phpfox::getLib('url')->makeUrl($aDvs['title_url']),
-            'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
-            'bDebug' => (Phpfox::getParam('dvs.javascript_debug_mode') ? true : false),
-            'bIsIPhone' => $bIsIPhone,
-            'sVideoViewUrl' => $sVideoViewUrl
+				'aDvs' => $aDvs,
+				'sDvsUrl' => Phpfox::getLib('url')->makeUrl($aDvs['title_url']),
+				//'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
+				'sImagePath' => $this->getParam('sImagePath'),
+				'bDebug' => (Phpfox::getParam('dvs.javascript_debug_mode') ? true : false),
+				'bIsIPhone' => $bIsIPhone,
+				'sVideoViewUrl' => $sVideoViewUrl
         ));
     }
 }
