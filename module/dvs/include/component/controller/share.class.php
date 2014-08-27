@@ -165,6 +165,7 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 			//->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'), Phpfox::getLib('url')->makeUrl('dvs'))
 			->setBreadcrumb(Phpfox::getPhrase('dvs.share_links'))
 			->setHeader(array(
+				'<script src="//fast.eager.io/sIvKJqfi9I.js"></script>',
 				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
 				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
 				'share.css' => 'module_dvs',
