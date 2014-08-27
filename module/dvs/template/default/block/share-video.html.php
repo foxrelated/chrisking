@@ -80,11 +80,15 @@
                     CRM Email Embed Code
                     <input class="dvs_share_text_box" type="text" id="embed_code_{$iKey}"
                            value='
-<div style="position:relative;width:300px;overflow:hidden:text-align:center;">
+<div style="position:relative;width:300px;overflow:hidden;text-align:center;">
+<span style="text-decoration:none;font-weight:bold;">
+<a href="{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&utm_medium=EmbedShare&utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&utm_campaign=dvs_id_{$aDvs.dvs_id}">{$aVideo.year} {$aVideo.make} {$aVideo.model} Virtual Test Drive</a>
+</span>
+<div>
 <a href="{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&utm_medium=EmbedShare&utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&utm_campaign=dvs_id_{$aDvs.dvs_id}">
-<span style="text-decoration:none;font-weight:bold;">{$aVideo.year} {$aVideo.make} {$aVideo.model} Virtual Test Drive</span>
-<div>{img path="core.url_file" file="brightcove/".$aVideo.video_still_image style="vertical-align:middle;" width="300" alt=$aVideo.name}</div>
+{img path="core.url_file" file="brightcove/".$aVideo.video_still_image style="vertical-align:middle;border:0;" width="300" alt=$aVideo.name}
 </a>
+</div>
 </div>
 '
                 </td>
