@@ -7,14 +7,18 @@
     <table width="600" border="0" cellpadding="4" cellspacing="4" style="border:1px solid #cccccc;">
         <tbody>
         <tr>
-            <td colspan="2" rowspan="1" valign="top">
+            <td colspan="2" rowspan="1" valign="top" align="center">
+                {if $aDvs.branding_file_name}
                 <a href="{$sVideoLink}">
-                {if $aDvs.branding_file_name}{img path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle" max_width=600 max_height=300 suffix='_600'}{else}{$aDvs.dealer_name}{/if}</a>
+                {img path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle" max_width=600 max_height=300 suffix='_600'}</a>
+                {else}
+                <h2>{$aDvs.dealer_name} Video Showroom</h2>
+                {/if}
             </td>
         </tr>
         <tr>
             <td valign="top">
-                Hello {$sShareName},<br />
+                Hello {$sShareName},
             </td>
             <td valign="top" style="text-align:center;">
                 <a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">Take your {$aVideo.year} {$aVideo.make} {$aVideo.model} Virtual Test Drive</a><br />
