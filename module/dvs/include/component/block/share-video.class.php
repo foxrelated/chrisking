@@ -23,7 +23,7 @@ class Dvs_Component_Block_Share_Video extends Phpfox_Component {
         $this->template()
         	->assign(array(
 				'aShareVideos' => $aShareVideos,
-
+				'aVideo' => Phpfox::getService('dvs.video')->get($sReferenceId),
 				'aDvs' => $aDvs,
 				'sDvsUrl' => Phpfox::getLib('url')->makeUrl($aDvs['title_url']),
 				//'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
