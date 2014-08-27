@@ -1776,7 +1776,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 	public function emailForm()
 	{
-		Phpfox::getBlock('dvs.share-email', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bLongUrl' => $this->get('longurl', false)), false);
+		Phpfox::getBlock('dvs.share-email', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bLongUrl' => $this->get('longurl', false), 'bSaveGa' => $this->get('bSaveGa', 1)), false);
 	}
 
     public function emailFormIframe() {

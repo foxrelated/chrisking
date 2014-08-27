@@ -23,7 +23,7 @@
                 </td>
                 <td>
                     <div class="dvs_share_buttons_holder">
-                        <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;iDvsId={$aDvs.dvs_id}&amp;&dvs_title={$aDvs.title_url}&amp;sRefId={$aVideo.referenceId}')); return false;">
+                        <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;iDvsId={$aDvs.dvs_id}&amp;&dvs_title={$aDvs.title_url}&amp;sRefId={$aVideo.referenceId}&amp;bSaveGa=2')); return false;">
                             <img src="{$baseUrl}module/dvs/static/image/email-share.png" alt="Share Via Email"/>
                         </a>
 
@@ -80,14 +80,17 @@
                     CRM Email Embed Code
                     <input class="dvs_share_text_box" type="text" id="embed_code_{$iKey}"
                            value='
-<div style="position:relative;width:300px;overflow:hidden">
-<a href="{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&utm_medium=EmbedShare&utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&utm_campaign=dvs_id_{$aDvs.dvs_id}"><span style="text-decoration:none;font-weight:bold;">{$aVideo.name}</span></a>
-<div>{img path="core.url_file" file="brightcove/".$aVideo.video_still_image style="vertical-align:middle;" width="300" alt=$aVideo.name}</div>
-<div style="height:100%;left:0;position:absolute;top:0;width:300px;">
-<a href="{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&amp;utm_medium=EmbedShare&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign=dvs_id_{$aDvs.dvs_id}"><img src="{$baseUrl}module/dvs/static/image/play_btn_75.png" style="display:block;margin-left:auto;margin-right:auto;padding-top:60px;"/></a>
+<div style="position:relative;width:300px;overflow:hidden;text-align:center;">
+<span style="text-decoration:none;font-weight:bold;">
+<a href="{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&utm_medium=EmbedShare&utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&utm_campaign=dvs_id_{$aDvs.dvs_id}">{$aVideo.year} {$aVideo.make} {$aVideo.model} Virtual Test Drive</a>
+</span>
+<div>
+<a href="{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&utm_medium=EmbedShare&utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&utm_campaign=dvs_id_{$aDvs.dvs_id}">
+{img path="core.url_file" file="brightcove/".$aVideo.video_still_image style="vertical-align:middle;border:0;" width="300" alt=$aVideo.name}
+</a>
 </div>
-</div>'
-                        />
+</div>
+'
                 </td>
                 <td><br/>
                     {if !$bIsIPhone}
