@@ -12,7 +12,7 @@
                 <a href="{$sVideoLink}">
                 {img path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle" max_width=600 max_height=300 suffix='_600'}</a>
                 {else}
-                <h2>{$aDvs.dealer_name}</h2>
+                <h2>{$aDvs.dealer_name} Video Showroom</h2>
                 {/if}
             </td>
         </tr>
