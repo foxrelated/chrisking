@@ -18,22 +18,23 @@ class Idrive_Component_Block_Plugins_Register extends Phpfox_Component {
 	{
 		/*phpmasterminds Customization on June 5th 2014*/
 		$salesteam_invite = false;
-		if (!Phpfox::getCookie('salesteam_invite')) {
-			/*$iExpire = (Phpfox::getParam('invite.invite_expire') > 0 ? (Phpfox::getParam('invite.invite_expire')*60*60*24) : (7*60*60*24));
-					
-			Phpfox::setCookie('salesteam_invite', null, PHPFOX_TIME + $iExpire);
-			$salesteam_invite = true;*/
-		} else {
-			$salesteam_invite = true;
-		}
+		$managersteam_invite = false;
 
-        if (!Phpfox::getCookie('managersteam_invite')) {
-            $iExpire = (Phpfox::getParam('invite.invite_expire') > 0 ? (Phpfox::getParam('invite.invite_expire')*60*60*24) : (7*60*60*24));
-
-            Phpfox::setCookie('managersteam_invite', null, PHPFOX_TIME + $iExpire);
+        if (Phpfox::getCookie('managersteam_invite')) {
             $managersteam_invite = true;
         } else {
-            $managersteam_invite = true;
+            if (Phpfox::getCookie('salesteam_invite')) {
+                $salesteam_invite = true;
+            } else {
+                $iExpire = (Phpfox::getParam('invite.invite_expire') > 0 ? (Phpfox::getParam('invite.invite_expire')*60*60*24) : (7*60*60*24));
+
+                Phpfox::setCookie('salesteam_invite', null, PHPFOX_TIME + $iExpire);
+                $salesteam_invite = true;
+            }
+            /*$iExpire = (Phpfox::getParam('invite.invite_expire') > 0 ? (Phpfox::getParam('invite.invite_expire')*60*60*24) : (7*60*60*24));
+
+            Phpfox::setCookie('managersteam_invite', null, PHPFOX_TIME + $iExpire);
+            $managersteam_invite = true;*/
         }
 		/*phpmasterminds Customization on June 5th 2014*/
 		$this->template()
