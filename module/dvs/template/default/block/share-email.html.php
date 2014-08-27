@@ -21,8 +21,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		// do whatever you want here
 		$.ajaxCall('dvs.sendShareEmail', $('#share_email_dealer').serialize());
 		//$.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id={$aVideo.referenceId}&service=email&return_id=share_link_box');
-
+        {/literal}
+        {if $bSaveGa == 1}
         shareEmailSent();
+        {/if}
+        {literal}
 	});
 
 	if( $.isFunction( $('input, textarea').placeholder ) ) {

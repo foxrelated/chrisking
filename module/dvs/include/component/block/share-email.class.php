@@ -22,6 +22,7 @@ class Dvs_Component_Block_Share_Email extends Phpfox_Component {
                 'bLongUrl' => $this->request()->getInt('longurl', false),
 		        'your_name' => Phpfox::getUserBy('full_name'),
 		        'your_email' => Phpfox::getUserBy('email'),
+                'bSaveGa' => $this->request()->get('bSaveGa', 1)
 		    ));
 	}
 
