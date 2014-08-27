@@ -26,7 +26,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</div>
 </div>
 
-<div id="dealer_extra_info"{if $salesteam_invite} style="display:none;"{/if}>
+<div id="dealer_extra_info"{if $salesteam_invite || $managersteam_invite} style="display:none;"{/if}>
 	<div class="table">
 		<div class="table_left">
 			<label for="website_rep">{required}{phrase var='dvs.website_rep'}:</label>
