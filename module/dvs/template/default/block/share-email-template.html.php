@@ -14,21 +14,23 @@
         </tr>
         <tr>
             <td valign="top">
-                Hello {$sShareName}!<br />
+                Hello {$sShareName},<br />
             </td>
             <td valign="top" style="text-align:center;">
-                <a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">Take a {$aVideo.year} {$aVideo.make} {$aVideo.model} Test Drive</a><br />
+                <a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">Take your {$aVideo.year} {$aVideo.make} {$aVideo.model} Virtual Test Drive</a><br />
             </td>
         </tr>
         <tr>
             <td valign="top">
-                Take a <a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">{$aVideo.year} {$aVideo.make} {$aVideo.model} Video Test Drive</a> from {$aDvs.dealer_name} -- It's fun, easy, and free!<br><br>
-                <br />
                 {$sShareMessage}
-                <br />
-                <br />
-                Sincerely,<br />
-                {$sMyShareName}</td>
+                <br /><br />
+                Take your <a href="{$sVideoLink}" style="text-decoration:none;font-weight:bold;">{$aVideo.year} {$aVideo.make} {$aVideo.model} Virtual Test Drive</a> from {$aDvs.dealer_name} -- It's fun, easy, and free!
+                <br /><br />
+                If you have any questions, please reply to this email.
+                <br /><br />
+                Thanks,<br />
+                {$sMyShareName}
+                </td>
             <td valign="top">
                 <div style="position: relative;width:300px;overflow:hidden">
                     <a href="{$sVideoLink}">
