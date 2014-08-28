@@ -82,9 +82,8 @@
                            value='
 <div style="position:relative;width:300px;overflow:hidden">
 <a href="{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&utm_medium=EmbedShare&utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&utm_campaign=dvs_id_{$aDvs.dvs_id}"><span style="text-decoration:none;font-weight:bold;">{$aVideo.name}</span></a>
-<div>{img path="core.url_file" file="brightcove/".$aVideo.video_still_image style="vertical-align:middle;" width="300" alt=$aVideo.name}</div>
 <div style="height:100%;left:0;position:absolute;top:0;width:300px;">
-<a href="{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&amp;utm_medium=EmbedShare&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign=dvs_id_{$aDvs.dvs_id}"><img src="{$baseUrl}module/dvs/static/image/play_btn_75.png" style="display:block;margin-left:auto;margin-right:auto;padding-top:60px;"/></a>
+<a href="{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&amp;utm_medium=EmbedShare&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign=dvs_id_{$aDvs.dvs_id}">{img server_id=$aVideo.image_server_id path="brightcove.url_image" file=$aVideo.image_path suffix="_email" max_width=300 max_height=300 title=$aVideo.name}</a>
 </div>
 </div>'
                         />
