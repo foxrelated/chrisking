@@ -2,6 +2,9 @@
 
 class Dvs_Component_Block_Share_Video extends Phpfox_Component {
     public function process() {
+        Phpfox::getLib('setting')->setParam('brightcove.dir_image', PHPFOX_DIR_FILE . 'pic' . PHPFOX_DS . 'brightcove' . PHPFOX_DS);
+        Phpfox::getLib('setting')->setParam('brightcove.url_image', Phpfox::getParam('core.url_pic') . 'brightcove/');
+
         $bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 
         $aDvs = $this->getParam('aDvs');
