@@ -371,9 +371,9 @@ background-color: #c35f54;
 						   </li>
 						   <li class="has-sub"><a href="#"><span>Integrate</span></a>
 							  <ul>
-								 <li><a href="#" onclick="$('#dvs_gallery_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Gallery Code</span></a></li>
-								  <li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS iFrame Code</span></a></li>
-								 
+                                <li><a href="#" onclick="$('#dvs_gallery_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Gallery Code</span></a></li>
+								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS iFrame Code</span></a></li>
+                                <li><a href="#" onclick="$('#vdp_embed_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>VDP Embed Code</span></a></li>
 							  </ul>
 						   </li>
 						   {if Phpfox::isAdmin()}
@@ -407,6 +407,21 @@ background-color: #c35f54;
 						</textarea>
 					</p>
 				</div>
+
+            <div id="vdp_embed_link_{$aDvs.dvs_id}" title="VDP Embed Code" class="dvs_iframe_link_popup" style="display:none;">
+                <p>
+                    <textarea rows="4" cols="71">
+&lt;link rel="stylesheet" type="text/css" href="{$sCorePath}module/dvs/static/css/default/default/vin.css" /&gt;
+&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/vin.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+WTVVIN.render_all_button({l}
+    "dvs" : 17,
+    "iframeUrl" : "{url link='dvs'}"
+{r});
+&lt;/script&gt;
+                    </textarea>
+                </p>
+            </div>
 				
 			{/foreach}
 {pager}

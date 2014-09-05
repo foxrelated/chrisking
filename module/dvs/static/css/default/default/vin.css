@@ -1,0 +1,19 @@
+.dvs_vin_btn, .dvs_vin_btn:hover {
+    display: block;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    height: 36px;
+    line-height: 36px;
+    color: #FFFFFF;
+    font-size: 14px;
+    background: #a764c5; /* Old browsers */
+    background: -moz-linear-gradient(top,  #a764c5 0%, #451656 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a764c5), color-stop(100%,#451656)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #a764c5 0%,#451656 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #a764c5 0%,#451656 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #a764c5 0%,#451656 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #a764c5 0%,#451656 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a764c5', endColorstr='#451656',GradientType=0 ); /* IE6-9 */
+}

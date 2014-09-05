@@ -5,29 +5,26 @@ class Dvs_Component_Controller_Vin extends Phpfox_Component {
         $sVin = $this->request()->get('vin');
         $iDvsId = $this->request()->get('dvs');
 
-        if(!$sVin || !$iDvsId) {
-            Phpfox_Error::set('Please provide VIN and DVS Id');
-            return false;
+        if (!$aDvs = Phpfox::getService('dvs')->get($iDvsId)) {
+            $this->url()->send('');
         }
 
-        /** DISABLE HEADER & FOOTER **/
-        $aLocale = Phpfox::getLib('locale')->getLang();
-        $this->template()->assign(array(
-                'sLocaleDirection' => $aLocale['direction'],
-                'sLocaleCode' => $aLocale['language_code'],
-                'sLocaleFlagId' => $aLocale['image'],
-                'sLocaleName' => $aLocale['title']
-            )
-        );
+        if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
+            $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array('iframe'));
+        } else {
+            $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs.iframe', array($aDvs['title_url']));
+        }
+
+        if(!$sVin) {
+            $this->url()->send($sOverrideLink);
+        }
 
         $sVideoRef = Phpfox::getService('dvs.vin')->getVideoRefByVin($sVin, $iDvsId);
-
         Phpfox::getService('dvs.video')->setDvs($iDvsId);
         $aVideo = Phpfox::getService('dvs.video')->get($sVideoRef);
-        $aDvs = Phpfox::getService('dvs')->get($iDvsId);
 
-        if(!$aVideo || !$aDvs) {
-            return false;
+        if(!$aVideo) {
+            $this->url()->send($sOverrideLink);
         }
 
         if ($aDvs['sitemap_parent_url'] && $aDvs['parent_video_url']) {
@@ -40,24 +37,7 @@ class Dvs_Component_Controller_Vin extends Phpfox_Component {
             }
         }
         $sOverrideLink = rtrim($sOverrideLink, '/');
-
-        $aDvs['vin_font_size'] = '12px';
-        $aDvs['vin_btn_color'] = 'FFFFFF';
-        $aDvs['vin_top_gradient'] = 'a764c5';
-        $aDvs['vin_bottom_gradient'] = '451656';
-
-        $this->template()
-            ->setHeader('cache', array(
-                'vin.css' => 'module_dvs'
-            ))
-            ->assign(array(
-                'sHeight' => $this->request()->get('height', '29'),
-                'sVideoUrl' => $sOverrideLink,
-                'aDvs' => $aDvs
-            ));
-
-        echo $this->template()->getTemplate('dvs.controller.vin', true);
-        exit;
+        $this->url()->send($sOverrideLink);
     }
 }
 ?>
