@@ -9,10 +9,14 @@ class Dvs_Component_Controller_Vin extends Phpfox_Component {
             $this->url()->send('');
         }
 
-        if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
-            $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array('iframe'));
+        if ($aDvs['sitemap_parent_url'] && $aDvs['parent_video_url']) {
+            $sOverrideLink = $aDvs['sitemap_parent_url'];
         } else {
-            $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs.iframe', array($aDvs['title_url']));
+            if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
+                $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array('iframe'));
+            } else {
+                $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs.iframe', array($aDvs['title_url']));
+            }
         }
 
         if(!$sVin) {
