@@ -25,7 +25,7 @@ if (!window.WTVVIN) {
                 if (aRows.hasOwnProperty(sKey)) {
                     aRow = aRows[sKey];
                     var element = document.getElementById('dvs_vin_btn_' + sKey);
-                    if(aRow.url != '') {
+                    if(aRow.url != null && aRow.url != '') {
                         element.setAttribute('href', aRow.url);
                     } else {
                         element.parentNode.removeChild(element);
