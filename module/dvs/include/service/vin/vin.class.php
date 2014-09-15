@@ -2,32 +2,109 @@
 
 class Dvs_Service_Vin_Vin extends Phpfox_Service {
     function __construct() {
-        $this->_sTable = Phpfox::getT('ko_dvs_vin');
+        $this->_sTable = Phpfox::getT('ko_dvs_vin_parsed');
     }
 
-    public function getVideoRefByVin($sVin, $iDvsId) {
-        $sQuishVin = $sVin;
+    public function getVins($aVins, $iDvsId) {
+        $aQuishVin = array();
+        $aFullRows = array();
+        $aCompletedRows = array();
+        foreach($aVins as $sVin) {
+            if($sQuishVin = $this->getQuishVin($sVin)) {
+                $aQuishVin[] = $sQuishVin;
+                $aFullRows[$sQuishVin] = array('vin' => $sVin);
+                $aCompletedRows[$sVin] = array('quish_vin_id' => $sQuishVin, 'url' => '');
+            }
+        }
+
+        if (!$aDvs = Phpfox::getService('dvs')->get($iDvsId)) {
+            return $aCompletedRows;
+        }
+        $aRows = $this->database()
+            ->select('v.quish_vin_id, b.referenceId, b.video_title_url')
+            ->from($this->_sTable, 'v')
+            ->leftJoin(Phpfox::getT('ko_brightcove'), 'b', 'b.ko_id = v.ko_id')
+            ->where('v.quish_vin_id IN (\'' . implode('\', \'', $aQuishVin) . '\')')
+            ->execute('getRows');
+
+        foreach($aRows as $aRow) {
+            if(in_array($aRow['quish_vin_id'], $aQuishVin)) {
+                $aCompletedRows[$aFullRows[$aRow['quish_vin_id']]['vin']]['url'] = $aRow['video_title_url'];
+                unset($aFullRows[$aRow['quish_vin_id']]);
+            }
+        }
+
+        foreach($aFullRows as $sKey => $aFullRow) {
+            list($aStyles, $aParams) = $this->getStyleByVin($sKey);
+            if(isset($aStyles[0]['id']) && $aVideo = $this->getVideoIdByEdStyle($aStyles[0]['id'])) {
+                if(isset($aVideo['ko_id']) && $aVideo['ko_id']) {
+                    $aCompletedRows[$aFullRow['vin']]['url'] = $aVideo['video_title_url'];
+
+                    $this->database()->insert($this->_sTable, array(
+                        'quish_vin_id' => $sKey,
+                        'ed_style_id' => (int)$aStyles[0]['id'],
+                        'ko_id' => (int)$aVideo['ko_id'],
+                        'referenceId' => $aVideo['referenceId']
+                    ));
+                }
+            }
+        }
+
+        foreach($aCompletedRows as $iKey => $aCompletedRow) {
+            if(!$aCompletedRow['url']) {
+                continue;
+            }
+
+            $aFind = array(
+                'overview',
+                'used-car-report',
+                'test-drive'
+            );
+
+            $aReplace = array(
+                ($aDvs['1onone_override'] ? $aDvs['1onone_override'] : (Phpfox::getParam('dvs.1onone_video_url_replacement') ? Phpfox::getParam('dvs.1onone_video_url_replacement') : 'overview')),
+                ($aDvs['new2u_override'] ? $aDvs['new2u_override'] : (Phpfox::getParam('dvs.new2u_video_url_replacement') ? Phpfox::getParam('dvs.new2u_video_url_replacement') : 'used-car-report')),
+                ($aDvs['top200_override'] ? $aDvs['top200_override'] : (Phpfox::getParam('dvs.top200_video_url_replacement') ? Phpfox::getParam('dvs.top200_video_url_replacement') : 'test-drive'))
+            );
+
+            $aCompletedRow['url'] = str_replace($aFind, $aReplace, $aCompletedRow['url']);
+
+            if (Phpfox::getParam('dvs.dvs_info_video_url_replacement')) {
+                $aCompletedRow['url'] .= '-' . $aDvs['title_url'] . '-' . strtolower(str_replace(' ', '-', $aDvs['city'])) . '-' . strtolower(str_replace(' ', '-', $aDvs['state_string']));
+            }
+            
+            if ($aDvs['sitemap_parent_url'] && $aDvs['parent_video_url']) {
+                $sOverrideLink = str_replace('WTVDVS_VIDEO_TEMP', $aCompletedRow['url'], $aDvs['parent_video_url']);
+            } else {
+                if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
+                    $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array('iframe', $aCompletedRow['url']));
+                } else {
+                    $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs.iframe', array($aDvs['title_url'], $aCompletedRow['url']));
+                }
+            }
+
+            $aCompletedRows[$iKey]['url'] = $sOverrideLink;
+        }
+
+        return $aCompletedRows;
+    }
+
+    public function getQuishVin($sVin) {
         if(strlen($sVin) > 10) {
             $sQuishVin = substr($sVin, 0, 8) . substr($sVin, 9, 2);
+            return $sQuishVin;
         }
-
-        list($aStyles, $aParams) = $this->getStyleByVin($sQuishVin);
-        if(isset($aStyles[0]['id']) && $sVideoId = $this->getVideoIdByEd($aStyles[0]['id'])) {
-            return $sVideoId;
-        } else {
-            return '';
-        }
-
-        return '';
+        return false;
     }
 
-    public function getVideoIdByEd($iEdStyleId) {
-        $sVideoId = $this->database()
-            ->select('video_id')
-            ->from($this->_sTable)
-            ->where('ed_style_id = ' . (int)$iEdStyleId)
-            ->execute('getField');
-        return $sVideoId;
+    public function getVideoIdByEdStyle($iEdStyleId) {
+        $aVideo = $this->database()
+            ->select('v.video_id, b.ko_id, b.referenceId, b.video_title_url')
+            ->from(Phpfox::getT('ko_dvs_vin'), 'v')
+            ->leftJoin(Phpfox::getT('ko_brightcove'), 'b', 'v.video_id = b.referenceId')
+            ->where('v.ed_style_id = ' . (int)$iEdStyleId)
+            ->execute('getRow');
+        return $aVideo;
     }
 
     public function getStyleByVin($sVin) {
