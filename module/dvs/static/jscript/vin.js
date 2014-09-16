@@ -14,7 +14,6 @@ if (!window.WTVVIN) {
 
                 x[i].setAttribute('id', 'dvs_vin_btn_' + sVinId);
                 var sHTML = '<a style="display: none;" href="#">' + x[i].getAttribute('title') + '</a><div class="dvs_vin_loading"></div>';
-                console.log(sHTML);
                 x[i].innerHTML = sHTML;
             }
             if(sAllVin.length > 0) {
