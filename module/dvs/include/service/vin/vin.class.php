@@ -20,8 +20,35 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         if (!$aDvs = Phpfox::getService('dvs')->get($iDvsId)) {
             return $aCompletedRows;
         }
+
+        $aPlayer = Phpfox::getService('dvs.player')->get($iDvsId);
+        $aMakes = array();
+        foreach($aPlayer['makes'] as $aMake) {
+            $aMakes[] = $aMake['make'];
+        }
+
+        $aAllowedYears = Phpfox::getParam('dvs.vf_overview_allowed_years');
+        if(!$aDvs['new_car_videos']) {
+            $sYears = Phpfox::getParam('research.new_model_year');
+            $aYears = explode(',', $sYears);
+            foreach($aAllowedYears as $iKey => $sYear) {
+                if(in_array($sYear, $aYears)) {
+                    unset($aAllowedYears[$iKey]);
+                }
+            }
+        }
+        if(!$aDvs['used_car_videos']) {
+            $sYears = Phpfox::getParam('research.used_model_year_exclusion');
+            $aYears = explode(',', $sYears);
+            foreach($aAllowedYears as $iKey => $sYear) {
+                if(!in_array($sYear, $aYears)) {
+                    unset($aAllowedYears[$iKey]);
+                }
+            }
+        }
+
         $aRows = $this->database()
-            ->select('v.quish_vin_id, b.referenceId, b.video_title_url')
+            ->select('v.quish_vin_id, b.referenceId, b.video_title_url, b.make, b.year')
             ->from($this->_sTable, 'v')
             ->leftJoin(Phpfox::getT('ko_brightcove'), 'b', 'b.ko_id = v.ko_id')
             ->where('v.quish_vin_id IN (\'' . implode('\', \'', $aQuishVin) . '\')')
@@ -29,23 +56,40 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
 
         foreach($aRows as $aRow) {
             if(in_array($aRow['quish_vin_id'], $aQuishVin)) {
-                $aCompletedRows[$aFullRows[$aRow['quish_vin_id']]['vin']]['url'] = $aRow['video_title_url'];
+                if(in_array($aRow['make'], $aMakes) && in_array($aRow['year'], $aAllowedYears)) {
+                    $aCompletedRows[$aFullRows[$aRow['quish_vin_id']]['vin']]['url'] = $aRow['video_title_url'];
+                }
                 unset($aFullRows[$aRow['quish_vin_id']]);
             }
         }
 
         foreach($aFullRows as $sKey => $aFullRow) {
+            $aRow = $this->database()
+                ->select('v.quish_vin_id, b.referenceId, b.video_title_url, b.make, b.year')
+                ->from($this->_sTable, 'v')
+                ->leftJoin(Phpfox::getT('ko_brightcove'), 'b', 'b.ko_id = v.ko_id')
+                ->where('v.quish_vin_id = \'' . $sKey . '\'')
+                ->execute('getRow');
+
+            if($aRow) {
+                if(in_array($aRow['make'], $aMakes)) {
+                    $aCompletedRows[$aFullRow['vin']]['url'] = $aRow['video_title_url'];
+                }
+                continue;
+            }
+
             list($aStyles, $aParams) = $this->getStyleByVin($sKey);
             if(isset($aStyles[0]['id']) && $aVideo = $this->getVideoIdByEdStyle($aStyles[0]['id'])) {
                 if(isset($aVideo['ko_id']) && $aVideo['ko_id']) {
-                    $aCompletedRows[$aFullRow['vin']]['url'] = $aVideo['video_title_url'];
-
                     $this->database()->insert($this->_sTable, array(
                         'quish_vin_id' => $sKey,
                         'ed_style_id' => (int)$aStyles[0]['id'],
                         'ko_id' => (int)$aVideo['ko_id'],
                         'referenceId' => $aVideo['referenceId']
                     ));
+                    if(in_array($aVideo['make'], $aMakes)  && in_array($aVideo['year'], $aAllowedYears)) {
+                        $aCompletedRows[$aFullRow['vin']]['url'] = $aVideo['video_title_url'];
+                    }
                 }
             }
         }
@@ -99,7 +143,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
 
     public function getVideoIdByEdStyle($iEdStyleId) {
         $aVideo = $this->database()
-            ->select('v.video_id, b.ko_id, b.referenceId, b.video_title_url')
+            ->select('v.video_id, b.ko_id, b.referenceId, b.video_title_url, b.year, b.make')
             ->from(Phpfox::getT('ko_dvs_vin'), 'v')
             ->leftJoin(Phpfox::getT('ko_brightcove'), 'b', 'v.video_id = b.referenceId')
             ->where('v.ed_style_id = ' . (int)$iEdStyleId)

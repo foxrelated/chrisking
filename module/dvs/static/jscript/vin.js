@@ -11,7 +11,11 @@ if (!window.WTVVIN) {
             for (i = 0; i < x.length; i++) {
                 sVinId = x[i].getAttribute('vin');
                 sAllVin += sVinId + ',';
+
                 x[i].setAttribute('id', 'dvs_vin_btn_' + sVinId);
+                var sHTML = '<a style="display: none;" href="#">' + x[i].getAttribute('title') + '</a><div class="dvs_vin_loading"></div>';
+                console.log(sHTML);
+                x[i].innerHTML = sHTML;
             }
             if(sAllVin.length > 0) {
                 sAllVin = sAllVin.substring(0, sAllVin.length - 1);
@@ -25,10 +29,14 @@ if (!window.WTVVIN) {
                 if (aRows.hasOwnProperty(sKey)) {
                     aRow = aRows[sKey];
                     var element = document.getElementById('dvs_vin_btn_' + sKey);
+                    var urlElement = element.childNodes[0];
+                    var loadingElement = element.childNodes[1];
                     if(aRow.url != null && aRow.url != '') {
-                        element.setAttribute('href', aRow.url);
+                        urlElement.setAttribute('href', aRow.url);
+                        urlElement.style.display = 'block';
+                        loadingElement.style.display = 'none';
                     } else {
-                        element.parentNode.removeChild(element);
+                        loadingElement.style.display = 'none';
                     }
                 }
             }

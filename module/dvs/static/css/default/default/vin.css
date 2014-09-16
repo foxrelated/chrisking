@@ -1,4 +1,5 @@
-.dvs_vin_btn, .dvs_vin_btn:hover {
+.dvs_vin_btn a,
+.dvs_vin_btn a:hover {
     display: block;
     font-weight: bold;
     text-align: center;
@@ -16,4 +17,11 @@
     background: -ms-linear-gradient(top,  #a764c5 0%,#451656 100%); /* IE10+ */
     background: linear-gradient(to bottom,  #a764c5 0%,#451656 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a764c5', endColorstr='#451656',GradientType=0 ); /* IE6-9 */
+}
+
+.dvs_vin_loading {
+    background: url(../../../image/add.gif) scroll no-repeat top left transparent;
+    display: block;
+    width: 16px;
+    height: 11px;
 }
