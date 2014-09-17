@@ -60,6 +60,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             $('#color_picker_iframe_text').ColorPickerSetColor('#{$aForms.iframe_text}');
             $('#color_picker_iframe_contact_background').ColorPickerSetColor('#{$aForms.iframe_contact_background}');
             $('#color_picker_iframe_contact_text').ColorPickerSetColor('#{$aForms.iframe_contact_text}');
+            $('#color_picker_vin_top_gradient').ColorPickerSetColor('#{$aForms.vin_top_gradient}');
+            $('#color_picker_vin_bottom_gradient').ColorPickerSetColor('#{$aForms.vin_bottom_gradient}');
 			{r}
 	{else}
 		$Behavior.colorPicker = function() {l}
@@ -78,6 +80,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             $('#color_picker_iframe_text').ColorPickerSetColor('#{$sDefaultColor}');
             $('#color_picker_iframe_contact_background').ColorPickerSetColor('#{$sDefaultColor}');
             $('#color_picker_iframe_contact_text').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_vin_top_gradient').ColorPickerSetColor('#A764C5');
+            $('#color_picker_vin_bottom_gradient').ColorPickerSetColor('#451656');
 		{r}
 	{/if}
 </script>
@@ -624,6 +628,51 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                     <div style="background-color: #{if $bIsEdit}{$aForms.iframe_contact_text}{else}{$sDefaultColor}{/if}"></div>
                 </div>
                 <input type="hidden" id="color_picker_iframe_contact_text_input" name="val[iframe_contact_text]" {if $bIsEdit}value="{$aForms.iframe_contact_text}"{else}value="{$sDefaultColor}"{/if}/>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+    <h3>Virtual Test Drive Button</h3>
+    <table>
+        <tr class="tr_interactive">
+            <td class="dvs_add_td_label">
+                Top-gradient color:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_vin_top_gradient" class="colorSelector">
+                    <div style="background-color: #{if $bIsEdit}{$aForms.vin_top_gradient}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_vin_top_gradient_input" name="val[vin_top_gradient]" {if $bIsEdit}value="{$aForms.vin_top_gradient}"{else}value="A764C5"{/if}/>
+            </td>
+
+            <td style="padding-left: 20px; width: 145px;" class="dvs_add_td_label">
+                Bottom-gradient color:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_vin_bottom_gradient" class="colorSelector">
+                    <div style="background-color: #{if $bIsEdit}{$aForms.vin_bottom_gradient}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_vin_bottom_gradient_input" name="val[vin_bottom_gradient]" {if $bIsEdit}value="{$aForms.vin_bottom_gradient}"{else}value="451656"{/if}/>
+            </td>
+        </tr>
+
+        <tr style="line-height: 45px;" class="tr_interactive">
+            <td class="dvs_add_td_label">
+                Font-Size:
+            </td>
+            <td colspan="3" class="dvs_add_td">
+                <input type="text" id="vin_font_size" name="val[vin_font_size]" {if $bIsEdit}value="{$aForms.vin_font_size}"{else}value="12px"{/if}/>
+            </td>
+        </tr>
+
+
+        <tr style="line-height: 45px;" class="tr_interactive">
+            <td class="dvs_add_td_label">
+                Button label:
+            </td>
+            <td colspan="3" class="dvs_add_td">
+                <input type="text" id="vin_button_label" name="val[vin_button_label]" {if $bIsEdit}value="{$aForms.vin_button_label}"{else}value="Virtual Test Drive"{/if}/>
             </td>
         </tr>
     </table>

@@ -13,14 +13,17 @@ class Newapi_Service_Dvs extends Phpfox_Service {
         $iDvsId = $this->_oApi->get('dvs');
         $sVin = $this->_oApi->get('vin');
         $aVins = explode(',', $sVin);
+        $aDvs = array(
+            'vin_button_label' => 'Virtual Test Drive'
+        );
 
         if($iDvsId && count($aVins)) {
-            $aRows = Phpfox::getService('dvs.vin')->getVins($aVins, $iDvsId);
+            list($aRows, $aDvs) = Phpfox::getService('dvs.vin')->getVins($aVins, $iDvsId);
             $iTotal = count($aRows);
         }
 
         $this->_oApi->setTotal($iTotal);
-        return $aRows;
+        return array('vin' => $aRows, 'text' => $aDvs['vin_button_label']);
     }
 }
 ?>

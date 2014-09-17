@@ -23,7 +23,8 @@ if (!window.WTVVIN) {
         },
 
         render_buttons: function(data) {
-            var aRows = data.output;
+            var sButtonText = data.output.text;
+            var aRows = data.output.vin;
             for (var sKey in aRows) {
                 if (aRows.hasOwnProperty(sKey)) {
                     aRow = aRows[sKey];
@@ -31,8 +32,10 @@ if (!window.WTVVIN) {
                     var urlElement = element.childNodes[0];
                     var loadingElement = element.childNodes[1];
                     if(aRow.url != null && aRow.url != '') {
+                        urlElement.innerHTML = sButtonText;
                         urlElement.setAttribute('href', aRow.url);
                         urlElement.style.display = 'block';
+
                         loadingElement.style.display = 'none';
                     } else {
                         loadingElement.style.display = 'none';

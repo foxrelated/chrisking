@@ -130,7 +130,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
             $aCompletedRows[$iKey]['url'] = $sOverrideLink;
         }
 
-        return $aCompletedRows;
+        return array($aCompletedRows, $aDvs);
     }
 
     public function getQuishVin($sVin) {
