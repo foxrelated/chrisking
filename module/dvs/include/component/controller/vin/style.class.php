@@ -22,6 +22,13 @@ class Dvs_Component_Controller_Vin_Style extends Phpfox_Component {
             'aStyle' => $aStyle
         ));
 
+        $lastModified = filemtime(PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'include' . PHPFOX_DS . 'component' . PHPFOX_DS . 'controller' . PHPFOX_DS . 'vin' . PHPFOX_DS . 'style.class.php');
+
+        header('Content-type: text/css;charset=utf-8');
+        header('Cache-Control: max-age=259200');
+        header("Last-Modified: ".gmdate("D, d M Y H:i:s", $lastModified)." GMT");
+        header('Expires: '.gmdate("D, d M Y H:i:s", time() + 3600*24*365).' GMT');
+
         echo $this->template()->getTemplate('dvs.controller.vin.style', true);
         exit;
     }
