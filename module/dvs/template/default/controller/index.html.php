@@ -411,12 +411,12 @@ background-color: #c35f54;
             <div id="vdp_embed_link_{$aDvs.dvs_id}" title="VDP Embed Code" class="dvs_iframe_link_popup" style="display:none;">
                 <p>
                     <textarea rows="4" cols="71">
-&lt;link rel="stylesheet" type="text/css" href="{$sCorePath}module/dvs/static/css/default/default/vin.css" /&gt;
 &lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/vin.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
-WTVVIN.render_all_button({l}
-    "dvs" : 17,
-    "iframeUrl" : "{url link='dvs'}"
+WTVVIN.init({l}
+    "dvs" : {$aDvs.dvs_id},
+    "apiUrl" : "{url link=''}",
+    'styleUrl' : "{url link='dvs.vin.style' id=$aDvs.dvs_id}"
 {r});
 &lt;/script&gt;
                     </textarea>
