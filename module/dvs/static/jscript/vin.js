@@ -6,6 +6,14 @@ if (!window.WTVVIN) {
             this.sApiUrl = params.apiUrl;
             this.iDvsId = params.dvs;
 
+            var cchead= document.getElementsByTagName("head");
+            var cclink=document.createElement('link');
+            cclink.href= params.styleUrl;
+            cclink.type= 'text/css';
+            cclink.charset = 'utf-8';
+            cclink.rel='stylesheet';
+            cchead[0].appendChild(cclink);
+
             var sAllVin = '';
             var x = document.getElementsByClassName('dvs_vin_btn');
             for (i = 0; i < x.length; i++) {
