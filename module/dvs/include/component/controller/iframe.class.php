@@ -97,12 +97,9 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
         //Load player data
         $aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 
-        if ($aPlayer['featured_model'])
-        {
+        if ($aPlayer['featured_model']) {
             $aFeaturedVideo = Phpfox::getService('dvs.video')->get('', false, $aPlayer['featured_year'], $aPlayer['featured_make'], $aPlayer['featured_model']);
-        }
-        else
-        {
+        } else {
             $aFeaturedVideo = array();
         }
 
@@ -127,83 +124,57 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
         array_unshift($aOverviewVideos, '');
         unset($aOverviewVideos[0]);
 
-        if ($sOverride)
-        {
+        if ($sOverride) {
             $aOverrideVideo = Phpfox::getService('dvs.video')->get($sOverride, true);
-        }
-        else
-        {
+        } else {
             $aOverrideVideo = array();
         }
 
 
         //Dupe check
-        if (!empty($aOverrideVideo) || !empty($aFeaturedVideo))
-        {
-            foreach ($aOverviewVideos as $iKey => $aVideo)
-            {
-                if ($iKey == 0)
-                {
+        $bIsInDvs = false;
+        if (!empty($aOverrideVideo) || !empty($aFeaturedVideo)) {
+            foreach ($aOverviewVideos as $iKey => $aVideo) {
+                if(!empty($aOverrideVideo) && $aVideo['id'] == $aOverrideVideo['id']) {
+                    $bIsInDvs = true;
+                }
+
+                if ($iKey == 0) {
                     //Don't unset the featured video
                     continue;
                 }
 
-                if ((!empty($aFeaturedVideo) && $aVideo['id'] == $aFeaturedVideo['id']) || (!empty($aOverrideVideo) && $aVideo['id'] == $aOverrideVideo['id']))
-                {
+                if ((!empty($aFeaturedVideo) && $aVideo['id'] == $aFeaturedVideo['id']) || (!empty($aOverrideVideo) && $aVideo['id'] == $aOverrideVideo['id'])) {
                     //Remove dupe
                     //unset($aOverviewVideos[$iKey]);
                 }
             }
         }
 
-        if ($aOverrideVideo)
-        {
+        if(!$bIsInDvs) {
+            $aOverviewVideos[] = $aOverrideVideo;
+        }
+
+        if ($aOverrideVideo) {
             $aFirstVideo = $aOverrideVideo;
-        }
-        else if ($aFeaturedVideo)
-        {
+        } else if ($aFeaturedVideo) {
             $aFirstVideo = $aFeaturedVideo;
-        }
-        else
-        {
+        } else {
             $aFirstVideo = $aOverviewVideos[1];
         }
-        /*phpmasterminds Edited for sort in gallery and footer starts*/
-        /*foreach($aOverviewVideos as $ik=>$aVal)
-        {
-            $exp = explode(" ",$aVal['name']);
 
-
-            $aOverviewVideos[$ik]['my_find'] = $exp[0];
-
-        }
-
-        $aOverviewVideos = Phpfox::getService('dvs')->aasort($aOverviewVideos,"ko_id");
-        */
-
-        /*phpmasterminds added below code for player next video*/
         $aCurrentVideo = 0;
-        foreach ($aOverviewVideos as $iKey => $aVideo)
-        {
-            if( ($aFirstVideo['year'] == $aVideo['year']) AND ($aFirstVideo['make'] == $aVideo['make']) AND ($aFirstVideo['model'] == $aVideo['model']))
-            {
+        foreach ($aOverviewVideos as $iKey => $aVideo) {
+            if( ($aFirstVideo['year'] == $aVideo['year']) AND ($aFirstVideo['make'] == $aVideo['make']) AND ($aFirstVideo['model'] == $aVideo['model'])) {
                 $aCurrentVideo = $iKey;
                 break;
             }
         }
-        /*phpmasterminds added below code for player next video*/
-        /*phpmasterminds Edited for sort in gallery and footer ends*/
-
-
-
-
-
 
         // Sort videos by name for footer links
         $aFooterLinks = $aOverviewVideos;
 
-        foreach($aFooterLinks as $ik=>$aVal)
-        {
+        foreach($aFooterLinks as $ik=>$aVal) {
             $exp = explode(" ",$aVal['name']);
 
 
