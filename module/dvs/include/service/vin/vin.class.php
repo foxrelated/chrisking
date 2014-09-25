@@ -57,7 +57,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
 
         foreach($aRows as $aRow) {
             if(in_array($aRow['quish_vin_id'], $aQuishVin)) {
-                if(!in_array($aRow['year'], explode(',', Phpfox::getParam('research.used_model_year_exclusion'))) || (in_array($aRow['year'], $aAllowedYears) && in_array($aRow['make'], $aMakes))) {
+                if(in_array($aRow['year'], $aAllowedYears) && (in_array($aRow['make'], $aMakes) || (!in_array($aRow['year'], explode(',', Phpfox::getParam('research.used_model_year_exclusion')))))) {
                     $aCompletedRows[$aFullRows[$aRow['quish_vin_id']]['vin']]['url'] = $aRow['video_title_url'];
                 }
                 unset($aFullRows[$aRow['quish_vin_id']]);
@@ -73,7 +73,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
                 ->execute('getRow');
 
             if($aRow) {
-                if(!in_array($aRow['year'], explode(',', Phpfox::getParam('research.used_model_year_exclusion'))) || (in_array($aRow['year'], $aAllowedYears) && in_array($aRow['make'], $aMakes))) {
+                if(in_array($aRow['year'], $aAllowedYears) && (in_array($aRow['make'], $aMakes) || (!in_array($aRow['year'], explode(',', Phpfox::getParam('research.used_model_year_exclusion')))))) {
                     $aCompletedRows[$aFullRow['vin']]['url'] = $aRow['video_title_url'];
                 }
                 continue;
@@ -88,7 +88,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
                         'ko_id' => (int)$aVideo['ko_id'],
                         'referenceId' => $aVideo['referenceId']
                     ));
-                    if (!in_array($aVideo['year'], explode(',', Phpfox::getParam('research.used_model_year_exclusion'))) || (in_array($aVideo['year'], $aAllowedYears) && in_array($aVideo['make'], $aMakes))) {
+                    if(in_array($aVideo['year'], $aAllowedYears) && (in_array($aVideo['make'], $aMakes) || (!in_array($aVideo['year'], explode(',', Phpfox::getParam('research.used_model_year_exclusion')))))) {
                         $aCompletedRows[$aFullRow['vin']]['url'] = $aVideo['video_title_url'];
                     }
                 }
