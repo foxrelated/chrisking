@@ -122,9 +122,9 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
                 $sOverrideLink = str_replace('WTVDVS_VIDEO_TEMP', $aCompletedRow['url'], $aDvs['parent_video_url']);
             } else {
                 if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
-                    $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array('iframe', $aCompletedRow['url']));
+                    $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array($aCompletedRow['url']));
                 } else {
-                    $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs.iframe', array($aDvs['title_url'], $aCompletedRow['url']));
+                    $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aCompletedRow['url']));
                 }
             }
 
