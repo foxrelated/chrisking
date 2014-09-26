@@ -398,6 +398,36 @@
             }
         });
 
+        $('#color_picker_vin_top_gradient').ColorPicker({
+            onShow: function (colpkr) {
+                $(colpkr).fadeIn(500);
+                return false;
+            },
+            onHide: function (colpkr) {
+                $(colpkr).fadeOut(500);
+                return false;
+            },
+            onChange: function (hsb, hex, rgb) {
+                $('#color_picker_vin_top_gradient div').css('backgroundColor', '#' + hex);
+                $('#color_picker_vin_top_gradient_input').val(hex);
+            }
+        });
+
+        $('#color_picker_vin_bottom_gradient').ColorPicker({
+            onShow: function (colpkr) {
+                $(colpkr).fadeIn(500);
+                return false;
+            },
+            onHide: function (colpkr) {
+                $(colpkr).fadeOut(500);
+                return false;
+            },
+            onChange: function (hsb, hex, rgb) {
+                $('#color_picker_vin_bottom_gradient div').css('backgroundColor', '#' + hex);
+                $('#color_picker_vin_bottom_gradient_input').val(hex);
+            }
+        });
+
 	};
 	
 	EYE.register(initLayout, 'init');

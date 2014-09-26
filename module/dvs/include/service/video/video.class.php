@@ -69,20 +69,20 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 				// If this is for a DVS, use phrase overrides for video title URLs
 				$aReplace = array(
 					'overview',
-					'used-car-review',
+					'used-car-report',
 					'test-drive'
 				);
 
 				$aFind = array(
 					($this->aDvs['1onone_override'] ? $this->aDvs['1onone_override'] : (Phpfox::getParam('dvs.1onone_video_url_replacement') ? Phpfox::getParam('dvs.1onone_video_url_replacement') : 'overview')),
-					($this->aDvs['new2u_override'] ? $this->aDvs['new2u_override'] : (Phpfox::getParam('dvs.new2u_video_url_replacement') ? Phpfox::getParam('dvs.new2u_video_url_replacement') : 'used-car-review')),
+					($this->aDvs['new2u_override'] ? $this->aDvs['new2u_override'] : (Phpfox::getParam('dvs.new2u_video_url_replacement') ? Phpfox::getParam('dvs.new2u_video_url_replacement') : 'used-car-report')),
 					($this->aDvs['top200_override'] ? $this->aDvs['top200_override'] : (Phpfox::getParam('dvs.top200_video_url_replacement') ? Phpfox::getParam('dvs.top200_video_url_replacement') : 'test-drive'))
 				);
 
 				$mVideoId = str_replace($aFind, $aReplace, $mVideoId);
 				// Strip out extra dealer information
 				if (strrpos($mVideoId, 'overview') !== false) $mVideoId = substr($mVideoId, 0, (strrpos($mVideoId, 'overview') + 8));
-				if (strrpos($mVideoId, 'used-car-review') !== false) $mVideoId = substr($mVideoId, 0, (strrpos($mVideoId, 'used-car-review') + 15));
+				if (strrpos($mVideoId, 'used-car-report') !== false) $mVideoId = substr($mVideoId, 0, (strrpos($mVideoId, 'used-car-report') + 15));
 				if (strrpos($mVideoId, 'test-drive') !== false) $mVideoId = substr($mVideoId, 0, (strrpos($mVideoId, 'test-drive') + 10));
 			}
 
@@ -720,13 +720,13 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 				// If this is for a DVS, use phrase overrides for video title URLs
 				$aFind = array(
 					'overview',
-					'used-car-review',
+					'used-car-report',
 					'test-drive'
 				);
 
 				$aReplace = array(
 					($this->aDvs['1onone_override'] ? $this->aDvs['1onone_override'] : (Phpfox::getParam('dvs.1onone_video_url_replacement') ? Phpfox::getParam('dvs.1onone_video_url_replacement') : 'overview')),
-					($this->aDvs['new2u_override'] ? $this->aDvs['new2u_override'] : (Phpfox::getParam('dvs.new2u_video_url_replacement') ? Phpfox::getParam('dvs.new2u_video_url_replacement') : 'used-car-review')),
+					($this->aDvs['new2u_override'] ? $this->aDvs['new2u_override'] : (Phpfox::getParam('dvs.new2u_video_url_replacement') ? Phpfox::getParam('dvs.new2u_video_url_replacement') : 'used-car-report')),
 					($this->aDvs['top200_override'] ? $this->aDvs['top200_override'] : (Phpfox::getParam('dvs.top200_video_url_replacement') ? Phpfox::getParam('dvs.top200_video_url_replacement') : 'test-drive'))
 				);
 
