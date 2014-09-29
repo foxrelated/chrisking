@@ -151,7 +151,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             }
         }
 
-        if(!$bIsInDvs) {
+        if(!$bIsInDvs && count($aOverrideVideo)) {
             $aOverviewVideos[] = $aOverrideVideo;
         }
 
