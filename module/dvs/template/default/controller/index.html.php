@@ -388,14 +388,13 @@ background-color: #c35f54;
 				</tr>
 				<tr><td colspan="3">&nbsp;</td></tr>
 				<div id="dvs_gallery_link_{$aDvs.dvs_id}" title="DVS Gallery Embed Code" class="dvs_gallery_link_popup" style="display:none;">
-					<p>
-						<textarea rows="4" cols="71">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}gallery" scrolling="no" frameborder="0" width="800" height="600"&gt;&lt;/iframe&gt;</textarea>
+					<p>Add this code to a blank page using HTML code method (not iFrame):<p>
+						<p><textarea rows="2" cols="71">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}gallery" scrolling="no" frameborder="0" width="800" height="600"&gt;&lt;/iframe&gt;</textarea>
 					</p>
 				</div>
 				<div id="dvs_iframe_link_{$aDvs.dvs_id}" title="DVS iFrame Embed Code" class="dvs_iframe_link_popup" style="display:none;">
-					<p>
-						<textarea rows="4" cols="71">
-&lt;div id="dvs_wrapper">&lt;/div&gt;
+					<p>Add this code to a blank page using HTML code method (not iFrame):</p>
+						<p><textarea rows="13" cols="71">&lt;div id="dvs_wrapper">&lt;/div&gt;
 &lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/embed.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
     WTVDVS.render_iframe({l}
@@ -404,24 +403,25 @@ background-color: #c35f54;
         "height" : 1000,
         "iframeUrl" : "{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}iframe/"
     {r});
-&lt;/script&gt;
-						</textarea>
+&lt;/script&gt;</textarea>
 					</p>
+					
 				</div>
 
             <div id="vdp_embed_link_{$aDvs.dvs_id}" title="VDP Embed Code" class="dvs_iframe_link_popup" style="display:none;">
-                <p>
-                    <textarea rows="4" cols="71">
-&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/vin.js"&gt;&lt;/script&gt;
+                <p>Step 1: Add this code after the &lt;body&gt; tag of the page:</p>
+                    <textarea rows="10" cols="71">&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/vin.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
 WTVVIN.init({l}
     "dvs" : {$aDvs.dvs_id},
     "apiUrl" : "{url link=''}",
     'styleUrl' : "{url link='dvs.vin.style' id=$aDvs.dvs_id}"
 {r});
-&lt;/script&gt;
-                    </textarea>
+&lt;/script&gt;</textarea>
                 </p>
+                <p>Step 2: Add button code and replace # with a VIN:</p> 
+					<textarea rows="1" cols="71">&lt;div class="dvs_vin_btn" vin="#"&gt;&lt;/div&gt; </textarea>
+					</p>
             </div>
 				
 			{/foreach}
