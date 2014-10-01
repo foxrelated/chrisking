@@ -11,8 +11,12 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         $aCompletedRows = array();
         foreach($aVins as $sVin) {
             if($sQuishVin = $this->getQuishVin($sVin)) {
+                if(!isset($aFullRows[$sQuishVin])) {
+                    $aFullRows[$sQuishVin]['vin'] = array();
+                }
+
                 $aQuishVin[] = $sQuishVin;
-                $aFullRows[$sQuishVin] = array('vin' => $sVin);
+                $aFullRows[$sQuishVin]['vin'][] = $sVin;
                 $aCompletedRows[$sVin] = array('quish_vin_id' => $sQuishVin, 'url' => '');
             }
         }
@@ -58,7 +62,9 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         foreach($aRows as $aRow) {
             if(in_array($aRow['quish_vin_id'], $aQuishVin)) {
                 if(in_array($aRow['year'], $aAllowedYears) && (in_array($aRow['make'], $aMakes) || (!in_array($aRow['year'], explode(',', Phpfox::getParam('research.used_model_year_exclusion')))))) {
-                    $aCompletedRows[$aFullRows[$aRow['quish_vin_id']]['vin']]['url'] = $aRow['video_title_url'];
+                    foreach($aFullRows[$aRow['quish_vin_id']]['vin'] as $sVin) {
+                        $aCompletedRows[$sVin]['url'] = $aRow['video_title_url'];
+                    }
                 }
                 unset($aFullRows[$aRow['quish_vin_id']]);
             }
@@ -74,7 +80,9 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
 
             if($aRow) {
                 if(in_array($aRow['year'], $aAllowedYears) && (in_array($aRow['make'], $aMakes) || (!in_array($aRow['year'], explode(',', Phpfox::getParam('research.used_model_year_exclusion')))))) {
-                    $aCompletedRows[$aFullRow['vin']]['url'] = $aRow['video_title_url'];
+                    foreach($aFullRow['vin'] as $sVin) {
+                        $aCompletedRows[$sVin]['url'] = $aRow['video_title_url'];
+                    }
                 }
                 continue;
             }
@@ -89,7 +97,9 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
                         'referenceId' => $aVideo['referenceId']
                     ));
                     if(in_array($aVideo['year'], $aAllowedYears) && (in_array($aVideo['make'], $aMakes) || (!in_array($aVideo['year'], explode(',', Phpfox::getParam('research.used_model_year_exclusion')))))) {
-                        $aCompletedRows[$aFullRow['vin']]['url'] = $aVideo['video_title_url'];
+                        foreach($aFullRow['vin'] as $sVin) {
+                            $aCompletedRows[$sVin]['url'] = $aVideo['video_title_url'];
+                        }
                     }
                 }
             }

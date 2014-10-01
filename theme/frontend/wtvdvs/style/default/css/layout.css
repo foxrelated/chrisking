@@ -152,7 +152,7 @@ select
 */
 #header
 {
-	background:rgb(51, 51, 51) url('../image/wtvdvs/header.png') repeat-x;	
+	background:rgb(35,42,49) url('../image/wtvdvs/header.png') repeat-x;	
 	color:#fff;	
 	min-width:1000px;
 }
