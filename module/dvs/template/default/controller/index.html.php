@@ -330,11 +330,11 @@ background-color: #c35f54;
 	<div id="dvss" {*if $bCanAddDvss}class="separate"{/if*} style="margin:15px 0px 0px 0px;">
 		<table style="width:100%;border-collapse:collapse;">
 			<tr style="border-bottom:1px solid #ccc;">
-				<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
+				{*<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
 					DVS Name
-				</td>
-				<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
-					Dealership Name
+				</td>*}
+				<td colspan="2" valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
+					Dealership DVS
 				</td>
 				<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
 					Options{*phrase var='dvs.settings'*}
@@ -343,12 +343,13 @@ background-color: #c35f54;
 			<tr><td colspan="3">&nbsp;</td></tr>
 			{foreach from=$aDvss item=aDvs}
 				<tr id="dvs_{$aDvs.dvs_id}">
-					<td valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
+					<td colspan="2" valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
+						<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}" target="_blank">{$aDvs.dealer_name}</a>
+					</td>
+					{*<td valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
 						<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}" target="_blank">{$aDvs.dvs_name}</a>
-					</td>
-					<td valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
-						{$aDvs.dealer_name}
-					</td>
+					</td>*}
+					
 					<td valign="middle" style="text-align:right;vertical-align:middle;">
 						<div id="cssmenu">
 						<ul>
