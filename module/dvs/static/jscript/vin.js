@@ -312,9 +312,13 @@ if (!window.WTVVIN) {
         },
 
         getJSON: function(url, successHandler, errorHandler) {
-            var xhr = typeof XMLHttpRequest != 'undefined'
-                ? new XMLHttpRequest()
-                : new ActiveXObject('Microsoft.XMLHTTP');
+            if (window.XDomainRequest) {
+                var xhr = new XDomainRequest();
+            } else if (window.XMLHttpRequest) {
+                var xhr = new XMLHttpRequest();
+            } else {
+                var xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
             xhr.open('get', url, true);
             xhr.onreadystatechange = function() {
                 var status;
