@@ -21,8 +21,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		// do whatever you want here
 		$.ajaxCall('dvs.sendShareEmail', $('#share_email_dealer').serialize());
 		//$.ajaxCall('dvs.generateShortUrl', 'dvs_id={$aDvs.dvs_id}&video_ref_id={$aVideo.referenceId}&service=email&return_id=share_link_box');
-
+        {/literal}
+        {if $bSaveGa == 1}
         shareEmailSent();
+        {/if}
+        {literal}
 	});
 
 	if( $.isFunction( $('input, textarea').placeholder ) ) {
@@ -77,6 +80,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$aDvs.button_top_gradient}', endColorstr='#{$aDvs.button_bottom_gradient}');
 	border: 1px solid #{$aDvs.button_border};
 	color: #{$aDvs.button_text};
+	cursor:pointer;
 	{r}
 
 	input.dvs_form_button:hover {l}
@@ -89,12 +93,24 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	background-color: #{$aDvs.button_background};
 	border: 1px solid #{$aDvs.button_border};
 	color: #{$aDvs.button_text};
+	cursor:pointer;
 	{r}
 </style>
+
 <form id="share_email_dealer" name="share_email_dealer">
 
 	<fieldset>
 		<ul>
+			<li>
+				<input type="text" name="val[my_share_name]" id="my_share_name" placeholder="{phrase var='dvs.your_name'}" value="{$your_name}" required class="inputShare"/>
+			</li>
+		</ul>
+        <ul>
+            <li>
+                <input type="text" name="val[my_share_email]" id="my_share_email" placeholder="{phrase var='dvs.your_email'}" value="{$your_email}" required class="inputShare"/>
+            </li>
+        </ul>
+        <ul>
 			<li>
 				<input type="text" name="val[share_name]" id="share_name" placeholder="{phrase var='dvs.friends_name'}" class="inputShare" required />
 			</li>
@@ -104,19 +120,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<input type="email" name="val[share_email]" id="share_email" placeholder="{phrase var='dvs.friends_email_address'}" required class="inputShare"/>
 			</li>
 		</ul>
+		
 		<ul>
 			<li>
-				<input type="text" name="val[my_share_name]" id="my_share_name" placeholder="{phrase var='dvs.your_name'}" required class="inputShare"/>
-			</li>
-		</ul>
-        <ul>
-            <li>
-                <input type="text" name="val[my_share_email]" id="my_share_email" placeholder="{phrase var='dvs.your_email'}" required class="inputShare"/>
-            </li>
-        </ul>
-		<ul>
-			<li>
-				<textarea id="share_message" name="val[share_message]" placeholder="{phrase var='dvs.message_to_friend'}" cols="18" rows="5" required></textarea>
+				<textarea id="share_message" name="val[share_message]" placeholder="{phrase var='dvs.message_to_friend'}" cols="18" rows="5"></textarea>
 			</li>
 		</ul>
 		<input type="hidden" name="val[video_ref_id]" id="video_ref_id" value="{$aVideo.referenceId}"/>

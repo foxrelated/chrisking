@@ -86,7 +86,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
         }
 
 		Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
-
+		
 		//Load player data
 		$aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 
@@ -99,7 +99,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			$aFeaturedVideo = array();
 		}
 
-		$aValidVSYears = Phpfox::getService('dvs.video')->getValidVSYears($aPlayer['makes']);
+		$aValidVSYears = Phpfox::getService('dvs.video')->getValidVSYears($aPlayer['makes'], $aDvs['dvs_id']);
 
 		$aVideoSelect = array();
 		$aValidVSMakes = array();
@@ -193,9 +193,9 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
  
 		// Sort videos by name for footer links
-		$aFooterLinks = $aOverviewVideos;
+
 	
-		foreach($aFooterLinks as $ik=>$aVal)
+		/*foreach($aFooterLinks as $ik=>$aVal)
 		{
 			$exp = explode(" ",$aVal['name']);
 			
@@ -204,7 +204,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			
 		}
 		
-		$aFooterLinks = Phpfox::getService('dvs')->aasort($aFooterLinks,"ko_id");
+		$aFooterLinks = Phpfox::getService('dvs')->aasort($aFooterLinks,"ko_id");*/
 		
 		/*usort($aFooterLinks, function($a, $b)
 		{
@@ -243,7 +243,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			'window.aSettings[\'latitude\']=\'' . $aDvs['latitude'] . '\';' .
 			'window.aSettings[\'longitude\']=\'' . $aDvs['longitude'] . '\';' .
 			'window.aSettings[\'zoom\']=\'' . Phpfox::getParam('dvs.google_maps_default_zoom') . '\';' .
-			'window.aSettings[\'infoWindow\']=\'<div id="google_maps_info_window_contents"><strong>' . $aDvs['dealer_name'] . '</strong><br/>' . $aDvs['address'] . '<br/>' . $aDvs['city'] . ', ' . $aDvs['state_string'] . '<br/>Phone: ' . $aDvs['phone'] . '<br/>Website: <a href="' . $aDvs['url'] . '">' . $aDvs['url'] . '</a></div>\';';
+			'window.aSettings[\'infoWindow\']=\'<div id="google_maps_info_window_contents"><strong>' . $aDvs['dealer_name'] . '</strong><br/>' . $aDvs['address'] . '<br/>' . $aDvs['city'] . ', ' . $aDvs['state_string'] . '</div>\';';
 
 		// Set inventory URL
 		$aDvs['inventory_url'] = str_replace('{$sMake}', urlencode($aFirstVideo['make']), $aDvs['inventory_url']);
@@ -335,6 +335,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
 		$inventoryList = Phpfox::getService('dvs')->getModelInventory($aFirstVideo['ko_id']);
 		
+		
 		$this->template()
 			->setTemplate('dvs-view')
 			->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -344,6 +345,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 			))
 			->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
 			->setHeader(array(
+				'<style type="text/css">' . Phpfox::getService('dvs')->getinvCss($aDvs) . '</style>',
 //				'<style type="text/css">' . Phpfox::getService('dvs')->getCss($aDvs, $bSubdomainMode) . '</style>',
 //				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aPlayer) . '</style>',
 				'player.js' => 'module_dvs',
@@ -389,7 +391,6 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				'aValidVSMakes' => $aValidVSMakes,
 				'iLongDescLimit' => Phpfox::getParam('dvs.long_desc_limit'),
 				'bSubdomainMode' => $bSubdomainMode,
-				'aFooterLinks' => $aFooterLinks,
 				'sBrowser' => $sBrowser,
 				'sCurrentUrlEncoded' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? urlencode(Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url'])) : urlencode(Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url'])))),
 				'sStaticPath' => Phpfox::getParam('core.path') . 'module/dvs/static/',

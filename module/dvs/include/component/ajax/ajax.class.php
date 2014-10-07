@@ -778,6 +778,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		}
 
 		$this->val('#contact_dvs_id', $aDvs['dvs_id']);
+
+
+        if($aDvs['footer_toggle']) {
+            Phpfox::getBlock('dvs.related-video', array('aDvs' => $aDvs, 'aVideo' => $aVideo));
+            $this->html('#related_videos', $this->getContent(false));
+        }
 	}
 
     public function iframeChangeVideo()
@@ -1183,12 +1189,25 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image'))
 			));
 			$sBody = $this->getContent(false);
-
+			
+			Phpfox::getBlock('dvs.share-email-plain-template', array(
+				'iDvsId' => $aDvs['dvs_id'],
+				'sReferenceId' => $aVideo['referenceId'],
+				'sShareName' => $aVals['share_name'],
+				'sMyShareName' => $aVals['my_share_name'],
+				'sShareMessage' => $aVals['share_message'],
+				'sShareEmail' => $aVals['share_email'],
+				'sBackgroundImageUrl' => ($aDvs['background_file_name'] ? Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.dvs.background') . $aDvs['background_file_name'] : ''),
+				'sVideoLink' => $sVideoLink,
+				'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image'))
+			));
+			$sBodyPlain = $this->getContent(false);
+			
 			//$sDealerEmail = 'noreply@' . str_replace('www.', '', parse_url($aDvs['url'], PHP_URL_HOST));
 			$sDealerEmail = $aDvs['email'];
 			Phpfox::getLibClass('phpfox.mail.interface');
 			$oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
-			$oMail->send($aVals['share_email'], $sSubject, ' ', $sBody, $aVals['my_share_name'], $aVals['my_share_email']);
+			$oMail->send($aVals['share_email'], $sSubject, $sBodyPlain, $sBody, $aVals['my_share_name'], $aVals['my_share_email']);
 
 //			Phpfox::getLib('mail')
 //				->to($aVals['share_email'])
@@ -1213,39 +1232,43 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         Phpfox::getLib('setting')->setParam('brightcove.url_image', Phpfox::getParam('core.url_pic') . 'brightcove/');
 
         $aVals = Phpfox::getLib('request')->getArray('val');
+        $sErrorText = '';
         $bIsError = false;
+
 
         if (!$aVals['share_name'])
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_an_email_address'));
+            $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_friends_name');
             $this->call('$("#share_email_dealer #share_name").addClass("required");');
+            $bIsError = true;
+        }
+        if (!$aVals['share_email'])
+        {
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_an_email_address');
+            }
+            $this->call('$("#share_email_dealer #share_email").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['my_share_name'])
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'));
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_name');
+            }
             $this->call('$("#share_email_dealer #my_share_name").addClass("required");');
             $bIsError = true;
         }
-
         if (!$aVals['my_share_email'])
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'));
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_email_address');
+            }
             $this->call('$("#share_email_dealer #my_share_email").addClass("required");');
-            $bIsError = true;
-        }
-
-        if (!$aVals['share_email'])
-        {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_friends_name'));
-            $this->call('$("#share_email_dealer #share_email").addClass("required");');
             $bIsError = true;
         }
 
         if (!$bIsError)
         {
-
-
             $aDvs = Phpfox::getService('dvs')->get($aVals['dvs_id']);
             Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
             $aVideo = Phpfox::getService('dvs.video')->get($aVals['video_ref_id']);
@@ -1296,10 +1319,23 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             ));
             $sBody = $this->getContent(false);
 
+            Phpfox::getBlock('dvs.share-email-plain-template', array(
+                'iDvsId' => $aDvs['dvs_id'],
+                'sReferenceId' => $aVideo['referenceId'],
+                'sShareName' => $aVals['share_name'],
+                'sMyShareName' => $aVals['my_share_name'],
+                'sShareMessage' => $aVals['share_message'],
+                'sShareEmail' => $aVals['share_email'],
+                'sBackgroundImageUrl' => ($aDvs['background_file_name'] ? Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.dvs.background') . $aDvs['background_file_name'] : ''),
+                'sVideoLink' => $sVideoLink,
+                'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image'))
+            ));
+            $sBodyPlain = $this->getContent(false);
+
             $sDealerEmail = 'noreply@' . str_replace('www.', '', parse_url($aDvs['url'], PHP_URL_HOST));
             Phpfox::getLibClass('phpfox.mail.interface');
             $oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
-            $oMail->send($aVals['share_email'], $sSubject, ' ', $sBody, $aVals['my_share_name'], $aVals['my_share_email']);
+            $oMail->send($aVals['share_email'], $sSubject, $sBodyPlain, $sBody, $aVals['my_share_name'], $aVals['my_share_email']);
 
 //			Phpfox::getLib('mail')
 //				->to($aVals['share_email'])
@@ -1314,6 +1350,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         }
         else
         {
+            $this->html('#share_email_error', $sErrorText)
+                ->show('#share_email_error');
             return false;
         }
     }
@@ -1594,6 +1632,35 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$sMakes = Phpfox::getLib('request')->get('aMakes');
 		$aMakes = explode(',', $sMakes);
 
+        $aAllowedYears = $aYears;
+
+        if($iDvsId = $this->get('iDvs')) {
+            $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+            if($aDvs) {
+                if(!$aDvs['new_car_videos']) {
+                    $sYears = Phpfox::getParam('research.new_model_year');
+                    $aYears2 = explode(',', $sYears);
+                    foreach($aAllowedYears as $iKey => $sYear) {
+                        if(in_array($sYear, $aYears2)) {
+                            unset($aAllowedYears[$iKey]);
+                        }
+                    }
+                }
+
+                if(!$aDvs['used_car_videos']) {
+                    $sYears = Phpfox::getParam('research.used_model_year_exclusion');
+                    $aYears2 = explode(',', $sYears);
+                    foreach($aAllowedYears as $iKey => $sYear) {
+                        if(!in_array($sYear, $aYears2)) {
+                            unset($aAllowedYears[$iKey]);
+                        }
+                    }
+                }
+            }
+        }
+
+        $aYears = $aAllowedYears;
+
 		$aPlayerModels = array();
 
 		foreach ($aYears as $iYear)
@@ -1692,6 +1759,16 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$this->hide('#sales_team_member_' . $iSalesTeamId);
 	}
 
+    public function removeManagerTeamMember()
+    {
+        $iManagerTeamId = $this->get('managersteam_id');
+
+        Phpfox::getService('dvs.manager.process')->remove($iManagerTeamId);
+
+        $this->hide('#managers_team_member_' . $iManagerTeamId);
+        $this->alert('User removed');
+    }
+
 	public function showGetPriceForm()
 	{
 		Phpfox::getBlock('dvs.get-price', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
@@ -1699,7 +1776,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 	public function emailForm()
 	{
-		Phpfox::getBlock('dvs.share-email', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bLongUrl' => $this->get('longurl', false)), false);
+		Phpfox::getBlock('dvs.share-email', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bLongUrl' => $this->get('longurl', false), 'bSaveGa' => $this->get('bSaveGa', 1)), false);
 	}
 
     public function emailFormIframe() {
@@ -1762,35 +1839,44 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
     public function contactDealerIframe()
     {
         $aVals = Phpfox::getLib('request')->getArray('val');
+        $sErrorText = '';
         $bIsError = false;
 
         if (!$aVals['contact_name'] && Phpfox::getParam('dvs.get_price_validate_name'))
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'). ' ');
+            $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_name');
             $this->call('$("#contact_dealer #name").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['contact_email'] && Phpfox::getParam('dvs.get_price_validate_email'))
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'). ' ');
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_email_address');
+            }
             $this->call('$("#contact_dealer #email").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['contact_phone'] && Phpfox::getParam('dvs.get_price_validate_phone'))
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_phone_number'). ' ');
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_phone_number');
+            }
             $this->call('$("#contact_dealer #phone").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['contact_zip'] && Phpfox::getParam('dvs.get_price_validate_zip_code'))
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_zip_code'). ' ');
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_zip_code');
+            }
             $this->call('$("#contact_dealer #zip").addClass("required");');
             $bIsError = true;
         }
         if (!$aVals['contact_comments'] && Phpfox::getParam('dvs.get_price_validate_comments'))
         {
-            //Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_comments'). ' ');
+            if(!$sErrorText) {
+                $sErrorText = Phpfox::getPhrase('dvs.please_enter_comments');
+            }
             $this->call('$("#contact_dealer #comments").addClass("required");');
             $bIsError = true;
         }
@@ -1861,8 +1947,85 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         }
         else
         {
+            $this->html('#contact_dealer_error', $sErrorText)
+                ->show('#contact_dealer_error');
             return false;
         }
+    }
+
+    public function getShareMakes()
+    {
+        // Get the variables from the ajax call.
+        $sDvsName = $this->get('sDvsName');
+        $iYear = $this->get('iYear');
+
+        // Get the DVS details based off the DVS name.
+        $aDvs = Phpfox::getService('dvs')->get($sDvsName, true);
+        $aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
+
+        // Get all of the makes for the DVS for the selected year.
+        $aMakes = Phpfox::getService('dvs.video')->getValidVSMakes($iYear, $aPlayer['makes']);
+
+        // Did we get more than one make?
+        //if (count($aMakes) === 1) {
+            // Yes, make the only make selected by default.
+            $sSelectOptions = '<li class="init"><span class="init_selected">' . $aMakes[0]['make'] . '</span><ul>';
+        /*    $this->call('$.ajaxCall(\'dvs.getShareModels\', \'sDvsName=' . $aDvs['title_url'] . '&iYear=' . $iYear . '&sMake=' . $aMakes[0]['make'] . '\');');
+        } else {
+            // The first list item should be one to tell the user to select a make.
+            $sSelectOptions = '<li class="init"><span class="init_selected">' . Phpfox::getPhrase('dvs.select_make') . '</span><ul>';
+            $this->html('#models', '<li class="init">' . Phpfox::getPhrase('dvs.select_model') . '</li><ul><li>' . Phpfox::getPhrase('dvs.please_select_a_make_first') . '</li></ul>');
+        }*/
+
+        // Build the ul list items
+        foreach ($aMakes as $aMake) {
+            $sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.getShareModels\', \'sDvsName=' . $aDvs['title_url'] . '&iYear=' . $iYear . '&amp;sMake=' . $aMake['make'] . '\');">' . $aMake['make'] . '</li>';
+        }
+
+        $sSelectOptions .= '</ul></li>';
+
+        // Replace the old html with the new list items.
+        $this->html('#makes', $sSelectOptions);
+
+        $sMake = '';
+        if(count($aMakes)) {
+            $sMake = $aMakes[0]['make'];
+        }
+
+        $aShareVideos = Phpfox::getService('dvs.video')->getShareVideos($aDvs['dvs_id'], $iYear, $sMake, '');
+        Phpfox::getBlock('dvs.share-video', array('aShareVideos' => $aShareVideos, 'aDvs' => $aDvs));
+
+        $this->html('#video_items', $this->getContent(false));
+    }
+
+    public function getShareModels()
+    {
+        // Set the variables to determine which models to get.
+        $sMake = $this->get('sMake');
+        $iYear = $this->get('iYear');
+        $sDvsName = $this->get('sDvsName');
+
+        // Get the DVS details based off the DVS name.
+        $aDvs = Phpfox::getService('dvs')->get($sDvsName, true);
+
+        $aShareVideos = Phpfox::getService('dvs.video')->getShareVideos($aDvs['dvs_id'], $iYear, $sMake, '');
+        Phpfox::getBlock('dvs.share-video', array('aShareVideos' => $aShareVideos, 'aDvs' => $aDvs));
+
+        $this->html('#video_items', $this->getContent(false));
+    }
+
+    public function getShareItem() {
+        $sMake = $this->get('sMake');
+        $iYear = $this->get('iYear');
+        $iDvsId = $this->get('iDvsId');
+        $sModel = $this->get('sModel');
+
+        $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+
+        $aShareVideos = Phpfox::getService('dvs.video')->getShareVideos($aDvs['dvs_id'], $iYear, $sMake, $sModel);
+        Phpfox::getBlock('dvs.share-video', array('aShareVideos' => $aShareVideos, 'aDvs' => $aDvs));
+
+        $this->html('#video_items', $this->getContent(false));
     }
 }
 ?>

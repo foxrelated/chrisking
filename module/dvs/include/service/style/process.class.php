@@ -22,58 +22,77 @@ class Dvs_Service_Style_Process extends Phpfox_Service {
 
 	public function add($aDvs)
 	{
-		$this->database()->insert($this->_sTable, array(
-			'dvs_id' => (int) $aDvs['dvs_id'],
-			'branding_file_id' => (int) $aDvs['branding_file_id'],
-			'background_file_id' => (int) $aDvs['background_file_id'],
-			'background_opacity' => $this->preParse()->clean($aDvs['background_opacity']),
-			'menu_background' => $this->preParse()->clean($aDvs['menu_background'], 6),
-			'menu_link' => $this->preParse()->clean($aDvs['menu_link'], 6),
-			'page_background' => $this->preParse()->clean($aDvs['page_background'], 6),
-			'page_text' => $this->preParse()->clean($aDvs['page_text'], 6),
-			'button_background' => $this->preParse()->clean($aDvs['button_background'], 6),
-			'button_text' => $this->preParse()->clean($aDvs['button_text'], 6),
-			'button_top_gradient' => $this->preParse()->clean($aDvs['button_top_gradient'], 6),
-			'button_bottom_gradient' => $this->preParse()->clean($aDvs['button_bottom_gradient'], 6),
-			'button_border' => $this->preParse()->clean($aDvs['button_border'], 6),
-			'text_link' => $this->preParse()->clean($aDvs['text_link'], 6),
-			'footer_link' => $this->preParse()->clean($aDvs['footer_link'], 6),
-            'iframe_background' => $this->preParse()->clean($aDvs['iframe_background'], 6),
-            'iframe_text' => $this->preParse()->clean($aDvs['iframe_text'], 6),
-            'iframe_contact_background' => $this->preParse()->clean($aDvs['iframe_contact_background'], 6),
-            'iframe_contact_text' => $this->preParse()->clean($aDvs['iframe_contact_text'], 6),
+        $aSql = array(
+            'dvs_id' => (int) $aDvs['dvs_id'],
+            'branding_file_id' => (int) $aDvs['branding_file_id'],
+            'background_file_id' => (int) $aDvs['background_file_id'],
+            'background_opacity' => $this->preParse()->clean($aDvs['background_opacity']),
             'background_repeat_type' => $this->preParse()->clean($aDvs['background_repeat_type']),
-            'background_attachment_type' => $this->preParse()->clean($aDvs['background_attachment_type']),
-            'font_family_id' => (int)$aDvs['font_family_id']
-		));
+            'background_attachment_type' => $this->preParse()->clean($aDvs['background_attachment_type'])
+        );
+
+        if(Phpfox::isAdmin()) {
+            $aSql['font_family_id'] = (int)$aDvs['font_family_id'];
+            $aSql['menu_background'] = $this->preParse()->clean($aDvs['menu_background'], 6);
+            $aSql['menu_link'] = $this->preParse()->clean($aDvs['menu_link'], 6);
+            $aSql['page_background'] = $this->preParse()->clean($aDvs['page_background'], 6);
+            $aSql['page_text'] = $this->preParse()->clean($aDvs['page_text'], 6);
+            $aSql['button_background'] = $this->preParse()->clean($aDvs['button_background'], 6);
+            $aSql['button_text'] = $this->preParse()->clean($aDvs['button_text'], 6);
+            $aSql['button_top_gradient'] = $this->preParse()->clean($aDvs['button_top_gradient'], 6);
+            $aSql['button_bottom_gradient'] = $this->preParse()->clean($aDvs['button_bottom_gradient'], 6);
+            $aSql['button_border'] = $this->preParse()->clean($aDvs['button_border'], 6);
+            $aSql['text_link'] = $this->preParse()->clean($aDvs['text_link'], 6);
+            $aSql['footer_link'] = $this->preParse()->clean($aDvs['footer_link'], 6);
+            $aSql['iframe_background'] = $this->preParse()->clean($aDvs['iframe_background'], 6);
+            $aSql['iframe_text'] = $this->preParse()->clean($aDvs['iframe_text'], 6);
+            $aSql['iframe_contact_background'] = $this->preParse()->clean($aDvs['iframe_contact_background'], 6);
+            $aSql['iframe_contact_text'] = $this->preParse()->clean($aDvs['iframe_contact_text'], 6);
+            $aSql['vin_top_gradient'] = $this->preParse()->clean($aDvs['vin_top_gradient'], 6);
+            $aSql['vin_bottom_gradient'] = $this->preParse()->clean($aDvs['vin_bottom_gradient'], 6);
+            $aSql['vin_font_size'] = $this->preParse()->clean($aDvs['vin_font_size'], 15);
+            $aSql['vin_button_label'] = $this->preParse()->clean($aDvs['vin_button_label'], 255);
+
+        }
+
+		$this->database()->insert($this->_sTable, $aSql);
 	}
 
 
 	public function update($aDvs)
 	{
-		$this->database()->update($this->_sTable, array(
-			'branding_file_id' => (int) $aDvs['branding_file_id'],
-			'background_file_id' => (int) $aDvs['background_file_id'],
-			'background_opacity' => $this->preParse()->clean($aDvs['background_opacity']),
-			'menu_background' => $this->preParse()->clean($aDvs['menu_background'], 6),
-			'menu_link' => $this->preParse()->clean($aDvs['menu_link'], 6),
-			'page_background' => $this->preParse()->clean($aDvs['page_background'], 6),
-			'page_text' => $this->preParse()->clean($aDvs['page_text'], 6),
-			'button_background' => $this->preParse()->clean($aDvs['button_background'], 6),
-			'button_text' => $this->preParse()->clean($aDvs['button_text'], 6),
-			'button_top_gradient' => $this->preParse()->clean($aDvs['button_top_gradient'], 6),
-			'button_bottom_gradient' => $this->preParse()->clean($aDvs['button_bottom_gradient'], 6),
-			'button_border' => $this->preParse()->clean($aDvs['button_border'], 6),
-			'text_link' => $this->preParse()->clean($aDvs['text_link'], 6),
-			'footer_link' => $this->preParse()->clean($aDvs['footer_link'], 6),
-            'iframe_background' => $this->preParse()->clean($aDvs['iframe_background'], 6),
-            'iframe_text' => $this->preParse()->clean($aDvs['iframe_text'], 6),
-            'iframe_contact_background' => $this->preParse()->clean($aDvs['iframe_contact_background'], 6),
-            'iframe_contact_text' => $this->preParse()->clean($aDvs['iframe_contact_text'], 6),
+        $aSql = array(
+            'branding_file_id' => (int) $aDvs['branding_file_id'],
+            'background_file_id' => (int) $aDvs['background_file_id'],
+            'background_opacity' => $this->preParse()->clean($aDvs['background_opacity']),
             'background_repeat_type' => $this->preParse()->clean($aDvs['background_repeat_type']),
-            'background_attachment_type' => $this->preParse()->clean($aDvs['background_attachment_type']),
-            'font_family_id' => (int)$aDvs['font_family_id']
-		), 'dvs_id = ' . (int) $aDvs['dvs_id']);
+            'background_attachment_type' => $this->preParse()->clean($aDvs['background_attachment_type'])
+        );
+
+        if(Phpfox::isAdmin()) {
+            $aSql['font_family_id'] = (int)$aDvs['font_family_id'];
+            $aSql['menu_background'] = $this->preParse()->clean($aDvs['menu_background'], 6);
+            $aSql['menu_link'] = $this->preParse()->clean($aDvs['menu_link'], 6);
+            $aSql['page_background'] = $this->preParse()->clean($aDvs['page_background'], 6);
+            $aSql['page_text'] = $this->preParse()->clean($aDvs['page_text'], 6);
+            $aSql['button_background'] = $this->preParse()->clean($aDvs['button_background'], 6);
+            $aSql['button_text'] = $this->preParse()->clean($aDvs['button_text'], 6);
+            $aSql['button_top_gradient'] = $this->preParse()->clean($aDvs['button_top_gradient'], 6);
+            $aSql['button_bottom_gradient'] = $this->preParse()->clean($aDvs['button_bottom_gradient'], 6);
+            $aSql['button_border'] = $this->preParse()->clean($aDvs['button_border'], 6);
+            $aSql['text_link'] = $this->preParse()->clean($aDvs['text_link'], 6);
+            $aSql['footer_link'] = $this->preParse()->clean($aDvs['footer_link'], 6);
+            $aSql['iframe_background'] = $this->preParse()->clean($aDvs['iframe_background'], 6);
+            $aSql['iframe_text'] = $this->preParse()->clean($aDvs['iframe_text'], 6);
+            $aSql['iframe_contact_background'] = $this->preParse()->clean($aDvs['iframe_contact_background'], 6);
+            $aSql['iframe_contact_text'] = $this->preParse()->clean($aDvs['iframe_contact_text'], 6);
+            $aSql['vin_top_gradient'] = $this->preParse()->clean($aDvs['vin_top_gradient'], 6);
+            $aSql['vin_bottom_gradient'] = $this->preParse()->clean($aDvs['vin_bottom_gradient'], 6);
+            $aSql['vin_font_size'] = $this->preParse()->clean($aDvs['vin_font_size'], 15);
+            $aSql['vin_button_label'] = $this->preParse()->clean($aDvs['vin_button_label'], 255);
+        }
+
+		$this->database()->update($this->_sTable, $aSql, 'dvs_id = ' . (int) $aDvs['dvs_id']);
 	}
 
 

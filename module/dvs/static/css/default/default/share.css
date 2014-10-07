@@ -66,6 +66,7 @@
 
 .dvs_share_thumbnail_image_container h3 {
 	border: none;
+	min-height:42px;
 }
 .dvs_share_thumbnail_image_container_inner table td {
 	vertical-align: top;
@@ -107,4 +108,65 @@
 }
 .dvs_share_text_box {
 	width: 180px;
+}
+
+#select_new {
+    text-align: center;
+}
+
+#select_new h3
+{
+    font-size: 1.25em;
+    font-weight: bold;
+    border-bottom: none;
+}
+
+#select_new ul#year,
+#select_new ul#makes,
+#select_new ul#models {
+    float: left;
+    width: 188px;
+    margin-right: 20px;
+    text-align: center;
+}
+
+#select_new ul li.init
+{
+    background: url("../../../image/dropdown.png");
+    display: block;
+    padding-top: 5px;
+    height: 26px;
+    width: 188px;
+    margin-top: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor:pointer;
+}
+
+#select_new ul ul
+{
+    min-width: 187px;
+    background: #fff;
+    padding: 4px 0px;
+    border-radius: 5px;
+    border: 1px #000 solid;
+    display: none;
+    position: absolute;
+    text-align: left;
+    z-index:9;
+    cursor:pointer;
+}
+
+#select_new ul ul li
+{
+    display: block;
+    padding: 4px;
+    font-size: 15px;
+    font-weight: normal;
+    cursor:pointer;
+}
+
+#select_new li:not(.init):hover
+{
+    background: #EEE;
 }

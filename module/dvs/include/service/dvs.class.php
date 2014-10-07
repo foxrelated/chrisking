@@ -104,6 +104,22 @@ public function aasort (&$array, $key) {
     $array=$ret;
 	return $array;
 }
+public function aaasort (&$array, $key) {
+    $sorter=array();
+    $ret=array();
+    reset($array);
+    foreach ($array as $ii => $va) {
+        $sorter[$ii]=$va[$key];
+    }
+    //asort($sorter);
+    arsort($sorter);
+	
+    foreach ($sorter as $ii => $va) {
+        $ret[$ii]=$array[$ii];
+    }
+    $array=$ret;
+	return $array;
+}
 /*phpmasterminds Edited for sort in gallery and footer starts*/
 
 	public function cleanImages()
@@ -155,7 +171,7 @@ public function aasort (&$array, $key) {
     $firstItemLink   = '';
     $lastItemLink    = '';
     $trackingDevMode = (($_COOKIE['dev'] == 1)?true:false);
-    $trackingDevMode = false;
+    // $trackingDevMode = false;
 
     if(!$detailedImportType){
       if($connector['pagination_type'] == 0){ // is offset
@@ -172,10 +188,23 @@ public function aasort (&$array, $key) {
           "pagination_name" => ($connector['pagination_name']?$connector['pagination_name']:'start'),
         ));
         $carsArr = array_shift($result['results']);
-        if(empty($carsArr[1]['image']['href']) || $firstItemLink == $carsArr[1]['image']['href']){
-          break;
+        if($_COOKIE['dev'] == 1){
+          // var_dump($firstItemLink);
+          // var_dump($lastItemLink);
+          // var_dump($carsArr);
+          // die();
         }
-        if(!empty($lastItemLink) && $lastItemLink == $carsArr[1]['image']['href']){
+        if(empty($carsArr[1]['image']['href']) || $firstItemLink == $carsArr[1]['image']['href']){
+          if(empty($carsArr[1]['name']['href']) || $firstItemLink == $carsArr[1]['name']['href']){
+            break;
+          }else{
+            $carsarr_first_href = $carsArr[1]['name']['href'];
+          }
+        }else{
+          $carsarr_first_href = $carsArr[1]['image']['href'];
+        }
+
+        if(!empty($lastItemLink) && $lastItemLink == $carsarr_first_href){
           break;
         }
         if($connector['pagination_type'] == 0){ // is offset
@@ -183,11 +212,17 @@ public function aasort (&$array, $key) {
         }else{ // is page
           if($paginator >= 30) break;
         }
-        if(empty($firstItemLink) && !empty($carsArr[1]['image']['href'])){
-          $firstItemLink = $carsArr[1]['image']['href'];
+        if(empty($firstItemLink) && !empty($carsarr_first_href)){
+          $firstItemLink = $carsarr_first_href;
         }
-        if(!empty($carsArr[1]['image']['href'])){
-          $lastItemLink = $carsArr[1]['image']['href'];
+        if(!empty($carsarr_first_href)){
+          $lastItemLink = $carsarr_first_href;
+        }
+        if($_COOKIE['dev'] == 1){
+          // var_dump($firstItemLink);
+          // var_dump($lastItemLink);
+          // var_dump($carsArr);
+          // die();
         }
         if(!empty($result)){
           $mcnt += $result['count'];
@@ -598,28 +633,29 @@ public function aasort (&$array, $key) {
     return $values;
 	}
 
-	public function listDvss($iPage, $iPageSize, $iUserId, $bPaginate = true)
+	public function listDvss($iPage, $iPageSize, $iUserId, $bPaginate = true, $bGetAll = false)
 	{
 		$iPage = (int) $iPage;
 		$iPageSize = (int) $iPageSize;
 		$iUserId = (int) $iUserId;
 
-		if ($bPaginate)
-		{
-			if ($iUserId)
-			{
-				$this->database()->where('user_id =' . $iUserId);
-			}
+        $sWhere = '1';
+	    if ($iUserId && !$bGetAll) {
+            $sWhere .= ' AND d.user_id =' . $iUserId;
+            $aIsManagerDvs = Phpfox::getService('dvs.manager')->getAllDvs($iUserId);
+
+            if(count($aIsManagerDvs)) {
+                $sWhere .= ' OR d.dvs_id IN (' . implode(',', $aIsManagerDvs) . ')';
+            }
+        }
+
+		if ($bPaginate) {
 			$iCnt = $this->database()->select('COUNT(*)')
-				->from($this->_sTable)
+				->from($this->_sTable, 'd')
+                ->where($sWhere)
 				->execute('getField');
 
 			$this->database()->limit($iPage, $iPageSize, $iCnt);
-		}
-
-		if ($iUserId)
-		{
-			$this->database()->where('d.user_id =' . $iUserId);
 		}
 
 		$aDvss = $this->database()
@@ -634,6 +670,7 @@ public function aasort (&$array, $key) {
 			//->leftjoin(Phpfox::getT('ko_dvs_logo_files'), 'l', 'l.logo_id = p.logo_file_id')
 			->leftjoin(Phpfox::getT('ko_dvs_preroll_files'), 'pr', 'pr.preroll_id = p.preroll_file_id')
 			->join(Phpfox::getT('user'), 'u', 'u.user_id = d.user_id')
+            ->where($sWhere)
 			->execute('getRows');
 
 		if ($bPaginate)
@@ -700,17 +737,18 @@ public function aasort (&$array, $key) {
 		// output
 		$aOutput = array();
 
-		$sRequestUrl = "http://maps.googleapis.com/maps/api/geocode/xml?sensor=false" . "&address=" . urlencode($sAddress);
+        $sRequestUrl = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false" . "&address=" . urlencode($sAddress);
 
-		$oXml = simplexml_load_file($sRequestUrl);
+        $oXml = file_get_contents($sRequestUrl);
+        $oXml = json_decode($oXml, true);
 
-		$sStatusCode = (string) $oXml->status;
+        $sStatusCode = (string) $oXml['status'];
 
-		if (strcmp($sStatusCode, "OK") == 0)
-		{
-			$aOutput['latitude'] = (string) $oXml->result->geometry->location->lat;
-			$aOutput['longitude'] = (string) $oXml->result->geometry->location->lng;
-		}
+        if (strcmp($sStatusCode, "OK") == 0)
+        {
+            $aOutput['latitude'] = (string) $oXml['results'][0]['geometry']['location']['lat'];
+            $aOutput['longitude'] = (string) $oXml['results'][0]['geometry']['location']['lng'];
+        }
 		else if (strcmp($sStatusCode, "620") == 0)
 		{
 			if ($bRecursion === true)
@@ -766,9 +804,17 @@ public function aasort (&$array, $key) {
 		return implode(', ', $aAddress);
 	}
 
+	public function getinvCss($aDvs)
+	{
+	
+		return $this->buildCss('#overview_inventory li .view_details a', array(
+		'color' => '#' . $aDvs['text_link']
+		), true);
 
+	}
 	public function getCss($aDvs, $bSubdomainMode)
 	{
+
 		$sCss = $this->buildCss('body', array(
 			'background' => 'none repeat scroll 0 0 #' . $aDvs['page_background'] . ' !important',
 			'color' => '#' . $aDvs['page_text']
@@ -977,6 +1023,10 @@ public function aasort (&$array, $key) {
 			{
 				return true;
 			}
+
+            if (Phpfox::getService('dvs.manager')->get($iUserId, $iId)) {
+                return true;
+            }
 		}
 
 		if ($sIdSource == 'branding')

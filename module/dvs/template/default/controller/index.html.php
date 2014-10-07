@@ -330,11 +330,11 @@ background-color: #c35f54;
 	<div id="dvss" {*if $bCanAddDvss}class="separate"{/if*} style="margin:15px 0px 0px 0px;">
 		<table style="width:100%;border-collapse:collapse;">
 			<tr style="border-bottom:1px solid #ccc;">
-				<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
+				{*<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
 					DVS Name
-				</td>
-				<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
-					Dealership Name
+				</td>*}
+				<td colspan="2" valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
+					Dealership DVS
 				</td>
 				<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
 					Options{*phrase var='dvs.settings'*}
@@ -343,12 +343,13 @@ background-color: #c35f54;
 			<tr><td colspan="3">&nbsp;</td></tr>
 			{foreach from=$aDvss item=aDvs}
 				<tr id="dvs_{$aDvs.dvs_id}">
-					<td valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
+					<td colspan="2" valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
+						<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}" target="_blank">{$aDvs.dealer_name}</a>
+					</td>
+					{*<td valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
 						<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}" target="_blank">{$aDvs.dvs_name}</a>
-					</td>
-					<td valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
-						{$aDvs.dealer_name}
-					</td>
+					</td>*}
+					
 					<td valign="middle" style="text-align:right;vertical-align:middle;">
 						<div id="cssmenu">
 						<ul>
@@ -358,6 +359,9 @@ background-color: #c35f54;
 								 <li><a href="{url link='dvs.customize' id=$aDvs.dvs_id}"><span>Customize Styling</span></a></li>
 								 <li><a href="{url link='dvs.player.add' id=$aDvs.dvs_id}"><span>Player Settings</span></a></li>
 								 <li><a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}"><span>Manage Sales Team</span></a></li>
+                                 {if Phpfox::isAdmin()}
+                                 <li><a href="{url link='dvs.manager' id=$aDvs.dvs_id}"><span>Manage Managers Team</span></a></li>
+                                 {/if}
 							  </ul>
 						   </li>
 						   <li class="has-sub"><a href="#"><span>Sharing</span></a>
@@ -368,9 +372,9 @@ background-color: #c35f54;
 						   </li>
 						   <li class="has-sub"><a href="#"><span>Integrate</span></a>
 							  <ul>
-								 <li><a href="#" onclick="$('#dvs_gallery_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Gallery Code</span></a></li>
-								  <li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS iFrame Code</span></a></li>
-								 
+                                <li><a href="#" onclick="$('#dvs_gallery_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Gallery Code</span></a></li>
+								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS iFrame Code</span></a></li>
+                                <li><a href="#" onclick="$('#vdp_embed_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>VDP Embed Code</span></a></li>
 							  </ul>
 						   </li>
 						   {if Phpfox::isAdmin()}
@@ -384,14 +388,13 @@ background-color: #c35f54;
 				</tr>
 				<tr><td colspan="3">&nbsp;</td></tr>
 				<div id="dvs_gallery_link_{$aDvs.dvs_id}" title="DVS Gallery Embed Code" class="dvs_gallery_link_popup" style="display:none;">
-					<p>
-						<textarea rows="4" cols="71">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}gallery" scrolling="no" frameborder="0" width="800" height="600"&gt;&lt;/iframe&gt;</textarea>
+					<p>Add this code to a blank page using HTML code method (not iFrame):<p>
+						<p><textarea rows="2" cols="71">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}gallery" scrolling="no" frameborder="0" width="800" height="600"&gt;&lt;/iframe&gt;</textarea>
 					</p>
 				</div>
 				<div id="dvs_iframe_link_{$aDvs.dvs_id}" title="DVS iFrame Embed Code" class="dvs_iframe_link_popup" style="display:none;">
-					<p>
-						<textarea rows="4" cols="71">
-&lt;div id="dvs_wrapper">&lt;/div&gt;
+					<p>Add this code to a blank page using HTML code method (not iFrame):</p>
+						<p><textarea rows="13" cols="71">&lt;div id="dvs_wrapper">&lt;/div&gt;
 &lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/embed.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
     WTVDVS.render_iframe({l}
@@ -400,10 +403,26 @@ background-color: #c35f54;
         "height" : 1000,
         "iframeUrl" : "{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}iframe/"
     {r});
-&lt;/script&gt;
-						</textarea>
+&lt;/script&gt;</textarea>
 					</p>
+					
 				</div>
+
+            <div id="vdp_embed_link_{$aDvs.dvs_id}" title="VDP Embed Code" class="dvs_iframe_link_popup" style="display:none;">
+                <p>Step 1: Add this code after the &lt;body&gt; tag of the page:</p>
+                    <textarea rows="10" cols="71">&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/vin.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+WTVVIN.init({l}
+    "dvs" : {$aDvs.dvs_id},
+    "apiUrl" : "{url link=''}",
+    'styleUrl' : "{url link='dvs.vin.style' id=$aDvs.dvs_id}"
+{r});
+&lt;/script&gt;</textarea>
+                </p>
+                <p>Step 2: Add button code and replace # with a VIN:</p> 
+					<textarea rows="1" cols="71">&lt;div class="dvs_vin_btn" vin="#"&gt;&lt;/div&gt; </textarea>
+					</p>
+            </div>
 				
 			{/foreach}
 {pager}

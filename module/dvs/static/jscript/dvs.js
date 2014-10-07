@@ -98,7 +98,7 @@ function googleShareClick(sSource) {
 
 function showEmailShare(iDvsId) {
 	if (aCurrentVideoMetaData) {
-		$.ajaxCall('dvs.showShareEmail', 'iDvsId=' + iDvsId + '&sRefId=' + aCurrentVideoMetaData['referenceId']);
+		//$.ajaxCall('dvs.showShareEmail', 'iDvsId=' + iDvsId + '&sRefId=' + aCurrentVideoMetaData['referenceId']);
 		var oCustomVars = {
 			1: {
 				name: 'Video Reference ID',

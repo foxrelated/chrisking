@@ -115,7 +115,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			
 			<li {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
 				<label for="makes">{phrase var='dvs.make'}:</label>
-				<select name="val[makes]" id="makes" onchange="$.ajaxCall('dvs.getFeaturedModels', 'aMakes=' + $('#makes').val());" multiple="multiple">
+				<select name="val[makes]" id="makes" onchange="$.ajaxCall('dvs.getFeaturedModels', 'iDvs={$iDvsId}&aMakes=' + $('#makes').val());" multiple="multiple">
 					{foreach from=$aMakes item=aMake}
 					<option value="{$aMake.make}"{if $bIsEdit && isset($aMake.selected)} selected="selected"{/if}>{$aMake.make}</option>
 					{/foreach}

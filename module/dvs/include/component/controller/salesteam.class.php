@@ -34,7 +34,11 @@ class Dvs_Component_Controller_Salesteam extends Phpfox_Component {
 				}
 				else
 				{
-					$this->url()->send('dvs');
+                    if (Phpfox::getService('dvs.manager')->get(Phpfox::getUserId(), $iDvsId)) {
+
+                    } else {
+                        $this->url()->send('dvs');
+                    }
 				}
 			}
 			else
@@ -129,8 +133,9 @@ class Dvs_Component_Controller_Salesteam extends Phpfox_Component {
 								'link' => $sLink
 						));
 
-						Phpfox::getLib('mail')
-							->to($aVals['email'])
+						Phpfox::getLib('mail')->to($aVals['email'])
+							->fromEmail(Phpfox::getUserBy('email'))
+							->fromName(Phpfox::getUserBy('full_name'))
 							->subject($sSubject)
 							->message($sBody)
 							->send();

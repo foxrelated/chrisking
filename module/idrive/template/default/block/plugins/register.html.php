@@ -13,20 +13,20 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 
 ?>
-<div class="table">
+<div class="table" style="display: none;">
 	<div class="table_left">
 		<label for="user_type">{required}{phrase var='idrive.user_type'}:</label>
 	</div>
 	<div class="table_right">
 		<select name="val[user_type]" onchange="if ($(this).val() == {$iDealerUserGroup}){l}$('#dealer_extra_info').show();{r}else{l}$('#dealer_extra_info').hide();{r}">
 			{foreach from=$aUserTypes key=sUserTypeKey item=sUserType}
-				<option value="{$sUserTypeKey}" {if $sUserTypeKey == $iSalesTeamUserGroup && $salesteam_invite}selected="selected"{/if} {if $sUserType =='Free Trial'}selected="selected"{/if}>{$sUserType}</option>
+				<option value="{$sUserTypeKey}" {if $sUserTypeKey == $iSalesTeamUserGroup && $salesteam_invite}selected="selected"{elseif $sUserTypeKey == $iManagerTeamUserGroup && $managersteam_invite}selected="selected"{elseif $sUserType =='Free Trial'}selected="selected"{/if}>{$sUserType}</option>
 			{/foreach}
 		</select>
 	</div>
 </div>
 
-<div id="dealer_extra_info"{if $salesteam_invite} style="display:none;"{/if}>
+<div id="dealer_extra_info"{if $salesteam_invite || $managersteam_invite} style="display:none;"{/if}>
 	<div class="table">
 		<div class="table_left">
 			<label for="website_rep">{required}{phrase var='dvs.website_rep'}:</label>

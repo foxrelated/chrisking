@@ -68,9 +68,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		$('#inventory_import_button_ajax').on('click', function(){
 			$('.progress_bar_wrapper').show('slow');
 			setInterval(function(){process_increase()}, 1000);
-			$.ajaxCall('dvs.instantImport',
-				'dvs_id={/literal}{$aForms.dvs_id}{literal}'
-			);
+            {/literal}
+            {if isset($aForms.dvs_id)}
+                {literal}
+                $.ajaxCall('dvs.instantImport',
+                    'dvs_id={/literal}{$aForms.dvs_id}{literal}'
+                );
+                {/literal}
+            {/if}
+            {literal}
 		});
 		$('#inv_display_status_on').on('click', function(){
 			var confirm_res = confirm("{/literal}{phrase var='dvs.inventory_settings_disclaimer'}{literal}");
@@ -88,9 +94,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 	function autoUpdate(offset){
 		if (offset < total && run){
-			$.ajaxCall('dvs.instantImport',
-				'dvs_id={/literal}{$aForms.dvs_id}{literal}'
-			);
+            {/literal}
+            {if isset($aForms.dvs_id)}
+                {literal}
+                $.ajaxCall('dvs.instantImport',
+                    'dvs_id={/literal}{$aForms.dvs_id}{literal}'
+                );
+                {/literal}
+            {/if}
+            {literal}
 		};
 		if (run == false){
 			$("#progress_running").toggle("slow");
@@ -299,20 +311,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<ol>
 			<li>
 				<label for="banner_toggle">{phrase var='dvs.banner_toggle'}:</label>
-				<input type="radio" name="val[banner_toggle]" value="1" {if $aForms.banner_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
-				<input type="radio" name="val[banner_toggle]" value="0" {if $aForms.banner_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}		
+				<input type="radio" name="val[banner_toggle]" value="1" {if $bIsEdit && $aForms.banner_toggle == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+				<input type="radio" name="val[banner_toggle]" value="0" {if $bIsEdit && $aForms.banner_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
 			</li>
-	
-			<li>
-				<label for="footer_toggle">{phrase var='dvs.footer_toggle'}:</label>
-				<input type="radio" name="val[footer_toggle]" value="1" {if $aForms.footer_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
-				<input type="radio" name="val[footer_toggle]" value="0" {if $aForms.footer_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
-			</li>
-	
 			<li>
 				<label for="top_menu_toggle">{phrase var='dvs.top_menu_toggle'}:</label>
-				<input type="radio" name="val[topmenu_toggle]" value="1" {if $aForms.topmenu_toggle == 1 && $bIsEdit}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
-				<input type="radio" name="val[topmenu_toggle]" value="0" {if $aForms.topmenu_toggle == 0 && $bIsEdit}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+				<input type="radio" name="val[topmenu_toggle]" value="1" {if $bIsEdit && $aForms.topmenu_toggle == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+				<input type="radio" name="val[topmenu_toggle]" value="0" {if $bIsEdit && $aForms.topmenu_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+			</li>
+			<li>
+				<label for="footer_toggle">{phrase var='dvs.footer_toggle'}:</label>
+				<input type="radio" name="val[footer_toggle]" value="1" {if $bIsEdit && $aForms.footer_toggle == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+				<input type="radio" name="val[footer_toggle]" value="0" {if $bIsEdit && $aForms.footer_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
 			</li>
 		</ol>
 		</fieldset>
@@ -321,11 +331,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<fieldset>
 		<ol>
 			<li>
-				<input type="radio" name="val[gallery_target_setting]" value="0" {if $aForms.gallery_target_setting == 0}checked="checked"{/if} />{phrase var='dvs.open_on_same_page'}
+				<input type="radio" name="val[gallery_target_setting]" value="0" {if $bIsEdit && $aForms.gallery_target_setting == 0}checked="checked"{/if} {if !$bIsEdit}checked="checked"{/if}/>{phrase var='dvs.open_on_same_page'}
 			</li>
 		
 			<li>
-				<input type="radio" name="val[gallery_target_setting]" value="1" {if $aForms.gallery_target_setting == 1}checked="checked"{/if} />{phrase var='dvs.open_in_new_window'}		
+				<input type="radio" name="val[gallery_target_setting]" value="1" {if $bIsEdit && $aForms.gallery_target_setting == 1}checked="checked"{/if} />{phrase var='dvs.open_in_new_window'}
 			</li>
 		</ol>
 		</fieldset>
@@ -335,8 +345,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<fieldset>
 		<ol>
 			<li>
-				<input type="radio" name="val[inv_display_status]" value="0" id="inv_display_status_off" {if $aForms.inv_display_status == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
-				<input type="radio" name="val[inv_display_status]" value="1" id="inv_display_status_on" {if $aForms.inv_display_status == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
+				<input type="radio" name="val[inv_display_status]" value="0" id="inv_display_status_off" {if $bIsEdit && $aForms.inv_display_status == 0}checked="checked"{/if} {if !$bIsEdit}checked="checked"{/if}/>{phrase var='dvs.dvs_inventory_status_off'}
+				<input type="radio" name="val[inv_display_status]" value="1" id="inv_display_status_on" {if $bIsEdit && $aForms.inv_display_status == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
 			</li>
 			<div class="inv_display_row_wrapper">
 			<li>
@@ -379,8 +389,31 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         <ol>
 
             <li>
-                <input type="radio" name="val[sitemap_parent_url]" value="0" {if $aForms.sitemap_parent_url == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
-                <input type="radio" name="val[sitemap_parent_url]" value="1" {if $aForms.sitemap_parent_url == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
+                {if !isset($aForms.parent_url)}
+                <h1 style="background: #FF0000; color: #FFFFFF; padding-left: 10px; font-size: 14px; line-height: 25px; height: 25px;">You need to embed the iframe code on the dealer site first!</h1>
+                {else}
+                <h1 style="background: #00FF00; color: #000000; padding-left: 10px; font-size: 14px; line-height: 25px; height: 25px;">DVS iFrame integrated: <a href="{$aForms.parent_url}"><b>{$aForms.parent_url}</b></a></h1>
+                {/if}
+
+                <input type="radio" name="val[sitemap_parent_url]" value="0" {if !$bIsEdit || !isset($aForms.parent_url) || ($bIsEdit && $aForms.sitemap_parent_url == 0)}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+                <input {if !isset($aForms.parent_url)}disabled="disabled"{/if} type="radio" name="val[sitemap_parent_url]" value="1" {if $bIsEdit && $aForms.sitemap_parent_url == 1 && isset($aForms.parent_url)}checked="checked"{/if}/>{phrase var='dvs.dvs_inventory_status_on'}
+            </li>
+        </ol>
+    </fieldset>
+
+    <h3>Video Types</h3>
+    <fieldset>
+        <ol>
+            <li>
+                <label for="new_car_videos">New Car Videos:</label>
+                <input type="radio" name="val[new_car_videos]" value="1" {if $bIsEdit && $aForms.new_car_videos == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+                <input type="radio" name="val[new_car_videos]" value="0" {if $bIsEdit && $aForms.new_car_videos == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+            </li>
+
+            <li>
+                <label for="used_car_videos">Used Car Videos:</label>
+                <input type="radio" name="val[used_car_videos]" value="1" {if $bIsEdit && $aForms.used_car_videos == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+                <input type="radio" name="val[used_car_videos]" value="0" {if $bIsEdit && $aForms.used_car_videos == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
             </li>
         </ol>
     </fieldset>
