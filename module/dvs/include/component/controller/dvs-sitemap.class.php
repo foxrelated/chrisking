@@ -82,8 +82,8 @@ class Dvs_Component_Controller_Dvs_Sitemap extends Phpfox_Component {
 				'<loc>' . str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $aDvs['parent_video_url']) . '</loc>' . "\n" . '<video:video>' . "\n" .
 				'<video:thumbnail_loc>' . Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.brightcove') . $aVideo['thumbnail_image'] . '</video:thumbnail_loc>' . "\n" .
 				
-				'<video:title>' . Phpfox::getLib('parse.input')->clean($aVideo['name'], 100) . '</video:title>' . "\n" .
-				//'<video:title>' . Phpfox::getLib('parse.input')->clean($aVideo['name'] . ' | ' . $aDvs['dealer_name'] . ' | ' . $aDvs['city'] . ', ' . $aDvs['state_string'] . ' ' . $aDvs['postal_code'], 100) . '</video:title>' .
+				//'<video:title>' . Phpfox::getLib('parse.input')->clean($aVideo['name'], 100) . '</video:title>' . "\n" .
+				'<video:title>' . Phpfox::getLib('parse.input')->clean($aVideo['name'] . ' | ' . $aDvs['city'] . ', ' . $aDvs['state_string'] . ' ' . $aDvs['postal_code'], 100) . ' | ' . $aDvs['dealer_name'] . '</video:title>' .
 				//'<video:title>' .$aVideo['year'].' '. $aVideo['model']. '</video:title>' . "\n" .
 				
 
