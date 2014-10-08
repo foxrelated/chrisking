@@ -6,6 +6,12 @@ if (!window.WTVVIN) {
             this.sApiUrl = params.apiUrl;
             this.iDvsId = params.dvs;
 
+            if (typeof params.scriptUrl != 'undefined') {
+                var sScriptUrl = params.scriptUrl;
+            } else {
+                var sScriptUrl = params.styleUrl.replace('vin/style/id', 'vin/script/id');
+            }
+
             var cchead = document.getElementsByTagName("head");
             var cclink = document.createElement('link');
             cclink.href = params.styleUrl;
@@ -29,7 +35,7 @@ if (!window.WTVVIN) {
             }
 
             var ccscript = document.createElement('script');
-            ccscript.src = params.scriptUrl + 'vin_' + sAllVin + '/';
+            ccscript.src = sScriptUrl + 'vin_' + sAllVin + '/';
             ccscript.type = 'text/javascript';
             cchead[0].appendChild(ccscript);
         },
