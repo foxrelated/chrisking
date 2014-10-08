@@ -153,10 +153,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</li>
 			{/if}
 			
+			{if !$bIsDvs}
 			<li>
 				<label for="autoplay">{phrase var='dvs.autoplay'}:</label>
 				<input type="checkbox" name="val[autoplay]" id="autoplay" value="1" {if $bIsEdit}{if $aForms.autoplay}checked=checked{/if}{/if}/>
 			</li>
+			{/if}
 			<!--phpmasterminds Auto play setting for base URL -->
 			<li {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
 				<label for="autoplay_baseurl">Autoplay Base URL:</label>

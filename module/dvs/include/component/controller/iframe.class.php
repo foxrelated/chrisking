@@ -48,8 +48,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 
         /*phpmasterminds*/
         $aBaseUrl = false;
-        if ($this->request()->get('req2'))
-        {
+        if ($this->request()->get('req3')) {
             $aBaseUrl = true;
         }
         /*phpmasterminds*/
@@ -85,6 +84,11 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 list($sOverride, $sNewParentUrl, $sOriginParentUrl) = Phpfox::getService('dvs.iframe')->parseUrl($sParentUrl);
                 if(($aDvs['parent_url'] != $sOriginParentUrl) || ($aDvs['parent_video_url'] != $sNewParentUrl)) {
                     Phpfox::getService('dvs.iframe')->updateSitemapUrl($aDvs['dvs_id'], $sNewParentUrl, $sOriginParentUrl);
+                }
+                if($sOverride) {
+                    $aBaseUrl = true;
+                } else {
+                    $aBaseUrl = false;
                 }
             } else {
                 $sOverride = ($bSubdomainMode ? $this->request()->get('req3') : $this->request()->get('req4'));

@@ -15,7 +15,7 @@
                 <td>
                     <div class="dvs_share_image_holder">
                         <a href="#" onclick="
-										tb_show('Preview', $.ajaxBox('dvs.showMiniPreview', 'height=640&amp;width=900&amp;val[dvs_id]={$aDvs.dvs_id}&video_title_url={$aVideo.video_title_url}')); return false;">
+						tb_show('Preview', $.ajaxBox('dvs.showMiniPreview', 'height=640&amp;width=900&amp;val[dvs_id]={$aDvs.dvs_id}&video_title_url={$aVideo.video_title_url}')); return false;">
                             <img src="{$baseUrl}module/dvs/static/image/play_btn_75.png" class="dvs_share_button_overlay" />
                             {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image width="100%"}
                         </a>
@@ -28,48 +28,72 @@
                         </a>
 
                         <a href="#" onclick="
-									var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=facebook&return_id=share_link_box';
-									$.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
-										if( {$bIsIPhone} ) {l}
-											window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#share_link_box').val());
-										{r} else {l}
-											window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400');
-										{r}
-										return false;
-							  	{r});
-							  	return false;">
+                        {if $aDvs.sitemap_parent_url}
+                            {if $bIsIPhone}
+                                window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('{$aVideo.parent_video_url}');
+                            {else}
+                                window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('{$aVideo.parent_video_url}'), '', 'width=600,height=400');
+                            {/if}
+                        {else}
+                            var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=facebook&return_id=share_link_box';
+                            $.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
+                                {if $bIsIPhone}
+                                    window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#share_link_box').val());
+                                {else}
+                                    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400');
+                                {/if}
+                                return false;
+                            {r});
+                        {/if}
+					    return false;">
                             <img src="{$baseUrl}module/dvs/static/image/facebook-share.png" alt="Share to Facebook"/>
                         </a>
 
-									<span id="twitter_button_wrapper">
-										<a href="#" onclick="
-											var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=twitter&return_id=share_link_box';
-											var text = 'Check out this {$aVideo.name} video test drive.';
+                        <span id="twitter_button_wrapper">
+                            <a href="#" onclick="
+                            {if $aDvs.sitemap_parent_url}
+                                {if $bIsIPhone}
+                                        window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{$aVideo.parent_video_url}');
+                                    {else}
+                                        window.open( 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{$aVideo.parent_video_url}'), '', 'width=600,height=400' );
+                                    {/if}
+                            {else}
+                                var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=twitter&return_id=share_link_box';
+                                var text = 'Check out this {$aVideo.name} video test drive.';
 
-											$.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
-												if( {$bIsIPhone} ) {l}
-													window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent($('#share_link_box').val());
-												{r} else {l}
-													window.open( 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400' );
-												{r}
-												return false;
-									  	{r});
-									  	return false;">
-                                            <img src="{$baseUrl}module/dvs/static/image/twitter-button.png" alt="Tweet" style="margin: 3px;" />
-                                        </a>
-									</span>
+                                $.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
+                                    {if $bIsIPhone}
+                                        window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent($('#share_link_box').val());
+                                    {else}
+                                        window.open( 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400' );
+                                    {/if}
+                                    return false;
+                                {r});
+                            {/if}
+                            return false;">
+                                <img src="{$baseUrl}module/dvs/static/image/twitter-button.png" alt="Tweet" style="margin: 3px;" />
+                            </a>
+                        </span>
 
                         <a href="#" onclick="
-											var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=google&return_id=share_link_box';
-											$.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
-												if( {$bIsIPhone} ) {l}
-													window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent( $('#share_link_box').val() );
-												{r} else {l}
-													window.open( 'https://plus.google.com/share?url=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400' );
-												{r}
-												return false;
-									  	{r});
-									  	return false;">
+                        {if $aDvs.sitemap_parent_url}
+                            {if $bIsIPhone}
+                                window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent('{$aVideo.parent_video_url}');
+                            {else}
+                                window.open( 'https://plus.google.com/share?url=' + encodeURIComponent('{$aVideo.parent_video_url}'), '', 'width=600,height=400' );
+                            {/if}
+                        {else}
+                            var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=google&return_id=share_link_box';
+                            $.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
+                                {if $bIsIPhone}
+                                    window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent( $('#share_link_box').val() );
+                                {else}
+                                    window.open( 'https://plus.google.com/share?url=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400' );
+                                {/if}
+                                return false;
+                            {r});
+                        {/if}
+                        return false;">
                             <img src="{$baseUrl}module/dvs/static/image/google-share.png" alt="Google+" title="Google+"/>
                         </a>
                     </div>
@@ -81,9 +105,9 @@
                     <input class="dvs_share_text_box" type="text" id="embed_code_{$iKey}"
                            value='
 <div style="position:relative;width:300px;overflow:hidden;text-align:center;">
-<a href="{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&utm_medium=EmbedShare&utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&utm_campaign=dvs_id_{$aDvs.dvs_id}"><span style="text-decoration:none;font-weight:bold;">{$aVideo.name}</span></a>
+<a href="{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&utm_medium=EmbedShare&utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&utm_campaign=dvs_id_{$aDvs.dvs_id}{/if}"><span style="text-decoration:none;font-weight:bold;">{$aVideo.name}</span></a>
 <div style="height:100%;left:0;top:0;width:300px;">
-<a href="{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&amp;utm_medium=EmbedShare&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign=dvs_id_{$aDvs.dvs_id}">{img server_id=$aVideo.image_server_id path="brightcove.url_image" file=$aVideo.image_path suffix="_email" max_width=300 max_height=300 title=$aVideo.name}</a>
+<a href="{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&amp;utm_medium=EmbedShare&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign=dvs_id_{$aDvs.dvs_id}{/if}">{img server_id=$aVideo.image_server_id path="brightcove.url_image" file=$aVideo.image_path suffix="_email" max_width=300 max_height=300 title=$aVideo.name}</a>
 </div>
 </div>
 '
@@ -109,9 +133,7 @@
             <tr>
                 <td>
                     Direct Video Link
-                    <input class="dvs_share_text_box" type="text" id="link_code_{$iKey}"
-                           value='{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&utm_medium=LinkShare&utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&utm_campaign=dvs_id_{$aDvs.dvs_id}'
-                        />
+                    <input class="dvs_share_text_box" type="text" id="link_code_{$iKey}" value='{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&utm_medium=LinkShare&utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&utm_campaign=dvs_id_{$aDvs.dvs_id}{/if}' />
                 </td>
                 <td><br/>
                     {if !$bIsIPhone}

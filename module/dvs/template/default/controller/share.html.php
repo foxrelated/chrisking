@@ -64,7 +64,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<input class="dvs_share_text_box" type="hidden" id="share_link_box">
 
 		{assign var='baseUrl' value=''}
-    {if $baseUrl = Phpfox::getParam('core.path')}{/if}
+        {if $baseUrl = Phpfox::getParam('core.path')}{/if}
 		<script type="text/javascript" src="{$baseUrl}module/dvs/static/jscript/clipboard/ZeroClipboard.js"></script>
 
         <div id="video_items">
