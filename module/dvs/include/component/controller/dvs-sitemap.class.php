@@ -97,7 +97,7 @@ class Dvs_Component_Controller_Dvs_Sitemap extends Phpfox_Component {
 				'<video:tag>' . $aVideo['model'] . '</video:tag> ' . "\n" .
 				'<video:tag>' . $aVideo['bodyStyle'] . '</video:tag> ' . "\n" .
 				$sDealerSeoTags . "\n" .
-				'<video:player_loc allow_embed="no">http://c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&amp;isUI=1&amp;domain=embed&amp;playerID=1970101121001&amp;publisherID=607012070001&amp;videoID=' . $aVideo['referenceId'] . '</video:player_loc>' . "\n" .
+				//'<video:player_loc allow_embed="no">http://c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&amp;isUI=1&amp;domain=embed&amp;playerID=1970101121001&amp;publisherID=607012070001&amp;videoID=' . $aVideo['referenceId'] . '</video:player_loc>' . "\n" .
 				'<video:duration>' . (int) ($aVideo['length'] / 1000) . '</video:duration>' . "\n" .
 				'<video:rating>5.0</video:rating>' . "\n" .
 				'<video:family_friendly>yes</video:family_friendly>' . "\n" .
