@@ -9,7 +9,7 @@
         <tr>
             <td colspan="2" rowspan="1" valign="top" align="center">
                 {if $aDvs.branding_file_name}
-                <a href="{$sVideoLink}?utm_source=ShareLinks&amp;utm_medium=Email_Share&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign={$aDvs.dealer_name}">
+                <a href="{$sVideoLink}?utm_source=ShareLinksE&amp;utm_medium=Email_Share&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign={$aDvs.dealer_name}">
                 {img path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle" max_width=600 max_height=300 suffix='_600'}</a>
                 {else}
                 <h2>{$aDvs.dealer_name} Video Showroom</h2>
