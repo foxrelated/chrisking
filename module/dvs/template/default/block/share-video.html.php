@@ -51,13 +51,13 @@
 
                         <span id="twitter_button_wrapper">
                             <a href="#" onclick="
-                            {if $aDvs.sitemap_parent_url}
+                            {*if $aDvs.sitemap_parent_url}
                                 {if $bIsIPhone}
                                         window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{$aVideo.parent_video_url}?utm_source=ShareLinks&amp;utm_medium=Twitter_Share&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign={$aDvs.dealer_name} DVS');
                                     {else}
                                         window.open( 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{$aVideo.parent_video_url}?utm_source=ShareLinks&amp;utm_medium=Twitter_Share&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign={$aDvs.dealer_name} DVS'), '', 'width=600,height=400' );
                                     {/if}
-                            {else}
+                            {else*}
                                 var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=twitter&return_id=share_link_box';
                                 var text = 'Check out this {$aVideo.name} video from {$aDvs.dealer_name}! %23{$aVideo.make} %23{$aVideo.model} %23VirtualTestDrive %23{$aDvs.title_url}';
 
@@ -69,7 +69,7 @@
                                     {/if}
                                     return false;
                                 {r});
-                            {/if}
+                            {*/if*}
                             return false;">
                                 <img src="{$baseUrl}module/dvs/static/image/twitter-button.png" alt="Tweet" style="margin: 3px;" />
                             </a>
