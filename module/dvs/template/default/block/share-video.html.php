@@ -28,13 +28,13 @@
                         </a>
 
                         <a href="#" onclick="
-                        {if $aDvs.sitemap_parent_url}
+                        {*if $aDvs.sitemap_parent_url}
                             {if $bIsIPhone}
                                 window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('{$aVideo.parent_video_url}');
                             {else}
                                 window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('{$aVideo.parent_video_url}'), '', 'width=600,height=400');
                             {/if}
-                        {else}
+                        {else*}
                             var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=facebook&return_id=share_link_box';
                             $.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
                                 {if $bIsIPhone}
@@ -44,20 +44,20 @@
                                 {/if}
                                 return false;
                             {r});
-                        {/if}
+                        {*/if*}
 					    return false;">
                             <img src="{$baseUrl}module/dvs/static/image/facebook-share.png" alt="Share to Facebook"/>
                         </a>
 
                         <span id="twitter_button_wrapper">
                             <a href="#" onclick="
-                            {if $aDvs.sitemap_parent_url}
+                            {*if $aDvs.sitemap_parent_url}
                                 {if $bIsIPhone}
                                         window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{$aVideo.parent_video_url}');
                                     {else}
                                         window.open( 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{$aVideo.parent_video_url}'), '', 'width=600,height=400' );
                                     {/if}
-                            {else}
+                            {else*}
                                 var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=twitter&return_id=share_link_box';
                                 var text = 'Check out this {$aVideo.name} video test drive.';
 
@@ -69,20 +69,20 @@
                                     {/if}
                                     return false;
                                 {r});
-                            {/if}
+                            {*/if*}
                             return false;">
                                 <img src="{$baseUrl}module/dvs/static/image/twitter-button.png" alt="Tweet" style="margin: 3px;" />
                             </a>
                         </span>
 
                         <a href="#" onclick="
-                        {if $aDvs.sitemap_parent_url}
+                        {*if $aDvs.sitemap_parent_url}
                             {if $bIsIPhone}
                                 window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent('{$aVideo.parent_video_url}');
                             {else}
                                 window.open( 'https://plus.google.com/share?url=' + encodeURIComponent('{$aVideo.parent_video_url}'), '', 'width=600,height=400' );
                             {/if}
-                        {else}
+                        {else*}
                             var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=google&return_id=share_link_box';
                             $.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
                                 {if $bIsIPhone}
@@ -92,7 +92,7 @@
                                 {/if}
                                 return false;
                             {r});
-                        {/if}
+                        {*/if*}
                         return false;">
                             <img src="{$baseUrl}module/dvs/static/image/google-share.png" alt="Google+" title="Google+"/>
                         </a>
