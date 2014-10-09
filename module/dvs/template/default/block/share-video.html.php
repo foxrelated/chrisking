@@ -30,9 +30,9 @@
                         <a href="#" onclick="
                         {*if $aDvs.sitemap_parent_url}
                             {if $bIsIPhone}
-                                window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('{$aVideo.parent_video_url}');
+                                window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('{$aVideo.parent_video_url}?utm_source=ShareLinks&amp;utm_medium=Facebook_Share&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign=dvs_id_{$aDvs.dvs_id}');
                             {else}
-                                window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('{$aVideo.parent_video_url}'), '', 'width=600,height=400');
+                                window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('{$aVideo.parent_video_url}?utm_source=ShareLinks&amp;utm_medium=Facebook_Share&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign=dvs_id_{$aDvs.dvs_id}'), '', 'width=600,height=400');
                             {/if}
                         {else*}
                             var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=facebook&return_id=share_link_box';
@@ -53,13 +53,13 @@
                             <a href="#" onclick="
                             {*if $aDvs.sitemap_parent_url}
                                 {if $bIsIPhone}
-                                        window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{$aVideo.parent_video_url}');
+                                        window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{$aVideo.parent_video_url}?utm_source=ShareLinks&amp;utm_medium=Twitter_Share&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign=dvs_id_{$aDvs.dvs_id}');
                                     {else}
-                                        window.open( 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{$aVideo.parent_video_url}'), '', 'width=600,height=400' );
+                                        window.open( 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{$aVideo.parent_video_url}?utm_source=ShareLinks&amp;utm_medium=Twitter_Share&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign=dvs_id_{$aDvs.dvs_id}'), '', 'width=600,height=400' );
                                     {/if}
                             {else*}
                                 var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=twitter&return_id=share_link_box';
-                                var text = 'Check out this {$aVideo.name} video test drive.';
+                                var text = 'Check out this {$aVideo.name} video test drive from {$aDvs.dealer_name}! #{$aVideo.make} #{$aVideo.model} #VirtualTestDrive #{$aDvs.dealer_name}';
 
                                 $.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
                                     {if $bIsIPhone}
@@ -78,9 +78,9 @@
                         <a href="#" onclick="
                         {*if $aDvs.sitemap_parent_url}
                             {if $bIsIPhone}
-                                window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent('{$aVideo.parent_video_url}');
+                                window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent('{$aVideo.parent_video_url}?utm_source=ShareLinks&amp;utm_medium=Google+_Share&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign=dvs_id_{$aDvs.dvs_id}');
                             {else}
-                                window.open( 'https://plus.google.com/share?url=' + encodeURIComponent('{$aVideo.parent_video_url}'), '', 'width=600,height=400' );
+                                window.open( 'https://plus.google.com/share?url=' + encodeURIComponent('{$aVideo.parent_video_url}?utm_source=ShareLinks&amp;utm_medium=Google+_Share&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign=dvs_id_{$aDvs.dvs_id}'), '', 'width=600,height=400' );
                             {/if}
                         {else*}
                             var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=google&return_id=share_link_box';
@@ -124,7 +124,7 @@
                         clip1_{$iKey}.glue('copy_button1_{$iKey}', "dvs_share_copy_button_holder1_{$iKey}");
                         clip1_{$iKey}.addEventListener('onComplete', function(){l}
                         $.ajaxCall('dvs.copyCRM', 'shorturl={$aVideo.shorturl}');
-                        alert('Embed code has been copied to clipboard!');
+                        alert('HTML code has been copied to your clipboard! Now paste it into your HTML editor of choice.');
                         {r});
                     </script>
                     {/if}
