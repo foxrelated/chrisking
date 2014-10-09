@@ -19,8 +19,16 @@ class Dvs_Component_Block_Share_Video extends Phpfox_Component {
 
         $sVideoViewUrl = '';
         if($aDvs['sitemap_parent_url']) {
+            $sParentUrlEncode = base64_encode(urlencode($aDvs['parent_video_url']));
             foreach($aShareVideos as $iKey => $aShareVideo) {
-                $aShareVideos[$iKey]['parent_video_url'] = str_replace('WTVDVS_VIDEO_TEMP', $aShareVideo['video_title_url'], $aDvs['parent_video_url']);
+                if(Phpfox::isModule('redirect')) {
+                    $aShareVideos[$iKey]['parent_video_url'] = $this->url()->makeUrl('share.' . $aDvs['title_url'], array(
+                        'parent' => $sParentUrlEncode,
+                        'video' => $aShareVideo['video_title_url']
+                    ));
+                } else {
+                    $aShareVideos[$iKey]['parent_video_url'] = str_replace('WTVDVS_VIDEO_TEMP', $aShareVideo['video_title_url'], $aDvs['parent_video_url']);
+                }
             }
         } else {
             if( $bSubdomainMode ) {
