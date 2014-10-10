@@ -147,114 +147,96 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 	 * @param type $iDvsId
 	 * @return type
 	 */
-	public function getOverviewVideos($iDvsId, $aSelectedMakes = null)
-	{
-		if ($aSelectedMakes)
-		{
+	public function getOverviewVideos($iDvsId, $aSelectedMakes = null) {
+		if ($aSelectedMakes) {
 			$aMakes = array();
-			foreach ($aSelectedMakes as $sMake)
-			{
+			foreach ($aSelectedMakes as $sMake) {
 				$aMakes[]['make'] = $sMake;
 			}
-		}
-		else
-		{
+		} else {
 			$aPlayer = Phpfox::getService('dvs.player')->get($iDvsId);
 			$aMakes = $aPlayer['makes'];
 		}
 
-		$aFilters = array();
-
-		$aAllowedYears = Phpfox::getParam('dvs.vf_overview_allowed_years');
-
-        if($iDvsId > 0) {
+        if($iDvsId <= 0) {
+            return array();
+        } else {
             $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+        }
 
-            if(!$aDvs['new_car_videos']) {
-                $sYears = Phpfox::getParam('research.new_model_year');
-                $aYears = explode(',', $sYears);
-                foreach($aAllowedYears as $iKey => $sYear) {
-                    if(in_array($sYear, $aYears)) {
-                        unset($aAllowedYears[$iKey]);
-                    }
+        $aAllowedYears = Phpfox::getParam('dvs.vf_overview_allowed_years');
+
+        $sWhere = '1';
+        if (!Phpfox::getParam('dvs.vf_overview_allow_1onone')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "1onONE%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_top200')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "Top200%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_pov')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "POV%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_new2u')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "New2U%"';
+        }
+
+        $aVideos = array();
+        /** GET NEW CAR VIDEOS */
+        if($aDvs['new_car_videos']) {
+            $aYears = explode(',', Phpfox::getParam('research.new_model_year'));
+            foreach($aYears as $iKey => $sYear) {
+                if(!in_array($sYear, $aAllowedYears)) {
+                    unset($aYears[$iKey]);
                 }
             }
 
-            if(!$aDvs['used_car_videos']) {
-                $sYears = Phpfox::getParam('research.used_model_year_exclusion');
-                $aYears = explode(',', $sYears);
-                foreach($aAllowedYears as $iKey => $sYear) {
-                    if(!in_array($sYear, $aYears)) {
-                        unset($aAllowedYears[$iKey]);
-                    }
-                }
+            foreach($aMakes as $aMake) {
+                $aRows = $this->database()
+                    ->select('v.*')
+                    ->from($this->_tVideos, 'v')
+                    ->order('v.year DESC')
+                    ->where($sWhere . ' AND v.year IN (' . implode(',', $aYears) . ') AND v.make = \'' . $this->preParse()->clean($aMake['make']) . '\'')
+                    ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
+                    ->execute('getRows');
+
+                $aVideos[] = $aRows;
             }
         }
 
+        /** GET INVENTORY CAR VIDEOS */
+        if($aDvs['used_car_videos']) {
+            $aYears = $aAllowedYears;
+            $aExcludeYears = explode(',', Phpfox::getParam('research.used_model_year_exclusion'));
+            foreach($aYears as $iKey => $sYear) {
+                if(in_array($sYear, $aExcludeYears)) {
+                    unset($aYears[$iKey]);
+                }
+            }
 
-		if ($aAllowedYears)
-		{
-			$iLoops = 0;
-			$sWhere = '(';
-			foreach ($aAllowedYears as $sYear)
-			{
-				$iLoops++;
-				$sWhere .= 'year = "' . $sYear . '"';
-				if (count($aAllowedYears) > $iLoops)
-				{
-					$sWhere .= ' OR ';
-				}
-				else
-				{
-					$sWhere .= ')';
-				}
-			}
-			$aFilters[] = $sWhere;
-		} else {
-            $aFilters[] = '0';
+            $aInventoryMakes = $this->database()
+                ->select('make')
+                ->from(Phpfox::getT('tbd_dvs_inventory'))
+                ->where('dealer_id = \'' . $aDvs['dealer_id'] . '\' AND year IN (' . implode(',', $aYears) . ')')
+                ->group('make')
+                ->execute('getRows');
+
+            foreach($aInventoryMakes as $aMake) {
+                $aRows = $this->database()
+                    ->select('i.inventory_id, v.*')
+                    ->from(Phpfox::getT('tbd_dvs_inventory'), 'i')
+                    ->leftJoin($this->_tVideos, 'v', 'v.referenceId = i.referenceId')
+                    ->where($sWhere . ' AND i.dealer_id = \'' .$aDvs['dealer_id'] . '\' AND i.referenceId IS NOT NULL AND i.year IN (' . implode(',', $aYears) . ') AND i.make = \'' . $aMake['make'] . '\'')
+                    ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
+                    ->group('i.referenceId')
+                    ->order('i.year DESC')
+                    ->execute('getRows');
+
+                $aVideos[] = $aRows;
+            }
         }
-
-
-
-		if (!Phpfox::getParam('dvs.vf_overview_allow_1onone'))
-		{
-			$aFilters[] = 'AND referenceId NOT LIKE "1onONE%"';
-		}
-
-		if (!Phpfox::getParam('dvs.vf_overview_allow_top200'))
-		{
-			$aFilters[] = 'AND referenceId NOT LIKE "Top200%"';
-		}
-
-		if (!Phpfox::getParam('dvs.vf_overview_allow_pov'))
-		{
-			$aFilters[] = 'AND referenceId NOT LIKE "POV%"';
-		}
-
-		if (!Phpfox::getParam('dvs.vf_overview_allow_new2u'))
-		{
-			$aFilters[] = 'AND referenceId NOT LIKE "New2U%"';
-		}
-
-		$aVideos = array();
-
-		foreach ($aMakes as $aMake)
-		{
-			$aWhere = array_merge($aFilters, array('AND make = "' . $this->preParse()->clean($aMake['make']) . '"'));
-
-			$aRows = $this->database()
-				->select('*')
-				->from($this->_tVideos)
-				->order('year DESC')
-				->where($aWhere)
-				->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
-				->execute('getRows');
-
-			if ($aRows)
-			{
-				$aVideos[] = $aRows;
-			}
-		}
 
 		$aOverviewVideos = $this->limitVideos($aVideos, Phpfox::getParam('dvs.vf_overview_max_videos'));
 
@@ -742,84 +724,6 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 		return ($bSingleVideo ? $aVideos[0] : $aVideos);
 	}
 
-    public function getShareVideos($iDvsId, $iYear, $aSelectedMakes = array(), $sModel = '') {
-        if (is_array($aSelectedMakes)) {
-            $aMakes = $aSelectedMakes;
-        } elseif($aSelectedMakes) {
-            $aMakes = array();
-            $aMakes[]['make'] = $aSelectedMakes;
-        } else {
-            $aPlayer = Phpfox::getService('dvs.player')->get($iDvsId);
-            $aMakes = $aPlayer['makes'];
-        }
-
-        $aFilters = array();
-
-        $aFilters[] = 'year = ' . (int)$iYear;
-
-        if ($sModel) {
-            $aFilters[] = ' AND model = \'' . $sModel . '\'';
-        }
-
-        if (!Phpfox::getParam('dvs.vf_overview_allow_1onone'))
-        {
-            $aFilters[] = 'AND referenceId NOT LIKE "1onONE%"';
-        }
-
-        if (!Phpfox::getParam('dvs.vf_overview_allow_top200'))
-        {
-            $aFilters[] = 'AND referenceId NOT LIKE "Top200%"';
-        }
-
-        if (!Phpfox::getParam('dvs.vf_overview_allow_pov'))
-        {
-            $aFilters[] = 'AND referenceId NOT LIKE "POV%"';
-        }
-
-        if (!Phpfox::getParam('dvs.vf_overview_allow_new2u'))
-        {
-            $aFilters[] = 'AND referenceId NOT LIKE "New2U%"';
-        }
-
-        $aVideos = array();
-
-        foreach ($aMakes as $aMake)
-        {
-            $aWhere = array_merge($aFilters, array('AND make = "' . $this->preParse()->clean($aMake['make']) . '"'));
-
-            $aRows = $this->database()
-                ->select('*')
-                ->from($this->_tVideos)
-                ->order('year DESC')
-                ->where($aWhere)
-                ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
-                ->execute('getRows');
-
-            if ($aRows)
-            {
-                $aVideos[] = $aRows;
-            }
-        }
-
-        $aOverviewVideos = $this->limitVideos($aVideos, Phpfox::getParam('dvs.vf_overview_max_videos'));
-
-        $aOverviewVideos = $this->sortVideos($aOverviewVideos, Phpfox::getParam('dvs.vf_overview_round_robin'));
-
-        $iUserId = Phpfox::getUserId();
-        foreach ($aOverviewVideos as $iKey => $aVideo) {
-            $aOverviewVideos[$iKey]['shorturl'] = Phpfox::getService('dvs.shorturl')->generate($iDvsId, $aVideo['referenceId'], 'embed', $iUserId, 1);
-
-            if (Phpfox::getParam('dvs.enable_subdomain_mode')){
-                $aOverviewVideos[$iKey]['entire_shorturl'] = Phpfox::getLib('url')->makeUrl('') . $aOverviewVideos[$iKey]['shorturl'];
-            }else{
-                $aOverviewVideos[$iKey]['entire_shorturl'] = Phpfox::getLib('url')->makeUrl('dvs') . $aOverviewVideos[$iKey]['shorturl'];
-            }
-        }
-
-        return $this->prepareVideos($aOverviewVideos);
-
-    }
-
     public function getRelatedVideo($aVideo, $iDvsId) {
         $sWhere = '1';
         $aPlayer = Phpfox::getService('dvs.player')->get($iDvsId);
@@ -855,6 +759,212 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
             ->execute('getRows');
 
         return $aRows;
+    }
+
+    public function getValidVSMakesByDealer($iYear, $aMakes, $sDealerId) {
+        if(in_array($iYear, explode(',', Phpfox::getParam('research.new_model_year')))) {
+            $aWhere = array();
+            if(!empty($iYear)) {
+                $aWhere[] = 'year = ' . (int) $iYear;
+            }
+
+            $sPlayerMakes = ($aWhere?'AND ':'').'(';
+            foreach ($aMakes as $iKey => $aMake) {
+                $sPlayerMakes .= 'make LIKE "' . $aMake['make'] . '"';
+                if ($iKey + 1 < count($aMakes)) {
+                    $sPlayerMakes .= ' OR ';
+                }
+            }
+
+            $aWhere[] = $sPlayerMakes . ')';
+
+            if (!Phpfox::getParam('dvs.vf_video_select_allow_1onone')) {
+                $aWhere[] = 'AND referenceId NOT LIKE "1onONE%"';
+            }
+
+            if (!Phpfox::getParam('dvs.vf_video_select_allow_top200')) {
+                $aWhere[] = 'AND referenceId NOT LIKE "Top200%"';
+            }
+
+            if (!Phpfox::getParam('dvs.vf_video_select_allow_pov')) {
+                $aWhere[] = 'AND referenceId NOT LIKE "POV%"';
+            }
+
+            if (!Phpfox::getParam('dvs.vf_video_select_allow_new2u')) {
+                $aWhere[] = 'AND referenceId NOT LIKE "New2U%"';
+            }
+
+            $aMakes = $this->database()
+                ->select('DISTINCT make')
+                ->from($this->_tVideos)
+                ->order('make')
+                ->where($aWhere)
+                ->execute('getRows');
+            return $aMakes;
+        }
+
+        if(!in_array($iYear, explode(',', Phpfox::getParam('research.used_model_year_exclusion')))) {
+            $sWhere = '1';
+            if (!Phpfox::getParam('dvs.vf_overview_allow_1onone')) {
+                $sWhere .= ' AND v.referenceId NOT LIKE "1onONE%"';
+            }
+
+            if (!Phpfox::getParam('dvs.vf_overview_allow_top200')) {
+                $sWhere .= ' AND v.referenceId NOT LIKE "Top200%"';
+            }
+
+            if (!Phpfox::getParam('dvs.vf_overview_allow_pov')) {
+                $sWhere .= ' AND v.referenceId NOT LIKE "POV%"';
+            }
+
+            if (!Phpfox::getParam('dvs.vf_overview_allow_new2u')) {
+                $sWhere .= ' AND v.referenceId NOT LIKE "New2U%"';
+            }
+
+            $aInventoryMakes = $this->database()
+                ->select('DISTINCT i.make')
+                ->from(Phpfox::getT('tbd_dvs_inventory'), 'i')
+                ->leftJoin($this->_tVideos, 'v', 'v.referenceId = i.referenceId')
+                ->where($sWhere . ' AND i.dealer_id = \'' . $sDealerId . '\' AND i.referenceId IS NOT NULL AND i.year = ' . $iYear)
+                ->order('i.make')
+                ->execute('getRows');
+
+            return $aInventoryMakes;
+        }
+
+
+        return array();
+    }
+
+    public function getModelsByYearMakeDvs($iDvsId, $iYear, $sMake) {
+        if($iDvsId <= 0) {
+            return array();
+        } else {
+            $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+        }
+
+        $aAllowedYears = Phpfox::getParam('dvs.vf_overview_allowed_years');
+
+        $sWhere = '1';
+        if (!Phpfox::getParam('dvs.vf_overview_allow_1onone')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "1onONE%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_top200')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "Top200%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_pov')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "POV%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_new2u')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "New2U%"';
+        }
+
+        $aVideos = array();
+        /** GET NEW CAR VIDEOS */
+        if (!in_array($iYear, $aAllowedYears)) {
+            return $aVideos;
+        }
+
+        if(in_array($iYear, explode(',', Phpfox::getParam('research.new_model_year'))) && $aDvs['new_car_videos']) {
+            $aVideos = $this->database()
+                ->select('v.*')
+                ->from($this->_tVideos, 'v')
+                ->order('v.year DESC')
+                ->where($sWhere . ' AND v.year = ' . $iYear . ' AND v.make = \'' . $this->preParse()->clean($sMake) . '\'')
+                ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
+                ->execute('getRows');
+        }
+
+        /** GET INVENTORY CAR VIDEOS */
+        if(!in_array($iYear, explode(',', Phpfox::getParam('research.used_model_year_exclusion'))) && $aDvs['used_car_videos']) {
+            $aVideos = $this->database()
+                ->select('i.inventory_id, v.*')
+                ->from(Phpfox::getT('tbd_dvs_inventory'), 'i')
+                ->leftJoin($this->_tVideos, 'v', 'v.referenceId = i.referenceId')
+                ->where($sWhere . ' AND i.dealer_id = \'' . $aDvs['dealer_id'] . '\' AND i.referenceId IS NOT NULL AND i.year = ' . $iYear . ' AND i.make = \'' . $this->preParse()->clean($sMake) . '\'')
+                ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
+                ->group('i.referenceId')
+                ->execute('getRows');
+        }
+
+        return $this->prepareVideos($aVideos);
+    }
+
+    public function getShareVideos($iDvsId, $iYear, $sMake, $sModel = '') {
+        if($iDvsId <= 0) {
+            return array();
+        } else {
+            $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+        }
+
+        $aAllowedYears = Phpfox::getParam('dvs.vf_overview_allowed_years');
+
+        $sWhere = '1';
+        if (!Phpfox::getParam('dvs.vf_overview_allow_1onone')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "1onONE%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_top200')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "Top200%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_pov')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "POV%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_new2u')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "New2U%"';
+        }
+
+        $aVideos = array();
+        /** GET NEW CAR VIDEOS */
+        if (!in_array($iYear, $aAllowedYears)) {
+            return $aVideos;
+        }
+
+        if(in_array($iYear, explode(',', Phpfox::getParam('research.new_model_year'))) && $aDvs['new_car_videos']) {
+            $aRows = $this->database()
+                ->select('v.*')
+                ->from($this->_tVideos, 'v')
+                ->order('v.year DESC')
+                ->where($sWhere . ' AND v.year = ' . $iYear . ' AND v.make = \'' . $this->preParse()->clean($sMake) . '\'')
+                ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
+                ->execute('getRows');
+            $aVideos[] = $aRows;
+        }
+
+        /** GET INVENTORY CAR VIDEOS */
+        if(!in_array($iYear, explode(',', Phpfox::getParam('research.used_model_year_exclusion'))) && $aDvs['used_car_videos']) {
+            $aRows = $this->database()
+                ->select('i.inventory_id, v.*')
+                ->from(Phpfox::getT('tbd_dvs_inventory'), 'i')
+                ->leftJoin($this->_tVideos, 'v', 'v.referenceId = i.referenceId')
+                ->where($sWhere . ' AND i.dealer_id = \'' . $aDvs['dealer_id'] . '\' AND i.referenceId IS NOT NULL AND i.year = ' . $iYear . ' AND i.make = \'' . $this->preParse()->clean($sMake) . '\'')
+                ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
+                ->group('i.referenceId')
+                ->execute('getRows');
+            $aVideos[] = $aRows;
+        }
+
+        $aOverviewVideos = $this->limitVideos($aVideos, Phpfox::getParam('dvs.vf_overview_max_videos'));
+
+        $aOverviewVideos = $this->sortVideos($aOverviewVideos, Phpfox::getParam('dvs.vf_overview_round_robin'));
+
+        $iUserId = Phpfox::getUserId();
+        foreach ($aOverviewVideos as $iKey => $aVideo) {
+            $aOverviewVideos[$iKey]['shorturl'] = Phpfox::getService('dvs.shorturl')->generate($iDvsId, $aVideo['referenceId'], 'embed', $iUserId, 1);
+
+            if (Phpfox::getParam('dvs.enable_subdomain_mode')){
+                $aOverviewVideos[$iKey]['entire_shorturl'] = Phpfox::getLib('url')->makeUrl('') . $aOverviewVideos[$iKey]['shorturl'];
+            }else{
+                $aOverviewVideos[$iKey]['entire_shorturl'] = Phpfox::getLib('url')->makeUrl('dvs') . $aOverviewVideos[$iKey]['shorturl'];
+            }
+        }
+
+        return $this->prepareVideos($aOverviewVideos);
     }
 }
 
