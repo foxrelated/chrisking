@@ -31,27 +31,51 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
 
     public function updateEdStyleId($iLimit = 20) {
         $aRows = $this->database()
-            ->select('*')
-            ->from($this->_sTable)
-            ->where('ed_style_id = 0')
+            ->select('i.inventory_id, i.squish_vin_id, i.ed_style_id, vin.ed_style_id AS ed_style_id_parsed')
+            ->from($this->_sTable, 'i')
+            ->leftJoin(Phpfox::getT('ko_dvs_vin_parsed'), 'vin', 'i.squish_vin_id = vin.squish_vin_id')
+            ->where('i.ed_style_id < 5')
+            ->group('i.squish_vin_id')
             ->limit($iLimit)
             ->execute('getRows');
 
         foreach($aRows as $aRow) {
-            list($aStyles, $aParams) = $this->getStyleByVin($aRow['squish_vin_id']);
-            if(isset($aStyles[0]['id'])) {
-                $this->database()->update($this->_sTable, array('ed_style_id' => $aStyles[0]['id']), 'squish_vin_id = \'' . $aRow['squish_vin_id'] . '\'');
+            if($aRow['ed_style_id_parsed'] > 0) {
+                $this->database()->update($this->_sTable, array('ed_style_id' => $aRow['ed_style_id_parsed']), 'squish_vin_id = \'' . $aRow['squish_vin_id'] . '\'');
             } else {
-                $this->database()->update($this->_sTable, array('ed_style_id' => 1), 'squish_vin_id = \'' . $aRow['squish_vin_id'] . '\'');
+                list($aStyles, $aParams) = $this->getStyleByVin($aRow['squish_vin_id']);
+                if(isset($aStyles[0]['id'])) {
+                    $this->database()->insert(Phpfox::getT('ko_dvs_vin_parsed'), array(
+                        'squish_vin_id' => $aRow['squish_vin_id'],
+                        'ed_style_id' => $aStyles[0]['id']
+                    ));
+                    $this->database()->update($this->_sTable, array('ed_style_id' => $aStyles[0]['id']), 'squish_vin_id = \'' . $aRow['squish_vin_id'] . '\'');
+                } else {
+                    // MARK THIS INVENTORY
+                    $this->database()->update($this->_sTable, array('ed_style_id' => (int)$aRow['ed_style_id'] + 1), 'squish_vin_id = \'' . $aRow['squish_vin_id'] . '\'');
+                }
             }
         }
 
         return $aRows;
     }
 
+    public function updateReferenceId($iLimit = 20) {
+        $aRows = $this->database()
+            ->select('i.inventory_id, i.squish_vin_id, i.ed_style_id, i.referenceId')
+            ->from($this->_sTable, 'i')
+            ->where('i.ed_style_id > 5 AND i.referenceId IS NULL')
+            ->group('i.ed_style_id')
+            ->limit($iLimit)
+            ->execute('getRows');
+
+        vdd($aRows);
+    }
+
     public function importRow($aData) {
         $aVals = array(
             'dealer_id' => $aData['Dealer ID'],
+            'vin_id' => $aData['VIN'],
             'squish_vin_id' => $this->getSquishVinCode($aData['VIN']),
             'make' => $aData['Make'],
             'model' => $aData['Model'],
@@ -66,7 +90,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         $aRow = $this->database()
             ->select('inventory_id, total')
             ->from($this->_sTable)
-            ->where('squish_vin_id = \'' . $aVals['squish_vin_id'] . '\' AND dealer_id = \'' . $aVals['dealer_id'] . '\'')
+            ->where('vin_id = \'' . $aVals['vin_id'] . '\' AND dealer_id = \'' . $aVals['dealer_id'] . '\'')
             ->execute('getRow');
 
         if($aRow) {
