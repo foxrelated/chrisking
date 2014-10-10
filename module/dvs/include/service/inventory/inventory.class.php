@@ -64,12 +64,30 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         $aRows = $this->database()
             ->select('i.inventory_id, i.squish_vin_id, i.ed_style_id, i.referenceId')
             ->from($this->_sTable, 'i')
-            ->where('i.ed_style_id > 5 AND i.referenceId IS NULL')
+            ->where('i.ed_style_id > 5 AND i.referenceId IS NULL AND i.is_video_updated = 0')
             ->group('i.ed_style_id')
             ->limit($iLimit)
             ->execute('getRows');
 
-        vdd($aRows);
+        $aEdStyleIds = array();
+        foreach($aRows as $aRow) {
+            $aEdStyleIds[] = $aRow['ed_style_id'];
+        }
+
+        if(!count($aEdStyleIds)) {
+            return false;
+        }
+
+        list($aData, $aReferenceIds) = $this->getAllVideoIdByEdStyles($aEdStyleIds);
+        foreach($aEdStyleIds as $iEdStyleId) {
+            if(isset($aData[$iEdStyleId])) {
+                $this->database()->update($this->_sTable, array('referenceId' => $aData[$iEdStyleId]['videoId']), 'ed_style_id = ' . (int)$iEdStyleId);
+            } else {
+                $this->database()->update($this->_sTable, array('is_video_updated' => 1), 'ed_style_id = ' . (int)$iEdStyleId);
+            }
+        }
+
+        return true;
     }
 
     public function importRow($aData) {
@@ -108,6 +126,28 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
             return $sQuishVin;
         }
         return false;
+    }
+
+    public function getAllVideoIdByEdStyles($aEdStyleIds) {
+        $sEdStyleIds = implode('/', $aEdStyleIds) . '/';
+        $sTargetUrl = 'http://api.wheelstv.co/v1/edstyleid/' . $sEdStyleIds;
+        $ch = curl_init($sTargetUrl);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        $oResponse = curl_exec($ch);
+        $oOutput= @json_decode($oResponse);
+
+        $aData = array();
+        $aReferenceIds = array();
+        foreach($oOutput->items as $aItem) {
+            $aData[$aItem->edStyleId] = array(
+                'videoId' => $aItem->videoId,
+                'wtvId' => $aItem->wtvId
+            );
+            $aReferenceIds[] = $aItem->videoId;
+        }
+        return array($aData, $aReferenceIds);
     }
 
     public function getStyleByVin($sVin) {
