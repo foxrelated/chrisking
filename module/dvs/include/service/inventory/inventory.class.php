@@ -7,6 +7,9 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
     }
 
     public function importFile() {
+        $this->database()->update($this->_sTable, array('is_updated' => 0, 'total' => 0, 'is_video_updated' => 0), '1');
+        $this->database()->update($this->_sTable, array('ed_style_id' => 0), 'ed_style_id < 10');
+
         $sFileName = Phpfox::getParam('dvs.csv_folder') . 'inventory.csv';
         $sDelimiter = ',';
 
@@ -26,7 +29,44 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
                 fclose($oOpenFileHandle);
             }
         }
+
+        $this->database()->delete($this->_sTable, 'is_updated = 0');
         return true;
+    }
+
+    public function importRow($aData) {
+        $aVals = array(
+            'dealer_id' => $aData['Dealer ID'],
+            'vin_id' => $aData['VIN'],
+            'squish_vin_id' => $this->getSquishVinCode($aData['VIN']),
+            'make' => $aData['Make'],
+            'model' => $aData['Model'],
+            'year' => $aData['Model Year'],
+            'ed_style_id' => 0,
+            'is_updated' => 1,
+            'total' => 1
+        );
+
+        if(!$aData['Dealer ID']) {
+            return false;
+        }
+
+        $aRow = $this->database()
+            ->select('inventory_id, total')
+            ->from($this->_sTable)
+            ->where('vin_id = \'' . $aVals['vin_id'] . '\' AND dealer_id = \'' . $aVals['dealer_id'] . '\'')
+            ->execute('getRow');
+
+        if($aRow) {
+            $this->database()->update($this->_sTable, array(
+                'is_updated' => 1,
+                'total' => (int)$aRow['total'] + 1
+            ), 'inventory_id = ' . (int)$aRow['inventory_id']);
+            return $aRow['inventory_id'];
+        }
+
+        $iId = $this->database()->insert($this->_sTable, $aVals);
+        return $iId;
     }
 
     public function updateEdStyleId($iLimit = 20) {
@@ -90,34 +130,19 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         return true;
     }
 
-    public function importRow($aData) {
-        $aVals = array(
-            'dealer_id' => $aData['Dealer ID'],
-            'vin_id' => $aData['VIN'],
-            'squish_vin_id' => $this->getSquishVinCode($aData['VIN']),
-            'make' => $aData['Make'],
-            'model' => $aData['Model'],
-            'year' => $aData['Model Year'],
-            'ed_style_id' => 0
-        );
-
-        if(!$aData['Dealer ID']) {
-            return false;
+    public function getPending($sType = 'style') {
+        if($sType == 'style') {
+            $sWhere = 'ed_style_id < 5';
+        } else {
+            $sWhere = 'ed_style_id > 5 AND referenceId IS NULL AND is_video_updated = 0';
         }
 
-        $aRow = $this->database()
-            ->select('inventory_id, total')
+        $iTotal = $this->database()
+            ->select('COUNT(*)')
             ->from($this->_sTable)
-            ->where('vin_id = \'' . $aVals['vin_id'] . '\' AND dealer_id = \'' . $aVals['dealer_id'] . '\'')
-            ->execute('getRow');
-
-        if($aRow) {
-            $this->database()->update($this->_sTable, array('total' => (int)$aRow['total'] + 1), 'inventory_id = ' . (int)$aRow['inventory_id']);
-            return false;
-        }
-
-        $iId = $this->database()->insert($this->_sTable, $aVals);
-        return $iId;
+            ->where($sWhere)
+            ->execute('getField');
+        return $iTotal;
     }
 
     public function getSquishVinCode($sVin) {
