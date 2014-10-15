@@ -17,11 +17,27 @@ class Dvs_Component_Block_Share_Video extends Phpfox_Component {
             $bIsIPhone = 0;
         }
 
-        if( $bSubdomainMode ) {
-            $sVideoViewUrl = Phpfox::getLib('url')->makeUrl( 'www' );//$sDvsTitle );
+        $sVideoViewUrl = '';
+        if($aDvs['sitemap_parent_url']) {
+            $sParentUrlEncode = base64_encode(urlencode($aDvs['parent_video_url']));
+            foreach($aShareVideos as $iKey => $aShareVideo) {
+                if(Phpfox::isModule('redirect')) {
+                    $aShareVideos[$iKey]['parent_video_url'] = $this->url()->makeUrl('share.' . $aDvs['title_url'], array(
+                        'parent' => $sParentUrlEncode,
+                        'video' => $aShareVideo['video_title_url']
+                    ));
+                } else {
+                    $aShareVideos[$iKey]['parent_video_url'] = str_replace('WTVDVS_VIDEO_TEMP', $aShareVideo['video_title_url'], $aDvs['parent_video_url']);
+                }
+            }
         } else {
-            $sVideoViewUrl = Phpfox::getLib('url')->makeUrl( '' ) . $sDvsTitle;
+            if( $bSubdomainMode ) {
+                $sVideoViewUrl = Phpfox::getLib('url')->makeUrl( 'www' );//$sDvsTitle );
+            } else {
+                $sVideoViewUrl = Phpfox::getLib('url')->makeUrl( '' ) . $sDvsTitle;
+            }
         }
+
 
         $this->template()
         ->assign(array(

@@ -11,6 +11,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         $aCompletedRows = array();
         foreach($aVins as $sVin) {
             if($sQuishVin = $this->getQuishVin($sVin)) {
+                $aFullRows[$sQuishVin]['ed_style_id'] = '';
                 if(!isset($aFullRows[$sQuishVin])) {
                     $aFullRows[$sQuishVin]['vin'] = array();
                 }
@@ -22,7 +23,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         }
 
         if (!$aDvs = Phpfox::getService('dvs')->get($iDvsId)) {
-            return $aCompletedRows;
+            return array($aCompletedRows, array());
         }
 
         $aPlayer = Phpfox::getService('dvs.player')->get($iDvsId);
@@ -53,54 +54,55 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         }
 
         $aRows = $this->database()
-            ->select('v.quish_vin_id, b.referenceId, b.video_title_url, b.make, b.year')
+            ->select('v.quish_vin_id, v.ed_style_id')
             ->from($this->_sTable, 'v')
-            ->leftJoin(Phpfox::getT('ko_brightcove'), 'b', 'b.ko_id = v.ko_id')
             ->where('v.quish_vin_id IN (\'' . implode('\', \'', $aQuishVin) . '\')')
             ->execute('getRows');
-
+        $aEdStyleIds = array();
         foreach($aRows as $aRow) {
-            if(in_array($aRow['quish_vin_id'], $aQuishVin)) {
-                if(in_array($aRow['year'], $aAllowedYears) && (in_array($aRow['make'], $aMakes) || (!in_array($aRow['year'], explode(',', Phpfox::getParam('research.used_model_year_exclusion')))))) {
-                    foreach($aFullRows[$aRow['quish_vin_id']]['vin'] as $sVin) {
-                        $aCompletedRows[$sVin]['url'] = $aRow['video_title_url'];
-                    }
-                }
-                unset($aFullRows[$aRow['quish_vin_id']]);
+            $aEdStyleIds[] = $aRow['ed_style_id'];
+            $aFullRows[$aRow['quish_vin_id']]['ed_style_id'] = $aRow['ed_style_id'];
+        }
+        $aQuishVin = array();
+        foreach($aFullRows as $sKey => $aFullRow) {
+            if(!$aFullRow['ed_style_id']) {
+                $aQuishVin[] = $sKey;
+            }
+        }
+
+        foreach($aQuishVin as $sVin) {
+            list($aStyles, $aParams) = $this->getStyleByVin($sVin);
+            if(isset($aStyles[0]['id'])) {
+                $this->database()->insert($this->_sTable, array(
+                    'quish_vin_id' => $sVin,
+                    'ed_style_id' => (int)$aStyles[0]['id']
+                ));
+                $aEdStyleIds[] = (string)$aStyles[0]['id'];
+                $aFullRows[$sVin]['ed_style_id'] = (string)$aStyles[0]['id'];
+            }
+        }
+
+        list($aData, $aReferenceIds) = $this->getAllVideoIdByEdStyles($aEdStyleIds);
+        $aVideos = $this->database()
+            ->select('b.ko_id, b.referenceId, b.video_title_url, b.year, b.make')
+            ->from(Phpfox::getT('ko_brightcove'), 'b')
+            ->where("b.referenceId IN ('" . implode("','", $aReferenceIds) . "')")
+            ->execute('getRows');
+        $aVideos2 = array();
+        foreach($aVideos as $aVideo) {
+            $aVideos2[$aVideo['referenceId']] = $aVideo['video_title_url'];
+        }
+
+        foreach($aData as $sKey => $aRow) {
+            if(isset($aVideos2[$aRow['videoId']])) {
+                $aData[$sKey]['video_title_url'] = $aVideos2[$aRow['videoId']];
             }
         }
 
         foreach($aFullRows as $sKey => $aFullRow) {
-            $aRow = $this->database()
-                ->select('v.quish_vin_id, b.referenceId, b.video_title_url, b.make, b.year')
-                ->from($this->_sTable, 'v')
-                ->leftJoin(Phpfox::getT('ko_brightcove'), 'b', 'b.ko_id = v.ko_id')
-                ->where('v.quish_vin_id = \'' . $sKey . '\'')
-                ->execute('getRow');
-
-            if($aRow) {
-                if(in_array($aRow['year'], $aAllowedYears) && (in_array($aRow['make'], $aMakes) || (!in_array($aRow['year'], explode(',', Phpfox::getParam('research.used_model_year_exclusion')))))) {
-                    foreach($aFullRow['vin'] as $sVin) {
-                        $aCompletedRows[$sVin]['url'] = $aRow['video_title_url'];
-                    }
-                }
-                continue;
-            }
-
-            list($aStyles, $aParams) = $this->getStyleByVin($sKey);
-            if(isset($aStyles[0]['id']) && $aVideo = $this->getVideoIdByEdStyle($aStyles[0]['id'])) {
-                if(isset($aVideo['ko_id']) && $aVideo['ko_id']) {
-                    $this->database()->insert($this->_sTable, array(
-                        'quish_vin_id' => $sKey,
-                        'ed_style_id' => (int)$aStyles[0]['id'],
-                        'ko_id' => (int)$aVideo['ko_id'],
-                        'referenceId' => $aVideo['referenceId']
-                    ));
-                    if(in_array($aVideo['year'], $aAllowedYears) && (in_array($aVideo['make'], $aMakes) || (!in_array($aVideo['year'], explode(',', Phpfox::getParam('research.used_model_year_exclusion')))))) {
-                        foreach($aFullRow['vin'] as $sVin) {
-                            $aCompletedRows[$sVin]['url'] = $aVideo['video_title_url'];
-                        }
-                    }
+            if(isset($aData[$aFullRow['ed_style_id']])) {
+                foreach($aFullRow['vin'] as $sVin) {
+                    $aCompletedRows[$sVin]['url'] = $aData[$aFullRow['ed_style_id']]['video_title_url'];
                 }
             }
         }
@@ -160,6 +162,28 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
             ->where('v.ed_style_id = ' . (int)$iEdStyleId)
             ->execute('getRow');
         return $aVideo;
+    }
+
+    public function getAllVideoIdByEdStyles($aEdStyleIds) {
+        $sEdStyleIds = implode('/', $aEdStyleIds) . '/';
+        $sTargetUrl = 'http://api.wheelstv.co/v1/edstyleid/' . $sEdStyleIds;
+        $ch = curl_init($sTargetUrl);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        $oResponse = curl_exec($ch);
+        $oOutput= @json_decode($oResponse);
+
+        $aData = array();
+        $aReferenceIds = array();
+        foreach($oOutput->items as $aItem) {
+            $aData[$aItem->edStyleId] = array(
+                'videoId' => $aItem->videoId,
+                'wtvId' => $aItem->wtvId
+            );
+            $aReferenceIds[] = $aItem->videoId;
+        }
+        return array($aData, $aReferenceIds);
     }
 
     public function getStyleByVin($sVin) {

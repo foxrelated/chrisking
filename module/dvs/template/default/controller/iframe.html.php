@@ -97,7 +97,6 @@
     </section>
 	
 	{if Phpfox::isUser()}
-	
 	<section id="dealer_links">
 		<table style="border-top:1px solid #ccc;">
 			<tr><td colspan="4">&nbsp;</td></tr>
@@ -122,6 +121,7 @@
 			<tr><td colspan="4"><p><i>*Dealer-Only Links (and this message) are not seen by the public. You are seeing this because you are logged into the DVS backend at http://www.wtvdvs.com</i></p></td></tr>
 		</table>
 	</section>
+    <div class="clear"></div>
 	{else}
     <section id="share_links">
         <input type="hidden" value="{$sNewParentUrl}" id="parent_url">
@@ -162,6 +162,7 @@
     </section>
 	{/if}
 </article>
+<div class="clear"></div>
 <footer></footer>
 {/if}
 
