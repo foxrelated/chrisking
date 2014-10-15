@@ -59,7 +59,7 @@
                                     {/if}
                             {else}
                                 var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=twitter&return_id=share_link_box';
-                                var text = 'Check out this {$aVideo.name} video test drive.';
+                                var text = 'Check out this {$aVideo.name} video from {$aDvs.dealer_name}! %23{$aVideo.make} %23{$aVideo.model} %23VirtualTestDrive %23{$aDvs.title_url}';
 
                                 $.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
                                     {if $bIsIPhone}
@@ -105,9 +105,9 @@
                     <input class="dvs_share_text_box" type="text" id="embed_code_{$iKey}"
                            value='
 <div style="position:relative;width:300px;overflow:hidden;text-align:center;">
-<a href="{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&utm_medium=EmbedShare&utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&utm_campaign=dvs_id_{$aDvs.dvs_id}{/if}"><span style="text-decoration:none;font-weight:bold;">{$aVideo.name}</span></a>
+<a href="{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&amp;utm_medium=CRM_Embed&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign={$aDvs.dealer_name} DVS{/if}"><span style="text-decoration:none;font-weight:bold;">{$aVideo.name}</span></a>
 <div style="height:100%;left:0;top:0;width:300px;">
-<a href="{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&amp;utm_medium=EmbedShare&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign=dvs_id_{$aDvs.dvs_id}{/if}">{img server_id=$aVideo.image_server_id path="brightcove.url_image" file=$aVideo.image_path suffix="_email" max_width=300 max_height=300 title=$aVideo.name}</a>
+<a href="{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&amp;utm_medium=CRM_Embed&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign={$aDvs.dealer_name} DVS{/if}">{img server_id=$aVideo.image_server_id path="brightcove.url_image" file=$aVideo.image_path suffix="_email" max_width=300 max_height=300 title=$aVideo.name}</a>
 </div>
 </div>
 '
@@ -124,7 +124,7 @@
                         clip1_{$iKey}.glue('copy_button1_{$iKey}', "dvs_share_copy_button_holder1_{$iKey}");
                         clip1_{$iKey}.addEventListener('onComplete', function(){l}
                         $.ajaxCall('dvs.copyCRM', 'shorturl={$aVideo.shorturl}');
-                        alert('Embed code has been copied to clipboard!');
+                        alert('HTML code has been copied to your clipboard! Now paste it into your HTML editor of choice.');
                         {r});
                     </script>
                     {/if}
@@ -133,7 +133,7 @@
             <tr>
                 <td>
                     Direct Video Link
-                    <input class="dvs_share_text_box" type="text" id="link_code_{$iKey}" value='{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&utm_medium=LinkShare&utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&utm_campaign=dvs_id_{$aDvs.dvs_id}{/if}' />
+                    <input class="dvs_share_text_box" type="text" id="link_code_{$iKey}" value='{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source=ShareLinks&amp;utm_medium=Direct_Link&amp;utm_content={$aVideo.year}_{$aVideo.make}_{$aVideo.model}&amp;utm_campaign={$aDvs.dealer_name} DVS{/if}' />
                 </td>
                 <td><br/>
                     {if !$bIsIPhone}

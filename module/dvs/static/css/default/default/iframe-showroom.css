@@ -358,9 +358,10 @@ margin-top:5px;
 	background: #EEE;
 }
 
-#dealer_links
-{
+#dealer_links {
 	margin-top: 20px;
+    float: left;
+    width: 66%;
 }
 
 /* 
