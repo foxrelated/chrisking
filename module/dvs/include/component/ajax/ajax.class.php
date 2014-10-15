@@ -1137,7 +1137,10 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$bIsError = true;
 		}
 
-		if (!$bIsError) {
+		if (!$bIsError)
+		{
+
+
 			$aDvs = Phpfox::getService('dvs')->get($aVals['dvs_id']);
 			Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
 			$aVideo = Phpfox::getService('dvs.video')->get($aVals['video_ref_id']);
@@ -1164,19 +1167,15 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 			$sSubject = str_replace($aFind, $aReplace, $sSubject);
 
-            $iUserId = Phpfox::getUserId();
-            if($aDvs['sitemap_parent_url']) {
-                $sVideoLink = str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $aDvs['parent_video_url']);
-            } else {
-                if( $aVals['longurl'] ) {
-                    $sVideoLink = ( Phpfox::getParam('dvs.enable_subdomain_mode' ) ?
-                        Phpfox::getLib('url')->makeUrl( $aDvs['title_url'], $aVideo['video_title_url'] ) :
-                        Phpfox::getLib('url')->makeUrl( 'dvs', array($aDvs['title_url'], $aVideo['video_title_url']) ) );
-                } else {
-                    $sShortUrl = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'email', $iUserId);
-                    $sVideoLink = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . $sShortUrl);
-                }
-            }
+   		$iUserId = Phpfox::getUserId();
+   		if( $aVals['longurl'] ) {
+				$sVideoLink = ( Phpfox::getParam('dvs.enable_subdomain_mode' ) ?
+												Phpfox::getLib('url')->makeUrl( $aDvs['title_url'], $aVideo['video_title_url'] ) :
+												Phpfox::getLib('url')->makeUrl( 'dvs', array($aDvs['title_url'], $aVideo['video_title_url']) ) );
+			} else {
+				$sShortUrl = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'email', $iUserId);
+				$sVideoLink = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . $sShortUrl);
+			}
 
 			Phpfox::getBlock('dvs.share-email-template', array(
 				'iDvsId' => $aDvs['dvs_id'],
@@ -1481,7 +1480,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 		// Add each model to the drop down.
 		foreach ($aModels as $aModel) {
-			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.videoSelect\', \'sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=\' + $(\'#contact_dvs_id\').val() + \'&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
+			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.videoSelect\', \'sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=' . $iDvsId . '&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
 		}
 
 		$sSelectOptions .= '</ul></li>';
@@ -1563,13 +1562,16 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		Phpfox::getService('dvs.video')->setDvs($iDvsId);
 
 		$aVideos = array();
-		$aVideos = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, $sModel);
-		$aVideos = array_merge($aVideos, Phpfox::getService('dvs.video')->getRelated($aVideos[0]));
+        if(in_array($iYear, explode(',', Phpfox::getParam('research.new_model_year')))) {
+            $aVideos = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, $sModel);
+            $aVideos = array_merge($aVideos, Phpfox::getService('dvs.video')->getRelated($aVideos[0]));
+        } elseif(!in_array($iYear, explode(',', Phpfox::getParam('research.used_model_year_exclusion')))) {
+            $aVideos = Phpfox::getService('dvs.video')->getModelsByYearMakeDvs($iDvsId, $iYear, $sMake);
+        }
 
 		//Build media id js array
 		$this->call('aVideoSelectMediaIds = [];');
-		foreach ($aVideos as $iKey => $aVideo)
-		{
+		foreach ($aVideos as $iKey => $aVideo) {
 			$this->call('aVideoSelectMediaIds[' . $iKey . '] = "' . $aVideo['id'] . '";');
 		}
 

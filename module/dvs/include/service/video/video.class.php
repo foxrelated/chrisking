@@ -565,8 +565,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 	 *
 	 * @param array years
 	 */
-	public function getValidVSYears($aMakes, $iDvsId = 0)
-	{
+	public function getValidVSYears($aMakes, $iDvsId = 0) {
 		$aAllowedYears = Phpfox::getParam('dvs.vf_video_select_allowed_years');
 
         if($iDvsId > 0) {
@@ -593,23 +592,45 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
             }
         }
 
-		foreach ($aAllowedYears as $iYearKey => $iYear)
-		{
+        $sWhere = '1';
+        if (!Phpfox::getParam('dvs.vf_overview_allow_1onone')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "1onONE%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_top200')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "Top200%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_pov')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "POV%"';
+        }
+
+        if (!Phpfox::getParam('dvs.vf_overview_allow_new2u')) {
+            $sWhere .= ' AND v.referenceId NOT LIKE "New2U%"';
+        }
+
+		foreach ($aAllowedYears as $iYearKey => $iYear) {
 			$bHasData = false;
-			foreach ($aMakes as $iMakeKey => $aMake)
-			{
-				if ($this->getVideoSelect($iYear, $aMake['make'], '', 1))
-				{
-					$bHasData = true;
-					break 1;
-				}
-			}
-			if (!$bHasData)
-			{
+            if(!isset($aDvs['dvs_id']) || in_array($iYear, explode(',', Phpfox::getParam('research.new_model_year')))) {
+                foreach ($aMakes as $iMakeKey => $aMake) {
+                    if ($this->getVideoSelect($iYear, $aMake['make'], '', 1)) {
+                        $bHasData = true;
+                        break 1;
+                    }
+                }
+            } elseif(!in_array($iYear, explode(',', Phpfox::getParam('research.used_model_year_exclusion')))) {
+                $bHasData = $this->database()
+                    ->select('COUNT(*)')
+                    ->from(Phpfox::getT('tbd_dvs_inventory'), 'i')
+                    ->leftJoin($this->_tVideos, 'v', 'v.referenceId = i.referenceId')
+                    ->where($sWhere . ' AND i.dealer_id = \'' . $aDvs['dealer_id'] . '\' AND i.referenceId IS NOT NULL AND i.year = ' . $iYear)
+                    ->execute('getField');
+            }
+
+			if (!$bHasData) {
 				unset($aAllowedYears[$iYearKey]);
 			}
 		}
-
 
 		$aAllowedYears = array_values($aAllowedYears);
 

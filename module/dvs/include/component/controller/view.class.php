@@ -90,26 +90,22 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		//Load player data
 		$aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 
-		if ($aPlayer['featured_model'])
-		{
+		if ($aPlayer['featured_model']) {
 			$aFeaturedVideo = Phpfox::getService('dvs.video')->get('', false, $aPlayer['featured_year'], $aPlayer['featured_make'], $aPlayer['featured_model']);
-		}
-		else
-		{
+		} else {
 			$aFeaturedVideo = array();
 		}
 
 		$aValidVSYears = Phpfox::getService('dvs.video')->getValidVSYears($aPlayer['makes'], $aDvs['dvs_id']);
+        $aValidVSYears = array(2008);
 
 		$aVideoSelect = array();
 		$aValidVSMakes = array();
 
-		if (!empty($aValidVSYears) && count($aValidVSYears) == 1)
-		{
+		if (!empty($aValidVSYears) && count($aValidVSYears) == 1) {
 			$aValidVSMakes = Phpfox::getService('dvs.video')->getValidVSMakes($aValidVSYears[0], $aPlayer['makes']);
 
-			if (!empty($aValidVSMakes) && count($aValidVSMakes == 1))
-			{
+			if (!empty($aValidVSMakes) && count($aValidVSMakes == 1)) {
 				$aVideoSelect = Phpfox::getService('dvs.video')->getVideoSelect('', $aValidVSMakes[0]['make'], '', true);
 			}
 		}
@@ -120,15 +116,11 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		array_unshift($aOverviewVideos, '');
 		unset($aOverviewVideos[0]);
 
-		if ($sOverride)
-		{
+		if ($sOverride) {
 			$aOverrideVideo = Phpfox::getService('dvs.video')->get($sOverride, true);
-		}
-		else
-		{
+		} else {
 			$aOverrideVideo = array();
 		}
-
  
 		//Dupe check
 		if (!empty($aOverrideVideo) || !empty($aFeaturedVideo))
