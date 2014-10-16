@@ -97,7 +97,6 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		}
 
 		$aValidVSYears = Phpfox::getService('dvs.video')->getValidVSYears($aPlayer['makes'], $aDvs['dvs_id']);
-        $aValidVSYears = array(2008);
 
 		$aVideoSelect = array();
 		$aValidVSMakes = array();
