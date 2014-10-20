@@ -60,6 +60,8 @@
 
     <aside>
         {if $aDvs.title_url == 'bobmooresubaru' && 'bobmoorecadillacnorman' && 'bobmoorecadillacokc'}
+        {elseif $aDvs.title_url == 'bobmoorecadillacnorman'}
+        {elseif $aDvs.title_url == 'bobmoorecadillacokc'}
         {else}
         <div id="contact_box">
             <h2>Contact {$aDvs.dealer_name}</h2>
