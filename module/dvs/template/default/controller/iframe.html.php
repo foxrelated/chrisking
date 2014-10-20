@@ -59,7 +59,7 @@
 	</section>
 
     <aside>
-        {if $aDvs.title_url == 'bobmooresubaru' or 'bobmoorecadillacnorman' or 'bobmoorecadillacokc'}
+        {if $aDvs.title_url == 'bobmooresubaru' || 'bobmoorecadillacnorman' || 'bobmoorecadillacokc'}
         {else}
         <div id="contact_box">
             <h2>Contact {$aDvs.dealer_name}</h2>
