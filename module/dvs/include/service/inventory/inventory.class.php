@@ -47,7 +47,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
             'total' => 1
         );
 
-        if(!$aData['Dealer ID']) {
+        if(!$aData['DEALER_ID']) {
             return false;
         }
 
