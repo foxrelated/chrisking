@@ -1161,7 +1161,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             if($aDvs['sitemap_parent_url']) {
                 $sParentUrlEncode = base64_encode(urlencode($aDvs['parent_video_url']));
                 if(Phpfox::isModule('redirect')) {
-                    $sVideoLink = $this->url()->makeUrl('share.' . $aDvs['title_url'], array(
+                    $sVideoLink = Phpfox::getLib('url')->makeUrl('share.' . $aDvs['title_url'], array(
                         'parent' => $sParentUrlEncode,
                         'video' => $aVideo['video_title_url']
                     )) . 'share_email/';
