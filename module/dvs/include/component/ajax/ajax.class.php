@@ -1204,12 +1204,15 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
 			$oMail->send($aVals['share_email'], $sSubject, $sBodyPlain, $sBody, $aVals['my_share_name'], $aVals['my_share_email']);
 
+            $this->hide('#loading_email_img')
+                ->show('.share_email_field');
+
 			$this->hide('#share_email_dealer');
 			$this->show('#dvs_share_email_success');
 			$this->call("setTimeout(function() { tb_remove(); }, 3000);");
-		}
-		else
-		{
+		} else {
+            $this->hide('#loading_email_img')
+                ->show('.share_email_field');
 			return false;
 		}
 	}

@@ -58,10 +58,9 @@
 		{template file='dvs.controller.player.iframe-player}
 	</section>
 
+    {if $aDvs.iframe_contact_form}
     <aside>
-        {if $aDvs.title_url == 'bobmooresubaru' && 'bobmoorecadillacnorman' && 'bobmoorecadillacokc'}
-        {elseif $aDvs.title_url == 'bobmoorecadillacnorman'}
-        {elseif $aDvs.title_url == 'bobmoorecadillacokc'}
+        {if $aDvs.title_url == 'bobmooresubaru'}
         {else}
         <div id="contact_box">
             <h2>Contact {$aDvs.dealer_name}</h2>
@@ -69,6 +68,7 @@
         </div>
         {/if}
     </aside>
+    {/if}
 	
 	<section id="dealer_links">
 	  <table>
