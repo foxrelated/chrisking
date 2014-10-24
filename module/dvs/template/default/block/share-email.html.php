@@ -128,7 +128,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</ul>
 		<input type="hidden" name="val[video_ref_id]" id="video_ref_id" value="{$aVideo.referenceId}"/>
 		<input type="hidden" name="val[dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>
-		<input type="hidden" name="val[longurl]" id="longurl" value="{$bLongUrl}" />
 	</fieldset>
 	<fieldset>
 		<input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button"/>
