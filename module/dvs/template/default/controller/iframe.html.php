@@ -60,13 +60,10 @@
 
     {if $aDvs.iframe_contact_form}
     <aside>
-        {if $aDvs.title_url == 'bobmooresubaru'}
-        {else}
         <div id="contact_box">
             <h2>Contact {$aDvs.dealer_name}</h2>
             {template file='dvs.block.contact-iframe}
         </div>
-        {/if}
     </aside>
     {/if}
 	
