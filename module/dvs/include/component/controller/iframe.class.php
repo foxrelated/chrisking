@@ -330,7 +330,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 
         $sShareIframeUrl = '';
         if($sShareSource) {
-            $sShareIframeUrl = $this->url()->makeUrl('dvs.utm') . '?utm_source=DVS';
+            $sShareIframeUrl = $this->url()->makeUrl('dvs.utm') . '?utm_source=' . str_replace('&', '', $aDvs['dealer_name']) . ' DVS';
             switch($sShareSource) {
                 case 'facebook':
                     $sShareIframeUrl .= '&utm_medium=Facebook';
@@ -356,7 +356,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             }
 
             $sShareIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
-            $sShareIframeUrl .= '&utm_campaign=' . str_replace('&', '', $aDvs['dealer_name']);
+            $sShareIframeUrl .= '&utm_campaign=' . str_replace('&', '', $aDvs['dealer_name']) . ' DVS Share Links';
         }
 
         $this->template()
