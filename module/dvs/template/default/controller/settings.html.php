@@ -389,7 +389,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</ol>
 	</fieldset>
 
-    <h3>Use Parent Url for Sitemap</h3>
+    <h3>iFrame Contact Form</h3>
+    <fieldset>
+        <ol>
+
+            <li>
+                <input type="radio" name="val[iframe_contact_form]" value="1" {if $bIsEdit && $aForms.iframe_contact_form == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+                <input type="radio" name="val[iframe_contact_form]" value="0" {if $bIsEdit && $aForms.iframe_contact_form == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+            </li>
+        </ol>
+    </fieldset>
+
+    <h3>Contact for Iframe</h3>
     <fieldset>
         <ol>
 
