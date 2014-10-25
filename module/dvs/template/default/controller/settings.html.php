@@ -315,22 +315,22 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<fieldset>
 		<ol>
 			<li>
-				<label for="banner_toggle">{phrase var='dvs.banner_toggle'}:</label>
+				<label for="banner_toggle">Banner:</label>
 				<input type="radio" name="val[banner_toggle]" value="1" {if $bIsEdit && $aForms.banner_toggle == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
 				<input type="radio" name="val[banner_toggle]" value="0" {if $bIsEdit && $aForms.banner_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
 			</li>
 			<li>
-				<label for="top_menu_toggle">{phrase var='dvs.top_menu_toggle'}:</label>
+				<label for="top_menu_toggle">Top Menu:</label>
 				<input type="radio" name="val[topmenu_toggle]" value="1" {if $bIsEdit && $aForms.topmenu_toggle == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
 				<input type="radio" name="val[topmenu_toggle]" value="0" {if $bIsEdit && $aForms.topmenu_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
 			</li>
 			<li>
-				<label for="footer_toggle">{phrase var='dvs.footer_toggle'}:</label>
+				<label for="footer_toggle">Footer Links:</label>
 				<input type="radio" name="val[footer_toggle]" value="1" {if $bIsEdit && $aForms.footer_toggle == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
 				<input type="radio" name="val[footer_toggle]" value="0" {if $bIsEdit && $aForms.footer_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
 			</li>
 			<li>
-				<label for="contactform_toggle">iFrame Contact Form Toggle:</label>
+				<label for="contactform_toggle">iFrame Contact Form:</label>
                 <input type="radio" name="val[iframe_contact_form]" value="1" {if $bIsEdit && $aForms.iframe_contact_form == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
                 <input type="radio" name="val[iframe_contact_form]" value="0" {if $bIsEdit && $aForms.iframe_contact_form == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
             </li>
