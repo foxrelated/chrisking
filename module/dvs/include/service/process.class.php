@@ -55,6 +55,7 @@ class Dvs_Service_Process extends Phpfox_Service {
 //			'twitter_url' => (isset($aDvs['twitter_url']) ? $this->preParse()->clean($aDvs['twitter_url'], 255) : ''),
 //			'google_url' => (isset($aDvs['google_url']) ? $this->preParse()->clean($aDvs['google_url'], 255) : ''),
             'specials_url' => $this->preParse()->clean($aDvs['specials_url'], 255),
+            'dealer_id' => $this->preParse()->clean($aDvs['dealer_id'], 75),
             'latitude' => $aGeoCode['latitude'],
             'longitude' => $aGeoCode['longitude'],
             '1onone_override' => (isset($aDvs['1onone_override']) ? $this->preParse()->clean($aDvs['1onone_override'], 128) : ''),
@@ -75,6 +76,7 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['sitemap_parent_url'] = $this->preParse()->clean($aDvs['sitemap_parent_url'], 1);
             $aSql['new_car_videos'] = $this->preParse()->clean($aDvs['new_car_videos'], 1);
             $aSql['used_car_videos'] = $this->preParse()->clean($aDvs['used_car_videos'], 1);
+            $aSql['iframe_contact_form'] = $this->preParse()->clean($aDvs['iframe_contact_form'], 1);
         }
 		
 		$iId = $this->database()->insert($this->_sTable, $aSql);
@@ -113,6 +115,7 @@ class Dvs_Service_Process extends Phpfox_Service {
 //			'twitter_url' => (isset($aDvs['twitter_url']) ? $this->preParse()->clean($aDvs['twitter_url'], 255) : ''),
 //			'google_url' => (isset($aDvs['google_url']) ? $this->preParse()->clean($aDvs['google_url'], 255) : ''),
             'specials_url' => $this->preParse()->clean($aDvs['specials_url'], 255),
+            'dealer_id' => $this->preParse()->clean($aDvs['dealer_id'], 75),
             'latitude' => $aGeoCode['latitude'],
             'longitude' => $aGeoCode['longitude'],
             '1onone_override' => (isset($aDvs['1onone_override']) ? $this->preParse()->clean($aDvs['1onone_override'], 128) : ''),
@@ -133,6 +136,7 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['sitemap_parent_url'] = $this->preParse()->clean($aDvs['sitemap_parent_url'], 1);
             $aSql['new_car_videos'] = $this->preParse()->clean($aDvs['new_car_videos'], 1);
             $aSql['used_car_videos'] = $this->preParse()->clean($aDvs['used_car_videos'], 1);
+            $aSql['iframe_contact_form'] = $this->preParse()->clean($aDvs['iframe_contact_form'], 1);
         }
 
 		$this->database()->update($this->_sTable, $aSql, 'dvs_id = ' . (int) $aDvs['dvs_id']);

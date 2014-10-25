@@ -4,6 +4,7 @@ defined('PHPFOX') or exit('NO DICE!');
 
 class Dvs_Component_Controller_Iframe extends Phpfox_Component {
     public function process() {
+        $sShareSource = '';
         $bIsIframe = false;
         $bIsFindWidth = false;
         $sParentUrl = $this->request()->get('parent', '');
@@ -81,7 +82,10 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
         else
         {
             if ($bIsIframe) {
-                list($sOverride, $sNewParentUrl, $sOriginParentUrl) = Phpfox::getService('dvs.iframe')->parseUrl($sParentUrl);
+                list($sOverride, $sNewParentUrl, $sOriginParentUrl, $aExtraParams) = Phpfox::getService('dvs.iframe')->parseUrl($sParentUrl);
+                if($aExtraParams['share']) {
+                    $sShareSource = $aExtraParams['share'];
+                }
                 if(($aDvs['parent_url'] != $sOriginParentUrl) || ($aDvs['parent_video_url'] != $sNewParentUrl)) {
                     Phpfox::getService('dvs.iframe')->updateSitemapUrl($aDvs['dvs_id'], $sNewParentUrl, $sOriginParentUrl);
                 }
@@ -324,6 +328,37 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 
         $sParentUrl = str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $sNewParentUrl);
 
+        $sShareIframeUrl = '';
+        if($sShareSource) {
+            $sShareIframeUrl = $this->url()->makeUrl('dvs.utm') . '?utm_source=DVS';
+            switch($sShareSource) {
+                case 'facebook':
+                    $sShareIframeUrl .= '&utm_medium=Facebook';
+                    break;
+                case 'twitter':
+                    $sShareIframeUrl .= '&utm_medium=Twitter';
+                    break;
+                case 'google':
+                    $sShareIframeUrl .= '&utm_medium=Google';
+                    break;
+                case 'crm':
+                    $sShareIframeUrl .= '&utm_medium=CRM_Embed';
+                    break;
+                case 'direct':
+                    $sShareIframeUrl .= '&utm_medium=Direct_Link';
+                    break;
+                case 'email':
+                    $sShareIframeUrl .= '&utm_medium=Email';
+                    break;
+                default:
+                    $sShareIframeUrl .= '&utm_medium=Direct_Link';
+                    break;
+            }
+
+            $sShareIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
+            $sShareIframeUrl .= '&utm_campaign=' . str_replace('&', '', $aDvs['dealer_name']);
+        }
+
         $this->template()
             ->setTemplate('dvs-iframe-view')
             ->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -347,6 +382,8 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 'jquery.placeholder.js' => 'module_dvs'
             ))
             ->assign(array(
+                'sShareSource' => $sShareSource,
+                'sShareIframeUrl' => $sShareIframeUrl,
                 'sDvsRequest' => $sDvsRequest,
                 'sNewParentUrl' => $sNewParentUrl,
                 'sParentUrl' => $sParentUrl,

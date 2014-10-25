@@ -284,6 +284,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<label for="dealer_specials_url">{phrase var='dvs.dealer_specials_url'}:</label>
 				<input type="url" name="val[specials_url]" value="{value type='input' id='specials_url'}" id="specials_url" size="60" maxlength="300" />
 			</li>
+
+            <li>
+                <label for="dealer_id">Dealer ID:</label>
+                <input type="text" name="val[dealer_id]" value="{value type='input' id='dealer_id'}" id="dealer_id" size="60" maxlength="75" />
+            </li>
 	
 			<li>
 				<label for="welcome_greeting" style="width:250px;">{phrase var='dvs.welcome_greeting_max_char_max' max=$iWelcomeGreetingMaxChars}:</label>
@@ -384,7 +389,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</ol>
 	</fieldset>
 
-    <h3>Use Parent Url for Sitemap</h3>
+    <h3>iFrame Contact Form</h3>
+    <fieldset>
+        <ol>
+
+            <li>
+                <input type="radio" name="val[iframe_contact_form]" value="1" {if $bIsEdit && $aForms.iframe_contact_form == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+                <input type="radio" name="val[iframe_contact_form]" value="0" {if $bIsEdit && $aForms.iframe_contact_form == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+            </li>
+        </ol>
+    </fieldset>
+
+    <h3>Contact for Iframe</h3>
     <fieldset>
         <ol>
 

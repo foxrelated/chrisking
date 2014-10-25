@@ -1114,25 +1114,21 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$aVals = Phpfox::getLib('request')->getArray('val');
 		$bIsError = false;
 
-		if (!$aVals['share_name'])
-		{
+		if (!$aVals['share_name']) {
 			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_an_email_address'));
 			$bIsError = true;
 		}
-		if (!$aVals['my_share_name'])
-		{
+		if (!$aVals['my_share_name']) {
 			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'));
 			$bIsError = true;
 		}
 
-        if (!$aVals['my_share_email'])
-        {
+        if (!$aVals['my_share_email']) {
             Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'));
             $bIsError = true;
         }
 
-		if (!$aVals['share_email'])
-		{
+		if (!$aVals['share_email']) {
 			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_friends_name'));
 			$bIsError = true;
 		}
@@ -1146,36 +1142,35 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 			// Repllace variables in the subject
 			$aFindReplace = array();
-			foreach ($aVals as $sKey => $sValue)
-			{
+			foreach ($aVals as $sKey => $sValue) {
 				$aFind[] = '{share_' . $sKey . '}';
 				$aReplace[] = '' . $sValue . '';
 			}
-			foreach ($aDvs as $sKey => $sValue)
-			{
+			foreach ($aDvs as $sKey => $sValue) {
 				$aFind[] = '{dvs_' . $sKey . '}';
 				$aReplace[] = '' . $sValue . '';
 			}
-			foreach ($aVideo as $sKey => $sValue)
-			{
+			foreach ($aVideo as $sKey => $sValue) {
 				$aFind[] = '{video_' . $sKey . '}';
 				$aReplace[] = '' . $sValue . '';
 			}
 
 			$sSubject = str_replace($aFind, $aReplace, $sSubject);
 
-            $iUserId = Phpfox::getUserId();
+   		    $iUserId = Phpfox::getUserId();
             if($aDvs['sitemap_parent_url']) {
-                $sVideoLink = str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $aDvs['parent_video_url']);
-            } else {
-                if( $aVals['longurl'] ) {
-                    $sVideoLink = ( Phpfox::getParam('dvs.enable_subdomain_mode' ) ?
-                        Phpfox::getLib('url')->makeUrl( $aDvs['title_url'], $aVideo['video_title_url'] ) :
-                        Phpfox::getLib('url')->makeUrl( 'dvs', array($aDvs['title_url'], $aVideo['video_title_url']) ) );
+                $sParentUrlEncode = base64_encode(urlencode($aDvs['parent_video_url']));
+                if(Phpfox::isModule('redirect')) {
+                    $sVideoLink = Phpfox::getLib('url')->makeUrl('share.' . $aDvs['title_url'], array(
+                        'parent' => $sParentUrlEncode,
+                        'video' => $aVideo['video_title_url']
+                    )) . 'share_email/';
                 } else {
-                    $sShortUrl = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'email', $iUserId);
-                    $sVideoLink = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . $sShortUrl);
+                    $sVideoLink = str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $aDvs['parent_video_url']) . '&share=email';
                 }
+            } else {
+                $sShortUrl = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'email', $iUserId);
+                $sVideoLink = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . $sShortUrl) . "?utm_source=ShareLinks&amp;utm_medium=Email_Share&amp;utm_content=" . $aVideo['year'] . "_" . $aVideo['make'] . "_" . $aVideo['model'] . "&amp;utm_campaign=" . $aDvs['dealer_name'];
             }
 
 			Phpfox::getBlock('dvs.share-email-template', array(
@@ -1203,26 +1198,21 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image'))
 			));
 			$sBodyPlain = $this->getContent(false);
-			
-			//$sDealerEmail = 'noreply@' . str_replace('www.', '', parse_url($aDvs['url'], PHP_URL_HOST));
+
 			$sDealerEmail = $aDvs['email'];
 			Phpfox::getLibClass('phpfox.mail.interface');
 			$oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
 			$oMail->send($aVals['share_email'], $sSubject, $sBodyPlain, $sBody, $aVals['my_share_name'], $aVals['my_share_email']);
 
-//			Phpfox::getLib('mail')
-//				->to($aVals['share_email'])
-//				->fromEmail($sDealerEmail)
-//				->subject($sSubject)
-//				->message($sBody)
-//				->send();
+            $this->hide('#loading_email_img')
+                ->show('.share_email_field');
 
 			$this->hide('#share_email_dealer');
 			$this->show('#dvs_share_email_success');
 			$this->call("setTimeout(function() { tb_remove(); }, 3000);");
-		}
-		else
-		{
+		} else {
+            $this->hide('#loading_email_img')
+                ->show('.share_email_field');
 			return false;
 		}
 	}
@@ -1427,8 +1417,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		}
 	}
 
-	public function getMakes()
-	{
+	public function getMakes() {
 		// Get the variables from the ajax call.
 		$sDvsName = $this->get('sDvsName');
 		$iYear = $this->get('iYear');
@@ -1438,193 +1427,57 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 
 		// Get all of the makes for the DVS for the selected year.
-		$aMakes = Phpfox::getService('dvs.video')->getValidVSMakes($iYear, $aPlayer['makes']);
+		$aMakes = Phpfox::getService('dvs.video')->getValidVSMakesByDealer($iYear, $aPlayer['makes'], $aDvs['dealer_id']);
 
 		// Did we get more than one make?
-		if (count($aMakes) === 1)
-		{
+		if (count($aMakes) === 1) {
 			// Yes, make the only make selected by default.
 			$sSelectOptions = '<li class="init"><span class="init_selected">' . $aMakes[0]['make'] . '</span><ul>';
-			$this->call('$.ajaxCall(\'dvs.getModels\', \'iYear=' . $iYear . '&sMake=' . $aMakes[0]['make'] . '\');');
-		}
-		else
-		{
+			$this->call('$.ajaxCall(\'dvs.getModels\', \'iDvsId=' . $aDvs['dvs_id'] . '&iYear=' . $iYear . '&sMake=' . $aMakes[0]['make'] . '\');');
+		} else {
 			// The first list item should be one to tell the user to select a make.
 			$sSelectOptions = '<li class="init"><span class="init_selected">' . Phpfox::getPhrase('dvs.select_make') . '</span><ul>';
 			$this->html('#models', '<li class="init">' . Phpfox::getPhrase('dvs.select_model') . '</li><ul><li>' . Phpfox::getPhrase('dvs.please_select_a_make_first') . '</li></ul>');
 		}
 
 		// Build the ul list items
-		foreach ($aMakes as $aMake)
-		{
-			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.getModels\', \'iYear=' . $iYear . '&amp;sMake=' . $aMake['make'] . '\');">' . $aMake['make'] . '</li>';
+		foreach ($aMakes as $aMake) {
+			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.getModels\', \'iDvsId=' . $aDvs['dvs_id'] . '&iYear=' . $iYear . '&amp;sMake=' . $aMake['make'] . '\');">' . $aMake['make'] . '</li>';
 		}
 
 		$sSelectOptions .= '</ul></li>';
 
 		// Replace the old html with the new list items.
 		$this->html('#makes', $sSelectOptions);
-
-//		if (Phpfox::getParam('dvs.enable_subdomain_mode'))
-//		{
-//			$sDvsTitle = $this->get('req1');
-//		}
-//		else
-//		{
-//			$sDvsTitle = $this->get('req1');
-//		}
-//		$aDvs = Phpfox::getService('dvs')->get($sDvsTitle, true);
-//		$aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
-//
-//		$iYear = $this->get('iYear');
-//
-//		if (!$iYear || !$aDvs)
-//		{
-//			return false;
-//		}
-//
-//		$sSelectOptions = '';
-//
-//		$aMakes = Phpfox::getService('dvs.video')->getValidVSMakes($iYear, $aPlayer['makes']);
-//
-//		$sBrowser = Phpfox::getService('dvs')->getBrowser();
-//
-//		if ($sBrowser == 'mobile' || $sBrowser == 'ipad')
-//		{
-//			$sSelect = '<select id="dvs_video_select_make" class="dvs_select" onchange="$.ajaxCall(\'dvs.getModels\', \'sMake=\' + this.value + \'&amp;iYear=\'+$(\'#dvs_video_select_year\').val());"><option value="">' . Phpfox::getPhrase('dvs.select_make') . '</option>';
-//			foreach ($aMakes as $aMake)
-//			{
-//				$sSelect .= '<option value="' . $aMake['make'] . '"' . (count($aMakes) == 1 ? ' selected="selected"' : '') . '>' . $aMake['make'] . '</option>';
-//			}
-//			$sSelect .= '</select>';
-//		}
-//		else
-//		{
-//
-//			foreach ($aMakes as $aMake)
-//			{
-//				$sSelectOptions .= '<li><a href="#" onclick="$(\'#dvs_select_box_make_text\').html(\'' . $aMake['make'] . '\');$.ajaxCall(\'dvs.getModels\', \'iYear=' . $iYear . '&amp;sMake=' . $aMake['make'] . '&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aMake['make'] . '</a></li>';
-//			}
-//
-//			$sSelect = '<div class="dvs_select_box_anchor" data-dropdown="#dvs_video_select_make" data-vertical-offset="15"><div class="dvs_select_box_anchor_text" id="dvs_select_box_make_text">' . Phpfox::getPhrase('dvs.select_make') . '</div></div>';
-//			$sSelect .= '<div class="dropdown dvs_select_options_container dropdown-anchor-right dropdown-relative" id="dvs_video_select_make">';
-//			$sSelect .= '<ul class="dropdown-menu">';
-//
-//			if ($sSelectOptions)
-//			{
-//				$sSelect .= $sSelectOptions;
-//			}
-//			else
-//			{
-//				$sSelect .= '<li><a href="#">No Makes Found</a></li>';
-//			}
-//
-//			$sSelect .= '</ul>';
-//			$sSelect .= '</div>';
-//
-//			$this->html('#dvs_select_box_model_text', Phpfox::getPhrase('dvs.select_model'));
-//			$this->val('#dvs_video_select_model_input', '');
-//		}
-//		echo 'test';
-//		$this->html('#makes', $sSelectOptions);
-////		$this->remove('.dvs_year_reset');
-////		$this->html('#dvs_vehicle_select_make_container', $sSelect);
-////		$this->html('#dvs_vehicle_select_model_placeholder', '<a href="#">' . Phpfox::getPhrase('dvs.please_select_a_make_first') . '</a>');
-//
-//		if (count($aMakes) == 1)
-//		{
-//			$this->getModels($iYear, $aMakes[0]['make']);
-//		}
 	}
 
-	public function getModels()
-	{
+	public function getModels() {
 		// Set the variables to determine which models to get.
+        $iDvsId = $this->get('iDvsId');
 		$sMake = $this->get('sMake');
 		$iYear = $this->get('iYear');
 
 		// Get a list of models that belong to the make and year.
-		$aModels = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, '', true);
+		$aModels = Phpfox::getService('dvs.video')->getModelsByYearMakeDvs($iDvsId, $iYear, $sMake, '', true);
 
 		// Are there models to add to the drop down menu?
-		if (!empty($aModels))
-		{
+		if (!empty($aModels)) {
 			// Yes, begin to create the drop down menu.
 			$sSelectOptions = '<li class="init"><span class="init_selected">' . Phpfox::getPhrase('dvs.select_model') . '</span><ul>';
-		}
-		else
-		{
+		} else {
 			// No, let the user know there were no models found.
 			$sSelectOptions = '<li class="init"><span class="init_selected">No Models Found</span><ul>';
 		}
 
 		// Add each model to the drop down.
-		foreach ($aModels as $aModel)
-		{
-			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.videoSelect\', \'sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=\' + $(\'#contact_dvs_id\').val() + \'&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
+		foreach ($aModels as $aModel) {
+			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.videoSelect\', \'sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=' . $iDvsId . '&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
 		}
 
 		$sSelectOptions .= '</ul></li>';
 
 		// Display the dropdown on the page.
 		$this->html('#models', $sSelectOptions);
-
-//		if (!$iYear || !$sMake)
-//		{
-//			$sMake = $this->get('sMake');
-//			$iYear = $this->get('iYear');
-//		}
-//		else
-//		{
-//			$this->html('#dvs_select_box_make_text', $sMake);
-//			$this->val('#dvs_video_select_make_input', $sMake);
-//		}
-//
-//		if (!$sMake)
-//		{
-//			return false;
-//		}
-//
-//		$sSelectOptions = '';
-//
-//		$aModels = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, '', true);
-//
-//		$sBrowser = Phpfox::getService('dvs')->getBrowser();
-//
-//		if ($sBrowser == 'mobile' || $sBrowser == 'ipad')
-//		{
-//			$sSelect = '<select id="dvs_video_select_model" class="dvs_select" onchange="$.ajaxCall(\'dvs.videoSelect\', \'sModel=\' + this.value + \'&amp;sMake=' . $sMake . '&amp;iYear=\' + $(\'#dvs_video_select_year\').val() + \'&amp;sPlaylistBorder=\' + $(\'#contact_dvs_id\').val() + \'&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());"><option value="">' . Phpfox::getPhrase('dvs.select_model') . '</option>';
-//			foreach ($aModels as $aModel)
-//			{
-//				$sSelect .= '<option class="dvs_year_reset" value="' . $aModel['model'] . '">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</option>';
-//			}
-//			$sSelect .= '</select>';
-//		}
-//		else
-//		{
-//			foreach ($aModels as $aModel)
-//			{
-//				$sSelectOptions .= '<li class="dvs_year_reset"><a href="#" class="video_type_' . $aModel['video_type'] . '" onclick="$(\'#dvs_select_box_model_text\').html(\'' . $aModel['year'] . ' ' . $aModel['model'] . '\');$.ajaxCall(\'dvs.videoSelect\', \'sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=\' + $(\'#contact_dvs_id\').val() + \'&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</a></li>';
-//			}
-//
-//			$sSelect = '<div class="dvs_select_box_anchor" data-dropdown="#dvs_video_select_model" data-vertical-offset="15"><div class="dvs_select_box_anchor_text" id="dvs_select_box_model_text">' . Phpfox::getPhrase('dvs.select_model') . '</div></div>';
-//			$sSelect .= '<div class="dropdown dvs_select_options_container dropdown-anchor-right dropdown-relative" id="dvs_video_select_model">';
-//			$sSelect .= '<ul class="dvs_year_reset dropdown-menu">';
-//
-//			if ($sSelectOptions)
-//			{
-//				$sSelect .= $sSelectOptions;
-//			}
-//			else
-//			{
-//				$sSelect .= '<li class="dvs_year_reset"><a href="#">No Models Found</a></li>';
-//			}
-//
-//			$sSelect .= '</ul>';
-//			$sSelect .= '</div>';
-//		}
-//
-//		$this->html('#dvs_vehicle_select_model_container', $sSelect);
 	}
 
 	public function getFeaturedModels()
@@ -1700,13 +1553,16 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		Phpfox::getService('dvs.video')->setDvs($iDvsId);
 
 		$aVideos = array();
-		$aVideos = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, $sModel);
-		$aVideos = array_merge($aVideos, Phpfox::getService('dvs.video')->getRelated($aVideos[0]));
+        if(in_array($iYear, explode(',', Phpfox::getParam('research.new_model_year')))) {
+            $aVideos = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, $sModel);
+            $aVideos = array_merge($aVideos, Phpfox::getService('dvs.video')->getRelated($aVideos[0]));
+        } elseif(!in_array($iYear, explode(',', Phpfox::getParam('research.used_model_year_exclusion')))) {
+            $aVideos = Phpfox::getService('dvs.video')->getModelsByYearMakeDvs($iDvsId, $iYear, $sMake);
+        }
 
 		//Build media id js array
 		$this->call('aVideoSelectMediaIds = [];');
-		foreach ($aVideos as $iKey => $aVideo)
-		{
+		foreach ($aVideos as $iKey => $aVideo) {
 			$this->call('aVideoSelectMediaIds[' . $iKey . '] = "' . $aVideo['id'] . '";');
 		}
 
@@ -1777,7 +1633,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 	public function emailForm()
 	{
-		Phpfox::getBlock('dvs.share-email', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bLongUrl' => $this->get('longurl', false), 'bSaveGa' => $this->get('bSaveGa', 1)), false);
+		Phpfox::getBlock('dvs.share-email', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bSaveGa' => $this->get('bSaveGa', 1)), false);
 	}
 
     public function emailFormIframe() {
@@ -1965,7 +1821,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         $aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 
         // Get all of the makes for the DVS for the selected year.
-        $aMakes = Phpfox::getService('dvs.video')->getValidVSMakes($iYear, $aPlayer['makes']);
+        $aMakes = Phpfox::getService('dvs.video')->getValidVSMakesByDealer($iYear, $aPlayer['makes'], $aDvs['dealer_id']);
 
         // Did we get more than one make?
         //if (count($aMakes) === 1) {
