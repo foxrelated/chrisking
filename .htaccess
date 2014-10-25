@@ -1,0 +1,104 @@
+######################################
+## [PHPFOX_HEADER]
+##
+## @copyright		[PHPFOX_COPYRIGHT]
+## @author  		Raymond Benc
+## @package 		PhpFox
+## @version 		$Id: htaccess.txt 5050 2012-11-28 09:47:44Z Raymond_Benc $
+######################################
+
+# Options -Indexes
+# Options -Multiviews
+
+
+#FOPEN
+php_flag allow_url_fopen on
+# <VirtualHost *:80>
+
+# enable PHP error logging
+#php_flag  log_errors on
+#php_value error_log  /home/path/public_html/domain/PHP_errors.log
+
+# Header unset Pragma
+# FileETag None
+# Header unset ETag
+
+# URL Rewrite
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+
+	#
+	#  Full path to your site
+	#
+	RewriteBase /
+	
+	#RewriteCond %{HTTP_HOST} ^admincp.wtvdvs.com$
+	#RewriteCond %{REQUEST_FILENAME} !-f
+	#RewriteRule ^(.*) index.php?do=/$1
+	
+	# Rename Photo Names
+	# RewriteRule ^file/pic/photo/([0-9]+)/([0-9]+)/([A-Za-z0-9]{32}+)\-(.*?)_([0-9]*?)\.(.*)$ file/pic/photo/$1/$2/$3_$5.$6
+	# RewriteRule ^file/pic/photo/([0-9]+)/([0-9]+)/([A-Za-z0-9]{32}+)\-(.*?)\.(.*)$ file/pic/photo/$1/$2/$3.$5	
+
+	#
+	#  Rules
+	#
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*) index.php?do=/$1
+
+	# Image Access Protection
+	# RewriteRule ^file/pic/photo/(.*)\.(.*)$ static/image.php?file=$1&ext=$2
+
+	#Redirect old DVS names
+	RewriteCond %{HTTP_HOST} ^acton-toyota.wtvdvs.com$ [NC]
+	RewriteRule ^(.*)$ http://testdrive.wtvdvs.com [L]
+	RewriteCond %{HTTP_HOST} ^gervaisfordvideo.wtvdvs.com$ [NC]
+	RewriteRule ^(.*)$ http://gervaisford.wtvdvs.com [L]
+	RewriteCond %{HTTP_HOST} ^colonialchevrolet.wtvdvs.com$ [NC]
+	RewriteRule ^(.*)$ http://colonialchevyvideo.wtvdvs.com [L]
+	RewriteCond %{HTTP_HOST} ^acton-jeep.wtvdvs.com$ [NC]
+	RewriteRule ^(.*)$ http://actoncdjr.wtvdvs.com [L]
+	RewriteCond %{HTTP_HOST} ^acton-dodge.wtvdvs.com$ [NC]
+	RewriteRule ^(.*)$ http://actoncdjr.wtvdvs.com [L]
+	RewriteCond %{HTTP_HOST} ^acton-ram.wtvdvs.com$ [NC]
+	RewriteRule ^(.*)$ http://actoncdjr.wtvdvs.com [L]
+	RewriteCond %{HTTP_HOST} ^acton-chrysler.wtvdvs.com$ [NC]
+	RewriteRule ^(.*)$ http://actoncdjr.wtvdvs.com [L]
+	RewriteCond %{HTTP_HOST} ^buycolonialchevroletvideo.wtvdvs.com$ [NC]
+	RewriteRule ^(.*)$ http://colonialchevyvideo.wtvdvs.com [L]	
+	RewriteCond %{HTTP_HOST} ^gervais-kia.wtvdvs.com$ [NC]
+	RewriteRule ^(.*)$ http://gervaiskia.wtvdvs.com [L]	
+	RewriteCond %{HTTP_HOST} ^baker-cadillac.wtvdvs.com$ [NC]
+	RewriteRule ^(.*)$ http://bakercadillac.wtvdvs.com [L]	
+	RewriteCond %{HTTP_HOST} ^acton-scion.wtvdvs.com$ [NC]
+	RewriteRule ^(.*)$ http://actonscion.wtvdvs.com [L]	
+</IfModule>
+
+# Modify Headers
+<IfModule mod_headers.c>
+	# Cache files
+	<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|swf|mp3|mp4)$">
+		Header set Cache-Control "public"
+		Header set Expires "Mon, 20 Apr 2015 20:00:00 GMT"
+		Header unset Last-Modified
+	</FilesMatch>
+	 
+	# Cache JavaScript & CSS
+	<FilesMatch "\.(js|css)$">
+		Header set Cache-Control "public"
+		Header set Expires "Mon, 20 Apr 2015 20:00:00 GMT"
+		Header unset Last-Modified
+	</FilesMatch>
+</IfModule>
+
+# Compress JavaScript & CSS
+<IfModule mod_deflate.c>
+	<FilesMatch "\.(js|css)$">
+		SetOutputFilter DEFLATE
+	</FilesMatch>
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>

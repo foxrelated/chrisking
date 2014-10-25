@@ -1,0 +1,176 @@
+<?php defined('PHPFOX') or exit('NO DICE!');  ?>##
+a:4:{s:7:"message";s:32:"Undefined index: HTTP_USER_AGENT";s:9:"backtrace";s:636:"array (
+  0 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/setting/setting.class.php',
+    'line' => 164,
+  ),
+  1 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/phpfox/phpfox.class.php',
+    'line' => 233,
+  ),
+  2 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/phpfox/phpfox.class.php',
+    'line' => 328,
+  ),
+  3 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/init.inc.php',
+    'line' => 87,
+  ),
+  4 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/index.php',
+    'line' => 40,
+  ),
+)";s:7:"request";s:43:"array (
+  'do' => '/web-console/Invoker',
+)";s:2:"ip";s:11:"93.174.93.4";}##
+<?php defined('PHPFOX') or exit('NO DICE!');  ?>##
+a:4:{s:7:"message";s:32:"Undefined index: HTTP_USER_AGENT";s:9:"backtrace";s:636:"array (
+  0 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/setting/setting.class.php',
+    'line' => 164,
+  ),
+  1 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/phpfox/phpfox.class.php',
+    'line' => 233,
+  ),
+  2 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/phpfox/phpfox.class.php',
+    'line' => 328,
+  ),
+  3 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/init.inc.php',
+    'line' => 87,
+  ),
+  4 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/index.php',
+    'line' => 40,
+  ),
+)";s:7:"request";s:9:"array (
+)";s:2:"ip";s:12:"98.223.70.23";}##
+<?php defined('PHPFOX') or exit('NO DICE!');  ?>##
+a:4:{s:7:"message";s:32:"Undefined index: HTTP_USER_AGENT";s:9:"backtrace";s:636:"array (
+  0 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/setting/setting.class.php',
+    'line' => 164,
+  ),
+  1 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/phpfox/phpfox.class.php',
+    'line' => 233,
+  ),
+  2 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/phpfox/phpfox.class.php',
+    'line' => 328,
+  ),
+  3 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/init.inc.php',
+    'line' => 87,
+  ),
+  4 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/index.php',
+    'line' => 40,
+  ),
+)";s:7:"request";s:49:"array (
+  'do' => '/MyAdmin/scripts/setup.php',
+)";s:2:"ip";s:12:"192.3.10.177";}##
+<?php defined('PHPFOX') or exit('NO DICE!');  ?>##
+a:4:{s:7:"message";s:32:"Undefined index: HTTP_USER_AGENT";s:9:"backtrace";s:636:"array (
+  0 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/setting/setting.class.php',
+    'line' => 164,
+  ),
+  1 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/phpfox/phpfox.class.php',
+    'line' => 233,
+  ),
+  2 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/phpfox/phpfox.class.php',
+    'line' => 328,
+  ),
+  3 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/init.inc.php',
+    'line' => 87,
+  ),
+  4 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/index.php',
+    'line' => 40,
+  ),
+)";s:7:"request";s:9:"array (
+)";s:2:"ip";s:12:"183.60.48.25";}##
+<?php defined('PHPFOX') or exit('NO DICE!');  ?>##
+a:4:{s:7:"message";s:32:"Undefined index: HTTP_USER_AGENT";s:9:"backtrace";s:636:"array (
+  0 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/setting/setting.class.php',
+    'line' => 164,
+  ),
+  1 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/phpfox/phpfox.class.php',
+    'line' => 233,
+  ),
+  2 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/phpfox/phpfox.class.php',
+    'line' => 328,
+  ),
+  3 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/init.inc.php',
+    'line' => 87,
+  ),
+  4 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/index.php',
+    'line' => 40,
+  ),
+)";s:7:"request";s:9:"array (
+)";s:2:"ip";s:13:"184.106.69.34";}##
+<?php defined('PHPFOX') or exit('NO DICE!');  ?>##
+a:4:{s:7:"message";s:32:"Undefined index: HTTP_USER_AGENT";s:9:"backtrace";s:636:"array (
+  0 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/setting/setting.class.php',
+    'line' => 164,
+  ),
+  1 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/phpfox/phpfox.class.php',
+    'line' => 233,
+  ),
+  2 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/library/phpfox/phpfox/phpfox.class.php',
+    'line' => 328,
+  ),
+  3 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/include/init.inc.php',
+    'line' => 87,
+  ),
+  4 => 
+  array (
+    'file' => '/var/www/vhosts/wtvdvs.com/html/index.php',
+    'line' => 40,
+  ),
+)";s:7:"request";s:9:"array (
+)";s:2:"ip";s:14:"136.186.231.16";}##

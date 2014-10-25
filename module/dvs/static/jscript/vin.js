@@ -6,16 +6,22 @@ if (!window.WTVVIN) {
             this.sApiUrl = params.apiUrl;
             this.iDvsId = params.dvs;
 
-            var cchead= document.getElementsByTagName("head");
-            var cclink=document.createElement('link');
-            cclink.href= params.styleUrl;
-            cclink.type= 'text/css';
+            if (typeof params.scriptUrl != 'undefined') {
+                var sScriptUrl = params.scriptUrl;
+            } else {
+                var sScriptUrl = params.styleUrl.replace('vin/style/id', 'vin/script/id');
+            }
+
+            var cchead = document.getElementsByTagName("head");
+            var cclink = document.createElement('link');
+            cclink.href = params.styleUrl;
+            cclink.type = 'text/css';
             cclink.charset = 'utf-8';
-            cclink.rel='stylesheet';
+            cclink.rel = 'stylesheet';
             cchead[0].appendChild(cclink);
 
             var sAllVin = '';
-            var x = document.getElementsByClassName('dvs_vin_btn');
+            var x = this.GEBCN('dvs_vin_btn');
             for (i = 0; i < x.length; i++) {
                 sVinId = x[i].getAttribute('vin');
                 sAllVin += sVinId + ',';
@@ -27,54 +33,40 @@ if (!window.WTVVIN) {
             if(sAllVin.length > 0) {
                 sAllVin = sAllVin.substring(0, sAllVin.length - 1);
             }
-            this.getJSON(this.sApiUrl + 'newapi.php?method=dvs.getVins&vin=' + sAllVin + '&dvs=' + this.iDvsId, this.render_buttons, this.render_errors);
+
+            var ccscript = document.createElement('script');
+            ccscript.src = sScriptUrl + 'vin_' + sAllVin + '/';
+            ccscript.type = 'text/javascript';
+            cchead[0].appendChild(ccscript);
         },
 
-        render_buttons: function(data) {
-            var sButtonText = data.output.text;
-            var aRows = data.output.vin;
-            for (var sKey in aRows) {
-                if (aRows.hasOwnProperty(sKey)) {
-                    aRow = aRows[sKey];
-                    var element = document.getElementById('dvs_vin_btn_' + sKey);
-                    var urlElement = element.childNodes[0];
-                    var loadingElement = element.childNodes[1];
-                    if(aRow.url != null && aRow.url != '') {
-                        urlElement.innerHTML = sButtonText;
-                        urlElement.setAttribute('href', aRow.url);
-                        urlElement.style.display = 'block';
+        GEBCN: function(cn){
+            if(document.getElementsByClassName) // Returns NodeList here
+                return document.getElementsByClassName(cn);
 
-                        loadingElement.style.display = 'none';
-                    } else {
-                        loadingElement.style.display = 'none';
-                    }
-                }
+            cn = cn.replace(/ *$/, '');
+
+            if(document.querySelectorAll) // Returns NodeList here
+                return document.querySelectorAll((' ' + cn).replace(/ +/g, '.'));
+
+            cn = cn.replace(/^ */, '');
+
+            var classes = cn.split(/ +/), clength = classes.length;
+            var els = document.getElementsByTagName('*'), elength = els.length;
+            var results = [];
+            var i, j, match;
+
+            for(i = 0; i < elength; i++){
+                match = true;
+                for(j = clength; j--;)
+                    if(!RegExp(' ' + classes[j] + ' ').test(' ' + els[i].className + ' '))
+                        match = false;
+                if(match)
+                    results.push(els[i]);
             }
-        },
 
-        render_errors: function(data) {
-
-        },
-
-        getJSON: function(url, successHandler, errorHandler) {
-            var xhr = typeof XMLHttpRequest != 'undefined'
-                ? new XMLHttpRequest()
-                : new ActiveXObject('Microsoft.XMLHTTP');
-            xhr.open('get', url, true);
-            xhr.onreadystatechange = function() {
-                var status;
-                var data;
-                if (xhr.readyState == 4) {
-                    status = xhr.status;
-                    if (status == 200) {
-                        data = JSON.parse(xhr.responseText);
-                        successHandler && successHandler(data);
-                    } else {
-                        errorHandler && errorHandler(status);
-                    }
-                }
-            };
-            xhr.send();
+            // Returns Array here
+            return results;
         }
     }
 }
