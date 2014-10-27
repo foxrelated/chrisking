@@ -52,6 +52,7 @@
                         <span id="twitter_button_wrapper">
                             <a href="#" onclick="
                             {if $aDvs.sitemap_parent_url}
+                                var text = 'Check out this {$aVideo.name} video from {$aDvs.dealer_name}! %23{$aVideo.make} %23{$aVideo.model} %23VirtualTestDrive %23{$aDvs.title_url}';
                                 {if $bIsIPhone}
                                         window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{$aVideo.parent_video_url}{if Phpfox::isModule('redirect')}share_twitter/{else}&share=twitter{/if}');
                                     {else}
