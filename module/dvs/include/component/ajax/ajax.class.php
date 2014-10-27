@@ -1800,12 +1800,19 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 //			$this->call('$("#dvs_contact_success").show().after(function() {});');
 //			$this->call('tb_remove();');
 
+            $this->hide('#loading_email_img')
+                ->show('.share_email_field');
+
             $this->call('getPriceEmailSent();');
         }
         else
         {
             $this->html('#contact_dealer_error', $sErrorText)
                 ->show('#contact_dealer_error');
+
+            $this->hide('#loading_email_img')
+                ->show('.share_email_field');
+
             return false;
         }
     }
