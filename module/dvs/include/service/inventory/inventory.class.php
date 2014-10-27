@@ -36,18 +36,18 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
 
     public function importRow($aData) {
         $aVals = array(
-            'dealer_id' => $aData['Dealer ID'],
+            'dealer_id' => $aData['DEALER_ID'],
             'vin_id' => $aData['VIN'],
             'squish_vin_id' => $this->getSquishVinCode($aData['VIN']),
-            'make' => $aData['Make'],
-            'model' => $aData['Model'],
-            'year' => $aData['Model Year'],
+            'make' => $aData['MAKE'],
+            'model' => $aData['MODEL'],
+            'year' => $aData['MODEL_YEAR'],
             'ed_style_id' => 0,
             'is_updated' => 1,
             'total' => 1
         );
 
-        if(!$aData['Dealer ID']) {
+        if(!$aData['DEALER_ID']) {
             return false;
         }
 
