@@ -25,10 +25,15 @@ class Share_Component_Controller_Index extends Phpfox_Component
         $sDvsRequest = $this->request()->get('req2');
 
         if ($aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true)) {
+            $sShare = $this->request()->get('share', '');
+
             $sParentUrl = urldecode(base64_decode($this->request()->get('parent')));
             $sOverride = $this->request()->get('video');
 
             $sRedirectUrl = str_replace('WTVDVS_VIDEO_TEMP', $sOverride, $sParentUrl);
+            if($sShare != '') {
+                $sRedirectUrl .= '&share=' . $sShare;
+            }
 
             Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
 
@@ -38,52 +43,37 @@ class Share_Component_Controller_Index extends Phpfox_Component
             array_unshift($aOverviewVideos, '');
             unset($aOverviewVideos[0]);
 
-            if ($sOverride)
-            {
+            if ($sOverride) {
                 $aOverrideVideo = Phpfox::getService('dvs.video')->get($sOverride, true);
-            }
-            else
-            {
+            } else {
                 $aOverrideVideo = array();
             }
 
             //Dupe check
-            if (!empty($aOverrideVideo) || !empty($aFeaturedVideo))
-            {
-                foreach ($aOverviewVideos as $iKey => $aVideo)
-                {
-                    if ($iKey == 0)
-                    {
-                        //Don't unset the featured video
+            if (!empty($aOverrideVideo) || !empty($aFeaturedVideo)) {
+                foreach ($aOverviewVideos as $iKey => $aVideo) {
+                    if ($iKey == 0) {
                         continue;
                     }
 
-                    if ((!empty($aFeaturedVideo) && $aVideo['id'] == $aFeaturedVideo['id']) || (!empty($aOverrideVideo) && $aVideo['id'] == $aOverrideVideo['id']))
-                    {
+                    if ((!empty($aFeaturedVideo) && $aVideo['id'] == $aFeaturedVideo['id']) || (!empty($aOverrideVideo) && $aVideo['id'] == $aOverrideVideo['id'])) {
                         //Remove dupe
                         //unset($aOverviewVideos[$iKey]);
                     }
                 }
             }
 
-            if ($aOverrideVideo)
-            {
+            if ($aOverrideVideo) {
                 $aFirstVideo = $aOverrideVideo;
-            }
-            else if ($aFeaturedVideo)
-            {
+            } else if ($aFeaturedVideo) {
                 $aFirstVideo = $aFeaturedVideo;
-            }
-            else
-            {
+            } else {
                 $aFirstVideo = $aOverviewVideos[1];
             }
 
             $aCurrentVideo = 0;
-            foreach ($aOverviewVideos as $iKey => $aVideo)
-            {
-                if( ($aFirstVideo['year'] == $aVideo['year']) AND ($aFirstVideo['make'] == $aVideo['make']) AND ($aFirstVideo['model'] == $aVideo['model']))
-                {
+            foreach ($aOverviewVideos as $iKey => $aVideo) {
+                if( ($aFirstVideo['year'] == $aVideo['year']) AND ($aFirstVideo['make'] == $aVideo['make']) AND ($aFirstVideo['model'] == $aVideo['model'])) {
                     $aCurrentVideo = $iKey;
                     break;
                 }
@@ -113,13 +103,11 @@ class Share_Component_Controller_Index extends Phpfox_Component
                 ->setTemplate('redirect-template')
                 ->assign(array(
                     'aDvs' => $aDvs,
+                    'sShare' => $sShare,
                     'aFirstVideo' => $aFirstVideo,
                     'aFirstVideoMeta' => $aFirstVideoMeta,
                     'sRedirectUrl' => $sRedirectUrl
                 ));
-
-            //$this->url()->send($sRedirectUrl);
-
         } else {
             $this->url()->send('');
         }

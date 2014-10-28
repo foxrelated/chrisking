@@ -409,7 +409,7 @@ background-color: #c35f54;
 				</div>
 
             <div id="vdp_embed_link_{$aDvs.dvs_id}" title="VDP Embed Code" class="dvs_iframe_link_popup" style="display:none;">
-                <p>Step 1: Add this code after the &lt;body&gt; tag of the page:</p>
+                <p>Step 1: Add this code right before the &lt;/body&gt; tag of the page:</p>
                     <textarea rows="10" cols="71">&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/vin.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
 WTVVIN.init({l}

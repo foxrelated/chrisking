@@ -225,4 +225,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{/if} <!--phpmasterminds added this code for footer toggle -->
   {/if}
 {/if}
+
+{if $sVdpIframeUrl != ''}
+<iframe src="{$sVdpIframeUrl}" height="1" width="1"></iframe>
+{/if}
+
 {module name='dvstour.addtour'} <!--nplkoder add this line-->

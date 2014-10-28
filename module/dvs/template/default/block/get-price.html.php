@@ -61,7 +61,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<p>Thank you for your interest in this vehicle!</p>
 		{else}
 		<p>Thank you for your interest in the <strong>{$aVideo.year} {$aVideo.make} {$aVideo.model}</strong>!</p>{/if}
-		<p>We're happy to help you find your next car, go over current specials and offer your our very best price. Please let us know how to reach you and we'll get right back to you:</p>
+		<p>We're happy to help you find your next car, go over current specials and offer you our very best price. Please let us know how to reach you and we'll get right back to you:</p>
 		<ul>
 			<li>
 				<input type="text" name="val[contact_name]" id="name" placeholder="{phrase var='dvs.get_price_placeholder_name'}" {if Phpfox::getParam('dvs.get_price_validate_name')} required {/if} class="inputContact"/>

@@ -58,15 +58,14 @@
 		{template file='dvs.controller.player.iframe-player}
 	</section>
 
+    {if $aDvs.iframe_contact_form}
     <aside>
-        {if $aDvs.title_url == 'bobmooresubaru'}
-        {else}
         <div id="contact_box">
             <h2>Contact {$aDvs.dealer_name}</h2>
             {template file='dvs.block.contact-iframe}
         </div>
-        {/if}
     </aside>
+    {/if}
 	
 	<section id="dealer_links">
 	  <table>
@@ -167,6 +166,14 @@
 </article>
 <div class="clear"></div>
 <footer></footer>
+{/if}
+
+{if $sShareSource != ''}
+<iframe src="{$sShareIframeUrl}" height="1" width="1"></iframe>
+{/if}
+
+{if $sVdpIframeUrl != ''}
+<iframe src="{$sVdpIframeUrl}" height="1" width="1"></iframe>
 {/if}
 
 {literal}
