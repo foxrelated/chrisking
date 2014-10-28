@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('NO DICE!');
 
 ?>
 
-{*<meta itemprop="creator" content="{$aDvs.dealer_user_full_name}" />
+<meta itemprop="creator" content="{$aDvs.dealer_user_full_name}" />
 <meta itemprop="productionCompany" content="WheelsTV" />
 <meta itemprop="contributor" content="{$aDvs.dealer_name}" />
 <meta itemprop="url" content="{$sRedirectUrl}" id="schema_video_url"/>
@@ -23,16 +23,7 @@ defined('PHPFOX') or exit('NO DICE!');
 <meta itemprop="name" content="{$aFirstVideoMeta.name}"  id="schema_video_name"/>
 <meta itemprop="description" content="{$aFirstVideoMeta.description}"  id="schema_video_description"/>
 
-
-<p>Redirect...</p>
-
-<article>
-    <section id="video_information">
-        <h3 id="video_name">{$aFirstVideo.name}</h3>
-        <p class="model_description" id="car_description">{$aFirstVideo.longDescription}</p>
-    </section>
-</article>
-*}
+{*<p>Redirect...</p><article><section id="video_information"><h3 id="video_name">{$aFirstVideo.name}</h3><p class="model_description" id="car_description">{$aFirstVideo.longDescription}</p></section></article>*}
 
 <script type="text/javascript">
     window.onload=function() {l}
