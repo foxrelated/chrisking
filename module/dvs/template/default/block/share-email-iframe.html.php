@@ -19,6 +19,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         event.preventDefault();
 
         // do whatever you want here
+        $('.share_email_field').hide();
+        $('#loading_email_img').show();
         $('#share_email_error').hide();
         $('#share_email_dealer input, #share_email_dealer textarea').removeClass('required');
         $.ajaxCall('dvs.sendShareEmailIframe', $('#share_email_dealer').serialize());
@@ -105,7 +107,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <div style="display: none" id="share_email_error"></div>
 
 <form id="share_email_dealer" name="share_email_dealer">
-    <fieldset>
+    <ul>
+		<li id="loading_email_img" style="display: none;">
+			{img theme='ajax/large.gif'}
+		</li>
+	</ul>
+    <div class="share_email_field">
+    <fieldset>        
         <ul>
             <li>
                 <input type="text" name="val[share_name]" id="share_name" placeholder="{phrase var='dvs.friends_name'}" class="inputShare" required />
@@ -131,6 +139,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 <textarea id="share_message" name="val[share_message]" placeholder="{phrase var='dvs.message_to_friend'}" cols="18" rows="5" required></textarea>
             </li>
         </ul>
+        
         <input type="hidden" name="val[video_ref_id]" id="video_ref_id" value="{$aVideo.referenceId}"/>
         <input type="hidden" name="val[dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>
         <input type="hidden" name="val[longurl]" id="longurl" value="{$bLongUrl}" />
@@ -139,6 +148,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     <fieldset>
         <input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button"/>
     </fieldset>
+    </div>
 </form>
 <div id="dvs_share_email_success" style="display:none;">
     {phrase var='dvs.email_has_been_sent'}
