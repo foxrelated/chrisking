@@ -329,10 +329,10 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
         $sVdpIframeUrl = '';
         if($sVdpEmbed) {
-            $sVdpIframeUrl = $this->url()->makeUrl('dvs.utm') . '?utm_source=Inventory Page';
+            $sVdpIframeUrl = $this->url()->makeUrl('dvs.utm') . '?utm_source=' . str_replace('&', '', $aDvs['dealer_name']) . ' DVS';
             $sVdpIframeUrl .= '&utm_medium=VDP Button';
             $sVdpIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
-            $sVdpIframeUrl .= '&utm_campaign=' . str_replace('&', '', $aDvs['dealer_name']) . ' DVS Share Links';
+            $sVdpIframeUrl .= '&utm_campaign=DVS Inventory';
         }
 		
 		$this->template()
