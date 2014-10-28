@@ -25,6 +25,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		{
 			$sDvsRequest = $this->request()->get('req2');
 		}
+        $sVdpEmbed = $this->request()->get('vdp', false);
 		$bPreview = false;
 		
 		/*phpmasterminds*/
@@ -325,7 +326,14 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		}
 
 		$inventoryList = Phpfox::getService('dvs')->getModelInventory($aFirstVideo['ko_id']);
-		
+
+        $sVdpIframeUrl = '';
+        if($sVdpEmbed) {
+            $sVdpIframeUrl = $this->url()->makeUrl('dvs.utm') . '?utm_source=Inventory Page';
+            $sVdpIframeUrl .= '&utm_medium=VDP Button';
+            $sVdpIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
+            $sVdpIframeUrl .= '&utm_campaign=' . str_replace('&', '', $aDvs['dealer_name']) . ' DVS Share Links';
+        }
 		
 		$this->template()
 			->setTemplate('dvs-view')
@@ -354,6 +362,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 				'jquery.placeholder.js' => 'module_dvs'
 			))
 			->assign(array(
+                'sVdpIframeUrl' => $sVdpIframeUrl,
 				'aDvs' => $aDvs,
 				'aBaseUrl' => $aBaseUrl,
 				'aCurrentVideo' => $aCurrentVideo,

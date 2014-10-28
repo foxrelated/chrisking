@@ -6,6 +6,7 @@ class Dvs_Service_Iframe extends Phpfox_Service {
     }
 
     public function parseUrl($sParentUrl) {
+        $vdp = '';
         $share = '';
         $video = '';
         $sOriginParent = $sParentUrl;
@@ -33,6 +34,7 @@ class Dvs_Service_Iframe extends Phpfox_Service {
         }
 
         return array($video, $sNewUrl, $sOriginParent, array(
+            'vdp' => $vdp,
             'share' => $share
         ));
     }
