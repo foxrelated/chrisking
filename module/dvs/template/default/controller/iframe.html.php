@@ -172,6 +172,10 @@
 <iframe src="{$sShareIframeUrl}" height="1" width="1"></iframe>
 {/if}
 
+{if $sVdpIframeUrl != ''}
+<iframe src="{$sVdpIframeUrl}" height="1" width="1"></iframe>
+{/if}
+
 {literal}
 <script type="text/javascript">
     $Behavior.loadUrlVideo = function() {

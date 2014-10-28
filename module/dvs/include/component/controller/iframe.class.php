@@ -4,6 +4,7 @@ defined('PHPFOX') or exit('NO DICE!');
 
 class Dvs_Component_Controller_Iframe extends Phpfox_Component {
     public function process() {
+        $sVdpEmbed = false;
         $sShareSource = '';
         $bIsIframe = false;
         $bIsFindWidth = false;
@@ -85,6 +86,9 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 list($sOverride, $sNewParentUrl, $sOriginParentUrl, $aExtraParams) = Phpfox::getService('dvs.iframe')->parseUrl($sParentUrl);
                 if($aExtraParams['share']) {
                     $sShareSource = $aExtraParams['share'];
+                }
+                if($aExtraParams['vdp']) {
+                    $sVdpEmbed = true;
                 }
                 if(($aDvs['parent_url'] != $sOriginParentUrl) || ($aDvs['parent_video_url'] != $sNewParentUrl)) {
                     Phpfox::getService('dvs.iframe')->updateSitemapUrl($aDvs['dvs_id'], $sNewParentUrl, $sOriginParentUrl);
@@ -359,6 +363,14 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             $sShareIframeUrl .= '&utm_campaign=' . str_replace('&', '', $aDvs['dealer_name']) . ' DVS Share Links';
         }
 
+        $sVdpIframeUrl = '';
+        if($sVdpEmbed) {
+            $sVdpIframeUrl = $this->url()->makeUrl('dvs.utm') . '?utm_source=Inventory Page';
+            $sVdpIframeUrl .= '&utm_medium=VDP Button';
+            $sVdpIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
+            $sVdpIframeUrl .= '&utm_campaign=' . str_replace('&', '', $aDvs['dealer_name']) . ' DVS Share Links';
+        }
+
         $this->template()
             ->setTemplate('dvs-iframe-view')
             ->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -384,6 +396,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             ->assign(array(
                 'sShareSource' => $sShareSource,
                 'sShareIframeUrl' => $sShareIframeUrl,
+                'sVdpIframeUrl' => $sVdpIframeUrl,
                 'sDvsRequest' => $sDvsRequest,
                 'sNewParentUrl' => $sNewParentUrl,
                 'sParentUrl' => $sParentUrl,
