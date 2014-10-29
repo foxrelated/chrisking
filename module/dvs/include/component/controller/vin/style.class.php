@@ -19,7 +19,11 @@ class Dvs_Component_Controller_Vin_Style extends Phpfox_Component {
             $aStyle['vin_font_size'] = $aDvs['vin_font_size'];
         }
         $this->template()->assign(array(
-            'aStyle' => $aStyle
+            'aStyle' => $aStyle,
+            'sPopupBg' => Phpfox::getLib('image.helper')->display(array(
+                'theme' => 'layout/thickbox_bg.png',
+                'return_url' => true
+            ))
         ));
 
         $lastModified = filemtime(PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'include' . PHPFOX_DS . 'component' . PHPFOX_DS . 'controller' . PHPFOX_DS . 'vin' . PHPFOX_DS . 'style.class.php');

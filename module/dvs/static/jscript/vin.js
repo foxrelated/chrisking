@@ -27,7 +27,7 @@ if (!window.WTVVIN) {
                 sAllVin += sVinId + ',';
 
                 x[i].setAttribute('id', 'dvs_vin_btn_' + sVinId);
-                var sHTML = '<a style="display: none;" href="#">' + x[i].getAttribute('title') + '</a><div class="dvs_vin_loading"></div>';
+                var sHTML = '<a style="display: none;" href="#" onClick="WTVVIN.show_popup(this); return false;">' + x[i].getAttribute('title') + '</a><div class="dvs_vin_loading"></div>';
                 x[i].innerHTML = sHTML;
             }
             if(sAllVin.length > 0) {
@@ -38,6 +38,8 @@ if (!window.WTVVIN) {
             ccscript.src = sScriptUrl + 'vin_' + sAllVin + '/';
             ccscript.type = 'text/javascript';
             cchead[0].appendChild(ccscript);
+
+            document.body.innerHTML += '<div id="dvs_vin_popup_wrapper"><div id="dvs_vin_popup"><div id="dvs_vin_close_btn"><a href="#" onClick="WTVVIN.close_popup(); return false;">Close</a></div><div id="dvs_vin_popup_content"></div></div></div>';
         },
 
         GEBCN: function(cn){
@@ -67,6 +69,17 @@ if (!window.WTVVIN) {
 
             // Returns Array here
             return results;
+        },
+
+        show_popup: function(oLink) {
+            var sLink = oLink.getAttribute('href');
+            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" height="565" width="900" frameborder="0"></iframe>';
+            document.getElementById('dvs_vin_popup_wrapper').style.display = 'block';
+        },
+
+        close_popup: function() {
+            document.getElementById('dvs_vin_popup_content').innerHTML = '';
+            document.getElementById('dvs_vin_popup_wrapper').style.display = 'none';
         }
     }
 }

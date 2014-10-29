@@ -26,3 +26,39 @@
     width: 16px;
     height: 11px;
 {r}
+
+#dvs_vin_popup_wrapper {l}
+    display: none;
+    background: url("{$sPopupBg}") repeat scroll 0 0 transparent;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+{r}
+
+#dvs_vin_popup {l}
+    background: #FFFFFF;
+    display: block;
+    width: 900px;
+    position: absolute;
+    left: 50%;
+    margin-left: -465px;
+    height: 585px;
+    top: 50%;
+    margin-top: -305px;
+    padding: 15px;
+    border-radius: 10px;
+{r}
+
+#dvs_vin_popup_content {l}
+    display: block;
+    width: 900px;
+    height: 565px;
+{r}
+
+#dvs_vin_close_btn {l}
+    color: #000000;
+    text-align: right;
+{r}
