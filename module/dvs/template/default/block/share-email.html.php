@@ -110,16 +110,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         <div class="share_email_field">
             <ul>
                 <li>
-                    <input type="text" name="val[my_share_name]" id="my_share_name" placeholder="{phrase var='dvs.your_name'}" value="{$your_name}" required class="inputShare"/>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <input type="text" name="val[my_share_email]" id="my_share_email" placeholder="{phrase var='dvs.your_email'}" value="{$your_email}" required class="inputShare"/>
-                </li>
-            </ul>
-            <ul>
-                <li>
                     <input type="text" name="val[share_name]" id="share_name" placeholder="{phrase var='dvs.friends_name'}" class="inputShare" required />
                 </li>
             </ul>
@@ -128,6 +118,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                     <input type="email" name="val[share_email]" id="share_email" placeholder="{phrase var='dvs.friends_email_address'}" required class="inputShare"/>
                 </li>
             </ul>
+            <ul>
+                <li>
+                    <input type="text" name="val[my_share_name]" id="my_share_name" placeholder="{phrase var='dvs.your_name'}" value="{$your_name}" required class="inputShare"/>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <input type="text" name="val[my_share_email]" id="my_share_email" placeholder="{phrase var='dvs.your_email'}" value="{$your_email}" required class="inputShare"/>
+                </li>
+            </ul>
+            
 
             <ul>
                 <li>
