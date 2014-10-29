@@ -538,9 +538,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 	/*public function blanknew()
 	{
 		$aDvs = Phpfox::getService('dvs')->get(Phpfox::getLib('request')->get('pollval'));
-		
+
 		$aVideo = Phpfox::getService('dvs.video')->get(Phpfox::getLib('request')->get('refe'));
-		
+
 		if (Phpfox::getParam('dvs.enable_subdomain_mode'))
 		{
 			$sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url']);
@@ -553,7 +553,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$sOverrideLink = rtrim($sOverrideLink, '/');
 		if($aDvs['gallery_target_setting'] == 1)
 		{
-			
+
 
 			//$this->call('window.location.href = \'' . $sOverrideLink . '\';');
 			$this->call('window.open( \'' . $sOverrideLink . '\',"_blank");');
@@ -568,7 +568,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		Phpfox::getService('dvs.video')->setDvs(Phpfox::getLib('request')->get('iDvsId'));
 		$aVideo = Phpfox::getService('dvs.video')->get($sRefId);
 		$aDvs = Phpfox::getService('dvs')->get(Phpfox::getLib('request')->get('iDvsId'));
-		
+
 		// Change get price form values
 //		$this->html('.vehicle_year', $aVideo['year']);
 //		$this->html('.vehicle_make', $aVideo['make']);
@@ -598,7 +598,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		//Change video information and reset description visibility
 		$this->html('#video_name', '<a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a>');
 		$this->html('#car_description', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
-		
+
 //		$this->call('$("#twitter_share").prop("href", "https://twitter.com/intent/tweet?text=Check%20out%20" + sShareLink + "&url=" + sShareLink);');
 //		$this->html('#video_name', '<strong><a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a></strong>');
 //		$this->html('#video_long_description_text', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
@@ -1185,7 +1185,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image'))
 			));
 			$sBody = $this->getContent(false);
-			
+
 			Phpfox::getBlock('dvs.share-email-plain-template', array(
 				'iDvsId' => $aDvs['dvs_id'],
 				'sReferenceId' => $aVideo['referenceId'],
@@ -1335,12 +1335,18 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 //				->message($sBody)
 //				->send();
 
+            $this->hide('#loading_email_img')
+                ->show('.share_email_field');
+
             $this->hide('#share_email_dealer');
             $this->show('#dvs_share_email_success');
             $this->call("setTimeout(function() { tb_remove(); }, 3000);");
         }
         else
         {
+            $this->hide('#loading_email_img')
+                ->show('.share_email_field');
+
             $this->html('#share_email_error', $sErrorText)
                 ->show('#share_email_error');
             return false;
