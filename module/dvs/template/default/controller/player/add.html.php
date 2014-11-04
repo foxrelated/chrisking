@@ -57,32 +57,27 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 	{literal}
 	$Behavior.multiSelect = function() {
-	$("#makes").multiselect({
-	header: false,
+	    $("#makes").multiselect({
+	        header: false,
 			click: function(event, ui){
-			$('#make_select_' + ui.value).val((ui.checked ? 1 : 0));
-					if (ui.checked)
-			{
-			iSelectedMakes++;
-			}
-			else
-			{
-			iSelectedMakes = iSelectedMakes - 1; ;
-			}
-			}
-	});
-	}
-	function validateDvsForm()
-	{
-	clearErrors();
-			if (iSelectedMakes <= 0)
-	{
-	validateError("{/literal}{phrase var='dvs.please_select_a_make_first'}{literal}", 'makes');
+			    $("[id='make_select_" + ui.value + "']").val((ui.checked ? 1 : 0));
+					if (ui.checked) {
+			            iSelectedMakes++;
+			        } else {
+			            iSelectedMakes = iSelectedMakes - 1; ;
+			        }
+			    }
+	    });
 	}
 
-	return window.bIsValid
-	}
+	function validateDvsForm() {
+	    clearErrors();
+        if (iSelectedMakes <= 0) {
+	        validateError("{/literal}{phrase var='dvs.please_select_a_make_first'}{literal}", 'makes');
+	    }
 
+	    return window.bIsValid
+	}
 	{/literal}
 </script>
 <form id="add_player" method="post" action="{if $bIsDvs}{url link='dvs.player.add'}{else}{url link='idrive.add'}{/if}" onsubmit="return validateDvsForm();">
@@ -112,7 +107,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			{else}
 			<input type="hidden" name="val[player_type]" value="0" />
 			{/if}
-			
+
 			<li {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
 				<label for="makes">{phrase var='dvs.make'}:</label>
 				<select name="val[makes]" id="makes" onchange="$.ajaxCall('dvs.getFeaturedModels', 'iDvs={$iDvsId}&aMakes=' + $('#makes').val());" multiple="multiple">

@@ -13,9 +13,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @package 		DVS
  */
 class Dvs_Service_Salesteam_Process extends Phpfox_Service {
-
-	public function __construct()
-	{
+	public function __construct() {
 		$this->_tSalesTeam = Phpfox::getT('ko_dvs_salesteam');
 	}
 
@@ -27,8 +25,7 @@ class Dvs_Service_Salesteam_Process extends Phpfox_Service {
 	 * @param int $iUserId
 	 * @return int, salesteam id
 	 */
-	public function inviteSalesChange($iUserId,$Email)
-	{
+	public function inviteSalesChange($iUserId,$Email) {
 		$aInvites = $this->database()->select('i.*')
 				->from(Phpfox::getT('ko_dvs_salesteam_invites'),'i')
 				->where('i.email_address = "'. $Email.'" AND i.manager_invite = 0')
@@ -36,7 +33,8 @@ class Dvs_Service_Salesteam_Process extends Phpfox_Service {
 				
 		$iSalesteamId = $this->database()->insert($this->_tSalesTeam, array(
 			'dvs_id' => (int) $aInvites['dvs_id'],
-			'user_id' => (int) $iUserId
+			'user_id' => (int) $iUserId,
+            'time_stamp' => PHPFOX_TIME
 		));
 		
 		$this->database()->delete(Phpfox::getT('ko_dvs_salesteam_invites'), 'invite_id = ' . (int) $aInvites['invite_id']);
@@ -44,11 +42,12 @@ class Dvs_Service_Salesteam_Process extends Phpfox_Service {
 		Phpfox::setCookie('salesteam_invite', 0, '-1');
 		return true;
 	}
-	public function add($iDvsId, $iUserId)
-	{
+
+	public function add($iDvsId, $iUserId) {
 		$iSalesteamId = $this->database()->insert($this->_tSalesTeam, array(
 			'dvs_id' => (int) $iDvsId,
-			'user_id' => (int) $iUserId
+			'user_id' => (int) $iUserId,
+            'time_stamp' => PHPFOX_TIME
 		));
 
 		return $iSalesteamId;
