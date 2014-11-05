@@ -33,8 +33,7 @@ class Dvs_Service_Salesteam_Process extends Phpfox_Service {
 				
 		$iSalesteamId = $this->database()->insert($this->_tSalesTeam, array(
 			'dvs_id' => (int) $aInvites['dvs_id'],
-			'user_id' => (int) $iUserId,
-            'time_stamp' => PHPFOX_TIME
+			'user_id' => (int) $iUserId
 		));
 		
 		$this->database()->delete(Phpfox::getT('ko_dvs_salesteam_invites'), 'invite_id = ' . (int) $aInvites['invite_id']);
@@ -46,8 +45,7 @@ class Dvs_Service_Salesteam_Process extends Phpfox_Service {
 	public function add($iDvsId, $iUserId) {
 		$iSalesteamId = $this->database()->insert($this->_tSalesTeam, array(
 			'dvs_id' => (int) $iDvsId,
-			'user_id' => (int) $iUserId,
-            'time_stamp' => PHPFOX_TIME
+			'user_id' => (int) $iUserId
 		));
 
 		return $iSalesteamId;
