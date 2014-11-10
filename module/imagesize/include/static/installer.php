@@ -59,5 +59,5 @@ if (!class_exists('PhpfoxplusImagesizeInstaller')) {
     }
 }
 
-$oInstaller = new PhpfoxplusImagesizeInstaller($sVersion);
-$oInstaller->{$sType}();
+/*$oInstaller = new PhpfoxplusImagesizeInstaller($sVersion);
+$oInstaller->{$sType}();*/

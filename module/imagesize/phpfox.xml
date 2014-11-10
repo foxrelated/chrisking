@@ -5,7 +5,7 @@
 		<is_core>0</is_core>
 		<is_active>1</is_active>
 		<is_menu>1</is_menu>
-		<menu><![CDATA[a:1:{s:33:"imagesize.admin_menu_build_images";a:1:{s:3:"url";a:1:{i:0;s:9:"imagesize";}}}]]></menu>
+		<menu><![CDATA[a:2:{s:33:"imagesize.admin_menu_build_images";a:1:{s:3:"url";a:1:{i:0;s:9:"imagesize";}}s:39:"imagesize.admin_menu_build_email_images";a:1:{s:3:"url";a:2:{i:0;s:9:"imagesize";i:1;s:5:"email";}}}]]></menu>
 		<phrase_var_name>module_imagesize</phrase_var_name>
 	</data>
 	<settings>
@@ -23,5 +23,6 @@
 		<phrase module_id="imagesize" version_id="3.7.5" var_name="module_imagesize" added="1406187613">Image Sizes for DVS - PhpfoxPlus.com</phrase>
 		<phrase module_id="imagesize" version_id="3.7.5" var_name="setting_bc_image_sizes" added="1406187990"><![CDATA[<title>Brightcove Image Sizes</title><info>Brightcove Image Sizes</info>]]></phrase>
 		<phrase module_id="imagesize" version_id="3.7.5" var_name="admin_menu_build_images" added="1406194953">Build images</phrase>
+		<phrase module_id="imagesize" version_id="3.7.5" var_name="admin_menu_build_email_images" added="1414839116">Build Email Images</phrase>
 	</phrases>
 </module>
