@@ -20,7 +20,8 @@ class Dvs_Component_Block_Get_Price extends Phpfox_Component {
 		$this->template()
 				->assign(array(
 					'aVideo' => Phpfox::getService('dvs.video')->get($this->getParam('sRefId')),
-					'aDvs' => Phpfox::getService('dvs')->get($this->getParam('iDvsId'), false)
+					'aDvs' => Phpfox::getService('dvs')->get($this->getParam('iDvsId'), false),
+                    'sBrowser' => Phpfox::getService('dvs')->getBrowser()
 		));
 	}
 
