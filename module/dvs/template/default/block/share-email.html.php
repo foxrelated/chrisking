@@ -125,7 +125,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </ul>
             <ul>
                 <li>
-                    <input type="text" name="val[my_share_email]" id="my_share_email" placeholder="{phrase var='dvs.your_email'}" value="{$your_email}" required class="inputShare"/>
+                    <input type="email" name="val[my_share_email]" id="my_share_email" placeholder="{phrase var='dvs.your_email'}" value="{$your_email}" required class="inputShare"/>
                 </li>
             </ul>
             
