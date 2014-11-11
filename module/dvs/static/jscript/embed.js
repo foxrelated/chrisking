@@ -1,7 +1,6 @@
 if (!window.WTVDVS) {
     window.WTVDVS = {
         render_iframe:function (params) {
-        	console.log('Start build iFrame');
             var sParentUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + window.location.search;
             var height = params.height, width = params.width;
             var wrapper = document.getElementById(params.id);

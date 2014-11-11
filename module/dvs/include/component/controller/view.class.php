@@ -113,8 +113,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		$aOverviewVideos = Phpfox::getService('dvs.video')->getOverviewVideos($aDvs['dvs_id']);
 
 		//Here we shift array keys to start at 1 so thumbnails play the proper videos when we load a featured video or override video on to the front of the array
-		array_unshift($aOverviewVideos, '');
-		unset($aOverviewVideos[0]);
+		//array_unshift($aOverviewVideos, '');
+		//unset($aOverviewVideos[0]);
 
 		if ($sOverride) {
 			$aOverrideVideo = Phpfox::getService('dvs.video')->get($sOverride, true);
@@ -123,35 +123,22 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 		}
  
 		//Dupe check
-		if (!empty($aOverrideVideo) || !empty($aFeaturedVideo))
-		{
-			foreach ($aOverviewVideos as $iKey => $aVideo)
-			{
-				if ($iKey == 0)
-				{
-					//Don't unset the featured video
-					continue;
-				}
-
-				if ((!empty($aFeaturedVideo) && $aVideo['id'] == $aFeaturedVideo['id']) || (!empty($aOverrideVideo) && $aVideo['id'] == $aOverrideVideo['id']))
-				{
-					//Remove dupe
-					//unset($aOverviewVideos[$iKey]);
+		if (!empty($aOverrideVideo) || !empty($aFeaturedVideo)) {
+			foreach ($aOverviewVideos as $iKey => $aVideo) {
+				if ((!empty($aFeaturedVideo) && $aVideo['id'] == $aFeaturedVideo['id']) || (!empty($aOverrideVideo) && $aVideo['id'] == $aOverrideVideo['id'])) {
+					unset($aOverviewVideos[$iKey]);
 				}
 			}
 		}
 
-		if ($aOverrideVideo)
-		{
+		if ($aOverrideVideo) {
+            array_unshift($aOverviewVideos, $aOverrideVideo);
 			$aFirstVideo = $aOverrideVideo;
-		}
-		else if ($aFeaturedVideo)
-		{
+		} else if ($aFeaturedVideo) {
+            array_unshift($aOverviewVideos, $aFeaturedVideo);
 			$aFirstVideo = $aFeaturedVideo;
-		}
-		else
-		{
-			$aFirstVideo = $aOverviewVideos[1];
+		} else {
+			$aFirstVideo = $aOverviewVideos[0];
 		}
 		/*phpmasterminds Edited for sort in gallery and footer starts*/
 		/*foreach($aOverviewVideos as $ik=>$aVal)
@@ -334,7 +321,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
             $sVdpIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
             $sVdpIframeUrl .= '&utm_campaign=DVS Inventory';
         }
-		
+
 		$this->template()
 			->setTemplate('dvs-view')
 			->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
