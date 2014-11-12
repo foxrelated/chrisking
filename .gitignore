@@ -3,3 +3,9 @@
 /.htaccess
 /include/setting/dev.sett.php
 /include/setting/server.sett.php
+.project
+include/setting/1dev.sett.php
+module/dvs/static/jscript/vin2-bak.js
+module/dvs/template/default/controller/vin/script.html-bak.php
+README.md
+robots.txt
