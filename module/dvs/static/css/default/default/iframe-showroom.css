@@ -458,12 +458,14 @@ cursor:pointer;
 }
 
 #contact_box {
-background: #000;
-display: inline-block;
-vertical-align:top;
-margin-top: 10px;
-padding: 10px;
--webkit-border-radius: 10px;
--moz-border-radius: 10px;
-border-radius: 10px;
+    background: #000;
+    display: inline-block;
+    vertical-align:top;
+    margin-top: 10px;
+    padding: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    min-height: 320px;
+    min-width: 235px;
 }
