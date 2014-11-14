@@ -1,0 +1,5 @@
+/.idea/
+/file/
+/.htaccess
+/include/setting/server.sett.php
+/include/setting/dev.sett.php
