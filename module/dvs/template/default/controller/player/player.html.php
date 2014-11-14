@@ -12,6 +12,21 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @package 		DVS
  */
 ?>
+<style type="text/css">
+    #myExperience {l}
+        display: block;
+        {if $bIsDvs}
+        width: 720px;
+        height: 408px;
+        {else}
+        width: {$iPlayerWidth}px;
+        height: {$iPlayerHeight}px;
+        {/if}
+
+    {r}
+</style>
+
+
 {if !empty($sJavascript)}{$sJavascript}{/if}
 <script type="text/javascript">
 	var aMediaIds = [];
@@ -215,8 +230,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{/if}
 </div>
 {/if}
-{/if}
 
+
+{/if}
 <object id="myExperience" class="BrightcoveExperience">
 	<param name="bgcolor" value="#FFFFFF" />
 	<param name="wmode" value="transparent" />
@@ -234,6 +250,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<param name="playerID" value="1418431455001" />
 		<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
 	{/if}
+	{if $bIsExternal}
+		<!-- external player -->
+		<param name="playerID" value="{$iPlayerId}" />
+		<param name="playerKey" value="{$sPlayerKey}" />
+	{else}
+		<!-- default player -->
+		<param name="playerID" value="1418431455001" />
+		<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
+	{/if}	
 	<param name="isVid" value="true" />
 	<param name="isUI" value="true" />
 	<param name="dynamicStreaming" value="true" />
@@ -247,10 +272,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<param name="accountID" value="{$aPlayer.google_id}" />
 		{/if}
 	{/if}
-	<param name="showNoContentMessage" value="false" />
+	<param name="showNoContentMessage" value="false" />	
 	{if $sBrowser == 'ipad'}
 		<param name="includeAPI" value="true" />
-		<param name="templateLoadHandler?" value="onTemplateLoad" />
+		<param name="templateLoadHandler﻿" value="onTemplateLoad" />
 		<param name="templateLoadHandler" value="onTemplateLoaded" />
 		<param name="templateReadyHandler" value="onTemplateReady" />
 	{else}
