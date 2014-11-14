@@ -133,8 +133,8 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
         $aOverviewVideos = Phpfox::getService('dvs.video')->getOverviewVideos($aDvs['dvs_id']);
 
         //Here we shift array keys to start at 1 so thumbnails play the proper videos when we load a featured video or override video on to the front of the array
-        array_unshift($aOverviewVideos, '');
-        unset($aOverviewVideos[0]);
+        //array_unshift($aOverviewVideos, '');
+        //unset($aOverviewVideos[0]);
 
         if ($sOverride) {
             $aOverrideVideo = Phpfox::getService('dvs.video')->get($sOverride, true);
@@ -142,37 +142,23 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             $aOverrideVideo = array();
         }
 
-
         //Dupe check
-        $bIsInDvs = false;
         if (!empty($aOverrideVideo) || !empty($aFeaturedVideo)) {
             foreach ($aOverviewVideos as $iKey => $aVideo) {
-                if(!empty($aOverrideVideo) && $aVideo['id'] == $aOverrideVideo['id']) {
-                    $bIsInDvs = true;
-                }
-
-                if ($iKey == 0) {
-                    //Don't unset the featured video
-                    continue;
-                }
-
                 if ((!empty($aFeaturedVideo) && $aVideo['id'] == $aFeaturedVideo['id']) || (!empty($aOverrideVideo) && $aVideo['id'] == $aOverrideVideo['id'])) {
-                    //Remove dupe
-                    //unset($aOverviewVideos[$iKey]);
+                    unset($aOverviewVideos[$iKey]);
                 }
             }
         }
 
-        if(!$bIsInDvs && count($aOverrideVideo)) {
-            $aOverviewVideos[] = $aOverrideVideo;
-        }
-
         if ($aOverrideVideo) {
+            array_unshift($aOverviewVideos, $aOverrideVideo);
             $aFirstVideo = $aOverrideVideo;
         } else if ($aFeaturedVideo) {
+            array_unshift($aOverviewVideos, $aFeaturedVideo);
             $aFirstVideo = $aFeaturedVideo;
         } else {
-            $aFirstVideo = $aOverviewVideos[1];
+            $aFirstVideo = $aOverviewVideos[0];
         }
 
         $aCurrentVideo = 0;

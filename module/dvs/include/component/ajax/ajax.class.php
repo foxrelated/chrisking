@@ -1699,44 +1699,42 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         $this->call('$("#video_name a").attr("href", $(\'#parent_url\').val().replace(\'WTVDVS_VIDEO_TEMP\', \'' . $aVideo['video_title_url'] . '\'));');
     }
 
-    public function contactDealerIframe()
-    {
+    public function contactDealerIframe() {
         $aVals = Phpfox::getLib('request')->getArray('val');
         $sErrorText = '';
         $bIsError = false;
 
-        if (!$aVals['contact_name'] && Phpfox::getParam('dvs.get_price_validate_name'))
-        {
+        if (Phpfox::getParam('dvs.get_price_validate_name') && (!$aVals['contact_name'] || ($aVals['contact_name'] == Phpfox::getPhrase('dvs.get_price_placeholder_name')))) {
             $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_name');
             $this->call('$("#contact_dealer #name").addClass("required");');
             $bIsError = true;
         }
-        if (!$aVals['contact_email'] && Phpfox::getParam('dvs.get_price_validate_email'))
-        {
+
+        if (Phpfox::getParam('dvs.get_price_validate_email') && (!$aVals['contact_email'] || ($aVals['contact_email'] == Phpfox::getPhrase('dvs.get_price_placeholder_email')))) {
             if(!$sErrorText) {
                 $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_email_address');
             }
             $this->call('$("#contact_dealer #email").addClass("required");');
             $bIsError = true;
         }
-        if (!$aVals['contact_phone'] && Phpfox::getParam('dvs.get_price_validate_phone'))
-        {
+
+        if (Phpfox::getParam('dvs.get_price_validate_phone') && (!$aVals['contact_phone'] || ($aVals['contact_phone'] == Phpfox::getPhrase('dvs.get_price_placeholder_phone')))) {
             if(!$sErrorText) {
                 $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_phone_number');
             }
             $this->call('$("#contact_dealer #phone").addClass("required");');
             $bIsError = true;
         }
-        if (!$aVals['contact_zip'] && Phpfox::getParam('dvs.get_price_validate_zip_code'))
-        {
+
+        if (Phpfox::getParam('dvs.get_price_validate_zip_code') && (!$aVals['contact_zip'] || ($aVals['contact_zip'] == Phpfox::getPhrase('dvs.get_price_placeholder_zip')))) {
             if(!$sErrorText) {
                 $sErrorText = Phpfox::getPhrase('dvs.please_enter_your_zip_code');
             }
             $this->call('$("#contact_dealer #zip").addClass("required");');
             $bIsError = true;
         }
-        if (!$aVals['contact_comments'] && Phpfox::getParam('dvs.get_price_validate_comments'))
-        {
+
+        if (Phpfox::getParam('dvs.get_price_validate_comments') && (!$aVals['contact_comments'] || ($aVals['contact_comments'] == Phpfox::getPhrase('dvs.get_price_placeholder_comments')))) {
             if(!$sErrorText) {
                 $sErrorText = Phpfox::getPhrase('dvs.please_enter_comments');
             }
@@ -1744,8 +1742,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             $bIsError = true;
         }
 
-        if (!$bIsError)
-        {
+        if (!$bIsError) {
             $this->call("$('#contact_dealer').hide();");
             $this->call("$('#dvs_contact_success').show();");
             $this->call("setTimeout(function() { $('#dvs_contact_success').hide(); $('#contact_dealer').show(); $('.inputContact').val(''); }, 2000);");
