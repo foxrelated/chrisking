@@ -151,13 +151,21 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             }
         }
 
-        if ($aOverrideVideo) {
-            array_unshift($aOverviewVideos, $aOverrideVideo);
-            $aFirstVideo = $aOverrideVideo;
-        } else if ($aFeaturedVideo) {
+        $bIsSetFirstVideo = false;
+
+        if ($aFeaturedVideo) {
+            $bIsSetFirstVideo = true;
             array_unshift($aOverviewVideos, $aFeaturedVideo);
             $aFirstVideo = $aFeaturedVideo;
-        } else {
+        }
+
+        if ($aOverrideVideo) {
+            $bIsSetFirstVideo = true;
+            array_unshift($aOverviewVideos, $aOverrideVideo);
+            $aFirstVideo = $aOverrideVideo;
+        }
+
+        if(!$bIsSetFirstVideo) {
             $aFirstVideo = $aOverviewVideos[0];
         }
 
