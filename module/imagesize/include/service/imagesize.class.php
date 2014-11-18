@@ -169,16 +169,17 @@ class Imagesize_Service_Imagesize extends Phpfox_Service {
             $aSizes = Phpfox::getParam('imagesize.bc_image_sizes');
             foreach ($aSizes as $iSize) {
                 $oImage->createThumbnail(Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, ''), Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_' . $iSize), $iSize, $iSize);
+                $this->createEmailThumb(Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_' . $iSize), Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_email_' . $iSize), $iSize);
             }
 
             /** BUILD EMAIL THUMBNAIL IMAGE */
-            $oImage->createThumbnail(Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, ''), Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_300'), 300, 300);
-            $this->createEmailThumb(Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_300'), Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_email'));
+            /*$oImage->createThumbnail(Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, ''), Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_300'), 300, 300);
+            $this->createEmailThumb(Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_300'), Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_email'));*/
 
 
-            $aSql['is_resize'] = 1;
+            $aSql['is_resize'] = 2;
         } else {
-            $aSql['is_resize'] = 1;
+            $aSql['is_resize'] = 2;
         }
         /**
          * $aSql['is_resize']
@@ -190,7 +191,28 @@ class Imagesize_Service_Imagesize extends Phpfox_Service {
         return $aSql['is_resize'];
     }
 
-    public function getCount() {
+    public function createEmailImage($iBrightcoveId, $bIsUpdate = false) {
+        $aBrightCove = $this->getBrightcove($iBrightcoveId);
+        $aSizes = Phpfox::getParam('imagesize.bc_image_sizes');
+        foreach ($aSizes as $iSize) {
+            $sFileFullPath = Phpfox::getParam('brightcove.dir_image') . sprintf($aBrightCove['image_path'], '_' . $iSize);
+            if(file_exists($sFileFullPath)) {
+                $this->createEmailThumb($sFileFullPath, Phpfox::getParam('brightcove.dir_image') . sprintf($aBrightCove['image_path'], '_email_' . $iSize), $iSize);
+            }
+        }
+
+        $this->database()->update($this->_sTable, array('is_resize' => 2), 'ko_id = ' . (int)$iBrightcoveId);
+
+        return true;
+    }
+
+    public function getCount($bForEmail = false) {
+        if($bForEmail) {
+            $sWhere = 'is_resize > 1';
+        } else {
+            $sWhere = 'is_resize > 0';
+        }
+
         $iTotal = $this->database()
             ->select('COUNT(ko_id)')
             ->from($this->_sTable)
@@ -199,24 +221,37 @@ class Imagesize_Service_Imagesize extends Phpfox_Service {
         $iCompleted = $this->database()
             ->select('COUNT(ko_id)')
             ->from($this->_sTable)
-            ->where('is_resize > 0')
+            ->where($sWhere)
             ->execute('getField');
 
         return array($iTotal, $iCompleted);
     }
 
-    public function getNextItem() {
+    public function getNextItem($bForEmail = false) {
+        if($bForEmail) {
+            $sWhere = 'is_resize = 1';
+        } else {
+            $sWhere = 'is_resize = 0';
+        }
+
         $aRow = $this->database()
             ->select('ko_id, name')
             ->from($this->_sTable)
-            ->where('is_resize = 0')
+            ->where($sWhere)
             ->execute('getRow');
         return $aRow;
     }
 
-    public function createEmailThumb($sFile, $sNewFile) {
+    public function createEmailThumb($sFile, $sNewFile, $iSize = 300) {
         $oFile = Phpfox::getLib('file');
-        $oStamp = imagecreatefrompng(PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'static' . PHPFOX_DS . 'image' .PHPFOX_DS . 'play_btn_75.png');
+        if($iSize <= 100) {
+            $oStamp = imagecreatefrompng(PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'static' . PHPFOX_DS . 'image' .PHPFOX_DS . 'play_btn_20.png');
+        } elseif($iSize <= 300) {
+            $oStamp = imagecreatefrompng(PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'static' . PHPFOX_DS . 'image' .PHPFOX_DS . 'play_btn_50.png');
+        } else {
+            $oStamp = imagecreatefrompng(PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'static' . PHPFOX_DS . 'image' .PHPFOX_DS . 'play_btn_75.png');
+        }
+
 
         if ($this->_sExt) {
             if(!$aMeta = $oFile->getMeta($sFile)) {

@@ -30,8 +30,10 @@ defined('PHPFOX') or exit('NO DICE!');
 
         body {l}
             background-attachment: {$aDvs.background_attachment_type};
+            {if isset($iBackgroundOpacity)}
             opacity: {$iBackgroundOpacity / 100};
             filter:alpha(opacity={$iBackgroundOpacity});
+            {/if}
             z-index: -1;
             /* keep the bg image aligned properly */
             background-position:center top;

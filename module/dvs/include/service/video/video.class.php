@@ -745,6 +745,84 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 		return ($bSingleVideo ? $aVideos[0] : $aVideos);
 	}
 
+    public function getRelatedVideo($aVideo, $iDvsId) {
+        if(!in_array($aVideo['year'], Phpfox::getParam('dvs.vf_video_select_allowed_years'))) {
+            return array();
+        }
+
+        $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+        $aPlayer = Phpfox::getService('dvs.player')->get($iDvsId);
+        $aMakes = array();
+        foreach($aPlayer['makes'] as $aMake) {
+            $aMakes[] = '\'' . $aMake['make'] . '\'';
+        }
+
+        if(in_array($aVideo['year'], explode(',', Phpfox::getParam('research.new_model_year')))) {
+            $sWhere = '1';
+            $sWhere .= ' AND make IN (' . implode(',' , $aMakes) . ')';
+
+
+            if(Phpfox::getParam('dvs.vf_related_force_same_year')) {
+                $sWhere .= ' AND year = ' . (int)$aVideo['year'];
+            }
+
+            if(Phpfox::getParam('dvs.vf_related_force_same_make')) {
+                $sWhere .= ' AND make = \'' . $aVideo['make'] . '\'';
+            }
+
+            if(Phpfox::getParam('dvs.vf_related_force_same_model')) {
+                $sWhere .= ' AND model = \'' . $aVideo['model'] . '\'';
+            }
+
+            if(Phpfox::getParam('dvs.vf_related_force_same_body_style')) {
+                $sWhere .= ' AND bodyStyle = \'' . $aVideo['bodyStyle'] . '\'';
+            }
+
+            $aRows = $this->database()
+                ->select('*')
+                ->from($this->_tVideos)
+                ->order('year DESC')
+                ->where($sWhere)
+                ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
+                ->execute('getRows');
+
+            return $aRows;
+        }
+
+        if(!in_array($aVideo['year'], explode(',', Phpfox::getParam('research.used_model_year_exclusion')))) {
+            $sWhere = 'i.dealer_id = \'' . $aDvs['dealer_id'] . '\'';
+
+            if(Phpfox::getParam('dvs.vf_related_force_same_year_used')) {
+                $sWhere .= ' AND i.year = ' . (int)$aVideo['year'];
+            }
+
+            if(Phpfox::getParam('dvs.vf_related_force_same_make_used')) {
+                $sWhere .= ' AND i.make = \'' . $aVideo['make'] . '\'';
+            }
+
+            if(Phpfox::getParam('dvs.vf_related_force_same_model')) {
+                $sWhere .= ' AND i.model = \'' . $aVideo['model'] . '\'';
+            }
+
+            if(Phpfox::getParam('dvs.vf_related_force_same_body_style')) {
+                $sWhere .= ' AND v.bodyStyle = \'' . $aVideo['bodyStyle'] . '\'';
+            }
+
+            $aRows = $this->database()
+                ->select('i.inventory_id, v.*')
+                ->from(Phpfox::getT('tbd_dvs_inventory'), 'i')
+                ->leftJoin($this->_tVideos, 'v' ,'i.referenceId = v.referenceId')
+                ->where($sWhere)
+                ->order('i.year DESC')
+                ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
+                ->execute('getRows');
+
+            return $aRows;
+        }
+
+        return array();
+    }
+
     public function getValidVSMakesByDealer($iYear, $aMakes, $sDealerId) {
         if(in_array($iYear, explode(',', Phpfox::getParam('research.new_model_year')))) {
             $aWhere = array();

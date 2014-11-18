@@ -12,6 +12,21 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @package 		DVS
  */
 ?>
+<style type="text/css">
+    #myExperience {l}
+        display: block;
+        {if $bIsDvs}
+        width: 720px;
+        height: 408px;
+        {else}
+        width: {$iPlayerWidth}px;
+        height: {$iPlayerHeight}px;
+        {/if}
+
+    {r}
+</style>
+
+
 {if !empty($sJavascript)}{$sJavascript}{/if}
 <script type="text/javascript">
 	var aMediaIds = [];
