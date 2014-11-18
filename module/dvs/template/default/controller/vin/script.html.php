@@ -6,6 +6,10 @@
     urlElement.innerHTML = '{$sButtonText}';
     urlElement.setAttribute('href', '{$aRow.url}');
     urlElement.style.display = 'block';
+    urlElement.setAttribute('href', '{$aRow.url}');
+    {if !$aDvs.vpd_popup}
+    urlElement.setAttribute('onClick', 'return true;');
+    {/if}
     {/if}
     loadingElement.style.display = 'none';
 {/foreach}

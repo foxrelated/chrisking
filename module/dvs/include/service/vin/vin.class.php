@@ -129,14 +129,21 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
             if (Phpfox::getParam('dvs.dvs_info_video_url_replacement')) {
                 $aCompletedRow['url'] .= '-' . $aDvs['title_url'] . '-' . strtolower(str_replace(' ', '-', $aDvs['city'])) . '-' . strtolower(str_replace(' ', '-', $aDvs['state_string']));
             }
-            
-            if ($aDvs['sitemap_parent_url'] && $aDvs['parent_video_url']) {
-                $sOverrideLink = str_replace('WTVDVS_VIDEO_TEMP', $aCompletedRow['url'], $aDvs['parent_video_url']) . '&vdp=1';
-            } else {
+            if($aDvs['vpd_popup']) {
                 if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
-                    $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array($aCompletedRow['url'])) . 'vdp_1/';
+                    $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array('dvs-vdp-iframe', $aCompletedRow['url']));
                 } else {
-                    $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aCompletedRow['url'])) . 'vdp_1/';
+                    $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], 'dvs-vdp-iframe', $aCompletedRow['url']));
+                }
+            } else {
+                if ($aDvs['sitemap_parent_url'] && $aDvs['parent_video_url']) {
+                    $sOverrideLink = str_replace('WTVDVS_VIDEO_TEMP', $aCompletedRow['url'], $aDvs['parent_video_url']) . '&vdp=1';
+                } else {
+                    if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
+                        $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array($aCompletedRow['url'])) . 'vdp_1/';
+                    } else {
+                        $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aCompletedRow['url'])) . 'vdp_1/';
+                    }
                 }
             }
 
