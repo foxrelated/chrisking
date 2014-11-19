@@ -151,15 +151,14 @@ class Dvs_Component_Controller_Index extends Phpfox_Component
 
 		list($aDvss, $iCnt) = Phpfox::getService('dvs')->listDvss($iPage, $iPageSize, Phpfox::getUserId(), true, Phpfox::getUserParam('dvs.can_view_other_dvs'));
 
-		if ($iCnt < Phpfox::getUserParam('dvs.dvss'))
-		{
+		if ($iCnt < Phpfox::getUserParam('dvs.dvss')) {
 			$bCanAddDvss = true;
-		}
-		else
-		{
+		} else {
 			$bCanAddDvss = false;
 		}
-Phpfox::getLib('pager')->set(array('page' => $iPage, 'size' => $iPageSize, 'count' => $iCnt));
+
+        Phpfox::getLib('pager')->set(array('page' => $iPage, 'size' => $iPageSize, 'count' => $iCnt));
+
 		$this->template()
 				->assign(array(
 					'sMessage' => $sMessage,

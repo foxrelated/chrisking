@@ -1,11 +1,35 @@
+{literal}
+<style type="text/css">
+    #dvs_bc_player {
+        width: 720px;
+        height: 408px;
+    }
+
+    body {
+        background-color: {/literal}#{$aDvs.player_background}{literal};
+        padding-top: 15px;
+    }
+
+    #video_information {
+        width: 100%;
+        margin-top: 0px;
+        width: 100%;
+    }
+
+    #video_information h3, #video_information a {
+        color: #000000;
+        padding:0px;
+        margin: 0px;
+    }
+</style>
+{/literal}
 <article>
+    <section id="video_information">
+        <h3 id="video_name">
+            <a onclick="return false;" id="current_video_link">{$aDvs.phrase_overrides.override_video_name_display}</a>
+        </h3>
+    </section>
     <section id="player">
-        <style type="text/css">
-            #dvs_bc_player {l}
-            width: 720px;
-            height: 408px;
-            {r}
-        </style>
         {if !empty($sJavascript)}{$sJavascript}{/if}
         <script type="text/javascript">
             var aMediaIds = [];
@@ -222,16 +246,6 @@
             <button type="button" id="chapter_container_MPG" class="disabled no_display" onclick="changeCuePoint('MPG');"></button>
             <button type="button" id="chapter_container_Honors" class="disabled no_display" onclick="changeCuePoint('Honors');"></button>
             <button type="button" id="chapter_container_Summary" class="disabled display" onclick="changeCuePoint('Summary');"></button>
-            {if (Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req2') == 'iframe') || (!Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req3') == 'iframe')}
-            {else}
-            {if $bIsDvs && !$bPreview}
-            <button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPrice(); return false;"></button>
-            {elseif !$bIsExternal && !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}
-            <button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceIDrive(); return false;"></button>
-            {elseif $bIsExternal && $bShowGetPrice}
-            <button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="getPriceExternal('{$sEmail}');"></button>
-            {/if}
-            {/if}
         </section>
 
         {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}

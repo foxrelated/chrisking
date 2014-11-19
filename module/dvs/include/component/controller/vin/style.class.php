@@ -9,6 +9,10 @@ class Dvs_Component_Controller_Vin_Style extends Phpfox_Component {
             'loading_image' => Phpfox::getLib('image.helper')->display(array(
                 'theme' => 'ajax/add.gif',
                 'return_url' => true
+            )),
+            'close_btn' => Phpfox::getLib('image.helper')->display(array(
+                'theme' => 'layout/modal_close_icon.png',
+                'return_url' => true
             ))
         );
 
