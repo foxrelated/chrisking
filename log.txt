@@ -19,6 +19,9 @@ Step 2: Create new settings for Used Videos:
 661 dvs.vf_related_force_same_body_style_used
 
 *****************************************************   #222   *****************************************************
-###DATABASE:
+### DATABASE:
     - CREATE "phpfox_tbd_dvs_vdp_files" table
     - ALTER TABLE `phpfox_ko_dvs_style` ADD `vdp_file_id` INT(11) UNSIGNED NOT NULL AFTER `background_file_id`;
+
+### DIRECTORY
+    - CREATE /file/dvs/vdp/ directory
