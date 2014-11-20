@@ -231,3 +231,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {/if}
 
 {module name='dvstour.addtour'} <!--nplkoder add this line-->
+
+
+{if !$aDvs.is_active}
+    {template file='dvs.block.deactive'}
+    <script type="text/javascript">
+        $Behavior.googleDvsDeactive = function() {l}
+            {if $sBrowser == 'mobile'}
+                sendToGoogle('DVS Mobile', 'DVS Deactivated', 'Deactivation Message Shown');
+            {else}
+                sendToGoogle('DVS Site', 'DVS Deactivated', 'Deactivation Message Shown');
+            {/if}
+        {r}
+    </script>
+{/if}

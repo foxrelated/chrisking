@@ -1,0 +1,22 @@
+#cssmenu ul li.activity_button a {
+    background: none;
+    box-shadow: none;
+    padding: 0px;
+}
+
+#global_ajax_message {
+    position:fixed;
+    background:#CEEEB2;
+    top:0px;
+    left:0px;
+    color:#000;
+    font-weight:bold;
+    font-size:10pt;
+    text-align:left;
+    z-index:1000000;
+    width:100%;
+    height:70px;
+    line-height:70px;
+    text-align:center;
+    display:none;
+}

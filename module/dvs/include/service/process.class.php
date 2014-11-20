@@ -184,7 +184,9 @@ class Dvs_Service_Process extends Phpfox_Service {
 		$this->database()->query("UPDATE " . $this->_sTable . " SET total_emails_sent  = total_emails_sent + 1 WHERE dvs_id = " . (int) $iDvsId);
 	}
 
-
+    public function updateActivity($iId, $iType) {
+        return $this->database()->update($this->_sTable, array('is_active' => (int) ($iType)), 'dvs_id = ' . (int) $iId);
+    }
 }
 
 ?>

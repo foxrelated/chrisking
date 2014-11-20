@@ -1894,5 +1894,11 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
         $this->html('#video_items', $this->getContent(false));
     }
+
+    public function updateActivity() {
+        if (Phpfox::getService('dvs.process')->updateActivity($this->get('id'), $this->get('active'))) {
+
+        }
+    }
 }
 ?>
