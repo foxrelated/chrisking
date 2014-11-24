@@ -1477,7 +1477,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 		// Add each model to the drop down.
 		foreach ($aModels as $aModel) {
-			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.videoSelect\', \'sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=' . $iDvsId . '&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
+			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.videoSelect\', \'sReferenceId=' . $aModel['referenceId'] . '&amp;sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=' . $iDvsId . '&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
 		}
 
 		$sSelectOptions .= '</ul></li>';
@@ -1550,21 +1550,25 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 	 */
 	public function videoSelect()
 	{
-		$iYear = $this->get('iYear');
+		/*$iYear = $this->get('iYear');
 		$sMake = $this->get('sMake');
 		$sModel = $this->get('sModel');
 		$sPlaylistBorder = $this->get('sPlaylistBorder');
-		$iDvsId = $this->get('iDvsId');
-		$aDvs = Phpfox::getService('dvs')->get($iDvsId);
+		$aDvs = Phpfox::getService('dvs')->get($iDvsId);*/
+
+        $iDvsId = $this->get('iDvsId');
+        $sReferenceId = $this->get('sReferenceId');
 		Phpfox::getService('dvs.video')->setDvs($iDvsId);
 
-		$aVideos = array();
+		/*$aVideos = array();
         if(in_array($iYear, explode(',', Phpfox::getParam('research.new_model_year')))) {
             $aVideos = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, $sModel);
             $aVideos = array_merge($aVideos, Phpfox::getService('dvs.video')->getRelated($aVideos[0]));
         } elseif(!in_array($iYear, explode(',', Phpfox::getParam('research.used_model_year_exclusion')))) {
             $aVideos = Phpfox::getService('dvs.video')->getModelsByYearMakeDvs($iDvsId, $iYear, $sMake);
-        }
+        }*/
+        $aVideo = Phpfox::getService('dvs.video')->get($sReferenceId);
+        $aVideos = Phpfox::getService('dvs.video')->getRelatedVideo($aVideo, $iDvsId);
 
 		//Build media id js array
 		$this->call('aVideoSelectMediaIds = [];');
