@@ -384,10 +384,10 @@ background-color: #c35f54;
                             {if Phpfox::isAdmin()}
                             <li class="active activity_button">
                                 <div class="js_item_is_active"{if !$aDvs.is_active} style="display:none;"{/if}>
-                                    <a href="#?call=dvs.updateActivity&amp;id={$aDvs.dvs_id}&amp;active=0" class="js_item_active_link" title="Deactivate">{img theme='misc/bullet_green.png' alt=''}</a>
+                                    <a href="#?call=dvs.updateActivity&amp;id={$aDvs.dvs_id}&amp;active=0" class="js_item_active_link" title="Deactivate"><span>Active</span></a>
                                 </div>
                                 <div class="js_item_is_not_active"{if $aDvs.is_active} style="display:none;"{/if}>
-                                    <a href="#?call=dvs.updateActivity&amp;id={$aDvs.dvs_id}&amp;active=1" class="js_item_active_link" title="Active">{img theme='misc/bullet_red.png' alt=''}</a>
+                                    <a href="#?call=dvs.updateActivity&amp;id={$aDvs.dvs_id}&amp;active=1" class="js_item_active_link" title="Active"><span>Not Active</span></a>
                                 </div>
                             </li>
                             {/if}

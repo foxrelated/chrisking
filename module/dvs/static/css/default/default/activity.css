@@ -1,7 +1,16 @@
 #cssmenu ul li.activity_button a {
-    background: none;
-    box-shadow: none;
-    padding: 0px;
+    width: 65px;
+}
+
+#cssmenu ul li.activity_button .js_item_is_active a {
+    background: #83c783;
+    background: -moz-linear-gradient(top,  #83c783 0%, #005700 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#83c783), color-stop(100%,#005700));
+    background: -webkit-linear-gradient(top,  #83c783 0%,#005700 100%);
+    background: -o-linear-gradient(top,  #83c783 0%,#005700 100%);
+    background: -ms-linear-gradient(top,  #83c783 0%,#005700 100%);
+    background: linear-gradient(to bottom,  #83c783 0%,#005700 100%);
+
 }
 
 #global_ajax_message {
