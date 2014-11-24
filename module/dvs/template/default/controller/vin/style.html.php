@@ -1,11 +1,7 @@
 .dvs_vin_btn a,
 .dvs_vin_btn a:hover {l}
     {if $aStyle.vdp_background}
-        background: url('{$aStyle.vdp_background}') no-repeat scroll top left transparent;
         display: block;
-        height: 36px;
-        width:300px;
-        font-size: 0px;
     {else}
         display: block;
         font-weight: bold;

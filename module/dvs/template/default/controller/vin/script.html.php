@@ -3,7 +3,9 @@
     var urlElement = element.childNodes[0];
     var loadingElement = element.childNodes[1];
     {if $aRow.url}
-    urlElement.innerHTML = '{$sButtonText}';
+    {if isset($vdp_background)}
+    urlElement.innerHTML = '<img src="{$vdp_background}" alt="{$sButtonText}" title="{$sButtonText}" />';
+    {/if}
     urlElement.setAttribute('href', '{$aRow.url}');
     urlElement.style.display = 'block';
     urlElement.setAttribute('href', '{$aRow.url}');

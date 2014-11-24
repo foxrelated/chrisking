@@ -13,6 +13,12 @@ class Dvs_Component_Controller_VIN_Script extends Phpfox_Component {
             'sButtonText' => str_replace("'", "\\'", $aDvs['vin_button_label'])
         ));
 
+        if($aDvs['vdp_file_name']) {
+            $this->template()->assign(array(
+                'vdp_background' => Phpfox::getParam('core.url_file') . 'dvs/vdp/' . $aDvs['vdp_file_name']
+            ));
+        }
+
         $lastModified = filemtime(PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'include' . PHPFOX_DS . 'component' . PHPFOX_DS . 'controller' . PHPFOX_DS . 'vin' . PHPFOX_DS . 'script.class.php');
         header('Content-type: text/javascript;charset=utf-8');
         header('Cache-Control: max-age=259200');
