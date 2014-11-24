@@ -62,6 +62,7 @@
     height: 600px;
     border-radius: 10px;
     overflow: hidden;
+    position: relative;
 {r}
 
 #dvs_vin_close_btn {l}
@@ -73,4 +74,5 @@
     right: -9px;
     top: -10px;
     width: 22px;
+    z-index: 999;
 {r}
