@@ -315,6 +315,54 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		}
 	}
 
+    public function vdpFileProcess() {
+        $iUserId = $this->get('user_id');
+        $this->errorSet('#js_vdp_file_upload_message');
+
+        if ($iId = Phpfox::getService('dvs.file')->vdpFileProcess($this->get('vdp_file'), $this->get('vdp_file_id'))) {
+            $sVdpFile = $this->get('vdp_file');
+
+            if (strpos($sVdpFile, "\\")) {
+                $aParts = explode('\\', $sVdpFile);
+                if (isset($aParts[count($aParts) - 1])) {
+                    $sVdpFile = $aParts[count($aParts) - 1];
+                }
+            }
+
+            // Do we have an appropriate file extension for an image?
+            $aFilePlusExtension = explode('.', $sVdpFile);
+            // Make the submission extension lower case.
+            $sLowerCaseSubmission = strtolower($aFilePlusExtension[1]);
+            // Make the approved extension list lower case.
+            $aLowerCaseApproved = array_map('strtolower', Phpfox::getParam('dvs.allowed_file_types'));
+            // Is the extension on the list?
+            if(!in_array($sLowerCaseSubmission,$aLowerCaseApproved)){
+                $this->call('window.parent.document.getElementById(\'error_message\').innerHTML = \'Please select a valid vdp image\';window.parent.document.getElementById(\'error_message\').setAttribute("style","display:show");');
+                return false;
+            }else{
+                $this->call('window.parent.document.getElementById(\'error_message\').setAttribute("style","display:none");');
+            }
+
+            $this->attr('#js_view_vdp_file_link', 'href', Phpfox::getLib('url')->makeUrl('file', array('redirect' => $iId)))
+                ->html('#js_vdp_upload_file_name', htmlentities(addslashes($sVdpFile)))
+                ->val('.js_cache_vdp_file_id', $iId)
+                ->submit('#js_vdp_file_form')
+                ->show('#js_vdp_file_process');
+        } else {
+            $this->show('#js_vdp_file_upload_error');
+        }
+    }
+
+    public function removeVdpFile() {
+        $iVdpId = $this->get('iVdpFileId');
+
+        if (!Phpfox::getService('dvs')->hasAccess($iVdpId, Phpfox::getUserId(), 'vdp')) {
+            return false;
+        }
+
+        Phpfox::getService('dvs.file.process')->removeVdp($iVdpId);
+    }
+
 	public function prerollFileProcess()
 	{
 		$iUserId = $this->get('user_id');
@@ -1477,7 +1525,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 		// Add each model to the drop down.
 		foreach ($aModels as $aModel) {
-			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.videoSelect\', \'sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=' . $iDvsId . '&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
+			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.videoSelect\', \'sReferenceId=' . $aModel['referenceId'] . '&amp;sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=' . $iDvsId . '&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
 		}
 
 		$sSelectOptions .= '</ul></li>';
@@ -1550,21 +1598,25 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 	 */
 	public function videoSelect()
 	{
-		$iYear = $this->get('iYear');
+		/*$iYear = $this->get('iYear');
 		$sMake = $this->get('sMake');
 		$sModel = $this->get('sModel');
 		$sPlaylistBorder = $this->get('sPlaylistBorder');
-		$iDvsId = $this->get('iDvsId');
-		$aDvs = Phpfox::getService('dvs')->get($iDvsId);
+		$aDvs = Phpfox::getService('dvs')->get($iDvsId);*/
+
+        $iDvsId = $this->get('iDvsId');
+        $sReferenceId = $this->get('sReferenceId');
 		Phpfox::getService('dvs.video')->setDvs($iDvsId);
 
-		$aVideos = array();
+		/*$aVideos = array();
         if(in_array($iYear, explode(',', Phpfox::getParam('research.new_model_year')))) {
             $aVideos = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, $sModel);
             $aVideos = array_merge($aVideos, Phpfox::getService('dvs.video')->getRelated($aVideos[0]));
         } elseif(!in_array($iYear, explode(',', Phpfox::getParam('research.used_model_year_exclusion')))) {
             $aVideos = Phpfox::getService('dvs.video')->getModelsByYearMakeDvs($iDvsId, $iYear, $sMake);
-        }
+        }*/
+        $aVideo = Phpfox::getService('dvs.video')->get($sReferenceId);
+        $aVideos = Phpfox::getService('dvs.video')->getRelatedVideo($aVideo, $iDvsId);
 
 		//Build media id js array
 		$this->call('aVideoSelectMediaIds = [];');
@@ -1893,6 +1945,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         Phpfox::getBlock('dvs.share-video', array('aShareVideos' => $aShareVideos, 'aDvs' => $aDvs));
 
         $this->html('#video_items', $this->getContent(false));
+    }
+
+    public function updateActivity() {
+        if (Phpfox::getService('dvs.process')->updateActivity($this->get('id'), $this->get('active'))) {
+
+        }
     }
 }
 ?>

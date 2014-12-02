@@ -28,7 +28,8 @@ class Dvs_Service_Style_Process extends Phpfox_Service {
             'background_file_id' => (int) $aDvs['background_file_id'],
             'background_opacity' => $this->preParse()->clean($aDvs['background_opacity']),
             'background_repeat_type' => $this->preParse()->clean($aDvs['background_repeat_type']),
-            'background_attachment_type' => $this->preParse()->clean($aDvs['background_attachment_type'])
+            'background_attachment_type' => $this->preParse()->clean($aDvs['background_attachment_type']),
+            'vdp_file_id' => (int) $aDvs['vdp_file_id']
         );
 
         if(Phpfox::isAdmin()) {
@@ -66,7 +67,8 @@ class Dvs_Service_Style_Process extends Phpfox_Service {
             'background_file_id' => (int) $aDvs['background_file_id'],
             'background_opacity' => $this->preParse()->clean($aDvs['background_opacity']),
             'background_repeat_type' => $this->preParse()->clean($aDvs['background_repeat_type']),
-            'background_attachment_type' => $this->preParse()->clean($aDvs['background_attachment_type'])
+            'background_attachment_type' => $this->preParse()->clean($aDvs['background_attachment_type']),
+            'vdp_file_id' => (int) $aDvs['vdp_file_id']
         );
 
         if(Phpfox::isAdmin()) {

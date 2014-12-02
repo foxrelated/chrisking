@@ -57,11 +57,12 @@ class Dvs_Service_Style_Style extends Phpfox_Service {
 		$iDvsId = (int) $iDvsId;
 
 		$aRow = $this->database()->select('*')
-						->from($this->_sTable, 's')
-						->leftjoin(Phpfox::getT('ko_dvs_branding_files'), 'b', 'b.branding_id = s.branding_file_id')
-						->leftjoin(Phpfox::getT('ko_dvs_background_files'), 'bg', 'bg.background_id = s.background_file_id')
-						->where('s.dvs_id =' . $iDvsId)
-						->execute('getRow');
+            ->from($this->_sTable, 's')
+            ->leftjoin(Phpfox::getT('ko_dvs_branding_files'), 'b', 'b.branding_id = s.branding_file_id')
+            ->leftjoin(Phpfox::getT('ko_dvs_background_files'), 'bg', 'bg.background_id = s.background_file_id')
+            ->leftjoin(Phpfox::getT('tbd_dvs_vdp_files'), 'bv', 'bv.vdp_id = s.vdp_file_id')
+            ->where('s.dvs_id =' . $iDvsId)
+            ->execute('getRow');
 
         if(isset($aRow['font_family_id'])) {
             $aRow['font_family'] = $this->_aFontFamilies[$aRow['font_family_id']];
