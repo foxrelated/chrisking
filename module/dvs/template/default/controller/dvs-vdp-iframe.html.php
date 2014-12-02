@@ -17,7 +17,7 @@
     }
 
     #video_information h3, #video_information a {
-        color: #000000;
+        color: {/literal}#{$aPlayer.player_text}{literal};
         padding:0px;
         margin: 0px;
     }
