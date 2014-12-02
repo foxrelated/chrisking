@@ -9,3 +9,4 @@ module/dvs/static/jscript/vin2-bak.js
 module/dvs/template/default/controller/vin/script.html-bak.php
 README.md
 robots.txt
+.gitignore
