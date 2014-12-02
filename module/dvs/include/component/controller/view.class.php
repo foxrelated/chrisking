@@ -295,6 +295,12 @@ class Dvs_Component_Controller_View extends Phpfox_Component
             $sVdpIframeUrl .= '&utm_campaign=DVS Inventory';
         }
 
+        if(!$aDvs['is_active']) {
+            $this->template()->setHeader('cache', array(
+                'deactive.css' => 'module_dvs'
+            ));
+        }
+
         $this->template()
             ->setTemplate('dvs-view')
             ->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -366,7 +372,6 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                     . '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
                     . '<script type="text/javascript">' . $sDvsJs . '</script>'
             ));
-
     }
 }
 

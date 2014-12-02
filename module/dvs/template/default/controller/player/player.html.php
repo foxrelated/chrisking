@@ -13,6 +13,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 ?>
 <style type="text/css">
+    #dvs_bc_player {l}
+        width: 720px;
+        height: 526px;
+        position: relative;
+    {r}
+
+    #playlist_wrapper {l}
+        position: absolute;
+        bottom: 0px;
+    {r}
+
     #myExperience {l}
         display: block;
         {if $bIsDvs}
@@ -22,7 +33,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         width: {$iPlayerWidth}px;
         height: {$iPlayerHeight}px;
         {/if}
-
     {r}
 </style>
 

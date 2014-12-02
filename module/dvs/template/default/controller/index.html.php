@@ -381,6 +381,16 @@ background-color: #c35f54;
 						   <li class="active"><a href="#" onclick="if (confirm('{phrase var='core.are_you_sure' phpfox_squote=true}')) {left_curly} $(this).parents('#dvss:first').find('#dvs_{$aDvs.dvs_id}:first').hide('slow'); $.ajaxCall('dvs.deleteDvs', 'dvs_id={$aDvs.dvs_id}');{right_curly}"><span>Delete</span></a>
 						   </li>
 						   {/if}
+                            {if Phpfox::isAdmin()}
+                            <li class="active activity_button">
+                                <div class="js_item_is_active"{if !$aDvs.is_active} style="display:none;"{/if}>
+                                    <a href="#?call=dvs.updateActivity&amp;id={$aDvs.dvs_id}&amp;active=0" class="js_item_active_link" title="Deactivate"><span>Active</span></a>
+                                </div>
+                                <div class="js_item_is_not_active"{if $aDvs.is_active} style="display:none;"{/if}>
+                                    <a href="#?call=dvs.updateActivity&amp;id={$aDvs.dvs_id}&amp;active=1" class="js_item_active_link" title="Active"><span>Not Active</span></a>
+                                </div>
+                            </li>
+                            {/if}
 						</ul>
 						</div>
 					</td>
