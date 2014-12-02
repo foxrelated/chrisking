@@ -183,7 +183,37 @@ class Dvs_Service_File_Process extends Phpfox_Service {
 		return false;
 	}
 
+    public function addVdpFile($sVdpFileName) {
+        return $this->database()
+            ->insert(Phpfox::getT('tbd_dvs_vdp_files'), array(
+                'vdp_file_name' => $sVdpFileName,
+                'user_id' => Phpfox::getUserId(),
+                'time_stamp' => PHPFOX_TIME
+            ));
+    }
 
+    public function updateVdpFileName($iVdpFileId, $sVdpFilePath, $aExtra = array('height' => 0, 'width' => 0)) {
+        $sVdpFilePath = str_replace('%s', '', $sVdpFilePath);
+        return $this->database()
+            ->update(Phpfox::getT('tbd_dvs_vdp_files'), array(
+                'vdp_file_name' => $sVdpFilePath,
+                'vdp_img_width' => $aExtra['width'],
+                'vdp_img_height' => $aExtra['height']
+            ), 'vdp_id =' . $iVdpFileId);
+    }
+
+    public function removeVdp($iVdpFileId) {
+        $oFile = Phpfox::getLib('file');
+        $sVdpFilePath = Phpfox::getService('dvs.file')->getVdpFile($iVdpFileId);
+
+        if ($sVdpFilePath) {
+            $oFile->unlink(Phpfox::getParam('core.dir_file') . 'dvs/vdp/' . $sVdpFilePath);
+            $this->database()->delete(Phpfox::getT('tbd_dvs_vdp_files'), 'vdp_id =' . $iVdpFileId);
+            return true;
+        }
+
+        return false;
+    }
 }
 
 ?>

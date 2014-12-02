@@ -18,6 +18,9 @@ class Dvs_Service_Iframe extends Phpfox_Service {
             if($share) {
                 $sParentUrl = str_replace('&share=' . $share, '', $sParentUrl);
             }
+            if($vdp) {
+                $sParentUrl = str_replace('&vdp=' . $vdp, '', $sParentUrl);
+            }
 
             if($video) {
                 $sNewUrl = str_replace($video, 'WTVDVS_VIDEO_TEMP', $sParentUrl);
@@ -46,7 +49,7 @@ class Dvs_Service_Iframe extends Phpfox_Service {
                     'parent_url' => $sParentUrl,
                     'parent_video_url' => $sParentVideoUrl
                 ),
-            'dvs_id = ' . (int)$iDvsId);
+                'dvs_id = ' . (int)$iDvsId);
         return true;
     }
 }

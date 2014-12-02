@@ -709,13 +709,14 @@ public function aaasort (&$array, $key) {
 		}
 
 		$aDvs = $this->database()
-			->select('cc.name as state_string, t.*, s.*, b.*, bg.*, p.*, pr.*, ' . Phpfox::getUserField('u', 'dealer_user_') . ', d.*')
+			->select('cc.name as state_string, t.*, s.*, b.*, bg.*, p.*, pr.*, bv.*, ' . Phpfox::getUserField('u', 'dealer_user_') . ', d.*')
 			->from($this->_sTable, 'd')
 			->leftjoin(Phpfox::getT('country_child'), 'cc', 'cc.child_id = d.country_child_id')
 			->leftjoin(Phpfox::getT('ko_dvs_text'), 't', 't.dvs_id = d.dvs_id')
 			->leftjoin(Phpfox::getT('ko_dvs_style'), 's', 's.dvs_id = d.dvs_id')
 			->leftjoin(Phpfox::getT('ko_dvs_branding_files'), 'b', 'b.branding_id = s.branding_file_id')
 			->leftjoin(Phpfox::getT('ko_dvs_background_files'), 'bg', 'bg.background_id = s.background_file_id')
+            ->leftjoin(Phpfox::getT('tbd_dvs_vdp_files'), 'bv', 'bv.vdp_id = s.vdp_file_id')
 			->leftjoin(Phpfox::getT('ko_dvs_players'), 'p', 'p.dvs_id = d.dvs_id')
 			//->leftjoin(Phpfox::getT('ko_dvs_logo_files'), 'l', 'l.logo_id = p.logo_file_id')
 			->leftjoin(Phpfox::getT('ko_dvs_preroll_files'), 'pr', 'pr.preroll_id = p.preroll_file_id')
@@ -1056,6 +1057,18 @@ public function aaasort (&$array, $key) {
 				return true;
 			}
 		}
+
+        if ($sIdSource == 'vdp') {
+            $iOwnerId = $this->database()
+                ->select('user_id')
+                ->from(Phpfox::getT('tbd_dvs_vdp_files'))
+                ->where('vdp_id = ' . (int) $iId)
+                ->execute('getField');
+
+            if ($iOwnerId == $iUserId) {
+                return true;
+            }
+        }
 
 		if ($sIdSource == 'logo')
 		{
