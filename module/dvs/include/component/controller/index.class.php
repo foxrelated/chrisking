@@ -21,36 +21,25 @@ class Dvs_Component_Controller_Index extends Phpfox_Component
 
 		$sDvsRequest = $this->request()->get(($bSubdomainMode ? 'req1' : 'req2'));
 
-		if ($aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true))
-		{
-			if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'sitemap')
-			{
+		if ($aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true)) {
+			if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'sitemap') {
 				return Phpfox::getLib('module')->setController('dvs.dvs-sitemap');
-			}
-			else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'share')
-			{
+			} else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'share') {
 				return Phpfox::getLib('module')->setController('dvs.share');
 			}
 //			else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'reports' && $this->request()->get(($bSubdomainMode ? 'req3' : 'req4')) == 'share')
 //			{
 //				Phpfox::getLib('module')->setController('dvs.reports.share');
 //			}
-			else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'gallery')
-			{
+			else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'gallery') {
 				return Phpfox::getLib('module')->setController('dvs.gallery');
-			}
-			else if ($this->request()->get($bSubdomainMode ? 'req3' : 'req4') == 'player')
-			{
+			} else if ($this->request()->get($bSubdomainMode ? 'req3' : 'req4') == 'player') {
 				return Phpfox::getLib('module')->setController('dvs.player.player');
-			}
-
-            else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'iframe')
-            {
+			} else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'iframe') {
                 return Phpfox::getLib('module')->setController('dvs.iframe');
-            }
-
-			else
-			{
+            } else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'dvs-vdp-iframe') {
+                return Phpfox::getLib('module')->setController('dvs.dvs-vdp-iframe');
+            } else {
 				return Phpfox::getLib('module')->setController('dvs.view');
 			}
 		}
@@ -162,15 +151,14 @@ class Dvs_Component_Controller_Index extends Phpfox_Component
 
 		list($aDvss, $iCnt) = Phpfox::getService('dvs')->listDvss($iPage, $iPageSize, Phpfox::getUserId(), true, Phpfox::getUserParam('dvs.can_view_other_dvs'));
 
-		if ($iCnt < Phpfox::getUserParam('dvs.dvss'))
-		{
+		if ($iCnt < Phpfox::getUserParam('dvs.dvss')) {
 			$bCanAddDvss = true;
-		}
-		else
-		{
+		} else {
 			$bCanAddDvss = false;
 		}
-Phpfox::getLib('pager')->set(array('page' => $iPage, 'size' => $iPageSize, 'count' => $iCnt));
+
+        Phpfox::getLib('pager')->set(array('page' => $iPage, 'size' => $iPageSize, 'count' => $iCnt));
+
 		$this->template()
 				->assign(array(
 					'sMessage' => $sMessage,

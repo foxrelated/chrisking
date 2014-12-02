@@ -19,6 +19,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         event.preventDefault();
 
         // do whatever you want here
+        $('.share_email_field').hide();
+        $('#loading_email_img').show();
         $('#share_email_error').hide();
         $('#share_email_dealer input, #share_email_dealer textarea').removeClass('required');
         $.ajaxCall('dvs.sendShareEmailIframe', $('#share_email_dealer').serialize());
@@ -107,36 +109,43 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <form id="share_email_dealer" name="share_email_dealer">
     <fieldset>
         <ul>
-            <li>
-                <input type="text" name="val[share_name]" id="share_name" placeholder="{phrase var='dvs.friends_name'}" class="inputShare" required />
+            <li id="loading_email_img" style="display: none;">
+                {img theme='ajax/large.gif'}
             </li>
         </ul>
-        <ul>
-            <li>
-                <input type="email" name="val[share_email]" id="share_email" placeholder="{phrase var='dvs.friends_email_address'}" required class="inputShare"/>
-            </li>
-        </ul>
-        <ul>
-            <li>
-                <input type="text" name="val[my_share_name]" id="my_share_name" placeholder="{phrase var='dvs.your_name'}" required class="inputShare"/>
-            </li>
-        </ul>
-        <ul>
-            <li>
-                <input type="text" name="val[my_share_email]" id="my_share_email" placeholder="{phrase var='dvs.your_email'}" required class="inputShare"/>
-            </li>
-        </ul>
-        <ul>
-            <li>
-                <textarea id="share_message" name="val[share_message]" placeholder="{phrase var='dvs.message_to_friend'}" cols="18" rows="5" required></textarea>
-            </li>
-        </ul>
+        <div class="share_email_field">
+            <ul>
+                <li>
+                    <input type="text" name="val[share_name]" id="share_name" placeholder="{phrase var='dvs.friends_name'}" class="inputShare" required />
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <input type="email" name="val[share_email]" id="share_email" placeholder="{phrase var='dvs.friends_email_address'}" required class="inputShare"/>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <input type="text" name="val[my_share_name]" id="my_share_name" placeholder="{phrase var='dvs.your_name'}" required class="inputShare"/>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <input type="email" name="val[my_share_email]" id="my_share_email" placeholder="{phrase var='dvs.your_email'}" required class="inputShare"/>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <textarea id="share_message" name="val[share_message]" placeholder="{phrase var='dvs.message_to_friend'}" cols="18" rows="5" required></textarea>
+                </li>
+            </ul>
+        </div>
         <input type="hidden" name="val[video_ref_id]" id="video_ref_id" value="{$aVideo.referenceId}"/>
         <input type="hidden" name="val[dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>
         <input type="hidden" name="val[longurl]" id="longurl" value="{$bLongUrl}" />
         <input type="hidden" name="val[parent_url]" id="parent_url" value="{$sParentUrl}" />
     </fieldset>
-    <fieldset>
+    <fieldset class="share_email_field">
         <input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button"/>
     </fieldset>
 </form>

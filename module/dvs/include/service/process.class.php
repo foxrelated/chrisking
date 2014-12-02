@@ -55,6 +55,7 @@ class Dvs_Service_Process extends Phpfox_Service {
 //			'twitter_url' => (isset($aDvs['twitter_url']) ? $this->preParse()->clean($aDvs['twitter_url'], 255) : ''),
 //			'google_url' => (isset($aDvs['google_url']) ? $this->preParse()->clean($aDvs['google_url'], 255) : ''),
             'specials_url' => $this->preParse()->clean($aDvs['specials_url'], 255),
+            'dealer_id' => $this->preParse()->clean($aDvs['dealer_id'], 75),
             'latitude' => $aGeoCode['latitude'],
             'longitude' => $aGeoCode['longitude'],
             '1onone_override' => (isset($aDvs['1onone_override']) ? $this->preParse()->clean($aDvs['1onone_override'], 128) : ''),
@@ -68,13 +69,15 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['footer_toggle'] = $this->preParse()->clean($aDvs['footer_toggle'], 1);
             $aSql['topmenu_toggle'] = $this->preParse()->clean($aDvs['topmenu_toggle'], 1);
             $aSql['gallery_target_setting'] = $this->preParse()->clean($aDvs['gallery_target_setting'], 1);
-            $aSql['inv_display_status'] = $this->preParse()->clean($aDvs['inv_display_status'], 1);
+            /*$aSql['inv_display_status'] = $this->preParse()->clean($aDvs['inv_display_status'], 1);
             $aSql['inv_feed_type'] = $this->preParse()->clean($aDvs['inv_feed_type'], 255);
             $aSql['inv_domain'] = $this->preParse()->clean($aDvs['inv_domain'], 255);
-            $aSql['inv_schedule_hours'] = $this->preParse()->clean($aDvs['inv_schedule_hours'], 255);
+            $aSql['inv_schedule_hours'] = $this->preParse()->clean($aDvs['inv_schedule_hours'], 255);*/
             $aSql['sitemap_parent_url'] = $this->preParse()->clean($aDvs['sitemap_parent_url'], 1);
             $aSql['new_car_videos'] = $this->preParse()->clean($aDvs['new_car_videos'], 1);
             $aSql['used_car_videos'] = $this->preParse()->clean($aDvs['used_car_videos'], 1);
+            $aSql['iframe_contact_form'] = $this->preParse()->clean($aDvs['iframe_contact_form'], 1);
+            $aSql['vpd_popup'] = $this->preParse()->clean($aDvs['vpd_popup'], 1);
         }
 		
 		$iId = $this->database()->insert($this->_sTable, $aSql);
@@ -113,6 +116,7 @@ class Dvs_Service_Process extends Phpfox_Service {
 //			'twitter_url' => (isset($aDvs['twitter_url']) ? $this->preParse()->clean($aDvs['twitter_url'], 255) : ''),
 //			'google_url' => (isset($aDvs['google_url']) ? $this->preParse()->clean($aDvs['google_url'], 255) : ''),
             'specials_url' => $this->preParse()->clean($aDvs['specials_url'], 255),
+            'dealer_id' => $this->preParse()->clean($aDvs['dealer_id'], 75),
             'latitude' => $aGeoCode['latitude'],
             'longitude' => $aGeoCode['longitude'],
             '1onone_override' => (isset($aDvs['1onone_override']) ? $this->preParse()->clean($aDvs['1onone_override'], 128) : ''),
@@ -126,13 +130,15 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['footer_toggle'] = $this->preParse()->clean($aDvs['footer_toggle'], 1);
             $aSql['topmenu_toggle'] = $this->preParse()->clean($aDvs['topmenu_toggle'], 1);
             $aSql['gallery_target_setting'] = $this->preParse()->clean($aDvs['gallery_target_setting'], 1);
-            $aSql['inv_display_status'] = $this->preParse()->clean($aDvs['inv_display_status'], 1);
+            /*$aSql['inv_display_status'] = $this->preParse()->clean($aDvs['inv_display_status'], 1);
             $aSql['inv_feed_type'] = $this->preParse()->clean($aDvs['inv_feed_type'], 255);
             $aSql['inv_domain'] = $this->preParse()->clean($aDvs['inv_domain'], 255);
-            $aSql['inv_schedule_hours'] = $this->preParse()->clean($aDvs['inv_schedule_hours'], 255);
+            $aSql['inv_schedule_hours'] = $this->preParse()->clean($aDvs['inv_schedule_hours'], 255);*/
             $aSql['sitemap_parent_url'] = $this->preParse()->clean($aDvs['sitemap_parent_url'], 1);
             $aSql['new_car_videos'] = $this->preParse()->clean($aDvs['new_car_videos'], 1);
             $aSql['used_car_videos'] = $this->preParse()->clean($aDvs['used_car_videos'], 1);
+            $aSql['iframe_contact_form'] = $this->preParse()->clean($aDvs['iframe_contact_form'], 1);
+            $aSql['vpd_popup'] = $this->preParse()->clean($aDvs['vpd_popup'], 1);
         }
 
 		$this->database()->update($this->_sTable, $aSql, 'dvs_id = ' . (int) $aDvs['dvs_id']);
@@ -180,7 +186,9 @@ class Dvs_Service_Process extends Phpfox_Service {
 		$this->database()->query("UPDATE " . $this->_sTable . " SET total_emails_sent  = total_emails_sent + 1 WHERE dvs_id = " . (int) $iDvsId);
 	}
 
-
+    public function updateActivity($iId, $iType) {
+        return $this->database()->update($this->_sTable, array('is_active' => (int) ($iType)), 'dvs_id = ' . (int) $iId);
+    }
 }
 
 ?>

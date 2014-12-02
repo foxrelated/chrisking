@@ -18,7 +18,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
 
                 $aQuishVin[] = $sQuishVin;
                 $aFullRows[$sQuishVin]['vin'][] = $sVin;
-                $aCompletedRows[$sVin] = array('quish_vin_id' => $sQuishVin, 'url' => '');
+                $aCompletedRows[$sVin] = array('squish_vin_id' => $sQuishVin, 'url' => '');
             }
         }
 
@@ -54,14 +54,14 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         }
 
         $aRows = $this->database()
-            ->select('v.quish_vin_id, v.ed_style_id')
+            ->select('v.squish_vin_id, v.ed_style_id')
             ->from($this->_sTable, 'v')
-            ->where('v.quish_vin_id IN (\'' . implode('\', \'', $aQuishVin) . '\')')
+            ->where('v.squish_vin_id IN (\'' . implode('\', \'', $aQuishVin) . '\')')
             ->execute('getRows');
         $aEdStyleIds = array();
         foreach($aRows as $aRow) {
             $aEdStyleIds[] = $aRow['ed_style_id'];
-            $aFullRows[$aRow['quish_vin_id']]['ed_style_id'] = $aRow['ed_style_id'];
+            $aFullRows[$aRow['squish_vin_id']]['ed_style_id'] = $aRow['ed_style_id'];
         }
         $aQuishVin = array();
         foreach($aFullRows as $sKey => $aFullRow) {
@@ -74,7 +74,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
             list($aStyles, $aParams) = $this->getStyleByVin($sVin);
             if(isset($aStyles[0]['id'])) {
                 $this->database()->insert($this->_sTable, array(
-                    'quish_vin_id' => $sVin,
+                    'squish_vin_id' => $sVin,
                     'ed_style_id' => (int)$aStyles[0]['id']
                 ));
                 $aEdStyleIds[] = (string)$aStyles[0]['id'];
@@ -129,14 +129,21 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
             if (Phpfox::getParam('dvs.dvs_info_video_url_replacement')) {
                 $aCompletedRow['url'] .= '-' . $aDvs['title_url'] . '-' . strtolower(str_replace(' ', '-', $aDvs['city'])) . '-' . strtolower(str_replace(' ', '-', $aDvs['state_string']));
             }
-            
-            if ($aDvs['sitemap_parent_url'] && $aDvs['parent_video_url']) {
-                $sOverrideLink = str_replace('WTVDVS_VIDEO_TEMP', $aCompletedRow['url'], $aDvs['parent_video_url']);
-            } else {
+            if($aDvs['vpd_popup']) {
                 if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
-                    $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array($aCompletedRow['url']));
+                    $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array('dvs-vdp-iframe', $aCompletedRow['url']));
                 } else {
-                    $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aCompletedRow['url']));
+                    $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], 'dvs-vdp-iframe', $aCompletedRow['url']));
+                }
+            } else {
+                if ($aDvs['sitemap_parent_url'] && $aDvs['parent_video_url']) {
+                    $sOverrideLink = str_replace('WTVDVS_VIDEO_TEMP', $aCompletedRow['url'], $aDvs['parent_video_url']) . '&vdp=1';
+                } else {
+                    if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
+                        $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array($aCompletedRow['url'])) . 'vdp_1/';
+                    } else {
+                        $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aCompletedRow['url'])) . 'vdp_1/';
+                    }
                 }
             }
 

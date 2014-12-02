@@ -12,6 +12,31 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @package 		DVS
  */
 ?>
+<style type="text/css">
+    #dvs_bc_player {l}
+        width: 720px;
+        height: 526px;
+        position: relative;
+    {r}
+
+    #playlist_wrapper {l}
+        position: absolute;
+        bottom: 0px;
+    {r}
+
+    #myExperience {l}
+        display: block;
+        {if $bIsDvs}
+        width: 720px;
+        height: 408px;
+        {else}
+        width: {$iPlayerWidth}px;
+        height: {$iPlayerHeight}px;
+        {/if}
+    {r}
+</style>
+
+
 {if !empty($sJavascript)}{$sJavascript}{/if}
 <script type="text/javascript">
 	var aMediaIds = [];
@@ -82,18 +107,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{/if}
 
 	{if !$bIsExternal}
-		var bPreRoll = {if $aPlayer.preroll_file_id}true{ else}false{/if};
-		var iDvsId = {if $bIsDvs}{$iDvsId}{ else}0{/if};
-		var bIdriveGetPrice = {if !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}true{ else}false{/if};
-		var bPreview = {if $bPreview}true{ else}false{/if};
-		var bAutoplay = {if (isset($aPlayer.autoplay) && $aPlayer.autoplay) || (isset($aPlayer.autoplay_baseurl) && $aPlayer.autoplay_baseurl && !$aBaseUrl) || (isset($aPlayer.autoplay_videourl) && $aPlayer.autoplay_videourl && $aBaseUrl)}true{ else}false{/if};
+		var bPreRoll = {if $aPlayer.preroll_file_id}true{else}false{/if};
+		var iDvsId = {if $bIsDvs}{$iDvsId}{else}0{/if};
+		var bIdriveGetPrice = {if !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}true{else}false{/if};
+		var bPreview = {if $bPreview}true{else}false{/if};
+		var bAutoplay = {if (isset($aPlayer.autoplay) && $aPlayer.autoplay) || (isset($aPlayer.autoplay_baseurl) && $aPlayer.autoplay_baseurl && !$aBaseUrl) || (isset($aPlayer.autoplay_videourl) && $aPlayer.autoplay_videourl && $aBaseUrl)}true{else}false{/if};
 		//var bAutoplay =true;
 		var iCurrentVideo = {$aCurrentVideo};
-		var bAutoAdvance = {if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{ else}false{/if};
+		var bAutoAdvance = {if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
 	{else}
 		var bPreRoll = false;
 		var iDvsId = 0;
-		var bIdriveGetPrice = {if $bShowGetPrice}true{ else}false{/if};
+		var bIdriveGetPrice = {if $bShowGetPrice}true{else}false{/if};
 		var bPreview = false;
 		var bAutoplay = {if $bAutoplay}true{else}false{/if};
 		var bAutoAdvance = true;

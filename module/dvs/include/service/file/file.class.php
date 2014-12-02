@@ -278,7 +278,56 @@ class Dvs_Service_File_File extends Phpfox_Service {
 				->execute('getField');
 	}
 
+    public function VdpFileProcess($sVdpFileName, $iOldVdpId) {
+        $iOldVdpId = (int) $iOldVdpId;
 
+        if (empty($sVdpFileName)) {
+            return Phpfox_Error::set('Please select an image to upload');
+        }
+
+        $aPathParts = pathinfo($sVdpFileName);
+
+        if (!isset($aPathParts['filename'])) {
+            $aPathParts['filename'] = basename($_FILES['image']['name'][0], '.' . $aPathParts['extension']);
+        }
+
+        $sVdpFileName = $aPathParts['filename'] . md5(PHPFOX_TIME);
+
+        $iId = Phpfox::getService('dvs.file.process')->addVdpFile($sVdpFileName);
+
+        if (!$iId) {
+            return false;
+        } else {
+            if ($iOldVdpId) Phpfox::getService('dvs.file.process')->removeVdp($iOldVdpId);
+            return $iId;
+        }
+    }
+
+    public function getVdpFile($iFileId) {
+        return $this->database()
+            ->select('vdp_file_name')
+            ->from(Phpfox::getT('tbd_dvs_vdp_files'))
+            ->where('vdp_id =' . $iFileId)
+            ->execute('getField');
+    }
+
+    public function addVdpFile($iVdpFileId) {
+        $iVdpFileId = (int) $iVdpFileId;
+
+        $sVdpFileName = $this->database()
+            ->select('vdp_file_name')
+            ->from(Phpfox::getT('tbd_dvs_vdp_files'))
+            ->where('vdp_id =' . $iVdpFileId)
+            ->execute('getField');
+
+        $aVdpFile = Phpfox::getLib('file')->load('vdp_file', Phpfox::getParam('dvs.allowed_file_types'), Phpfox::getUserParam('dvs.file_size_limit'));
+
+        $sVdpFilePath = Phpfox::getLib('file')->upload('vdp_file', Phpfox::getParam('core.dir_file') . 'dvs/vdp/', $sVdpFileName);
+
+        Phpfox::getService('dvs.file.process')->updateVdpFileName($iVdpFileId, $sVdpFilePath);
+
+        return $iVdpFileId;
+    }
 }
 
 ?>

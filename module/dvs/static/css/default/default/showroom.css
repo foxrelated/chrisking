@@ -235,6 +235,7 @@ header nav a:hover
 
 #overview_playlist ul li img
 {
+    height: 82px;
 	/*opacity: 0.5;
 	filter:alpha(opacity=50);*/
 }

@@ -1497,8 +1497,8 @@ $Core.init = function()
 	$bDocumentIsLoaded = true;
 		
 	$(document).ready(function()
-	{	
-		$.each($Behavior, function() 
+	{
+		$.each($Behavior, function()
 		{
 			this(this);
 		});

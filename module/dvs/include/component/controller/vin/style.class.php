@@ -9,6 +9,10 @@ class Dvs_Component_Controller_Vin_Style extends Phpfox_Component {
             'loading_image' => Phpfox::getLib('image.helper')->display(array(
                 'theme' => 'ajax/add.gif',
                 'return_url' => true
+            )),
+            'close_btn' => Phpfox::getLib('image.helper')->display(array(
+                'theme' => 'layout/modal_close_icon.png',
+                'return_url' => true
             ))
         );
 
@@ -17,9 +21,17 @@ class Dvs_Component_Controller_Vin_Style extends Phpfox_Component {
             $aStyle['vin_top_gradient'] = '#' . $aDvs['vin_top_gradient'];
             $aStyle['vin_bottom_gradient'] = '#' . $aDvs['vin_bottom_gradient'];
             $aStyle['vin_font_size'] = $aDvs['vin_font_size'];
+            if($aDvs['vdp_file_name']) {
+                $aStyle['vdp_background'] = Phpfox::getParam('core.url_file') . 'dvs/vdp/' . $aDvs['vdp_file_name'];
+            }
         }
         $this->template()->assign(array(
-            'aStyle' => $aStyle
+            'aStyle' => $aStyle,
+            'sPopupBg' => Phpfox::getLib('image.helper')->display(array(
+                'theme' => 'layout/thickbox_bg.png',
+                'return_url' => true
+            )),
+            'aDvs' => $aDvs
         ));
 
         $lastModified = filemtime(PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'include' . PHPFOX_DS . 'component' . PHPFOX_DS . 'controller' . PHPFOX_DS . 'vin' . PHPFOX_DS . 'style.class.php');

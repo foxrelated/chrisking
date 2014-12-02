@@ -168,7 +168,8 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
 				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
 				'share.css' => 'module_dvs',
-                'dropdown.js' => 'module_dvs'
+                'dropdown.js' => 'module_dvs',
+                'placeholders.jquery.min.js' => 'module_dvs',
 			))
 			->assign(array(
 				'aDvs' => $aDvs,
