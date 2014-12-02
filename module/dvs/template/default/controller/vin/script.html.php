@@ -5,9 +5,10 @@
     {if $aRow.url}
     {if isset($vdp_background)}
     urlElement.innerHTML = '<img src="{$vdp_background}" alt="{$sButtonText}" title="{$sButtonText}" />';
-    {/if}
-    urlElement.setAttribute('href', '{$aRow.url}');
+    urlElement.style.display = 'inline-block';
+    {else}
     urlElement.style.display = 'block';
+    {/if}
     urlElement.setAttribute('href', '{$aRow.url}');
     {if !$aDvs.vpd_popup}
     urlElement.setAttribute('onClick', 'return true;');

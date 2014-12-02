@@ -1,7 +1,7 @@
 .dvs_vin_btn a,
 .dvs_vin_btn a:hover {l}
     {if $aStyle.vdp_background}
-        display: block;
+        display: inline-block;
     {else}
         display: block;
         font-weight: bold;
