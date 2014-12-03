@@ -2,7 +2,8 @@
 
 class Dvs_Component_Controller_Test extends Phpfox_Component {
     public function process() {
-        if($this->request()->get('import')) {
+        Phpfox::getService('dvs.inventory')->downloadZipFile();
+        /*if($this->request()->get('import')) {
             Phpfox::getService('dvs.inventory')->importFile();
             echo 'Import Completed';
             exit;
@@ -23,7 +24,7 @@ class Dvs_Component_Controller_Test extends Phpfox_Component {
         }
 
         echo 'No actions!';
-        exit;
+        exit;*/
 
         //Phpfox::getService('dvs.inventory')->updateEdStyleId();
 

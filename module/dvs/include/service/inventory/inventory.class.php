@@ -1,9 +1,17 @@
 <?php
 
 class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
+    private $_sHost = 'sftp.dmotorworks.com';
+    private $_sPort = '22';
+    private $_sUsername = 'WTVMain';
+    private $_sPassword = '$new123';
+
     function __construct() {
         $this->_sTable = Phpfox::getT('tbd_dvs_inventory');
         Phpfox::getLib('setting')->setParam('dvs.csv_folder', PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'include' . PHPFOX_DS . 'service' . PHPFOX_DS . 'inventory' . PHPFOX_DS);
+
+        /*$remoteDir = '/must/be/the/complete/folder/path';
+        $localDir = '/can/be/the/relative/or/absolute/local/path';*/
     }
 
     public function importFile() {
@@ -235,6 +243,65 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         }
 
         return $object;
+    }
+
+    public function downloadZipFile() {
+        if (!function_exists("ssh2_connect"))
+            die('Function ssh2_connect not found, you cannot use ssh2 here');
+
+        if (!$connection = ssh2_connect($this->_sHost, $this->_sPort))
+            die('Unable to connect');
+
+        if (!ssh2_auth_password($connection, $this->_sUsername, $this->_sPassword))
+            die('Unable to authenticate.');
+
+        if (!$stream = ssh2_sftp($connection))
+            die('Unable to create a stream.');
+
+        if (!$dir = opendir("ssh2.sftp://{$stream}"))
+            die('Could not open the directory');
+
+        $files = array();
+        while (false !== ($file = readdir($dir))) {
+            if ($file == "." || $file == "..")
+                continue;
+            $files[] = $file;
+        }
+        vdd($files);
+
+        /*foreach ($files as $file)
+        {
+            echo "Copying file: $file\n";
+            if (!$remote = @fopen("ssh2.sftp://{$sftp}/{$remoteDir}{$file}", 'r'))
+            {
+                echo "Unable to open remote file: $file\n";
+                continue;
+            }
+
+            if (!$local = @fopen($localDir . $file, 'w'))
+            {
+                echo "Unable to create local file: $file\n";
+                continue;
+            }
+
+            $read = 0;
+            $filesize = filesize("ssh2.sftp://{$sftp}/{$remoteDir}{$file}");
+            while ($read < $filesize && ($buffer = fread($remote, $filesize - $read)))
+            {
+                $read += strlen($buffer);
+                if (fwrite($local, $buffer) === FALSE)
+                {
+                    echo "Unable to write to local file: $file\n";
+                    break;
+                }
+            }
+            fclose($local);
+            fclose($remote);
+        }*/
+    }
+
+    public function runCronjob() {
+
     }
 }
 ?>
