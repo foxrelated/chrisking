@@ -8,10 +8,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
 
     function __construct() {
         $this->_sTable = Phpfox::getT('tbd_dvs_inventory');
-        Phpfox::getLib('setting')->setParam('dvs.csv_folder', PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'include' . PHPFOX_DS . 'service' . PHPFOX_DS . 'inventory' . PHPFOX_DS);
-
-        /*$remoteDir = '/must/be/the/complete/folder/path';
-        $localDir = '/can/be/the/relative/or/absolute/local/path';*/
+        Phpfox::getLib('setting')->setParam('dvs.csv_folder', PHPFOX_DIR . 'file' . PHPFOX_DS . 'inventory' . PHPFOX_DS);
     }
 
     public function importFile() {
@@ -67,9 +64,9 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
 
         if($aRow) {
             $this->database()->update($this->_sTable, array(
-                'is_updated' => 1,
-                'total' => (int)$aRow['total'] + 1
-            ), 'inventory_id = ' . (int)$aRow['inventory_id']);
+                    'is_updated' => 1,
+                    'total' => (int)$aRow['total'] + 1
+                ), 'inventory_id = ' . (int)$aRow['inventory_id']);
             return $aRow['inventory_id'];
         }
 
@@ -246,62 +243,98 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
     }
 
     public function downloadZipFile() {
-        if (!function_exists("ssh2_connect"))
+        if (!function_exists("ssh2_connect")) {
+            return false;
             die('Function ssh2_connect not found, you cannot use ssh2 here');
-
-        if (!$connection = ssh2_connect($this->_sHost, $this->_sPort))
-            die('Unable to connect');
-
-        if (!ssh2_auth_password($connection, $this->_sUsername, $this->_sPassword))
-            die('Unable to authenticate.');
-
-        if (!$stream = ssh2_sftp($connection))
-            die('Unable to create a stream.');
-
-        if (!$dir = opendir("ssh2.sftp://{$stream}"))
-            die('Could not open the directory');
-
-        $files = array();
-        while (false !== ($file = readdir($dir))) {
-            if ($file == "." || $file == "..")
-                continue;
-            $files[] = $file;
         }
-        vdd($files);
 
-        /*foreach ($files as $file)
-        {
-            echo "Copying file: $file\n";
-            if (!$remote = @fopen("ssh2.sftp://{$sftp}/{$remoteDir}{$file}", 'r'))
-            {
-                echo "Unable to open remote file: $file\n";
+        if (!$oConnection = ssh2_connect($this->_sHost, $this->_sPort)) {
+            return false;
+            die('Unable to connect');
+        }
+
+
+        if (!ssh2_auth_password($oConnection, $this->_sUsername, $this->_sPassword)) {
+            return false;
+            die('Unable to authenticate.');
+        }
+
+
+        if (!$oStream = ssh2_sftp($oConnection)) {
+            return false;
+            die('Unable to create a stream.');
+        }
+
+
+        if (!$oDir = opendir("ssh2.sftp://{$oStream}/./")) {
+            return false;
+            die('Could not open the directory');
+        }
+
+
+        $sFile = '';
+        while (false !== ($sTempFile = readdir($oDir))) {
+            if ($sTempFile == "." || $sTempFile == "..")
                 continue;
+            if(strpos($sTempFile, 'VINVENTORY') === 0) {
+                $sFile = $sTempFile;
+                break;
             }
+        }
 
-            if (!$local = @fopen($localDir . $file, 'w'))
-            {
-                echo "Unable to create local file: $file\n";
-                continue;
-            }
+        if(!$sFile) {
+            return false;
+        }
 
-            $read = 0;
-            $filesize = filesize("ssh2.sftp://{$sftp}/{$remoteDir}{$file}");
-            while ($read < $filesize && ($buffer = fread($remote, $filesize - $read)))
-            {
-                $read += strlen($buffer);
-                if (fwrite($local, $buffer) === FALSE)
-                {
-                    echo "Unable to write to local file: $file\n";
-                    break;
-                }
+        if (!$fRemote = @fopen("ssh2.sftp://{$oStream}/{$sFile}", 'r')) {
+            return false;
+        }
+
+        if (!$fLocal = @fopen(Phpfox::getParam('dvs.csv_folder') . $sFile, 'w')) {
+            return false;
+        }
+
+        $iRead = 0;
+        $iFilesize = filesize("ssh2.sftp://{$oStream}/{$sFile}");
+        while ($iRead < $iFilesize && ($iBuffer = fread($fRemote, $iFilesize - $iRead))) {
+            $iRead += strlen($iBuffer);
+            if (fwrite($fLocal, $iBuffer) === FALSE) {
+                echo "Unable to write to local file: $file\n";
+                return false;
             }
-            fclose($local);
-            fclose($remote);
-        }*/
+        }
+        fclose($fLocal);
+        fclose($fRemote);
+
+        return $sFile;
+    }
+
+    public function extracFile($sFile) {
+        $oZip = new ZipArchive;
+        $oRes = $oZip->open(Phpfox::getParam('dvs.csv_folder') . $sFile);
+        if ($oRes === TRUE) {
+            $oZip->extractTo(Phpfox::getParam('dvs.csv_folder'));
+            $oZip->close();
+
+            if (!rename(Phpfox::getParam('dvs.csv_folder') . str_replace('.zip', '.txt', $sFile), Phpfox::getParam('dvs.csv_folder') . 'inventory.csv')) {
+                return false;
+            }
+            @unlink(Phpfox::getParam('dvs.csv_folder') . $sFile);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function runCronjob() {
-
+        if($sFile = $this->downloadZipFile()) {
+            if ($this->extracFile($sFile)) {
+                $this->importFile();
+            }
+            return true;
+        }
+        return false;
     }
 }
+
 ?>
