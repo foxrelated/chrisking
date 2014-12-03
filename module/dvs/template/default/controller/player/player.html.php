@@ -406,7 +406,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {literal}
 <script type="text/javascript">
 
-$Behavior.thumgs = function() {
+$Behavior.thumbs = function() {
 var bAutoplay = false;
 exteralthumbnailClick(1);
 }
