@@ -1,12 +1,3 @@
-{if $sVdpIframeUrl != ''}
-<article>
-    <section id="player">
-        {template file='dvs.controller.player.iframe-player}
-    </section>
-</article>
-
-<iframe src="{$sVdpIframeUrl}" height="1" width="1"></iframe>
-{else}
     {if $sBrowser == 'mobile'}
         {template file='dvs.controller.iframe-mobile-view}
     {else}
@@ -176,10 +167,13 @@
     <div class="clear"></div>
     <footer></footer>
     {/if}
-{/if}
 
 {if $sShareSource != ''}
 <iframe src="{$sShareIframeUrl}" height="1" width="1"></iframe>
+{/if}
+
+{if $sVdpIframeUrl != ''}
+<iframe src="{$sVdpIframeUrl}" height="1" width="1"></iframe>
 {/if}
 
 {literal}

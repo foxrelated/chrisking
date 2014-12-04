@@ -11,7 +11,7 @@
         height: 36px;
         max-width:300px;
         line-height: 36px;
-        color: #FFFFFF;
+        color: {$aStyle.vin_text_color};
         font-size: {$aStyle.vin_font_size};
         background: {$aStyle.vin_top_gradient}; /* Old browsers */
         background: -moz-linear-gradient(top,  {$aStyle.vin_top_gradient} 0%, {$aStyle.vin_bottom_gradient} 100%); /* FF3.6+ */

@@ -131,7 +131,7 @@ class Dvs_Service_File_File extends Phpfox_Service {
 
 		$aLogoFile = Phpfox::getLib('file')->load('logo_file', Phpfox::getParam('dvs.allowed_file_types'), Phpfox::getUserParam('dvs.file_size_limit'));
 
-		$sLogoFilePath = Phpfox::getLib('file')->upload('logo_file', Phpfox::getParam('core.dir_file') . 'dvs/logo/', $sLogoFileName);
+		$sLogoFilePath = Phpfox::getLib('file')->upload('logo_file', Phpfox::getParam('core.dir_file') . 'dvs' . PHPFOX_DS . 'logo' . PHPFOX_DS, $sLogoFileName);
 
 		Phpfox::getService('dvs.file.process')->updateLogoFileName($iLogoFileId, $sLogoFilePath);
 
@@ -152,7 +152,7 @@ class Dvs_Service_File_File extends Phpfox_Service {
 	public function addBrandingFile($iBrandingFileId)
 	{
 		$iBrandingFileId = (int) $iBrandingFileId;
-		$sPath = Phpfox::getParam('core.dir_file') . 'dvs/branding/';
+		$sPath = Phpfox::getParam('core.dir_file') . 'dvs' . PHPFOX_DS . 'branding' . PHPFOX_DS;
 
 		$sBrandingFileName = $this->database()
 			->select('branding_file_name')
@@ -187,7 +187,7 @@ class Dvs_Service_File_File extends Phpfox_Service {
 
 		$aBackgroundFile = Phpfox::getLib('file')->load('background_file', Phpfox::getParam('dvs.allowed_file_types'), Phpfox::getUserParam('dvs.file_size_limit'));
 
-		$sBackgroundFilePath = Phpfox::getLib('file')->upload('background_file', Phpfox::getParam('core.dir_file') . 'dvs/background/', $sBackgroundFileName);
+		$sBackgroundFilePath = Phpfox::getLib('file')->upload('background_file', Phpfox::getParam('core.dir_file') . 'dvs' . PHPFOX_DS . 'background' . PHPFOX_DS, $sBackgroundFileName);
 
 		Phpfox::getService('dvs.file.process')->updateBackgroundFileName($iBackgroundFileId, $sBackgroundFilePath);
 
@@ -260,7 +260,7 @@ class Dvs_Service_File_File extends Phpfox_Service {
 
 		if (!$aPrerollFile = Phpfox::getLib('file')->load('preroll_file', Phpfox::getParam('dvs.allowed_preroll_file_types'), Phpfox::getUserParam('dvs.max_preroll_size'))) return false;
 
-		$sPrerollFilePath = Phpfox::getLib('file')->upload('preroll_file', Phpfox::getParam('core.dir_file') . 'dvs/preroll/', $sPrerollFileName);
+		$sPrerollFilePath = Phpfox::getLib('file')->upload('preroll_file', Phpfox::getParam('core.dir_file') . 'dvs' . PHPFOX_DS . 'preroll' . PHPFOX_DS, $sPrerollFileName);
 
 		Phpfox::getService('dvs.file.process')->updatePrerollFileName($iPrerollFileId, $sPrerollFilePath);
 
@@ -322,7 +322,7 @@ class Dvs_Service_File_File extends Phpfox_Service {
 
         $aVdpFile = Phpfox::getLib('file')->load('vdp_file', Phpfox::getParam('dvs.allowed_file_types'), Phpfox::getUserParam('dvs.file_size_limit'));
 
-        $sVdpFilePath = Phpfox::getLib('file')->upload('vdp_file', Phpfox::getParam('core.dir_file') . 'dvs/vdp/', $sVdpFileName);
+        $sVdpFilePath = Phpfox::getLib('file')->upload('vdp_file', Phpfox::getParam('core.dir_file') . 'dvs' . PHPFOX_DS . 'vdp' . PHPFOX_DS, $sVdpFileName);
 
         Phpfox::getService('dvs.file.process')->updateVdpFileName($iVdpFileId, $sVdpFilePath);
 
