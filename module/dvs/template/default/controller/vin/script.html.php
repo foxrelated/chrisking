@@ -8,6 +8,7 @@
     urlElement.style.display = 'inline-block';
     {else}
     urlElement.style.display = 'block';
+    urlElement.innerHTML = '{$sButtonText}';
     {/if}
     urlElement.setAttribute('href', '{$aRow.url}');
     {if !$aDvs.vpd_popup}

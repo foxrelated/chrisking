@@ -102,7 +102,12 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         foreach($aFullRows as $sKey => $aFullRow) {
             if(isset($aData[$aFullRow['ed_style_id']])) {
                 foreach($aFullRow['vin'] as $sVin) {
-                    $aCompletedRows[$sVin]['url'] = $aData[$aFullRow['ed_style_id']]['video_title_url'];
+                    if(isset($aData[$aFullRow['ed_style_id']]['video_title_url'])) {
+                        $aCompletedRows[$sVin]['url'] = $aData[$aFullRow['ed_style_id']]['video_title_url'];
+                    } else {
+                        $aCompletedRows[$sVin]['url'] = '';
+                    }
+
                 }
             }
         }
