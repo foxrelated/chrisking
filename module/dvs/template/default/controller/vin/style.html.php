@@ -1,6 +1,6 @@
 .dvs_vin_btn a,
 .dvs_vin_btn a:hover {l}
-    {if $aStyle.vdp_background}
+    {if isset($aStyle.vdp_background)}
         display: inline-block;
     {else}
         display: block;
