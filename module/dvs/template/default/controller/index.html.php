@@ -426,7 +426,7 @@ WTVVIN.init({l}
     "dvs" : {$aDvs.dvs_id},
     "apiUrl" : "{url link=''}",
     "styleUrl" : "{url link='dvs.vin.style' id=$aDvs.dvs_id}",
-    "scriptUrl" : "{url link='dvs.vin.script' id=$aDvs.dvs_id}",
+    "scriptUrl" : "{url link='dvs.vin.script' id=$aDvs.dvs_id}"
 {r});
 &lt;/script&gt;</textarea>
                 </p>

@@ -3,6 +3,7 @@ if (!window.WTVVIN) {
         sApiUrl: '',
         iDvsId: 0,
         init: function (params) {
+
             this.sApiUrl = params.apiUrl;
             this.iDvsId = params.dvs;
 
@@ -27,8 +28,19 @@ if (!window.WTVVIN) {
                 sAllVin += sVinId + ',';
 
                 x[i].setAttribute('id', 'dvs_vin_btn_' + sVinId);
-                var sHTML = '<a style="display: none;" href="#" onClick="WTVVIN.show_popup(this); return false;">' + x[i].getAttribute('title') + '</a><div class="dvs_vin_loading"></div>';
-                x[i].innerHTML = sHTML;
+
+                var aLink = document.createElement('a');
+                aLink.style.display = 'none';
+                aLink.setAttribute('href', '#');
+                aLink.setAttribute('onClick', 'WTVVIN.show_popup(this); return false;');
+                x[i].appendChild(aLink);
+
+                var divLoading = document.createElement('div');
+                divLoading.className = 'dvs_vin_loading';
+                x[i].appendChild(divLoading);
+
+                /*var sHTML = '<a style="display: none;" href="#" onClick="WTVVIN.show_popup(this); return false;">' + x[i].getAttribute('title') + '</a><div class="dvs_vin_loading"></div>';
+                x[i].innerHTML = sHTML;*/
             }
             if(sAllVin.length > 0) {
                 sAllVin = sAllVin.substring(0, sAllVin.length - 1);
