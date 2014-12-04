@@ -34,3 +34,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{/foreach}
 	</div>
 </div>
+{if !$aDvs.is_active}
+{template file='dvs.block.deactive'}
+<script type="text/javascript">
+    $Behavior.googleDvsDeactive = function() {l}
+    {if $sBrowser == 'mobile'}
+        sendToGoogle('DVS Mobile', 'DVS Deactivated', 'Deactivation Message Shown');
+        {else}
+        sendToGoogle('DVS Site', 'DVS Deactivated', 'Deactivation Message Shown');
+        {/if}
+            {r}
+</script>
+{/if}
