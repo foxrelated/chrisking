@@ -100,8 +100,11 @@
             var iDvsId = {if $bIsDvs}{$iDvsId}{else}0{/if};
             var bIdriveGetPrice = {if !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}true{else}false{/if};
             var bPreview = {if $bPreview}true{else}false{/if};
+            {if !$aDvs.is_active}
             var bAutoplay = {if (isset($aPlayer.autoplay) && $aPlayer.autoplay) || (isset($aPlayer.autoplay_baseurl) && $aPlayer.autoplay_baseurl && !$aBaseUrl) || (isset($aPlayer.autoplay_videourl) && $aPlayer.autoplay_videourl && $aBaseUrl)}true{else}false{/if};
-            //var bAutoplay =true;
+            {else}
+            var bAutoplay =false;
+            {/if}
             var iCurrentVideo = {$aCurrentVideo};
             var bAutoAdvance = {if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
 
@@ -285,3 +288,17 @@
 </article>
 
 <iframe src="{$sVdpIframeUrl}" height="1" width="1"></iframe>
+{if !$aDvs.is_active}
+{template file='dvs.block.deactive'}
+{*
+<script type="text/javascript">
+$Behavior.googleDvsDeactive = function() {l}
+    {if $sBrowser == 'mobile'}
+    sendToGoogle('DVS Mobile', 'DVS Deactivated', 'Deactivation Message Shown');
+    {else}
+    sendToGoogle('DVS Site', 'DVS Deactivated', 'Deactivation Message Shown');
+    {/if}
+{r}
+</script>
+*}
+{/if}
