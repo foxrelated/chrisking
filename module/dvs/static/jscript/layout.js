@@ -428,6 +428,21 @@
             }
         });
 
+        $('#color_picker_vin_text_color').ColorPicker({
+            onShow: function (colpkr) {
+                $(colpkr).fadeIn(500);
+                return false;
+            },
+            onHide: function (colpkr) {
+                $(colpkr).fadeOut(500);
+                return false;
+            },
+            onChange: function (hsb, hex, rgb) {
+                $('#color_picker_vin_text_color div').css('backgroundColor', '#' + hex);
+                $('#color_picker_vin_text_color_input').val(hex);
+            }
+        });
+
 	};
 	
 	EYE.register(initLayout, 'init');
