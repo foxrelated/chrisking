@@ -100,7 +100,7 @@
             var iDvsId = {if $bIsDvs}{$iDvsId}{else}0{/if};
             var bIdriveGetPrice = {if !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}true{else}false{/if};
             var bPreview = {if $bPreview}true{else}false{/if};
-            {if !$aDvs.is_active}
+            {if $aDvs.is_active}
             var bAutoplay = {if (isset($aPlayer.autoplay) && $aPlayer.autoplay) || (isset($aPlayer.autoplay_baseurl) && $aPlayer.autoplay_baseurl && !$aBaseUrl) || (isset($aPlayer.autoplay_videourl) && $aPlayer.autoplay_videourl && $aBaseUrl)}true{else}false{/if};
             {else}
             var bAutoplay =false;

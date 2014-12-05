@@ -51,7 +51,7 @@ if (!window.WTVVIN) {
             ccscript.type = 'text/javascript';
             cchead[0].appendChild(ccscript);
 
-            document.body.innerHTML += '<div id="dvs_vin_popup_wrapper" onClick="WTVVIN.close_popup(); return false;"><div id="dvs_vin_popup"><a id="dvs_vin_close_btn" href="#" onClick="WTVVIN.close_popup(); return false;">Close</a><div id="dvs_vin_popup_content"></div></div></div>';
+            document.querySelector('body').innerHTML += '<div id="dvs_vin_popup_wrapper" onClick="WTVVIN.close_popup(); return false;"><div id="dvs_vin_popup"><a id="dvs_vin_close_btn" href="#" onClick="WTVVIN.close_popup(); return false;">Close</a><div id="dvs_vin_popup_content"></div></div></div>';
         },
 
         GEBCN: function(cn){
