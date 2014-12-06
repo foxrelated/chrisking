@@ -9,7 +9,7 @@
         text-decoration: none;
         text-transform: uppercase;
         height: 36px;
-        max-width:300px;
+        width:300px;
         line-height: 36px;
         color: {$aStyle.vin_text_color};
         font-size: {$aStyle.vin_font_size};
