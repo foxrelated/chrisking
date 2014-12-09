@@ -38,9 +38,13 @@
     height: 100%;
     left: 0;
     position: fixed;
+    _position:absolute;
     top: 0;
-    width: 100%;
+    _top:expression(eval(document.body.scrollTop));
+    width: 102%;
     z-index: 99;
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity = 80);
 {r}
 
 #dvs_vin_popup {l}
