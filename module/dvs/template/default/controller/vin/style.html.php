@@ -69,7 +69,7 @@
     border-radius: 10px;
     overflow: hidden;
     position: relative;
-    z-index:99;
+    z-index:1001;
 {r}
 
 #dvs_vin_close_btn {l}
