@@ -16,7 +16,7 @@
         width: 100%;
     }
 
-    #video_information h3, #video_information a {
+    #video_information h3 {
         color: {/literal}#{$aPlayer.player_text}{literal};
         padding:0px;
         margin: 0px;
@@ -26,7 +26,7 @@
 <article>
     <section id="video_information">
         <h3 id="video_name">
-            <a onclick="return false;" id="current_video_link">{$aDvs.phrase_overrides.override_video_name_display}</a>
+            {$aDvs.phrase_overrides.override_video_name_display}
         </h3>
     </section>
     <section id="player">
@@ -96,10 +96,10 @@
                 {/if}
             {/if}
 
-            var bPreRoll = {if $aPlayer.preroll_file_id}true{else}false{/if};
+            //var bPreRoll = {if $aPlayer.preroll_file_id}true{else}false{/if};
             var iDvsId = {if $bIsDvs}{$iDvsId}{else}0{/if};
-            var bIdriveGetPrice = {if !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}true{else}false{/if};
-            var bPreview = {if $bPreview}true{else}false{/if};
+            //var bIdriveGetPrice = {if !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}true{else}false{/if};
+            //var bPreview = {if $bPreview}true{else}false{/if};
             {if $aDvs.is_active}
             var bAutoplay = {if (isset($aPlayer.autoplay) && $aPlayer.autoplay) || (isset($aPlayer.autoplay_baseurl) && $aPlayer.autoplay_baseurl && !$aBaseUrl) || (isset($aPlayer.autoplay_videourl) && $aPlayer.autoplay_videourl && $aBaseUrl)}true{else}false{/if};
             {else}
@@ -212,9 +212,9 @@
             <param name="isVid" value="true" />
             <param name="isUI" value="true" />
             <param name="dynamicStreaming" value="true" />
-            {if $aPlayer.preroll_file_id}
+            {*{if $aPlayer.preroll_file_id}
             <param name="adServerURL" value="{$sPrerollXmlUrl}" />
-            {/if}
+            {/if}*}
             <param name="accountID" value="{$aDvs.dvs_google_id}" />
             <param name="showNoContentMessage" value="false" />
             {if $sBrowser == 'ipad'}
@@ -250,7 +250,7 @@
             <button type="button" id="chapter_container_Honors" class="disabled no_display" onclick="changeCuePoint('Honors');"></button>
             <button type="button" id="chapter_container_Summary" class="disabled display" onclick="changeCuePoint('Summary');"></button>
         </section>
-
+		{*
         {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
         <section id="playlist_wrapper">
             <button class="prev playlist-button">&lt;</button>
@@ -284,6 +284,7 @@
             <button class="next playlist-button">&gt;</button>
             {/if}
         </section>
+        *}
     </section>
 </article>
 
