@@ -59,6 +59,7 @@
     margin-top: -300px;
     box-shadow: 0 0 10px #222222;
     border-radius: 10px;
+    z-index:99;
 {r}
 
 #dvs_vin_popup_content {l}
@@ -68,6 +69,7 @@
     border-radius: 10px;
     overflow: hidden;
     position: relative;
+    z-index:99;
 {r}
 
 #dvs_vin_close_btn {l}
