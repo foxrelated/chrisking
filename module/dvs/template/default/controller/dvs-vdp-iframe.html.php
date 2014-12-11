@@ -21,7 +21,7 @@
         padding:0px;
         margin: 0px;
         margin-left:10px;
-        font-size:14px;
+        font-size:18px;
     }
 </style>
 {/literal}
