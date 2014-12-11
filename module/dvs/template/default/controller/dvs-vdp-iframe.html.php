@@ -20,6 +20,8 @@
         color: {/literal}#{$aPlayer.player_text}{literal};
         padding:0px;
         margin: 0px;
+        margin-left:10px;
+        font-size:14px;
     }
 </style>
 {/literal}
