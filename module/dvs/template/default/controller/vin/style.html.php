@@ -54,7 +54,7 @@
     position: absolute;
     left: 50%;
     margin-left: -465px;
-    height: 600px;
+    height: 500px;
     top: 50%;
     margin-top: -300px;
     box-shadow: 0 0 10px #222222;
@@ -65,7 +65,7 @@
 #dvs_vin_popup_content {l}
     display: block;
     width: 930px;
-    height: 600px;
+    height: 500px;
     border-radius: 10px;
     overflow: hidden;
     position: relative;
