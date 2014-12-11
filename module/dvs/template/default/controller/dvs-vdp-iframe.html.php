@@ -2,7 +2,7 @@
 <style type="text/css">
     #dvs_bc_player {
         width: 720px;
-        height: 408px;
+        height: 306px;
     }
 
     body {
@@ -250,7 +250,7 @@
             <button type="button" id="chapter_container_Honors" class="disabled no_display" onclick="changeCuePoint('Honors');"></button>
             <button type="button" id="chapter_container_Summary" class="disabled display" onclick="changeCuePoint('Summary');"></button>
         </section>
-		
+		{*
         {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
         <section id="playlist_wrapper">
             <button class="prev playlist-button">&lt;</button>
@@ -284,7 +284,7 @@
             <button class="next playlist-button">&gt;</button>
             {/if}
         </section>
-        
+        *}
     </section>
 </article>
 
