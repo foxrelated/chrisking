@@ -96,10 +96,10 @@
                 {/if}
             {/if}
 
-            //var bPreRoll = {if $aPlayer.preroll_file_id}true{else}false{/if};
+            var bPreRoll = {if $aPlayer.preroll_file_id}true{else}false{/if};
             var iDvsId = {if $bIsDvs}{$iDvsId}{else}0{/if};
-            //var bIdriveGetPrice = {if !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}true{else}false{/if};
-            //var bPreview = {if $bPreview}true{else}false{/if};
+            var bIdriveGetPrice = {if !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}true{else}false{/if};
+            var bPreview = {if $bPreview}true{else}false{/if};
             {if $aDvs.is_active}
             var bAutoplay = {if (isset($aPlayer.autoplay) && $aPlayer.autoplay) || (isset($aPlayer.autoplay_baseurl) && $aPlayer.autoplay_baseurl && !$aBaseUrl) || (isset($aPlayer.autoplay_videourl) && $aPlayer.autoplay_videourl && $aBaseUrl)}true{else}false{/if};
             {else}
@@ -212,9 +212,9 @@
             <param name="isVid" value="true" />
             <param name="isUI" value="true" />
             <param name="dynamicStreaming" value="true" />
-            {*{if $aPlayer.preroll_file_id}
+            <!--{if $aPlayer.preroll_file_id}
             <param name="adServerURL" value="{$sPrerollXmlUrl}" />
-            {/if}*}
+            {/if}-->
             <param name="accountID" value="{$aDvs.dvs_google_id}" />
             <param name="showNoContentMessage" value="false" />
             {if $sBrowser == 'ipad'}
