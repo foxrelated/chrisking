@@ -10,9 +10,21 @@
     urlElement.style.display = 'block';
     urlElement.innerHTML = '{$sButtonText}';
     {/if}
+    {if $aDvs.vpd_popup}
+        if(urlElement.addEventListener) {l}
+            urlElement.addEventListener('click', function(evt) {l}
+                evt.preventDefault();
+                WTVVIN.show_popup('{$aRow.url}'); return false;
+            {r}, false);
+        {r} else {l}
+            urlElement.attachEvent('onclick', function() {l}
+                WTVVIN.show_popup('{$aRow.url}');
+                window.event.returnValue = false;
+                return false;
+            {r});
+        {r}
+    {else}
     urlElement.setAttribute('href', '{$aRow.url}');
-    {if !$aDvs.vpd_popup}
-    urlElement.setAttribute('onClick', 'return true;');
     {/if}
     {/if}
     loadingElement.style.display = 'none';

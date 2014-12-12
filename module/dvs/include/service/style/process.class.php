@@ -51,6 +51,7 @@ class Dvs_Service_Style_Process extends Phpfox_Service {
             $aSql['iframe_contact_text'] = $this->preParse()->clean($aDvs['iframe_contact_text'], 6);
             $aSql['vin_top_gradient'] = $this->preParse()->clean($aDvs['vin_top_gradient'], 6);
             $aSql['vin_bottom_gradient'] = $this->preParse()->clean($aDvs['vin_bottom_gradient'], 6);
+            $aSql['vin_text_color'] = $this->preParse()->clean($aDvs['vin_text_color'], 6);
             $aSql['vin_font_size'] = $this->preParse()->clean($aDvs['vin_font_size'], 15);
             $aSql['vin_button_label'] = $this->preParse()->clean($aDvs['vin_button_label'], 255);
 
@@ -90,6 +91,7 @@ class Dvs_Service_Style_Process extends Phpfox_Service {
             $aSql['iframe_contact_text'] = $this->preParse()->clean($aDvs['iframe_contact_text'], 6);
             $aSql['vin_top_gradient'] = $this->preParse()->clean($aDvs['vin_top_gradient'], 6);
             $aSql['vin_bottom_gradient'] = $this->preParse()->clean($aDvs['vin_bottom_gradient'], 6);
+            $aSql['vin_text_color'] = $this->preParse()->clean($aDvs['vin_text_color'], 6);
             $aSql['vin_font_size'] = $this->preParse()->clean($aDvs['vin_font_size'], 15);
             $aSql['vin_button_label'] = $this->preParse()->clean($aDvs['vin_button_label'], 255);
         }

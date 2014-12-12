@@ -9,9 +9,10 @@
         text-decoration: none;
         text-transform: uppercase;
         height: 36px;
+        width:100%;
         max-width:300px;
         line-height: 36px;
-        color: #FFFFFF;
+        color: {$aStyle.vin_text_color};
         font-size: {$aStyle.vin_font_size};
         background: {$aStyle.vin_top_gradient}; /* Old browsers */
         background: -moz-linear-gradient(top,  {$aStyle.vin_top_gradient} 0%, {$aStyle.vin_bottom_gradient} 100%); /* FF3.6+ */
@@ -38,9 +39,13 @@
     height: 100%;
     left: 0;
     position: fixed;
+    _position:absolute;
     top: 0;
-    width: 100%;
-    z-index: 99;
+    _top:expression(eval(document.body.scrollTop));
+    width: 102%;
+    z-index: 9999;
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity = 80);
 {r}
 
 #dvs_vin_popup {l}
@@ -49,20 +54,22 @@
     position: absolute;
     left: 50%;
     margin-left: -465px;
-    height: 600px;
+    height: 500px;
     top: 50%;
     margin-top: -300px;
     box-shadow: 0 0 10px #222222;
     border-radius: 10px;
+    z-index:9998;
 {r}
 
 #dvs_vin_popup_content {l}
     display: block;
     width: 930px;
-    height: 600px;
+    height: 500px;
     border-radius: 10px;
     overflow: hidden;
     position: relative;
+    z-index:9998;
 {r}
 
 #dvs_vin_close_btn {l}
@@ -74,5 +81,5 @@
     right: -9px;
     top: -10px;
     width: 22px;
-    z-index: 999;
+    z-index: 9999;
 {r}

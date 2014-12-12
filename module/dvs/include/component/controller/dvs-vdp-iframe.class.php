@@ -184,7 +184,11 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
         $sVdpIframeUrl .= '&utm_medium=VDP Button';
         $sVdpIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
         $sVdpIframeUrl .= '&utm_campaign=DVS Inventory';
-
+        if(!$aDvs['is_active']) {
+            $this->template()->setHeader('cache', array(
+                'deactive.css' => 'module_dvs'
+            ));
+        }
         $this->template()
             ->setTemplate('dvs-iframe-view')
             ->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
