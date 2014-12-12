@@ -13,7 +13,6 @@
     {if $aDvs.vpd_popup}
         if(urlElement.addEventListener) {l}
             urlElement.addEventListener('click', function(evt) {l}
-                console.log(1);
                 evt.preventDefault();
                 WTVVIN.show_popup('{$aRow.url}'); return false;
             {r}, false);
