@@ -32,7 +32,6 @@ if (!window.WTVVIN) {
                 var aLink = document.createElement('a');
                 aLink.style.display = 'none';
                 aLink.setAttribute('href', '#');
-                aLink.setAttribute('onClick', 'WTVVIN.show_popup(this); return false;');
                 x[i].appendChild(aLink);
 
                 var divLoading = document.createElement('div');
@@ -40,7 +39,7 @@ if (!window.WTVVIN) {
                 x[i].appendChild(divLoading);
 
                 /*var sHTML = '<a style="display: none;" href="#" onClick="WTVVIN.show_popup(this); return false;">' + x[i].getAttribute('title') + '</a><div class="dvs_vin_loading"></div>';
-                x[i].innerHTML = sHTML;*/
+                 x[i].innerHTML = sHTML;*/
             }
             if(sAllVin.length > 0) {
                 sAllVin = sAllVin.substring(0, sAllVin.length - 1);
@@ -51,9 +50,44 @@ if (!window.WTVVIN) {
             ccscript.type = 'text/javascript';
             cchead[0].appendChild(ccscript);
 
+            var popupWrapper = document.createElement('div');
+            popupWrapper.setAttribute('id', 'dvs_vin_popup_wrapper');
+            if(popupWrapper.addEventListener) {
+                popupWrapper.addEventListener('click', function() {
+                    WTVVIN.close_popup(); return false;
+                });
+            } else {
+                popupWrapper.attachEvent('onclick', function() {
+                    WTVVIN.close_popup(); return false;
+                });
+            }
 
+            var popup =document.createElement('div');
+            popup.setAttribute('id', 'dvs_vin_popup');
+            popupWrapper.appendChild(popup);
 
-            document.getElementsByTagName('body')[0].innerHTML += '<div id="dvs_vin_popup_wrapper" onClick="WTVVIN.close_popup(); return false;"><div id="dvs_vin_popup"><a id="dvs_vin_close_btn" href="#" onClick="WTVVIN.close_popup(); return false;">Close</a><div id="dvs_vin_popup_content"></div></div></div>';
+            var closeButton = document.createElement('a');
+            closeButton.setAttribute('id', 'dvs_vin_close_btn');
+            closeButton.setAttribute('href', '#');
+            if(closeButton.addEventListener) {
+                closeButton.addEventListener('click', function() {
+                    WTVVIN.close_popup(); return false;
+                });
+            } else {
+                closeButton.attachEvent('onclick', function() {
+                    WTVVIN.close_popup(); return false;
+                });
+            }
+
+            var text = document.createTextNode('Close');
+            closeButton.appendChild(text);
+            popup.appendChild(closeButton);
+
+            var popupContent = document.createElement('div');
+            popupContent.setAttribute('id', 'dvs_vin_popup_content');
+            popup.appendChild(popupContent);
+
+            document.body.appendChild(popupWrapper);
         },
 
         GEBCN: function(cn){
@@ -85,15 +119,18 @@ if (!window.WTVVIN) {
             return results;
         },
 
-        show_popup: function(oLink) {
-            var sLink = oLink.getAttribute('href');
+        show_popup: function(sLink) {
+            //var sLink = oLink.getAttribute('href');
             document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" height="600" width="930" frameborder="0" scrolling="no"></iframe>';
-            this.fadeIn('dvs_vin_popup_wrapper');
+            WTVVIN.fadeIn('dvs_vin_popup_wrapper');
+            return false;
         },
 
         close_popup: function() {
             document.getElementById('dvs_vin_popup_content').innerHTML = '';
             this.fadeOut('dvs_vin_popup_wrapper');
+
+            return false;
         },
 
         fadeOut: function(id, val){
@@ -107,8 +144,9 @@ if (!window.WTVVIN) {
                 setTimeout('WTVVIN.fadeOut("'+id+'",'+val+')', 20);
             } else {
                 document.getElementById(id).style.display = 'none';
-                return;
+                return false;
             }
+            return false;
         },
 
         fadeIn: function(id, val) {
@@ -123,8 +161,9 @@ if (!window.WTVVIN) {
                 setTimeout('WTVVIN.fadeIn("'+id+'",'+val+')', 20);
             } else {
                 document.getElementById(id).style.opacity='1';
-                return;
+                return false;
             }
+            return false;
         }
     }
 }
