@@ -56,7 +56,7 @@
     margin-left: -465px;
     height: 500px;
     top: 50%;
-    margin-top: -350px;
+    margin-top: -250px;
     box-shadow: 0 0 10px #222222;
     border-radius: 10px;
     z-index:10001;
