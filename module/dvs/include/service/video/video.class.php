@@ -786,6 +786,14 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
                 ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
                 ->execute('getRows');
 
+            foreach($aRows as $iKey => $aRow) {
+                if($aRow['id'] == $aVideo['id']) {
+                    unset($aRows[$iKey]);
+                    array_unshift($aRows, $aRow);
+                    break;
+                }
+            }
+
             return $aRows;
         }
 
@@ -816,6 +824,14 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
                 ->order('i.year DESC')
                 ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
                 ->execute('getRows');
+
+            foreach($aRows as $iKey => $aRow) {
+                if($aRow['id'] == $aVideo['id']) {
+                    unset($aRows[$iKey]);
+                    array_unshift($aRows, $aRow);
+                    break;
+                }
+            }
 
             return $aRows;
         }
