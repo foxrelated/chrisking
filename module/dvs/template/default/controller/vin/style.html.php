@@ -43,7 +43,7 @@
     top: 0;
     _top:expression(eval(document.body.scrollTop));
     width: 102%;
-    z-index: 9999;
+    z-index: 10000;
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity = 80);
 {r}
