@@ -41,7 +41,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
 
     public function importRow($aData) {
         $aVals = array(
-            'dealer_id' => $aData['DEALER_ID'],
+            'dvs_id' => $aData['DEALER_ID'],
             'vin_id' => $aData['VIN'],
             'squish_vin_id' => $this->getSquishVinCode($aData['VIN']),
             'make' => $aData['MAKE'],
@@ -59,7 +59,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         $aRow = $this->database()
             ->select('inventory_id, total')
             ->from($this->_sTable)
-            ->where('vin_id = \'' . $aVals['vin_id'] . '\' AND dealer_id = \'' . $aVals['dealer_id'] . '\'')
+            ->where('vin_id = \'' . $aVals['vin_id'] . '\' AND dvs_id = \'' . $aVals['dvs_id'] . '\'')
             ->execute('getRow');
 
         if($aRow) {
@@ -299,7 +299,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         while ($iRead < $iFilesize && ($iBuffer = fread($fRemote, $iFilesize - $iRead))) {
             $iRead += strlen($iBuffer);
             if (fwrite($fLocal, $iBuffer) === FALSE) {
-                echo "Unable to write to local file: $file\n";
+                echo "Unable to write to local file: $sFile\n";
                 return false;
             }
         }
@@ -327,12 +327,12 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
     }
 
     public function runCronjob() {
-        if($sFile = $this->downloadZipFile()) {
-            if ($this->extracFile($sFile)) {
+        //if($sFile = $this->downloadZipFile()) {
+            //if ($this->extracFile($sFile)) {
                 $this->importFile();
-            }
+            //}
             return true;
-        }
+        //}
         return false;
     }
 }

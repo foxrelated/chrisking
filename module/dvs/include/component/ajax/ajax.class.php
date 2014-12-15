@@ -1481,7 +1481,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 
 		// Get all of the makes for the DVS for the selected year.
-		$aMakes = Phpfox::getService('dvs.video')->getValidVSMakesByDealer($iYear, $aPlayer['makes'], $aDvs['dealer_id']);
+		$aMakes = Phpfox::getService('dvs.video')->getValidVSMakesByDealer($iYear, $aPlayer['makes'], $aDvs['dvs_id']);
 
 		// Did we get more than one make?
 		if (count($aMakes) === 1) {
@@ -1880,7 +1880,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         $aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 
         // Get all of the makes for the DVS for the selected year.
-        $aMakes = Phpfox::getService('dvs.video')->getValidVSMakesByDealer($iYear, $aPlayer['makes'], $aDvs['dealer_id']);
+        $aMakes = Phpfox::getService('dvs.video')->getValidVSMakesByDealer($iYear, $aPlayer['makes'], $aDvs['dvs_id']);
 
         // Did we get more than one make?
         //if (count($aMakes) === 1) {
