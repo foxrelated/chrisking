@@ -219,9 +219,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 					->setBreadcrumb(Phpfox::getPhrase('dvs.edit_player'));
 				;
 			}
-		}
-		else
-		{
+		} else { //add & edit feature models
 			$iDvsId = $this->request()->getInt('id');
 
 			if (Phpfox::getService('dvs')->hasAccess($iDvsId, Phpfox::getUserId()))
@@ -238,7 +236,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 			if (($aPlayer = Phpfox::getService('dvs.player')->get($iDvsId)))
 			{
 				$aPlayerModels = array();
-
+                $aSelectedMakes = array();
 				foreach ($aMakes as $iKey => $aMake)
 				{
 					foreach ($aPlayer['makes'] as $aPlayerMake)
@@ -246,10 +244,11 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 						if ($aMake['make'] == $aPlayerMake['make'])
 						{
 							$aMakes[$iKey]['selected'] = 1;
+                            array_push($aSelectedMakes, $aPlayerMake['make']);
 						}
 					}
 				}
-
+                /*
 				foreach ($aYears as $iYear)
 				{
 					foreach ($aMakes as $aMake)
@@ -260,7 +259,10 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 							$aPlayerModels = array_merge($aPlayerModels, $aModels);
 						}
 					}
-				}
+				}*/
+
+                $aPlayerModels = Phpfox::getService('dvs.video')->getFeatureModels($iDvsId, $aSelectedMakes);
+
 
 				$this->template()
 					->assign(array(

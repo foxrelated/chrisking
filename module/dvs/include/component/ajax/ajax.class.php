@@ -1537,47 +1537,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 	public function getFeaturedModels()
 	{
 		$sMakes = Phpfox::getLib('request')->get('aMakes');
+        $iDvsId = $this->get('iDvs');
 		$aMakes = explode(',', $sMakes);
-
-        $aAllowedYears = Phpfox::getParam('dvs.vf_video_select_allowed_years');
-
-        if($iDvsId = $this->get('iDvs')) {
-            $aDvs = Phpfox::getService('dvs')->get($iDvsId);
-            if($aDvs) {
-                if(!$aDvs['new_car_videos']) {
-                    $aYears2 = Phpfox::getParam('dvs.new_years');
-                    foreach($aAllowedYears as $iKey => $sYear) {
-                        if(in_array($sYear, $aYears2)) {
-                            unset($aAllowedYears[$iKey]);
-                        }
-                    }
-                }
-
-                if(!$aDvs['used_car_videos']) {
-                    $aYears2 = Phpfox::getParam('dvs.new_years');
-                    foreach($aAllowedYears as $iKey => $sYear) {
-                        if(!in_array($sYear, $aYears2)) {
-                            unset($aAllowedYears[$iKey]);
-                        }
-                    }
-                }
-            }
-        }
-
-        $aYears = $aAllowedYears;
-
-		$aPlayerModels = array();
-
-		foreach ($aYears as $iYear)
-		{
-			foreach ($aMakes as $sMake)
-			{
-				$aModels = Phpfox::getService('dvs.video')->getModels($iYear, $sMake);
-
-				$aPlayerModels = array_merge($aPlayerModels, $aModels);
-			}
-		}
-
+        $aPlayerModels = Phpfox::getService('dvs.video')->getFeatureModels($iDvsId, $aMakes);
 
 		$sSelect = '<select id="dvs_video_select_model"><option value="">' . Phpfox::getPhrase('dvs.select_model') . '</option>';
 		foreach ($aPlayerModels as $aModel)
