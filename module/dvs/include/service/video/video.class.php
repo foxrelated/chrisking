@@ -1095,18 +1095,19 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
                     unset($aYears[$iKey]);
                 }
             }
+			if(count($aYears)) {
+				foreach($aMakes as $aMake) {
+					$aRows = $this->database()
+						->select('v.*')
+						->from($this->_tVideos, 'v')
+						->order('v.year DESC')
+						->where($sWhere . ' AND v.year IN (' . implode(',', $aYears) . ') AND v.make = \'' . $this->preParse()->clean($aMake['make']) . '\'')
+						->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
+						->execute('getRows');
 
-            foreach($aMakes as $aMake) {
-                $aRows = $this->database()
-                    ->select('v.*')
-                    ->from($this->_tVideos, 'v')
-                    ->order('v.year DESC')
-                    ->where($sWhere . ' AND v.year IN (' . implode(',', $aYears) . ') AND v.make = \'' . $this->preParse()->clean($aMake['make']) . '\'')
-                    ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
-                    ->execute('getRows');
-
-                $aVideos[] = $aRows;
-            }
+					$aVideos[] = $aRows;
+				}
+			}
         }
 
         /** GET INVENTORY CAR VIDEOS */
@@ -1119,26 +1120,28 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
                 }
             }
 
-            $aInventoryMakes = $this->database()
-                ->select('make')
-                ->from(Phpfox::getT('tbd_dvs_inventory'))
-                ->where('dvs_id = \'' . $aDvs['dvs_id'] . '\' AND year IN (' . implode(',', $aYears) . ')')
-                ->group('make')
-                ->execute('getRows');
+			if(count($aYears)) {
+				$aInventoryMakes = $this->database()
+					->select('make')
+					->from(Phpfox::getT('tbd_dvs_inventory'))
+					->where('dvs_id = \'' . $aDvs['dvs_id'] . '\' AND year IN (' . implode(',', $aYears) . ')')
+					->group('make')
+					->execute('getRows');
 
-            foreach($aInventoryMakes as $aMake) {
-                $aRows = $this->database()
-                    ->select('i.inventory_id, v.*')
-                    ->from(Phpfox::getT('tbd_dvs_inventory'), 'i')
-                    ->leftJoin($this->_tVideos, 'v', 'v.referenceId = i.referenceId')
-                    ->where($sWhere . ' AND i.dvs_id = \'' .$aDvs['dvs_id'] . '\' AND i.referenceId IS NOT NULL AND i.year IN (' . implode(',', $aYears) . ') AND i.make = \'' . $aMake['make'] . '\'')
-                    ->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
-                    ->group('i.referenceId')
-                    ->order('i.year DESC')
-                    ->execute('getRows');
+				foreach($aInventoryMakes as $aMake) {
+					$aRows = $this->database()
+						->select('i.inventory_id, v.*')
+						->from(Phpfox::getT('tbd_dvs_inventory'), 'i')
+						->leftJoin($this->_tVideos, 'v', 'v.referenceId = i.referenceId')
+						->where($sWhere . ' AND i.dvs_id = \'' .$aDvs['dvs_id'] . '\' AND i.referenceId IS NOT NULL AND i.year IN (' . implode(',', $aYears) . ') AND i.make = \'' . $aMake['make'] . '\'')
+						->limit(Phpfox::getParam('dvs.vf_overview_max_videos_per_make'))
+						->group('i.referenceId')
+						->order('i.year DESC')
+						->execute('getRows');
 
-                $aVideos[] = $aRows;
-            }
+					$aVideos[] = $aRows;
+				}
+			}
         }
 
         $aOverviewVideos = $this->limitVideos($aVideos, Phpfox::getParam('dvs.vf_overview_max_videos'));
