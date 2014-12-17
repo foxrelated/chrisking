@@ -50,6 +50,19 @@ if (!window.WTVVIN) {
             ccscript.type = 'text/javascript';
             cchead[0].appendChild(ccscript);
 
+            var layoutWrapper = document.createElement('div');
+            layoutWrapper.setAttribute('id', 'dvs_vin_layout_wrapper');
+            document.body.appendChild(layoutWrapper);
+            if(layoutWrapper.addEventListener) {
+                layoutWrapper.addEventListener('click', function() {
+                    WTVVIN.close_popup(); return false;
+                });
+            } else {
+                layoutWrapper.attachEvent('onclick', function() {
+                    WTVVIN.close_popup(); return false;
+                });
+            }
+
             var popupWrapper = document.createElement('div');
             popupWrapper.setAttribute('id', 'dvs_vin_popup_wrapper');
             if(popupWrapper.addEventListener) {
@@ -122,14 +135,16 @@ if (!window.WTVVIN) {
         show_popup: function(sLink) {
             //var sLink = oLink.getAttribute('href');
             document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" height="600" width="930" frameborder="0" scrolling="no"></iframe>';
-            WTVVIN.fadeIn('dvs_vin_popup_wrapper');
+            WTVVIN.fadeIn('dvs_vin_layout_wrapper', 9);
+            WTVVIN.fadeIn('dvs_vin_popup_wrapper', 10);
             return false;
         },
 
         close_popup: function() {
             document.getElementById('dvs_vin_popup_content').innerHTML = '';
+            console.log("colose");
+            this.fadeOut('dvs_vin_layout_wrapper');
             this.fadeOut('dvs_vin_popup_wrapper');
-
             return false;
         },
 
