@@ -214,9 +214,6 @@
             <param name="isVid" value="true" />
             <param name="isUI" value="true" />
             <param name="dynamicStreaming" value="true" />
-            <!--{if $aPlayer.preroll_file_id}
-            <param name="adServerURL" value="{$sPrerollXmlUrl}" />
-            {/if}-->
             <param name="accountID" value="{$aDvs.dvs_google_id}" />
             <param name="showNoContentMessage" value="false" />
             {if $sBrowser == 'ipad'}
