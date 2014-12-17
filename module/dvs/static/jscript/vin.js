@@ -55,7 +55,7 @@ if (!window.WTVVIN) {
 
             var closeButton = document.createElement('a');
             closeButton.setAttribute('id', 'dvs_vin_close_btn');
-            closeButton.setAttribute('href', '#');
+            //closeButton.setAttribute('href', '#');
             if(closeButton.addEventListener) {
                 closeButton.addEventListener('click', function() {
                     WTVVIN.close_popup(); return false;

@@ -74,6 +74,7 @@
 
 #dvs_vin_close_btn {l}
     background: url("{$aStyle.close_btn}") no-repeat scroll left top transparent;
+    cursor: pointer;
     display: block;
     font-size: 0;
     height: 22px;
