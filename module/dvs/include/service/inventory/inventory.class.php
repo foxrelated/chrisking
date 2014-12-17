@@ -1,9 +1,14 @@
 <?php
 
 class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
+    private $_sHost = 'sftp.dmotorworks.com';
+    private $_sPort = '22';
+    private $_sUsername = 'WTVMain';
+    private $_sPassword = '$new123';
+
     function __construct() {
         $this->_sTable = Phpfox::getT('tbd_dvs_inventory');
-        Phpfox::getLib('setting')->setParam('dvs.csv_folder', PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'include' . PHPFOX_DS . 'service' . PHPFOX_DS . 'inventory' . PHPFOX_DS);
+        Phpfox::getLib('setting')->setParam('dvs.csv_folder', PHPFOX_DIR . 'file' . PHPFOX_DS . 'inventory' . PHPFOX_DS);
     }
 
     public function importFile() {
@@ -36,7 +41,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
 
     public function importRow($aData) {
         $aVals = array(
-            'dealer_id' => $aData['DEALER_ID'],
+            'dvs_id' => $aData['DEALER_ID'],
             'vin_id' => $aData['VIN'],
             'squish_vin_id' => $this->getSquishVinCode($aData['VIN']),
             'make' => $aData['MAKE'],
@@ -54,14 +59,14 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         $aRow = $this->database()
             ->select('inventory_id, total')
             ->from($this->_sTable)
-            ->where('vin_id = \'' . $aVals['vin_id'] . '\' AND dealer_id = \'' . $aVals['dealer_id'] . '\'')
+            ->where('vin_id = \'' . $aVals['vin_id'] . '\' AND dvs_id = \'' . $aVals['dvs_id'] . '\'')
             ->execute('getRow');
 
         if($aRow) {
             $this->database()->update($this->_sTable, array(
-                'is_updated' => 1,
-                'total' => (int)$aRow['total'] + 1
-            ), 'inventory_id = ' . (int)$aRow['inventory_id']);
+                    'is_updated' => 1,
+                    'total' => (int)$aRow['total'] + 1
+                ), 'inventory_id = ' . (int)$aRow['inventory_id']);
             return $aRow['inventory_id'];
         }
 
@@ -236,5 +241,100 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
 
         return $object;
     }
+
+    public function downloadZipFile() {
+        if (!function_exists("ssh2_connect")) {
+            return false;
+            die('Function ssh2_connect not found, you cannot use ssh2 here');
+        }
+
+        if (!$oConnection = ssh2_connect($this->_sHost, $this->_sPort)) {
+            return false;
+            die('Unable to connect');
+        }
+
+
+        if (!ssh2_auth_password($oConnection, $this->_sUsername, $this->_sPassword)) {
+            return false;
+            die('Unable to authenticate.');
+        }
+
+
+        if (!$oStream = ssh2_sftp($oConnection)) {
+            return false;
+            die('Unable to create a stream.');
+        }
+
+
+        if (!$oDir = opendir("ssh2.sftp://{$oStream}/./")) {
+            return false;
+            die('Could not open the directory');
+        }
+
+
+        $sFile = '';
+        while (false !== ($sTempFile = readdir($oDir))) {
+            if ($sTempFile == "." || $sTempFile == "..")
+                continue;
+            if(strpos($sTempFile, 'VINVENTORY') === 0) {
+                $sFile = $sTempFile;
+                break;
+            }
+        }
+
+        if(!$sFile) {
+            return false;
+        }
+
+        if (!$fRemote = @fopen("ssh2.sftp://{$oStream}/{$sFile}", 'r')) {
+            return false;
+        }
+
+        if (!$fLocal = @fopen(Phpfox::getParam('dvs.csv_folder') . $sFile, 'w')) {
+            return false;
+        }
+
+        $iRead = 0;
+        $iFilesize = filesize("ssh2.sftp://{$oStream}/{$sFile}");
+        while ($iRead < $iFilesize && ($iBuffer = fread($fRemote, $iFilesize - $iRead))) {
+            $iRead += strlen($iBuffer);
+            if (fwrite($fLocal, $iBuffer) === FALSE) {
+                echo "Unable to write to local file: $sFile\n";
+                return false;
+            }
+        }
+        fclose($fLocal);
+        fclose($fRemote);
+
+        return $sFile;
+    }
+
+    public function extracFile($sFile) {
+        $oZip = new ZipArchive;
+        $oRes = $oZip->open(Phpfox::getParam('dvs.csv_folder') . $sFile);
+        if ($oRes === TRUE) {
+            $oZip->extractTo(Phpfox::getParam('dvs.csv_folder'));
+            $oZip->close();
+
+            if (!rename(Phpfox::getParam('dvs.csv_folder') . str_replace('.zip', '.txt', $sFile), Phpfox::getParam('dvs.csv_folder') . 'inventory.csv')) {
+                return false;
+            }
+            @unlink(Phpfox::getParam('dvs.csv_folder') . $sFile);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function runCronjob() {
+        //if($sFile = $this->downloadZipFile()) {
+            //if ($this->extracFile($sFile)) {
+                $this->importFile();
+            //}
+            return true;
+        //}
+        return false;
+    }
 }
+
 ?>

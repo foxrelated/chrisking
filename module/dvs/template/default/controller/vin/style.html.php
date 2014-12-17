@@ -32,7 +32,7 @@
     height: 11px;
 {r}
 
-#dvs_vin_popup_wrapper {l}
+#dvs_vin_layout_wrapper {l}
     opacity: 0;
     display: none;
     background: url("{$sPopupBg}") repeat scroll 0 0 transparent;
@@ -48,6 +48,19 @@
     filter: alpha(opacity = 80);
 {r}
 
+#dvs_vin_popup_wrapper {l}
+    opacity: 0;
+    display: none;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    _position:absolute;
+    top: 0;
+    _top:expression(eval(document.body.scrollTop));
+    width: 102%;
+    z-index: 10001;
+{r}
+
 #dvs_vin_popup {l}
     display: block;
     width: 930px;
@@ -59,7 +72,7 @@
     margin-top: -250px;
     box-shadow: 0 0 10px #222222;
     border-radius: 10px;
-    z-index:10001;
+    z-index:10002;
 {r}
 
 #dvs_vin_popup_content {l}
@@ -74,6 +87,7 @@
 
 #dvs_vin_close_btn {l}
     background: url("{$aStyle.close_btn}") no-repeat scroll left top transparent;
+    cursor: pointer;
     display: block;
     font-size: 0;
     height: 22px;
