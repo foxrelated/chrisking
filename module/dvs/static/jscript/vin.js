@@ -37,6 +37,19 @@ if (!window.WTVVIN) {
                 sAllVin = sAllVin.substring(0, sAllVin.length - 1);
             }
 
+            var layoutWrapper = document.createElement('div');
+            layoutWrapper.setAttribute('id', 'dvs_vin_layout_wrapper');
+            if(layoutWrapper.addEventListener) {
+                layoutWrapper.addEventListener('click', function() {
+                    WTVVIN.close_popup(); return false;
+                });
+            } else {
+                layoutWrapper.attachEvent('onclick', function() {
+                    WTVVIN.close_popup(); return false;
+                });
+            }
+            document.body.appendChild(layoutWrapper);
+
             var popupWrapper = document.createElement('div');
             popupWrapper.setAttribute('id', 'dvs_vin_popup_wrapper');
             if(popupWrapper.addEventListener) {
