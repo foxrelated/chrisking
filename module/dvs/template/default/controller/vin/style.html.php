@@ -51,7 +51,6 @@
 #dvs_vin_popup_wrapper {l}
     opacity: 0;
     display: none;
-    background: url("{$sPopupBg}") repeat scroll 0 0 transparent;
     height: 100%;
     left: 0;
     position: fixed;
