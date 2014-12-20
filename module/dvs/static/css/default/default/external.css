@@ -2,7 +2,7 @@
 {
 	display: inline-block;
 	vertical-align: top;
-	position: static;
+	/* position: static; */
 }
 
 #chapter_buttons
@@ -10,6 +10,8 @@
 	display: inline-block;
 	vertical-align: top;
 	position: static;
+	margin-top:10px;
+	margin-left:-70px;
 }
 
 #site_content
