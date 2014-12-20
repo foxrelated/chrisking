@@ -1481,7 +1481,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 
 		// Get all of the makes for the DVS for the selected year.
-		$aMakes = Phpfox::getService('dvs.video')->getValidVSMakesByDealer($iYear, $aPlayer['makes'], $aDvs['dealer_id']);
+		$aMakes = Phpfox::getService('dvs.video')->getValidVSMakesByDealer($iYear, $aPlayer['makes'], $aDvs['dvs_id']);
 
 		// Did we get more than one make?
 		if (count($aMakes) === 1) {
@@ -1536,51 +1536,10 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 	public function getFeaturedModels()
 	{
-		$aYears = Phpfox::getParam('dvs.new_years');
 		$sMakes = Phpfox::getLib('request')->get('aMakes');
+        $iDvsId = $this->get('iDvs');
 		$aMakes = explode(',', $sMakes);
-
-        $aAllowedYears = $aYears;
-
-        if($iDvsId = $this->get('iDvs')) {
-            $aDvs = Phpfox::getService('dvs')->get($iDvsId);
-            if($aDvs) {
-                if(!$aDvs['new_car_videos']) {
-                    $sYears = Phpfox::getParam('research.new_model_year');
-                    $aYears2 = explode(',', $sYears);
-                    foreach($aAllowedYears as $iKey => $sYear) {
-                        if(in_array($sYear, $aYears2)) {
-                            unset($aAllowedYears[$iKey]);
-                        }
-                    }
-                }
-
-                if(!$aDvs['used_car_videos']) {
-                    $sYears = Phpfox::getParam('research.used_model_year_exclusion');
-                    $aYears2 = explode(',', $sYears);
-                    foreach($aAllowedYears as $iKey => $sYear) {
-                        if(!in_array($sYear, $aYears2)) {
-                            unset($aAllowedYears[$iKey]);
-                        }
-                    }
-                }
-            }
-        }
-
-        $aYears = $aAllowedYears;
-
-		$aPlayerModels = array();
-
-		foreach ($aYears as $iYear)
-		{
-			foreach ($aMakes as $sMake)
-			{
-				$aModels = Phpfox::getService('dvs.video')->getModels($iYear, $sMake);
-
-				$aPlayerModels = array_merge($aPlayerModels, $aModels);
-			}
-		}
-
+        $aPlayerModels = Phpfox::getService('dvs.video')->getFeatureModels($iDvsId, $aMakes);
 
 		$sSelect = '<select id="dvs_video_select_model"><option value="">' . Phpfox::getPhrase('dvs.select_model') . '</option>';
 		foreach ($aPlayerModels as $aModel)
@@ -1883,7 +1842,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         $aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 
         // Get all of the makes for the DVS for the selected year.
-        $aMakes = Phpfox::getService('dvs.video')->getValidVSMakesByDealer($iYear, $aPlayer['makes'], $aDvs['dealer_id']);
+        $aMakes = Phpfox::getService('dvs.video')->getValidVSMakesByDealer($iYear, $aPlayer['makes'], $aDvs['dvs_id']);
 
         // Did we get more than one make?
         //if (count($aMakes) === 1) {

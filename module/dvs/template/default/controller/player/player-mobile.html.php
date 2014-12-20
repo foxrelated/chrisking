@@ -89,7 +89,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		var bIdriveGetPrice = {if !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}true{else}false{/if};
 		var bPreview = {if $bPreview}true{else}false{/if};
 		var bAutoplay = {if (isset($aPlayer.autoplay) && $aPlayer.autoplay) || (isset($aPlayer.autoplay_baseurl) && $aPlayer.autoplay_baseurl && !$aBaseUrl) || (isset($aPlayer.autoplay_videourl) && $aPlayer.autoplay_videourl && $aBaseUrl)}true{ else}false{/if};
-		//var bAutoplay =true;
+            {if !$aDvs.is_active}bAutoplay = false;{/if}
 		var iCurrentVideo = {$aCurrentVideo};
 		var bAutoAdvance ={if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
 	{else}
@@ -98,6 +98,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		var bIdriveGetPrice = {if $bShowGetPrice}true{else}false{/if};
 		var bPreview = false;
 		var bAutoplay = {if $bAutoplay}true{else}false{/if};
+            {if !$aDvs.is_active}bAutoplay = false;{/if}
 		var bAutoAdvance = true;
 	{/if}
 		

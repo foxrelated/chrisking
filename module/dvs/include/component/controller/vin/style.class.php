@@ -21,6 +21,7 @@ class Dvs_Component_Controller_Vin_Style extends Phpfox_Component {
             $aStyle['vin_top_gradient'] = '#' . $aDvs['vin_top_gradient'];
             $aStyle['vin_bottom_gradient'] = '#' . $aDvs['vin_bottom_gradient'];
             $aStyle['vin_font_size'] = $aDvs['vin_font_size'];
+            $aStyle['vin_text_color'] = '#' . $aDvs['vin_text_color'];
             if($aDvs['vdp_file_name']) {
                 $aStyle['vdp_background'] = Phpfox::getParam('core.url_file') . 'dvs/vdp/' . $aDvs['vdp_file_name'];
             }

@@ -2,7 +2,7 @@
 <style type="text/css">
     #dvs_bc_player {
         width: 720px;
-        height: 408px;
+        height: 306px;
     }
 
     body {
@@ -16,17 +16,19 @@
         width: 100%;
     }
 
-    #video_information h3, #video_information a {
+    #video_information h3 {
         color: {/literal}#{$aPlayer.player_text}{literal};
         padding:0px;
         margin: 0px;
+        margin-left:10px;
+        font-size:18px;
     }
 </style>
 {/literal}
 <article>
     <section id="video_information">
         <h3 id="video_name">
-            <a onclick="return false;" id="current_video_link">{$aDvs.phrase_overrides.override_video_name_display}</a>
+            {$aDvs.phrase_overrides.override_video_name_display}
         </h3>
     </section>
     <section id="player">
@@ -100,8 +102,11 @@
             var iDvsId = {if $bIsDvs}{$iDvsId}{else}0{/if};
             var bIdriveGetPrice = {if !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}true{else}false{/if};
             var bPreview = {if $bPreview}true{else}false{/if};
+            {if $aDvs.is_active}
             var bAutoplay = {if (isset($aPlayer.autoplay) && $aPlayer.autoplay) || (isset($aPlayer.autoplay_baseurl) && $aPlayer.autoplay_baseurl && !$aBaseUrl) || (isset($aPlayer.autoplay_videourl) && $aPlayer.autoplay_videourl && $aBaseUrl)}true{else}false{/if};
-            //var bAutoplay =true;
+            {else}
+            var bAutoplay =false;
+            {/if}
             var iCurrentVideo = {$aCurrentVideo};
             var bAutoAdvance = {if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
 
@@ -209,9 +214,6 @@
             <param name="isVid" value="true" />
             <param name="isUI" value="true" />
             <param name="dynamicStreaming" value="true" />
-            {if $aPlayer.preroll_file_id}
-            <param name="adServerURL" value="{$sPrerollXmlUrl}" />
-            {/if}
             <param name="accountID" value="{$aDvs.dvs_google_id}" />
             <param name="showNoContentMessage" value="false" />
             {if $sBrowser == 'ipad'}
@@ -247,7 +249,7 @@
             <button type="button" id="chapter_container_Honors" class="disabled no_display" onclick="changeCuePoint('Honors');"></button>
             <button type="button" id="chapter_container_Summary" class="disabled display" onclick="changeCuePoint('Summary');"></button>
         </section>
-
+		{*
         {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
         <section id="playlist_wrapper">
             <button class="prev playlist-button">&lt;</button>
@@ -281,7 +283,22 @@
             <button class="next playlist-button">&gt;</button>
             {/if}
         </section>
+        *}
     </section>
 </article>
 
 <iframe src="{$sVdpIframeUrl}" height="1" width="1"></iframe>
+{if !$aDvs.is_active}
+{template file='dvs.block.deactive'}
+{*
+<script type="text/javascript">
+$Behavior.googleDvsDeactive = function() {l}
+    {if $sBrowser == 'mobile'}
+    sendToGoogle('DVS Mobile', 'DVS Deactivated', 'Deactivation Message Shown');
+    {else}
+    sendToGoogle('DVS Site', 'DVS Deactivated', 'Deactivation Message Shown');
+    {/if}
+{r}
+</script>
+*}
+{/if}

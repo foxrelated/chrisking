@@ -28,18 +28,17 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
 
-		$aYears = Phpfox::getParam('dvs.new_years');
+//		$aYears = Phpfox::getParam('dvs.new_years');
+//        $aAllowedYears = $aYears;
+        $aAllowedYears = Phpfox::getParam('dvs.vf_video_select_allowed_years');
 
-        /*$aAllowedYears = Phpfox::getParam('dvs.vf_video_select_allowed_years');*/
 
-        $aAllowedYears = $aYears;
 
         if($iDvsId = $this->request()->get('id')) {
             $aDvs = Phpfox::getService('dvs')->get($iDvsId);
             if($aDvs) {
                 if(!$aDvs['new_car_videos']) {
-                    $sYears = Phpfox::getParam('research.new_model_year');
-                    $aYears2 = explode(',', $sYears);
+                    $aYears2 = Phpfox::getParam('dvs.new_years');
                     foreach($aAllowedYears as $iKey => $sYear) {
                         if(in_array($sYear, $aYears2)) {
                             unset($aAllowedYears[$iKey]);
@@ -48,8 +47,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
                 }
 
                 if(!$aDvs['used_car_videos']) {
-                    $sYears = Phpfox::getParam('research.used_model_year_exclusion');
-                    $aYears2 = explode(',', $sYears);
+                    $aYears2 = Phpfox::getParam('dvs.new_years');
                     foreach($aAllowedYears as $iKey => $sYear) {
                         if(!in_array($sYear, $aYears2)) {
                             unset($aAllowedYears[$iKey]);
@@ -221,9 +219,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 					->setBreadcrumb(Phpfox::getPhrase('dvs.edit_player'));
 				;
 			}
-		}
-		else
-		{
+		} else { //add & edit feature models
 			$iDvsId = $this->request()->getInt('id');
 
 			if (Phpfox::getService('dvs')->hasAccess($iDvsId, Phpfox::getUserId()))
@@ -240,7 +236,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 			if (($aPlayer = Phpfox::getService('dvs.player')->get($iDvsId)))
 			{
 				$aPlayerModels = array();
-
+                $aSelectedMakes = array();
 				foreach ($aMakes as $iKey => $aMake)
 				{
 					foreach ($aPlayer['makes'] as $aPlayerMake)
@@ -248,10 +244,11 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 						if ($aMake['make'] == $aPlayerMake['make'])
 						{
 							$aMakes[$iKey]['selected'] = 1;
+                            array_push($aSelectedMakes, $aPlayerMake['make']);
 						}
 					}
 				}
-
+                /*
 				foreach ($aYears as $iYear)
 				{
 					foreach ($aMakes as $aMake)
@@ -262,7 +259,10 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 							$aPlayerModels = array_merge($aPlayerModels, $aModels);
 						}
 					}
-				}
+				}*/
+
+                $aPlayerModels = Phpfox::getService('dvs.video')->getFeatureModels($iDvsId, $aSelectedMakes);
+
 
 				$this->template()
 					->assign(array(
