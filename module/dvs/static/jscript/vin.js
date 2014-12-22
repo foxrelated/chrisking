@@ -13,14 +13,6 @@ if (!window.WTVVIN) {
                 var sScriptUrl = params.styleUrl.replace('vin/style/id', 'vin/script/id');
             }
 
-            var cchead = document.getElementsByTagName("head");
-            var cclink = document.createElement('link');
-            cclink.href = params.styleUrl;
-            cclink.type = 'text/css';
-            cclink.charset = 'utf-8';
-            cclink.rel = 'stylesheet';
-            cchead[0].appendChild(cclink);
-
             var sAllVin = '';
             var x = this.GEBCN('dvs_vin_btn');
             for (i = 0; i < x.length; i++) {
@@ -45,10 +37,18 @@ if (!window.WTVVIN) {
                 sAllVin = sAllVin.substring(0, sAllVin.length - 1);
             }
 
-            var ccscript = document.createElement('script');
-            ccscript.src = sScriptUrl + 'vin_' + sAllVin + '/';
-            ccscript.type = 'text/javascript';
-            cchead[0].appendChild(ccscript);
+            var layoutWrapper = document.createElement('div');
+            layoutWrapper.setAttribute('id', 'dvs_vin_layout_wrapper');
+            if(layoutWrapper.addEventListener) {
+                layoutWrapper.addEventListener('click', function() {
+                    WTVVIN.close_popup(); return false;
+                });
+            } else {
+                layoutWrapper.attachEvent('onclick', function() {
+                    WTVVIN.close_popup(); return false;
+                });
+            }
+            document.body.appendChild(layoutWrapper);
 
             var popupWrapper = document.createElement('div');
             popupWrapper.setAttribute('id', 'dvs_vin_popup_wrapper');
@@ -68,7 +68,7 @@ if (!window.WTVVIN) {
 
             var closeButton = document.createElement('a');
             closeButton.setAttribute('id', 'dvs_vin_close_btn');
-            closeButton.setAttribute('href', '#');
+            //closeButton.setAttribute('href', '#');
             if(closeButton.addEventListener) {
                 closeButton.addEventListener('click', function() {
                     WTVVIN.close_popup(); return false;
@@ -88,6 +88,18 @@ if (!window.WTVVIN) {
             popup.appendChild(popupContent);
 
             document.body.appendChild(popupWrapper);
+
+            var cclink = document.createElement('link');
+            cclink.href = params.styleUrl;
+            cclink.type = 'text/css';
+            cclink.charset = 'utf-8';
+            cclink.rel = 'stylesheet';
+            document.body.appendChild(cclink);
+
+            var ccscript = document.createElement('script');
+            ccscript.src = sScriptUrl + 'vin_' + sAllVin + '/';
+            ccscript.type = 'text/javascript';
+            document.body.appendChild(ccscript);
         },
 
         GEBCN: function(cn){
@@ -122,14 +134,15 @@ if (!window.WTVVIN) {
         show_popup: function(sLink) {
             //var sLink = oLink.getAttribute('href');
             document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" height="600" width="930" frameborder="0" scrolling="no"></iframe>';
-            WTVVIN.fadeIn('dvs_vin_popup_wrapper');
+            WTVVIN.fadeIn('dvs_vin_layout_wrapper', 9);
+            WTVVIN.fadeIn('dvs_vin_popup_wrapper', 10);
             return false;
         },
 
         close_popup: function() {
             document.getElementById('dvs_vin_popup_content').innerHTML = '';
+            this.fadeOut('dvs_vin_layout_wrapper');
             this.fadeOut('dvs_vin_popup_wrapper');
-
             return false;
         },
 
