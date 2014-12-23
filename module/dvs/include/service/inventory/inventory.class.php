@@ -41,7 +41,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
 
     public function importRow($aData) {
         $aVals = array(
-            'dvs_id' => $aData['DEALER_ID'],
+            'dealer_id' => $aData['DEALER_ID'],
             'vin_id' => $aData['VIN'],
             'squish_vin_id' => $this->getSquishVinCode($aData['VIN']),
             'make' => $aData['MAKE'],
@@ -59,7 +59,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         $aRow = $this->database()
             ->select('inventory_id, total')
             ->from($this->_sTable)
-            ->where('vin_id = \'' . $aVals['vin_id'] . '\' AND dvs_id = \'' . $aVals['dvs_id'] . '\'')
+            ->where('vin_id = \'' . $aVals['vin_id'] . '\' AND dealer_id = \'' . $aVals['dealer_id'] . '\'')
             ->execute('getRow');
 
         if($aRow) {
@@ -330,13 +330,13 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
     }
 
     public function runCronjob() {
-        if($sFile = $this->downloadZipFile()) {
-            if ($this->extracFile($sFile)) {
+//        if($sFile = $this->downloadZipFile()) {
+//            if ($this->extracFile($sFile)) {
                 $this->importFile();
-            }
-            return true;
-        }
-        return false;
+//            }
+//            return true;
+//        }
+//        return false;
     }
 }
 

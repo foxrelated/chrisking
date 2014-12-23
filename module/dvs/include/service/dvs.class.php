@@ -640,7 +640,6 @@ public function aaasort (&$array, $key) {
 		$iPage = (int) $iPage;
 		$iPageSize = (int) $iPageSize;
 		$iUserId = (int) $iUserId;
-
         $sWhere = '1';
 	    if ($iUserId && !$bGetAll) {
             $sWhere .= ' AND d.user_id =' . $iUserId;
@@ -674,6 +673,15 @@ public function aaasort (&$array, $key) {
 			->join(Phpfox::getT('user'), 'u', 'u.user_id = d.user_id')
             ->where($sWhere)
 			->execute('getRows');
+
+        foreach($aDvss as $iKey => $aDvs) {
+            if(isset($aDvs['dealer_id']) && ($aDvs['dealer_id'])) {
+                $aDvss[$iKey]['dealer_id'] = @unserialize($aDvs['dealer_id']);
+                if(!is_array($aDvss[$iKey]['dealer_id'])) {
+                    $aDvss[$iKey]['dealer_id'] = array();
+                }
+            }
+        }
 
 		if ($bPaginate)
 		{
@@ -728,6 +736,14 @@ public function aaasort (&$array, $key) {
         if(isset($aDvs['font_family_id'])) {
             $aDvs['font_family'] = Phpfox::getService('dvs.style')->getFontFamily($aDvs['font_family_id']);
         }
+
+        if(isset($aDvs['dealer_id']) && ($aDvs['dealer_id'])) {
+            $aDvs['dealer_id'] = @unserialize($aDvs['dealer_id']);
+            if(!is_array($aDvs['dealer_id'])) {
+                $aDvs['dealer_id'] = array();
+            }
+        }
+
 
 		return $aDvs;
 	}
