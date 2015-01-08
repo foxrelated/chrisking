@@ -155,30 +155,32 @@
                     {/if}
                 </td>
             </tr>
+            {if Phpfox::isAdmin()}
             <tr>
                 <td>
-                    QR Code
+                    QR Code Link
                     <input class="dvs_share_text_box" type="text" id="link_code_{$iKey}" value='{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule("redirect")}share_qrcode/{else}&share=qrcode{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=QR%20Code&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}' />
                 </td>
                 <td>
                 <br/>
                     {if !$bIsIPhone}
-                    <div id="dvs_share_copy_button_holder2_{$iKey}" class="dvs_share_copy_button_holder">
-                        <button id="copy_button2_{$iKey}">Copy Link</button>
+                    <div id="dvs_share_copy_button_holder3_{$iKey}" class="dvs_share_copy_button_holder">
+                        <button id="copy_button3_{$iKey}">Copy QR Link</button>
                     </div>
                     <script type="text/javascript">
-                        var clip2_{$iKey} = new ZeroClipboard.Client();
-                        clip2_{$iKey}.setHandCursor(true);
-                        clip2_{$iKey}.setText( document.getElementById('link_code_{$iKey}').value );
-                        clip2_{$iKey}.glue('copy_button2_{$iKey}', "dvs_share_copy_button_holder2_{$iKey}");
-                        clip2_{$iKey}.addEventListener('onComplete', function(){l}
+                        var clip3_{$iKey} = new ZeroClipboard.Client();
+                        clip3_{$iKey}.setHandCursor(true);
+                        clip3_{$iKey}.setText( document.getElementById('link_code_{$iKey}').value );
+                        clip3_{$iKey}.glue('copy_button3_{$iKey}', "dvs_share_copy_button_holder3_{$iKey}");
+                        clip3_{$iKey}.addEventListener('onComplete', function(){l}
                         $.ajaxCall('dvs.copyCRM', 'shorturl={$aVideo.shorturl}');
-                        alert('Link has been copied to clipboard!');
+                        alert('QR link has been copied to clipboard!');
                         {r});
                     </script>
                     {/if}
                 </td>
             </tr>
+            {/if}
         </table>
 
     </div>
