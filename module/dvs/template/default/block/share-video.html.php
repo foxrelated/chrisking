@@ -165,7 +165,7 @@
                 <br/>
                     {if !$bIsIPhone}
                     <div id="dvs_share_copy_button_holder3_{$iKey}" class="dvs_share_copy_button_holder">
-                        <button id="copy_button3_{$iKey}">Copy QR Link</button>
+                        <button id="copy_button3_{$iKey}">Copy QR</button>
                     </div>
                     <script type="text/javascript">
                         var clip3_{$iKey} = new ZeroClipboard.Client();
