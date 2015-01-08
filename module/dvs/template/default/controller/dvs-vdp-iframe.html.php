@@ -108,7 +108,7 @@
             var bAutoplay =false;
             {/if}
             var iCurrentVideo = {$aCurrentVideo};
-            var bAutoAdvance = {if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
+            var bAutoAdvance = false;
 
             function setPlayerStyle(){l}
                 if (bDebug) {l}

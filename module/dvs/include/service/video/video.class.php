@@ -216,7 +216,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
                 }
             }
 
-            if(count($aDvs['dealer_id'])) {
+            if(count($aDvs['dealer_id']) && count($aYears)) {
                 $aInventoryMakes = $this->database()
                     ->select('make')
                     ->from(Phpfox::getT('tbd_dvs_inventory'))

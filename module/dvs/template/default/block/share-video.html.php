@@ -158,7 +158,7 @@
             <tr>
                 <td>
                     QR Code
-                    <input class="dvs_share_text_box" type="text" id="link_code_{$iKey}" value='{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule("redirect")}share_direct/{else}&share=qrcode{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=QR%20Code&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}' />
+                    <input class="dvs_share_text_box" type="text" id="link_code_{$iKey}" value='{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule("redirect")}share_qrcode/{else}&share=qrcode{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=QR%20Code&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}' />
                 </td>
                 <td>
                 <br/>
