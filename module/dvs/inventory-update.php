@@ -42,7 +42,13 @@ if (Phpfox::isModule('dvs')) {
     $bReturn = Phpfox::getService('dvs.inventory')->getPending('style');
     if($bReturn > 0) {
         Phpfox::getService('dvs.inventory')->updateEdStyleId();
+        $bReturn = Phpfox::getService('dvs.inventory')->getPending('style');
+        echo 'Edmunds Style ID Pending: ' . $bReturn;
+        echo '<br />Reference Id Pending: *** (Only update after Edmunds Style Update Completed)';
     } else {
         Phpfox::getService('dvs.inventory')->updateReferenceId();
+        $bReturn = Phpfox::getService('dvs.inventory')->getPending('reference');
+        echo 'Edmunds Style ID Pending: 0';
+        echo '<br />Reference Id Pending: ' . $bReturn;
     }
 }

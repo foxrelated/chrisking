@@ -17,6 +17,11 @@ defined('PHPFOX') or exit('NO DICE!');
 <head>
     <title>{title}</title>
     {header}
+    <style>
+        body {l}
+            background-color: transparent;
+        {r}
+    </style>
 </head>
 
 <body>

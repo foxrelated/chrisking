@@ -41,7 +41,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
 
     public function importRow($aData) {
         $aVals = array(
-            'dvs_id' => $aData['DEALER_ID'],
+            'dealer_id' => $aData['DEALER_ID'],
             'vin_id' => $aData['VIN'],
             'squish_vin_id' => $this->getSquishVinCode($aData['VIN']),
             'make' => $aData['MAKE'],
@@ -59,7 +59,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         $aRow = $this->database()
             ->select('inventory_id, total')
             ->from($this->_sTable)
-            ->where('vin_id = \'' . $aVals['vin_id'] . '\' AND dvs_id = \'' . $aVals['dvs_id'] . '\'')
+            ->where('vin_id = \'' . $aVals['vin_id'] . '\' AND dealer_id = \'' . $aVals['dealer_id'] . '\'')
             ->execute('getRow');
 
         if($aRow) {
@@ -244,31 +244,31 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
 
     public function downloadZipFile() {
         if (!function_exists("ssh2_connect")) {
-            return false;
             die('Function ssh2_connect not found, you cannot use ssh2 here');
+            return false;
         }
 
         if (!$oConnection = ssh2_connect($this->_sHost, $this->_sPort)) {
-            return false;
             die('Unable to connect');
+            return false;
         }
 
 
         if (!ssh2_auth_password($oConnection, $this->_sUsername, $this->_sPassword)) {
-            return false;
             die('Unable to authenticate.');
+            return false;
         }
 
 
         if (!$oStream = ssh2_sftp($oConnection)) {
-            return false;
             die('Unable to create a stream.');
+            return false;
         }
 
 
         if (!$oDir = opendir("ssh2.sftp://{$oStream}/./")) {
-            return false;
             die('Could not open the directory');
+            return false;
         }
 
 
@@ -283,14 +283,17 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         }
 
         if(!$sFile) {
+            die('Could not find VINVENTORY.zip');
             return false;
         }
 
         if (!$fRemote = @fopen("ssh2.sftp://{$oStream}/{$sFile}", 'r')) {
+            die('Could not open VINVENTORY.zip');
             return false;
         }
 
         if (!$fLocal = @fopen(Phpfox::getParam('dvs.csv_folder') . $sFile, 'w')) {
+            die('Could not open VINVENTORY.zip');
             return false;
         }
 
@@ -299,7 +302,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         while ($iRead < $iFilesize && ($iBuffer = fread($fRemote, $iFilesize - $iRead))) {
             $iRead += strlen($iBuffer);
             if (fwrite($fLocal, $iBuffer) === FALSE) {
-                echo "Unable to write to local file: $sFile\n";
+                die("Unable to write to local file: $sFile");
                 return false;
             }
         }
@@ -327,12 +330,12 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
     }
 
     public function runCronjob() {
-        //if($sFile = $this->downloadZipFile()) {
-            //if ($this->extracFile($sFile)) {
+        if($sFile = $this->downloadZipFile()) {
+            if ($this->extracFile($sFile)) {
                 $this->importFile();
-            //}
+            }
             return true;
-        //}
+        }
         return false;
     }
 }

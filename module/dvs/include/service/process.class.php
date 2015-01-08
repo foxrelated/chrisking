@@ -55,7 +55,6 @@ class Dvs_Service_Process extends Phpfox_Service {
 //			'twitter_url' => (isset($aDvs['twitter_url']) ? $this->preParse()->clean($aDvs['twitter_url'], 255) : ''),
 //			'google_url' => (isset($aDvs['google_url']) ? $this->preParse()->clean($aDvs['google_url'], 255) : ''),
             'specials_url' => $this->preParse()->clean($aDvs['specials_url'], 255),
-            //'dealer_id' => $this->preParse()->clean($aDvs['dealer_id'], 75),
             'latitude' => $aGeoCode['latitude'],
             'longitude' => $aGeoCode['longitude'],
             '1onone_override' => (isset($aDvs['1onone_override']) ? $this->preParse()->clean($aDvs['1onone_override'], 128) : ''),
@@ -63,6 +62,24 @@ class Dvs_Service_Process extends Phpfox_Service {
             'top200_override' => (isset($aDvs['top200_override']) ? $this->preParse()->clean($aDvs['top200_override'], 128) : ''),
             'dvs_time_stamp' => PHPFOX_TIME,
         );
+
+        $aDvs['dealer_id'] = $this->preParse()->clean($aDvs['dealer_id'], 255);
+        if($aDvs['dealer_id'] != '') {
+            $aDealderIds = array();
+            $aTempIds = explode(',', $aDvs['dealer_id']);
+            foreach($aTempIds as $iTempId) {
+                if((int)$iTempId > 0) {
+                    $aDealderIds[] = (int)$iTempId;
+                }
+            }
+            if(count($aDealderIds)) {
+                $aSql['dealer_id'] = serialize($aDealderIds);
+            } else {
+                $aSql['dealer_id'] = '';
+            }
+        } else {
+            $aSql['dealer_id'] = '';
+        }
 
         if(Phpfox::isAdmin()) {
             $aSql['banner_toggle'] = $this->preParse()->clean($aDvs['banner_toggle'], 1);
@@ -87,6 +104,11 @@ class Dvs_Service_Process extends Phpfox_Service {
 			'text' => $this->preParse()->clean($aDvs['welcome'], Phpfox::getParam('dvs.welcome_greeting_max_chars')),
 			'text_parsed' => $this->preParse()->prepare($aDvs['welcome'])
 		));
+
+        /** DEFAULT VALUE FOR DEALER_ID */
+        if($aSql['dealer_id'] == '') {
+            $this->database()->update($this->_sTable, array('dealer_id' => serialize(array($iId))), 'dvs_id = ' . $iId);
+        }
 
 		return $iId;
 	}
@@ -116,7 +138,6 @@ class Dvs_Service_Process extends Phpfox_Service {
 //			'twitter_url' => (isset($aDvs['twitter_url']) ? $this->preParse()->clean($aDvs['twitter_url'], 255) : ''),
 //			'google_url' => (isset($aDvs['google_url']) ? $this->preParse()->clean($aDvs['google_url'], 255) : ''),
             'specials_url' => $this->preParse()->clean($aDvs['specials_url'], 255),
-            //'dealer_id' => $this->preParse()->clean($aDvs['dealer_id'], 75),
             'latitude' => $aGeoCode['latitude'],
             'longitude' => $aGeoCode['longitude'],
             '1onone_override' => (isset($aDvs['1onone_override']) ? $this->preParse()->clean($aDvs['1onone_override'], 128) : ''),
@@ -124,6 +145,24 @@ class Dvs_Service_Process extends Phpfox_Service {
             'top200_override' => (isset($aDvs['top200_override']) ? $this->preParse()->clean($aDvs['top200_override'], 128) : ''),
             'dvs_time_stamp' => PHPFOX_TIME,
         );
+
+        $aDvs['dealer_id'] = $this->preParse()->clean($aDvs['dealer_id'], 255);
+        if($aDvs['dealer_id'] != '') {
+            $aDealderIds = array();
+            $aTempIds = explode(',', $aDvs['dealer_id']);
+            foreach($aTempIds as $iTempId) {
+                if((int)$iTempId > 0) {
+                    $aDealderIds[] = (int)$iTempId;
+                }
+            }
+            if(count($aDealderIds)) {
+                $aSql['dealer_id'] = serialize($aDealderIds);
+            } else {
+                $aSql['dealer_id'] = serialize(array());
+            }
+        } else {
+            $aSql['dealer_id'] = serialize(array());
+        }
 
         if(Phpfox::isAdmin()) {
             $aSql['banner_toggle'] = $this->preParse()->clean($aDvs['banner_toggle'], 1);

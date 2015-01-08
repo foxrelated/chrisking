@@ -39,5 +39,5 @@ define('PHPFOX_DIR', dirname(dirname(dirname(__FILE__))) . PHPFOX_DS);
 include PHPFOX_DIR . PHPFOX_DS . 'include' . PHPFOX_DS . 'init.inc.php';
 
 if (Phpfox::isModule('dvs')) {
-    Phpfox::getService('dvs.invite.process')->runCronjob();
+    Phpfox::getService('dvs.inventory')->runCronjob();
 }
