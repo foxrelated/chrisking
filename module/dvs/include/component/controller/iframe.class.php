@@ -348,13 +348,20 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 case 'email':
                     $sShareIframeUrl .= '&utm_medium=Email';
                     break;
+                case 'qrcode':
+                    $sShareIframeUrl .= '&utm_medium=QR Code';
+                    break;
                 default:
                     $sShareIframeUrl .= '&utm_medium=Direct Link';
                     break;
             }
 
             $sShareIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
-            $sShareIframeUrl .= '&utm_campaign=DVS iFrame';
+            if($sShareSource == 'qrcode') {
+                $sShareIframeUrl .= '&utm_campaign=DVS Share Links';
+            } else {
+                $sShareIframeUrl .= '&utm_campaign=DVS iFrame';
+            }
         }
 
         $sVdpIframeUrl = '';
