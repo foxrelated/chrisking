@@ -134,7 +134,7 @@
             <tr>
                 <td>
                     Direct Video Link
-                    <input class="dvs_share_text_box" type="text" id="link_code_{$iKey}" value='{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule("redirect")}share_direct/{else}&share=direct{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=Direct%20Link&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}' />
+                    <input class="dvs_share_text_box" type="text" id="link_code2_{$iKey}" value='{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule("redirect")}share_direct/{else}&share=direct{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=Direct%20Link&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}' />
                 </td>
                 <td>
                 <br/>
@@ -145,7 +145,7 @@
                     <script type="text/javascript">
                         var clip2_{$iKey} = new ZeroClipboard.Client();
                         clip2_{$iKey}.setHandCursor(true);
-                        clip2_{$iKey}.setText( document.getElementById('link_code_{$iKey}').value );
+                        clip2_{$iKey}.setText( document.getElementById('link_code2_{$iKey}').value );
                         clip2_{$iKey}.glue('copy_button2_{$iKey}', "dvs_share_copy_button_holder2_{$iKey}");
                         clip2_{$iKey}.addEventListener('onComplete', function(){l}
                         $.ajaxCall('dvs.copyCRM', 'shorturl={$aVideo.shorturl}');
@@ -159,7 +159,7 @@
             <tr>
                 <td>
                     QR Code Link
-                    <input class="dvs_share_text_box" type="text" id="link_code_{$iKey}" value='{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule("redirect")}share_qrcode/{else}&share=qrcode{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=QR%20Code&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}' />
+                    <input class="dvs_share_text_box" type="text" id="link_code3_{$iKey}" value='{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule("redirect")}share_qrcode/{else}&share=qrcode{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=QR%20Code&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}' />
                 </td>
                 <td>
                 <br/>
@@ -170,7 +170,7 @@
                     <script type="text/javascript">
                         var clip3_{$iKey} = new ZeroClipboard.Client();
                         clip3_{$iKey}.setHandCursor(true);
-                        clip3_{$iKey}.setText( document.getElementById('link_code_{$iKey}').value );
+                        clip3_{$iKey}.setText( document.getElementById('link_code3_{$iKey}').value );
                         clip3_{$iKey}.glue('copy_button3_{$iKey}', "dvs_share_copy_button_holder3_{$iKey}");
                         clip3_{$iKey}.addEventListener('onComplete', function(){l}
                         $.ajaxCall('dvs.copyCRM', 'shorturl={$aVideo.shorturl}');
