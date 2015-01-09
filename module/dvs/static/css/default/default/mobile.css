@@ -138,6 +138,7 @@ aside
     text-align: center;
     vertical-align: top;
     width: 95%;
+    min-height: 655px;
 }
 
 #contact_box h2 {
@@ -152,5 +153,5 @@ font-size:22px;
 }
 
 #dvs_contact_success {
-font-size:32px;
+    font-size:32px;
 }

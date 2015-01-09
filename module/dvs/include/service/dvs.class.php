@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Mobile_Detect.php';
+
 /**
  * [PHPFOX_HEADER]
  */
@@ -638,7 +640,6 @@ public function aaasort (&$array, $key) {
 		$iPage = (int) $iPage;
 		$iPageSize = (int) $iPageSize;
 		$iUserId = (int) $iUserId;
-
         $sWhere = '1';
 	    if ($iUserId && !$bGetAll) {
             $sWhere .= ' AND d.user_id =' . $iUserId;
@@ -672,6 +673,15 @@ public function aaasort (&$array, $key) {
 			->join(Phpfox::getT('user'), 'u', 'u.user_id = d.user_id')
             ->where($sWhere)
 			->execute('getRows');
+
+        foreach($aDvss as $iKey => $aDvs) {
+            if(isset($aDvs['dealer_id']) && ($aDvs['dealer_id'])) {
+                $aDvss[$iKey]['dealer_id'] = @unserialize($aDvs['dealer_id']);
+                if(!is_array($aDvss[$iKey]['dealer_id'])) {
+                    $aDvss[$iKey]['dealer_id'] = array();
+                }
+            }
+        }
 
 		if ($bPaginate)
 		{
@@ -709,13 +719,14 @@ public function aaasort (&$array, $key) {
 		}
 
 		$aDvs = $this->database()
-			->select('cc.name as state_string, t.*, s.*, b.*, bg.*, p.*, pr.*, ' . Phpfox::getUserField('u', 'dealer_user_') . ', d.*')
+			->select('cc.name as state_string, t.*, s.*, b.*, bg.*, p.*, pr.*, bv.*, ' . Phpfox::getUserField('u', 'dealer_user_') . ', d.*')
 			->from($this->_sTable, 'd')
 			->leftjoin(Phpfox::getT('country_child'), 'cc', 'cc.child_id = d.country_child_id')
 			->leftjoin(Phpfox::getT('ko_dvs_text'), 't', 't.dvs_id = d.dvs_id')
 			->leftjoin(Phpfox::getT('ko_dvs_style'), 's', 's.dvs_id = d.dvs_id')
 			->leftjoin(Phpfox::getT('ko_dvs_branding_files'), 'b', 'b.branding_id = s.branding_file_id')
 			->leftjoin(Phpfox::getT('ko_dvs_background_files'), 'bg', 'bg.background_id = s.background_file_id')
+            ->leftjoin(Phpfox::getT('tbd_dvs_vdp_files'), 'bv', 'bv.vdp_id = s.vdp_file_id')
 			->leftjoin(Phpfox::getT('ko_dvs_players'), 'p', 'p.dvs_id = d.dvs_id')
 			//->leftjoin(Phpfox::getT('ko_dvs_logo_files'), 'l', 'l.logo_id = p.logo_file_id')
 			->leftjoin(Phpfox::getT('ko_dvs_preroll_files'), 'pr', 'pr.preroll_id = p.preroll_file_id')
@@ -725,6 +736,14 @@ public function aaasort (&$array, $key) {
         if(isset($aDvs['font_family_id'])) {
             $aDvs['font_family'] = Phpfox::getService('dvs.style')->getFontFamily($aDvs['font_family_id']);
         }
+
+        if(isset($aDvs['dealer_id']) && ($aDvs['dealer_id'])) {
+            $aDvs['dealer_id'] = @unserialize($aDvs['dealer_id']);
+            if(!is_array($aDvs['dealer_id'])) {
+                $aDvs['dealer_id'] = array();
+            }
+        }
+
 
 		return $aDvs;
 	}
@@ -1057,6 +1076,18 @@ public function aaasort (&$array, $key) {
 			}
 		}
 
+        if ($sIdSource == 'vdp') {
+            $iOwnerId = $this->database()
+                ->select('user_id')
+                ->from(Phpfox::getT('tbd_dvs_vdp_files'))
+                ->where('vdp_id = ' . (int) $iId)
+                ->execute('getField');
+
+            if ($iOwnerId == $iUserId) {
+                return true;
+            }
+        }
+
 		if ($sIdSource == 'logo')
 		{
 			$iOwnerId = $this->database()
@@ -1088,97 +1119,20 @@ public function aaasort (&$array, $key) {
 	}
 
 
-	public function getBrowser()
-	{
-		static $sAgent;
-		$this->_bIsMobile = false;
+	public function getBrowser() {
+        $this->_bIsMobile = false;
+        $detect = new Mobile_Detect;
+        if ($detect->isTablet()) {
+            return 'ipad';
+        } else {
+            if ($detect->isMobile()) {
+                $this->_bIsMobile = true;
+                return 'mobile';
+            }
+        }
 
-		$sAgent = Phpfox::getLib('request')->getServer('HTTP_USER_AGENT');
-
-		if (preg_match("/Firefox\/(.*)/i", $sAgent, $aMatches) && isset($aMatches[1]))
-		{
-			$sAgent = 'Firefox ' . $aMatches[1];
-		}
-		elseif (preg_match("/MSIE (.*);/i", $sAgent, $aMatches))
-		{
-			$aParts = explode(';', $aMatches[1]);
-			$sAgent = 'IE ' . $aParts[0];
-		}
-		elseif (preg_match("/Opera\/(.*)/i", $sAgent, $aMatches))
-		{
-			$aParts = explode(' ', trim($aMatches[1]));
-			$sAgent = 'Opera ' . $aParts[0];
-		}
-		elseif (preg_match('/\s+?chrome\/([0-9.]{1,10})/i', $sAgent, $aMatches))
-		{
-			$aParts = explode(' ', trim($aMatches[1]));
-			$sAgent = 'Chrome ' . $aParts[0];
-		}
-		elseif (preg_match('/android/i', $sAgent))
-		{
-			$this->_bIsMobile = true;
-			$sAgent = 'Android';
-		}
-		elseif (preg_match('/opera mini/i', $sAgent))
-		{
-			$this->_bIsMobile = true;
-			$sAgent = 'Opera Mini';
-		}
-		elseif (preg_match('/(pre\/|palm os|palm|hiptop|avantgo|fennec|plucker|xiino|blazer|elaine)/i', $sAgent))
-		{
-			$this->_bIsMobile = true;
-			$sAgent = 'Palm';
-		}
-		elseif (preg_match('/blackberry/i', $sAgent))
-		{
-			$this->_bIsMobile = true;
-			$sAgent = 'Blackberry';
-		}
-		elseif (preg_match('/(iris|3g_t|windows ce|opera mobi|windows ce; smartphone;|windows ce; iemobile|windows phone)/i', $sAgent))
-		{
-			$this->_bIsMobile = true;
-			$sAgent = 'Windows Smartphone';
-		}
-		elseif (preg_match("/Version\/(.*) Safari\/(.*)/i", $sAgent, $aMatches) && isset($aMatches[1]))
-		{
-			if (preg_match("/iPhone/i", $sAgent) || preg_match("/ipod/i", $sAgent))
-			{
-				$aParts = explode(' ', trim($aMatches[1]));
-				$sAgent = 'Safari iPhone ' . $aParts[0];
-				$this->_bIsMobile = true;
-			}
-			else if (preg_match("/ipad/i", $sAgent))
-			{
-				$aParts = explode(' ', trim($aMatches[1]));
-				$sAgent = 'ipad';
-				$this->_bIsMobile = true;
-			}
-			else
-			{
-				$sAgent = 'Safari ' . $aMatches[1];
-			}
-		}
-		//custom ipad detection
-		elseif (preg_match('/crios/i', $sAgent)) //detects Chrome browser for iOS
-		{
-			$this->_bIsMobile = false;
-			$sAgent = 'ipad';
-		}
-		elseif (preg_match('/(mini 9.5|vx1000|lge |m800|e860|u940|ux840|compal|wireless| mobi|ahong|lg380|lgku|lgu900|lg210|lg47|lg920|lg840|lg370|sam-r|mg50|s55|g83|t66|vx400|mk99|d615|d763|el370|sl900|mp500|samu3|samu4|vx10|xda_|samu5|samu6|samu7|samu9|a615|b832|m881|s920|n210|s700|c-810|_h797|mob-x|sk16d|848b|mowser|s580|r800|471x|v120|rim8|c500foma:|160x|x160|480x|x640|t503|w839|i250|sprint|w398samr810|m5252|c7100|mt126|x225|s5330|s820|htil-g1|fly v71|s302|-x113|novarra|k610i|-three|8325rc|8352rc|sanyo|vx54|c888|nx250|n120|mtk |c5588|s710|t880|c5005|i;458x|p404i|s210|c5100|teleca|s940|c500|s590|foma|samsu|vx8|vx9|a1000|_mms|myx|a700|gu1100|bc831|e300|ems100|me701|me702m-three|sd588|s800|8325rc|ac831|mw200|brew |d88|htc\/|htc_touch|355x|m50|km100|d736|p-9521|telco|sl74|ktouch|m4u\/|me702|8325rc|kddi|phone|lg |sonyericsson|samsung|240x|x320vx10|nokia|sony cmd|motorola|up.browser|up.link|mmp|symbian|smartphone|midp|wap|vodafone|o2|pocket|kindle|mobile|psp|treo)/i', $sAgent))
-		{
-			$this->_bIsMobile = true;
-		}
-
-		if ($sAgent == 'ipad')
-		{
-			return 'ipad';
-		}
-		else
-		{
-			return ($this->_bIsMobile ? 'mobile' : 'desktop');
-		}
+        return 'desktop';
 	}
-
 }
 
 ?>

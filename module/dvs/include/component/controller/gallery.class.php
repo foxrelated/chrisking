@@ -40,13 +40,14 @@ class Dvs_Component_Controller_Gallery extends Phpfox_Component {
 			
 		}
 		$aDvsVideos = Phpfox::getService('dvs')->aasort($aDvsVideos,"my_find");
-		
+
 		/*phpmasterminds Edited for sort in gallery ends*/
 		if ($aPlayer['featured_model'])
 		{
 			$aFeaturedVideo = Phpfox::getService('dvs.video')->get('', false, $aPlayer['featured_year'], $aPlayer['featured_make'], $aPlayer['featured_model']);
 			array_unshift($aDvsVideos, '');
 			$aDvsVideos[0] = $aFeaturedVideo;
+            $aDvsVideos[0]['targer_href'] = $aDvs['gallery_target_setting'];
 
 			// Make sure the featured video is not duped
 			foreach ($aDvsVideos as $iKey => $aVideo)
@@ -115,8 +116,12 @@ class Dvs_Component_Controller_Gallery extends Phpfox_Component {
 		}
 
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
-	
-	
+
+        if(!$aDvs['is_active']) {
+            $this->template()->setHeader('cache', array(
+                'deactive.css' => 'module_dvs'
+            ));
+        }
 		$aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aFirstVideo);
 		$this->template()
 			->setTemplate('blank')

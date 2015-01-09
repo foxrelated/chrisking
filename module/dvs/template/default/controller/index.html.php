@@ -381,6 +381,16 @@ background-color: #c35f54;
 						   <li class="active"><a href="#" onclick="if (confirm('{phrase var='core.are_you_sure' phpfox_squote=true}')) {left_curly} $(this).parents('#dvss:first').find('#dvs_{$aDvs.dvs_id}:first').hide('slow'); $.ajaxCall('dvs.deleteDvs', 'dvs_id={$aDvs.dvs_id}');{right_curly}"><span>Delete</span></a>
 						   </li>
 						   {/if}
+                            {if Phpfox::isAdmin()}
+                            <li class="active activity_button">
+                                <div class="js_item_is_active"{if !$aDvs.is_active} style="display:none;"{/if}>
+                                    <a href="#?call=dvs.updateActivity&amp;id={$aDvs.dvs_id}&amp;active=0" class="js_item_active_link" title="Click to Deactivate"><span>Active</span></a>
+                                </div>
+                                <div class="js_item_is_not_active"{if $aDvs.is_active} style="display:none;"{/if}>
+                                    <a href="#?call=dvs.updateActivity&amp;id={$aDvs.dvs_id}&amp;active=1" class="js_item_active_link" title="Click to Activate"><span>Not Active</span></a>
+                                </div>
+                            </li>
+                            {/if}
 						</ul>
 						</div>
 					</td>
@@ -409,14 +419,14 @@ background-color: #c35f54;
 				</div>
 
             <div id="vdp_embed_link_{$aDvs.dvs_id}" title="VDP Embed Code" class="dvs_iframe_link_popup" style="display:none;">
-                <p>Step 1: Add this code after the &lt;body&gt; tag of the page:</p>
+                <p>Step 1: Add this code right before the &lt;/body&gt; tag of the page:</p>
                     <textarea rows="10" cols="71">&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/vin.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
 WTVVIN.init({l}
     "dvs" : {$aDvs.dvs_id},
     "apiUrl" : "{url link=''}",
     "styleUrl" : "{url link='dvs.vin.style' id=$aDvs.dvs_id}",
-    "scriptUrl" : "{url link='dvs.vin.script' id=$aDvs.dvs_id}",
+    "scriptUrl" : "{url link='dvs.vin.script' id=$aDvs.dvs_id}"
 {r});
 &lt;/script&gt;</textarea>
                 </p>

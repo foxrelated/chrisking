@@ -92,11 +92,11 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 
 		$aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aFirstVideo);
 
-        $aValidVSYears = Phpfox::getService('dvs.video')->getValidVSYears($aPlayer['makes']);
+		$aValidVSYears = Phpfox::getService('dvs.video')->getValidVSYears($aPlayer['makes'], $aDvs['dvs_id']);
 
         if(count($aValidVSYears)) {
             $iYear = $aValidVSYears[0];
-            $aMakes = Phpfox::getService('dvs.video')->getValidVSMakes($iYear, $aPlayer['makes']);
+			$aMakes = Phpfox::getService('dvs.video')->getValidVSMakesByDealer($iYear, $aPlayer['makes'], $aDvs['dvs_id']);
             if(count($aMakes)) {
                 $sMake = $aMakes[0]['make'];
             }
@@ -168,7 +168,8 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 				'<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>',
 				'<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>',
 				'share.css' => 'module_dvs',
-                'dropdown.js' => 'module_dvs'
+                'dropdown.js' => 'module_dvs',
+                'placeholders.jquery.min.js' => 'module_dvs',
 			))
 			->assign(array(
 				'aDvs' => $aDvs,

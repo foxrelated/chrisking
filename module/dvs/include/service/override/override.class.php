@@ -101,10 +101,11 @@ class Dvs_Service_Override_Override extends Phpfox_Service {
 	{
 		// Dynamically add DVS and video keys and values to the find and replace arrays for str_replace
 		$aFindReplace = array();
-		foreach ($aDvs as $sKey => $sValue)
-		{
-			$aFind[] = '{dvs_' . $sKey . '}';
-			$aReplace[] = '' . $sValue . '';
+		foreach ($aDvs as $sKey => $sValue) {
+            if(!in_array($sKey, array('dealer_id'))) {
+                $aFind[] = '{dvs_' . $sKey . '}';
+                $aReplace[] = '' . $sValue . '';
+            }
 		}
 		foreach ($aVideo as $sKey => $sValue)
 		{

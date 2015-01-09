@@ -4,6 +4,7 @@ defined('PHPFOX') or exit('NO DICE!');
 
 class Dvs_Component_Controller_Iframe extends Phpfox_Component {
     public function process() {
+        $sVdpEmbed = false;
         $sShareSource = '';
         $bIsIframe = false;
         $bIsFindWidth = false;
@@ -86,6 +87,9 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 if($aExtraParams['share']) {
                     $sShareSource = $aExtraParams['share'];
                 }
+                if($aExtraParams['vdp']) {
+                    $sVdpEmbed = true;
+                }
                 if(($aDvs['parent_url'] != $sOriginParentUrl) || ($aDvs['parent_video_url'] != $sNewParentUrl)) {
                     Phpfox::getService('dvs.iframe')->updateSitemapUrl($aDvs['dvs_id'], $sNewParentUrl, $sOriginParentUrl);
                 }
@@ -129,8 +133,8 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
         $aOverviewVideos = Phpfox::getService('dvs.video')->getOverviewVideos($aDvs['dvs_id']);
 
         //Here we shift array keys to start at 1 so thumbnails play the proper videos when we load a featured video or override video on to the front of the array
-        array_unshift($aOverviewVideos, '');
-        unset($aOverviewVideos[0]);
+        //array_unshift($aOverviewVideos, '');
+        //unset($aOverviewVideos[0]);
 
         if ($sOverride) {
             $aOverrideVideo = Phpfox::getService('dvs.video')->get($sOverride, true);
@@ -138,37 +142,31 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             $aOverrideVideo = array();
         }
 
-
         //Dupe check
-        $bIsInDvs = false;
         if (!empty($aOverrideVideo) || !empty($aFeaturedVideo)) {
             foreach ($aOverviewVideos as $iKey => $aVideo) {
-                if(!empty($aOverrideVideo) && $aVideo['id'] == $aOverrideVideo['id']) {
-                    $bIsInDvs = true;
-                }
-
-                if ($iKey == 0) {
-                    //Don't unset the featured video
-                    continue;
-                }
-
                 if ((!empty($aFeaturedVideo) && $aVideo['id'] == $aFeaturedVideo['id']) || (!empty($aOverrideVideo) && $aVideo['id'] == $aOverrideVideo['id'])) {
-                    //Remove dupe
-                    //unset($aOverviewVideos[$iKey]);
+                    unset($aOverviewVideos[$iKey]);
                 }
             }
         }
 
-        if(!$bIsInDvs && count($aOverrideVideo)) {
-            $aOverviewVideos[] = $aOverrideVideo;
+        $bIsSetFirstVideo = false;
+
+        if ($aFeaturedVideo) {
+            $bIsSetFirstVideo = true;
+            array_unshift($aOverviewVideos, $aFeaturedVideo);
+            $aFirstVideo = $aFeaturedVideo;
         }
 
         if ($aOverrideVideo) {
+            $bIsSetFirstVideo = true;
+            array_unshift($aOverviewVideos, $aOverrideVideo);
             $aFirstVideo = $aOverrideVideo;
-        } else if ($aFeaturedVideo) {
-            $aFirstVideo = $aFeaturedVideo;
-        } else {
-            $aFirstVideo = $aOverviewVideos[1];
+        }
+
+        if(!$bIsSetFirstVideo) {
+            $aFirstVideo = $aOverviewVideos[0];
         }
 
         $aCurrentVideo = 0;
@@ -342,21 +340,42 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                     $sShareIframeUrl .= '&utm_medium=Google';
                     break;
                 case 'crm':
-                    $sShareIframeUrl .= '&utm_medium=CRM_Embed';
+                    $sShareIframeUrl .= '&utm_medium=CRM Embed';
                     break;
                 case 'direct':
-                    $sShareIframeUrl .= '&utm_medium=Direct_Link';
+                    $sShareIframeUrl .= '&utm_medium=Direct Link';
                     break;
                 case 'email':
                     $sShareIframeUrl .= '&utm_medium=Email';
                     break;
+                case 'qrcode':
+                    $sShareIframeUrl .= '&utm_medium=QR Code';
+                    break;
                 default:
-                    $sShareIframeUrl .= '&utm_medium=Direct_Link';
+                    $sShareIframeUrl .= '&utm_medium=Direct Link';
                     break;
             }
 
             $sShareIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
-            $sShareIframeUrl .= '&utm_campaign=' . str_replace('&', '', $aDvs['dealer_name']) . ' DVS Share Links';
+            if($sShareSource == 'qrcode') {
+                $sShareIframeUrl .= '&utm_campaign=DVS Share Links';
+            } else {
+                $sShareIframeUrl .= '&utm_campaign=DVS iFrame';
+            }
+        }
+
+        $sVdpIframeUrl = '';
+        if($sVdpEmbed) {
+            $sVdpIframeUrl = $this->url()->makeUrl('dvs.utm') . '?utm_source=' . str_replace('&', '', $aDvs['dealer_name']) . ' DVS';
+            $sVdpIframeUrl .= '&utm_medium=VDP Button';
+            $sVdpIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
+            $sVdpIframeUrl .= '&utm_campaign=DVS Inventory';
+        }
+
+        if(!$aDvs['is_active']) {
+            $this->template()->setHeader('cache', array(
+                'deactive.css' => 'module_dvs'
+            ));
         }
 
         $this->template()
@@ -384,6 +403,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             ->assign(array(
                 'sShareSource' => $sShareSource,
                 'sShareIframeUrl' => $sShareIframeUrl,
+                'sVdpIframeUrl' => $sVdpIframeUrl,
                 'sDvsRequest' => $sDvsRequest,
                 'sNewParentUrl' => $sNewParentUrl,
                 'sParentUrl' => $sParentUrl,

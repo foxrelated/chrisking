@@ -12,6 +12,31 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @package 		DVS
  */
 ?>
+<style type="text/css">
+    #dvs_bc_player {l}
+        width: 720px;
+        height: 526px;
+        position: relative;
+    {r}
+
+    #playlist_wrapper {l}
+        position: absolute;
+        bottom: 0px;
+    {r}
+
+    #myExperience {l}
+        display: block;
+        {if $bIsDvs}
+        width: 720px;
+        height: 408px;
+        {else}
+        width: {$iPlayerWidth}px;
+        height: {$iPlayerHeight}px;
+        {/if}
+    {r}
+</style>
+
+
 {if !empty($sJavascript)}{$sJavascript}{/if}
 <script type="text/javascript">
 	var aMediaIds = [];
@@ -87,7 +112,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		var bIdriveGetPrice = {if !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}true{else}false{/if};
 		var bPreview = {if $bPreview}true{else}false{/if};
 		var bAutoplay = {if (isset($aPlayer.autoplay) && $aPlayer.autoplay) || (isset($aPlayer.autoplay_baseurl) && $aPlayer.autoplay_baseurl && !$aBaseUrl) || (isset($aPlayer.autoplay_videourl) && $aPlayer.autoplay_videourl && $aBaseUrl)}true{else}false{/if};
-		//var bAutoplay =true;
+            {if !$aDvs.is_active}bAutoplay = false;{/if}
 		var iCurrentVideo = {$aCurrentVideo};
 		var bAutoAdvance = {if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
 	{else}
@@ -96,6 +121,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		var bIdriveGetPrice = {if $bShowGetPrice}true{else}false{/if};
 		var bPreview = false;
 		var bAutoplay = {if $bAutoplay}true{else}false{/if};
+            {if !$aDvs.is_active}bAutoplay = false;{/if}
 		var bAutoAdvance = true;
 	{/if}
 
@@ -235,15 +261,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<param name="playerID" value="1418431455001" />
 		<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
 	{/if}
-	{if $bIsExternal}
-		<!-- external player -->
-		<param name="playerID" value="{$iPlayerId}" />
-		<param name="playerKey" value="{$sPlayerKey}" />
-	{else}
-		<!-- default player -->
-		<param name="playerID" value="1418431455001" />
-		<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
-	{/if}	
 	<param name="isVid" value="true" />
 	<param name="isUI" value="true" />
 	<param name="dynamicStreaming" value="true" />
@@ -381,7 +398,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {literal}
 <script type="text/javascript">
 
-$Behavior.thumgs = function() {
+$Behavior.thumbs = function() {
 var bAutoplay = false;
 exteralthumbnailClick(1);
 }

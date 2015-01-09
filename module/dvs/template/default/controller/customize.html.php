@@ -62,6 +62,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             $('#color_picker_iframe_contact_text').ColorPickerSetColor('#{$aForms.iframe_contact_text}');
             $('#color_picker_vin_top_gradient').ColorPickerSetColor('#{$aForms.vin_top_gradient}');
             $('#color_picker_vin_bottom_gradient').ColorPickerSetColor('#{$aForms.vin_bottom_gradient}');
+            $('#color_picker_vin_text_color').ColorPickerSetColor('#{$aForms.vin_text_color}');
 			{r}
 	{else}
 		$Behavior.colorPicker = function() {l}
@@ -82,6 +83,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             $('#color_picker_iframe_contact_text').ColorPickerSetColor('#{$sDefaultColor}');
             $('#color_picker_vin_top_gradient').ColorPickerSetColor('#A764C5');
             $('#color_picker_vin_bottom_gradient').ColorPickerSetColor('#451656');
+            $('#color_picker_vin_text_color').ColorPickerSetColor('#451656');
 		{r}
 	{/if}
 </script>
@@ -350,7 +352,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<input type="text" name="val[background_opacity]" value="{value type='input' id='background_opacity'}" id="background_opacity" size="5"/>
 			</td>
 		</tr>
-		
 	</table>
 
     <table>
@@ -655,6 +656,16 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 </div>
                 <input type="hidden" id="color_picker_vin_bottom_gradient_input" name="val[vin_bottom_gradient]" {if $bIsEdit}value="{$aForms.vin_bottom_gradient}"{else}value="451656"{/if}/>
             </td>
+
+            <td style="padding: 0 20px; width: 145px; text-align: right;" class="dvs_add_td_label">
+                Text color:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_vin_text_color" class="colorSelector">
+                    <div style="background-color: #{if $bIsEdit}{$aForms.vin_text_color}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_vin_text_color_input" name="val[vin_text_color]" {if $bIsEdit}value="{$aForms.vin_text_color}"{else}value="000000"{/if}/>
+            </td>
         </tr>
 
         <tr style="line-height: 45px;" class="tr_interactive">
@@ -675,6 +686,52 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 <input type="text" id="vin_button_label" name="val[vin_button_label]" {if $bIsEdit}value="{$aForms.vin_button_label}"{else}value="Virtual Test Drive"{/if}/>
             </td>
         </tr>
+
+        <table>
+            <tr class="tr_interactive">
+                <td class="dvs_add_td">
+                    Virtual Test Drive Button Image:
+                </td>
+                <td class="dvs_add_td">
+				<span id="vdp_file_label">
+				{if $bIsEdit}
+					{phrase var='dvs.current_image'}
+				{else}
+					{phrase var='dvs.select_file'}
+				{/if}:
+				</span>
+                    <iframe id="js_vdp_upload_frame" name="js_vdp_upload_frame" src="{url link='dvs.vdp-file-form'}{if $bIsEdit}current-vdp-id_{$aForms.vdp_file_id}{/if}" scrolling="no" frameborder="0" width="250" height="35" {if $bIsEdit}style="display:none;"{/if}></iframe>
+                    <div id="vdp_file_preview" {if !$bIsEdit}style="display: none"{/if}>
+                    {if $bIsEdit}
+                    {if $aForms.vdp_file_name}
+                    {img path='core.url_file' file='dvs/vdp/'.$aForms.vdp_file_name max_width=180 max_height=180}
+                    {else}
+                    No VDP Image
+                    {/if}
+                    <br />
+                    <a href="#" onclick="
+                    window.parent.document.getElementById('vdp_file_label').innerHTML = '{phrase var='dvs.select_file'}:';
+                    window.parent.document.getElementById('js_vdp_upload_frame').style.display = 'block';
+                    window.parent.document.getElementById('vdp_file_preview').style.display = 'none'; return false;">
+                        Change VDP Image
+                    </a>
+                    -
+                    <a href="#" onclick="
+                    if (confirm('Are you sure?')){l}
+                        window.parent.document.getElementById('vdp_file_label').innerHTML = '{phrase var='dvs.select_file'}:';
+                        window.parent.document.getElementById('js_vdp_upload_frame').style.display = 'block';
+                        window.parent.document.getElementById('vdp_file_preview').style.display = 'none';
+                        window.parent.document.getElementById('vdp_file_id').value = 0;
+                        $.ajaxCall('dvs.removeVdpFile','iVdpFileId={$aForms.vdp_file_id}')
+                    {r} return false;">
+                        Remove VDP Image
+                    </a>
+                    {/if}
+                    </div>
+                    <input type="hidden" id="vdp_file_id" name="val[vdp_file_id]" value="{if $bIsEdit}{$aForms.vdp_file_id}{else}0{/if}"/>
+                </td>
+            </tr>
+        </table>
     </table>
     </div>
     <br>

@@ -287,7 +287,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
             <li>
                 <label for="dealer_id">Dealer ID:</label>
-                <input type="text" name="val[dealer_id]" value="{value type='input' id='dealer_id'}" id="dealer_id" size="60" maxlength="75" />
+                <input type="text" name="val[dealer_id]" value="{value type='input' id='dealer_id'}" id="dealer_id" size="60" maxlength="255" />
             </li>
 	
 			<li>
@@ -410,6 +410,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </li>
         </ol>
     </fieldset>
+
+    <h3>Open VDP button links in popup</h3>
+    <fieldset>
+        <ol>
+            <li>
+                <input type="radio" name="val[vpd_popup]" value="1" {if $bIsEdit && $aForms.vpd_popup == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
+                <input type="radio" name="val[vpd_popup]" value="0" {if $bIsEdit && $aForms.vpd_popup == 0}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_off'}
+            </li>
+        </ol>
+    </fieldset>
+
 
     <h3>Video Types</h3>
     <fieldset>

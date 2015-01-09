@@ -6,6 +6,7 @@ class Dvs_Service_Iframe extends Phpfox_Service {
     }
 
     public function parseUrl($sParentUrl) {
+        $vdp = '';
         $share = '';
         $video = '';
         $sOriginParent = $sParentUrl;
@@ -16,6 +17,9 @@ class Dvs_Service_Iframe extends Phpfox_Service {
             parse_str($aUrlData['query']);
             if($share) {
                 $sParentUrl = str_replace('&share=' . $share, '', $sParentUrl);
+            }
+            if($vdp) {
+                $sParentUrl = str_replace('&vdp=' . $vdp, '', $sParentUrl);
             }
 
             if($video) {
@@ -33,6 +37,7 @@ class Dvs_Service_Iframe extends Phpfox_Service {
         }
 
         return array($video, $sNewUrl, $sOriginParent, array(
+            'vdp' => $vdp,
             'share' => $share
         ));
     }
@@ -44,7 +49,7 @@ class Dvs_Service_Iframe extends Phpfox_Service {
                     'parent_url' => $sParentUrl,
                     'parent_video_url' => $sParentVideoUrl
                 ),
-            'dvs_id = ' . (int)$iDvsId);
+                'dvs_id = ' . (int)$iDvsId);
         return true;
     }
 }

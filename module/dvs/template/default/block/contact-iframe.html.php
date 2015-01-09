@@ -22,6 +22,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             event.preventDefault();
 
             // do whatever you want here
+            $('.share_email_field').hide();
+            $('#loading_email_img').show();
             $('#contact_dealer_error').hide();
             $('#contact_dealer input, #contact_dealer textarea').removeClass('required');
             $.ajaxCall('dvs.contactDealerIframe', $('#contact_dealer').serialize());
@@ -73,28 +75,35 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 <form id="contact_dealer" name="contact_dealer" action="javascript:void(0);">
 	<fieldset>
-		<ul>
-			<li>
-				<input type="text" name="val[contact_name]" id="name" placeholder="{phrase var='dvs.get_price_placeholder_name'}" {if Phpfox::getParam('dvs.get_price_validate_name')} required {/if} class="inputContact"/>
-			</li>
-			<li>
-				<input type="email" name="val[contact_email]" id="email" placeholder="{phrase var='dvs.get_price_placeholder_email'}" {if Phpfox::getParam('dvs.get_price_validate_email')} required {/if} class="inputContact" />
-			</li>
-			<li>
-				<input type="text" name="val[contact_phone]" id="phone" placeholder="{phrase var='dvs.get_price_placeholder_phone'}" {if Phpfox::getParam('dvs.get_price_validate_phone')} required {/if} class="inputContact" />
-			</li>
-			<li>
-				<input type="text" name="val[contact_zip]" id="zip" placeholder="{phrase var='dvs.get_price_placeholder_zip'}" {if Phpfox::getParam('dvs.get_price_validate_zip_code')} required {/if} class="inputContact" />
-			</li>
-			<li>
-				<textarea id="comments" name="val[contact_comments]" cols="16" rows="3" placeholder="{phrase var='dvs.get_price_placeholder_comments'}" {if Phpfox::getParam('dvs.get_price_validate_comments')} required {/if} class="inputContact"></textarea>
-			</li>
-		</ul>
+        <ul>
+            <li id="loading_email_img" style="display: none;">
+                {img theme='ajax/large.gif'}
+            </li>
+        </ul>
+        <div class="share_email_field">
+            <ul>
+                <li>
+                    <input type="text" name="val[contact_name]" id="name" placeholder="{phrase var='dvs.get_price_placeholder_name'}" {if Phpfox::getParam('dvs.get_price_validate_name')} required {/if} class="inputContact"/>
+                </li>
+                <li>
+                    <input type="email" name="val[contact_email]" id="email" placeholder="{phrase var='dvs.get_price_placeholder_email'}" {if Phpfox::getParam('dvs.get_price_validate_email')} required {/if} class="inputContact" />
+                </li>
+                <li>
+                    <input type="text" name="val[contact_phone]" id="phone" placeholder="{phrase var='dvs.get_price_placeholder_phone'}" {if Phpfox::getParam('dvs.get_price_validate_phone')} required {/if} class="inputContact" />
+                </li>
+                <li>
+                    <input type="text" name="val[contact_zip]" id="zip" placeholder="{phrase var='dvs.get_price_placeholder_zip'}" {if Phpfox::getParam('dvs.get_price_validate_zip_code')} required {/if} class="inputContact" />
+                </li>
+                <li>
+                    <textarea id="comments" name="val[contact_comments]" cols="16" rows="3" placeholder="{phrase var='dvs.get_price_placeholder_comments'}" {if Phpfox::getParam('dvs.get_price_validate_comments')} required {/if} class="inputContact"></textarea>
+                </li>
+            </ul>
+        </div>
 
 		<input type="hidden" name="val[contact_video_ref_id]" id="video_ref_id" value="{$aFirstVideo.referenceId}"/>
 		{if !empty($aDvs)}<input type="hidden" name="val[contact_dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>{/if}
 	</fieldset>
-	<fieldset>
+    <fieldset class="share_email_field">
 		<input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button" />
 	</fieldset>
 </form>

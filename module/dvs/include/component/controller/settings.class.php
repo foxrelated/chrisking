@@ -32,7 +32,13 @@ class Dvs_Component_Controller_Settings extends Phpfox_Component {
 
 			if (($aDvs = Phpfox::getService('dvs')->get($iDvsId)))
 			{
-				if ($aDvs['user_id'] == Phpfox::getUserId() || Phpfox::isAdmin())
+				if(is_array($aDvs['dealer_id'])) {
+                    $aDvs['dealer_id'] = implode(', ', $aDvs['dealer_id']);
+                } else {
+                    $aDvs['dealer_id'] = '';
+                }
+
+                if ($aDvs['user_id'] == Phpfox::getUserId() || Phpfox::isAdmin())
 				{
 					$bCanAddDvss = true;
 				}

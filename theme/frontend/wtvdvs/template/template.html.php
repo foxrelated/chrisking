@@ -7,6 +7,7 @@
 		{header}
 	</head>
 	<body>
+        <div id="global_ajax_message"></div>
 		{body}	
 		{block location='9'}
 		<div id="header">			

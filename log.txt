@@ -1,0 +1,37 @@
+*****************************************************   #101   *****************************************************
+- Settings in database:
+434 dvs.vf_related_force_same_year
+435 dvs.vf_related_force_same_make
+436 dvs.vf_related_force_same_model
+437 dvs.vf_related_force_same_body_style
+
+
+Step 1. Update phrase:
+setting_vf_related_force_same_year          :   'Related: Force Same Year for New Videos'
+setting_vf_related_force_same_make          :   'Related: Force Same Make for New Videos'
+setting_vf_related_force_same_model         :   'Related: Force Same Model for New Videos'
+setting_vf_related_force_same_body_style    :   'Related: Force Same Body Style for New Videos'
+
+Step 2: Create new settings for Used Videos:
+658 dvs.vf_related_force_same_year_used
+659 dvs.vf_related_force_same_make_used
+660 dvs.vf_related_force_same_model_used
+661 dvs.vf_related_force_same_body_style_used
+
+*****************************************************   #222   *****************************************************
+### DATABASE:
+    - CREATE "phpfox_tbd_dvs_vdp_files" table
+    - ALTER TABLE `phpfox_ko_dvs_style` ADD `vdp_file_id` INT(11) UNSIGNED NOT NULL AFTER `background_file_id`;
+
+### DIRECTORY
+    - CREATE /file/dvs/vdp/ directory
+
+*****************************************************   #223   *****************************************************
+### DATABASE:
+    - ALTER TABLE `phpfox_ko_dvs` ADD `is_active` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1' ;
+
+
+*****************************************************   #300   *****************************************************
+### DATABASE:
+    - ALTER TABLE `phpfox_tbd_dvs_inventory` CHANGE `dvs_id` `dealer_id` INT(11) UNSIGNED NOT NULL;
+    - ALTER TABLE `phpfox_ko_dvs` CHANGE `dealer_id` `dealer_id` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
