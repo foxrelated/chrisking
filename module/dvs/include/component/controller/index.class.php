@@ -113,17 +113,117 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
 			}
 		}
 
-		$iPage = $this->request()->getInt('page');
+        $aMakes = Phpfox::getService('dvs.video')->getMakes();
+        $aCustomMakeDataFilter = array(
+            array(
+                'link' => '',
+                'phrase' => ($this->request()->get('make') ? 'All Makes' : ' - Make - ')
+            )
+        );
+        foreach($aMakes as $aMake) {
+            $aCustomMakeDataFilter[] = array(
+                'link' => str_replace(' ', '-', $aMake['make']),
+                'phrase' => $aMake['make']
+            );
+        }
+
+
+        $this->search()->set(array(
+                'type' => 'dvs',
+                'field' => 'dvs.dvs_id',
+                'search_tool' => array(
+                    'table_alias' => 'dvs',
+                    'search' => array(
+                        'action' => $this->url()->makeUrl('dvs', array('view' => $this->request()->get('view'))),
+                        'default_value' => 'Search DVS...',
+                        'name' => 'search',
+                        'field' => array('dvs.dealer_name')
+                    ),
+                    'sort' => array(
+                        'ascending' => array(
+                            0 => 'dvs.dealer_name',
+                            1 => 'Ascending',
+                            2 => 'ASC',
+                            'default_sort_order' => 'ASC'
+                        ),
+                        'descending' => array('dvs.dealer_name', 'Descending', 'DESC')
+                    ),
+                    'show' => array(20),
+                    'custom_filters' => array(
+                        ' -Active- ' => array(
+                            'param' => 'active',
+                            'default_phrase' => ' - Active - ',
+                            'data' => array(
+                                array('link' => '', 'phrase' => ($this->request()->get('active') ? 'All' : ' - Active - ')),
+                                array('link' => 'active', 'phrase' => 'Active'),
+                                array('link' => 'inactive', 'phrase' => 'Inactive'),
+                            )
+                        ),
+
+                        ' -Make- ' => array(
+                            'param' => 'make',
+                            'default_phrase' => ' - Make - ',
+                            'data' => $aCustomMakeDataFilter
+                        )
+                    )
+                )
+            )
+        );
+
+        $aBrowseParams = array(
+            'module_id' => 'dvs',
+            'alias' => 'dvs',
+            'field' => 'dvs_id',
+            'table' => Phpfox::getT('ko_dvs')
+        );
+
+        $sActive = $this->request()->get('active');
+        switch ($sActive) {
+            case 'active':
+                Phpfox::isUser(true);
+                $this->search()->setCondition('AND dvs.is_active = 1');
+                break;
+            case 'inactive':
+                Phpfox::isUser(true);
+                $this->search()->setCondition('AND dvs.is_active = 0');
+                break;
+        }
+
+        $sMake = $this->request()->get('make');
+        if($sMake != '') {
+            $this->search()->setCondition('AND dmake.pmake_id > 0');
+        }
+
+        if(!Phpfox::getUserParam('dvs.can_view_other_dvs')) {
+            $iUserId = Phpfox::getUserId();
+            $sWhere = ' AND (dvs.user_id = ' . $iUserId;
+            $aIsManagerDvs = Phpfox::getService('dvs.manager')->getAllDvs($iUserId);
+            if(count($aIsManagerDvs)) {
+                $sWhere .= ' OR dvs.dvs_id IN (' . implode(',', $aIsManagerDvs) . ')';
+            }
+            $sWhere .= ')';
+
+            $this->search()->setCondition($sWhere);
+        }
+
+        $this->search()->browse()->params($aBrowseParams)->execute();
+
+        $aDvss = $this->search()->browse()->getRows();
+        $iCnt = $this->search()->browse()->getCount();
+
+        Phpfox::getLib('pager')->set(array('page' => $this->search()->getPage(), 'size' => $this->search()->getDisplay(), 'count' => $iCnt));
+
+        /*$iPage = $this->request()->getInt('page');
 		$iPageSize = 20;
 		list($aDvss, $iCnt) = Phpfox::getService('dvs')->listDvss($iPage, $iPageSize, Phpfox::getUserId(), true, Phpfox::getUserParam('dvs.can_view_other_dvs'));
 
-		if ($iCnt < Phpfox::getUserParam('dvs.dvss')) {
-			$bCanAddDvss = true;
-		} else {
-			$bCanAddDvss = false;
-		}
+        Phpfox::getLib('pager')->set(array('page' => $iPage, 'size' => $iPageSize, 'count' => $iCnt));*/
 
-        Phpfox::getLib('pager')->set(array('page' => $iPage, 'size' => $iPageSize, 'count' => $iCnt));
+        if ($iCnt < Phpfox::getUserParam('dvs.dvss')) {
+            $bCanAddDvss = true;
+        } else {
+            $bCanAddDvss = false;
+        }
 
 		$this->template()->assign(array(
 					'sMessage' => $sMessage,
@@ -136,7 +236,8 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
 				->setHeader('cache', array(
 					'pager.css' => 'style_css',
 					'activity.css' => 'module_dvs',
-					'activity.js' => 'module_dvs'
+					'activity.js' => 'module_dvs',
+                    'index.css' => 'module_dvs'
 		));
 
 		

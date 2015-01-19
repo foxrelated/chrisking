@@ -37,9 +37,12 @@ defined('PHPFOX') or exit('NO DICE!');
 
 		{if !Phpfox::isMobile() && isset($aSearchTool.filters) && count($aSearchTool.filters)}
 			<div class="header_filter_holder">
+                {if Phpfox::getLib('module')->getFullControllerName() == 'dvs.index'}
+                <h4 id="dvs_filter_heading">Filter DVS by:</h4>
+                {/if}
 				{foreach from=$aSearchTool.filters key=sSearchFilterName item=aSearchFilters}
 					{if !isset($aSearchFilters.is_input)}
-						<div class="header_bar_float">
+						<div class="header_bar_float" id="header_bar_float_{$aSearchFilters.param}">
 							<div class="header_bar_drop_holder">
 								<ul class="header_bar_drop">
 									<li><span>{$sSearchFilterName}:</span></li>

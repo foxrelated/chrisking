@@ -334,7 +334,11 @@ background-color: #c35f54;
 					DVS Name
 				</td>*}
 				<td colspan="2" valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
-					Dealership DVS
+					{if Phpfox::getLib('request')->get('sort') == 'descending'}
+                    <a class="dealer_heading_asc" href="{$aSearchTool.filters.Sort.data.0.link}">Dealership DVS</a>
+                    {else}
+                    <a class="dealer_heading_desc" href="{$aSearchTool.filters.Sort.data.1.link}">Dealership DVS</a>
+                    {/if}
 				</td>
 				<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
 					Options{*phrase var='dvs.settings'*}
