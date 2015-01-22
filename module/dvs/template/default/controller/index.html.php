@@ -327,7 +327,7 @@ background-color: #c35f54;
 <div class="clear"></div>
 
 {if $aDvss}
-	<div id="dvss" {*if $bCanAddDvss}class="separate"{/if*} style="margin:15px 0px 0px 0px;">
+	<div id="dvss" {*if $bCanAddDvss}class="separate"{/if*} style="margin:50px 0px 0px 0px;">
 		<table style="width:100%;border-collapse:collapse;">
 			<tr style="border-bottom:1px solid #ccc;">
 				{*<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
