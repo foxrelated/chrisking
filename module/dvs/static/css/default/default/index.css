@@ -19,7 +19,6 @@ div.header_bar_menu {
 }
 
 #header_bar_float_sort,
-#header_bar_float_show,
 #header_bar_float_when {
     display: none;
 }

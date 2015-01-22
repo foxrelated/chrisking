@@ -148,7 +148,7 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
                         ),
                         'descending' => array('dvs.dealer_name', 'Descending', 'DESC')
                     ),
-                    'show' => array(20),
+                    'show' => array(20, 50, 100),
                     'custom_filters' => array(
                         ' -Active- ' => array(
                             'param' => 'active',
