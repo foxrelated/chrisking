@@ -323,18 +323,22 @@ background-color: #c35f54;
 <div id="add_dvs_button" {if !$bCanAddDvss}style="display:none;"{/if}>
 	<a href="{url link='dvs.settings'}" class="button-link" style="width:90px;height:10px;padding:2px 2px 15px 2px;margin:0px;">{phrase var='dvs.add_dvs'}</a>
 	<div class="main_break"></div>
-	<div class="main_break"></div>
 </div>
+<div class="clear"></div>
 
 {if $aDvss}
-	<div id="dvss" {*if $bCanAddDvss}class="separate"{/if*} style="margin:15px 0px 0px 0px;">
+	<div id="dvss" {*if $bCanAddDvss}class="separate"{/if*} style="margin:50px 0px 0px 0px;">
 		<table style="width:100%;border-collapse:collapse;">
 			<tr style="border-bottom:1px solid #ccc;">
 				{*<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
 					DVS Name
 				</td>*}
 				<td colspan="2" valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
-					Dealership DVS
+					{if Phpfox::getLib('request')->get('sort') == 'descending'}
+                    <a class="dealer_heading_asc" href="{$aSearchTool.filters.Sort.data.0.link}">Dealership DVS</a>
+                    {else}
+                    <a class="dealer_heading_desc" href="{$aSearchTool.filters.Sort.data.1.link}">Dealership DVS</a>
+                    {/if}
 				</td>
 				<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
 					Options{*phrase var='dvs.settings'*}

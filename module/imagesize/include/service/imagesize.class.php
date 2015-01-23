@@ -173,8 +173,8 @@ class Imagesize_Service_Imagesize extends Phpfox_Service {
             }
 
             /** BUILD EMAIL THUMBNAIL IMAGE */
-            /*$oImage->createThumbnail(Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, ''), Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_300'), 300, 300);
-            $this->createEmailThumb(Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_300'), Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_email'));*/
+            $oImage->createThumbnail(Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, ''), Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_300'), 300, 300);
+            $this->createEmailThumb(Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_300'), Phpfox::getParam('brightcove.dir_image') . sprintf($sFileName, '_email'));
 
 
             $aSql['is_resize'] = 2;
