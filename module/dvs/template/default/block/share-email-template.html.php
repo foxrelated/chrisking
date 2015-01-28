@@ -39,7 +39,7 @@
                 <div style="position: relative;width:300px;overflow:hidden">
                     <a href="{$sVideoLink}">
                         <div>
-                            {img server_id=$aVideo.image_server_id path='brightcove.url_image' file=$aVideo.image_path suffix='_email' max_width=300 max_height=300 title=$aVideo.name}
+                            {img server_id=$aVideo.image_server_id path='brightcove.url_image' file=$aVideo.image_path suffix='_email_300' max_width=300 max_height=300 title=$aVideo.name}
                         </div>
                     </a>
                 </div>

@@ -108,7 +108,7 @@
 <div style="position:relative;width:300px;overflow:hidden;text-align:center;">
 <a href="{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule('redirect')}share_crm/{else}&share=crm{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=CRM%20Embed&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}"><span style="text-decoration:none;font-weight:bold;">{$aVideo.name}</span></a>
 <div style="height:100%;left:0;top:0;width:300px;">
-<a href="{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule('redirect')}share_crm/{else}&share=crm{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=CRM%20Embed&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}">{img server_id=$aVideo.image_server_id path="brightcove.url_image" file=$aVideo.image_path suffix="_email" max_width=300 max_height=300 title=$aVideo.name}</a>
+<a href="{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule('redirect')}share_crm/{else}&share=crm{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=CRM%20Embed&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}">{img server_id=$aVideo.image_server_id path="brightcove.url_image" file=$aVideo.image_path suffix="_email_300" max_width=300 max_height=300 title=$aVideo.name}</a>
 </div>
 </div>
 '
