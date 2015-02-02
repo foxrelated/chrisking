@@ -1195,6 +1195,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				$aReplace[] = '' . $sValue . '';
 			}
 			foreach ($aDvs as $sKey => $sValue) {
+                if(is_array($sValue)) {
+                    continue;
+                }
 				$aFind[] = '{dvs_' . $sKey . '}';
 				$aReplace[] = '' . $sValue . '';
 			}
@@ -1206,20 +1209,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$sSubject = str_replace($aFind, $aReplace, $sSubject);
 
    		    $iUserId = Phpfox::getUserId();
-            if($aDvs['sitemap_parent_url']) {
-                $sParentUrlEncode = base64_encode(urlencode($aDvs['parent_video_url']));
-                if(Phpfox::isModule('redirect')) {
-                    $sVideoLink = Phpfox::getLib('url')->makeUrl('share.' . $aDvs['title_url'], array(
-                        'parent' => $sParentUrlEncode,
-                        'video' => $aVideo['video_title_url']
-                    )) . 'share_email/';
-                } else {
-                    $sVideoLink = str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $aDvs['parent_video_url']) . '&share=email';
-                }
-            } else {
-                $sShortUrl = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'email', $iUserId);
-                $sVideoLink = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . $sShortUrl) . "?utm_source=ShareLinks&amp;utm_medium=Email_Share&amp;utm_content=" . $aVideo['year'] . "_" . $aVideo['make'] . "_" . $aVideo['model'] . "&amp;utm_campaign=" . $aDvs['dealer_name'];
-            }
+            $oShareService = Phpfox::getService('dvs.share');
+            $sVideoLink = $oShareService->convertNumberToHashCode($aVideo['ko_id'], 5) . $oShareService->convertNumberToHashCode($aDvs['dvs_id'], 3);
+            $sVideoLink = Phpfox::getLib('url')->makeUrl('share.') . $sVideoLink . '6';
 
 			Phpfox::getBlock('dvs.share-email-template', array(
 				'iDvsId' => $aDvs['dvs_id'],
@@ -1321,8 +1313,10 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
                 $aFind[] = '{share_' . $sKey . '}';
                 $aReplace[] = '' . $sValue . '';
             }
-            foreach ($aDvs as $sKey => $sValue)
-            {
+            foreach ($aDvs as $sKey => $sValue) {
+                if(is_array($sValue)) {
+                    continue;
+                }
                 $aFind[] = '{dvs_' . $sKey . '}';
                 $aReplace[] = '' . $sValue . '';
             }
@@ -1343,7 +1337,10 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
                 $sShortUrl = Phpfox::getService('dvs.shorturl')->generate($aDvs['dvs_id'], $aVideo['referenceId'], 'email', $iUserId);
                 $sVideoLink = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . $sShortUrl);
             }*/
-            $sVideoLink = $aVals['parent_url'];
+            //$sVideoLink = $aVals['parent_url'];
+            $oShareService = Phpfox::getService('dvs.share');
+            $sVideoLink = $oShareService->convertNumberToHashCode($aVideo['ko_id'], 5) . $oShareService->convertNumberToHashCode($aDvs['dvs_id'], 3);
+            $sVideoLink = Phpfox::getLib('url')->makeUrl('share.') . $sVideoLink . '6';
 
             Phpfox::getBlock('dvs.share-email-template', array(
                 'iDvsId' => $aDvs['dvs_id'],
@@ -1676,7 +1673,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
         $aFindReplace = array();
         foreach ($aDvs as $sKey => $sValue) {
-            if ($sKey == 'phrase_overrides') {
+            if ($sKey == 'phrase_overrides' || is_array($sValue)) {
                 continue;
             }
 
@@ -1694,12 +1691,14 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
         $this->val('#video_ref_id', $aVideo['referenceId']);
 
+        $sShareCode = Phpfox::getLib('url')->makeUrl('share') . Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5) . Phpfox::getService('dvs.share')->convertNumberToHashCode($aDvs['dvs_id'], 3);
         $this->remove('.twitter_popup');
-        $this->call('$(\'#twitter_button_wrapper\').html(\'<a href="https://twitter.com/share?url=\' + encodeURIComponent($(\'#parent_url\').val().replace(\'WTVDVS_VIDEO_TEMP\', \'' . $aVideo['video_title_url'] . '\')) + \'&text=\' + encodeURIComponent(\'' . $sTwitterText . '\') + \'" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>\');');
+        $this->call('$(\'#twitter_button_wrapper\').html(\'<a href="https://twitter.com/share?url=\' + encodeURIComponent(\'' . $sShareCode . '1\') + \'&text=\' + encodeURIComponent(\'' . $sTwitterText . '\') + \'" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>\');');
         $this->call('twttr.widgets.load();');
         //$this->call('$(\'#current_video_link\').attr(\'href\', $(\'#parent_url\').val().replace(\'WTVDVS_VIDEO_TEMP\', \'' . $aVideo['video_title_url'] . '\'));');
 
         $this->val('#video_url', $aVideo['video_title_url']);
+        $this->val('#video_hash_code', Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5));
         $this->val('#share_title', $sTwitterText);
         $this->val('#video_thumbnail', Phpfox::getLib('image.helper')->display(array(
             'server_id' => $aVideo['server_id'],

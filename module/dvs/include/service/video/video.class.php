@@ -1193,6 +1193,16 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
 
         return $aVideos2;
     }
+
+    public function getVideoByKoId($iId) {
+        $aVideo = $this->database()
+            ->select('*')
+            ->from($this->_tVideos)
+            ->where('ko_id = ' . (int)$iId)
+            ->execute('getRow');
+
+        return $this->prepareVideos($aVideo, true);
+    }
 }
 
 ?>

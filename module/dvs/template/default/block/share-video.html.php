@@ -21,6 +21,7 @@
                         </a>
                     </div>
                 </td>
+
                 <td>
                     <div class="dvs_share_buttons_holder">
                         <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;iDvsId={$aDvs.dvs_id}&amp;&dvs_title={$aDvs.title_url}&amp;sRefId={$aVideo.referenceId}&amp;bSaveGa=2')); return false;">
@@ -28,48 +29,23 @@
                         </a>
 
                         <a href="#" onclick="
-                        {if $aDvs.sitemap_parent_url}
-                            {if $bIsIPhone}
-                                window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('{$aVideo.parent_video_url}{if Phpfox::isModule('redirect')}share_facebook/{else}&share=facebook{/if}');
-                            {else}
-                                window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('{$aVideo.parent_video_url}{if Phpfox::isModule('redirect')}share_facebook/{else}&share=facebook{/if}'), '', 'width=600,height=400');
-                            {/if}
+                        {if $bIsIPhone}
+                            window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('{url link='share.'$aVideo.share_hash_code'0'}');
                         {else}
-                            var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=facebook&return_id=share_link_box';
-                            $.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
-                                {if $bIsIPhone}
-                                    window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#share_link_box').val());
-                                {else}
-                                    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400');
-                                {/if}
-                                return false;
-                            {r});
+                            window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('{url link='share.'$aVideo.share_hash_code'0'}'), '', 'width=600,height=400');
                         {/if}
+
 					    return false;">
                             <img src="{$baseUrl}module/dvs/static/image/facebook-share.png" alt="Share to Facebook"/>
                         </a>
 
                         <span id="twitter_button_wrapper">
                             <a href="#" onclick="
-                            {if $aDvs.sitemap_parent_url}
-                                var text = 'Check out this {$aVideo.name} video from {$aDvs.dealer_name}! %23{$aVideo.make} %23{$aVideo.model} %23VirtualTestDrive %23{$aDvs.title_url}';
-                                {if $bIsIPhone}
-                                        window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{$aVideo.parent_video_url}{if Phpfox::isModule('redirect')}share_twitter/{else}&share=twitter{/if}');
-                                    {else}
-                                        window.open( 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{$aVideo.parent_video_url}{if Phpfox::isModule('redirect')}share_twitter/{else}&share=twitter{/if}'), '', 'width=600,height=400' );
-                                    {/if}
+                            var text = 'Check out this {$aVideo.name} video from {$aDvs.dealer_name}! %23{$aVideo.make} %23{$aVideo.model} %23{$aDvs.title_url}';
+                            {if $bIsIPhone}
+                                window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{url link='share.'$aVideo.share_hash_code'1'}');
                             {else}
-                                var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=twitter&return_id=share_link_box';
-                                var text = 'Check out this {$aVideo.name} video from {$aDvs.dealer_name}! %23{$aVideo.make} %23{$aVideo.model} %23VirtualTestDrive %23{$aDvs.title_url}';
-
-                                $.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
-                                    {if $bIsIPhone}
-                                        window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent($('#share_link_box').val());
-                                    {else}
-                                        window.open( 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400' );
-                                    {/if}
-                                    return false;
-                                {r});
+                                window.open( 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{url link='share.'$aVideo.share_hash_code'1'}'), '', 'width=600,height=400' );
                             {/if}
                             return false;">
                                 <img src="{$baseUrl}module/dvs/static/image/twitter-button.png" alt="Tweet" style="margin: 3px;" />
@@ -77,22 +53,10 @@
                         </span>
 
                         <a href="#" onclick="
-                        {if $aDvs.sitemap_parent_url}
-                            {if $bIsIPhone}
-                                window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent('{$aVideo.parent_video_url}{if Phpfox::isModule('redirect')}share_google/{else}&share=google{/if}');
-                            {else}
-                                window.open( 'https://plus.google.com/share?url=' + encodeURIComponent('{$aVideo.parent_video_url}{if Phpfox::isModule('redirect')}share_google/{else}&share=google{/if}'), '', 'width=600,height=400' );
-                            {/if}
+                        {if $bIsIPhone}
+                            window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent('{url link='share.'$aVideo.share_hash_code'2'}');
                         {else}
-                            var params = 'dvs_id={$aDvs.dvs_id}&dvs_title={$aDvs.title_url}&video_ref_id={$aVideo.referenceId}&service=google&return_id=share_link_box';
-                            $.ajaxCall('dvs.generateShortUrl', params).done(function(){l}
-                                {if $bIsIPhone}
-                                    window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent( $('#share_link_box').val() );
-                                {else}
-                                    window.open( 'https://plus.google.com/share?url=' + encodeURIComponent($('#share_link_box').val()), '', 'width=600,height=400' );
-                                {/if}
-                                return false;
-                            {r});
+                            window.open( 'https://plus.google.com/share?url=' + encodeURIComponent('{url link='share.'$aVideo.share_hash_code'2'}'), '', 'width=600,height=400' );
                         {/if}
                         return false;">
                             <img src="{$baseUrl}module/dvs/static/image/google-share.png" alt="Google+" title="Google+"/>
@@ -106,9 +70,9 @@
                     <input class="dvs_share_text_box" type="text" id="embed_code_{$iKey}"
                            value='
 <div style="position:relative;width:300px;overflow:hidden;text-align:center;">
-<a href="{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule('redirect')}share_crm/{else}&share=crm{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=CRM%20Embed&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}"><span style="text-decoration:none;font-weight:bold;">{$aVideo.name}</span></a>
+<a href="{url link='share.'$aVideo.share_hash_code'3'}"><span style="text-decoration:none;font-weight:bold;">{$aVideo.name}</span></a>
 <div style="height:100%;left:0;top:0;width:300px;">
-<a href="{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule('redirect')}share_crm/{else}&share=crm{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=CRM%20Embed&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}">{img server_id=$aVideo.image_server_id path="brightcove.url_image" file=$aVideo.image_path suffix="_email_300" max_width=300 max_height=300 title=$aVideo.name}</a>
+<a href="{url link='share.'$aVideo.share_hash_code'3'}">{img server_id=$aVideo.image_server_id path="brightcove.url_image" file=$aVideo.image_path suffix="_email_300" max_width=300 max_height=300 title=$aVideo.name}</a>
 </div>
 </div>
 '
@@ -134,7 +98,7 @@
             <tr>
                 <td>
                     Direct Video Link
-                    <input class="dvs_share_text_box" type="text" id="link_code2_{$iKey}" value='{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule("redirect")}share_direct/{else}&share=direct{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=Direct%20Link&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}' />
+                    <input class="dvs_share_text_box" type="text" id="link_code2_{$iKey}" value='{url link='share.'$aVideo.share_hash_code'4'}' />
                 </td>
                 <td>
                 <br/>
@@ -159,7 +123,7 @@
             <tr>
                 <td>
                     QR Code Link
-                    <input class="dvs_share_text_box" type="text" id="link_code3_{$iKey}" value='{if $aDvs.sitemap_parent_url}{$aVideo.parent_video_url}{if Phpfox::isModule("redirect")}share_qrcode/{else}&share=qrcode{/if}{else}{$sVideoViewUrl}{$aVideo.shorturl}?utm_source={$aDvs.dealer_name}%20DVS&amp;utm_medium=QR%20Code&amp;utm_content={$aVideo.year}%20{$aVideo.make}%20{$aVideo.model}&amp;utm_campaign=DVS%20Share%20Links{/if}' />
+                    <input class="dvs_share_text_box" type="text" id="link_code3_{$iKey}" value='{url link='share.'$aVideo.share_hash_code'5'}' />
                 </td>
                 <td>
                 <br/>
