@@ -3,6 +3,8 @@ defined('PHPFOX') or exit('NO DICE!');
 
 class Share_Component_Controller_Index extends Phpfox_Component {
     public function process() {
+        Phpfox::getLib('setting')->setParam('brightcove.url_image', Phpfox::getParam('core.url_pic') . 'brightcove/');
+
         $bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
         $sShareRequest = $this->request()->get('req2');
         $bIsOldShareSystem = false;
