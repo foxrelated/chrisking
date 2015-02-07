@@ -75,6 +75,14 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                         'return_url' => true
                     ));
 
+                    $sTwitterThumbnailUrl = Phpfox::getLib('image.helper')->display(array(
+                        'img server_id' => $aVideo['image_server_id'],
+                        'path' => 'brightcove.url_image',
+                        'file' => $aVideo['image_path'],
+                        'suffix' => '_email_500',
+                        'return_url' => true
+                    ));
+
                     $aFirstVideoMeta = array(
                         'url' => Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $aFirstVideo['video_title_url']),
                         'thumbnail_url' => $sThumbnailUrl,
@@ -94,7 +102,8 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                             'aDvs' => $aDvs,
                             'aFirstVideo' => $aFirstVideo,
                             'aFirstVideoMeta' => $aFirstVideoMeta,
-                            'sRedirectUrl' => $sRedirectUrl
+                            'sRedirectUrl' => $sRedirectUrl,
+                            'sTwitterThumbnailUrl' => $sTwitterThumbnailUrl
                         ));
                 }
             }
@@ -168,6 +177,14 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                         'return_url' => true
                     ));
 
+                    $sTwitterThumbnailUrl = Phpfox::getLib('image.helper')->display(array(
+                        'img server_id' => $aVideo['image_server_id'],
+                        'path' => 'brightcove.url_image',
+                        'file' => $aVideo['image_path'],
+                        'suffix' => '_email_500',
+                        'return_url' => true
+                    ));
+
                     $aVideoMeta = array(
                         'url' => Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $aVideo['video_title_url']),
                         'thumbnail_url' => $sThumbnailUrl,
@@ -187,7 +204,8 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                             'aDvs' => $aDvs,
                             'aFirstVideo' => $aVideo,
                             'aFirstVideoMeta' => $aVideoMeta,
-                            'sRedirectUrl' => $sRedirectUrl
+                            'sRedirectUrl' => $sRedirectUrl,
+                            'sTwitterThumbnailUrl' => $sTwitterThumbnailUrl
                         ));
                 } else {
                     $this->url()->send('');
