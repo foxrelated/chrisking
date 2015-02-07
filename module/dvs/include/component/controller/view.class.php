@@ -328,6 +328,9 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                 'jquery.placeholder.js' => 'module_dvs'
             ))
             ->assign(array(
+                'sVideoHashCode' => Phpfox::getService('dvs.share')->convertNumberToHashCode($aFirstVideo['ko_id'], 5),
+                'sDvsHashCode' => Phpfox::getService('dvs.share')->convertNumberToHashCode($aDvs['dvs_id'], 3),
+                'sShareCode' => $this->url()->makeUrl('share') . Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5) . Phpfox::getService('dvs.share')->convertNumberToHashCode($aDvs['dvs_id'], 3),
                 'sVdpIframeUrl' => $sVdpIframeUrl,
                 'aDvs' => $aDvs,
                 'aBaseUrl' => $aBaseUrl,

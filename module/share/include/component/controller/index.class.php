@@ -58,12 +58,20 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                         }
                     }
 
-                    if (file_exists(PHPFOX_DIR_FILE . "brightcove" . PHPFOX_DS . $aFirstVideo['thumbnail_image'])) {
-                        $sThumbnailUrl = Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['thumbnail_image'];
-                    } else {
-                        $sThumbnailUrl = Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'theme.frontend.default.style.default.image.noimage') . 'item.png';
-                    }
-                    $sThumbnailUrl = str_replace('index.php?do=/', '', $sThumbnailUrl);
+//                    if (file_exists(PHPFOX_DIR_FILE . "brightcove" . PHPFOX_DS . $aFirstVideo['thumbnail_image'])) {
+//                        $sThumbnailUrl = Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['thumbnail_image'];
+//                    } else {
+//                        $sThumbnailUrl = Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'theme.frontend.default.style.default.image.noimage') . 'item.png';
+//                    }
+//                    $sThumbnailUrl = str_replace('index.php?do=/', '', $sThumbnailUrl);
+
+                    $sThumbnailUrl = Phpfox::getLib('image.helper')->display(array(
+                        'img server_id' => $aFirstVideo['image_server_id'],
+                        'path' => 'brightcove.url_image',
+                        'file' => $aFirstVideo['image_path'],
+                        'suffix' => '_email_300',
+                        'return_url' => true
+                    ));
 
                     $aFirstVideoMeta = array(
                         'url' => Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $aFirstVideo['video_title_url']),
@@ -150,11 +158,13 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                         }
                     }
 
-                    if (file_exists(PHPFOX_DIR_FILE . "brightcove" . PHPFOX_DS . $aVideo['thumbnail_image'])) {
-                        $sThumbnailUrl = Phpfox::getParam('core.path') . 'file/brightcove/' . $aVideo['thumbnail_image'];
-                    } else {
-                        $sThumbnailUrl = Phpfox::getParam('core.path') . 'theme/frontend/default/style/default/image/noimage/item.png';
-                    }
+                    $sThumbnailUrl = Phpfox::getLib('image.helper')->display(array(
+                        'img server_id' => $aVideo['image_server_id'],
+                        'path' => 'brightcove.url_image',
+                        'file' => $aVideo['image_path'],
+                        'suffix' => '_email_300',
+                        'return_url' => true
+                    ));
 
                     $aVideoMeta = array(
                         'url' => Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $aVideo['video_title_url']),

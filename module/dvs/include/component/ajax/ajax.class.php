@@ -765,12 +765,14 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 		if ($bVideoChanged)
 		{
+			$this->val('#video_hash_code', Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5));
+
 			$sTwitterText = Phpfox::getPhrase('dvs.twitter_default_share_text');
 			$sTwitterText = str_replace($aFind, $aReplace, $sTwitterText);
 
-			$sVideoUrl = (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url']) : Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url'])));
+			$sShareCode = Phpfox::getLib('url')->makeUrl('share') . Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5) . Phpfox::getService('dvs.share')->convertNumberToHashCode($aDvs['dvs_id'], 3);
 			$this->remove('.twitter_popup');
-			$this->html('#twitter_button_wrapper', '<a href="https://twitter.com/share?url=' . urlencode($sVideoUrl) . '&text=' . urlencode($sTwitterText) . '" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>');
+			$this->html('#twitter_button_wrapper', '<a href="https://twitter.com/share?url=' . urlencode($sShareCode) . '&text=' . urlencode($sTwitterText) . '" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>');
 			$this->call('twttr.widgets.load();');
 		}
 
