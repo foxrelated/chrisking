@@ -41,7 +41,7 @@
 
                         <span id="twitter_button_wrapper">
                             <a href="#" onclick="
-                            var text = 'Check out this {$aVideo.name} video from {$aDvs.dealer_name}! %23{$aVideo.make} %23{$aVideo.model} %23{$aDvs.title_url}';
+                            var text = 'Take a {$aVideo.year} %23{$aVideo.make} %23{$aVideo.model} Virtual Test Drive from %23{$aDvs.title_url}';
                             {if $bIsIPhone}
                                 window.location.href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{url link='share.'$aVideo.share_hash_code'1'}');
                             {else}
