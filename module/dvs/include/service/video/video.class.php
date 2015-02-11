@@ -767,10 +767,6 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
             $sWhere = '1';
             $sWhere .= ' AND make IN (' . implode(',' , $aMakes) . ')';
 			$sWhere .= ' AND year IN (' . Phpfox::getParam('research.new_model_year') . ')';
-<<<<<<< HEAD
-=======
-
->>>>>>> share-links-2.0
 
             if(Phpfox::getParam('dvs.vf_related_force_same_year')) {
                 $sWhere .= ' AND year = ' . (int)$aVideo['year'];
