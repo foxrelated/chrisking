@@ -345,11 +345,11 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 case 'direct':
                     $sShareIframeUrl .= '&utm_medium=Direct Link';
                     break;
-                case 'email':
-                    $sShareIframeUrl .= '&utm_medium=Email';
-                    break;
                 case 'qrcode':
                     $sShareIframeUrl .= '&utm_medium=QR Code';
+                    break;
+                case 'email':
+                    $sShareIframeUrl .= '&utm_medium=Email';
                     break;
                 default:
                     $sShareIframeUrl .= '&utm_medium=Direct Link';
@@ -409,6 +409,9 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 'sParentUrl' => $sParentUrl,
                 'sParentUrlEncode' => $sParentUrlEncode,
                 'sVideoUrl' => $aVideo['video_title_url'],
+                'sVideoHashCode' => Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5),
+                'sDvsHashCode' => Phpfox::getService('dvs.share')->convertNumberToHashCode($aDvs['dvs_id'], 3),
+                'sShareCode' => $this->url()->makeUrl('share') . Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5) . Phpfox::getService('dvs.share')->convertNumberToHashCode($aDvs['dvs_id'], 3),
                 'sVideoThumb' => Phpfox::getLib('image.helper')->display(array(
                         'server_id' => $aVideo['server_id'],
                         'path' => 'core.url_file',
@@ -425,7 +428,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 //'sBackgroundPath' => Phpfox::getParam('core.url_file') . 'dvs/background/' . $aDvs['background_file_name'],
                 //'iBackgroundOpacity' => $iBackgroundOpacity,
                 //'iBackgroundAlpha' => $iBackgroundAlpha,
-                'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
+                'sImagePath' => Phpfox::getParam('core.path') . 'module/dvs/static/image/',
                 'aVideoSelectModels' => $aVideoSelect,
                 'aPlayer' => $aPlayer,
                 'iDvsId' => $aDvs['dvs_id'],

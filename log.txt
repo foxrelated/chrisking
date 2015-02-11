@@ -35,3 +35,13 @@ Step 2: Create new settings for Used Videos:
 ### DATABASE:
     - ALTER TABLE `phpfox_tbd_dvs_inventory` CHANGE `dvs_id` `dealer_id` INT(11) UNSIGNED NOT NULL;
     - ALTER TABLE `phpfox_ko_dvs` CHANGE `dealer_id` `dealer_id` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
+
+*****************************************************   NEW SHARE SYSTEM   *****************************************
+- Share type:
+    0: facebook
+    1: twitter
+    2: google
+    3: CRM
+    4: Direct Link
+    5: QR Code
+    6: email

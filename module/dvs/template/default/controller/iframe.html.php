@@ -128,6 +128,7 @@
         <section id="share_links">
             <input type="hidden" value="{$sNewParentUrl}" id="parent_url">
             <input type="hidden" value="{$sVideoUrl}" id="video_url">
+            <input type="hidden" value="{$sVideoHashCode}" id="video_hash_code">
             <input type="hidden" value="{phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}" id="share_title">
             <input type="hidden" value="{$sVideoThumb}" id="video_thumbnail">
             <table cellpadding="4" cellspacing="4" border="0">
@@ -142,19 +143,19 @@
                     </td>
                     {if Phpfox::isModule('redirect')}
                    <td style="vertical-align:middle;">
-                        <a href="#" onclick="window.open('https://www.facebook.com/share.php?u=' + encodeURI('{url link='share.'$sDvsRequest}parent_{$sParentUrlEncode}/video_' + $('#video_url').val()), 'Facebook Share', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
+                        <a href="#" onclick="window.open('https://www.facebook.com/share.php?u=' + encodeURI('{url link='share'}' + $('#video_hash_code').val() + '{$sDvsHashCode}0'), 'Facebook Share', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
                             <img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
                         </a>
                     </td>
                     {/if}
                     <td style="vertical-align:middle;padding-left:2px;padding-right:2px;">
                         <span id="twitter_button_wrapper">
-                        <a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}&url={$sParentUrl}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
+                        <a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}&url={$sShareCode}1" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
                         </span>
                     </td>
                     {if Phpfox::isModule('redirect')}
                     <td style="vertical-align:middle;">
-                        <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURI('{url link='share.'$sDvsRequest}parent_{$sParentUrlEncode}/video_' + $('#video_url').val())); googleShareClick('Share Links'); return false;">
+                        <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURI('{url link='share'}' + $('#video_hash_code').val() + '{$sDvsHashCode}2')); googleShareClick('Share Links'); return false;">
                             <img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
                         </a>
                     </td>

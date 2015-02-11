@@ -2,7 +2,7 @@
 <style type="text/css">
     #dvs_bc_player {
         width: 720px;
-        height: 306px;
+        height: 406px;
     }
 
     body {
@@ -284,6 +284,7 @@
             {/if}
         </section>
         *}
+        <p style="padding-top:10px;color:#{$aPlayer.player_text};font-size:11px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
     </section>
 </article>
 
