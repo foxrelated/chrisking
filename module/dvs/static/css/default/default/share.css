@@ -42,11 +42,11 @@
 	float:left;
 }
 
-.dvs_share_text_box{
-	width:155px;
+.dvs_share_text_box {
+	width:187px;
 	padding:5px;
-	font-size:8px;
-	margin:2px;
+	font-size:9px;
+	/* margin:2px; */
 }
 
 .dvs_share_button_container{
@@ -66,7 +66,9 @@
 
 .dvs_share_thumbnail_image_container h3 {
 	border: none;
-	min-height:42px;
+	/* min-height:42px; */
+	font-size:12px;
+	font-weight:bold;
 }
 .dvs_share_thumbnail_image_container_inner table td {
 	vertical-align: top;
@@ -78,18 +80,20 @@
 	padding-right: 0;
 }
 .dvs_share_buttons_holder {
-	margin-top: -4px;
+	/* margin-top: -4px; */
+	text-align:center;
+	width:100%;
 }
 .dvs_share_copy_button_holder {
 	position:relative;
-	width: 84px;
+	width: 54px;
 	margin: 0 auto;
 	text-align: left;
 }
 .dvs_share_copy_button_holder button {
-	width: 80px;
+	width: 50px;
 	padding: 5px 0;
-	margin: -1px 0 0;
+	margin: 1px 0 0;
 	background: grey;
 	border: none;
 	color: white;

@@ -17,7 +17,7 @@
                         <a href="#" onclick="
 						tb_show('Preview', $.ajaxBox('dvs.showMiniPreview', 'height=640&amp;width=900&amp;val[dvs_id]={$aDvs.dvs_id}&video_title_url={$aVideo.video_title_url}')); return false;">
                             <img src="{$baseUrl}module/dvs/static/image/play_btn_75.png" class="dvs_share_button_overlay" />
-                            {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image width="100%"}
+                            {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image width="200"}
                         </a>
                     </div>
                 </td>
@@ -25,9 +25,9 @@
                 <td>
                     <div class="dvs_share_buttons_holder">
                         <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;iDvsId={$aDvs.dvs_id}&amp;&dvs_title={$aDvs.title_url}&amp;sRefId={$aVideo.referenceId}&amp;bSaveGa=2')); return false;">
-                            <img src="{$baseUrl}module/dvs/static/image/email-share.png" alt="Share Via Email"/>
+                            <img src="{$baseUrl}module/dvs/static/image/mini-email.png" alt="Share Via Email"/>
                         </a>
-
+						<br>
                         <a href="#" onclick="
                         {if $bIsIPhone}
                             window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('{url link='share.'$aVideo.share_hash_code'0'}');
@@ -36,9 +36,9 @@
                         {/if}
 
 					    return false;">
-                            <img src="{$baseUrl}module/dvs/static/image/facebook-share.png" alt="Share to Facebook"/>
+                            <img src="{$baseUrl}module/dvs/static/image/mini-facebook.png" alt="Share to Facebook"/>
                         </a>
-
+						<br>
                         <span id="twitter_button_wrapper">
                             <a href="#" onclick="
                             var text = 'Take a {$aVideo.year} %23{$aVideo.make} %23{$aVideo.model} Virtual Test Drive from %23{$aDvs.title_url}';
@@ -48,10 +48,10 @@
                                 window.open( 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{url link='share.'$aVideo.share_hash_code'1'}'), '', 'width=600,height=400' );
                             {/if}
                             return false;">
-                                <img src="{$baseUrl}module/dvs/static/image/twitter-button.png" alt="Tweet" style="margin: 3px;" />
+                                <img src="{$baseUrl}module/dvs/static/image/mini-twitter.png" alt="Tweet" style="margin: 3px;" />
                             </a>
                         </span>
-
+						<br>
                         <a href="#" onclick="
                         {if $bIsIPhone}
                             window.location.href = 'https://plus.google.com/share?url=' + encodeURIComponent('{url link='share.'$aVideo.share_hash_code'2'}');
@@ -59,7 +59,7 @@
                             window.open( 'https://plus.google.com/share?url=' + encodeURIComponent('{url link='share.'$aVideo.share_hash_code'2'}'), '', 'width=600,height=400' );
                         {/if}
                         return false;">
-                            <img src="{$baseUrl}module/dvs/static/image/google-share.png" alt="Google+" title="Google+"/>
+                            <img src="{$baseUrl}module/dvs/static/image/mini-google.png" alt="Google+" title="Google+" style="margin-left:-5px;"/>
                         </a>
                     </div>
                 </td>
@@ -80,7 +80,7 @@
                 <td><br/>
                     {if !$bIsIPhone}
                     <div id="dvs_share_copy_button_holder1_{$iKey}" class="dvs_share_copy_button_holder">
-                        <button id="copy_button1_{$iKey}">Copy Code</button>
+                        <button id="copy_button1_{$iKey}">Copy</button>
                     </div>
                     <script type="text/javascript">
                         var clip1_{$iKey} = new ZeroClipboard.Client();
@@ -104,7 +104,7 @@
                 <br/>
                     {if !$bIsIPhone}
                     <div id="dvs_share_copy_button_holder2_{$iKey}" class="dvs_share_copy_button_holder">
-                        <button id="copy_button2_{$iKey}">Copy Link</button>
+                        <button id="copy_button2_{$iKey}">Copy</button>
                     </div>
                     <script type="text/javascript">
                         var clip2_{$iKey} = new ZeroClipboard.Client();
@@ -129,7 +129,7 @@
                 <br/>
                     {if !$bIsIPhone}
                     <div id="dvs_share_copy_button_holder3_{$iKey}" class="dvs_share_copy_button_holder">
-                        <button id="copy_button3_{$iKey}">Copy QR</button>
+                        <button id="copy_button3_{$iKey}">Copy</button>
                     </div>
                     <script type="text/javascript">
                         var clip3_{$iKey} = new ZeroClipboard.Client();
