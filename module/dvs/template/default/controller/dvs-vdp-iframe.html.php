@@ -284,7 +284,7 @@
             {/if}
         </section>
         *}
-        <p style="color:#{$aPlayer.player_text};font-size:10px;" align="center">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
+        <p style="padding-top:10px;color:#{$aPlayer.player_text};font-size:11px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
     </section>
 </article>
 
