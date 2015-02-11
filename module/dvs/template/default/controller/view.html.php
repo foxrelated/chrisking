@@ -167,18 +167,19 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </section>
         
         <section id="action_links">
+          <input type="hidden" value="{$sVideoHashCode}" id="video_hash_code" />
 			 {if !Phpfox::isUser()}
 			  <p>Click to Share:</p>
 			  <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); showEmailShare(); return false;">
 				<img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
 			  </a>
-			  <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
+			  <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURI('{url link='share'}' + $('#video_hash_code').val() + '{$sDvsHashCode}0'), '', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
 				<img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
 			  </a>
 			  <span id="twitter_button_wrapper">
-				<a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aFirstVideo.year video_make=$aFirstVideo.make video_model=$aFirstVideo.model dvs_dealer_name=$aDvs.dealer_name}&url={$sCurrentUrlEncoded}" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
+				<a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aFirstVideo.year video_make=$aFirstVideo.make video_model=$aFirstVideo.model dvs_dealer_name=$aDvs.dealer_name}&url={$sShareCode}1" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
 			  </span>
-			  <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href)); googleShareClick('Share Links'); return false;">
+			  <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURI('{url link='share'}' + $('#video_hash_code').val() + '{$sDvsHashCode}2')); googleShareClick('Share Links'); return false;">
 				<img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
 			  </a>
 			  {/if}

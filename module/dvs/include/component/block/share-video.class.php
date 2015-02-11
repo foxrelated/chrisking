@@ -17,8 +17,12 @@ class Dvs_Component_Block_Share_Video extends Phpfox_Component {
             $bIsIPhone = 0;
         }
 
-        $sVideoViewUrl = '';
-        if($aDvs['sitemap_parent_url']) {
+        $oShareService = Phpfox::getService('dvs.share');
+        foreach($aShareVideos as $iKey => $aShareVideo) {
+            $aShareVideos[$iKey]['share_hash_code'] = $oShareService->convertNumberToHashCode($aShareVideo['ko_id'], 5) . $oShareService->convertNumberToHashCode($aDvs['dvs_id'], 3);
+        }
+
+        /*if($aDvs['sitemap_parent_url']) {
             $sParentUrlEncode = base64_encode(urlencode($aDvs['parent_video_url']));
             foreach($aShareVideos as $iKey => $aShareVideo) {
                 if(Phpfox::isModule('redirect')) {
@@ -36,7 +40,9 @@ class Dvs_Component_Block_Share_Video extends Phpfox_Component {
             } else {
                 $sVideoViewUrl = Phpfox::getLib('url')->makeUrl( '' ) . $sDvsTitle;
             }
-        }
+        }*/
+
+
 
 
         $this->template()
@@ -46,8 +52,7 @@ class Dvs_Component_Block_Share_Video extends Phpfox_Component {
             'sDvsUrl' => Phpfox::getLib('url')->makeUrl($aDvs['title_url']),
             'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
             'bDebug' => (Phpfox::getParam('dvs.javascript_debug_mode') ? true : false),
-            'bIsIPhone' => $bIsIPhone,
-            'sVideoViewUrl' => $sVideoViewUrl
+            'bIsIPhone' => $bIsIPhone
         ));
     }
 }

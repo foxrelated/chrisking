@@ -768,6 +768,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
             $sWhere .= ' AND make IN (' . implode(',' , $aMakes) . ')';
 			$sWhere .= ' AND year IN (' . Phpfox::getParam('research.new_model_year') . ')';
 
+
             if(Phpfox::getParam('dvs.vf_related_force_same_year')) {
                 $sWhere .= ' AND year = ' . (int)$aVideo['year'];
             }
@@ -1193,6 +1194,16 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
         usort($aVideos2, 'yearSort');
 
         return $aVideos2;
+    }
+
+    public function getVideoByKoId($iId) {
+        $aVideo = $this->database()
+            ->select('*')
+            ->from($this->_tVideos)
+            ->where('ko_id = ' . (int)$iId)
+            ->execute('getRow');
+
+        return $this->prepareVideos($aVideo, true);
     }
 }
 

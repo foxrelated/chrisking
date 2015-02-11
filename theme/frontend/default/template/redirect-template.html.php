@@ -20,6 +20,12 @@ defined('PHPFOX') or exit('NO DICE!');
     <meta property="og:image" content="{$aFirstVideoMeta.thumbnail_url}" />
     <meta property="article:author" content="{$aDvs.dealer_user_full_name}" />
     <title>{title}</title>
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@WheelsTV">
+    <meta name="twitter:title" content="{$aFirstVideoMeta.name}">
+    <meta name="twitter:description" content="{$aFirstVideoMeta.description}">
+    <meta name="twitter:image:src" content="{$sTwitterThumbnailUrl}">
 </head>
 <body itemscope itemtype="http://schema.org/AutoDealer">
 <div id="js_body_width_frame">
