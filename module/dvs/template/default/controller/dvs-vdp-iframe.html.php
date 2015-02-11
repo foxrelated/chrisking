@@ -284,6 +284,7 @@
             {/if}
         </section>
         *}
+        <h3 id="video_name" style="font-size:10px;" align="center">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</h3>
     </section>
 </article>
 
