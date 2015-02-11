@@ -328,6 +328,9 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                 'jquery.placeholder.js' => 'module_dvs'
             ))
             ->assign(array(
+                'sVideoHashCode' => Phpfox::getService('dvs.share')->convertNumberToHashCode($aFirstVideo['ko_id'], 5),
+                'sDvsHashCode' => Phpfox::getService('dvs.share')->convertNumberToHashCode($aDvs['dvs_id'], 3),
+                'sShareCode' => $this->url()->makeUrl('share') . Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5) . Phpfox::getService('dvs.share')->convertNumberToHashCode($aDvs['dvs_id'], 3),
                 'sVdpIframeUrl' => $sVdpIframeUrl,
                 'aDvs' => $aDvs,
                 'aBaseUrl' => $aBaseUrl,
@@ -338,7 +341,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                 'sBackgroundPath' => Phpfox::getParam('core.url_file') . 'dvs/background/' . $aDvs['background_file_name'],
                 'iBackgroundOpacity' => $iBackgroundOpacity,
                 'iBackgroundAlpha' => $iBackgroundAlpha,
-                'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
+                'sImagePath' => Phpfox::getParam('core.path') . 'module/dvs/static/image/',
                 'aVideoSelectModels' => $aVideoSelect,
                 'aPlayer' => $aPlayer,
                 'iDvsId' => $aDvs['dvs_id'],

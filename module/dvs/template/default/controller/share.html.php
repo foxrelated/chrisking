@@ -25,9 +25,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         <ul id="year">
             <li class="init"><span class="init_selected">{if isset($iYear) && ($iYear > 0)}{$iYear}{else}Select Year{/if}</span>
                 <ul>
-                    {foreach from=$aVideoSelectYears item=iYear}
-                    <li onclick="$.ajaxCall('dvs.getShareMakes', 'iYear={$iYear}&amp;sDvsName={$aDvs.title_url}');">
-                        {$iYear}
+                    {foreach from=$aVideoSelectYears item=iLoopYear}
+                    <li onclick="$.ajaxCall('dvs.getShareMakes', 'iYear={$iLoopYear}&amp;sDvsName={$aDvs.title_url}');">
+                        {$iLoopYear}
                     </li>
                     {/foreach}
                 </ul>
