@@ -408,6 +408,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 <input {if !isset($aForms.parent_url)}disabled="disabled"{/if} type="radio" name="val[sitemap_parent_url]" value="1" {if $bIsEdit && $aForms.sitemap_parent_url == 1 && isset($aForms.parent_url)}checked="checked"{/if}/>{phrase var='dvs.dvs_inventory_status_on'}
                 <input type="radio" name="val[sitemap_parent_url]" value="0" {if !$bIsEdit || !isset($aForms.parent_url) || ($bIsEdit && $aForms.sitemap_parent_url == 0)}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
             </li>
+
+			{if isset($aForms.parent_url)}
+			<li>
+				<label for="parent_url">Parent URL:</label>
+				<input type="text" maxlength="255" size="60" id="parent_url" name="val[parent_url]" value="{value type='input' id='parent_url'}">
+			</li>
+
+			<li>
+				<label for="parent_video_url">Parent Video URL:</label>
+				<input type="text" maxlength="255" size="60" id="parent_video_url" name="val[parent_video_url]" value="{value type='input' id='parent_video_url'}">
+			</li>
+			{/if}
         </ol>
     </fieldset>
 

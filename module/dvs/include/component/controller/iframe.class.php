@@ -90,7 +90,10 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 if($aExtraParams['vdp']) {
                     $sVdpEmbed = true;
                 }
-                if(($aDvs['parent_url'] != $sOriginParentUrl) || ($aDvs['parent_video_url'] != $sNewParentUrl)) {
+                /*if(($aDvs['parent_url'] != $sOriginParentUrl) || ($aDvs['parent_video_url'] != $sNewParentUrl)) {
+                    Phpfox::getService('dvs.iframe')->updateSitemapUrl($aDvs['dvs_id'], $sNewParentUrl, $sOriginParentUrl);
+                }*/
+                if(!$aDvs['parent_url'] || !$aDvs['parent_video_url']) {
                     Phpfox::getService('dvs.iframe')->updateSitemapUrl($aDvs['dvs_id'], $sNewParentUrl, $sOriginParentUrl);
                 }
                 if($sOverride) {
