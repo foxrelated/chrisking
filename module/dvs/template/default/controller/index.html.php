@@ -359,20 +359,22 @@ background-color: #c35f54;
 						<ul>
 						   <li class="has-sub"><a href="#"><span>Settings</span></a>
 							  <ul>
-								 <li><a href="{url link='dvs.settings' id=$aDvs.dvs_id}"><span>Edit Settings</span></a></li>
+								 <li><a href="{url link='dvs.settings' id=$aDvs.dvs_id}"><span>General Settings</span></a></li>
 								 <li><a href="{url link='dvs.customize' id=$aDvs.dvs_id}"><span>Customize Styling</span></a></li>
 								 <li><a href="{url link='dvs.player.add' id=$aDvs.dvs_id}"><span>Player Settings</span></a></li>
-								 <li><a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}"><span>Manage Sales Team</span></a></li>
+								 <li><a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}"><span>Sales Team</span></a></li>
                                  {if Phpfox::isAdmin()}
-                                 <li><a href="{url link='dvs.manager' id=$aDvs.dvs_id}"><span>Manage Managers Team</span></a></li>
+                                 <li><a href="{url link='dvs.manager' id=$aDvs.dvs_id}"><span>Managers Team</span></a></li>
                                  {/if}
 							  </ul>
 						   </li>
-						   <li class="has-sub"><a href="#"><span>Sharing</span></a>
-							  <ul>
+						   <li class=""><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share"><span>Share Links</span></a></a>
+							  <!-- 
+<ul>
 								 <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share"><span>Share Links</span></a></li>
 								 <li><a href="{url link='dvs.reports.share.'$aDvs.title_url}"><span>Share Report</span></a></li>
 							  </ul>
+ -->
 						   </li>
 						   <li class="has-sub"><a href="#"><span>Integrate</span></a>
 							  <ul>
