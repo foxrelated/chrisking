@@ -402,13 +402,8 @@ background-color: #c35f54;
 					
 				</tr>
 				<tr><td colspan="3">&nbsp;</td></tr>
-				<div id="dvs_gallery_link_{$aDvs.dvs_id}" title="DVS Gallery Embed Code" class="dvs_gallery_link_popup" style="display:none;">
-					<p>Add this code to a blank page using HTML code method (not iFrame):<p>
-						<p><textarea rows="2" cols="71">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}gallery" scrolling="no" frameborder="0" width="800" height="600"&gt;&lt;/iframe&gt;</textarea>
-					</p>
-				</div>
 				<div id="dvs_iframe_link_{$aDvs.dvs_id}" title="DVS Embed Code" class="dvs_iframe_link_popup" style="display:none;">
-					<p>Add this code to a blank page using HTML code method (not iFrame):</p>
+					<p>Add this javascript code to a new page called "Virtual Test Drive" and link to it under New Inventory navigation menu:</p>
 						<p><textarea rows="13" cols="71">&lt;div id="dvs_wrapper">&lt;/div&gt;
 &lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/embed.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
@@ -424,7 +419,7 @@ background-color: #c35f54;
 				</div>
 
             <div id="vdp_embed_link_{$aDvs.dvs_id}" title="Inventory Embed Code" class="dvs_iframe_link_popup" style="display:none;">
-                <p>Step 1: Add this code right before the &lt;/body&gt; tag of the page:</p>
+                <p>Step 1: Add this code right before the &lt;/body&gt; tag of the SRP and VDP template page:</p>
                     <textarea rows="10" cols="71">&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/vin.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
 WTVVIN.init({l}
@@ -435,7 +430,7 @@ WTVVIN.init({l}
 {r});
 &lt;/script&gt;</textarea>
                 </p>
-                <p>Step 2: Add button code and replace # with a VIN:</p> 
+                <p>Step 2: Add button code for each vehicle listing and replace # with VIN:</p> 
 					<textarea rows="1" cols="71">&lt;div class="dvs_vin_btn" vin="#"&gt;&lt;/div&gt; </textarea>
 					</p>
             </div>
