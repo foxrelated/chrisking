@@ -4697,6 +4697,8 @@ a.dislike_count_link:hover
 }
 .dvs_add_td_label{
 	width: 124px;
+	text-align:right;
+	vertical-align:middle;
 }
 .import_button_wrapper{
 	margin-top: 15px;
