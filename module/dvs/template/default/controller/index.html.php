@@ -376,9 +376,8 @@ background-color: #c35f54;
 						   </li>
 						   <li class="has-sub"><a href="#"><span>Integrate</span></a>
 							  <ul>
-                                <li><a href="#" onclick="$('#dvs_gallery_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Gallery Code</span></a></li>
-								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS iFrame Code</span></a></li>
-                                <li><a href="#" onclick="$('#vdp_embed_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>VDP Embed Code</span></a></li>
+								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Embed Code</span></a></li>
+                                <li><a href="#" onclick="$('#vdp_embed_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>Inventory Embed Code</span></a></li>
 							  </ul>
 						   </li>
 						   {if Phpfox::isAdmin()}
