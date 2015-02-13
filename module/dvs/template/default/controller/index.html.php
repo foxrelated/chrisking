@@ -97,24 +97,7 @@ padding: 0;
   height: 8px;
 }
 #cssmenu > ul {
-  /* 
-border-bottom: 1px solid #252A30;
-  border-top: 1px solid #252A30;
-   
--moz-box-shadow: inset 0 1px 0 #8799a9, 0 1px 1px rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: inset 0 1px 0 #8799a9, 0 1px 1px rgba(0, 0, 0, 0.5);
-  box-shadow: inset 0 1px 0 #8799a9, 0 1px 1px rgba(0, 0, 0, 0.5);
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAABNCAIAAADo7ZnJAAAAA3NCSVQICAjb4U/gAAAAUUlEQVQYlXWPyRGAMAwDd1wwHVADJS+POERk4OVD1mGO8yq1wFIKLXHsJLDGH8wSou8q0bfGxplYcpaHRerG/J/zS/edLTnrjvDo7PHv1Nhy3lZMnHg0MO2JAAAAAElFTkSuQmCC);
-  background-color: #566171;
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #6e7d8f), color-stop(1, #404854));
-  background-image: -webkit-linear-gradient(top, #6e7d8f, #404854);
-  background-image: -moz-linear-gradient(top, #6e7d8f, #404854);
-  background-image: -o-linear-gradient(top, #6e7d8f, #404854);
-  background-image: linear-gradient(#6e7d8f, #404854);
- 
-  height: 27px;
-  padding: 15px 15px 15px 5px;
- */
+
 }
 #cssmenu > ul > li {
   margin:0;
@@ -131,7 +114,6 @@ border-bottom: 1px solid #252A30;
   
 }
 #cssmenu > ul > li:hover > a {
-  /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAbCAIAAAAyOnIjAAAAA3NCSVQICAjb4U/gAAAAGElEQVQImWP4//8/079//0jGf//+JVUPAADfUJPhbDTaAAAAAElFTkSuQmCC); */
   background-color: #e2e2e2;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #c8c8c8));
   background-image: -webkit-linear-gradient(top, #ffffff, #c8c8c8);
@@ -140,7 +122,6 @@ border-bottom: 1px solid #252A30;
   background-image: linear-gradient(#ffffff, #c8c8c8);
 }
 #cssmenu > ul > li.active:hover > a {
-  /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAbCAIAAAAyOnIjAAAAA3NCSVQICAjb4U/gAAAAJklEQVQImWP4MruP6d+/f0z//v5Fo/8x/fv3F41GyP8lUf2/v38BoDRPnb8AZS4AAAAASUVORK5CYII=); */
   background-color: #cb7b72;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f49b8e), color-stop(1, #bd584d));
   background-image: -webkit-linear-gradient(top, #f49b8e, #bd584d);
@@ -149,7 +130,6 @@ border-bottom: 1px solid #252A30;
   background-image: linear-gradient(#f49b8e, #bd584d);
 }
 #cssmenu ul a {
-  /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAbCAIAAAAyOnIjAAAAA3NCSVQICAjb4U/gAAAAIUlEQVQImWP4+PEj09+/f5n+/fvH9PfvXzhG5uNik6gOAOTaUDaAXrIOAAAAAElFTkSuQmCC); */
   background-color: #c2c2c2;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f1f1f1), color-stop(1, #a8a8a8));
   background-image: -webkit-linear-gradient(top, #f1f1f1, #a8a8a8);
@@ -213,10 +193,6 @@ border-bottom: 1px solid #252A30;
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-   /*-moz-box-shadow: 0 2px 1px 1px rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: 0 2px 1px 1px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 2px 1px 1px rgba(0, 0, 0, 0.5);
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA2CAMAAAAxtAOuAAAAolBMVEXp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enCAApGAAAANXRSTlP9+vf08Ozp5eDc19POycS+ubOuqKOdl5GLhYB6dG5oYlxXUUxGQTs2MSwoIx8aFhMPCwgFAqv7N0MAAABMSURBVHheBcCDEcMAAADAj1Hbtr3/aj0/BEKRWCKVyRVKFVU1dQ1NLW0dXT19A0MjYxNTM3MLSytrG1s7ewdHJ2cXVzd3D08vbx/fP9L5BZigzasGAAAAAElFTkSuQmCC) repeat-x; */
   background-color: #c3c3c3;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e9e9e9), color-stop(1, #aaaaaa));
   background-image: -webkit-linear-gradient(top, #e9e9e9, #aaaaaa);
@@ -255,17 +231,6 @@ border-bottom: 1px solid #252A30;
 }
 #cssmenu ul .has-sub li:hover > a:after {
   border-left: 0 none;
-  /* 
-background-color: #c35f54;
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ea5f51), color-stop(1, #a9463b));
-  background-image: -webkit-linear-gradient(top, #ea5f51, #a9463b);
-  background-image: -moz-linear-gradient(top, #ea5f51, #a9463b);
-  background-image: -o-linear-gradient(top, #ea5f51, #a9463b);
-  background-image: linear-gradient(#ea5f51, #a9463b);
-  -moz-box-shadow: inset -1px 2px 0 rgba(255, 255, 255, 0.2), inset 0 1px 0 #ce5448;
-  -webkit-box-shadow: inset -1px 2px 0 rgba(255, 255, 255, 0.2), inset 0 1px 0 #ce5448;
-  box-shadow: inset -1px 2px 0 rgba(255, 255, 255, 0.2), inset 0 1px 0 #ce5448;
- */
   content: '';
   height: 100%;
   width: 6px;
@@ -359,20 +324,22 @@ background-color: #c35f54;
 						<ul>
 						   <li class="has-sub"><a href="#"><span>Settings</span></a>
 							  <ul>
-								 <li><a href="{url link='dvs.settings' id=$aDvs.dvs_id}"><span>Edit Settings</span></a></li>
+								 <li><a href="{url link='dvs.settings' id=$aDvs.dvs_id}"><span>General Settings</span></a></li>
 								 <li><a href="{url link='dvs.customize' id=$aDvs.dvs_id}"><span>Customize Styling</span></a></li>
 								 <li><a href="{url link='dvs.player.add' id=$aDvs.dvs_id}"><span>Player Settings</span></a></li>
-								 <li><a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}"><span>Manage Sales Team</span></a></li>
+								 <li><a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}"><span>Sales Team</span></a></li>
                                  {if Phpfox::isAdmin()}
-                                 <li><a href="{url link='dvs.manager' id=$aDvs.dvs_id}"><span>Manage Managers Team</span></a></li>
+                                 <li><a href="{url link='dvs.manager' id=$aDvs.dvs_id}"><span>Managers Team</span></a></li>
                                  {/if}
 							  </ul>
 						   </li>
-						   <li class="has-sub"><a href="#"><span>Sharing</span></a>
-							  <ul>
+						   <li class=""><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share"><span>Share Links</span></a></a>
+							  <!-- 
+<ul>
 								 <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share"><span>Share Links</span></a></li>
 								 <li><a href="{url link='dvs.reports.share.'$aDvs.title_url}"><span>Share Report</span></a></li>
 							  </ul>
+ -->
 						   </li>
 						   <li class="has-sub"><a href="#"><span>Integrate</span></a>
 							  <ul>
@@ -400,13 +367,8 @@ background-color: #c35f54;
 					
 				</tr>
 				<tr><td colspan="3">&nbsp;</td></tr>
-				<div id="dvs_gallery_link_{$aDvs.dvs_id}" title="DVS Gallery Embed Code" class="dvs_gallery_link_popup" style="display:none;">
-					<p>Add this code to a blank page using HTML code method (not iFrame):<p>
-						<p><textarea rows="2" cols="71">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}gallery" scrolling="no" frameborder="0" width="800" height="600"&gt;&lt;/iframe&gt;</textarea>
-					</p>
-				</div>
-				<div id="dvs_iframe_link_{$aDvs.dvs_id}" title="DVS iFrame Embed Code" class="dvs_iframe_link_popup" style="display:none;">
-					<p>Add this code to a blank page using HTML code method (not iFrame):</p>
+				<div id="dvs_iframe_link_{$aDvs.dvs_id}" title="DVS Embed Code" class="dvs_iframe_link_popup" style="display:none;">
+					<p>Add this javascript code to a new page called "Virtual Test Drive" and link to it under New Inventory navigation menu:</p>
 						<p><textarea rows="13" cols="71">&lt;div id="dvs_wrapper">&lt;/div&gt;
 &lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/embed.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
@@ -421,8 +383,8 @@ background-color: #c35f54;
 					
 				</div>
 
-            <div id="vdp_embed_link_{$aDvs.dvs_id}" title="VDP Embed Code" class="dvs_iframe_link_popup" style="display:none;">
-                <p>Step 1: Add this code right before the &lt;/body&gt; tag of the page:</p>
+            <div id="vdp_embed_link_{$aDvs.dvs_id}" title="Inventory Embed Code" class="dvs_iframe_link_popup" style="display:none;">
+                <p>Step 1: Add this code right before the &lt;/body&gt; tag of the SRP and VDP template page:</p>
                     <textarea rows="10" cols="71">&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/vin.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
 WTVVIN.init({l}
@@ -433,7 +395,7 @@ WTVVIN.init({l}
 {r});
 &lt;/script&gt;</textarea>
                 </p>
-                <p>Step 2: Add button code and replace # with a VIN:</p> 
+                <p>Step 2: Add button code for each vehicle listing and replace # with VIN:</p> 
 					<textarea rows="1" cols="71">&lt;div class="dvs_vin_btn" vin="#"&gt;&lt;/div&gt; </textarea>
 					</p>
             </div>

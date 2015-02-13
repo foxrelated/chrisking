@@ -178,6 +178,14 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['used_car_videos'] = $this->preParse()->clean($aDvs['used_car_videos'], 1);
             $aSql['iframe_contact_form'] = $this->preParse()->clean($aDvs['iframe_contact_form'], 1);
             $aSql['vpd_popup'] = $this->preParse()->clean($aDvs['vpd_popup'], 1);
+
+            if(isset($aDvs['parent_url'])) {
+                $aSql['parent_url'] = $this->preParse()->clean($aDvs['parent_url']);
+            }
+
+            if(isset($aDvs['parent_video_url'])) {
+                $aSql['parent_video_url'] = $this->preParse()->clean($aDvs['parent_video_url']);
+            }
         }
 
 		$this->database()->update($this->_sTable, $aSql, 'dvs_id = ' . (int) $aDvs['dvs_id']);

@@ -13,11 +13,12 @@
 
 .dvs_share_thumbnail_image_container{
 	position: relative;
-	width:285px;
+	width:280px;
 	padding: 10px;
 	margin:10px;
 	float:left;
-	outline:1px solid #EEEEEE;
+	/* border:1px solid #EEEEEE; 
+	border-radius:8px;*/
 }
 
 .dvs_share_link:hover{
@@ -42,11 +43,11 @@
 	float:left;
 }
 
-.dvs_share_text_box{
-	width:155px;
+.dvs_share_text_box {
+	width:187px;
 	padding:5px;
-	font-size:8px;
-	margin:2px;
+	font-size:9px;
+	/* margin:2px; */
 }
 
 .dvs_share_button_container{
@@ -66,7 +67,9 @@
 
 .dvs_share_thumbnail_image_container h3 {
 	border: none;
-	min-height:42px;
+	/* min-height:42px; */
+	font-size:12px;
+	font-weight:bold;
 }
 .dvs_share_thumbnail_image_container_inner table td {
 	vertical-align: top;
@@ -78,18 +81,20 @@
 	padding-right: 0;
 }
 .dvs_share_buttons_holder {
-	margin-top: -4px;
+	margin:5px 0 14px 0;
+	text-align:center;
+	width:100%;
 }
 .dvs_share_copy_button_holder {
 	position:relative;
 	width: 84px;
-	margin: 0 auto;
+	margin: 14px auto;
 	text-align: left;
 }
 .dvs_share_copy_button_holder button {
 	width: 80px;
 	padding: 5px 0;
-	margin: -1px 0 0;
+	margin:0;
 	background: grey;
 	border: none;
 	color: white;
@@ -99,12 +104,24 @@
 }
 .dvs_share_image_holder {
 	position: relative;
+	width:280px;
+	height:160px;
 }
+
+.dvs_share_image_holder img {
+	border:1px solid #ccc;
+	border-radius:4px;
+}
+
 .dvs_share_button_overlay {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	margin: -37px 0 0 -38px;
+}
+
+.dvs_share_button_overlay img {
+border:0!important;
 }
 .dvs_share_text_box {
 	width: 180px;
