@@ -407,7 +407,7 @@ background-color: #c35f54;
 						<p><textarea rows="2" cols="71">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}gallery" scrolling="no" frameborder="0" width="800" height="600"&gt;&lt;/iframe&gt;</textarea>
 					</p>
 				</div>
-				<div id="dvs_iframe_link_{$aDvs.dvs_id}" title="DVS iFrame Embed Code" class="dvs_iframe_link_popup" style="display:none;">
+				<div id="dvs_iframe_link_{$aDvs.dvs_id}" title="DVS Embed Code" class="dvs_iframe_link_popup" style="display:none;">
 					<p>Add this code to a blank page using HTML code method (not iFrame):</p>
 						<p><textarea rows="13" cols="71">&lt;div id="dvs_wrapper">&lt;/div&gt;
 &lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/embed.js"&gt;&lt;/script&gt;
@@ -423,7 +423,7 @@ background-color: #c35f54;
 					
 				</div>
 
-            <div id="vdp_embed_link_{$aDvs.dvs_id}" title="VDP Embed Code" class="dvs_iframe_link_popup" style="display:none;">
+            <div id="vdp_embed_link_{$aDvs.dvs_id}" title="Inventory Embed Code" class="dvs_iframe_link_popup" style="display:none;">
                 <p>Step 1: Add this code right before the &lt;/body&gt; tag of the page:</p>
                     <textarea rows="10" cols="71">&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/vin.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
