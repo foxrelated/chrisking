@@ -16,7 +16,7 @@
                     <div class="dvs_share_image_holder">
                         <a href="#" onclick="
 						tb_show('Preview', $.ajaxBox('dvs.showMiniPreview', 'height=640&amp;width=900&amp;val[dvs_id]={$aDvs.dvs_id}&video_title_url={$aVideo.video_title_url}')); return false;">
-                            {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image width="280"}
+                            {img path='brightcove.url_image' file=$aVideo.image_path suffix='_email_300' max_width=280 max_height=280}
                         </a>
                     </div>
                 </td>

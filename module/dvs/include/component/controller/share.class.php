@@ -18,6 +18,8 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 	{
 		Phpfox::isUser(true);
 
+        Phpfox::getLib('setting')->setParam('brightcove.url_image', Phpfox::getParam('core.url_pic') . 'brightcove/');
+
 		$bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 
 		$sDvsTitle = $this->request()->get(($bSubdomainMode ? 'req1' : 'req2'));
