@@ -1,5 +1,8 @@
 <?php
 
+require_once('ga/autoload.php');
+use UnitedPrototype\GoogleAnalytics;
+
 class Dvs_Service_Vin_Vin extends Phpfox_Service {
     function __construct() {
         $this->_sTable = Phpfox::getT('ko_dvs_vin_parsed');
@@ -154,6 +157,25 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
 
             $aCompletedRows[$iKey]['url'] = $sOverrideLink;
         }
+
+
+        /** SEND GA EVENT */
+
+        if($aDvs['dvs_google_id']) {
+            $tracker = new GoogleAnalytics\Tracker($aDvs['dvs_google_id'], 'domain.com');
+        } else {
+            $tracker = new GoogleAnalytics\Tracker(Phpfox::getParam('dvs.global_google_id'), 'domain.com');
+        }
+        $visitor = new GoogleAnalytics\Visitor();
+        $visitor->setIpAddress($_SERVER['REMOTE_ADDR']);
+        $visitor->setUserAgent($_SERVER['HTTP_USER_AGENT']);
+        $session = new GoogleAnalytics\Session();
+        $event = new GoogleAnalytics\Event();
+        $event->setCategory($aDvs['dvs_name'] . ' DVS Site');
+        $event->setAction('Inventory Page');
+        $event->setLabel('Inventory Pageviews');
+        $event->setValue('1');
+        $tracker->trackEvent($event, $session, $visitor);
 
         return array($aCompletedRows, $aDvs);
     }
