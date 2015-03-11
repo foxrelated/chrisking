@@ -1120,7 +1120,6 @@ public function aaasort (&$array, $key) {
 
 
 	public function getBrowser() {
-        return 'mobile';
         $this->_bIsMobile = false;
         $detect = new Mobile_Detect;
         if ($detect->isTablet()) {
