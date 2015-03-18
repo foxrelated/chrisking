@@ -26,17 +26,21 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {/literal}
 
 {if $bc == 'refid' || $bPreview}
-{literal}
-<style type="text/css">
-  #site_content{
-    width: auto;
-  }
-</style>
-{/literal}
-{module name='dvstour.addtour'}
-  <section id="player">
-    {template file='dvs.controller.player.player}
-  </section>
+    {if $sBrowser == 'mobile'}
+        {template file='dvs.controller.view-mobile}
+    {else}
+        {literal}
+        <style type="text/css">
+            #site_content{
+                width: auto;
+            }
+        </style>
+        {/literal}
+        {module name='dvstour.addtour'}
+        <section id="player">
+            {template file='dvs.controller.player.player}
+        </section>
+    {/if}
 {else}
   {if $sBrowser == 'mobile'}
     {template file='dvs.controller.view-mobile}
