@@ -24,18 +24,26 @@
                             </ul>
                         </td>
                         {/if}
+
                         <td>
                             <ul id="makes">
-                            <li class="init">
-                              &nbsp;&nbsp;{phrase var='dvs.select_make'}
-                              <ul>
-                                <li>
-                                  {phrase var='dvs.please_select_a_year_first'}
+                                <li class="init">
+                                  &nbsp;&nbsp;{phrase var='dvs.select_make'}
+                                  <ul>
+                                    {if count($aVideoSelectYears) == 1}
+                                        {foreach from=$aValidVSMakes item=aValidMake}
+                                        <li onclick="$.ajaxCall('dvs.getModels', 'iDvsId={$aDvs.dvs_id}&amp;iYear={$aVideoSelectYears.0}&amp;sMake={$aValidMake.make}');">{$aValidMake.make}</li>
+                                        {/foreach}
+                                    {else}
+                                        <li>
+                                            {phrase var='dvs.please_select_a_year_first'}
+                                        </li>
+                                    {/if}
+                                  </ul>
                                 </li>
-                              </ul>
-                            </li>
                             </ul>
                         </td>
+
                         <td>
                             <ul id="models">
                             <li class="init">
