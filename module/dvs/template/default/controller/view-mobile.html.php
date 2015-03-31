@@ -27,6 +27,22 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</section>
 
 	<div id="player_right">
+		<section id="dealer_links">
+			
+			{if $aDvs.inventory_url}
+			<a href="{$aDvs.inventory_url}" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow">
+				{phrase var='dvs.cta_inventory'}
+			</a>
+			{/if}
+			{if $aDvs.specials_url}
+			<a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow">
+				{phrase var='dvs.cta_specials'}
+			</a>
+			{/if}
+			<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=600&amp;width=520&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); menuContact('Call To Action Menu Clicks'); return false;">
+				{phrase var='dvs.cta_contact'}
+			</a>
+		</section>
 		<section id="select_new">
 			{if $aVideoSelectYears}
 			<h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
@@ -68,22 +84,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</ul>
 			{/if}
 		</section>
-		<section id="dealer_links">
-			
-			{if $aDvs.inventory_url}
-			<a href="{$aDvs.inventory_url}" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow">
-				{phrase var='dvs.cta_inventory'}
-			</a>
-			{/if}
-			{if $aDvs.specials_url}
-			<a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow">
-				{phrase var='dvs.cta_specials'}
-			</a>
-			{/if}
-			<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=600&amp;width=520&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); menuContact('Call To Action Menu Clicks'); return false;">
-				{phrase var='dvs.cta_contact'}
-			</a>
-		</section>
+		
 	</div>
 
 	<section id="video_information">
