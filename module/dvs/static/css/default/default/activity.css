@@ -11,6 +11,8 @@
     background: -ms-linear-gradient(top,  #83c783 0%,#005700 100%);
     background: linear-gradient(to bottom,  #83c783 0%,#005700 100%);
 
+    color:#fff;
+
 }
 
 #global_ajax_message {
