@@ -289,6 +289,7 @@ padding: 0;
 	<a href="{url link='dvs.settings'}" class="button-link" style="width:90px;height:10px;padding:2px 2px 15px 2px;margin:0px;">{phrase var='dvs.add_dvs'}</a>
 	<div class="main_break"></div>
 </div>
+
 <div class="clear"></div>
 
 {if $aDvss}
@@ -300,9 +301,9 @@ padding: 0;
 				</td>*}
 				<td colspan="2" valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
 					{if Phpfox::getLib('request')->get('sort') == 'descending'}
-                    <a class="dealer_heading_asc" href="{$aSearchTool.filters.Sort.data.0.link}">Dealership DVS</a>
+                    <a class="dealer_heading_asc" href="{$aSearchTool.filters.Sort.data.0.link}">Dealership Name</a>
                     {else}
-                    <a class="dealer_heading_desc" href="{$aSearchTool.filters.Sort.data.1.link}">Dealership DVS</a>
+                    <a class="dealer_heading_desc" href="{$aSearchTool.filters.Sort.data.1.link}">Dealership Name</a>
                     {/if}
 				</td>
 				<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">

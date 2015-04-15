@@ -35,10 +35,11 @@ defined('PHPFOX') or exit('NO DICE!');
 			</div>
 		{/if}
 
+		{if Phpfox::isAdmin()}
 		{if !Phpfox::isMobile() && isset($aSearchTool.filters) && count($aSearchTool.filters)}
 			<div class="header_filter_holder">
                 {if Phpfox::getLib('module')->getFullControllerName() == 'dvs.index'}
-                <h4 id="dvs_filter_heading">Filter DVS by:</h4>
+                <h4 id="dvs_filter_heading">Filter by:</h4>
                 {/if}
 				{foreach from=$aSearchTool.filters key=sSearchFilterName item=aSearchFilters}
 					{if !isset($aSearchFilters.is_input)}
@@ -80,7 +81,7 @@ defined('PHPFOX') or exit('NO DICE!');
 				{/if}				
 				<div class="clear"></div>
 			</div>
-
+		{/if}
 		{/if}
 	</div>
 {/if}

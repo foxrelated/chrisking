@@ -135,7 +135,7 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
                     'table_alias' => 'dvs',
                     'search' => array(
                         'action' => $this->url()->makeUrl('dvs', array('view' => $this->request()->get('view'))),
-                        'default_value' => 'Search DVS...',
+                        'default_value' => 'Search by Dealership',
                         'name' => 'search',
                         'field' => array('dvs.dealer_name')
                     ),
@@ -152,9 +152,9 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
                     'custom_filters' => array(
                         ' -Active- ' => array(
                             'param' => 'active',
-                            'default_phrase' => ' - Active - ',
+                            'default_phrase' => ' - Any - ',
                             'data' => array(
-                                array('link' => '', 'phrase' => ($this->request()->get('active') ? 'All' : ' - Active - ')),
+                                array('link' => '', 'phrase' => ($this->request()->get('active') ? 'Any' : ' - Any - ')),
                                 array('link' => 'active', 'phrase' => 'Active'),
                                 array('link' => 'inactive', 'phrase' => 'Inactive'),
                             )
@@ -162,7 +162,7 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
 
                         ' -Make- ' => array(
                             'param' => 'make',
-                            'default_phrase' => ' - Make - ',
+                            'default_phrase' => ' Any Make ',
                             'data' => $aCustomMakeDataFilter
                         )
                     )
