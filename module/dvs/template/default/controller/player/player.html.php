@@ -28,7 +28,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         display: block;
         {if $bIsDvs}
         width: 720px;
-        height: 408px;
+        height: 405px;
         {else}
         width: {$iPlayerWidth}px;
         height: {$iPlayerHeight}px;
