@@ -45,3 +45,19 @@ Step 2: Create new settings for Used Videos:
     4: Direct Link
     5: QR Code
     6: email
+
+*****************************************************   #440   *****************************************************
+Step 1. Add phrase:
+kobrightcove.notification_email_subject          :   'Video import notification from WheelsTV DVS'
+kobrightcove.notification_email_body          :   'Hi {user_name},
+
+                                                   You have received video import notification from WheelsTV DVS
+
+                                                   Video Details:
+                                                   {list_video}
+
+                                                   Sincerely,
+                                                   WheelsTV'
+
+Step 1. Create new settings for Used Videos:
+kobrightcove.notificationuser_group

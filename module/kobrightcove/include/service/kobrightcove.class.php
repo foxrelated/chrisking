@@ -76,16 +76,42 @@ class Kobrightcove_Service_Kobrightcove extends Phpfox_Service {
 		$aVideos = Phpfox::getService('kobrightcove')->keepAllowedVideos($aVideos);
 
 		$aVideos = Phpfox::getService('kobrightcove')->parseOutNullInts($aVideos);
-
+		$aNewVideos = array();
 		foreach ($aVideos as $key => $aValue)
 		{
 			if (!$this->refExists($aValue['referenceId']))
 			{
+				$aNewVideos[] = $aValue['name'];
 				Phpfox::getService('kobrightcove.data.process')->add($aValue);
 				//echo '<script>console.log("Adding RefID: ' . $aValue['referenceId'] . '");</script>';
 				$iVideos++;
 			}
 		}
+		//SEND MAIL
+        if ($aNewVideos) {
+            $iNotificationUserGroup = Phpfox::getParam('kobrightcove.notificationuser_group');
+            $aUsers = $this->database()
+                ->select('full_name, email')
+                ->from(Phpfox::getT('user'))
+                ->where('user_group_id = "' . $iNotificationUserGroup . '"')
+                ->execute('getRows');
+            if ($aUsers) {
+                foreach ($aUsers as $aUser) {
+                    $sSubject = Phpfox::getPhrase('kobrightcove.notification_email_subject');
+                    $sBody = Phpfox::getPhrase('kobrightcove.notification_email_body', array(
+                        'user_name' => $aUser['full_name'],
+                        'list_video' => implode(', ', $aNewVideos)
+                    ));
+                    Phpfox::getLib('mail')
+                        ->to($aUser['email'])
+                        ->subject($sSubject)
+                        ->message($sBody)
+                        ->send();
+                }
+            }
+        }
+			
+
 		return $iVideos;
 	}
 
