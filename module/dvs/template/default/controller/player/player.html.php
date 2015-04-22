@@ -257,11 +257,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<param name="height" value="{$iPlayerHeight}" />
 	{/if}
 	{if $bIsExternal}
+		{if $sBrowser == 'ipad' || $aDvs.player_type}
 		<param name="@videoPlayer" value="{$iPlayerId}" />
+		{/if}
 		<param name="playerID" value="{$iPlayerId}" />
 		<param name="playerKey" value="{$sPlayerKey}" />
 	{else}
+		{if $sBrowser == 'ipad' || $aDvs.player_type}
 		<param name="@videoPlayer" value="1418431455001" />
+		{/if}
 		<param name="playerID" value="1418431455001" />
 		<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
 	{/if}

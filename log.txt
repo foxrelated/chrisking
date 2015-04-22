@@ -47,4 +47,4 @@ Step 2: Create new settings for Used Videos:
     6: email
 *****************************************************   #441   *****************************************************
 ### DATABASE:
-    - ALTER TABLE `phpfox_ko_dvs` ADD `player_type` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1' ;
+    - ALTER TABLE `phpfox_ko_dvs` ADD `player_type` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' ;
