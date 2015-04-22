@@ -450,6 +450,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </li>
         </ol>
     </fieldset>
+     <h3>Player Type</h3>
+    <fieldset>
+        <ol>
+            <li>
+                <input type="radio" name="val[player_type]" value="0" {if $bIsEdit && $aForms.player_type == 0}checked="checked"{/if} />Flash
+                <input type="radio" name="val[player_type]" value="1" {if $bIsEdit && $aForms.player_type == 1}checked="checked"{/if} />HTML5
+            </li>
+        </ol>
+    </fieldset>
 	</div>
 <br>
 	<div id="phrase_override_toggle">
