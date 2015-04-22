@@ -59,5 +59,12 @@ kobrightcove.notification_email_body          :   'Hi {user_name},
                                                    Sincerely,
                                                    WheelsTV'
 
-Step 1. Create new settings for Used Videos:
-kobrightcove.notificationuser_group
+Step 2. Create new settings for notification user group:
+Product: Konsort.org Brightcove Integration
+Module: kobrightcove
+Groups: Brightcove
+Variable: notificationuser_group
+Type: string
+Value: 1
+Title: User Group import notification log
+Info: User Group import notification log
