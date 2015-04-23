@@ -8,6 +8,9 @@
 		<menu></menu>
 		<phrase_var_name>module_mixpanel</phrase_var_name>
 	</data>
+	<components>
+		<component module_id="mixpanel" component="track-views" m_connection="" module="mixpanel" is_controller="0" is_block="1" is_active="1" />
+	</components>
 	<phrases>
 		<phrase module_id="mixpanel" version_id="3.7.5" var_name="module_mixpanel" added="1429495834">Mixpanel Plugin - PhpfoxPlus.com</phrase>
 	</phrases>
