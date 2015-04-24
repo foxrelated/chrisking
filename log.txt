@@ -68,3 +68,28 @@ Type: string
 Value: 1
 Title: User Group import notification log
 Info: User Group import notification log
+
+*****************************************************   #449   *****************************************************
+
+### DATABASE:
+CREATE TABLE IF NOT EXISTS `phpfox_ko_dvs_blacklists` (
+`id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `domain` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE `phpfox_ko_dvs_blacklists`
+ ADD PRIMARY KEY (`id`);
+ALTER TABLE `phpfox_ko_dvs_blacklists`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+### PHRASE:
+dvs.deny_domain_access : Unauthorized user. Visit dealervideoshowroom.com for more information
+dvs.add_new_domain_to_blacklist : Add new domain to blacklist
+dvs.edit_domain_blacklist : Edit domain blacklist
+dvs.fill_the_domain_url : Fill the domain url
+dvs.fill_the_domain_name : Fill the domain name
+dvs.manage_blacklists_domain : Manage blacklists domain
+
+### EDIT:
+Add sub-menu module dvs
+Phrase: Manage blacklist domain |  Link: dvs.blacklists
