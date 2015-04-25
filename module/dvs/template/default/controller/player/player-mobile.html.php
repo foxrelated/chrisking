@@ -18,7 +18,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	var aMediaIds = [];
 			var aOverviewMediaIds = [];
 			var aTestDriveMediaIds = [];
-	
+	var bIsHtml5 = false;
+	{if $aDvs.player_type}
+		var bIsHtml5 = true;
+	{/if}
 	{if $bIsDvs}
 
 	{foreach from = $aOverviewVideos key = iKey item = aVideo}
@@ -175,6 +178,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{/if}
 				<param name="isVid" value="true" />
 				<param name="isUI" value="true" />
+				{if $sBrowser == 'ipad' || $aDvs.player_type}
+				<param name="forceHTML" value="true">
+				{/if}
 				<param name="dynamicStreaming" value="true" />
 				{if !$bIsExternal && $aPlayer.preroll_file_id}
 					<param name="adServerURL" value="{$sPrerollXmlUrl}" />

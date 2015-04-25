@@ -45,6 +45,7 @@ Step 2: Create new settings for Used Videos:
     4: Direct Link
     5: QR Code
     6: email
+<<<<<<< HEAD
 
 *****************************************************   #440   *****************************************************
 Step 1. Add phrase:
@@ -93,3 +94,8 @@ dvs.manage_blacklists_domain : Manage blacklists domain
 ### EDIT:
 Add sub-menu module dvs
 Phrase: Manage blacklist domain |  Link: dvs.blacklists
+
+*****************************************************   #441   *****************************************************
+### DATABASE:
+    - ALTER TABLE `phpfox_ko_dvs` ADD `player_type` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' ;
+
