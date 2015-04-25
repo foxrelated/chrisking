@@ -210,4 +210,3 @@
                 {r}
     </script>
 {/if}
-{module name='mixpanel.track-views' aDvs=$aDvs}

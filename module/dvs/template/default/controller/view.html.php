@@ -250,4 +250,3 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         {r}
     </script>
 {/if}
-{module name='mixpanel.track-views' aDvs=$aDvs}

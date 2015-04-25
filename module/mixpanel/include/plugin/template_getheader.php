@@ -5,3 +5,36 @@
     mixpanel.init("6ddfad2250ea3cd64e7c28a689cb3444");
 </script>
 <!-- end Mixpanel -->
+
+<?php
+if (Phpfox::getLib('request')->get('req1') != 'admincp') {
+    if (Phpfox::isUser()) {
+        $aMixPanelUser = Phpfox::getService('mixpanel')->get(Phpfox::getUserId());
+        Phpfox::getLib('template')->setHeader('<script type="text/javascript">
+        mixpanel.identify("' . Phpfox::getUserId() . '");
+        mixpanel.people.set({
+            "$id": "' . $aMixPanelUser['user_id'] . '",
+            "$first_name": "' . $aMixPanelUser['first_name'] . '",
+            "$last_name": "' . $aMixPanelUser['first_name'] . '",
+            "$created": "' . date("F j, Y, g:i a", $aMixPanelUser['joined']) . '",
+            "$email": "' . $aMixPanelUser['email'] . '",
+            "$last_login": "' . date("F j, Y, g:i a", $aMixPanelUser['last_login']) . '",
+            "$user_group": "' . $aMixPanelUser['user_group_title'] . '"
+        });
+    </script>');
+    } else {
+        Phpfox::getLib('template')->setHeader('<script type="text/javascript">
+        mixpanel.identify("anonymous");
+        mixpanel.people.set({
+            "$id": "null",
+            "$first_name": "null",
+            "$last_name": "null",
+            "$created": "null",
+            "$email": "null",
+            "$last_login": "null",
+            "$user_group": "null"
+        });
+    </script>');
+    }
+}
+?>
