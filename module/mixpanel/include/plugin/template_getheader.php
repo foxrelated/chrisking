@@ -11,8 +11,7 @@ if (Phpfox::getLib('request')->get('req1') != 'admincp') {
     if (Phpfox::isUser()) {
         $aMixPanelUser = Phpfox::getService('mixpanel')->get(Phpfox::getUserId());
         Phpfox::getLib('template')->setHeader('<script type="text/javascript">
-        mixpanel.identify("' . Phpfox::getUserId() . '");
-        mixpanel.people.set({
+        mixpanel.register({
             "$id": "' . $aMixPanelUser['user_id'] . '",
             "$first_name": "' . $aMixPanelUser['first_name'] . '",
             "$last_name": "' . $aMixPanelUser['first_name'] . '",
@@ -24,8 +23,7 @@ if (Phpfox::getLib('request')->get('req1') != 'admincp') {
     </script>');
     } else {
         Phpfox::getLib('template')->setHeader('<script type="text/javascript">
-        mixpanel.identify("anonymous");
-        mixpanel.people.set({
+        mixpanel.register({
             "$id": "null",
             "$first_name": "null",
             "$last_name": "null",
