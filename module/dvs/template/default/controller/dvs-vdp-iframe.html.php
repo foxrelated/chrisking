@@ -221,6 +221,7 @@
             <param name="showNoContentMessage" value="false" />
             {if $sBrowser == 'ipad' || $aDvs.player_type}
             <param name="@videoPlayer" value="3773602637001" />
+            <param name="forceHTML" value="true" />
             <param name="includeAPI" value="true" />
             <param name="templateLoadHandler﻿" value="onTemplateLoad" />
             <param name="templateLoadHandler" value="onTemplateLoaded" />
