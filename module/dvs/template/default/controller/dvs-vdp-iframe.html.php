@@ -233,7 +233,9 @@
             }
         </script>
         {/literal}
-        </section>{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}<section id="chapter_buttons">
+        </section>{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}
+        {if $sBrowser != 'mobile'}
+        <section id="chapter_buttons">
             <button type="button" id="chapter_container_Intro" class="disabled display" onclick="changeCuePoint('Intro');"></button>
             <button type="button" id="chapter_container_Overview" class="disabled no_display" onclick="changeCuePoint('Overview');"></button>
             <button type="button" id="chapter_container_WhatsNew" class="disabled display" onclick="changeCuePoint('WhatsNew');"></button>
@@ -249,6 +251,7 @@
             <button type="button" id="chapter_container_Honors" class="disabled no_display" onclick="changeCuePoint('Honors');"></button>
             <button type="button" id="chapter_container_Summary" class="disabled display" onclick="changeCuePoint('Summary');"></button>
         </section>
+        {/if}
 		{*
         {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
         <section id="playlist_wrapper">

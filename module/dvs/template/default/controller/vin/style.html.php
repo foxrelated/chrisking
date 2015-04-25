@@ -51,7 +51,7 @@
 #dvs_vin_popup_wrapper {l}
     opacity: 0;
     display: none;
-    height: 100%;
+    height: 500px;
     left: 0;
     position: fixed;
     _position:absolute;
