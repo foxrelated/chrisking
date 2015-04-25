@@ -64,9 +64,11 @@
 #dvs_vin_popup {l}
     display: block;
     width: 90%;
+    max-width:930px;
     position: relative;
     margin: 0 auto;
     height: 100%;
+    max-height:500px;
     box-shadow: 0 0 10px #222222;
     border-radius: 10px;
     z-index:10002;
@@ -76,7 +78,9 @@
 #dvs_vin_popup_content {l}
     display: block;
     width: 100%;
+    max-width:930px;
     height: 100%;
+    max-height:500px;
     border-radius: 10px;
     overflow: hidden;
     position: relative;
