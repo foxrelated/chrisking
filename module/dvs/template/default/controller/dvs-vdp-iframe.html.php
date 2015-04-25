@@ -37,7 +37,10 @@
             var aMediaIds = [];
             var aOverviewMediaIds = [];
             var aTestDriveMediaIds = [];
-
+            var bIsHtml5 = false;
+            {if $aDvs.player_type}
+                var bIsHtml5 = true;
+            {/if}
             {if $bIsDvs}
                 {foreach from = $aOverviewVideos key = iKey item = aVideo}
                     aOverviewMediaIds[{$iKey}] = {$aVideo.id};
@@ -216,7 +219,8 @@
             <param name="dynamicStreaming" value="true" />
             <param name="accountID" value="{$aDvs.dvs_google_id}" />
             <param name="showNoContentMessage" value="false" />
-            {if $sBrowser == 'ipad'}
+            {if $sBrowser == 'ipad' || $aDvs.player_type}
+            <param name="@videoPlayer" value="1418431455001" />
             <param name="includeAPI" value="true" />
             <param name="templateLoadHandler﻿" value="onTemplateLoad" />
             <param name="templateLoadHandler" value="onTemplateLoaded" />

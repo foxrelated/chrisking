@@ -42,7 +42,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	var aMediaIds = [];
 	var aOverviewMediaIds = [];
 	var aTestDriveMediaIds = [];
-	
+	var bIsHtml5 = false;
+	{if $aDvs.player_type}
+		var bIsHtml5 = true;
+	{/if}
 	{if $bIsDvs}
 
 	{foreach from = $aOverviewVideos key = iKey item = aVideo}
@@ -246,7 +249,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {/if}
 <object id="myExperience" class="BrightcoveExperience">
 	<param name="bgcolor" value="#FFFFFF" />
-	<param name="wmode" value="transparent" />
 	{if $bIsDvs}
 		<param name="width" value="720" />
 		<param name="height" value="405" />
@@ -255,9 +257,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<param name="height" value="{$iPlayerHeight}" />
 	{/if}
 	{if $bIsExternal}
+		{if $sBrowser == 'ipad' || $aDvs.player_type}
+		<param name="@videoPlayer" value="{$iPlayerId}" />
+		{/if}
 		<param name="playerID" value="{$iPlayerId}" />
 		<param name="playerKey" value="{$sPlayerKey}" />
 	{else}
+		{if $sBrowser == 'ipad' || $aDvs.player_type}
+		<param name="@videoPlayer" value="1418431455001" />
+		{/if}
 		<param name="playerID" value="1418431455001" />
 		<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
 	{/if}
@@ -275,7 +283,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{/if}
 	{/if}
 	<param name="showNoContentMessage" value="false" />	
-	{if $sBrowser == 'ipad'}
+	{if $sBrowser == 'ipad' || $aDvs.player_type}
+		<param name="htmlFallback" value="true" />
+		<param name="forceHTML" value="true">
 		<param name="includeAPI" value="true" />
 		<param name="templateLoadHandler﻿" value="onTemplateLoad" />
 		<param name="templateLoadHandler" value="onTemplateLoaded" />
