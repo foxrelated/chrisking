@@ -849,6 +849,16 @@ function thumbnailClick(iKey) {
 	return false;
 }
 
+function textOverlayClick(iDvsId) {
+	sendToGoogle('DVS iFrame', 'Overlay', 'Text Overlay Clicked');
+	mixpanel.track("Text Overlay Clicked");
+}
+
+function getPriceOverlayClick(iDvsId) {
+	sendToGoogle('DVS iFrame', 'Overlay', 'Get Price Overlay Clicked');
+	mixpanel.track("Get Price Overlay Clicked");
+}
+
 function thumbnailClickDvs(iDvsId) {
 	sendToGoogle('DVS iFrame', 'Playlist', 'Thumbnail Clicked');
 	mixpanel.track("Thumbnail Clicked");

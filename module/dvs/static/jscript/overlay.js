@@ -39,11 +39,6 @@ function resetOverlays() {
 	iCustomOverlayActive = 0;	
 }
 
-function overlayClick(iDvsId) {
-	sendToGoogle('DVS iFrame', 'Overlay', 'Overlay Clicked');
-	mixpanel.track("Overlay Clicked");
-}
-
 function onProgress(oProgress) {
 	// Are we ready to display overlay 1?
 	if (

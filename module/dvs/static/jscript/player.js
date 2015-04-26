@@ -876,6 +876,15 @@ function cuePointsHandler(cuepoints) {
 // 	}
 // 	return false;
 // }
+function textOverlayClick(iDvsId) {
+	sendToGoogle('DVS Site', 'Overlay', 'Text Overlay Clicked');
+	mixpanel.track("Text Overlay Clicked");
+}
+
+function getPriceOverlayClick(iDvsId) {
+	sendToGoogle('DVS Site', 'Overlay', 'Get Price Overlay Clicked');
+	mixpanel.track("Get Price Overlay Clicked");
+}
 
 function thumbnailClickDvs(iDvsId) {
 	sendToGoogle('DVS Site', 'Playlist', 'Thumbnail Clicked');
