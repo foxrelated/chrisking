@@ -45,7 +45,6 @@ Step 2: Create new settings for Used Videos:
     4: Direct Link
     5: QR Code
     6: email
-<<<<<<< HEAD
 
 *****************************************************   #440   *****************************************************
 Step 1. Add phrase:
