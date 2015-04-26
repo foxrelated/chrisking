@@ -220,7 +220,7 @@
             <param name="accountID" value="{$aDvs.dvs_google_id}" />
             <param name="showNoContentMessage" value="false" />
             {if $sBrowser == 'ipad' || $aDvs.player_type}
-            <param name="@videoPlayer" value="" />
+            <param name="@videoPlayer" value="Video_Placeholder" />
             <param name="forceHTML" value="true" />
             <param name="includeAPI" value="true" />
             <param name="templateLoadHandler﻿" value="onTemplateLoad" />
