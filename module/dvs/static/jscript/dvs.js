@@ -24,7 +24,7 @@ function menuEmail(sSource) {
 
 function menuFooter(sSource) {
 	sendToGoogle('DVS Site', sSource, 'Footer Link Clicked');
-	mixpanel.track("Footer Click");
+	mixpanel.track("Footer Link Clicked");
 }
 
 function facebookShareClick(sSource) {

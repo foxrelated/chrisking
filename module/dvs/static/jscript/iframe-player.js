@@ -62,7 +62,7 @@ function watchVideoSelect(aVideoSelectMediaIds) {
 	}
 
 	sendToGoogle('DVS iFrame', 'Menu', 'Video Select');
-
+	mixpanel.track("Video Selector");
 	if (bIsDvs) {
 		resetOverlays();
 	}
@@ -96,7 +96,14 @@ function changeCuePoint(sCuePoint) {
 		};
 
 		sendToGoogle(sPlayerName, 'iFrame Player', 'Chapter Clicked: ' + sCuePoint, oCustomVars);
-
+		mixpanel.track("Chapter Clicked", {
+			"Chapter": sCuePoint,
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			}
+		);
 		if (bDebug) {
 			console.log('Media: Cuepoint Manually Changed to ' + sCuePoint);
 		}
@@ -138,6 +145,14 @@ function getPrice(iDvsId) {
 		};
 
 		sendToGoogle('DVS iFrame', 'Call To Action Menu Clicks', 'Get Price Clicked', oCustomVars);
+		mixpanel.track("Get Price Clicked", {
+			"Chapter": sCurrentCuePoint,
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			}
+		);
 	}
 	else
 	{
@@ -176,6 +191,14 @@ function getPriceIDrive(iIDriveId) {
 		};
 
 		sendToGoogle(sPlayerName, 'iDrive iFrame Player', 'Call to Action Clicks', 'Get Price Clicked', oCustomVars);
+		mixpanel.track("Get Price Clicked", {
+			"Chapter": sCurrentCuePoint,
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			}
+		);
 	}
 	else
 	{
@@ -384,6 +407,7 @@ function onTemplateReady(oVideo) {
 	}
 
 	sendToGoogle(sPlayerName, 'iFrame Player', 'iFrame Player Loaded');
+	mixpanel.track("Player Loaded");
 }
 
 //Called when any video loads.
@@ -432,6 +456,13 @@ function onVideoLoad(oMedia) {
 			};
 
 			sendToGoogle(sPlayerName, 'iFrame Player', 'Media Begin', oCustomVars);
+			mixpanel.track("Media Begin", {
+				"Video ID": aCurrentVideoMetaData.referenceId,
+				"Year": aCurrentVideoMetaData.year,
+				"Make": aCurrentVideoMetaData.make,
+				"Model": aCurrentVideoMetaData.model,
+				}
+			);
 		}
 		else
 		{
@@ -447,6 +478,13 @@ function onVideoLoad(oMedia) {
 			};
 
 			sendToGoogle(sPlayerName, 'iFrame Player', 'Media Begin', oCustomVars);
+			mixpanel.track("Media Begin", {
+				"Video ID": "Pre-roll",
+				"Year": aCurrentVideoMetaData.year,
+				"Make": aCurrentVideoMetaData.make,
+				"Model": aCurrentVideoMetaData.model,
+				}
+			);
 		}
 
 		bMediaBegin = true;
@@ -496,7 +534,13 @@ function onVideoLoad(oMedia) {
 	};
 
 	sendToGoogle(sPlayerName, 'iFrame Player', 'Video Load', oCustomVars);
-
+	mixpanel.track("Video Loaded", {
+		"Video ID": aCurrentVideoMetaData.referenceId,
+		"Year": aCurrentVideoMetaData.year,
+		"Make": aCurrentVideoMetaData.make,
+		"Model": aCurrentVideoMetaData.model,
+		}
+	);
 	if (sBrowser !== 'mobile' && sBrowser !== 'ipad') {
 		modMen.closeMenuPage();
 
@@ -558,6 +602,14 @@ function onCuePointEvent(oCuePoint) {
 		};
 
 		sendToGoogle(sPlayerName, 'iFrame Player', 'Chapter Watched: ' + sCurrentCuePoint, oCustomVars);
+		mixpanel.track("Chapter Watched", {
+			"Chapter": sCurrentCuePoint,
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			}
+		);
 	}
 
 	if (bDebug) {
@@ -799,6 +851,7 @@ function thumbnailClick(iKey) {
 
 function thumbnailClickDvs(iDvsId) {
 	sendToGoogle('DVS iFrame', 'Playlist', 'Thumbnail Clicked');
+	mixpanel.track("Thumbnail Clicked");
 }
 
 function thumbnailClickIDrive(iIDriveId) {

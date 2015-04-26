@@ -14,6 +14,8 @@ function showOverlay(iOverlayId) {
 		complete: function() {
 		}
 	});
+	mixpanel.track("Overlay Viewed");
+
 }
 
 function hideOverlay(iOverlayId) {
@@ -35,6 +37,11 @@ function resetOverlays() {
 	// Make sure all overlays are hidden
 	$('.dvs_overlay').css('top', 0);
 	iCustomOverlayActive = 0;	
+}
+
+function overlayClick(iDvsId) {
+	sendToGoogle('DVS iFrame', 'Overlay', 'Overlay Clicked');
+	mixpanel.track("Overlay Clicked");
 }
 
 function onProgress(oProgress) {

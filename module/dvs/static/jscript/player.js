@@ -879,7 +879,7 @@ function cuePointsHandler(cuepoints) {
 
 function thumbnailClickDvs(iDvsId) {
 	sendToGoogle('DVS Site', 'Playlist', 'Thumbnail Clicked');
-	mixpanel.track("Thumbnail Click");
+	mixpanel.track("Thumbnail Clicked");
 }
 
 function thumbnailClickIDrive(iIDriveId) {
