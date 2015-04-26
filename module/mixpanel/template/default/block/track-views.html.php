@@ -1,7 +1,7 @@
 {if $bIsUser}
 {literal}
 <script type="text/javascript">
-mixpanel.track("View dvs", {
+mixpanel.track("DVS Page View", {
 	{/literal}
     "name": "{$aUser.full_name}",
     "type": "User",
@@ -12,7 +12,7 @@ mixpanel.track("View dvs", {
 {else}
 {literal}
 <script type="text/javascript">
-mixpanel.track("View dvs", {
+mixpanel.track("DVS Page View", {
 	{/literal}
    	"ip": "{$aUser.ip}",
     "type": "Anonymously",
