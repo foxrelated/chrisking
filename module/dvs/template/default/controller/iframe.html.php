@@ -204,8 +204,9 @@
         $Behavior.googleDvsDeactive = function() {l}
         {if $sBrowser == 'mobile'}
             sendToGoogle('DVS Mobile', 'DVS Deactivated', 'Deactivation Message Shown');
+			mixpanel.track("Deactivation Message Shown");
             {else}
-            sendToGoogle('DVS iFrame', 'DVS Deactivated', 'Deactivation Message Shown');
+            sendToGoogle('DVS iFrame', 'DVS Deactivated', 'Deactivation Message Shown');         			mixpanel.track("Deactivation Message Shown");
             {/if}
                 {r}
     </script>
