@@ -145,7 +145,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					<meta itemprop="url" content="{$aFirstVideoMeta.url}" id="schema_video_url"/>
 					<meta itemprop="thumbnailUrl" content="{$aFirstVideoMeta.thumbnail_url}"  id="schema_video_thumbnail_url"/>
 					<meta itemprop="image" content="{$aFirstVideoMeta.thumbnail_url}"  id="schema_video_image"/>
-					<meta itemprop="embedUrl" content="http://c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&amp;isUI=1&amp;domain=embed&amp;playerID=1970101121001&amp;publisherID=607012070001&amp;videoID={$aFirstVideoMeta.referenceId}" id="schema_video_embed_url"/>
+					<!--<meta itemprop="embedUrl" content="http://c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&amp;isUI=1&amp;domain=embed&amp;playerID=1970101121001&amp;publisherID=607012070001&amp;videoID={$aFirstVideoMeta.referenceId}" id="schema_video_embed_url"/>-->
 					<meta itemprop="uploadDate" content="{$aFirstVideoMeta.upload_date}"  id="schema_video_upload_date"/>
 					<meta itemprop="duration" content="{$aFirstVideoMeta.duration}"  id="schema_video_duration"/>
 					<meta itemprop="name" content="{$aDvs.phrase_overrides.override_meta_itemprop_name_meta}"  id="schema_video_name"/>
@@ -186,6 +186,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						<param name="accountID" value="{$aPlayer.google_id}" />
 					{/if}
 				{/if}
+				<param name="forceHTML" value="true" />
 				<param name="includeAPI" value="true" />
 				<param name="templateLoadHandler" value="onTemplateLoad" />
 				<param name="templateLoadHandler" value="onTemplateLoaded" />

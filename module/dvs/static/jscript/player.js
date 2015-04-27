@@ -62,7 +62,8 @@ function watchVideoSelect(aVideoSelectMediaIds) {
 	}
 
 	sendToGoogle('DVS Site', 'Menu', 'Video Select');
-
+	mixpanel.track("Video Selector");
+	
 	if (bIsDvs) {
 		resetOverlays();
 	}
@@ -96,7 +97,14 @@ function changeCuePoint(sCuePoint) {
 		};
 
 		sendToGoogle(sPlayerName, 'Player', 'Chapter Clicked: ' + sCuePoint, oCustomVars);
-
+		mixpanel.track("Chapter Clicked", {
+			"Chapter": sCuePoint,
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			}
+		);
 		if (bDebug) {
 			console.log('Media: Cuepoint Manually Changed to ' + sCuePoint);
 		}
@@ -138,6 +146,14 @@ function getPrice(iDvsId) {
 		};
 
 		sendToGoogle('DVS Site', 'Call To Action Menu Clicks', 'Get Price Clicked', oCustomVars);
+		mixpanel.track("Get Price Clicked", {
+			"Chapter": sCurrentCuePoint,
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			}
+		);
 	}
 	else
 	{
@@ -176,6 +192,14 @@ function getPriceIDrive(iIDriveId) {
 		};
 
 		sendToGoogle(sPlayerName, 'iDrive Player', 'Call to Action Clicks', 'Get Price Clicked', oCustomVars);
+		mixpanel.track("Get Price Clicked", {
+			"Chapter": sCurrentCuePoint,
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			}
+		);
 	}
 	else
 	{
@@ -384,6 +408,7 @@ function onTemplateReady(oVideo) {
 	}
 
 	sendToGoogle(sPlayerName, 'Player', 'Player Loaded');
+	mixpanel.track("Player Loaded");
 }
 
 //Called when any video loads.
@@ -432,6 +457,13 @@ function onVideoLoad(oMedia) {
 			};
 
 			sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
+			mixpanel.track("Media Begin", {
+				"Video ID": aCurrentVideoMetaData.referenceId,
+				"Year": aCurrentVideoMetaData.year,
+				"Make": aCurrentVideoMetaData.make,
+				"Model": aCurrentVideoMetaData.model,
+				}
+			);
 		}
 		else
 		{
@@ -447,6 +479,13 @@ function onVideoLoad(oMedia) {
 			};
 
 			sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
+			mixpanel.track("Media Begin", {
+				"Video ID": "Pre-roll",
+				"Year": aCurrentVideoMetaData.year,
+				"Make": aCurrentVideoMetaData.make,
+				"Model": aCurrentVideoMetaData.model,
+				}
+			);
 		}
 
 		bMediaBegin = true;
@@ -496,7 +535,14 @@ function onVideoLoad(oMedia) {
 	};
 
 	sendToGoogle(sPlayerName, 'Player', 'Video Load', oCustomVars);
-
+	mixpanel.track("Video Loaded", {
+		"Video ID": aCurrentVideoMetaData.referenceId,
+		"Year": aCurrentVideoMetaData.year,
+		"Make": aCurrentVideoMetaData.make,
+		"Model": aCurrentVideoMetaData.model,
+		}
+	);
+		
 	if (sBrowser !== 'mobile' && sBrowser !== 'ipad') {
 		modMen.closeMenuPage();
 
@@ -556,6 +602,14 @@ function onCuePointEvent(oCuePoint) {
 		};
 
 		sendToGoogle(sPlayerName, 'Player', 'Chapter Watched: ' + sCurrentCuePoint, oCustomVars);
+		mixpanel.track("Chapter Watched", {
+			"Chapter": sCurrentCuePoint,
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			}
+		);
 	}
 
 	if (bDebug) {
@@ -589,7 +643,7 @@ function onVideoEnd(oVideo) {
 			else
 			{
 				//modCon.getMediaAsynch(aMediaIds[iCurrentVideo]);
-				thumbnailClick(iCurrentVideo);
+				//thumbnailClick(iCurrentVideo);
 				thumbnailClickDvs();
 			}
 		}
@@ -768,63 +822,73 @@ function cuePointsHandler(cuepoints) {
 
 }
 
-function exteralthumbnailClick(iKey) {
-	if (bDebug) {
-		console.log('Player: Playlist Thumbnail Click: #' + iKey);
-	}
+// function exteralthumbnailClick(iKey) {
+// 	if (bDebug) {
+// 		console.log('Player: Playlist Thumbnail Click: #' + iKey);
+// 	}
+// 
+// 	if (bIsDvs) {
+// 
+// 		resetOverlays();
+// 	}
+// 
+// 	bVideoChanged = true;
+// 
+// 	iCurrentVideo = iKey;
+// 
+// 	//bIgnoreAutoPlaySetting = true;
+// 
+// 
+// 	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+// 		modVid.loadVideoByID(aMediaIds[iKey]);
+// 	}
+// 	else
+// 	{
+// 		modCon.getMediaAsynch(aMediaIds[iKey]);
+// 	}
+// 	return false;
+// }
 
-	if (bIsDvs) {
 
-		resetOverlays();
-	}
-
-	bVideoChanged = true;
-
-	iCurrentVideo = iKey;
-
-	//bIgnoreAutoPlaySetting = true;
-
-
-	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
-		modVid.loadVideoByID(aMediaIds[iKey]);
-	}
-	else
-	{
-		modCon.getMediaAsynch(aMediaIds[iKey]);
-	}
-	return false;
+// function thumbnailClick(iKey) {
+// 	if (bDebug) {
+// 		console.log('Player: Playlist Thumbnail Click: #' + iKey);
+// 	}
+// 
+// 	if (bIsDvs) {
+// 
+// 		resetOverlays();
+// 	}
+// 
+// 	bVideoChanged = true;
+// 
+// 	iCurrentVideo = iKey;
+// 
+// 	bIgnoreAutoPlaySetting = true;
+// 
+// 
+// 	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+// 		modVid.loadVideoByID(aMediaIds[iKey]);
+// 	}
+// 	else
+// 	{
+// 		modCon.getMediaAsynch(aMediaIds[iKey]);
+// 	}
+// 	return false;
+// }
+function textOverlayClick(iDvsId) {
+	sendToGoogle('DVS Site', 'Overlay', 'Text Overlay Clicked');
+	mixpanel.track("Text Overlay Clicked");
 }
 
-
-function thumbnailClick(iKey) {
-	if (bDebug) {
-		console.log('Player: Playlist Thumbnail Click: #' + iKey);
-	}
-
-	if (bIsDvs) {
-
-		resetOverlays();
-	}
-
-	bVideoChanged = true;
-
-	iCurrentVideo = iKey;
-
-	bIgnoreAutoPlaySetting = true;
-
-
-	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
-		modVid.loadVideoByID(aMediaIds[iKey]);
-	}
-	else
-	{
-		modCon.getMediaAsynch(aMediaIds[iKey]);
-	}
-	return false;
+function getPriceOverlayClick(iDvsId) {
+	sendToGoogle('DVS Site', 'Overlay', 'Get Price Overlay Clicked');
+	mixpanel.track("Get Price Overlay Clicked");
 }
 
 function thumbnailClickDvs(iDvsId) {
 	sendToGoogle('DVS Site', 'Playlist', 'Thumbnail Clicked');
+	mixpanel.track("Thumbnail Clicked");
 }
 
 function thumbnailClickIDrive(iIDriveId) {

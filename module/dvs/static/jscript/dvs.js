@@ -1,17 +1,21 @@
 function menuHome(sSource) {
 	sendToGoogle('DVS Site', sSource, 'Home');
+	mixpanel.track("Home Click");
 }
 
 function menuInventory(sSource) {
 	sendToGoogle('DVS Site', sSource, 'Show Inventory');
+	mixpanel.track("View Inventory Click")
 }
 
 function menuOffers(sSource) {
 	sendToGoogle('DVS Site', sSource, 'Special Offers');
+	mixpanel.track("Special Offers Click")
 }
 
 function menuContact(sSource) {
 	sendToGoogle('DVS Site', sSource, 'Contact Dealer');
+	mixpanel.track("Contact Dealer Click")
 }
 
 function menuEmail(sSource) {
@@ -20,6 +24,7 @@ function menuEmail(sSource) {
 
 function menuFooter(sSource) {
 	sendToGoogle('DVS Site', sSource, 'Footer Link Clicked');
+	mixpanel.track("Footer Link Clicked");
 }
 
 function facebookShareClick(sSource) {
@@ -48,6 +53,14 @@ function facebookShareClick(sSource) {
 		};
 
 		sendToGoogle('DVS Site', sSource, 'Facebook Share Clicked', oCustomVars);
+		mixpanel.track("Facebook Share Clicked", {
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			"Chapter": sCurrentCuePoint
+			}
+		);
 	}
 	else
 	{
@@ -85,6 +98,14 @@ function googleShareClick(sSource) {
 		};
 
 		sendToGoogle('DVS Site', sSource, 'Google Share Clicked', oCustomVars);
+		mixpanel.track("Google Share Clicked", {
+				"Video ID": aCurrentVideoMetaData.referenceId,
+				"Year": aCurrentVideoMetaData.year,
+				"Make": aCurrentVideoMetaData.make,
+				"Model": aCurrentVideoMetaData.model,
+				"Chapter": sCurrentCuePoint
+				}
+		);	
 	}
 	else
 	{
@@ -123,6 +144,14 @@ function showEmailShare(iDvsId) {
 		};
 
 		sendToGoogle('DVS Site', 'Share Links', 'Email Share Clicked', oCustomVars);
+		mixpanel.track("Email Share Clicked", {
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			"Chapter": sCurrentCuePoint
+			}
+		);	
 	}
 	else
 	{
@@ -160,6 +189,14 @@ function shareEmailSent() {
 		};
 
 		sendToGoogle('DVS Site', 'Share Links', 'Email Share Sent', oCustomVars);
+		mixpanel.track("Email Share Sent", {
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			"Chapter": sCurrentCuePoint
+			}
+		);
 	}
 }
 
@@ -189,6 +226,14 @@ function getPriceEmailSent() {
 		};
 
 		sendToGoogle('DVS Site', 'Dealer Contact', 'Lead Sent', oCustomVars);
+		mixpanel.track("Lead Sent", {
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			"Chapter": sCurrentCuePoint
+			}
+		);
 	}
 }
 
@@ -288,6 +333,14 @@ $Behavior.dvs = function() {
 		};
 
 		sendToGoogle('DVS Site', 'Share Links', 'Twitter Share Clicked', oCustomVars);
+		mixpanel.track("Twitter Share Clicked", {
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			"Chapter": sCurrentCuePoint
+			}
+		);
 	}
 
 
@@ -318,6 +371,14 @@ $Behavior.dvs = function() {
 		};
 
 		sendToGoogle('DVS Site', 'Share Links', 'Tweet Posted', oCustomVars);
+		mixpanel.track("Tweet Posted", {
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			"Chapter": sCurrentCuePoint
+			}
+		);
 	}
 
 	function favIntentToAnalytics(intentEvent) {
