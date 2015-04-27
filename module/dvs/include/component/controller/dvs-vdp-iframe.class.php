@@ -181,9 +181,17 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
         }
 
         $sVdpIframeUrl = $this->url()->makeUrl('dvs.utm') . '?utm_source=' . str_replace('&', '', $aDvs['dealer_name']) . ' DVS';
-        $sVdpIframeUrl .= '&utm_medium=VDP Button';
+        $sVdpIframeUrl .= '&utm_medium=Overlay Player';
         $sVdpIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
         $sVdpIframeUrl .= '&utm_campaign=DVS Inventory';
+        mixpanel.track("Overlay Player Loaded", {
+			//"Chapter": sCuePoint,
+			"Video ID": $aFirstVideo['referenceId'],
+			"Year": $aFirstVideo['year'],
+			"Make": $aFirstVideo['make'],
+			"Model": $aFirstVideo['model']
+			}
+		);
         if(!$aDvs['is_active']) {
             $this->template()->setHeader('cache', array(
                 'deactive.css' => 'module_dvs'
@@ -199,12 +207,12 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
             ->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
             ->setHeader(array(
                 //'player.js' => 'module_dvs',
-                'iframe-player.js' => 'module_dvs',
+                'overlay-player.js' => 'module_dvs',
+                'overlay-dvs.js' => 'module_dvs',
                 'shorten.js' => 'module_dvs',
 //				'modernizr.js' => 'module_dvs',
                 'google_analytics.js' => 'module_dvs',
                 //'dvs.js' => 'module_dvs',
-                'iframe-dvs.js' => 'module_dvs',
                 '<meta property = "og:image" content = "' . $sThumbnailUrl . '"/>',
                 // New css + js files added 2/14
                 'chapter_buttons.css' => 'module_dvs',
