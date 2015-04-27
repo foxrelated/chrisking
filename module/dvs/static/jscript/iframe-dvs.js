@@ -63,7 +63,7 @@ function facebookShareClick(sSource) {
 			"Make": aCurrentVideoMetaData.make,
 			"Model": aCurrentVideoMetaData.model,
 			"Chapter": sCurrentCuePoint
-		}
+			});
 	}
 	else
 	{
