@@ -850,32 +850,32 @@ function cuePointsHandler(cuepoints) {
 // }
 
 
-// function thumbnailClick(iKey) {
-// 	if (bDebug) {
-// 		console.log('Player: Playlist Thumbnail Click: #' + iKey);
-// 	}
-// 
-// 	if (bIsDvs) {
-// 
-// 		resetOverlays();
-// 	}
-// 
-// 	bVideoChanged = true;
-// 
-// 	iCurrentVideo = iKey;
-// 
-// 	bIgnoreAutoPlaySetting = true;
-// 
-// 
-// 	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
-// 		modVid.loadVideoByID(aMediaIds[iKey]);
-// 	}
-// 	else
-// 	{
-// 		modCon.getMediaAsynch(aMediaIds[iKey]);
-// 	}
-// 	return false;
-// }
+function thumbnailClick(iKey) {
+	if (bDebug) {
+		console.log('Player: Playlist Thumbnail Click: #' + iKey);
+	}
+
+	if (bIsDvs) {
+
+		resetOverlays();
+	}
+
+	bVideoChanged = true;
+
+	iCurrentVideo = iKey;
+
+	bIgnoreAutoPlaySetting = true;
+
+
+	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+		modVid.loadVideoByID(aMediaIds[iKey]);
+	}
+	else
+	{
+		modCon.getMediaAsynch(aMediaIds[iKey]);
+	}
+	return false;
+}
 function textOverlayClick(iDvsId) {
 	sendToGoogle('DVS Site', 'Overlay', 'Text Overlay Clicked');
 	mixpanel.track("Text Overlay Clicked");
