@@ -20,6 +20,7 @@ class Kobrightcove_Component_Controller_Admincp_Index extends Phpfox_Component {
 		{
 			if ($this->request()->get('job') == 'import')
 			{
+                Phpfox::getService('kobrightcove')->sendImportedEmail();
 				$this->url()->send('admincp.kobrightcove', null, $this->request()->get('total') . ' videos imported successfully.');
 			}
 			elseif ($this->request()->get('job') == 'update')
