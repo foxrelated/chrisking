@@ -184,14 +184,7 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
         $sVdpIframeUrl .= '&utm_medium=Overlay Player';
         $sVdpIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
         $sVdpIframeUrl .= '&utm_campaign=DVS Inventory';
-        mixpanel.track("Overlay Player Loaded", {
-			//"Chapter": sCuePoint,
-			"Video ID": $aFirstVideo['referenceId'],
-			"Year": $aFirstVideo['year'],
-			"Make": $aFirstVideo['make'],
-			"Model": $aFirstVideo['model']
-			}
-		);
+			
         if(!$aDvs['is_active']) {
             $this->template()->setHeader('cache', array(
                 'deactive.css' => 'module_dvs'
