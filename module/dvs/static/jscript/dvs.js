@@ -1,6 +1,6 @@
 function menuHome(sSource) {
 	sendToGoogle('DVS Site', sSource, 'Home');
-	mixpanel.track("Home Click", {
+	mixpanel.track("Home Clicked", {
 	"Category": "DVS Site",
 	"Source": sSource,
 	});
@@ -8,7 +8,7 @@ function menuHome(sSource) {
 
 function menuInventory(sSource) {
 	sendToGoogle('DVS Site', sSource, 'Show Inventory');
-	mixpanel.track("View Inventory Click", {
+	mixpanel.track("View Inventory Clicked", {
 	"Category": "DVS Site",
 	"Source": sSource,
 	});
@@ -16,7 +16,7 @@ function menuInventory(sSource) {
 
 function menuOffers(sSource) {
 	sendToGoogle('DVS Site', sSource, 'Special Offers');
-	mixpanel.track("Special Offers Click", {
+	mixpanel.track("Special Offers Clicked", {
 	"Category": "DVS Site",
 	"Source": sSource,
 	});
@@ -24,7 +24,7 @@ function menuOffers(sSource) {
 
 function menuContact(sSource) {
 	sendToGoogle('DVS Site', sSource, 'Contact Dealer');
-	mixpanel.track("Contact Dealer Click", {
+	mixpanel.track("Contact Dealer Clicked", {
 	"Category": "DVS Site",
 	"Source": sSource,
 	});
