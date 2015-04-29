@@ -72,11 +72,12 @@ class Kobrightcove_Service_Kobrightcove extends Phpfox_Service {
 		$oVideos = Phpfox::getService('kobrightcove.koechove')->findUpdate($iOffset, 'year,make,model,bodystyle', 10);
 
 		$aVideos = Phpfox::getService('kobrightcove')->flattenBcObjectCustomFields($oVideos);
-        $aNewVideos = $aVideos;
+
 		$aVideos = Phpfox::getService('kobrightcove')->keepAllowedVideos($aVideos);
 
 		$aVideos = Phpfox::getService('kobrightcove')->parseOutNullInts($aVideos);
 
+        $aNewVideos = array();
 
 		foreach ($aVideos as $key => $aValue)
 		{
