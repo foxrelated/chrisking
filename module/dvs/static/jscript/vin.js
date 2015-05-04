@@ -2,10 +2,16 @@ if (!window.WTVVIN) {
     window.WTVVIN = {
         sApiUrl: '',
         iDvsId: 0,
+        screenWidth: 0,
+        screenHeight: 0,
         init: function (params) {
 
             this.sApiUrl = params.apiUrl;
             this.iDvsId = params.dvs;
+
+            this.screenWidth = window.innerWidth;
+            this.screenHeight = window.innerHeight;
+
 
             if (typeof params.scriptUrl != 'undefined') {
                 var sScriptUrl = params.scriptUrl;
@@ -92,14 +98,14 @@ if (!window.WTVVIN) {
             document.body.appendChild(popupWrapper);
 
             var cclink = document.createElement('link');
-            cclink.href = params.styleUrl;
+            cclink.href = params.styleUrl + 'height_' + this.screenHeight + '/width_' + this.screenWidth + '/';
             cclink.type = 'text/css';
             cclink.charset = 'utf-8';
             cclink.rel = 'stylesheet';
             document.body.appendChild(cclink);
 
             var ccscript = document.createElement('script');
-            ccscript.src = sScriptUrl + 'vin_' + sAllVin + '/';
+            ccscript.src = sScriptUrl + 'vin_' + sAllVin + '/height_' + this.screenHeight + '/width_' + this.screenWidth + '/';
             ccscript.type = 'text/javascript';
             document.body.appendChild(ccscript);
         },

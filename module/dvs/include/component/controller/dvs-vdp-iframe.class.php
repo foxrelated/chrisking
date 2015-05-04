@@ -154,6 +154,38 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
 
         $iBackgroundOpacity = $iBackgroundAlpha / 100;
 
+        // Resize player for mobile device
+        $sBrowser = Phpfox::getService('dvs')->getBrowser();
+        $iScreenHeight = $this->request()->get('height');
+        $iScreenWidth = $this->request()->get('width');
+
+        $iWarningTextFontSize = 11;
+        if ($sBrowser == 'mobile') {
+            $iPopupWidth = (int)($iScreenWidth * 0.9);
+            if ($iPopupWidth > 930) {
+                $iPopupWidth = 930;
+            }
+            $iPlayerWidth = (int)($iPopupWidth * 0.9);
+            $iPlayerHeight = (int)($iPlayerWidth * 405 / 720);
+            $iPopupHeight = $iPlayerHeight + 80;
+            $this->template()->assign(array(
+                'iPopupWidth' => $iPopupWidth,
+                'iPopupHeight' => $iPopupHeight,
+                'iPlayerWidth' => $iPlayerWidth,
+                'iPlayerHeight' => $iPlayerHeight
+            ));
+            $iWarningTextFontSize = 7;
+            if ($iPlayerWidth > 670) {
+                $iWarningTextFontSize = 11;
+            } elseif ($iPlayerWidth > 600) {
+                $iWarningTextFontSize = 10;
+            } elseif ($iPlayerWidth > 585) {
+                $iWarningTextFontSize = 9;
+            } elseif ($iPlayerWidth > 530) {
+                $iWarningTextFontSize = 8;
+            }
+        }
+
         // Template specific JS and CSS
         if ($sBrowser == 'mobile') {
             $this->template()
@@ -242,13 +274,12 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
                 'aOverrideVideo' => $aOverrideVideo,
                 'sLinkBase' => $sLinkBase,
                 'aFirstVideoMeta' => $aFirstVideoMeta,
-                'sBrowser' => $sBrowser,
                 'bOverrideOpenGraph' => true,
                 'iLongDescLimit' => Phpfox::getParam('dvs.long_desc_limit'),
                 'bSubdomainMode' => $bSubdomainMode,
                 //'aFooterLinks' => $aFooterLinks,
                 'sBrowser' => $sBrowser,
-
+                'iWarningTextFontSize' => $iWarningTextFontSize,
                 'sCurrentUrlEncoded' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? urlencode(Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url'])) : urlencode(Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url'])))),
                 'sStaticPath' => Phpfox::getParam('core.path') . 'module/dvs/static/',
                 'sJavascript' => '<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>'

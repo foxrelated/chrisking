@@ -1,30 +1,29 @@
-{literal}
 <style type="text/css">
-    #dvs_bc_player {
-        width: 720px;
-        height: 406px;
-    }
+    #dvs_bc_player {l}
+        width: {if $sBrowser == 'mobile'}{$iPlayerWidth}{else}720px{/if};
+        height: {if $sBrowser == 'mobile'}{$iPlayerHeight}{else}406px{/if};
+    {r}
 
-    body {
-        background-color: {/literal}#{$aDvs.player_background}{literal};
+    body {l}
+        background-color: #{$aDvs.player_background};
         padding-top: 15px;
-    }
+    {r}
 
-    #video_information {
+    #video_information {l}
         width: 100%;
         margin-top: 0px;
         width: 100%;
-    }
+    {r}
 
-    #video_information h3 {
-        color: {/literal}#{$aPlayer.player_text}{literal};
+    #video_information h3 {l}
+        color: #{$aPlayer.player_text};
         padding:0px;
         margin: 0px;
         margin-left:10px;
-        font-size:18px;
-    }
+        font-size:{if $sBrowser == 'mobile'}10px{else}18px{/if};
+    {r}
 </style>
-{/literal}
+
 <article>
     <section id="video_information">
         <h3 id="video_name">
@@ -124,6 +123,7 @@
                 {/if}
             {r}
 
+            {if $sBrowser != 'mobile'}
             function enableVideoSelectCarousel(){l}
                 if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
                 $('#overview_playlist').show();
@@ -158,6 +158,7 @@
                     {r});
                 {/if}
             {r}
+            {/if}
         </script>
 
         {if ($bIsDvs && $aOverviewVideos) || (!$bIsDvs && $aVideos)}
@@ -210,8 +211,8 @@
         <object id="myExperience" class="BrightcoveExperience">
             <param name="bgcolor" value="#FFFFFF" />
             <param name="wmode" value="transparent" />
-            <param name="width" value="720" />
-            <param name="height" value="405" />
+            <param name="width" value="{if $sBrowser == 'mobile'}{$iPlayerWidth}{else}720{/if}" />
+            <param name="height" value="{if $sBrowser == 'mobile'}{$iPlayerHeight}{else}405{/if}" />
             <param name="playerID" value="1418431455001" />
             <param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
             <param name="isVid" value="true" />
@@ -291,7 +292,7 @@
             {/if}
         </section>
         *}
-        <p style="padding-top:10px;color:#{$aPlayer.player_text};font-size:11px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
+        <p id="video_warning_text" style="padding-top:10px;color:#{$aPlayer.player_text};font-size:{$iWarningTextFontSize}px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
     </section>
 </article>
 
