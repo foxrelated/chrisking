@@ -2,10 +2,13 @@
 
 class Dvs_Component_Controller_VIN_Script extends Phpfox_Component {
     public function process() {
+        $sBrowser = Phpfox::getService('dvs')->getBrowser();
+        $iScreenHeight = $this->request()->get('height');
+        $iScreenWidth = $this->request()->get('width');
         $iDvsId = $this->request()->get('id');
         $sAllVin = $this->request()->get('vin');
         $aVins = explode(',', $sAllVin);
-        list($aRows, $aDvs) = Phpfox::getService('dvs.vin')->getVins($aVins, $iDvsId);
+        list($aRows, $aDvs) = Phpfox::getService('dvs.vin')->getVins($aVins, $iDvsId, $iScreenWidth, $iScreenHeight);
 
         $this->template()->assign(array(
             'aDvs' => $aDvs,

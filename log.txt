@@ -45,3 +45,56 @@ Step 2: Create new settings for Used Videos:
     4: Direct Link
     5: QR Code
     6: email
+
+*****************************************************   #440   *****************************************************
+Step 1. Add phrase:
+kobrightcove.notification_email_subject          :   'Video import notification from WheelsTV DVS'
+kobrightcove.notification_email_body          :   'Hi {user_name},
+
+                                                   You have received video import notification from WheelsTV DVS
+
+                                                   Video Details:
+                                                   {list_video}
+
+                                                   Sincerely,
+                                                   WheelsTV'
+
+Step 2. Create new settings for notification user group:
+Product: Konsort.org Brightcove Integration
+Module: kobrightcove
+Groups: Brightcove
+Variable: notificationuser_group
+Type: string
+Value: 1
+Title: User Group import notification log
+Info: User Group import notification log
+
+*****************************************************   #449   *****************************************************
+
+### DATABASE:
+CREATE TABLE IF NOT EXISTS `phpfox_ko_dvs_blacklists` (
+`id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `domain` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE `phpfox_ko_dvs_blacklists`
+ ADD PRIMARY KEY (`id`);
+ALTER TABLE `phpfox_ko_dvs_blacklists`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+### PHRASE:
+dvs.deny_domain_access : Unauthorized user. Visit dealervideoshowroom.com for more information
+dvs.add_new_domain_to_blacklist : Add new domain to blacklist
+dvs.edit_domain_blacklist : Edit domain blacklist
+dvs.fill_the_domain_url : Fill the domain url
+dvs.fill_the_domain_name : Fill the domain name
+dvs.manage_blacklists_domain : Manage blacklists domain
+
+### EDIT:
+Add sub-menu module dvs
+Phrase: Manage blacklist domain |  Link: dvs.blacklists
+
+*****************************************************   #441   *****************************************************
+### DATABASE:
+    - ALTER TABLE `phpfox_ko_dvs` ADD `player_type` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' ;
+

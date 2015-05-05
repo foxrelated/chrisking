@@ -2,10 +2,16 @@ if (!window.WTVVIN) {
     window.WTVVIN = {
         sApiUrl: '',
         iDvsId: 0,
+        screenWidth: 0,
+        screenHeight: 0,
         init: function (params) {
 
             this.sApiUrl = params.apiUrl;
             this.iDvsId = params.dvs;
+
+            this.screenWidth = window.innerWidth;
+            this.screenHeight = window.innerHeight;
+
 
             if (typeof params.scriptUrl != 'undefined') {
                 var sScriptUrl = params.scriptUrl;
@@ -92,14 +98,14 @@ if (!window.WTVVIN) {
             document.body.appendChild(popupWrapper);
 
             var cclink = document.createElement('link');
-            cclink.href = params.styleUrl;
+            cclink.href = params.styleUrl + 'height_' + this.screenHeight + '/width_' + this.screenWidth + '/';
             cclink.type = 'text/css';
             cclink.charset = 'utf-8';
             cclink.rel = 'stylesheet';
             document.body.appendChild(cclink);
 
             var ccscript = document.createElement('script');
-            ccscript.src = sScriptUrl + 'vin_' + sAllVin + '/';
+            ccscript.src = sScriptUrl + 'vin_' + sAllVin + '/height_' + this.screenHeight + '/width_' + this.screenWidth + '/';
             ccscript.type = 'text/javascript';
             document.body.appendChild(ccscript);
         },
@@ -135,7 +141,7 @@ if (!window.WTVVIN) {
 
         show_popup: function(sLink) {
             //var sLink = oLink.getAttribute('href');
-            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" height="600" width="930" frameborder="0" scrolling="no"></iframe>';
+            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" height="100%" width="100%" frameborder="0" scrolling="no"></iframe>';
             WTVVIN.fadeIn('dvs_vin_layout_wrapper', 9);
             WTVVIN.fadeIn('dvs_vin_popup_wrapper', 10);
             return false;

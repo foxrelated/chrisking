@@ -3,7 +3,7 @@ var vinInterval = setInterval(function(){l}
     vinLoopCount++;
 
     {foreach from=$aRows key=sKey item=aRow}
-        var elements = document.getElementsByClassName("dvs_vin_btn_{$sKey}");
+        var elements = document.querySelectorAll(".dvs_vin_btn_{$sKey}");
         if(elements != null && elements.length > 0) {l}
             for(var k = 0; k < elements.length; k++) {l}
                 if(elements[k] != null) {l}

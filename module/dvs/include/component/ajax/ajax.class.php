@@ -1912,5 +1912,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
         }
     }
+
+    public function deleteDomain()
+	{
+		$iId = $this->get('id');
+
+		Phpfox::getService('dvs.blacklists')->remove($iId);
+	}
 }
 ?>

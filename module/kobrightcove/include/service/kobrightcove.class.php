@@ -77,15 +77,39 @@ class Kobrightcove_Service_Kobrightcove extends Phpfox_Service {
 
 		$aVideos = Phpfox::getService('kobrightcove')->parseOutNullInts($aVideos);
 
+        $aNewVideos = array();
+
 		foreach ($aVideos as $key => $aValue)
 		{
 			if (!$this->refExists($aValue['referenceId']))
 			{
-				Phpfox::getService('kobrightcove.data.process')->add($aValue);
+				if (Phpfox::getService('kobrightcove.data.process')->add($aValue)) {
+                    $aNewVideos[] = $aValue['name'];
+                }
 				//echo '<script>console.log("Adding RefID: ' . $aValue['referenceId'] . '");</script>';
 				$iVideos++;
 			}
 		}
+
+        if(count($aNewVideos)) {
+            $oCache = Phpfox::getLib('cache');
+            $sCacheId = $oCache->set('kobrightcove_import_video');
+            if ($aImportedVideos = $oCache->get($sCacheId)) {
+                foreach($aNewVideos as $sVideo) {
+                    $aImportedVideos[] = $sVideo;
+                }
+                $sCacheId = $oCache->set('kobrightcove_import_video');
+                $oCache->save($sCacheId, $aImportedVideos);
+            } else {
+                $aImportedVideos = array();
+                foreach($aNewVideos as $sVideo) {
+                    $aImportedVideos[] = $sVideo;
+                }
+                $sCacheId = $oCache->set('kobrightcove_import_video');
+                $oCache->save($sCacheId, $aImportedVideos);
+            }
+        }
+
 		return $iVideos;
 	}
 
@@ -214,7 +238,37 @@ class Kobrightcove_Service_Kobrightcove extends Phpfox_Service {
 		return $aTimeParts[1] . substr($aTimeParts[0], 1);
 	}
 
+    public function sendImportedEmail() {
+        $oCache = Phpfox::getLib('cache');
+        $sCacheId = $oCache->set('kobrightcove_import_video');
+        if ($aNewVideos = $oCache->get($sCacheId)) {
+            $iNotificationUserGroup = Phpfox::getParam('kobrightcove.notificationuser_group');
+            $aUsers = $this->database()
+                ->select('full_name, email')
+                ->from(Phpfox::getT('user'))
+                ->where('user_group_id = "' . $iNotificationUserGroup . '"')
+                ->execute('getRows');
+            if ($aUsers) {
+                foreach ($aUsers as $aUser) {
+                    $sSubject = Phpfox::getPhrase('kobrightcove.notification_email_subject');
+                    $sBody = Phpfox::getPhrase('kobrightcove.notification_email_body', array(
+                        'user_name' => $aUser['full_name'],
+                        'list_video' => implode(
+'<br />
+', $aNewVideos)
+                    ));
+                    Phpfox::getLib('mail')
+                        ->to($aUser['email'])
+                        ->subject($sSubject)
+                        ->message($sBody)
+                        ->send();
+                }
+            }
+        }
 
+        $sCacheId = $oCache->set('kobrightcove_import_video');
+        $oCache->remove($sCacheId);
+    }
 }
 
 ?>

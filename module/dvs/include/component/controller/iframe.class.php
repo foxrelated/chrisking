@@ -30,6 +30,14 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 $sParentUrl .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
             }
         }
+        //BEGIN CHECK BLACK LISTS DOMAIN
+        $aBlackListsDomain = phpfox::getService('dvs.blacklists')->getForCheck();
+        foreach($aBlackListsDomain as $aBlackList){
+            if($this->get_domain($aBlackList['domain']) == $this->get_domain($sParentUrl)){
+                die(Phpfox::getPhrase('dvs.deny_domain_access'));
+            }
+        }
+        //END CHECK BLACK LISTS DOMAIN
         $sNewParentUrl = $sParentUrl;
 
         $iMaxWidth = $this->request()->get('maxwidth', 580) - 32;
@@ -471,6 +479,16 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                     . '<script type="text/javascript">' . $sDvsJs . '</script>'
                     . '<script type="text/javascript">var bUpdatedShareUrl = true;</script>'
             ));
+    }
+
+    private function get_domain($url)
+    {
+      $pieces = parse_url($url);
+      $domain = isset($pieces['host']) ? $pieces['host'] : '';
+      if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
+        return $regs['domain'];
+      }
+      return false;
     }
 }
 ?>
