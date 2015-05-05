@@ -8,31 +8,36 @@
 
 <?php
 if (Phpfox::getLib('request')->get('req1') != 'admincp') {
+    $sMinPanelScript = '<script type="text/javascript">mixpanel.register({';
+
+    if ($aDvs = Phpfox::getLib('template')->getVar('aDvs')) {
+        $sMinPanelScript .= '"$dealer_name": "' . htmlspecialchars_decode($aDvs['dealer_name']) . '",
+            "$dvs_name": "' . htmlspecialchars_decode($aDvs['dvs_name']) . '",
+            "$title_url": "' . htmlspecialchars_decode($aDvs['title_url']) . '",';
+    };
+
     if (Phpfox::isUser()) {
         $aMixPanelUser = Phpfox::getService('mixpanel')->get(Phpfox::getUserId());
-        Phpfox::getLib('template')->setHeader('<script type="text/javascript">
-        mixpanel.register({
+        $sMinPanelScript .= '
             "$id": "' . $aMixPanelUser['user_id'] . '",
             "$first_name": "' . $aMixPanelUser['first_name'] . '",
             "$last_name": "' . $aMixPanelUser['first_name'] . '",
             "$created": "' . date("F j, Y, g:i a", $aMixPanelUser['joined']) . '",
             "$email": "' . $aMixPanelUser['email'] . '",
             "$last_login": "' . date("F j, Y, g:i a", $aMixPanelUser['last_login']) . '",
-            "$user_group": "' . $aMixPanelUser['user_group_title'] . '"
-        });
-    </script>');
+            "$user_group": "' . $aMixPanelUser['user_group_title'] . '"';
     } else {
-        Phpfox::getLib('template')->setHeader('<script type="text/javascript">
-        mixpanel.register({
+        $sMinPanelScript = '
             "$id": "null",
             "$first_name": "null",
             "$last_name": "null",
             "$created": "null",
             "$email": "null",
             "$last_login": "null",
-            "$user_group": "null"
-        });
-    </script>');
+            "$user_group": "null"';
     }
+
+    $sMinPanelScript .= '});</script>';
+    Phpfox::getLib('template')->setHeader($sMinPanelScript);
 }
 ?>
