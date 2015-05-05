@@ -27,7 +27,7 @@ if (Phpfox::getLib('request')->get('req1') != 'admincp') {
             "$last_login": "' . date("F j, Y, g:i a", $aMixPanelUser['last_login']) . '",
             "$user_group": "' . $aMixPanelUser['user_group_title'] . '"';
     } else {
-        $sMinPanelScript = '
+        $sMinPanelScript .= '
             "$id": "null",
             "$first_name": "null",
             "$last_name": "null",
