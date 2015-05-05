@@ -39,5 +39,5 @@ if (Phpfox::getLib('request')->get('req1') != 'admincp') {
 
     $sMinPanelScript .= '});</script>';
     Phpfox::getLib('template')->setHeader($sMinPanelScript);
-}
+};
 ?>
