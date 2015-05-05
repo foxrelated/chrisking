@@ -95,15 +95,15 @@ class Kobrightcove_Service_Kobrightcove extends Phpfox_Service {
             $oCache = Phpfox::getLib('cache');
             $sCacheId = $oCache->set('kobrightcove_import_video');
             if ($aImportedVideos = $oCache->get($sCacheId)) {
-                foreach($aNewVideos as $aVideo) {
-                    $aImportedVideos[] = $aVideo['name'];
+                foreach($aNewVideos as $sVideo) {
+                    $aImportedVideos[] = $sVideo;
                 }
                 $sCacheId = $oCache->set('kobrightcove_import_video');
                 $oCache->save($sCacheId, $aImportedVideos);
             } else {
                 $aImportedVideos = array();
-                foreach($aNewVideos as $aVideo) {
-                    $aImportedVideos[] = $aVideo['name'];
+                foreach($aNewVideos as $sVideo) {
+                    $aImportedVideos[] = $sVideo;
                 }
                 $sCacheId = $oCache->set('kobrightcove_import_video');
                 $oCache->save($sCacheId, $aImportedVideos);

@@ -39,7 +39,22 @@ class Dvs_Component_Controller_Vin_Style extends Phpfox_Component {
             }
             $iPlayerWidth = (int)($iPopupWidth * 0.9);
             $iPlayerHeight = (int)($iPlayerWidth * 405 / 720);
-            $iPopupHeight = $iPlayerHeight + 80;
+            $iPopupHeight = $iPlayerHeight + 65;
+
+            if ($iPlayerWidth > 520) {
+                $iPopupHeight = $iPopupHeight + 50;
+            } elseif ($iPlayerWidth > 450) {
+                $iPopupHeight = $iPopupHeight + 48;
+            } elseif ($iPlayerWidth > 380) {
+                $iPopupHeight = $iPopupHeight + 45;
+            } elseif ($iPlayerWidth > 350) {
+                $iPopupHeight = $iPopupHeight + 43;
+            } elseif ($iPlayerWidth > 310) {
+                $iPopupHeight = $iPopupHeight + 40;
+            } else {
+                $iPopupHeight = $iPopupHeight + 38;
+            }
+
             $this->template()->assign(array(
                 'iPopupWidth' => $iPopupWidth,
                 'iPopupHeight' => $iPopupHeight,

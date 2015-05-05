@@ -21,7 +21,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	var run=true;
 
 	$Behavior.domReady = function(){
-		autoUpdate(0);
+		autoUpdate(492);
 	};
 
 	function autoUpdate(offset){

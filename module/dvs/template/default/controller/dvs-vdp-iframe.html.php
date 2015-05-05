@@ -20,7 +20,7 @@
         padding:0px;
         margin: 0px;
         margin-left:10px;
-        font-size:{if $sBrowser == 'mobile'}10px{else}18px{/if};
+        font-size:{if $sBrowser == 'mobile'}{$iHeaderTextFontSize}px{else}18px{/if};
     {r}
 </style>
 

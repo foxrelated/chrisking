@@ -160,6 +160,7 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
         $iScreenWidth = $this->request()->get('width');
 
         $iWarningTextFontSize = 11;
+        $iHeaderTextFontSize = 15;
         if ($sBrowser == 'mobile') {
             $iPopupWidth = (int)($iScreenWidth * 0.9);
             if ($iPopupWidth > 930) {
@@ -174,15 +175,28 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
                 'iPlayerWidth' => $iPlayerWidth,
                 'iPlayerHeight' => $iPlayerHeight
             ));
-            $iWarningTextFontSize = 7;
+            $iWarningTextFontSize = 8;
             if ($iPlayerWidth > 670) {
-                $iWarningTextFontSize = 11;
+                $iWarningTextFontSize = 12;
             } elseif ($iPlayerWidth > 600) {
-                $iWarningTextFontSize = 10;
+                $iWarningTextFontSize = 11;
             } elseif ($iPlayerWidth > 585) {
-                $iWarningTextFontSize = 9;
+                $iWarningTextFontSize = 10;
             } elseif ($iPlayerWidth > 530) {
-                $iWarningTextFontSize = 8;
+                $iWarningTextFontSize = 9;
+            }
+
+            $iHeaderTextFontSize = 15;
+            if ($iPlayerWidth > 520) {
+                $iHeaderTextFontSize = 20;
+            } elseif ($iPlayerWidth > 450) {
+                $iHeaderTextFontSize = 19;
+            } elseif ($iPlayerWidth > 380) {
+                $iHeaderTextFontSize = 18;
+            } elseif ($iPlayerWidth > 350) {
+                $iHeaderTextFontSize = 17;
+            } elseif ($iPlayerWidth > 310) {
+                $iHeaderTextFontSize = 16;
             }
         }
 
@@ -280,6 +294,7 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
                 //'aFooterLinks' => $aFooterLinks,
                 'sBrowser' => $sBrowser,
                 'iWarningTextFontSize' => $iWarningTextFontSize,
+                'iHeaderTextFontSize' => $iHeaderTextFontSize,
                 'sCurrentUrlEncoded' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? urlencode(Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url'])) : urlencode(Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url'])))),
                 'sStaticPath' => Phpfox::getParam('core.path') . 'module/dvs/static/',
                 'sJavascript' => '<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>'
