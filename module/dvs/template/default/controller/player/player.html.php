@@ -245,6 +245,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 {/if}
 <object id="myExperience" class="BrightcoveExperience">
+	<param name="htmlFallback" value="true" />
 	<param name="bgcolor" value="#FFFFFF" />
 	<param name="wmode" value="transparent" />
 	{if $bIsDvs}
