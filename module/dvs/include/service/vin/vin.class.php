@@ -1,7 +1,7 @@
 <?php
 
-require_once('ga/autoload.php');
-use UnitedPrototype\GoogleAnalytics;
+//require_once('ga/autoload.php');
+//use UnitedPrototype\GoogleAnalytics;
 
 class Dvs_Service_Vin_Vin extends Phpfox_Service {
     function __construct() {
@@ -161,10 +161,10 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
 
         /** SEND GA EVENT */
 
-        if($aDvs['dvs_google_id']) {
+        /*if($aDvs['dvs_google_id']) {
             $tracker = new GoogleAnalytics\Tracker($aDvs['dvs_google_id'], 'domain.com');
         } else {
-            $tracker = new GoogleAnalytics\Tracker(Phpfox::getParam('dvs.global_google_id'), 'domain.com');
+        $tracker = new GoogleAnalytics\Tracker(Phpfox::getParam('dvs.global_google_id'), 'wtvdvs.com');
         }
         $visitor = new GoogleAnalytics\Visitor();
         $visitor->setIpAddress($_SERVER['REMOTE_ADDR']);
@@ -175,7 +175,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         $event->setAction('Inventory Page');
         $event->setLabel('Inventory Pageviews');
         $event->setValue('1');
-        $tracker->trackEvent($event, $session, $visitor);
+        $tracker->trackEvent($event, $session, $visitor);*/
 
         return array($aCompletedRows, $aDvs);
     }
