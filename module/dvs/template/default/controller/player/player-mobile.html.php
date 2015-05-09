@@ -7,7 +7,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 /**
  *
  *
- * @copyright		Konsort.org 
+ * @copyright		Konsort.org
  * @author  		Konsort.org
  * @package 		DVS
  */
@@ -45,7 +45,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	if (bDebug) {l}
 		console.log(aMediaIds);
 	{r}
-	
+
 	{if $aPlayer.custom_overlay_1_type}
 		if (bDebug) console.log('Overlay: Overlay 1 is active. Type: {$aPlayer.custom_overlay_1_type}. Start: {$aPlayer.custom_overlay_1_start}. Duration: {$aPlayer.custom_overlay_1_duration}.');
 		var bCustomOverlay1 = true;
@@ -55,7 +55,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		var bCustomOverlay1 = false;
 		if (bDebug) console.log('Overlay: Overlay 1 is inactive.');
 	{/if}
-		
+
 	{if $aPlayer.custom_overlay_2_type}
 		if (bDebug) console.log('Overlay: Overlay 2 is active. Type: {$aPlayer.custom_overlay_2_type}. Start: {$aPlayer.custom_overlay_2_start}. Duration: {$aPlayer.custom_overlay_2_duration}.');
 		var bCustomOverlay2 = true;
@@ -65,7 +65,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		var bCustomOverlay2 = false;
 		if (bDebug) console.log('Overlay: Overlay 2 is inactive.');
 	{/if}
-		
+
 	{if $aPlayer.custom_overlay_3_type}
 		if (bDebug) console.log('Overlay: Overlay 3 is active. Type: {$aPlayer.custom_overlay_3_type}. Start: {$aPlayer.custom_overlay_3_start}. Duration: {$aPlayer.custom_overlay_3_duration}.');
 		var bCustomOverlay3 = true;
@@ -75,17 +75,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		var bCustomOverlay3 = false;
 		if (bDebug) console.log('Overlay: Overlay 3 is inactive.');
 	{/if}
-			
+
 	{else}
 		{foreach from = $aVideos key = iKey item = aVideo}
 			aMediaIds[{$iKey}] = {$aVideo.id};
 		{/foreach}
-		
+
 		{if isset($aFeaturedVideo.id)}
 			aMediaIds[0] = {$aFeaturedVideo.id};
 		{/if}
 	{/if}
-	
+
 	{if !$bIsExternal}
 		var bPreRoll = {if $aPlayer.preroll_file_id}true{else}false{/if};
 		var iDvsId = {if $bIsDvs}{$iDvsId}{else}0{/if};
@@ -104,19 +104,19 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             {if !$aDvs.is_active}bAutoplay = false;{/if}
 		var bAutoAdvance = true;
 	{/if}
-		
+
 	function setPlayerStyle(){l}
-		if (bDebug) 
+		if (bDebug)
 		{l}
 			console.log("Player: Setting player style and volume.");
 			modVid.setVolume(0);
 		{r}
-		
+
 		{if !$bIsExternal}
 			modVid.setStyles('video-background:#{$aPlayer.player_background};titleText-active:#{$aPlayer.player_text};titleText-disabled:#{$aPlayer.player_text};titleText-rollover:#{$aPlayer.player_text};titleText-selected:#{$aPlayer.player_text};bodyText-active:#{$aPlayer.player_text};bodyText-disabled:#{$aPlayer.player_text};bodyText-rollover:#{$aPlayer.player_text};bodyText-selected:#{$aPlayer.player_text};buttons-icons:#{$aPlayer.player_button_icons};buttons-rolloverIcons:#{$aPlayer.player_button_icons};buttons-selectedIcons:#{$aPlayer.player_button_icons};buttons-glow:#{$aPlayer.player_button_icons};buttons-iconGlow:#{$aPlayer.player_button_icons};buttons-face:#{$aPlayer.player_buttons};buttons-rollover:#{$aPlayer.player_buttons};buttons-selected:#{$aPlayer.player_buttons};playheadWell-background:#{$aPlayer.player_progress_bar};playheadWell-watched:#{$aPlayer.player_progress_bar};playhead-face:#{$aPlayer.player_button_icons};volumeControl-icons:#{$aPlayer.player_button_icons};volumeControl-track:#{$aPlayer.player_progress_bar};volumeControl-face:#{$aPlayer.player_buttons};linkText-active:#{$aPlayer.player_text};linkText-disabled:#{$aPlayer.player_text};linkText-rollover:#{$aPlayer.player_text};linkText-downState:#{$aPlayer.player_text};');
 		{/if}
 	{r}
-	
+
 	function enableVideoSelectCarousel(){l}
 		if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
 	{r}
@@ -170,15 +170,21 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{/if}
 				<param name="wmode" value="transparent" />
 				{if $bIsExternal}
+                {if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
+                <param name="@videoPlayer" value="{$iPlayerId}" />
+                {/if}
 				<param name="playerID" value="{$iPlayerId}" />
 				<param name="playerKey" value="{$sPlayerKey}" />
 				{else}
+                {if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
+                <param name="@videoPlayer" value="" />
+                {/if}
 				<param name="playerID" value="1418431455001" />
 				<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
 				{/if}
 				<param name="isVid" value="true" />
 				<param name="isUI" value="true" />
-				{if $sBrowser == 'ipad' || $aDvs.player_type}
+				{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
 				<param name="forceHTML" value="true">
 				{/if}
 				<param name="dynamicStreaming" value="true" />

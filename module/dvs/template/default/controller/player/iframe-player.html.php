@@ -20,12 +20,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </style>
 {if !empty($sJavascript)}{$sJavascript}{/if}
 <script type="text/javascript">
+    var bIsSupportVideo = !!document.createElement('video').canPlayType;
     var aMediaIds = [];
     var aOverviewMediaIds = [];
     var aTestDriveMediaIds = [];
     var bIsHtml5 = false;
     {if $aDvs.player_type}
+        if (bIsSupportVideo) {l}
         var bIsHtml5 = true;
+        {r}
     {/if}
     {if $bIsDvs}
 
@@ -233,7 +236,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     {/if}
     <param name="accountID" value="{$aDvs.dvs_google_id}" />
     <param name="showNoContentMessage" value="false" />
-	{if $sBrowser == 'ipad' || $aDvs.player_type}
+	{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
     <param name="@videoPlayer" value="" />
 	<param name="forceHTML" value="true">
     <param name="includeAPI" value="true" />
@@ -246,6 +249,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 {literal}
 <script type="text/javascript">
+    if(!bIsSupportVideo){
+        (elem=document.getElementById("forceHTML")).parentNode.removeChild(elem);
+    }
     $Behavior.brightCoveCreateExp = function()
     {
         brightcove.createExperiences();
@@ -331,7 +337,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
 				<p>{$aVideo.year} {$aVideo.model}</p>
                 </a>
-                
+
             </li>
             {/foreach}
             <li style='display: none;'></li>
@@ -342,7 +348,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                     {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
 				<p>{$aVideo.year} {$aVideo.model}</p>
                 </a>
-                
+
             </li>
             {/foreach}
             {$sExtraLi}
