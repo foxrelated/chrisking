@@ -238,7 +238,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     <param name="showNoContentMessage" value="false" />
 	{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
     <param name="@videoPlayer" value="" />
-	<param name="forceHTML" value="true">
+	<param id="forceHTML" name="forceHTML" value="true">
     <param name="includeAPI" value="true" />
     <param name="templateLoadHandler﻿" value="onTemplateLoad" />
     <param name="templateLoadHandler" value="onTemplateLoaded" />
