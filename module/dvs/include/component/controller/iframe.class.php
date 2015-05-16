@@ -31,9 +31,11 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             }
         }
         //BEGIN CHECK BLACK LISTS DOMAIN
+        $sCurrentUrl = $_SERVER["HTTP_REFERER"].$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
         $aBlackListsDomain = phpfox::getService('dvs.blacklists')->getForCheck();
         foreach($aBlackListsDomain as $aBlackList){
-            if($this->get_domain($aBlackList['domain']) == $this->get_domain($sParentUrl)){
+            vdd($sParentUrl);
+            if($this->get_domain($aBlackList['domain']) == $this->get_domain($sCurrentUrl)){
                 die(Phpfox::getPhrase('dvs.deny_domain_access'));
             }
         }
