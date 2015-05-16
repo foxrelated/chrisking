@@ -1,30 +1,29 @@
-{literal}
 <style type="text/css">
-    #dvs_bc_player {
-        width: 720px;
-        height: 406px;
-    }
+    #dvs_bc_player {l}
+        width: {if $sBrowser == 'mobile'}{$iPlayerWidth}{else}720px{/if};
+        height: {if $sBrowser == 'mobile'}{$iPlayerHeight}{else}406px{/if};
+    {r}
 
-    body {
-        background-color: {/literal}#{$aDvs.player_background}{literal};
+    body {l}
+        background-color: #{$aDvs.player_background};
         padding-top: 15px;
-    }
+    {r}
 
-    #video_information {
+    #video_information {l}
         width: 100%;
         margin-top: 0px;
         width: 100%;
-    }
+    {r}
 
-    #video_information h3 {
-        color: {/literal}#{$aPlayer.player_text}{literal};
+    #video_information h3 {l}
+        color: #{$aPlayer.player_text};
         padding:0px;
         margin: 0px;
         margin-left:10px;
-        font-size:18px;
-    }
+        font-size:{if $sBrowser == 'mobile'}{$iHeaderTextFontSize}px{else}18px{/if};
+    {r}
 </style>
-{/literal}
+
 <article>
     <section id="video_information">
         <h3 id="video_name">
@@ -34,10 +33,16 @@
     <section id="player">
         {if !empty($sJavascript)}{$sJavascript}{/if}
         <script type="text/javascript">
+            var bIsSupportVideo = !!document.createElement('video').canPlayType;
             var aMediaIds = [];
             var aOverviewMediaIds = [];
             var aTestDriveMediaIds = [];
-
+            var bIsHtml5 = false;
+            {if $aDvs.player_type}
+                if (bIsSupportVideo) {l}
+                var bIsHtml5 = true;
+                {r}
+            {/if}
             {if $bIsDvs}
                 {foreach from = $aOverviewVideos key = iKey item = aVideo}
                     aOverviewMediaIds[{$iKey}] = {$aVideo.id};
@@ -121,6 +126,7 @@
                 {/if}
             {r}
 
+            {if $sBrowser != 'mobile'}
             function enableVideoSelectCarousel(){l}
                 if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
                 $('#overview_playlist').show();
@@ -155,6 +161,7 @@
                     {r});
                 {/if}
             {r}
+            {/if}
         </script>
 
         {if ($bIsDvs && $aOverviewVideos) || (!$bIsDvs && $aVideos)}
@@ -207,8 +214,8 @@
         <object id="myExperience" class="BrightcoveExperience">
             <param name="bgcolor" value="#FFFFFF" />
             <param name="wmode" value="transparent" />
-            <param name="width" value="720" />
-            <param name="height" value="405" />
+            <param name="width" value="{if $sBrowser == 'mobile'}{$iPlayerWidth}{else}720{/if}" />
+            <param name="height" value="{if $sBrowser == 'mobile'}{$iPlayerHeight}{else}405{/if}" />
             <param name="playerID" value="1418431455001" />
             <param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
             <param name="isVid" value="true" />
@@ -216,7 +223,9 @@
             <param name="dynamicStreaming" value="true" />
             <param name="accountID" value="{$aDvs.dvs_google_id}" />
             <param name="showNoContentMessage" value="false" />
-            {if $sBrowser == 'ipad'}
+            {if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
+            <param name="@videoPlayer" value="" />
+            <param id="forceHTML" name="forceHTML" value="true" />
             <param name="includeAPI" value="true" />
             <param name="templateLoadHandler﻿" value="onTemplateLoad" />
             <param name="templateLoadHandler" value="onTemplateLoaded" />
@@ -227,13 +236,17 @@
 
         {literal}
         <script type="text/javascript">
+            if(!bIsSupportVideo){
+                (elem=document.getElementById("forceHTML")).parentNode.removeChild(elem);
+            }
             $Behavior.brightCoveCreateExp = function()
             {
                 brightcove.createExperiences();
             }
         </script>
         {/literal}
-        </section>{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}<section id="chapter_buttons">
+        </section>{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}
+        {if $sBrowser != 'mobile'}<section id="chapter_buttons">
             <button type="button" id="chapter_container_Intro" class="disabled display" onclick="changeCuePoint('Intro');"></button>
             <button type="button" id="chapter_container_Overview" class="disabled no_display" onclick="changeCuePoint('Overview');"></button>
             <button type="button" id="chapter_container_WhatsNew" class="disabled display" onclick="changeCuePoint('WhatsNew');"></button>
@@ -249,6 +262,7 @@
             <button type="button" id="chapter_container_Honors" class="disabled no_display" onclick="changeCuePoint('Honors');"></button>
             <button type="button" id="chapter_container_Summary" class="disabled display" onclick="changeCuePoint('Summary');"></button>
         </section>
+        {/if}
 		{*
         {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
         <section id="playlist_wrapper">
@@ -284,7 +298,7 @@
             {/if}
         </section>
         *}
-        <p style="padding-top:10px;color:#{$aPlayer.player_text};font-size:11px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
+        <p id="video_warning_text" style="padding-top:10px;color:#{$aPlayer.player_text};font-size:{$iWarningTextFontSize}px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
     </section>
 </article>
 

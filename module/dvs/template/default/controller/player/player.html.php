@@ -39,10 +39,16 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 {if !empty($sJavascript)}{$sJavascript}{/if}
 <script type="text/javascript">
+    var bIsSupportVideo = !!document.createElement('video').canPlayType;
 	var aMediaIds = [];
 	var aOverviewMediaIds = [];
 	var aTestDriveMediaIds = [];
-	
+	var bIsHtml5 = false;
+	{if $aDvs.player_type}
+        if (bIsSupportVideo) {l}
+        var bIsHtml5 = true;
+        {r}
+	{/if}
 	{if $bIsDvs}
 
 	{foreach from = $aOverviewVideos key = iKey item = aVideo}
@@ -246,7 +252,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {/if}
 <object id="myExperience" class="BrightcoveExperience">
 	<param name="bgcolor" value="#FFFFFF" />
-	<param name="wmode" value="transparent" />
 	{if $bIsDvs}
 		<param name="width" value="720" />
 		<param name="height" value="405" />
@@ -255,9 +260,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<param name="height" value="{$iPlayerHeight}" />
 	{/if}
 	{if $bIsExternal}
+		{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
+		<param name="@videoPlayer" value="{$iPlayerId}" />
+		{/if}
 		<param name="playerID" value="{$iPlayerId}" />
 		<param name="playerKey" value="{$sPlayerKey}" />
 	{else}
+		{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
+		<param name="@videoPlayer" value="" />
+		{/if}
 		<param name="playerID" value="1418431455001" />
 		<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
 	{/if}
@@ -275,7 +286,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{/if}
 	{/if}
 	<param name="showNoContentMessage" value="false" />	
-	{if $sBrowser == 'ipad'}
+	{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
+		<param id="forceHTML" name="forceHTML" value="false">
 		<param name="includeAPI" value="true" />
 		<param name="templateLoadHandler﻿" value="onTemplateLoad" />
 		<param name="templateLoadHandler" value="onTemplateLoaded" />
@@ -288,7 +300,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </object>
 
 {literal}
+
 <script type="text/javascript">
+    if(!bIsSupportVideo){
+        (elem=document.getElementById("forceHTML")).parentNode.removeChild(elem);
+    }
 	$Behavior.brightCoveCreateExp = function()
 	{
 		brightcove.createExperiences();

@@ -274,7 +274,7 @@ function playVideo(iVideoKey) {
 		}
 	}
 
-	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 
 		console.log(modVid);
 		console.log(modVid);
@@ -300,7 +300,7 @@ function onTemplateLoaded(experienceID)
 		console.log('iFrame Player: Template Loaded: ' + experienceID);
 	}
 
-	if (sBrowser === 'mobile' || sBrowser === 'ipad')
+	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5)
 	{
 		if (bDebug) {
 			console.log('iFrame Player: Setting up Smart Player API');
@@ -382,7 +382,7 @@ function onTemplateReady(oVideo) {
 
 	if (bAutoplay) {
 
-		if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+		if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 			modVid.loadVideoByID(aMediaIds[iCurrentVideo]);
 		}
 		else
@@ -396,7 +396,7 @@ function onTemplateReady(oVideo) {
 	}
 	else
 	{
-		if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+		if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 			modVid.cueVideoByID(aMediaIds[iCurrentVideo]);
 		}
 		else
@@ -507,7 +507,7 @@ function onVideoLoad(oMedia) {
 	}
 
 	//Workaround for BC player in mobile
-	if (sBrowser === 'mobile' || sBrowser === 'ipad')
+	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5)
 	{
 		seek(0);
 	}
@@ -520,7 +520,7 @@ function onVideoLoad(oMedia) {
 	$('#chapter_buttons button').addClass('no_display').removeClass('display');
 
 	//get new cue points
-	if (sBrowser === 'mobile' || sBrowser === 'ipad')
+	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5)
 	{
 		modCue.getCuePoints(oMedia.media.id, cuePointsHandler);
 	}
@@ -657,7 +657,7 @@ function onVideoEnd(oVideo) {
 				console.log('Media: Playing next video');
 			}
 
-			if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+			if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 				modVid.loadVideoByID(aMediaIds[iCurrentVideo]);
 			}
 			else
@@ -699,7 +699,7 @@ function seek(time)
 		console.log('Media: Seeking to time: ' + time);
 	}
 
-	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 		// if the video is not playing, start it and function calls itself again
 		modVid.getIsPlaying(function(isPlaying) {
 			if (isPlaying === true) {
@@ -761,7 +761,7 @@ function cuePointsHandler(cuepoints) {
 			console.log('Media: Cuepoints: ' + sCuePoints);
 		}
 
-		if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+		if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 			bIsPlaying = true;
 			modVid.getIsPlaying(function(isPlaying) {
 				if (isPlaying === false) {
@@ -859,7 +859,7 @@ function thumbnailClick(iKey) {
 	bIgnoreAutoPlaySetting = true;
 
 
-	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 		modVid.loadVideoByID(aMediaIds[iKey]);
 	}
 	else

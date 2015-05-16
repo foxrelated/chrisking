@@ -26,7 +26,45 @@ class Dvs_Component_Controller_Vin_Style extends Phpfox_Component {
                 $aStyle['vdp_background'] = Phpfox::getParam('core.url_file') . 'dvs/vdp/' . $aDvs['vdp_file_name'];
             }
         }
+
+        // Resize player for mobile device
+        $sBrowser = Phpfox::getService('dvs')->getBrowser();
+        $iScreenHeight = $this->request()->get('height');
+        $iScreenWidth = $this->request()->get('width');
+
+        if ($sBrowser == 'mobile') {
+            $iPopupWidth = (int)($iScreenWidth * 0.9);
+            if ($iPopupWidth > 930) {
+                $iPopupWidth = 930;
+            }
+            $iPlayerWidth = (int)($iPopupWidth * 0.9);
+            $iPlayerHeight = (int)($iPlayerWidth * 405 / 720);
+            $iPopupHeight = $iPlayerHeight + 65;
+
+            if ($iPlayerWidth > 520) {
+                $iPopupHeight = $iPopupHeight + 50;
+            } elseif ($iPlayerWidth > 450) {
+                $iPopupHeight = $iPopupHeight + 48;
+            } elseif ($iPlayerWidth > 380) {
+                $iPopupHeight = $iPopupHeight + 45;
+            } elseif ($iPlayerWidth > 350) {
+                $iPopupHeight = $iPopupHeight + 43;
+            } elseif ($iPlayerWidth > 310) {
+                $iPopupHeight = $iPopupHeight + 40;
+            } else {
+                $iPopupHeight = $iPopupHeight + 38;
+            }
+
+            $this->template()->assign(array(
+                'iPopupWidth' => $iPopupWidth,
+                'iPopupHeight' => $iPopupHeight,
+                'iPlayerWidth' => $iPlayerWidth,
+                'iPlayerHeight' => $iPlayerHeight
+            ));
+        }
+
         $this->template()->assign(array(
+            'sBrowser' => $sBrowser,
             'aStyle' => $aStyle,
             'sPopupBg' => Phpfox::getLib('image.helper')->display(array(
                 'theme' => 'layout/thickbox_bg.png',

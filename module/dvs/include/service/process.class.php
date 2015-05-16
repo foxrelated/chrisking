@@ -95,6 +95,7 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['used_car_videos'] = $this->preParse()->clean($aDvs['used_car_videos'], 1);
             $aSql['iframe_contact_form'] = $this->preParse()->clean($aDvs['iframe_contact_form'], 1);
             $aSql['vpd_popup'] = $this->preParse()->clean($aDvs['vpd_popup'], 1);
+            $aSql['player_type'] = $this->preParse()->clean($aDvs['player_type'], 1);
         }
 		
 		$iId = $this->database()->insert($this->_sTable, $aSql);
@@ -178,7 +179,7 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['used_car_videos'] = $this->preParse()->clean($aDvs['used_car_videos'], 1);
             $aSql['iframe_contact_form'] = $this->preParse()->clean($aDvs['iframe_contact_form'], 1);
             $aSql['vpd_popup'] = $this->preParse()->clean($aDvs['vpd_popup'], 1);
-
+            $aSql['player_type'] = $this->preParse()->clean($aDvs['player_type'], 1);
             if(isset($aDvs['parent_url'])) {
                 $aSql['parent_url'] = $this->preParse()->clean($aDvs['parent_url']);
             }

@@ -66,7 +66,6 @@ function watchVideoSelect(aVideoSelectMediaIds) {
 		"Category": "DVS Site",
 		"Action": "Menu",
 	});
-	
 	if (bIsDvs) {
 		resetOverlays();
 	}
@@ -198,17 +197,7 @@ function getPrice(iDvsId) {
 // 			}
 // 		};
 // 
-// 		sendToGoogle('iDrive Player', 'Call to Action Clicks', 'Get Price Clicked', oCustomVars);
-// 		mixpanel.track("Get Price Clicked", {
-// 			"Category": sPlayerName,
-// 			"Action": "Calls to Action",
-// 			"Chapter": sCurrentCuePoint,
-// 			"Video ID": aCurrentVideoMetaData.referenceId,
-// 			"Year": aCurrentVideoMetaData.year,
-// 			"Make": aCurrentVideoMetaData.make,
-// 			"Model": aCurrentVideoMetaData.model,
-// 			}
-// 		);
+// 		sendToGoogle(sPlayerName, 'iDrive Player', 'Call to Action Clicks', 'Get Price Clicked', oCustomVars);
 // 	}
 // 	else
 // 	{
@@ -219,7 +208,7 @@ function getPrice(iDvsId) {
 // 		}
 // 	}
 // }
-
+// 
 // function getPriceExternal(sEmail) {
 // 	if (aCurrentVideoMetaData) {
 // 
@@ -275,7 +264,7 @@ function playVideo(iVideoKey) {
 		}
 	}
 
-	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 
 		console.log(modVid);
 		console.log(modVid);
@@ -301,7 +290,7 @@ function onTemplateLoaded(experienceID)
 		console.log('Player: Template Loaded: ' + experienceID);
 	}
 
-	if (sBrowser === 'mobile' || sBrowser === 'ipad')
+	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5)
 	{
 		if (bDebug) {
 			console.log('Player: Setting up Smart Player API');
@@ -383,7 +372,7 @@ function onTemplateReady(oVideo) {
 
 	if (bAutoplay) {
 
-		if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+		if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 			modVid.loadVideoByID(aMediaIds[iCurrentVideo]);
 		}
 		else
@@ -397,7 +386,7 @@ function onTemplateReady(oVideo) {
 	}
 	else
 	{
-		if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+		if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 			modVid.cueVideoByID(aMediaIds[iCurrentVideo]);
 		}
 		else
@@ -417,10 +406,6 @@ function onTemplateReady(oVideo) {
 	}
 
 	sendToGoogle(sPlayerName, 'Player', 'Player Loaded');
-	mixpanel.track("Player Loaded", {
-		"Category": sPlayerName,
-		"Action": "Player"
-	});
 }
 
 //Called when any video loads.
@@ -508,7 +493,7 @@ function onVideoLoad(oMedia) {
 	}
 
 	//Workaround for BC player in mobile
-	if (sBrowser === 'mobile' || sBrowser === 'ipad')
+	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5)
 	{
 		seek(0);
 	}
@@ -521,7 +506,7 @@ function onVideoLoad(oMedia) {
 	$('#chapter_buttons button').addClass('no_display').removeClass('display');
 
 	//get new cue points
-	if (sBrowser === 'mobile' || sBrowser === 'ipad')
+	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5)
 	{
 		modCue.getCuePoints(oMedia.media.id, cuePointsHandler);
 	}
@@ -560,7 +545,7 @@ function onVideoLoad(oMedia) {
 		"Model": aCurrentVideoMetaData.model,
 		}
 	);
-		
+
 	if (sBrowser !== 'mobile' && sBrowser !== 'ipad') {
 		modMen.closeMenuPage();
 
@@ -657,13 +642,13 @@ function onVideoEnd(oVideo) {
 				console.log('Media: Playing next video');
 			}
 
-			if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+			if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 				modVid.loadVideoByID(aMediaIds[iCurrentVideo]);
 			}
 			else
 			{
 				//modCon.getMediaAsynch(aMediaIds[iCurrentVideo]);
-				//thumbnailClick(iCurrentVideo);
+				thumbnailClick(iCurrentVideo);
 				thumbnailClickDvs();
 			}
 		}
@@ -699,7 +684,7 @@ function seek(time)
 		console.log('Media: Seeking to time: ' + time);
 	}
 
-	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 		// if the video is not playing, start it and function calls itself again
 		modVid.getIsPlaying(function(isPlaying) {
 			if (isPlaying === true) {
@@ -761,7 +746,7 @@ function cuePointsHandler(cuepoints) {
 			console.log('Media: Cuepoints: ' + sCuePoints);
 		}
 
-		if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+		if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 			bIsPlaying = true;
 			modVid.getIsPlaying(function(isPlaying) {
 				if (isPlaying === false) {
@@ -859,7 +844,7 @@ function cuePointsHandler(cuepoints) {
 // 	//bIgnoreAutoPlaySetting = true;
 // 
 // 
-// 	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+// 	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 // 		modVid.loadVideoByID(aMediaIds[iKey]);
 // 	}
 // 	else
@@ -887,7 +872,7 @@ function thumbnailClick(iKey) {
 	bIgnoreAutoPlaySetting = true;
 
 
-	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 		modVid.loadVideoByID(aMediaIds[iKey]);
 	}
 	else
@@ -896,6 +881,7 @@ function thumbnailClick(iKey) {
 	}
 	return false;
 }
+
 function textOverlayClick(iDvsId) {
 	sendToGoogle('DVS Site', 'Overlay Banner', 'Text Overlay Clicked');
 	mixpanel.track("Text Overlay Clicked", {

@@ -1596,11 +1596,11 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				'max_width' => 145,
 				'max_height' => 82));
 
-			$sPlaylistHtml .= '<li>' .
-				'<a href="#" onclick="' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? 'modVid.loadVideoByID' : 'modCon.getMediaAsynch') . '(aMediaIds[' . $iKey . ']);return false;">' .
+            $sPlaylistHtml .= '<li>' .
+                '<a href="#" onclick="thumbnailClick (' . $iKey . ');thumbnailClickDvs();return false;">' .
 
-				$sThumbnailImageHtml . '<p>' . $aVideo['year'] . ' ' . $aVideo['model'] . '</p></a>' .
-				'</li>';
+                $sThumbnailImageHtml . '<p>' . $aVideo['year'] . ' ' . $aVideo['model'] . '</p></a>' .
+                '</li>';
 		}
 
 		$sPlaylistHtml .= '</ul>';
@@ -1912,5 +1912,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
         }
     }
+
+    public function deleteDomain()
+	{
+		$iId = $this->get('id');
+
+		Phpfox::getService('dvs.blacklists')->remove($iId);
+	}
 }
 ?>
