@@ -39,12 +39,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 {if !empty($sJavascript)}{$sJavascript}{/if}
 <script type="text/javascript">
+    var bIsSupportVideo = !!document.createElement('video').canPlayType;
 	var aMediaIds = [];
 	var aOverviewMediaIds = [];
 	var aTestDriveMediaIds = [];
 	var bIsHtml5 = false;
 	{if $aDvs.player_type}
-		var bIsHtml5 = true;
+        if (bIsSupportVideo) {l}
+        var bIsHtml5 = true;
+        {r}
 	{/if}
 	{if $bIsDvs}
 
@@ -258,13 +261,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<param name="height" value="{$iPlayerHeight}" />
 	{/if}
 	{if $bIsExternal}
-		{if $sBrowser == 'ipad' || $aDvs.player_type}
+		{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
 		<param name="@videoPlayer" value="{$iPlayerId}" />
 		{/if}
 		<param name="playerID" value="{$iPlayerId}" />
 		<param name="playerKey" value="{$sPlayerKey}" />
 	{else}
-		{if $sBrowser == 'ipad' || $aDvs.player_type}
+		{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
 		<param name="@videoPlayer" value="" />
 		{/if}
 		<param name="playerID" value="1418431455001" />
@@ -284,8 +287,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{/if}
 	{/if}
 	<param name="showNoContentMessage" value="false" />	
-	{if $sBrowser == 'ipad' || $aDvs.player_type}
-		<param name="forceHTML" value="true">
+	{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
+		<param id="forceHTML" name="forceHTML" value="false">
 		<param name="includeAPI" value="true" />
 		<param name="templateLoadHandler﻿" value="onTemplateLoad" />
 		<param name="templateLoadHandler" value="onTemplateLoaded" />
@@ -298,7 +301,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </object>
 
 {literal}
+
 <script type="text/javascript">
+    if(!bIsSupportVideo){
+        (elem=document.getElementById("forceHTML")).parentNode.removeChild(elem);
+    }
 	$Behavior.brightCoveCreateExp = function()
 	{
 		brightcove.createExperiences();
