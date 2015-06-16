@@ -1,3 +1,6 @@
+if(typeof bUrlChanged === 'undefined'){
+    var bUrlChanged = false;
+}
 var bcExp = {};
 var modExp = {};
 var modCon = {};
@@ -11,7 +14,6 @@ var oCuePoints = {};
 var oChapterDivs = {};
 var bMediaBegin = false;
 var bVideoChanged = false;
-var bUrlChanged = false;
 var sPlayerName;
 //var iCurrentVideo = 0;
 var aVideoSelectMediaIds = [];

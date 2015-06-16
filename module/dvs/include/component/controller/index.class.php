@@ -29,6 +29,8 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
 				return Phpfox::getLib('module')->setController('dvs.player.player');
 			} else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'iframe') {
                 return Phpfox::getLib('module')->setController('dvs.iframe');
+            } else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'inventory-player') {
+                return Phpfox::getLib('module')->setController('dvs.inventory-player');
             } else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'dvs-vdp-iframe') {
                 return Phpfox::getLib('module')->setController('dvs.dvs-vdp-iframe');
             } else {
