@@ -8,23 +8,33 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
         $iMaxWidth = $this->request()->get('maxwidth', 580) - 32;
         $iMaxHeight = (int)($iMaxWidth / 29 * 16);
         $aVins = explode(',', $sVin);
-        $bPreview = false;
 
         list($aRows, $aDvs) = Phpfox::getService('dvs.vin')->getVins($aVins, $iDvsId, $iMaxWidth, $iMaxHeight);
 
         $bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
-        $aPlayer = Phpfox::getService('dvs.player')->get($iDvsId);
+
         $sDvsRequest = $aDvs['title_url'];
 
+
+        $bPreview = false;
+
+
+        $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
+
         $sOverride = $aRows[$sVin]['title_url'];
-        Phpfox::getService('dvs.video')->setDvs($iDvsId);
+
+        Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
+
+        //Load player data
+        $aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
+
         if ($aPlayer['featured_model']) {
             $aFeaturedVideo = Phpfox::getService('dvs.video')->get('', false, $aPlayer['featured_year'], $aPlayer['featured_make'], $aPlayer['featured_model']);
         } else {
             $aFeaturedVideo = array();
         }
 
-        $aOverviewVideos = Phpfox::getService('dvs.video')->getOverviewVideos($iDvsId);
+        $aOverviewVideos = Phpfox::getService('dvs.video')->getOverviewVideos($aDvs['dvs_id']);
 
         //Here we shift array keys to start at 1 so thumbnails play the proper videos when we load a featured video or override video on to the front of the array
         //array_unshift($aOverviewVideos, '');
@@ -146,8 +156,8 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
 
         // Resize player for mobile device
         $sBrowser = Phpfox::getService('dvs')->getBrowser();
-        $iScreenHeight = $this->request()->get('height');
-        $iScreenWidth = $this->request()->get('width');
+        $iScreenHeight = $iMaxHeight;
+        $iScreenWidth = $iMaxWidth;
 
         $iWarningTextFontSize = 11;
         $iHeaderTextFontSize = 15;
@@ -267,8 +277,8 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
                 //'iBackgroundAlpha' => $iBackgroundAlpha,
                 'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
                 'aPlayer' => $aPlayer,
-                'iDvsId' => $iDvsId,
-                'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('dvs.player.prxml', array('id' => $iDvsId)), '', -1) . '  ? ',
+                'iDvsId' => $aDvs['dvs_id'],
+                'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('dvs.player.prxml', array('id' => $aDvs['dvs_id'])), '', -1) . '  ? ',
                 'aOverviewVideos' => $aOverviewVideos,
                 'bPreview' => $bPreview,
                 'bIsDvs' => true,
@@ -299,6 +309,5 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
                     . '<script type="text/javascript">' . $sDvsJs . '</script>'
                     . '<script type="text/javascript">var bUpdatedShareUrl = true;</script>'
             ));
-
     }
 }
