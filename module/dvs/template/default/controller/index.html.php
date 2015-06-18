@@ -346,6 +346,7 @@ padding: 0;
 							  <ul>
 								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Embed Code</span></a></li>
                                 <li><a href="#" onclick="$('#vdp_embed_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>Inventory Embed Code</span></a></li>
+                                <li><a href="#" onclick="$('#vin_url_player_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>VIN URL Player Code</span></a></li>
 							  </ul>
 						   </li>
 						   {if Phpfox::isAdmin()}
@@ -399,6 +400,12 @@ WTVVIN.init({l}
                 <p>Step 2: Add button code for each vehicle listing and replace # with VIN:</p> 
 					<textarea rows="1" cols="71">&lt;div class="dvs_vin_btn" vin="#"&gt;&lt;/div&gt; </textarea>
 					</p>
+            </div>
+            
+            <div id="vin_url_player_{$aDvs.dvs_id}" title="VIN URL Player code" class="dvs_iframe_link_popup" style="display:none;">
+                <p>Use this link to assign a single VIN to the player via a URL. Replace # with VIN:</p>
+                    <textarea rows="1" cols="71">{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}id_{$aDvs.dvs_id}/vin_#</textarea>
+                </p>
             </div>
 				
 			{/foreach}
