@@ -403,9 +403,10 @@ WTVVIN.init({l}
             </div>
             
             <div id="vin_url_player_{$aDvs.dvs_id}" title="VIN URL Player code" class="dvs_iframe_link_popup" style="display:none;">
-                <p>Use this link to assign a single VIN to the player via a URL. Replace # with VIN:</p>
-                    <textarea rows="1" cols="71">{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}id_{$aDvs.dvs_id}/vin_#</textarea>
+                <p>Use this URL to assign a video to the player using a VIN (replace # with VIN):</p>
+                    <textarea rows="1" cols="50">{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}id_{$aDvs.dvs_id}/vin_#</textarea>
                 </p>
+                <p>Note: This is mostly for Cobalt/CDK integrations who require the player be opened in a pop-up window or iframe that they control.</p>
             </div>
 				
 			{/foreach}
