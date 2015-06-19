@@ -1,6 +1,3 @@
-if(typeof bUrlChanged === 'undefined'){
-    var bUrlChanged = false;
-}
 var bcExp = {};
 var modExp = {};
 var modCon = {};
@@ -14,6 +11,7 @@ var oCuePoints = {};
 var oChapterDivs = {};
 var bMediaBegin = false;
 var bVideoChanged = false;
+var bUrlChanged = false;
 var sPlayerName;
 //var iCurrentVideo = 0;
 var aVideoSelectMediaIds = [];
@@ -24,54 +22,54 @@ var oCustomVars = [];
 //var bOverlayHold = false;
 
 if (bDebug) {
-	console.log('Page: ' + (bIsDvs ? 'DVS iFrame' : 'iDrive') + ' Browser Detected: ' + sBrowser);
+	console.log('Page: ' + (bIsDvs ? 'DVS Overlay Player' : 'iDrive') + ' Browser Detected: ' + sBrowser);
 }
 
 //Watch overviews.  Resets MediaID array and plays video 0.
-function watchOverviews() {
-	aMediaIds = aOverviewMediaIds;
-	playVideo(1);
-
-	if (bDebug) {
-		console.log("iFrame Player: Switching to Overviews");
-	}
-
-	sendToGoogle(sPlayerName, 'Menu', 'Watch Overviews');
-}
-
-//Watch test drives.  Resets MediaID array and plays video 0.
-function watchTestDrives() {
-	aMediaIds = aTestDriveMediaIds;
-	playVideo(0);
-
-	if (bDebug) {
-		console.log("Switching to Test Drives");
-	}
-
-	sendToGoogle(sPlayerName, 'Menu', 'Watch Test Drives');
-}
+// function watchOverviews() {
+// 	aMediaIds = aOverviewMediaIds;
+// 	playVideo(1);
+// 
+// 	if (bDebug) {
+// 		console.log("iFrame Player: Switching to Overviews");
+// 	}
+// 
+// 	sendToGoogle(sPlayerName, 'Menu', 'Watch Overviews');
+// }
+// 
+// //Watch test drives.  Resets MediaID array and plays video 0.
+// function watchTestDrives() {
+// 	aMediaIds = aTestDriveMediaIds;
+// 	playVideo(0);
+// 
+// 	if (bDebug) {
+// 		console.log("Switching to Test Drives");
+// 	}
+// 
+// 	sendToGoogle(sPlayerName, 'Menu', 'Watch Test Drives');
+// }
 
 //Video manually selected.  Resets MediaID array and plays video 0.
-function watchVideoSelect(aVideoSelectMediaIds) {
-	bIgnoreAutoPlaySetting = true;
-	bVideoChanged = true;
-	aMediaIds = aVideoSelectMediaIds;
-
-	playVideo(0);
-
-	if (bDebug) {
-		console.log("iFrame Player: Switching to Video Select");
-	}
-
-	sendToGoogle('DVS iFrame', 'Menu', 'Video Select');
-	mixpanel.track("Video Selector", {
-		"Category": "DVS iFrame",
-		"Action": "Menu",
-	});
-	if (bIsDvs) {
-		resetOverlays();
-	}
-}
+// function watchVideoSelect(aVideoSelectMediaIds) {
+// 	bIgnoreAutoPlaySetting = true;
+// 	bVideoChanged = true;
+// 	aMediaIds = aVideoSelectMediaIds;
+// 
+// 	playVideo(0);
+// 
+// 	if (bDebug) {
+// 		console.log("iFrame Player: Switching to Video Select");
+// 	}
+// 
+// 	sendToGoogle('DVS iFrame', 'Menu', 'Video Select');
+// 	mixpanel.track("Video Selector", {
+// 		"Category": "DVS iFrame",
+// 		"Action" : "Menu"
+// 	});
+// 	if (bIsDvs) {
+// 		resetOverlays();
+// 	}
+// }
 
 //Seek to new cue point if it's different than the one we're in, call cueChange
 function changeCuePoint(sCuePoint) {
@@ -100,10 +98,10 @@ function changeCuePoint(sCuePoint) {
 			}
 		};
 
-		sendToGoogle(sPlayerName, 'iFrame Player', 'Chapter Clicked: ' + sCuePoint, oCustomVars);
+		sendToGoogle('DVS Overlay Player', 'Overlay Player', 'Chapter Clicked: ' + sCuePoint, oCustomVars);
 		mixpanel.track("Chapter Clicked", {
-			"Category": sPlayerName,
-			"Action": "iFrame Player",
+			"Category" : "DVS Overlay Player",
+			"Action" : "Overlay Player",
 			"Chapter": sCuePoint,
 			"Video ID": aCurrentVideoMetaData.referenceId,
 			"Year": aCurrentVideoMetaData.year,
@@ -151,10 +149,10 @@ function getPrice(iDvsId) {
 			}
 		};
 
-		sendToGoogle('DVS iFrame', 'Call To Action Menu Clicks', 'Get Price Clicked', oCustomVars);
+		sendToGoogle('DVS Overlay Player', 'Call To Action Menu Clicks', 'Get Price Clicked', oCustomVars);
 		mixpanel.track("Get Price Clicked", {
-			"Category": "DVS iFrame",
-			"Action": "Calls to Action",
+			"Category" : "DVS Overlay Player",
+			"Action" : "Calls to Action",
 			"Chapter": sCurrentCuePoint,
 			"Video ID": aCurrentVideoMetaData.referenceId,
 			"Year": aCurrentVideoMetaData.year,
@@ -173,53 +171,53 @@ function getPrice(iDvsId) {
 	}
 }
 
-function getPriceIDrive(iIDriveId) {
-	if (aCurrentVideoMetaData) {
-
-		var oCustomVars = {
-			1: {
-				name: 'Video Reference ID',
-				value: aCurrentVideoMetaData.referenceId
-			},
-			2: {
-				name: 'Vehicle Year',
-				value: aCurrentVideoMetaData.year
-			},
-			3: {
-				name: 'Vehicle Make',
-				value: aCurrentVideoMetaData.make
-			},
-			4: {
-				name: 'Vehicle Model',
-				value: aCurrentVideoMetaData.model
-			},
-			5: {
-				name: 'Video Chapter',
-				value: sCurrentCuePoint
-			}
-		};
-
-		sendToGoogle(sPlayerName, 'iDrive iFrame Player', 'Call to Action Clicks', 'Get Price Clicked', oCustomVars);
-		mixpanel.track("Get Price Clicked", {
-			"Category": sPlayerName,
-			"Action": "Calls to Action",
-			"Chapter": sCurrentCuePoint,
-			"Video ID": aCurrentVideoMetaData.referenceId,
-			"Year": aCurrentVideoMetaData.year,
-			"Make": aCurrentVideoMetaData.make,
-			"Model": aCurrentVideoMetaData.model,
-			}
-		);
-	}
-	else
-	{
-		if (sBrowser === 'mobile') {
-			alert('Please wait for a video to start.');
-		} else {
-			alert('Please wait for a video to load.');
-		}
-	}
-}
+// function getPriceIDrive(iIDriveId) {
+// 	if (aCurrentVideoMetaData) {
+// 
+// 		var oCustomVars = {
+// 			1: {
+// 				name: 'Video Reference ID',
+// 				value: aCurrentVideoMetaData.referenceId
+// 			},
+// 			2: {
+// 				name: 'Vehicle Year',
+// 				value: aCurrentVideoMetaData.year
+// 			},
+// 			3: {
+// 				name: 'Vehicle Make',
+// 				value: aCurrentVideoMetaData.make
+// 			},
+// 			4: {
+// 				name: 'Vehicle Model',
+// 				value: aCurrentVideoMetaData.model
+// 			},
+// 			5: {
+// 				name: 'Video Chapter',
+// 				value: sCurrentCuePoint
+// 			}
+// 		};
+// 
+// 		sendToGoogle(sPlayerName, 'DVS Overlay Player', 'Call to Action Clicks', 'Get Price Clicked', oCustomVars);
+// 		mixpanel.track("Get Price Clicked", {
+// 			"Category" : "DVS Overlay Player",
+// 			"Action" : "Calls to Action",
+// 			"Chapter": sCurrentCuePoint,
+// 			"Video ID": aCurrentVideoMetaData.referenceId,
+// 			"Year": aCurrentVideoMetaData.year,
+// 			"Make": aCurrentVideoMetaData.make,
+// 			"Model": aCurrentVideoMetaData.model,
+// 			}
+// 		);
+// 	}
+// 	else
+// 	{
+// 		if (sBrowser === 'mobile') {
+// 			alert('Please wait for a video to start.');
+// 		} else {
+// 			alert('Please wait for a video to load.');
+// 		}
+// 	}
+// }
 
 function getPriceExternal(sEmail) {
 	if (aCurrentVideoMetaData) {
@@ -266,7 +264,7 @@ function cueChange(sCuePoint) {
 //Plays a new video on video end
 function playVideo(iVideoKey) {
 	if (bDebug) {
-		console.log('iFrame Player: Playing Video 2Key: ' + iVideoKey + ' from:');
+		console.log('Overlay Player: Playing Video 2Key: ' + iVideoKey + ' from:');
 		console.log(aMediaIds);
 	}
 
@@ -276,14 +274,14 @@ function playVideo(iVideoKey) {
 		}
 	}
 
-	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
+	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
 
 		console.log(modVid);
 		console.log(modVid);
 
 		modVid.loadVideoByID(aMediaIds[iVideoKey]);
 		if (bDebug) {
-			console.log('iFrame Player: Loading video...');
+			console.log('Overlay Player: Loading video...');
 		}
 	}
 	else
@@ -299,13 +297,13 @@ function onTemplateLoaded(experienceID)
 {
 
 	if (bDebug) {
-		console.log('iFrame Player: Template Loaded: ' + experienceID);
+		console.log('Overlay Player: Template Loaded: ' + experienceID);
 	}
 
-	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5)
+	if (sBrowser === 'mobile' || sBrowser === 'ipad')
 	{
 		if (bDebug) {
-			console.log('iFrame Player: Setting up Smart Player API');
+			console.log('Overlay Player: Setting up Smart Player API');
 		}
 
 		bcExp = brightcove.api.getExperience(experienceID);
@@ -323,7 +321,7 @@ function onTemplateLoaded(experienceID)
 	else
 	{
 		if (bDebug) {
-			console.log('iFrame Player: Setting up Flash Only API');
+			console.log('Overlay Player: Setting up Flash Only API');
 		}
 
 		bcExp = brightcove.getExperience(experienceID);
@@ -348,7 +346,7 @@ function onTemplateLoaded(experienceID)
 	}
 
 	if (bDebug) {
-		console.log('iFrame Player: Set up.');
+		console.log('Overlay Player: Set up.');
 	}
 	oChapterDivs['Intro'] = $('#chapter_container_Intro').html();
 	oChapterDivs['WhatsNew'] = $('#chapter_container_WhatsNew').html();
@@ -374,7 +372,7 @@ function onTemplateLoaded(experienceID)
 function onTemplateReady(oVideo) {
 
 	if (bDebug) {
-		console.log('iFrame Player: Template Ready.');
+		console.log('Overlay Player: Template Ready.');
 	}
 
 	if (!aMediaIds[iCurrentVideo])
@@ -384,7 +382,7 @@ function onTemplateReady(oVideo) {
 
 	if (bAutoplay) {
 
-		if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
+		if (sBrowser === 'mobile' || sBrowser === 'ipad') {
 			modVid.loadVideoByID(aMediaIds[iCurrentVideo]);
 		}
 		else
@@ -393,12 +391,12 @@ function onTemplateReady(oVideo) {
 		}
 
 		if (bDebug) {
-			console.log('iFrame Player: Playing video: ' + aMediaIds[iCurrentVideo]);
+			console.log('Overlay Player: Playing video: ' + aMediaIds[iCurrentVideo]);
 		}
 	}
 	else
 	{
-		if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
+		if (sBrowser === 'mobile' || sBrowser === 'ipad') {
 			modVid.cueVideoByID(aMediaIds[iCurrentVideo]);
 		}
 		else
@@ -407,21 +405,21 @@ function onTemplateReady(oVideo) {
 		}
 
 		if (bDebug) {
-			console.log('iFrame Player: Cueing video: ' + aMediaIds[iCurrentVideo]);
+			console.log('Overlay Player: Cueing video: ' + aMediaIds[iCurrentVideo]);
 		}
 	}
 
 	if (bIsDvs) {
-		sPlayerName = 'DVS iFrame Player';
+		sPlayerName = 'DVS Overlay Player';
 	} else {
 		sPlayerName = 'iDrive iFrame Player';
 	}
 
-	sendToGoogle(sPlayerName, 'iFrame Player', 'iFrame Player Loaded');
+	sendToGoogle(sPlayerName, 'Overlay Player', 'Player Loaded');
 	mixpanel.track("Player Loaded", {
 		"Category": sPlayerName,
-		"Action": "iFrame Player"
-	});
+		"Action": "Overlay Player"
+		});
 }
 
 //Called when any video loads.
@@ -469,10 +467,10 @@ function onVideoLoad(oMedia) {
 				}
 			};
 
-			sendToGoogle(sPlayerName, 'iFrame Player', 'Media Begin', oCustomVars);
+			sendToGoogle(sPlayerName, 'Overlay Player', 'Media Begin', oCustomVars);
 			mixpanel.track("Media Begin", {
-				"Category": sPlayerName,
-				"Action": "iFrame Player",
+				"Category" : sPlayerName,
+				"Action" : "Overlay Player",
 				"Video ID": aCurrentVideoMetaData.referenceId,
 				"Year": aCurrentVideoMetaData.year,
 				"Make": aCurrentVideoMetaData.make,
@@ -493,10 +491,10 @@ function onVideoLoad(oMedia) {
 				}
 			};
 
-			sendToGoogle(sPlayerName, 'iFrame Player', 'Media Begin', oCustomVars);
+			sendToGoogle(sPlayerName, 'Overlay Player', 'Media Begin', oCustomVars);
 			mixpanel.track("Media Begin", {
-				"Category": sPlayerName,
-				"Action": "iFrame Player",
+				"Category" : sPlayerName,
+				"Action" : "Overlay Player",
 				"Video ID": "Pre-roll",
 				"Year": aCurrentVideoMetaData.year,
 				"Make": aCurrentVideoMetaData.make,
@@ -509,20 +507,20 @@ function onVideoLoad(oMedia) {
 	}
 
 	//Workaround for BC player in mobile
-	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5)
+	if (sBrowser === 'mobile' || sBrowser === 'ipad')
 	{
 		seek(0);
 	}
 
 	sCurrentCuePoint = '';
 	if (bDebug) {
-		console.log('iFrame Player: Hiding all chapters');
+		console.log('Overlay Player: Hiding all chapters');
 	}
 
 	$('#chapter_buttons button').addClass('no_display').removeClass('display');
 
 	//get new cue points
-	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5)
+	if (sBrowser === 'mobile' || sBrowser === 'ipad')
 	{
 		modCue.getCuePoints(oMedia.media.id, cuePointsHandler);
 	}
@@ -551,10 +549,10 @@ function onVideoLoad(oMedia) {
 		}
 	};
 
-	sendToGoogle(sPlayerName, 'iFrame Player', 'Video Load', oCustomVars);
+	sendToGoogle(sPlayerName, 'Overlay Player', 'Video Load', oCustomVars);
 	mixpanel.track("Video Loaded", {
-		"Category": sPlayerName,
-		"Action": "iFrame Player",
+		"Category" : sPlayerName,
+		"Action" : "Overlay Player",
 		"Video ID": aCurrentVideoMetaData.referenceId,
 		"Year": aCurrentVideoMetaData.year,
 		"Make": aCurrentVideoMetaData.make,
@@ -568,7 +566,7 @@ function onVideoLoad(oMedia) {
 			modVid.loadVideo(oMedia.video.id);
 
 			if (bDebug && bIgnoreAutoPlaySetting && !bAutoplay) {
-				console.log('iFrame Player: Ignoring auto play setting, video loaded via thumbnail click or video select');
+				console.log('Overlay Player: Ignoring auto play setting, video loaded via thumbnail click or video select');
 			}
 		}
 		else
@@ -621,10 +619,10 @@ function onCuePointEvent(oCuePoint) {
 			}
 		};
 
-		sendToGoogle(sPlayerName, 'iFrame Player', 'Chapter Watched: ' + sCurrentCuePoint, oCustomVars);
+		sendToGoogle(sPlayerName, 'Overlay Player', 'Chapter Watched: ' + sCurrentCuePoint, oCustomVars);
 		mixpanel.track("Chapter Watched", {
-			"Category": sPlayerName,
-			"Action": "iFrame Player",
+			"Category" : sPlayerName,
+			"Action" : "Overlay Player",
 			"Chapter": sCurrentCuePoint,
 			"Video ID": aCurrentVideoMetaData.referenceId,
 			"Year": aCurrentVideoMetaData.year,
@@ -644,14 +642,14 @@ function onCuePointEvent(oCuePoint) {
 //Plays next video if there are any
 function onVideoEnd(oVideo) {
 	if (bDebug) {
-		console.log('iFrame Player: Video End');
+		console.log('Overlay Player: Video End');
 	}
 	bDebug = true;
 	if (bAutoAdvance) {
 		iCurrentVideo++;
 
 		if (bDebug) {
-			console.log('iFrame Player: Auto Advance enabled. Advancing to Video key: ' + iCurrentVideo);
+			console.log('Overlay Player: Auto Advance enabled. Advancing to Video key: ' + iCurrentVideo);
 		}
 
 		if (aMediaIds[iCurrentVideo]) {
@@ -659,7 +657,7 @@ function onVideoEnd(oVideo) {
 				console.log('Media: Playing next video');
 			}
 
-			if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
+			if (sBrowser === 'mobile' || sBrowser === 'ipad') {
 				modVid.loadVideoByID(aMediaIds[iCurrentVideo]);
 			}
 			else
@@ -673,11 +671,11 @@ function onVideoEnd(oVideo) {
 	else
 	{
 		if (bDebug) {
-			console.log('iFrame Player: Auto Advance disabled.');
+			console.log('Overlay Player: Auto Advance disabled.');
 		}
 		// Handle chapter light states
 		if (bDebug) {
-			console.log('iFrame Player: Resetting chapter lights');
+			console.log('Overlay Player: Resetting chapter lights');
 		}
 
 		$.each(oChapterDivs, function(sChapter, sHtml) {
@@ -701,7 +699,7 @@ function seek(time)
 		console.log('Media: Seeking to time: ' + time);
 	}
 
-	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
+	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
 		// if the video is not playing, start it and function calls itself again
 		modVid.getIsPlaying(function(isPlaying) {
 			if (isPlaying === true) {
@@ -732,7 +730,7 @@ function isPlayingHandler(result) {
 	bPlaying = result;
 
 	if (bDebug) {
-		console.log('iFrame Player: isPlayingHandler result: ' + result);
+		console.log('Overlay Player: isPlayingHandler result: ' + result);
 	}
 }
 
@@ -742,7 +740,7 @@ function changeLights(sCuePoint) {
 	$('#chapter_buttons button.selected').attr('class', 'watched display');
 
 	if (bDebug) {
-		console.log('iFrame Player: Showing green for ' + sCuePoint);
+		console.log('Overlay Player: Showing green for ' + sCuePoint);
 	}
 
 	if (sCuePoint === 'Intro' || sCuePoint === 'Overview')
@@ -763,7 +761,7 @@ function cuePointsHandler(cuepoints) {
 			console.log('Media: Cuepoints: ' + sCuePoints);
 		}
 
-		if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
+		if (sBrowser === 'mobile' || sBrowser === 'ipad') {
 			bIsPlaying = true;
 			modVid.getIsPlaying(function(isPlaying) {
 				if (isPlaying === false) {
@@ -846,7 +844,7 @@ function cuePointsHandler(cuepoints) {
 
 function thumbnailClick(iKey) {
 	if (bDebug) {
-		console.log('iFrame Player: Playlist Thumbnail Click: #' + iKey);
+		console.log('Overlay Player: Playlist Thumbnail Click: #' + iKey);
 	}
 
 	if (bIsDvs) {
@@ -861,7 +859,7 @@ function thumbnailClick(iKey) {
 	bIgnoreAutoPlaySetting = true;
 
 
-	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
+	if (sBrowser === 'mobile' || sBrowser === 'ipad') {
 		modVid.loadVideoByID(aMediaIds[iKey]);
 	}
 	else
@@ -872,33 +870,34 @@ function thumbnailClick(iKey) {
 }
 
 function textOverlayClick(iDvsId) {
-	sendToGoogle('DVS iFrame', 'Overlay Banner', 'Text Overlay Clicked');
+	sendToGoogle('DVS Overlay Player', 'Overlay Player', 'Text Overlay Clicked');
 	mixpanel.track("Text Overlay Clicked", {
-		"Category": "DVS iFrame",
-		"Action": "Overlay Banner"
+		"Category" : "DVS Overlay Player",
+		"Action" : "Overlay Player",
 	});
+	
 }
 
 function getPriceOverlayClick(iDvsId) {
-	sendToGoogle('DVS iFrame', 'Overlay Banner', 'Get Price Overlay Clicked');
+	sendToGoogle('DVS Overlay Player', 'Overlay Player', 'Get Price Overlay Clicked');
 	mixpanel.track("Get Price Overlay Clicked", {
-		"Category": "DVS iFrame",
-		"Action": "Overlay Banner"
+		"Category" : "DVS Overlay Player",
+		"Action" : "Overlay Player",
 	});
 }
 
-function thumbnailClickDvs(iDvsId) {
-	sendToGoogle('DVS iFrame', 'Playlist', 'Thumbnail Clicked');
-	mixpanel.track("Thumbnail Clicked", {
-		"Category": "DVS iFrame",
-		"Action": "Playlist"
-	});
-}
+// function thumbnailClickDvs(iDvsId) {
+// 	sendToGoogle('DVS Overlay Player', 'Playlist', 'Thumbnail Clicked');
+// 	mixpanel.track("Thumbnail Clicked", {
+// 		"Category" : "DVS Overlay Player",
+// 		"Action" : "Playlist",
+// 	});
+// }
 
 // function thumbnailClickIDrive(iIDriveId) {
-// 	sendToGoogle(sPlayerName, 'iDrive iFrame Player', 'Playlist', 'Thumbnail Clicked');
+// 	sendToGoogle(sPlayerName, 'iDrive Overlay Player', 'Playlist', 'Thumbnail Clicked');
 // }
 // 
 // function inventoryClickDvs(iDvsId) {
-// 	sendToGoogle('DVS iFrame', 'Inventory', 'Inventory Clicked');
+// 	sendToGoogle('DVS Overlay Player', 'Playlist', 'Inventory Clicked');
 // }

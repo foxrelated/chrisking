@@ -1,25 +1,52 @@
 function menuHome(sSource) {
 	sendToGoogle('DVS iFrame', sSource, 'Home');
+	mixpanel.track("Home Clicked", {
+		"Category": "DVS iFrame",
+		"Source": sSource
+	});
 }
 
 function menuInventory(sSource) {
 	sendToGoogle('DVS iFrame', sSource, 'Show Inventory');
+	mixpanel.track("View Inventory Clicked", {
+		"Category": "DVS iFrame",
+		"Source": sSource
+	});
 }
 
 function menuOffers(sSource) {
 	sendToGoogle('DVS iFrame', sSource, 'Special Offers');
+		mixpanel.track("Special Offers Clicked", {
+		"Category": "DVS iFrame",
+		"Source": sSource
+	});
+
 }
 
 function menuContact(sSource) {
 	sendToGoogle('DVS iFrame', sSource, 'Contact Dealer');
+		mixpanel.track("Contact Dealer Clicked", {
+		"Category": "DVS iFrame",
+		"Source": sSource
+	});;
+
 }
 
 function menuEmail(sSource) {
 	sendToGoogle('DVS iFrame', sSource, 'Email Menu Link');
+		mixpanel.track("Email Menu Clicked", {
+		"Category": "DVS iFrame",
+		"Source": sSource
+	});
+
 }
 
 function menuFooter(sSource) {
 	sendToGoogle('DVS iFrame', sSource, 'Footer Link Clicked');
+		mixpanel.track("Footer Clicked", {
+		"Category": "DVS iFrame",
+		"Source": sSource
+	});
 }
 
 function facebookShareClick(sSource) {
@@ -48,6 +75,15 @@ function facebookShareClick(sSource) {
 		};
 
 		sendToGoogle('DVS iFrame', sSource, 'Facebook Share Clicked', oCustomVars);
+		mixpanel.track("Facebook Share Clicked", {
+			"Category": "DVS iFrame",
+			"Source": sSource,
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			"Chapter": sCurrentCuePoint
+			});
 	}
 	else
 	{
@@ -85,6 +121,16 @@ function googleShareClick(sSource) {
 		};
 
 		sendToGoogle('DVS iFrame', sSource, 'Google Share Clicked', oCustomVars);
+		mixpanel.track("Google Share Clicked", {
+				"Category": "DVS iFrame",
+				"Source": sSource,
+				"Video ID": aCurrentVideoMetaData.referenceId,
+				"Year": aCurrentVideoMetaData.year,
+				"Make": aCurrentVideoMetaData.make,
+				"Model": aCurrentVideoMetaData.model,
+				"Chapter": sCurrentCuePoint
+				}
+		);
 	}
 	else
 	{
@@ -123,6 +169,16 @@ function showEmailShare(iDvsId) {
 		};
 
 		sendToGoogle('DVS iFrame', 'Share Links', 'Email Share Clicked', oCustomVars);
+		mixpanel.track("Email Share Clicked", {
+			"Category": "DVS iFrame",
+			"Source": "Share Links",
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			"Chapter": sCurrentCuePoint
+			}
+		);	
 	}
 	else
 	{
@@ -160,6 +216,16 @@ function shareEmailSent() {
 		};
 
 		sendToGoogle('DVS iFrame', 'Share Links', 'Email Share Sent', oCustomVars);
+		mixpanel.track("Email Share Sent", {
+			"Category": "DVS iFrame",
+			"Source": "Share Links",
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			"Chapter": sCurrentCuePoint
+			}
+		);
 	}
 }
 
@@ -189,6 +255,16 @@ function getPriceEmailSent() {
 		};
 
 		sendToGoogle('DVS iFrame', 'Dealer Contact', 'Lead Sent', oCustomVars);
+		mixpanel.track("Lead Sent", {
+			"Category": "DVS iFrame",
+			"Source": "Dealer Contact",
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			"Chapter": sCurrentCuePoint
+			}
+		);
 	}
 }
 
@@ -288,6 +364,16 @@ $Behavior.dvs = function() {
 		};
 
 		sendToGoogle('DVS iFrame', 'Share Links', 'Twitter Share Clicked', oCustomVars);
+		mixpanel.track("Twitter Share Clicked", {
+			"Category": "DVS iFrame",
+			"Source": "Share Links",
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			"Chapter": sCurrentCuePoint
+			}
+		);
 	}
 
 
@@ -318,6 +404,16 @@ $Behavior.dvs = function() {
 		};
 
 		sendToGoogle('DVS iFrame', 'Share Links', 'Tweet Posted', oCustomVars);
+		mixpanel.track("Tweet Posted", {
+			"Category": "DVS iFrame",
+			"Source": "Share Links",
+			"Video ID": aCurrentVideoMetaData.referenceId,
+			"Year": aCurrentVideoMetaData.year,
+			"Make": aCurrentVideoMetaData.make,
+			"Model": aCurrentVideoMetaData.model,
+			"Chapter": sCurrentCuePoint
+			}
+		);
 	}
 
 	function favIntentToAnalytics(intentEvent) {

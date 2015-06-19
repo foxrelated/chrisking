@@ -165,7 +165,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         /*if($aDvs['dvs_google_id']) {
             $tracker = new GoogleAnalytics\Tracker($aDvs['dvs_google_id'], 'domain.com');
         } else {
-            $tracker = new GoogleAnalytics\Tracker(Phpfox::getParam('dvs.global_google_id'), 'domain.com');
+        $tracker = new GoogleAnalytics\Tracker(Phpfox::getParam('dvs.global_google_id'), 'wtvdvs.com');
         }
         $visitor = new GoogleAnalytics\Visitor();
         $visitor->setIpAddress($_SERVER['REMOTE_ADDR']);

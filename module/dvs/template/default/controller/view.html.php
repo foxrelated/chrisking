@@ -244,8 +244,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         $Behavior.googleDvsDeactive = function() {l}
             {if $sBrowser == 'mobile'}
                 sendToGoogle('DVS Mobile', 'DVS Deactivated', 'Deactivation Message Shown');
+                mixpanel.track("Deactivation Message Shown");
             {else}
                 sendToGoogle('DVS Site', 'DVS Deactivated', 'Deactivation Message Shown');
+                mixpanel.track("Deactivation Message Shown");
             {/if}
         {r}
     </script>
