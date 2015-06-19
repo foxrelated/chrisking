@@ -156,6 +156,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
             }
 
             $aCompletedRows[$iKey]['url'] = $sOverrideLink;
+            $aCompletedRows[$iKey]['title_url'] = $aCompletedRow['url'];
         }
 
 

@@ -25,7 +25,7 @@ if (!window.WTVVIN) {
                 sVinId = x[i].getAttribute('vin');
                 sAllVin += sVinId + ',';
 
-                x[i].setAttribute('id', 'dvs_vin_btn_' + sVinId);
+                x[i].setAttribute('id', 'dvs_vin_btn_' + sVinId + '_' + i);
                 var sCurrentClass = x[i].getAttribute('class');
                 x[i].setAttribute('class', sCurrentClass + ' dvs_vin_btn_' + sVinId);
 

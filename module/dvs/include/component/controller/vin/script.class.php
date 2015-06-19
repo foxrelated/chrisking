@@ -13,6 +13,7 @@ class Dvs_Component_Controller_VIN_Script extends Phpfox_Component {
         $this->template()->assign(array(
             'aDvs' => $aDvs,
             'aRows' => $aRows,
+            'iTotalVin' => count($aVins),
             'sButtonText' => str_replace("'", "\\'", $aDvs['vin_button_label'])
         ));
 
