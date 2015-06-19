@@ -98,3 +98,41 @@ Phrase: Manage blacklist domain |  Link: dvs.blacklists
 ### DATABASE:
     - ALTER TABLE `phpfox_ko_dvs` ADD `player_type` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' ;
 
+*****************************************************   #561   *****************************************************
+### NOTED:
+    - Default email format will be standard email
+### DATABASE:
+    - ALTER TABLE `phpfox_ko_dvs` ADD `email_format` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `player_type`;
+### PHRASE:
+    - dvs.dealer_email_xml_body : <?xml version="1.0" encoding="UTF-8"?>
+                                  <?ADF VERSION="1.0"?>
+                                  <adf>
+                                      <prospect>
+                                          <id sequence="uniqueLeadId" source="{dvs_name}"></id>
+                                          <requestdate>{time}</requestdate>
+                                          <vehicle interest="buy" status="new">
+                                              <vin></vin>
+                                              <year>{year}</year>
+                                              <make>{make}</make>
+                                              <model>{model}</model>
+                                              <stock></stock>
+                                          </vehicle>
+                                          <customer>
+                                              <contact>
+                                                  <name part="full">{contact_name}</name>
+                                                  <email>{contact_email}</email>
+                                                  <phone type="home">{contact_phone}</phone>
+                                                  <phone type="work"></phone>
+                                                  <phone type="mobile"></phone>
+                                              </contact>
+                                              <comments>{contact_comments}</comments>
+                                          </customer>
+                                          <vendor>
+                                              <contact>
+                                                  <name part="full">WheelsTV - Dealer Video Showroom</name>
+                                                  <email>support@wheelstv.net</email>
+                                                  <phone type="business">978-264-4333</phone>
+                                              </contact>
+                                          </vendor>
+                                      </prospect>
+                                  </adf>
