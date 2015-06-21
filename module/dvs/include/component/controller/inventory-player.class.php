@@ -1,27 +1,27 @@
 <?php
-
 defined('PHPFOX') or exit('NO DICE!');
 
-class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
+class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
     public function process() {
+        $iDvsId = $this->request()->get('id');
+        $sVin = $this->request()->get('vin');
+        $iMaxWidth = $this->request()->get('maxwidth', 580) - 32;
+        $iMaxHeight = (int)($iMaxWidth / 29 * 16);
+        $aVins = explode(',', $sVin);
+
+        list($aRows, $aDvs) = Phpfox::getService('dvs.vin')->getVins($aVins, $iDvsId, $iMaxWidth, $iMaxHeight);
+
         $bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 
-        if ($bSubdomainMode) {
-            $sDvsRequest = $this->request()->get('req1');
-        } else {
-            $sDvsRequest = $this->request()->get('req2');
-        }
+        $sDvsRequest = $aDvs['title_url'];
+
+
         $bPreview = false;
 
-        /*phpmasterminds*/
-        $aBaseUrl = false;
-        if ($this->request()->get('req3')) {
-            $aBaseUrl = true;
-        }
-        /*phpmasterminds*/
+
         $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
 
-        $sOverride = ($bSubdomainMode ? $this->request()->get('req3') : $this->request()->get('req4'));
+        $sOverride = $aRows[$sVin]['title_url'];
 
         Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
 
@@ -156,8 +156,8 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
 
         // Resize player for mobile device
         $sBrowser = Phpfox::getService('dvs')->getBrowser();
-        $iScreenHeight = $this->request()->get('height');
-        $iScreenWidth = $this->request()->get('width');
+        $iScreenHeight = $iMaxHeight;
+        $iScreenWidth = $iMaxWidth;
 
         $iWarningTextFontSize = 11;
         $iHeaderTextFontSize = 15;
@@ -227,10 +227,9 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
         }
 
         $sVdpIframeUrl = $this->url()->makeUrl('dvs.utm') . '?utm_source=' . str_replace('&', '', $aDvs['dealer_name']) . ' DVS';
-        $sVdpIframeUrl .= '&utm_medium=Overlay Player';
+        $sVdpIframeUrl .= '&utm_medium=VDP Button';
         $sVdpIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
         $sVdpIframeUrl .= '&utm_campaign=DVS Inventory';
-			
         if(!$aDvs['is_active']) {
             $this->template()->setHeader('cache', array(
                 'deactive.css' => 'module_dvs'
@@ -246,12 +245,12 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
             ->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
             ->setHeader(array(
                 //'player.js' => 'module_dvs',
-                'overlay-player.js' => 'module_dvs',
-                'overlay-dvs.js' => 'module_dvs',
+                'iframe-player.js' => 'module_dvs',
                 'shorten.js' => 'module_dvs',
 //				'modernizr.js' => 'module_dvs',
                 'google_analytics.js' => 'module_dvs',
                 //'dvs.js' => 'module_dvs',
+                'iframe-dvs.js' => 'module_dvs',
                 '<meta property = "og:image" content = "' . $sThumbnailUrl . '"/>',
                 // New css + js files added 2/14
                 'chapter_buttons.css' => 'module_dvs',
@@ -263,14 +262,13 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
                 'sDvsRequest' => $sDvsRequest,
                 'sVideoUrl' => $aVideo['video_title_url'],
                 'sVideoThumb' => Phpfox::getLib('image.helper')->display(array(
-                        'server_id' => $aVideo['server_id'],
-                        'path' => 'core.url_file',
-                        'file' => 'brightcove/' . $aVideo['thumbnail_image'],
-                        'return_url' => true
-                    )),
+                    'server_id' => $aVideo['server_id'],
+                    'path' => 'core.url_file',
+                    'file' => 'brightcove/' . $aVideo['thumbnail_image'],
+                    'return_url' => true
+                )),
 
                 'aDvs' => $aDvs,
-                'aBaseUrl' => $aBaseUrl,
                 'aCurrentVideo' => $aCurrentVideo,
                 'aFirstVideo' => $aFirstVideo,
                 'bc' => $this->request()->get('bc'),
@@ -313,4 +311,3 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
             ));
     }
 }
-?>

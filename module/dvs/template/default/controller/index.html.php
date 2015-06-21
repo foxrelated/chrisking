@@ -334,7 +334,7 @@ padding: 0;
                                  {/if}
 							  </ul>
 						   </li>
-						   <li class=""><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share"><span>Share Links</span></a></a>
+						   <li class=""><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a>
 							  <!-- 
 <ul>
 								 <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share"><span>Share Links</span></a></li>
@@ -346,6 +346,7 @@ padding: 0;
 							  <ul>
 								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Embed Code</span></a></li>
                                 <li><a href="#" onclick="$('#vdp_embed_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>Inventory Embed Code</span></a></li>
+                                <li><a href="#" onclick="$('#vin_url_player_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>VIN URL Player Code</span></a></li>
 							  </ul>
 						   </li>
 						   {if Phpfox::isAdmin()}
@@ -399,6 +400,13 @@ WTVVIN.init({l}
                 <p>Step 2: Add button code for each vehicle listing and replace # with VIN:</p> 
 					<textarea rows="1" cols="71">&lt;div class="dvs_vin_btn" vin="#"&gt;&lt;/div&gt; </textarea>
 					</p>
+            </div>
+            
+            <div id="vin_url_player_{$aDvs.dvs_id}" title="VIN URL Player code" class="dvs_iframe_link_popup" style="display:none;">
+                <p>Use this URL to assign a video to the player using a VIN (replace # with VIN):</p>
+                    <textarea rows="1" cols="50">{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#</textarea>
+                </p>
+                <p>Note: This is mostly for Cobalt/CDK integrations who require the player be opened in a pop-up window or iframe that they control.</p>
             </div>
 				
 			{/foreach}

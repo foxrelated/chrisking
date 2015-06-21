@@ -1114,25 +1114,37 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 					'phone' => $aDvs['phone']
 			));
 
-			$sBody = Phpfox::getPhrase('dvs.dealer_email_body', array(
-					'contact_name' => $aVals['contact_name'],
-					'contact_email' => $aVals['contact_email'],
-					'contact_phone' => $aVals['contact_phone'],
-					'contact_zip' => $aVals['contact_zip'],
-					'contact_comments' => $aVals['contact_comments'],
-					'year' => $aVideo['year'],
-					'make' => $aVideo['make'],
-					'model' => $aVideo['model'],
-					'bodyStyle' => $aVideo['bodyStyle'],
-					'dvs_name' => $aDvs['dvs_name'],
-					'dealer_name' => $aDvs['dealer_name'],
-					'title_url' => $aDvs['title_url'],
-					'address' => $aDvs['address'],
-					'city' => $aDvs['city'],
-					'state_string' => $aDvs['state_string'],
-					'phone' => $aDvs['phone']
-			));
-
+            if($aDvs['email_format']){
+                $sBody = Phpfox::getPhrase('dvs.dealer_email_xml_body', array(
+                    'time' => PHPFOX_TIME,
+                    'year' => $aVideo['year'],
+                    'make' => $aVideo['make'],
+                    'model' => $aVideo['model'],
+                    'contact_name' => $aVals['contact_name'],
+                    'contact_email' => $aVals['contact_email'],
+                    'contact_phone' => $aVals['contact_phone'],
+                    'contact_comments' => $aVals['contact_comments']
+                ));
+            }else{
+                $sBody = Phpfox::getPhrase('dvs.dealer_email_body', array(
+                    'contact_name' => $aVals['contact_name'],
+                    'contact_email' => $aVals['contact_email'],
+                    'contact_phone' => $aVals['contact_phone'],
+                    'contact_zip' => $aVals['contact_zip'],
+                    'contact_comments' => $aVals['contact_comments'],
+                    'year' => $aVideo['year'],
+                    'make' => $aVideo['make'],
+                    'model' => $aVideo['model'],
+                    'bodyStyle' => $aVideo['bodyStyle'],
+                    'dvs_name' => $aDvs['dvs_name'],
+                    'dealer_name' => $aDvs['dealer_name'],
+                    'title_url' => $aDvs['title_url'],
+                    'address' => $aDvs['address'],
+                    'city' => $aDvs['city'],
+                    'state_string' => $aDvs['state_string'],
+                    'phone' => $aDvs['phone']
+                ));
+            }
 			Phpfox::getLib('mail')
 				->to($aDvs['email'])
 				->subject($sSubject)
@@ -1780,26 +1792,37 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
                 'state_string' => $aDvs['state_string'],
                 'phone' => $aDvs['phone']
             ));
-
-            $sBody = Phpfox::getPhrase('dvs.dealer_email_body', array(
-                'contact_name' => $aVals['contact_name'],
-                'contact_email' => $aVals['contact_email'],
-                'contact_phone' => $aVals['contact_phone'],
-                'contact_zip' => $aVals['contact_zip'],
-                'contact_comments' => $aVals['contact_comments'],
-                'year' => $aVideo['year'],
-                'make' => $aVideo['make'],
-                'model' => $aVideo['model'],
-                'bodyStyle' => $aVideo['bodyStyle'],
-                'dvs_name' => $aDvs['dvs_name'],
-                'dealer_name' => $aDvs['dealer_name'],
-                'title_url' => $aDvs['title_url'],
-                'address' => $aDvs['address'],
-                'city' => $aDvs['city'],
-                'state_string' => $aDvs['state_string'],
-                'phone' => $aDvs['phone']
-            ));
-
+            if($aDvs['email_format']){
+                $sBody = Phpfox::getPhrase('dvs.dealer_email_xml_body', array(
+                    'time' => PHPFOX_TIME,
+                    'year' => $aVideo['year'],
+                    'make' => $aVideo['make'],
+                    'model' => $aVideo['model'],
+                    'contact_name' => $aVals['contact_name'],
+                    'contact_email' => $aVals['contact_email'],
+                    'contact_phone' => $aVals['contact_phone'],
+                    'contact_comments' => $aVals['contact_comments']
+                ));
+            }else{
+                $sBody = Phpfox::getPhrase('dvs.dealer_email_body', array(
+                    'contact_name' => $aVals['contact_name'],
+                    'contact_email' => $aVals['contact_email'],
+                    'contact_phone' => $aVals['contact_phone'],
+                    'contact_zip' => $aVals['contact_zip'],
+                    'contact_comments' => $aVals['contact_comments'],
+                    'year' => $aVideo['year'],
+                    'make' => $aVideo['make'],
+                    'model' => $aVideo['model'],
+                    'bodyStyle' => $aVideo['bodyStyle'],
+                    'dvs_name' => $aDvs['dvs_name'],
+                    'dealer_name' => $aDvs['dealer_name'],
+                    'title_url' => $aDvs['title_url'],
+                    'address' => $aDvs['address'],
+                    'city' => $aDvs['city'],
+                    'state_string' => $aDvs['state_string'],
+                    'phone' => $aDvs['phone']
+                ));
+            }
             Phpfox::getLib('mail')
                 ->to($aDvs['email'])
                 ->subject($sSubject)

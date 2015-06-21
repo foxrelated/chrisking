@@ -14,6 +14,8 @@ function showOverlay(iOverlayId) {
 		complete: function() {
 		}
 	});
+	mixpanel.track("Overlay Viewed");
+
 }
 
 function hideOverlay(iOverlayId) {

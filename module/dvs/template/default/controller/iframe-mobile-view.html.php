@@ -21,6 +21,27 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     </section>
 
     <div id="player_right">
+        <section id="dealer_links">
+
+            {if $aDvs.inventory_url}
+            <a href="{$aDvs.inventory_url}" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow">
+                {phrase var='dvs.cta_inventory'}
+            </a>
+            {/if}
+            {if $aDvs.specials_url}
+            <a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow">
+                {phrase var='dvs.cta_specials'}
+            </a>
+            {/if}
+            {if $aDvs.iframe_contact_form}
+            <aside>
+                <div id="contact_box">
+                    <h2>Contact {$aDvs.dealer_name}</h2>
+                    {template file='dvs.block.contact-iframe}
+                </div>
+            </aside>
+            {/if}
+        </section>
         <section id="select_new">
             {if $aVideoSelectYears}
             <h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
@@ -61,28 +82,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 </li>
             </ul>
             {/if}
-        </section>
-        <section id="dealer_links">
-
-            {if $aDvs.inventory_url}
-            <a href="{$aDvs.inventory_url}" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow">
-                {phrase var='dvs.cta_inventory'}
-            </a>
-            {/if}
-            {if $aDvs.specials_url}
-            <a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow">
-                {phrase var='dvs.cta_specials'}
-            </a>
-            {/if}
-            {if $aDvs.iframe_contact_form}
-            <aside>
-                <div id="contact_box">
-                    <h2>Contact {$aDvs.dealer_name}</h2>
-                    {template file='dvs.block.contact-iframe}
-                </div>
-            </aside>
-            {/if}
-        </section>
+        </section>   
     </div>
     <br><br>
 </article>
