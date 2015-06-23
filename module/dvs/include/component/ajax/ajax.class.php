@@ -1116,7 +1116,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
             if($aDvs['email_format']){
                 $sBody = Phpfox::getPhrase('dvs.dealer_email_xml_body', array(
-                    'time' => PHPFOX_TIME,
+                    'time' => date('Y-m-dTH:i:s', PHPFOX_TIME),
+                    'dvs_name' => $aDvs['dvs_name'],
                     'year' => $aVideo['year'],
                     'make' => $aVideo['make'],
                     'model' => $aVideo['model'],
@@ -1794,7 +1795,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             ));
             if($aDvs['email_format']){
                 $sBody = Phpfox::getPhrase('dvs.dealer_email_xml_body', array(
-                    'time' => PHPFOX_TIME,
+                    'dvs_name' => $aDvs['dvs_name'],
+                    'time' => date('Y-m-dTH:i:s', PHPFOX_TIME),
                     'year' => $aVideo['year'],
                     'make' => $aVideo['make'],
                     'model' => $aVideo['model'],
