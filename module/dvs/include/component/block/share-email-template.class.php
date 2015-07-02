@@ -43,6 +43,8 @@ class Dvs_Component_Block_Share_Email_Template extends Phpfox_Component {
 				'sVideoLink' => $this->getParam('sVideoLink'),
 				'sImagePath' => $this->getParam('sImagePath'),
 				'sShareEmail' => $this->getParam('sShareEmail'),
+				'sMyShareEmail' => $this->getParam('sMyShareEmail'),
+				'sMySharePhone' => $this->getParam('sMySharePhone'),
 				'aForms'	=> $aForms,
 				'ses'		=> $ses
 		));

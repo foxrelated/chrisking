@@ -1235,12 +1235,13 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				'sMyShareName' => $aVals['my_share_name'],
 				'sShareMessage' => $aVals['share_message'],
 				'sShareEmail' => $aVals['share_email'],
+				'sMyShareEmail' => $aVals['my_share_email'],
+				'sMySharePhone' => $aDvs['phone'],
 				'sBackgroundImageUrl' => ($aDvs['background_file_name'] ? Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.dvs.background') . $aDvs['background_file_name'] : ''),
 				'sVideoLink' => $sVideoLink,
 				'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image'))
 			));
 			$sBody = $this->getContent(false);
-
 			Phpfox::getBlock('dvs.share-email-plain-template', array(
 				'iDvsId' => $aDvs['dvs_id'],
 				'sReferenceId' => $aVideo['referenceId'],
