@@ -815,7 +815,7 @@ body.outlook p {
                     <table class="twelve columns" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;margin: 0 auto;width: 500px;">
                       <tr style="padding: 0;vertical-align: top;text-align: left;">
                         <td style="text-align: center;word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;vertical-align: top;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-                          <h3 style="padding-bottom: 10px;text-align: center;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;padding: 0;margin: 0;line-height: 1.3;word-break: normal;font-size: 32px;"><a href="{$sVideoLink}" style="color: #2ba6cb;text-decoration: none;">{$aVideo.year} {$aVideo.make} {$aVideo.model} Virtual Test Drive</a></h3>
+                          <h4 style="padding-bottom: 10px;text-align: center;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;padding: 0;margin: 0;line-height: 1.3;word-break: normal;font-size: 28px;"><a href="{$sVideoLink}" style="color: #2ba6cb;text-decoration: none;">{$aVideo.year} {$aVideo.make} {$aVideo.model} Virtual Test Drive</a></h4>
                           <a href="{$sVideoLink}" style="color: #2ba6cb;text-decoration: none;">
                           {img server_id=$aVideo.image_server_id path='brightcove.url_image' file=$aVideo.image_path suffix='_email_500' title=$aVideo.name style='border:1px solid #ccc;'}
                           </a>
