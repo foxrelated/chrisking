@@ -349,10 +349,6 @@ p.lead, p.lede, p.leed {
   line-height:21px;
 }
 
-p { 
-  margin-bottom: 10px;
-}
-
 small {
   font-size: 10px;
 }
@@ -815,7 +811,7 @@ body.outlook p {
                     <table class="twelve columns" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;margin: 0 auto;width: 500px;">
                       <tr style="padding: 0;vertical-align: top;text-align: left;">
                         <td style="text-align: center;word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;vertical-align: top;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-                          <h4 style="padding-bottom: 10px;text-align: center;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;padding: 0;margin: 0;line-height: 1.3;word-break: normal;font-size: 28px;"><a href="{$sVideoLink}" style="color: #2ba6cb;text-decoration: none;">{$aVideo.year} {$aVideo.make} {$aVideo.model} Virtual Test Drive</a></h4>
+                          <h4 style="padding-bottom: 10px!important;text-align: center;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;padding: 0;margin: 0;line-height: 1.3;word-break: normal;font-size: 28px;"><a href="{$sVideoLink}" style="color: #2ba6cb;text-decoration: none;">{$aVideo.year} {$aVideo.make} {$aVideo.model} Virtual Test Drive</a></h4>
                           <a href="{$sVideoLink}" style="color: #2ba6cb;text-decoration: none;">
                           {img server_id=$aVideo.image_server_id path='brightcove.url_image' file=$aVideo.image_path suffix='_email_500' title=$aVideo.name style='border:1px solid #ccc;'}
                           </a>
@@ -840,7 +836,7 @@ body.outlook p {
                       {if $sShareMessage}
                       <tr style="padding: 0;vertical-align: top;text-align: left;">
                         <td class="panel" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px !important;vertical-align: top;text-align: left;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;background: #f2f2f2;border: 1px solid #d9d9d9;border-collapse: collapse !important;">
-                        <p style="font-size: 16px;margin: 0;margin-bottom: 10px;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;">{$sShareMessage}</p>
+                        <p style="font-size: 16px;margin: 0;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;">{$sShareMessage}</p>
                         </td>
                         <td class="expander" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0 !important;vertical-align: top;text-align: left;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;visibility: hidden;width: 0px;border-collapse: collapse !important;"></td>
                       </tr>
@@ -877,7 +873,7 @@ body.outlook p {
                       <tr style="padding: 0;vertical-align: top;text-align: left;">
                         <td align="center" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;vertical-align: top;text-align: left;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
                           <center style="width: 100%;min-width: 500px;">
-                            <p style="text-align: center;font-size: 10px;margin: 0;margin-bottom: 10px;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;padding: 0;line-height: 19px;"><a href="http://www.dealervideoshowroom.com" style="color: #2ba6cb;text-decoration: none;">Powered by Dealer Video Showroom</a></p>
+                            <p style="text-align: center;font-size: 10px;margin: 0;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;padding: 0;line-height: 19px;"><a href="http://www.dealervideoshowroom.com" style="color: #2ba6cb;text-decoration: none;">Powered by Dealer Video Showroom</a></p>
                           </center>
                         </td>
                         <td class="expander" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0 !important;vertical-align: top;text-align: left;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;visibility: hidden;width: 0px;border-collapse: collapse !important;"></td>
