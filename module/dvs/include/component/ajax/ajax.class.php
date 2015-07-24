@@ -1232,7 +1232,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				'sReferenceId' => $aVideo['referenceId'],
 				'sShareName' => $aVals['share_name'],
 				'sMyShareName' => $aVals['my_share_name'],
-				'sShareMessage' => $aVals['share_message'],
+				'sShareMessage' => nl2br(htmlentities($aVals['share_message'], ENT_QUOTES, 'UTF-8')),
 				'sShareEmail' => $aVals['share_email'],
 				'sMyShareEmail' => $aVals['my_share_email'],
 				'sMySharePhone' => $aDvs['phone'],
@@ -1258,7 +1258,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image'))
 			));
 			$sBodyPlain = $this->getContent(false);
-
 			$sDealerEmail = $aDvs['email'];
 			Phpfox::getLibClass('phpfox.mail.interface');
 			$oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
@@ -1367,7 +1366,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
                 'sReferenceId' => $aVideo['referenceId'],
                 'sShareName' => $aVals['share_name'],
                 'sMyShareName' => $aVals['my_share_name'],
-                'sShareMessage' => $aVals['share_message'],
+                'sShareMessage' => nl2br(htmlentities($aVals['share_message'], ENT_QUOTES, 'UTF-8')),
                 'sShareEmail' => $aVals['share_email'],
                 'sMyShareEmail' => $aVals['my_share_email'],
                 'sMySharePhone' => $aDvs['phone'],
