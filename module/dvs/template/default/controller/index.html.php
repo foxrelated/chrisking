@@ -347,6 +347,7 @@ padding: 0;
 								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Embed Code</span></a></li>
                                 <li><a href="#" onclick="$('#vdp_embed_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>Inventory Embed Code</span></a></li>
                                 <li><a href="#" onclick="$('#vin_url_player_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>VIN URL Player Code</span></a></li>
+                                 <li><a href="{url link='dvs.download-introduction' id=$aDvs.dvs_id}"><span>Download Introductions</span></a></li>
 							  </ul>
 						   </li>
 						   {if Phpfox::isAdmin()}
