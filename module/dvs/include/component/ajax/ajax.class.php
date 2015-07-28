@@ -1227,7 +1227,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             $oShareService = Phpfox::getService('dvs.share');
             $sVideoLink = $oShareService->convertNumberToHashCode($aVideo['ko_id'], 5) . $oShareService->convertNumberToHashCode($aDvs['dvs_id'], 3);
             $sVideoLink = Phpfox::getLib('url')->makeUrl('share.') . $sVideoLink . '6';
-
 			Phpfox::getBlock('dvs.share-email-template', array(
 				'iDvsId' => $aDvs['dvs_id'],
 				'sReferenceId' => $aVideo['referenceId'],
@@ -1235,12 +1234,18 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				'sMyShareName' => $aVals['my_share_name'],
 				'sShareMessage' => $aVals['share_message'],
 				'sShareEmail' => $aVals['share_email'],
+				'sMyShareEmail' => $aVals['my_share_email'],
+				'sMySharePhone' => $aDvs['phone'],
+				'sPagebg' => $aDvs['page_background'],
+				'sTextColor' => $aDvs['vin_text_color'],
+				'sLinkColor' => $aDvs['text_link'],
+				'sButtonBackground' => $aDvs['button_background'],
+				'sButtonText' => $aDvs['button_text'],
 				'sBackgroundImageUrl' => ($aDvs['background_file_name'] ? Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.dvs.background') . $aDvs['background_file_name'] : ''),
 				'sVideoLink' => $sVideoLink,
 				'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image'))
 			));
 			$sBody = $this->getContent(false);
-
 			Phpfox::getBlock('dvs.share-email-plain-template', array(
 				'iDvsId' => $aDvs['dvs_id'],
 				'sReferenceId' => $aVideo['referenceId'],
@@ -1364,6 +1369,13 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
                 'sMyShareName' => $aVals['my_share_name'],
                 'sShareMessage' => $aVals['share_message'],
                 'sShareEmail' => $aVals['share_email'],
+                'sMyShareEmail' => $aVals['my_share_email'],
+                'sMySharePhone' => $aDvs['phone'],
+                'sPagebg' => $aDvs['page_background'],
+                'sTextColor' => $aDvs['vin_text_color'],
+                'sLinkColor' => $aDvs['text_link'],
+                'sButtonBackground' => $aDvs['button_background'],
+                'sButtonText' => $aDvs['button_text'],
                 'sBackgroundImageUrl' => ($aDvs['background_file_name'] ? Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.dvs.background') . $aDvs['background_file_name'] : ''),
                 'sVideoLink' => $sVideoLink,
                 'sImagePath' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image'))
