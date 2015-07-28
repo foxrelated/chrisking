@@ -1,7 +1,7 @@
 <style type="text/css">
     #dvs_bc_player {l}
-        width: {if $sBrowser == 'mobile'}{$iPlayerWidth}{else}720px{/if};
-        height: {if $sBrowser == 'mobile'}{$iPlayerHeight}{else}406px{/if};
+        width: {if $sBrowser == 'mobile'}{$iPlayerWidth}px{else}720px{/if};
+        height: {if $sBrowser == 'mobile'}{$iPlayerHeight}px{else}406px{/if};
     {r}
 
     body {l}
@@ -22,8 +22,20 @@
         margin-left:10px;
         font-size:{if $sBrowser == 'mobile'}{$iHeaderTextFontSize}px{else}18px{/if};
     {r}
+    #dvs_bc_player h1 {l}
+        line-height: 400px;
+        text-align: center;
+    {r}
 </style>
-
+<script type="text/javascript">
+    $Behavior.removeNoVideo = function() {l}
+    {if $bNoVideo}
+        $('#video_information').remove();
+        $('#dvs_bc_player').css('background', '#000');
+        $('#dvs_bc_player').html('<h1>Coming soon</h1>');
+    {/if}
+    {r}
+</script>
 <article>
     <section id="video_information">
         <h3 id="video_name">
