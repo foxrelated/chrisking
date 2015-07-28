@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @author  		Konsort.org
  * @package 		DVS
  */
-class Dvs_Component_Block_Download_Introductions extends Phpfox_Component {
+class Dvs_Component_Block_Download_Instructions extends Phpfox_Component {
     public function process() {
 
         $this->template()
