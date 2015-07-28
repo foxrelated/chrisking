@@ -253,12 +253,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	
 			<li>
 				<label for="zip_code">{phrase var='dvs.zip_code'}:</label>
-				<input type="text" name="val[postal_code]" value="{value type='input' id='postal_code'}" id="postal_code" size="60" maxlength="5" />
+				<input type="text" name="val[postal_code]" value="{value type='input' id='postal_code'}" id="postal_code" size="60" maxlength="10" />
 			</li>
 	
 			<li>
 				<label for="contact_phone">{phrase var='dvs.contact_phone'}:</label>
-				<input type="tel" name="val[phone]" size="60" maxlength="13" value="{value type='input' id='phone'}" id="phone" />
+				<input type="tel" name="val[phone]" size="60" maxlength="20" value="{value type='input' id='phone'}" id="phone" />
 				{*phrase var='dvs.phone_phrase'*}
 			</li>
 	
@@ -296,11 +296,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{*phrase var='dvs.welcome_message_phrase'*}
 			</li>
 	
-			<li>
+			{*<li>
 				<label for="custom_seo_tags">{phrase var='dvs.custom_seo_tags'}:</label>
 				<input type="text" name="val[seo_tags]" value="{value type='input' id='seo_tags'}" id="seo_tags" size="60" maxlength="100" />
 				&nbsp;Note: Separate tags with commas{*phrase var='dvs.seo_tags_phrase'*}
-			</li>
+			</li>*}
 	
 			<li>
 				<label for="google_analytics_id">{phrase var='dvs.google_analytics_id'}:</label>
@@ -337,7 +337,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</ol>
 		</fieldset>
 
-		<h3>Gallery Link Target</h3>
+		{*<h3>Gallery Link Target</h3>
 		<fieldset>
 		<ol>
 			<li>
@@ -350,7 +350,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</ol>
 		</fieldset>
 
-		{*<h3>{phrase var='dvs.inventory_display_settings'}</h3>
+		<h3>{phrase var='dvs.inventory_display_settings'}</h3>
 
 		<fieldset>
 		<ol>
@@ -395,14 +395,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</ol>
 	</fieldset>*}
 
-    <h3>Parent URL for Sitemap and Share Links</h3>
+    <h3>Dealer's VTD Page URL (for Sitemap and Share Links)</h3>
     <fieldset>
         <ol>
             <li>
                 {if !isset($aForms.parent_url)}
                 <h1 style="background: #FF0000; color: #FFFFFF; padding-left: 10px; font-size: 14px; line-height: 25px; height: 25px;">You need to embed the iframe code on the dealer site first!</h1>
                 {else}
-                <h1 style="background: #00FF00; color: #000000; padding-left: 10px; font-size: 14px; line-height: 25px; height: 25px;">DVS iFrame integrated: <a href="{$aForms.parent_url}"><b>{$aForms.parent_url}</b></a></h1>
+                <h1 style="background: #00FF00; color: #000000; padding-left: 10px; font-size: 14px; line-height: 25px; height: 25px;">VTD page integrated: <a href="{$aForms.parent_url}"><b>{$aForms.parent_url}</b></a></h1>
                 {/if}
 
                 <input {if !isset($aForms.parent_url)}disabled="disabled"{/if} type="radio" name="val[sitemap_parent_url]" value="1" {if $bIsEdit && $aForms.sitemap_parent_url == 1 && isset($aForms.parent_url)}checked="checked"{/if}/>{phrase var='dvs.dvs_inventory_status_on'}
@@ -411,19 +411,19 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 			{if isset($aForms.parent_url)}
 			<li>
-				<label for="parent_url">Parent URL:</label>
+				<label for="parent_url">VTD Page URL:</label>
 				<input type="text" maxlength="255" size="60" id="parent_url" name="val[parent_url]" value="{value type='input' id='parent_url'}">
 			</li>
 
 			<li>
-				<label for="parent_video_url">Parent Video URL:</label>
+				<label for="parent_video_url">VTD Page Video URL:</label>
 				<input type="text" maxlength="255" size="60" id="parent_video_url" name="val[parent_video_url]" value="{value type='input' id='parent_video_url'}">
 			</li>
 			{/if}
         </ol>
     </fieldset>
 
-    <h3>Open VDP button links in popup</h3>
+    <h3>Inventory Overlay Player</h3>
     <fieldset>
         <ol>
             <li>
@@ -434,17 +434,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     </fieldset>
 
 
-    <h3>Video Types</h3>
+    <h3>Allowed Video Types</h3>
     <fieldset>
         <ol>
             <li>
-                <label for="new_car_videos">New Car Videos:</label>
+                <label for="new_car_videos">New Car:</label>
                 <input type="radio" name="val[new_car_videos]" value="1" {if $bIsEdit && $aForms.new_car_videos == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
                 <input type="radio" name="val[new_car_videos]" value="0" {if $bIsEdit && $aForms.new_car_videos == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
             </li>
 
             <li>
-                <label for="used_car_videos">Used Car Videos:</label>
+                <label for="used_car_videos">Used Car:</label>
                 <input type="radio" name="val[used_car_videos]" value="1" {if $bIsEdit && $aForms.used_car_videos == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
                 <input type="radio" name="val[used_car_videos]" value="0" {if $bIsEdit && $aForms.used_car_videos == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
             </li>
@@ -459,7 +459,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </li>
         </ol>
     </fieldset>
-    <h3>Email contact format</h3>
+    <h3>Email Lead Format</h3>
     <fieldset>
         <ol>
             <li>
