@@ -93,6 +93,7 @@ class Dvs_Component_Controller_Settings extends Phpfox_Component {
 
 		$this->template()
 			->setHeader(array(
+				'country.js' => 'module_core',
 				//'add.css' => 'module_dvs',
 				'settings.css' => 'module_dvs',))
 			->assign(array(

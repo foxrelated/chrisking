@@ -241,11 +241,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<label for="city">{required}{phrase var='dvs.city'}:</label>
 				<input type="text" name="val[city]" value="{value type='input' id='city'}" id="city" size="60" maxlength="60" required />
 			</li>
-	
+			<li>
+				<label for="state">{required}Country:</label>
+				{select_location}
+			</li>
 			<li>
 				<label for="state">{required}State:</label>
 				{if $bIsEdit}
-					{module name='core.country-child' country_child_id=$aForms.country_child_id}
+					{module name='core.country-child' country_child_value=($aForms.country_iso?$aForms.country_iso:'US') country_child_id=$aForms.country_child_id country_not_user=true}
 				{else}
 					{module name='core.country-child'}
 				{/if}

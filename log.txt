@@ -140,3 +140,7 @@ Phrase: Manage blacklist domain |  Link: dvs.blacklists
 *****************************************************   #629   *****************************************************
 ### PHRASE:
     - dvs.dealer_text_body : Tap {video_link} to take a {dealer_name} Virtual Test Drive on your phone! {custom_message}
+
+*****************************************************   #629   *****************************************************
+### DATABASE:
+    - ALTER TABLE `phpfox_ko_dvs` ADD `country_iso` CHAR(2) NULL DEFAULT NULL AFTER `email_format`;
