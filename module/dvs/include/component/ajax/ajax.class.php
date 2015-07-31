@@ -1169,10 +1169,76 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		}
 	}
 
-	public function sendShareEmail()
+	public function sendShareText()
 	{
         Phpfox::getLib('setting')->setParam('brightcove.dir_image', PHPFOX_DIR_FILE . 'pic' . PHPFOX_DS . 'brightcove' . PHPFOX_DS);
         Phpfox::getLib('setting')->setParam('brightcove.url_image', Phpfox::getParam('core.url_pic') . 'brightcove/');
+
+		$aVals = Phpfox::getLib('request')->getArray('val');
+		$bIsError = false;
+
+		if (!$aVals['sender_mobile']) {
+			Phpfox_Error::set('Please enter sender mobile');
+			$bIsError = true;
+		}
+		if (!$aVals['receiver_mobile']) {
+			Phpfox_Error::set('Please enter receiver mobile');
+			$bIsError = true;
+		}
+
+
+		if (!$bIsError) {
+			$aDvs = Phpfox::getService('dvs')->get($aVals['dvs_id']);
+			Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
+			$aVideo = Phpfox::getService('dvs.video')->get($aVals['video_ref_id']);
+            $oShareService = Phpfox::getService('dvs.share');
+            $sVideoLink = $oShareService->convertNumberToHashCode($aVideo['ko_id'], 5) . $oShareService->convertNumberToHashCode($aDvs['dvs_id'], 3);
+            $sVideoLink = Phpfox::getLib('url')->makeUrl('share.') . $sVideoLink . '6';
+			$sBody = Phpfox::getPhrase('dvs.dealer_text_body', array(
+				'dealer_name' => $aDvs['dvs_id'],
+				'custom_message' => $aVals['custom_message'],
+				'video_link' => $sVideoLink
+			));
+			$url = 'https://www.callfire.com/api/1.1/rest/text';
+			$username = '8d8f92381861';
+			$password='fa466f5e29147c02';
+			$params = array(
+				'Text'  => 'TEXT',
+				'Message' => $sBody,
+				'From' => $aVals['sender_mobile'],
+				'To' => $aVals['receiver_mobile']
+			);
+			$http = curl_init($url);
+			curl_setopt($http, CURLOPT_POST, true);
+			$query = http_build_query($params);
+			curl_setopt($http, CURLOPT_POSTFIELDS, $query);
+			$header = array('Content-Type: application/x-www-form-urlencoded');
+			curl_setopt($http, CURLOPT_HTTPHEADER,     $header);
+			curl_setopt($http, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($http, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($http, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($http, CURLOPT_USERPWD, "$username:$password");
+			$response = curl_exec($http);
+			$error = curl_error($http);
+			curl_close($http);
+
+            $this->hide('#loading_text_img')
+                ->show('.share_text_field');
+
+			$this->hide('#share_text_dealer');
+			$this->show('#dvs_share_text_success');
+			$this->call("setTimeout(function() { tb_remove(); }, 3000);");
+		} else {
+            $this->hide('#loading_text_img')
+                ->show('.share_text_field');
+			return false;
+		}
+	}
+
+	public function sendShareEmail()
+	{
+		Phpfox::getLib('setting')->setParam('brightcove.dir_image', PHPFOX_DIR_FILE . 'pic' . PHPFOX_DS . 'brightcove' . PHPFOX_DS);
+		Phpfox::getLib('setting')->setParam('brightcove.url_image', Phpfox::getParam('core.url_pic') . 'brightcove/');
 
 		$aVals = Phpfox::getLib('request')->getArray('val');
 		$bIsError = false;
@@ -1186,10 +1252,10 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$bIsError = true;
 		}
 
-        if (!$aVals['my_share_email']) {
-            Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'));
-            $bIsError = true;
-        }
+		if (!$aVals['my_share_email']) {
+			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'));
+			$bIsError = true;
+		}
 
 		if (!$aVals['share_email']) {
 			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_friends_name'));
@@ -1210,9 +1276,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				$aReplace[] = '' . $sValue . '';
 			}
 			foreach ($aDvs as $sKey => $sValue) {
-                if(is_array($sValue)) {
-                    continue;
-                }
+				if(is_array($sValue)) {
+					continue;
+				}
 				$aFind[] = '{dvs_' . $sKey . '}';
 				$aReplace[] = '' . $sValue . '';
 			}
@@ -1223,10 +1289,10 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 			$sSubject = str_replace($aFind, $aReplace, $sSubject);
 
-   		    $iUserId = Phpfox::getUserId();
-            $oShareService = Phpfox::getService('dvs.share');
-            $sVideoLink = $oShareService->convertNumberToHashCode($aVideo['ko_id'], 5) . $oShareService->convertNumberToHashCode($aDvs['dvs_id'], 3);
-            $sVideoLink = Phpfox::getLib('url')->makeUrl('share.') . $sVideoLink . '6';
+			$iUserId = Phpfox::getUserId();
+			$oShareService = Phpfox::getService('dvs.share');
+			$sVideoLink = $oShareService->convertNumberToHashCode($aVideo['ko_id'], 5) . $oShareService->convertNumberToHashCode($aDvs['dvs_id'], 3);
+			$sVideoLink = Phpfox::getLib('url')->makeUrl('share.') . $sVideoLink . '6';
 			Phpfox::getBlock('dvs.share-email-template', array(
 				'iDvsId' => $aDvs['dvs_id'],
 				'sReferenceId' => $aVideo['referenceId'],
@@ -1263,15 +1329,15 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
 			$oMail->send($aVals['share_email'], $sSubject, $sBodyPlain, $sBody, $aVals['my_share_name'], $aVals['my_share_email']);
 
-            $this->hide('#loading_email_img')
-                ->show('.share_email_field');
+			$this->hide('#loading_email_img')
+				->show('.share_email_field');
 
 			$this->hide('#share_email_dealer');
 			$this->show('#dvs_share_email_success');
 			$this->call("setTimeout(function() { tb_remove(); }, 3000);");
 		} else {
-            $this->hide('#loading_email_img')
-                ->show('.share_email_field');
+			$this->hide('#loading_email_img')
+				->show('.share_email_field');
 			return false;
 		}
 	}
@@ -1674,6 +1740,11 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 	public function emailForm()
 	{
 		Phpfox::getBlock('dvs.share-email', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bSaveGa' => $this->get('bSaveGa', 1)), false);
+	}
+
+	public function textForm()
+	{
+		Phpfox::getBlock('dvs.share-text', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId'), 'bSaveGa' => $this->get('bSaveGa', 1)), false);
 	}
 
     public function emailFormIframe() {

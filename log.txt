@@ -136,3 +136,7 @@ Phrase: Manage blacklist domain |  Link: dvs.blacklists
                                           </vendor>
                                       </prospect>
                                   </adf>
+
+*****************************************************   #629   *****************************************************
+### PHRASE:
+    - dvs.dealer_text_body : Tap {video_link} to take a {dealer_name} Virtual Test Drive on your phone! {custom_message}
