@@ -359,11 +359,11 @@
     {r}
 
     a:hover{l}
-    color: #2795b6 !important;
+    color: #{$sLinkColor} !important;
     {r}
 
     a:active{l}
-    color: #2795b6 !important;
+    color: #{$sLinkColor} !important;
     {r}
 
     a:visited{l}
@@ -432,9 +432,9 @@
     display: block;
     width: auto !important;
     text-align: center;
-    background: #{$sLinkColor};
+    background: #{$sButtonBackground};
     border: 1px solid #2284a1;
-    color: #ffffff;
+    color: #{$sButtonText};
     padding: 8px 0;
     {r}
 
@@ -462,7 +462,7 @@
     font-weight: bold;
     text-decoration: none;
     font-family: Helvetica, Arial, sans-serif;
-    color: #ffffff;
+    color: #{$sButtonText};
     font-size: 16px;
     {r}
 
@@ -486,13 +486,13 @@
     table.button:hover td,
     table.button:visited td,
     table.button:active td{l}
-    background: #2795b6 !important;
+    background: #{$sButtonBackground} !important;
     {r}
 
     table.button:hover td a,
     table.button:visited td a,
     table.button:active td a{l}
-    color: #fff !important;
+    color: #{$sButtonText} !important;
     {r}
 
     table.button:hover td,
@@ -500,7 +500,7 @@
     table.small-button:hover td,
     table.medium-button:hover td,
     table.large-button:hover td{l}
-    background: #2795b6 !important;
+    background: #{$sButtonBackground} !important;
     {r}
 
     table.button:hover td a,
@@ -518,37 +518,37 @@
     table.large-button:hover td a,
     table.large-button:active td a,
     table.large-button td a:visited{l}
-    color: #ffffff !important;
+    color: #{$sButtonText} !important;
     {r}
 
     table.secondary td{l}
-    background: #e9e9e9;
+    background: #{$sButtonBackground};
     border-color: #d0d0d0;
     color: #555;
     {r}
 
     table.secondary td a{l}
-    color: #555;
+    color: #{$sButtonText};
     {r}
 
     table.secondary:hover td{l}
-    background: #d0d0d0 !important;
-    color: #555;
+    background: #{$sButtonBackground} !important;
+    color: #{$sButtonText};
     {r}
 
     table.secondary:hover td a,
     table.secondary td a:visited,
     table.secondary:active td a{l}
-    color: #555 !important;
+    color: #{$sButtonText} !important;
     {r}
 
     table.success td{l}
-    background: #5da423;
+    background: #{$sButtonBackground};
     border-color: #457a1a;
     {r}
 
     table.success:hover td{l}
-    background: #457a1a !important;
+    background: #{$sButtonBackground} !important;
     {r}
 
     table.alert td{l}
@@ -825,8 +825,8 @@
                         <td style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;vertical-align: top;text-align: left;color: #{$sTextColor};font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
                           <table class="large-button" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;overflow: hidden;">
                             <tr style="padding: 0;vertical-align: top;text-align: left;">
-                              <td style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 21px 0 18px;vertical-align: top;text-align: center;color: #{$sPagebg};font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;display: block;background: #{$sButtonBackground};border: 1px solid #{$sButtonText};border-collapse: collapse !important;width: auto !important;">
-                                <a href="{$sVideoLink}" style="color: #{$sButtonText};text-decoration: none;font-weight: bold;font-family: Helvetica, Arial, sans-serif;font-size: 24px;">Take Your Virtual Test Drive</a>
+                              <td style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 21px 0 18px;vertical-align: top;text-align: center;color: #{$sButtonText};font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;display: block;background: #{$sButtonBackground};border: 1px solid #{$sButtonText};border-collapse: collapse !important;width: auto !important;">
+                                <a href="{$sVideoLink}" style="color: #{$sButtonText};text-decoration: none;font-weight: bold;font-family: Helvetica, Arial, sans-serif;font-size: 24px;background:#{$sButtonBackground};">Take Your Virtual Test Drive</a>
                               </td>
                             </tr>
                           </table>
