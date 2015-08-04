@@ -1185,6 +1185,10 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			Phpfox_Error::set('Please enter receiver mobile');
 			$bIsError = true;
 		}
+        if ($aVals['custom_message'] && strlen($aVals['custom_message']) > 100) {
+            Phpfox_Error::set('Please enter custom message less than 100 character');
+            $bIsError = true;
+        }
 
 
 		if (!$bIsError) {
@@ -1195,7 +1199,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             $sVideoLink = $oShareService->convertNumberToHashCode($aVideo['ko_id'], 5) . $oShareService->convertNumberToHashCode($aDvs['dvs_id'], 3);
             $sVideoLink = Phpfox::getLib('url')->makeUrl('share.') . $sVideoLink . '6';
 			$sBody = Phpfox::getPhrase('dvs.dealer_text_body', array(
-				'dealer_name' => $aDvs['dvs_id'],
+				'dealer_name' => $aDvs['dvs_name'],
 				'custom_message' => $aVals['custom_message'],
 				'video_link' => $sVideoLink
 			));
