@@ -8,9 +8,11 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
         $iMaxWidth = $this->request()->get('maxwidth', 580) - 32;
         $iMaxHeight = (int)($iMaxWidth / 29 * 16);
         $aVins = explode(',', $sVin);
-
         list($aRows, $aDvs) = Phpfox::getService('dvs.vin')->getVins($aVins, $iDvsId, $iMaxWidth, $iMaxHeight);
-
+        $bNoVideo = false;
+        if(!$aRows || $aRows[$sVin]['title_url'] == 'no-video'){
+            $bNoVideo = true;
+        }
         $bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 
         $sDvsRequest = $aDvs['title_url'];
@@ -281,6 +283,7 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
                 'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('dvs.player.prxml', array('id' => $aDvs['dvs_id'])), '', -1) . '  ? ',
                 'aOverviewVideos' => $aOverviewVideos,
                 'bPreview' => $bPreview,
+                'bNoVideo' => $bNoVideo,
                 'bIsDvs' => true,
                 'bIsExternal' => false,
                 'aFeaturedVideo' => $aFeaturedVideo,
