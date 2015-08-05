@@ -243,12 +243,22 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</li>
 			<li>
 				<label for="state">{required}Country:</label>
-				{select_location}
+                <select id="country_iso" name="val[country_iso]">
+                    {if $aCountries}
+                    {foreach from=$aCountries item=aCountry name=sCountry}
+                    <option class="js_country_option" id="js_country_iso_option_{$aCountry.country_iso}" value="{$aCountry.country_iso}" {if $aForms.country_iso == $aCountry.country_iso}selected="selected"{/if}>{$aCountry.name}</option>
+                    {/foreach}
+                    {/if}
+                </select>
 			</li>
 			<li>
 				<label for="state">{required}State:</label>
 				{if $bIsEdit}
-					{module name='core.country-child' country_child_value=($aForms.country_iso?$aForms.country_iso:'US') country_child_id=$aForms.country_child_id country_not_user=true}
+                    {if $aForms.country_iso}
+                    {module name='core.country-child' country_child_value=$aForms.country_iso country_child_id=$aForms.country_child_id country_not_user=true}
+                    {else}
+                    {module name='core.country-child' country_child_value=US country_child_id=$aForms.country_child_id country_not_user=true}
+                    {/if}
 				{else}
 					{module name='core.country-child'}
 				{/if}

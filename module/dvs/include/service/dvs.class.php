@@ -1133,6 +1133,15 @@ public function aaasort (&$array, $key) {
 
         return 'desktop';
 	}
+
+    public function getCountry()
+    {
+        $aRows = $this->database()->select('country_iso, name')
+            ->from(Phpfox::getT('country'))
+            ->where("(country_iso = 'US') OR (country_iso = 'CA')")
+            ->execute('getRows');
+        return $aRows;
+    }
 }
 
 ?>
