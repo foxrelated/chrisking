@@ -46,7 +46,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     {template file='dvs.controller.view-mobile}
   {else}
     {if !$bPreview}
-      {if $aDvs.banner_toggle == 1} <!--phpmasterminds added this code for header toggle -->
+      {if $aDvs.banner_toggle == 1}
       	{if $aDvs.branding_file_name}
 			<a href="{$aDvs.url}" target="_parent">
 			  {img path='core.url_file'
@@ -57,9 +57,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
       	{else}
         <h1><a href="{$aDvs.url}" target="_parent">{$aDvs.dealer_name}</a></h1>
       	{/if}
-      {/if} <!--phpmasterminds added this code for header toggle -->
+      {/if}
     {/if}
-	{if $aDvs.topmenu_toggle == 1} <!--phpmasterminds added this code for Menu toggle -->
+	{if $aDvs.topmenu_toggle == 1}
     <header>
       <nav>
         <ul>
@@ -88,10 +88,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </ul>
       </nav>
     </header>
-	{/if}<!--phpmasterminds added this code for Menu toggle ends -->
+	{/if}
     <article>
       <section>
-        <div class="dvs-info" style="padding-top:10px;font-size:13px;font-weight:bold;"><p>To start your video test drive, select a year, make and model or click on the play button below. Instantly view what's important to you by clicking the chapter buttons to the right.</p></div>
+        {*<div class="dvs-info" style="padding-top:10px;font-size:13px;font-weight:bold;"><p>To start your video test drive, select a year, make and model or click on the play button below. Instantly view what's important to you by clicking the chapter buttons to the right.</p></div>*}
       </section>
       <section id="player">
         {template file='dvs.controller.player.player}
@@ -198,15 +198,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </h3>
 
         <p class="model_description" id="car_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
-
+		
+		{*
         {if empty($aOverrideVideo.ko_id)}
         <section>
           <h2>{$aDvs.dealer_name} of {$aDvs.city}, {$aDvs.state_string}</h2>
           <p itemprop="description" class="model_description">{$aDvs.text_parsed}</p>
         </section>
         {/if}
+        *}
       </section>
-
+      
+	  {*
       <aside>
         <div id="dvs_geomap_container" itemprop="map"></div>
         <p>{if $aDvs.url}
@@ -218,16 +221,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         <p><span itemprop="addressLocality">{$aDvs.city}</span>, <span itemprop="addressRegion">{$aDvs.state_string}</span>, <span itemprop="postalCode">{$aDvs.postal_code}</span>
         </p>
       </aside>
+      *}
       <div class="clear"></div>
     </article>
-	{if $aDvs.footer_toggle == 1} <!--phpmasterminds added this code for footer toggle -->
+	{if $aDvs.footer_toggle == 1}
     <footer>
       <h3>{phrase var='dvs.more_videos'}</h3>
       <ul id="related_videos">
           {module name='dvs.related-video' aDvs=$aDvs aVideo=$aFirstVideo}
       </ul>
     </footer>
-	{/if} <!--phpmasterminds added this code for footer toggle -->
+	{/if}
   {/if}
 {/if}
 
@@ -235,7 +239,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <iframe src="{$sVdpIframeUrl}" height="1" width="1"></iframe>
 {/if}
 
-{module name='dvstour.addtour'} <!--nplkoder add this line-->
+{module name='dvstour.addtour'}
 
 
 {if !$aDvs.is_active}
