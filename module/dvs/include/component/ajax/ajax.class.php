@@ -1177,10 +1177,10 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$aVals = Phpfox::getLib('request')->getArray('val');
 		$bIsError = false;
 
-		if (!$aVals['sender_mobile']) {
-			Phpfox_Error::set('Please enter sender mobile');
-			$bIsError = true;
-		}
+		//if (!$aVals['sender_mobile']) {
+		//	Phpfox_Error::set('Please enter sender mobile');
+		//	$bIsError = true;
+		//}
 		if (!$aVals['receiver_mobile']) {
 			Phpfox_Error::set('Please enter receiver mobile');
 			$bIsError = true;
@@ -1209,8 +1209,11 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$params = array(
 				'Text'  => 'TEXT',
 				'Message' => $sBody,
-				'From' => $aVals['sender_mobile'],
+				//'From' => $aVals['sender_mobile'],
+				'From' => 67076,
 				'To' => $aVals['receiver_mobile']
+				'BroadcastName' => $aDvs['dvs_name']
+				
 			);
 			$http = curl_init($url);
 			curl_setopt($http, CURLOPT_POST, true);

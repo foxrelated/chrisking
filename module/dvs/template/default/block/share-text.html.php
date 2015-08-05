@@ -95,11 +95,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </li>
         </ul>
         <div class="share_text_field">
-            <ul>
+            <!--<ul>
                 <li>
                     <input type="text" name="val[sender_mobile]" id="sender_mobile" placeholder="Sender Mobile" class="inputShare" required />
                 </li>
-            </ul>
+            </ul>-->
             <ul>
                 <li>
                     <input type="text" name="val[receiver_mobile]" id="receiver_mobile" placeholder="Receiver Mobile" required class="inputShare"/>
@@ -121,5 +121,5 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</fieldset>
 </form>
 <div id="dvs_share_text_success" style="display:none;">
-	Text has been sent
+	Your virtual "text" drive has been sent!
 </div>
