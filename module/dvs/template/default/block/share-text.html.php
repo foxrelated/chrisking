@@ -108,7 +108,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
             <ul>
                 <li>
-                    <textarea id="custom_message" name="val[custom_message]" placeholder="Custom Message" cols="18" rows="5"></textarea>
+                    <textarea id="custom_message" name="val[custom_message]" placeholder="Custom Message" cols="18" rows="5" maxlength="100"></textarea>
                 </li>
             </ul>
         </div>
