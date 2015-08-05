@@ -33,7 +33,7 @@
     {if $bNoVideo}
         $('#video_information').remove();
         $('#dvs_bc_player').css('background', '#000');
-        $('#dvs_bc_player').html('<h1>Coming soon</h1>');
+        $('#dvs_bc_player').html('<h1>Video Coming Soon! Please try another.</h1>');
         {/if}
     {r}
 </script>
