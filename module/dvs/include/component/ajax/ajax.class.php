@@ -1211,7 +1211,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				'Message' => $sBody,
 				//'From' => $aVals['sender_mobile'],
 				'From' => 67076,
-				'To' => $aVals['receiver_mobile']
+				'To' => $aVals['receiver_mobile'],
 				'BroadcastName' => $aDvs['dvs_name']
 				
 			);
