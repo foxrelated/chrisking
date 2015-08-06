@@ -436,7 +436,11 @@ function onVideoLoad(oMedia) {
 
 	aCurrentVideoMetaData = oMedia.media.customFields;
 	aCurrentVideoMetaData.id = oMedia.media.id;
-	aCurrentVideoMetaData.referenceId = oMedia.media.referenceId;
+    if(oMedia.media.referenceId){
+        aCurrentVideoMetaData.referenceId = oMedia.media.referenceId;
+    }else{
+        aCurrentVideoMetaData.referenceId = oMedia.media.referenceID;
+    }
 	if (bDebug) {
 		console.log('Media: Current Video Meta Data Follows:');
 		console.log(aCurrentVideoMetaData);
@@ -559,7 +563,10 @@ function onVideoLoad(oMedia) {
 		"Model": aCurrentVideoMetaData.model,
 		}
 	);
-	if (sBrowser !== 'mobile' && sBrowser !== 'ipad') {
+    
+    $.ajaxCall('dvs.iframeChangeVideo', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId);
+
+    if (sBrowser !== 'mobile' && sBrowser !== 'ipad') {
 		modMen.closeMenuPage();
 
 		if (bAutoplay || bIgnoreAutoPlaySetting) {
@@ -576,7 +583,6 @@ function onVideoLoad(oMedia) {
 	}
 
 	// Change vehicle info in dealer contact form
-	$.ajaxCall('dvs.iframeChangeVideo', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + oMedia.media.referenceId + '&iDvsId=' + iDvsId);
 
     bUpdatedShareUrl = false;
 
