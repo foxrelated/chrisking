@@ -269,7 +269,7 @@ function playVideo(iVideoKey) {
 	}
 
 	if (bIsDvs) {
-		if (sBrowser !== 'mobile' && sBrowser !== 'ipad') {
+		if (sBrowser !== 'mobile' && sBrowser !== 'ipad' || bIsHtml5) {
 			resetOverlays();
 		}
 	}
@@ -396,7 +396,7 @@ function onTemplateReady(oVideo) {
 	}
 	else
 	{
-		if (sBrowser === 'mobile' || sBrowser === 'ipad') {
+		if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
 			modVid.cueVideoByID(aMediaIds[iCurrentVideo]);
 		}
 		else
@@ -520,7 +520,7 @@ function onVideoLoad(oMedia) {
 	$('#chapter_buttons button').addClass('no_display').removeClass('display');
 
 	//get new cue points
-	if (sBrowser === 'mobile' || sBrowser === 'ipad')
+	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5)
 	{
 		modCue.getCuePoints(oMedia.media.id, cuePointsHandler);
 	}
@@ -559,7 +559,7 @@ function onVideoLoad(oMedia) {
 		"Model": aCurrentVideoMetaData.model,
 		}
 	);
-	if (sBrowser !== 'mobile' && sBrowser !== 'ipad') {
+	if (sBrowser !== 'mobile' && sBrowser !== 'ipad' || bIsHtml5) {
 		modMen.closeMenuPage();
 
 		if (bAutoplay || bIgnoreAutoPlaySetting) {
