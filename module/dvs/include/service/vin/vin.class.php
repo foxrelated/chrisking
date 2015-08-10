@@ -103,16 +103,16 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         }
 
         foreach($aFullRows as $sKey => $aFullRow) {
-            //if(isset($aData[$aFullRow['ed_style_id']])) {
+            if(isset($aData[$aFullRow['ed_style_id']])) {
                 foreach($aFullRow['vin'] as $sVin) {
                     if(isset($aData[$aFullRow['ed_style_id']]['video_title_url'])) {
                         $aCompletedRows[$sVin]['url'] = $aData[$aFullRow['ed_style_id']]['video_title_url'];
                     } else {
-                        $aCompletedRows[$sVin]['url'] = 'no-video';
+                        $aCompletedRows[$sVin]['url'] = '';
                     }
 
                 }
-            //}
+            }
         }
 
         foreach($aCompletedRows as $iKey => $aCompletedRow) {
@@ -134,7 +134,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
 
             $aCompletedRow['url'] = str_replace($aFind, $aReplace, $aCompletedRow['url']);
 
-            if (Phpfox::getParam('dvs.dvs_info_video_url_replacement') && $aCompletedRow['url'] != 'no-video') {
+            if (Phpfox::getParam('dvs.dvs_info_video_url_replacement')) {
                 $aCompletedRow['url'] .= '-' . $aDvs['title_url'] . '-' . strtolower(str_replace(' ', '-', $aDvs['city'])) . '-' . strtolower(str_replace(' ', '-', $aDvs['state_string']));
             }
             if($aDvs['vpd_popup']) {

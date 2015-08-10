@@ -22,11 +22,9 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
         $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
 
         $sOverride = ($bSubdomainMode ? $this->request()->get('req3') : $this->request()->get('req4'));
+
         Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
-        $bNoVideo = false;
-        if($sOverride == 'no-video'){
-            $bNoVideo = true;
-        }
+
         //Load player data
         $aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 
@@ -272,7 +270,6 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
                     )),
 
                 'aDvs' => $aDvs,
-                'bNoVideo' => $bNoVideo,
                 'aBaseUrl' => $aBaseUrl,
                 'aCurrentVideo' => $aCurrentVideo,
                 'aFirstVideo' => $aFirstVideo,
