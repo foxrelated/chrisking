@@ -91,12 +91,16 @@ class Dvs_Component_Controller_Settings extends Phpfox_Component {
 			Phpfox::getService('dvs')->importInventory($iDvsId);
 		}
 
-		$this->template()
+        $aCountries = Phpfox::getService('dvs')->getCountry();
+
+        $this->template()
 			->setHeader(array(
+				'country.js' => 'module_core',
 				//'add.css' => 'module_dvs',
 				'settings.css' => 'module_dvs',))
 			->assign(array(
 				'aForms'                   => $aDvs,
+				'aCountries'                 => $aCountries,
 				'connectors'               => $connectors,
 				'importInventoryRes'       => $importInventoryRes,
 				'sMessage'                 => $sMessage,

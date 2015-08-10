@@ -97,6 +97,7 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['vpd_popup'] = $this->preParse()->clean($aDvs['vpd_popup'], 1);
             $aSql['player_type'] = $this->preParse()->clean($aDvs['player_type'], 1);
             $aSql['email_format'] = $this->preParse()->clean($aDvs['email_format'], 1);
+            $aSql['country_iso'] = $this->preParse()->clean($aDvs['country_iso'], 2);
         }
 		
 		$iId = $this->database()->insert($this->_sTable, $aSql);
@@ -182,6 +183,7 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['vpd_popup'] = $this->preParse()->clean($aDvs['vpd_popup'], 1);
             $aSql['player_type'] = $this->preParse()->clean($aDvs['player_type'], 1);
             $aSql['email_format'] = $this->preParse()->clean($aDvs['email_format'], 1);
+            $aSql['country_iso'] = $this->preParse()->clean($aDvs['country_iso'], 2);
             if(isset($aDvs['parent_url'])) {
                 $aSql['parent_url'] = $this->preParse()->clean($aDvs['parent_url']);
             }

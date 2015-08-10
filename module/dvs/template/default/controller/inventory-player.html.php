@@ -22,8 +22,21 @@
     margin-left:10px;
     font-size:{if $sBrowser == 'mobile'}{$iHeaderTextFontSize}px{else}18px{/if};
     {r}
+    #dvs_bc_player h1 {l}
+        line-height: 400px;
+        text-align: center;
+        color: #fff;
+    {r}
 </style>
-
+<script type="text/javascript">
+    $Behavior.removeNoVideo = function() {l}
+    {if $bNoVideo}
+        $('#video_information').remove();
+        $('#dvs_bc_player').css('background', '#000');
+        $('#dvs_bc_player').html('<h1>Video Coming Soon! Please try another.</h1>');
+        {/if}
+    {r}
+</script>
 <article>
     <section id="video_information">
         <h3 id="video_name">
