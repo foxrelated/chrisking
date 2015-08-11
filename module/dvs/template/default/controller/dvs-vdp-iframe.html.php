@@ -126,50 +126,50 @@
                 {/if}
             {r}
 
-            {if $sBrowser != 'mobile'}
-            function enableVideoSelectCarousel(){l}
-                if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
-                $('#overview_playlist').show();
-                $("#overview_playlist").jCarouselLite({l}
-                    btnNext: ".next",
-                    btnPrev: ".prev",
-                    circular: false,
-                    visible: 5,
-                    scroll: 3,
-                    speed: 900
-                {r});
-            {r}
-
-            $Behavior.jCarousel = function() {l}
-                {if $bIsDvs}
-                    $("#overview_playlist").jCarouselLite({l}
-                        btnNext: ".next",
-                        btnPrev: ".prev",
-                        circular: false,
-                        visible: 5,
-                        scroll: 3,
-                        speed: 900
-                    {r});
-                {else}
-                    $("#overview_playlist").jCarouselLite({l}
-                        btnNext: ".next",
-                        btnPrev: ".prev",
-                        circular: false,
-                        visible: {if ($bIsExternal || (!$bIsDvs && isset($iPlaylistThumbnails)))}{$iPlaylistThumbnails}{ else}4{/if},
-                        scroll: {if ($bIsExternal || (!$bIsDvs && isset($iScrollAmt)))}{$iScrollAmt}{ else}3{/if},
-                        speed: 900
-                    {r});
-                {/if}
-            {r}
-            {/if}
+//            {if $sBrowser != 'mobile'}
+//             function enableVideoSelectCarousel(){l}
+//                 if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
+//                 $('#overview_playlist').show();
+//                 $("#overview_playlist").jCarouselLite({l}
+//                     btnNext: ".next",
+//                     btnPrev: ".prev",
+//                     circular: false,
+//                     visible: 5,
+//                     scroll: 3,
+//                     speed: 900
+//                 {r});
+//             {r}
+//
+//             $Behavior.jCarousel = function() {l}
+//                 {if $bIsDvs}
+//                     $("#overview_playlist").jCarouselLite({l}
+//                         btnNext: ".next",
+//                         btnPrev: ".prev",
+//                         circular: false,
+//                         visible: 5,
+//                         scroll: 3,
+//                         speed: 900
+//                     {r});
+//                 {else}
+//                     $("#overview_playlist").jCarouselLite({l}
+//                         btnNext: ".next",
+//                         btnPrev: ".prev",
+//                         circular: false,
+//                         visible: {if ($bIsExternal || (!$bIsDvs && isset($iPlaylistThumbnails)))}{$iPlaylistThumbnails}{ else}4{/if},
+//                         scroll: {if ($bIsExternal || (!$bIsDvs && isset($iScrollAmt)))}{$iScrollAmt}{ else}3{/if},
+//                         speed: 900
+//                     {r});
+//                 {/if}
+//             {r}
+//            {/if}
         </script>
 
         {if ($bIsDvs && $aOverviewVideos) || (!$bIsDvs && $aVideos)}
         <section id="dvs_bc_player"{if $bIsDvs} itemscope itemtype="http://schema.org/VideoObject"{/if}>
         {if $bIsDvs}
         {if !$bPreview}
-        <meta itemprop="creator" content="{$aDvs.phrase_overrides.override_meta_itemprop_creator_meta}" />
-        <meta itemprop="productionCompany" content="{$aDvs.dealer_name}" />
+        <meta itemprop="creator" content="{$aDvs.dealer_name}" />
+        <meta itemprop="productionCompany" content="Dealer Video Showroom" />
         <meta itemprop="contributor" content="{$aDvs.dealer_name}" />
         <meta itemprop="url" content="{$aFirstVideoMeta.url}" id="schema_video_url"/>
         <meta itemprop="thumbnailUrl" content="{$aFirstVideoMeta.thumbnail_url}"  id="schema_video_thumbnail_url"/>
@@ -207,8 +207,6 @@
 				{/if}
 			</div>
 			{/if}
-
-
         {/if}
         <object id="myExperience" class="BrightcoveExperience">
             <param name="bgcolor" value="#FFFFFF" />
