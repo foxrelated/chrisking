@@ -180,7 +180,7 @@
         <meta itemprop="description" content="{$aDvs.phrase_overrides.override_meta_itemprop_description_meta}"  id="schema_video_description"/>
         {/if}
 
-		{if !$sBrowser == 'mobile'}
+		{if $sBrowser != 'mobile'}
 			{if $aPlayer.custom_overlay_1_type}
 			<div id="dvs_overlay_1" class="dvs_overlay">
 				{if $aPlayer.custom_overlay_1_type == 1}
