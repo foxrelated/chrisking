@@ -416,7 +416,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 <input {if !isset($aForms.parent_url)}disabled="disabled"{/if} type="radio" name="val[sitemap_parent_url]" value="1" {if $bIsEdit && $aForms.sitemap_parent_url == 1 && isset($aForms.parent_url)}checked="checked"{/if}/>{phrase var='dvs.dvs_inventory_status_on'}
                 <input type="radio" name="val[sitemap_parent_url]" value="0" {if !$bIsEdit || !isset($aForms.parent_url) || ($bIsEdit && $aForms.sitemap_parent_url == 0)}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
                 {if !isset($aForms.parent_url)}
-                <span style="background: #FF0000; color: #FFFFFF; padding:50px; font-size: 14px;">Alert! The DVS Embed code was not detected on the dealer's website.</span>
+                <span style="background: #FF0000; color: #FFFFFF; padding:10px; font-size: 14px;">Alert! The DVS Embed code was not detected on the dealer's website.</span>
                 {else}
                 <span style="margin-left:20px;background: #00FF00; color: #000000; padding:5px; font-size: 14px;">Success! VTD page found at <a href="{$aForms.parent_url}"><b>{$aForms.parent_url}</b></a></span>
                 {/if}

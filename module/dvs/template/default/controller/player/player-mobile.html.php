@@ -176,18 +176,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<param name="playerID" value="{$iPlayerId}" />
 				<param name="playerKey" value="{$sPlayerKey}" />
 				{else}
-                {if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
-                <param name="@videoPlayer" value="" />
-                {/if}
+                
 				<param name="playerID" value="1418431455001" />
 				<param name="playerKey" value="AQ~~,AAAAjVS9InE~,8mX2MExmDXXSn4MgkQm1tvvNX5cQ4cW" />
 				{/if}
 				<param name="isVid" value="true" />
 				<param name="isUI" value="true" />
-				{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
-				<param name="forceHTML" value="true">
-				{/if}
 				<param name="dynamicStreaming" value="true" />
+				<param name="showNoContentMessage" value="false" />
 				{if !$bIsExternal && $aPlayer.preroll_file_id}
 					<param name="adServerURL" value="{$sPrerollXmlUrl}" />
 				{/if}
@@ -198,12 +194,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						<param name="accountID" value="{$aPlayer.google_id}" />
 					{/if}
 				{/if}
-				<param name="forceHTML" value="true" />
+				
+				{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
+                <param name="@videoPlayer" value="" />
+                <param name="forceHTML" value="true" />
 				<param name="includeAPI" value="true" />
 				<param name="templateLoadHandler" value="onTemplateLoad" />
 				<param name="templateLoadHandler" value="onTemplateLoaded" />
 				<param name="templateReadyHandler" value="onTemplateReady" />
-				<param name="showNoContentMessage" value="false" />
+				{/if}
 				<param name="linkBaseURL" value="{$sLinkBase}" id="bc_player_param_linkbase" />
 			</object>
 		</div>

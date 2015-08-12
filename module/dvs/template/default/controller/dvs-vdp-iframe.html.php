@@ -22,20 +22,8 @@
         margin-left:10px;
         font-size:{if $sBrowser == 'mobile'}{$iHeaderTextFontSize}px{else}18px{/if};
     {r}
-    #dvs_bc_player h1 {l}
-        line-height: 400px;
-        text-align: center;
-    {r}
 </style>
-<script type="text/javascript">
-    $Behavior.removeNoVideo = function() {l}
-    {if $bNoVideo}
-        $('#video_information').remove();
-        $('#dvs_bc_player').css('background', '#000');
-        $('#dvs_bc_player').html('<h1>Coming soon</h1>');
-    {/if}
-    {r}
-</script>
+
 <article>
     <section id="video_information">
         <h3 id="video_name">
@@ -138,50 +126,50 @@
                 {/if}
             {r}
 
-            {if $sBrowser != 'mobile'}
-            function enableVideoSelectCarousel(){l}
-                if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
-                $('#overview_playlist').show();
-                $("#overview_playlist").jCarouselLite({l}
-                    btnNext: ".next",
-                    btnPrev: ".prev",
-                    circular: false,
-                    visible: 5,
-                    scroll: 3,
-                    speed: 900
-                {r});
-            {r}
-
-            $Behavior.jCarousel = function() {l}
-                {if $bIsDvs}
-                    $("#overview_playlist").jCarouselLite({l}
-                        btnNext: ".next",
-                        btnPrev: ".prev",
-                        circular: false,
-                        visible: 5,
-                        scroll: 3,
-                        speed: 900
-                    {r});
-                {else}
-                    $("#overview_playlist").jCarouselLite({l}
-                        btnNext: ".next",
-                        btnPrev: ".prev",
-                        circular: false,
-                        visible: {if ($bIsExternal || (!$bIsDvs && isset($iPlaylistThumbnails)))}{$iPlaylistThumbnails}{ else}4{/if},
-                        scroll: {if ($bIsExternal || (!$bIsDvs && isset($iScrollAmt)))}{$iScrollAmt}{ else}3{/if},
-                        speed: 900
-                    {r});
-                {/if}
-            {r}
-            {/if}
+//            {if $sBrowser != 'mobile'}
+//             function enableVideoSelectCarousel(){l}
+//                 if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
+//                 $('#overview_playlist').show();
+//                 $("#overview_playlist").jCarouselLite({l}
+//                     btnNext: ".next",
+//                     btnPrev: ".prev",
+//                     circular: false,
+//                     visible: 5,
+//                     scroll: 3,
+//                     speed: 900
+//                 {r});
+//             {r}
+//
+//             $Behavior.jCarousel = function() {l}
+//                 {if $bIsDvs}
+//                     $("#overview_playlist").jCarouselLite({l}
+//                         btnNext: ".next",
+//                         btnPrev: ".prev",
+//                         circular: false,
+//                         visible: 5,
+//                         scroll: 3,
+//                         speed: 900
+//                     {r});
+//                 {else}
+//                     $("#overview_playlist").jCarouselLite({l}
+//                         btnNext: ".next",
+//                         btnPrev: ".prev",
+//                         circular: false,
+//                         visible: {if ($bIsExternal || (!$bIsDvs && isset($iPlaylistThumbnails)))}{$iPlaylistThumbnails}{ else}4{/if},
+//                         scroll: {if ($bIsExternal || (!$bIsDvs && isset($iScrollAmt)))}{$iScrollAmt}{ else}3{/if},
+//                         speed: 900
+//                     {r});
+//                 {/if}
+//             {r}
+//            {/if}
         </script>
 
         {if ($bIsDvs && $aOverviewVideos) || (!$bIsDvs && $aVideos)}
         <section id="dvs_bc_player"{if $bIsDvs} itemscope itemtype="http://schema.org/VideoObject"{/if}>
         {if $bIsDvs}
         {if !$bPreview}
-        <meta itemprop="creator" content="{$aDvs.phrase_overrides.override_meta_itemprop_creator_meta}" />
-        <meta itemprop="productionCompany" content="{$aDvs.dealer_name}" />
+        <meta itemprop="creator" content="{$aDvs.dealer_name}" />
+        <meta itemprop="productionCompany" content="Dealer Video Showroom" />
         <meta itemprop="contributor" content="{$aDvs.dealer_name}" />
         <meta itemprop="url" content="{$aFirstVideoMeta.url}" id="schema_video_url"/>
         <meta itemprop="thumbnailUrl" content="{$aFirstVideoMeta.thumbnail_url}"  id="schema_video_thumbnail_url"/>
@@ -192,36 +180,33 @@
         <meta itemprop="description" content="{$aDvs.phrase_overrides.override_meta_itemprop_description_meta}"  id="schema_video_description"/>
         {/if}
 
-
-        {if $aPlayer.custom_overlay_1_type}
-        <div id="dvs_overlay_1" class="dvs_overlay">
-            {if $aPlayer.custom_overlay_1_type == 1}
-            <a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>
-            {else}
-            <a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_1_text}</a>
-            {/if}
-        </div>
-        {/if}
-        {if $aPlayer.custom_overlay_2_type}
-        <div id="dvs_overlay_2" class="dvs_overlay">
-            {if $aPlayer.custom_overlay_2_type == 1}
-            <a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>
-            {else}
-            <a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_2_text}</a>
-            {/if}
-        </div>
-        {/if}
-        {if $aPlayer.custom_overlay_3_type}
-        <div id="dvs_overlay_3" class="dvs_overlay" >
-            {if $aPlayer.custom_overlay_3_type == 1}
-            <a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png"/></a>
-            {else}
-            <a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_3_text}</a>
-            {/if}
-        </div>
-        {/if}
-
-
+			{if $aPlayer.custom_overlay_1_type}
+			<div id="dvs_overlay_1" class="dvs_overlay">
+				{if $aPlayer.custom_overlay_1_type == 1}
+				<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>
+				{else}
+				<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_1_text}</a>
+				{/if}
+			</div>
+			{/if}
+			{if $aPlayer.custom_overlay_2_type}
+			<div id="dvs_overlay_2" class="dvs_overlay">
+				{if $aPlayer.custom_overlay_2_type == 1}
+				<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>
+				{else}
+				<a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_2_text}</a>
+				{/if}
+			</div>
+			{/if}
+			{if $aPlayer.custom_overlay_3_type}
+			<div id="dvs_overlay_3" class="dvs_overlay" >
+				{if $aPlayer.custom_overlay_3_type == 1}
+				<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png"/></a>
+				{else}
+				<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_3_text}</a>
+				{/if}
+			</div>
+			{/if}
         {/if}
         <object id="myExperience" class="BrightcoveExperience">
             <param name="bgcolor" value="#FFFFFF" />

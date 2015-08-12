@@ -269,7 +269,7 @@ function playVideo(iVideoKey) {
 	}
 
 	if (bIsDvs) {
-		if (sBrowser !== 'mobile' && sBrowser !== 'ipad') {
+		if (sBrowser !== 'mobile' && sBrowser !== 'ipad' || bIsHtml5) {
 			resetOverlays();
 		}
 	}
@@ -566,7 +566,7 @@ function onVideoLoad(oMedia) {
     
     $.ajaxCall('dvs.iframeChangeVideo', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId);
 
-    if (sBrowser !== 'mobile' && sBrowser !== 'ipad') {
+	if (sBrowser !== 'mobile' && sBrowser !== 'ipad' || bIsHtml5) {
 		modMen.closeMenuPage();
 
 		if (bAutoplay || bIgnoreAutoPlaySetting) {
