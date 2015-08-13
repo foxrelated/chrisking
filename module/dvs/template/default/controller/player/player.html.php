@@ -239,7 +239,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </div>
 {/if}
 {if $aPlayer.custom_overlay_3_type}
-<div id="dvs_overlay_3" class="dvs_overlay" >
+<div id="dvs_overlay_3" class="dvs_overlay">
 	{if $aPlayer.custom_overlay_3_type == 1}
 	<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png"/></a>
 	{else}

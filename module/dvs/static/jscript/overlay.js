@@ -4,7 +4,7 @@ function showOverlay(iOverlayId) {
 	resetOverlays();
 	$('#dvs_overlay_' + iOverlayId).toggle();
 	$("#dvs_overlay_" + iOverlayId).animate({
-		top: 10
+		top: 0
 	},
 	{
 		duration: 1000,
