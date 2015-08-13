@@ -1,6 +1,9 @@
 <div id="deactive_popup_wrapper">
     <div id="deactive_popup_content">
         <a href="http://dealervideoshowroom.com">{img theme='wtvdvs/dealer_logo.png' max_width='600'}</a>
-        <br /><p>To re-activate Virtual Test Drives call <a href="tel:+18449433578">1-844-943-3578</a> or email <a href="mailto:support@dealervideoshowroom.com">support@dealervideoshowroom.com</a></span></p>
+        <p></p>
+        <p>To re-activate Virtual Test Drives:</p>
+        <p>Call <a href="tel:+18449433578">1-844-943-3578</a></p>
+        <p>Email <a href="mailto:support@dealervideoshowroom.com">support@dealervideoshowroom.com</a></p>
     </div>
 </div>
