@@ -141,6 +141,9 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                             case '6':
                                 $sRedirectUrl .= '&share=email';
                                 break;
+                            case '7':
+                                $sRedirectUrl .= '&share=text';
+                                break;
                         }
                     } else {
                         $sRedirectUrl = Phpfox::getLib('url')->makeUrl($aDvs['title_url']) . $aVideo['video_title_url'];
@@ -165,6 +168,9 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                                 break;
                             case '6':
                                 $sRedirectUrl .= '/share_email/';
+                                break;
+                            case '7':
+                                $sRedirectUrl .= '/share_text/';
                                 break;
                         }
                     }

@@ -363,6 +363,9 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 case 'email':
                     $sShareIframeUrl .= '&utm_medium=Email';
                     break;
+                case 'text':
+                    $sShareIframeUrl .= '&utm_medium=Text Link';
+                    break;
                 default:
                     $sShareIframeUrl .= '&utm_medium=Direct Link';
                     break;
