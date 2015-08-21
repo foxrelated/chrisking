@@ -27,7 +27,7 @@
 						{if Phpfox::isAdmin()}
 						<span>
                         <a href="#" onclick="tb_show('Text to a Friend', $.ajaxBox('dvs.textForm', 'height=400&amp;width=360&amp;iDvsId={$aDvs.dvs_id}&amp;&dvs_title={$aDvs.title_url}&amp;sRefId={$aVideo.referenceId}&amp;bSaveGa=2')); return false;">
-							<img src="{$baseUrl}module/dvs/static/image/text-medium.png" height="40px" alt="Share Via Friend"/>
+							<img src="{$baseUrl}module/dvs/static/image/text-medium.png" height="40px" alt="Share via Text"/>
 						</a>
 						</span>
                         {/if}
