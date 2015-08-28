@@ -24,12 +24,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         <section id="dealer_links">
 
             {if $aDvs.inventory_url}
-            <a href="{$aDvs.inventory_url}" class="dvs_inventory_link" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow">
+            <a href="{$aDvs.inventory_url}" class="dvs_inventory_link" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow" target="_parent">
                 {phrase var='dvs.cta_inventory'}
             </a>
             {/if}
             {if $aDvs.specials_url}
-            <a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow">
+            <a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow" target="_parent">
                 {phrase var='dvs.cta_specials'}
             </a>
             {/if}
