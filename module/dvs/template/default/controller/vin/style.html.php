@@ -51,7 +51,7 @@
 #dvs_vin_popup_wrapper {l}
     opacity: 0;
     display: none;
-    height: {if $sBrowser == 'mobile'}{$iPopupHeight}{else}500px{/if};
+    height: {if $sBrowser == 'mobile'}{$iPopupHeight}px{else}500px{/if};
     left: 0;
     position: fixed;
     _position:absolute;
@@ -68,7 +68,7 @@
     position: relative;
     margin: 0 auto;
     height: 100%;
-    max-height:{if $sBrowser == 'mobile'}{$iPopupHeight}{else}500px{/if};
+    /*max-height:{if $sBrowser == 'mobile'}{$iPopupHeight}px{else}500px{/if};*/
     box-shadow: 0 0 10px #222222;
     border-radius: 10px;
     z-index:10002;
@@ -80,7 +80,7 @@
     width: 100%;
     max-width:930px;
     height: 100%;
-    max-height:{if $sBrowser == 'mobile'}{$iPopupHeight}{else}500px{/if};
+    max-height:{if $sBrowser == 'mobile'}{$iPopupHeight}px{else}500px{/if};
     border-radius: 10px;
     overflow: hidden;
     position: relative;
