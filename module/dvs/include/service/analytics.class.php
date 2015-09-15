@@ -23,9 +23,9 @@ class Dvs_Service_Analytics extends Phpfox_Service {
 
         $client = new Google_Client();
         $client->setAssertionCredentials($credentials);
-        if ($client->getAuth()->isAccessTokenExpired()) {
+        //if ($client->getAuth()->isAccessTokenExpired()) {
             $client->getAuth()->refreshTokenWithAssertion();
-        }
+        //}
 
         $aAccessToken = json_decode($client->getAccessToken());
         return $aAccessToken->access_token;

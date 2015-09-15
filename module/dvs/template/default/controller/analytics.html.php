@@ -31,7 +31,7 @@
          */
         var dataChart1 = new gapi.analytics.googleCharts.DataChart({
             query: {
-                'ids': 'ga:91930849', // The Demos & Tools website view.
+                'ids': 'ga:60794198', // The Demos & Tools website view.
                 'start-date': '30daysAgo',
                 'end-date': 'yesterday',
                 'metrics': 'ga:sessions,ga:users',
@@ -55,7 +55,7 @@
          */
         var dataChart2 = new gapi.analytics.googleCharts.DataChart({
             query: {
-                'ids': 'ga:91930849', // The Demos & Tools website view.
+                'ids': 'ga:60794198', // The Demos & Tools website view.
                 'start-date': '30daysAgo',
                 'end-date': 'yesterday',
                 'metrics': 'ga:pageviews',
