@@ -1,5 +1,38 @@
-<div id="chart-1-container"></div>
-<div id="chart-2-container"></div>
+<div id="date-selector-container"></div>
+<div id="circle-stats-wrapper">
+    <div id="circle-leads-sent"></div>
+    <div id="circle-inventory-clicks"></div>
+    <div id="circle-offer-clicks"></div>
+    <div id="circle-conversion-rate"></div>
+    <div class="clear"></div>
+</div>
+
+<div id="main-session-wrapper">
+    <div id="session-chart"></div>
+</div>
+
+<div id="mini-chart-wrapper">
+    <div id="mini-chart-left">
+        <div id="mini-chart-session" class="mini-chart">
+            <div id="mini-chart-session-total" class="mini-chart-total"></div>
+            <div id="mini-chart-session-content"></div>
+        </div>
+        <div id="mini-chart-user" class="mini-chart">
+            <div id="mini-chart-user-total" class="mini-chart-total"></div>
+            <div id="mini-chart-user-content"></div>
+        </div>
+        <div id="mini-chart-pageview" class="mini-chart">
+            <div id="mini-chart-pageview-total" class="mini-chart-total"></div>
+            <div id="mini-chart-pageview-content"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div id="mini-chart-right">
+
+    </div>
+</div>
+
+{if !empty($sJavascript)}{$sJavascript}{/if}
 
 {literal}
 <script>
@@ -10,71 +43,265 @@
         fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
     }(window,document,'script'));
 </script>
+{/literal}
+<script src="{$sSitePath}module/dvs/static/jscript/ga/date-selector.js"></script>
+<script src="{$sSitePath}module/dvs/static/jscript/ga/circle-graph.js"></script>
+{literal}
 
 
 <script>
     gapi.analytics.ready(function() {
-
-        /**
-         * Authorize the user with an access token obtained server side.
-         */
         gapi.analytics.auth.authorize({
             'serverAuth': {
-                {/literal}'access_token': '{$sGaAccessToken}'{literal}
-
+                container: 'embed-api-auth-container',
+                access_token: sGaAccessToken
             }
         });
 
-        /**
-         * Creates a new DataChart instance showing sessions over the past 30 days.
-         * It will be rendered inside an element with the id "chart-1-container".
-         */
-        var dataChart1 = new gapi.analytics.googleCharts.DataChart({
+
+        var totalEvents = 0;
+        var totalEventsLoaded = 0;
+        var dateSelector = new gapi.analytics.ext.DateSelector({
+            container: 'date-selector-container'
+        }).execute();
+
+        // CIRCLE GRAPH
+        var circleLeadsSent = new gapi.analytics.ext.CircleGraph({
+            container: 'circle-leads-sent',
+            title: 'Leads Sent',
             query: {
-                'ids': 'ga:60794198', // The Demos & Tools website view.
-                'start-date': '30daysAgo',
+                'ids': sGaIds,
+                'start-date': '7daysAgo',
                 'end-date': 'yesterday',
-                'metrics': 'ga:sessions,ga:users',
-                'dimensions': 'ga:date'
+                'metrics': 'ga:totalEvents',
+                'filters' : 'ga:eventLabel==Lead Sent;ga:eventCategory=~^{' + sDvsTitleUrl + '}'
+            }
+        }).execute();
+
+        var circleInventoryClick = new gapi.analytics.ext.CircleGraph({
+            container: 'circle-inventory-clicks',
+            title: 'Inventory Clicks',
+            query: {
+                'ids': sGaIds,
+                'start-date': '7daysAgo',
+                'end-date': 'yesterday',
+                'metrics': 'ga:totalEvents',
+                'filters' : 'ga:eventLabel==Show Inventory;ga:eventCategory=~^{' + sDvsTitleUrl + '}'
+            }
+        }).execute();
+
+        var circleOfferClick = new gapi.analytics.ext.CircleGraph({
+            container: 'circle-offer-clicks',
+            title: 'Special Offer Clicks',
+            query: {
+                'ids': sGaIds,
+                'start-date': '7daysAgo',
+                'end-date': 'yesterday',
+                'metrics': 'ga:totalEvents',
+                'filters' : 'ga:eventLabel==Special Offers;ga:eventCategory=~^{' + sDvsTitleUrl + '}'
+            }
+        }).execute();
+
+        var circleConversionRate = new gapi.analytics.ext.CircleGraph({
+            container: 'circle-conversion-rate',
+            title: 'Conversion Rate',
+            number: '...',
+            class: 'circle-graph-green',
+            type: 'conversion',
+            query: {
+                'ids': sGaIds,
+                'start-date': '7daysAgo',
+                'end-date': 'yesterday',
+                'metrics': 'ga:sessions',
+                'filters' : 'ga:eventCategory=~^{' + sDvsTitleUrl + '}'
+            }
+        }).execute();
+
+        circleLeadsSent.on('loadedData', function(count) {
+            totalEvents += parseInt(count);
+            totalEventsLoaded++;
+            if (totalEventsLoaded == 3) {
+                reloadConversion()
+            }
+        });
+
+        circleInventoryClick.on('loadedData', function(count) {
+            totalEvents += parseInt(count);
+            totalEventsLoaded++;
+            if (totalEventsLoaded == 3) {
+                reloadConversion()
+            }
+        });
+
+        circleOfferClick.on('loadedData', function(count) {
+            totalEvents += parseInt(count);
+            totalEventsLoaded++;
+            if (totalEventsLoaded == 3) {
+                reloadConversion()
+            }
+        });
+
+        circleConversionRate.on('loadedData', function(count) {
+            document.getElementById('mini-chart-session-total').innerHTML = count;
+        });
+
+        function reloadConversion() {
+            circleConversionRate.set({totalEvents: totalEvents}).execute();
+        }
+
+        // MAIN SESSION CHART
+        var dataChart = new gapi.analytics.googleCharts.DataChart({
+            query: {
+                'ids': sGaIds,
+                'metrics': 'ga:sessions',
+                'dimensions': 'ga:date',
+                'filters' : 'ga:eventCategory=~^{' + sDvsTitleUrl + '}',
+                'start-date': '7daysAgo',
+                'end-date': 'yesterday'
             },
             chart: {
-                'container': 'chart-1-container',
-                'type': 'LINE',
-                'options': {
-                    'width': '100%'
+                container: 'session-chart',
+                type: 'LINE',
+                options: {
+                    width: '100%'
                 }
             }
         });
-        dataChart1.execute();
+        dataChart.execute();
 
-
-        /**
-         * Creates a new DataChart instance showing top 5 most popular demos/tools
-         * amongst returning users only.
-         * It will be rendered inside an element with the id "chart-3-container".
-         */
-        var dataChart2 = new gapi.analytics.googleCharts.DataChart({
+        // MINI CHARTS
+        var miniSessionChart = new gapi.analytics.googleCharts.DataChart({
             query: {
-                'ids': 'ga:60794198', // The Demos & Tools website view.
-                'start-date': '30daysAgo',
-                'end-date': 'yesterday',
+                'ids': sGaIds,
+                'metrics': 'ga:sessions',
+                'dimensions': 'ga:date',
+                'filters' : 'ga:eventCategory=~^{' + sDvsTitleUrl + '}',
+                'start-date': '7daysAgo',
+                'end-date': 'yesterday'
+            },
+            chart: {
+                container: 'mini-chart-session-content',
+                type: 'LINE',
+                options: {
+                    width: '100%',
+                    height: '120',
+                    title: 'Sessions',
+                    curveType: 'function',
+                    pointsVisible: false,
+                    lineWidth: 1,
+                    hAxis: { textPosition: 'none'}
+                    //vAxis: { textPosition: 'none'}
+                }
+            }
+        });
+        miniSessionChart.execute();
+
+        var miniUserChart = new gapi.analytics.googleCharts.DataChart({
+            query: {
+                'ids': sGaIds,
+                'metrics': 'ga:users',
+                'dimensions': 'ga:date',
+                'filters' : 'ga:eventCategory=~^{' + sDvsTitleUrl + '}',
+                'start-date': '7daysAgo',
+                'end-date': 'yesterday'
+            },
+            chart: {
+                container: 'mini-chart-user-content',
+                type: 'LINE',
+                options: {
+                    width: '100%',
+                    height: '120',
+                    title: 'Users',
+                    curveType: 'function',
+                    pointsVisible: false,
+                    lineWidth: 1,
+                    hAxis: { textPosition: 'none'}
+                    //vAxis: { textPosition: 'none'}
+                }
+            }
+        });
+        miniUserChart.execute();
+
+        var userReport = new gapi.analytics.report.Data({
+            query: {
+                'ids': sGaIds,
+                'metrics': 'ga:users',
+                'filters' : 'ga:eventCategory=~^{' + sDvsTitleUrl + '}',
+                'start-date': '7daysAgo',
+                'end-date': 'yesterday'
+            }
+        });
+
+        userReport.on('success', function(response) {
+            if (typeof response.rows != "undefined") {
+                document.getElementById('mini-chart-user-total').innerHTML = response.rows[0][0];
+            }
+        });
+        userReport.execute();
+
+        var miniPageViewChart = new gapi.analytics.googleCharts.DataChart({
+            query: {
+                'ids': sGaIds,
                 'metrics': 'ga:pageviews',
-                'dimensions': 'ga:pagePathLevel1',
-                'sort': '-ga:pageviews',
-                'filters': 'ga:pagePathLevel1!=/',
-                'max-results': 7
+                'dimensions': 'ga:date',
+                'filters' : 'ga:eventCategory=~^{' + sDvsTitleUrl + '}',
+                'start-date': '7daysAgo',
+                'end-date': 'yesterday'
             },
             chart: {
-                'container': 'chart-2-container',
-                'type': 'PIE',
-                'options': {
-                    'width': '100%',
-                    'pieHole': 4/9
+                container: 'mini-chart-pageview-content',
+                type: 'LINE',
+                options: {
+                    width: '100%',
+                    height: '120',
+                    title: 'Pageviews',
+                    curveType: 'function',
+                    pointsVisible: false,
+                    lineWidth: 1,
+                    hAxis: { textPosition: 'none'}
+                    //vAxis: { textPosition: 'none'}
                 }
             }
         });
-        dataChart2.execute();
+        miniPageViewChart.execute();
 
+        var pageviewReport = new gapi.analytics.report.Data({
+            query: {
+                'ids': sGaIds,
+                'metrics': 'ga:pageviews',
+                'filters' : 'ga:eventCategory=~^{' + sDvsTitleUrl + '}',
+                'start-date': '7daysAgo',
+                'end-date': 'yesterday'
+            }
+        });
+
+        pageviewReport.on('success', function(response) {
+            if (typeof response.rows != "undefined") {
+                document.getElementById('mini-chart-pageview-total').innerHTML = response.rows[0][0];
+            }
+        });
+        pageviewReport.execute();
+
+        dateSelector.on('change', function(dateRange) {
+            totalEvents = 0;
+            totalEventsLoaded = 0;
+            circleConversionRate.set({query: dateRange}).clearTemplate();
+            circleLeadsSent.set({query: dateRange}).execute();
+            circleInventoryClick.set({query: dateRange}).execute();
+            circleOfferClick.set({query: dateRange}).execute();
+            dataChart.set({query: dateRange}).execute();
+
+            miniSessionChart.set({query: dateRange}).execute();
+            document.getElementById('mini-chart-session-total').innerHTML = '';
+
+            miniUserChart.set({query: dateRange}).execute();
+            document.getElementById('mini-chart-user-total').innerHTML = '';
+            userReport.set({query: dateRange}).execute();
+
+            miniPageViewChart.set({query: dateRange}).execute();
+            document.getElementById('mini-chart-pageview-total').innerHTML = '';
+            pageviewReport.set({query: dateRange}).execute();
+        });
     });
 </script>
 {/literal}

@@ -1,0 +1,67 @@
+#date-selector-container {
+    text-align: center;
+}
+
+.DVSDateLabel {
+    font-size: 14px;
+    font-weight: bold;
+    padding-right: 15px;
+}
+
+#circle-stats-wrapper {
+    background-color: #E5E5E5;
+    margin-top: 20px;
+}
+
+.DVSCicleGraph {
+    padding: 20px 0;
+    text-align: center;
+    display: block;
+    float: left;
+    width: 25%;
+}
+
+.DVSCicleGraph .DVSCircleLabel {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.DVSCicleGraph .DVSCircleNumber {
+    background-color: #018DCA;
+    width: 128px;
+    height: 128px;
+    line-height: 128px;
+    font-size: 38px;
+    color: #FFFFFF;
+    display: inline-block;
+    margin-top: 10px;
+    border-radius: 64px;
+}
+
+.DVSCicleGraph.circle-graph-green .DVSCircleNumber {
+    background-color: #4EB526;
+}
+
+#mini-chart-left {
+    width: 75%;
+    float: left;
+    display: block;
+}
+
+.mini-chart {
+    position: relative;
+    display: block;
+    width: 30%;
+    float: left;
+    padding: 0 10px 0 0;
+    border-right: 1px solid #CCCCCC;
+    margin-right: 10px;
+}
+
+.mini-chart-total {
+    font-size: 20px;
+    position: absolute;
+    right: 5px;
+    top: 0;
+    z-index: 99;
+}
