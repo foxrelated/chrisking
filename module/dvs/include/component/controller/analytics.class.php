@@ -12,7 +12,7 @@ class Dvs_Component_Controller_Analytics extends Phpfox_Component {
             $this->url()->send('');
             return false;
         }
-        $aDvs['title_url'] = 'commonwealthhonda';
+        //$aDvs['title_url'] = 'commonwealthhonda';
 
         $this->template()
             ->setHeader(array(
