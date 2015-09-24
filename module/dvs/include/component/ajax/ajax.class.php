@@ -2029,5 +2029,42 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 		Phpfox::getService('dvs.blacklists')->remove($iId);
 	}
+
+    public function analyticExportPdf() {
+        $sTab = $this->get('tab');
+        $iDay = $this->get('day');
+
+        if ($iDvsId = $this->get('dvsId')) {
+            if (!Phpfox::getService('dvs')->hasAccess($iDvsId, Phpfox::getUserId())) {
+                return false;
+            }
+            $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+        } else {
+            return false;
+        }
+        $aDvs['title_url'] = 'sierratoyota';
+        $aDvs['dealer_name'] = 'Commonwealth Honda';
+
+        if ($sTab == 'overall') {
+            $EncodedPNG = $this->get('circleGraphImg');
+            $EncodedPNG = str_replace(' ','+',$EncodedPNG);
+            $EncodedPNG =  str_replace('data:image/png;base64,', '', $EncodedPNG);
+            $decoded=base64_decode($EncodedPNG);
+            file_put_contents(Phpfox::getParam('core.dir_cache') . '1.png', $decoded);
+        } elseif ($sTab == 'video') {
+            $EncodedPNG = $this->get('circleGraphImg');
+            $EncodedPNG = str_replace(' ','+',$EncodedPNG);
+            $EncodedPNG =  str_replace('data:image/png;base64,', '', $EncodedPNG);
+            $decoded=base64_decode($EncodedPNG);
+            file_put_contents(Phpfox::getParam('core.dir_cache') . '1.png', $decoded);
+            Phpfox::getService('dvs.analytics.export')->exportVideo(Phpfox::getParam('core.dir_cache'), $iDay, $aDvs);
+        } elseif ($sTab == 'sharing') {
+            $EncodedPNG = $this->get('circleGraphImg');
+            $EncodedPNG = str_replace(' ','+',$EncodedPNG);
+            $EncodedPNG =  str_replace('data:image/png;base64,', '', $EncodedPNG);
+            $decoded=base64_decode($EncodedPNG);
+            file_put_contents(Phpfox::getParam('core.dir_cache') . '1.png', $decoded);
+        }
+    }
 }
 ?>

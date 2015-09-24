@@ -12,21 +12,34 @@ class Dvs_Component_Controller_Analytics extends Phpfox_Component {
             $this->url()->send('');
             return false;
         }
-        //$aDvs['title_url'] = 'commonwealthhonda';
+//        $aDvs['title_url'] = 'commonwealthhonda';
+        $aDvs['title_url'] = 'sierratoyota';
+
+        $aDvs['dealer_name'] = 'Commonwealth Honda';
+
+        $sTab = $this->request()->get('tab', 'overall');
+        $iDays = $this->request()->get('day', 7);
+        $sDateFrom = $iDays.'daysAgo';
+        $sFullPath = $this->url()->makeUrl('dvs.analytics', array('id' => $iDvsId, 'tab' => $sTab, 'day' => 'tempdays'));
+
+        $this->setParam('aDvs', $aDvs);
+        $this->setParam('sDateFrom', $sDateFrom);
 
         $this->template()
             ->setHeader(array(
-                'analytics.css' => 'module_dvs'
+                'analytics.css' => 'module_dvs',
+                'analytics-'. $sTab .'.js' => 'module_dvs'
             ))
             ->assign(array(
-                'sSitePath' => Phpfox::getParam('core.path'),
-                'sJavascript' =>
-                    '<script type="text/javascript">
-                        var sDvsTitleUrl = "' . $aDvs['title_url'] . '";
-                        var sGaAccessToken = "' . Phpfox::getService('dvs.analytics')->getAccess() . '";
-                        var sGaIds = "ga:60794198";
-                    </script>'
-        ));
+                'aDvs' => $aDvs,
+                'iDays' => $iDays,
+                'sTab' => $sTab,
+                'sGlobalJavascript' =>
+                    '<script type="text/javascript">' .
+                        'var sFullPath = "' . $sFullPath . '";' .
+                        'var iExportDay = ' . $iDays . ';' .
+                    '</script>'
+            ));
     }
 }
 
