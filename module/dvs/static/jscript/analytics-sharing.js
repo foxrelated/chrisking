@@ -2,6 +2,8 @@ google.load("visualization", "1", {packages:["corechart", "table"]});
 google.setOnLoadCallback(drawChart);
 
 var canvas = null;
+var shareViewTable = null;
+var shareViewPie = null;
 
 function drawChart() {
     drawCircleGraph(window.iEmailSentEvent, window.iEmailClickedEvent, window.iCTRate);
@@ -13,7 +15,12 @@ function drawChart() {
 
 function exportAllChart() {
     var circleGraphImage = (canvas.toDataURL("image/png"));
-    $.ajaxCall('dvs.analyticExportPdf', 'tab=overall&sessionMainChartImg='+circleGraphImage);
+    if (window.shareViewDataRaw) {
+        var shareViewPieImage = (shareViewPie.getImageURI());
+        $.ajaxCall('dvs.analyticExportPdf', 'tab=sharing&day='+window.iExportDay+'&dvsId='+window.iDvsId+'&circleGraphImg='+circleGraphImage+'&shareViewPieImage='+shareViewPieImage);
+    } else {
+        $.ajaxCall('dvs.analyticExportPdf', 'tab=sharing&day='+window.iExportDay+'&dvsId='+window.iDvsId+'&circleGraphImg='+circleGraphImage);
+    }
 }
 
 function drawCircleGraph(emailSent, emailClicked, CTRate) {
@@ -61,7 +68,7 @@ function drawShareViewTable() {
     shareViewData.addColumn('number', 'Sessions');
     shareViewData.addRows(window.shareViewDataRaw);
 
-    var shareViewTable = new google.visualization.Table(document.getElementById('share-table-chart'));
+    shareViewTable = new google.visualization.Table(document.getElementById('share-table-chart'));
     shareViewTable.draw(shareViewData, {showRowNumber: false, width: '100%', height: '100%'});
 }
 
@@ -75,6 +82,6 @@ function drawShareViewPie() {
         pieHole: 0.25
     };
 
-    var chart = new google.visualization.PieChart(document.getElementById('share-pie-chart'));
-    chart.draw(shareViewData, options);
+    shareViewPie = new google.visualization.PieChart(document.getElementById('share-pie-chart'));
+    shareViewPie.draw(shareViewData, options);
 }

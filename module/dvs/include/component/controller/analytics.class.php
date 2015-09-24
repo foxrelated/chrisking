@@ -36,6 +36,7 @@ class Dvs_Component_Controller_Analytics extends Phpfox_Component {
                 'sTab' => $sTab,
                 'sGlobalJavascript' =>
                     '<script type="text/javascript">' .
+                        'var iDvsId = ' . $iDvsId . ';' .
                         'var sFullPath = "' . $sFullPath . '";' .
                         'var iExportDay = ' . $iDays . ';' .
                     '</script>'

@@ -11,7 +11,7 @@ function drawChart() {
 
 function exportAllChart() {
     var circleGraphImage = (canvas.toDataURL("image/png"));
-    $.ajaxCall('dvs.analyticExportPdf', 'tab=video&day='+window.iExportDay+'circleGraphImg='+circleGraphImage);
+    $.ajaxCall('dvs.analyticExportPdf', 'tab=video&day='+window.iExportDay+'&dvsId='+window.iDvsId+'&circleGraphImg='+circleGraphImage);
 }
 
 function drawCircleGraph(videoView, playerLoad, playRate) {

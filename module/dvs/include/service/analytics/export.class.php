@@ -13,8 +13,61 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
 
     }
 
-    public function exportOverall($sImagePrefix, $iDay = 7) {
+    public function exportOverall($sImagePrefix, $iDays = 7, $aDvs) {
+        $sDateFrom = $iDays.'daysAgo';
+        $oGAService = Phpfox::getService('dvs.analytics');
         $pdf = new FPDF();
+        $pdf->SetFont('Arial', 'B', 14);
+        $pdf->SetTextColor(0, 0, 0);
+        // Set up a page
+        $pdf->AddPage('P');
+        $pdf->SetDisplayMode('real', 'default');
+        // Write 'Sharing Stats' Text
+        $pdf->SetXY(5, 5);
+        $pdf->SetFontSize(15);
+        $pdf->Write(5, 'Overall Stats');
+        $pdf->Ln(10);
+        // Show Circle Graph Image
+        $pdf->Image($sImagePrefix.'1.png', 5, 20, 200, 40);
+        // Show Main Session
+        $pdf->Image($sImagePrefix.'2.png', 5, 65, 200, 40);
+        // Show Mini Images
+        $pdf->Image($sImagePrefix.'3.png', 5, 110, 45, 22);
+        $pdf->Image($sImagePrefix.'4.png', 55, 110, 45, 22);
+        $pdf->Image($sImagePrefix.'5.png', 105, 110, 45, 22);
+        $pdf->Image($sImagePrefix.'6.png', 5, 135, 45, 22);
+        $pdf->Image($sImagePrefix.'7.png', 55, 135, 45, 22);
+        $pdf->Image($sImagePrefix.'8.png', 105, 135, 45, 22);
+        $pdf->Image($sImagePrefix.'9.png', 155, 110, 45, 50);
+
+        // Draw Sessions by City
+        $pdf->SetXY(5, 165);
+        $pdf->SetFont('Arial', 'B', 13);
+        $pdf->Write(5, 'Sessions by City');
+        $oSessionCityTableRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:city','filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'}','sort'=>'-ga:sessions','max-results'=>10), $sDateFrom);
+        $pdf->SetXY(5, 175);
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Cell(5, 7, '', 1, 0, 'C');
+        $pdf->Cell(70, 7, 'City', 1, 0, 'C');
+        $pdf->Cell(20, 7, 'Sessions', 1, 0, 'C');
+        $pdf->Ln();
+        $pdf->SetFont('Arial', '', 8);
+        $iPointY = 175;
+        foreach($oSessionCityTableRequest->rows as $iKey => $aRow) {
+            $iPointY += 7;
+            $pdf->SetXY(5, $iPointY);
+            $pdf->Cell(5, 7, $iKey+1, 1, 0);
+            $pdf->Cell(70, 7, $aRow[0], 1, 0);
+            $pdf->Cell(20, 7, $aRow[1], 1, 0, 'C');
+        }
+
+        $pdf->Ln(10);
+        $sNewFile = 'exporting-' . md5($aDvs['dvs_id'].'-overall-'.$iDays.'-'.uniqid()) . '.pdf';
+        $pdf->Output(Phpfox::getParam('core.dir_cache') . $sNewFile, 'F');
+        for($i=1; $i<=9; $i++) {
+            unlink($sImagePrefix.$i.'.png');
+        }
+        return $sNewFile;
     }
 
     public function exportVideo($sImagePrefix, $iDays = 7, $aDvs) {
@@ -29,7 +82,7 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         // Write 'Sharing Stats' Text
         $pdf->SetXY(5, 5);
         $pdf->SetFontSize(15);
-        $pdf->Write(5, 'Video Stats');
+        $pdf->Write(5, 'Videos Stats');
         $pdf->Ln(10);
         // Show Circle Graph Image
         $pdf->Image($sImagePrefix.'1.png', 5, null, 200, 40);
@@ -73,13 +126,15 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
             $pdf->Cell(20, 7, $aRow[1], 1, 0, 'C');
         }
 
-        $pdf->Ln(10);
-        $pdf->Output(Phpfox::getParam('core.dir_cache') . '1.pdf', 'F');
-
-
+        $sNewFile = 'exporting-' . md5($aDvs['dvs_id'].'-video-'.$iDays.'-'.uniqid()) . '.pdf';
+        $pdf->Output(Phpfox::getParam('core.dir_cache') . $sNewFile, 'F');
+        unlink($sImagePrefix.'1.png');
+        return $sNewFile;
     }
 
-    public function exportSharing($sImagePrefix, $iDay = 7) {
+    public function exportSharing($sImagePrefix, $iDays = 7, $aDvs) {
+        $sDateFrom = $iDays.'daysAgo';
+        $oGAService = Phpfox::getService('dvs.analytics');
         $pdf = new FPDF();
         $pdf->SetFont('Arial', 'B', 14);
         $pdf->SetTextColor(0, 0, 0);
@@ -87,13 +142,43 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         $pdf->AddPage('P');
         $pdf->SetDisplayMode('real', 'default');
         // Write 'Sharing Stats' Text
-        $pdf->SetXY(10, 60);
-        $pdf->SetFontSize(16);
-        $pdf->Write(5, 'Sharing Stats');
+        $pdf->SetXY(5, 5);
+        $pdf->SetFontSize(15);
+        $pdf->Write(5, 'Videos Stats');
+        $pdf->Ln(10);
         // Show Circle Graph Image
-        $pdf->Image($sImagePrefix.'1.png', 10, 100, 980, 200);
-        $pdf->Ln(230);
-        $pdf->Output(Phpfox::getParam('core.dir_cache') . '1.pdf', 'F');
+        $pdf->Image($sImagePrefix.'1.png', 5, null, 200, 40);
+        $pdf->Ln(40);
+
+        $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:medium','filters'=>'ga:campaign==DVS Share Links','sort'=>'-ga:sessions'), $sDateFrom);
+        if ($oShareViewRequest->rows) {
+            // Draw Most Watched Videos Table
+            $pdf->SetXY(5, 75);
+            $pdf->SetFont('Arial', 'B', 13);
+            $pdf->Write(5, 'Most Shares Viewed');
+            $pdf->SetXY(5, 85);
+            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->Cell(70, 7, 'City', 1, 0, 'C');
+            $pdf->Cell(20, 7, 'Sessions', 1, 0, 'C');
+            $pdf->Ln();
+            $pdf->SetFont('Arial', '', 8);
+            $iPointY = 85;
+            foreach($oShareViewRequest->rows as $aRow) {
+                $iPointY += 7;
+                $pdf->SetXY(5, $iPointY);
+                $pdf->Cell(70, 7, $aRow[0], 1, 0);
+                $pdf->Cell(20, 7, $aRow[1], 1, 0, 'C');
+            }
+            $pdf->Image($sImagePrefix.'2.png', 105, 75, 100, 40);
+        }
+
+        $sNewFile = 'exporting-' . md5($aDvs['dvs_id'].'-sharing-'.$iDays.'-'.uniqid()) . '.pdf';
+        $pdf->Output(Phpfox::getParam('core.dir_cache') . $sNewFile, 'F');
+        unlink($sImagePrefix.'1.png');
+        if ($oShareViewRequest->rows) {
+            unlink($sImagePrefix.'2.png');
+        }
+        return $sNewFile;
     }
 }
 ?>

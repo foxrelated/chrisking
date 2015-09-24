@@ -2044,27 +2044,38 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         }
         $aDvs['title_url'] = 'sierratoyota';
         $aDvs['dealer_name'] = 'Commonwealth Honda';
+        $sCacheImagePrefix = md5($iDvsId.$sTab.$iDay);
 
         if ($sTab == 'overall') {
-            $EncodedPNG = $this->get('circleGraphImg');
-            $EncodedPNG = str_replace(' ','+',$EncodedPNG);
-            $EncodedPNG =  str_replace('data:image/png;base64,', '', $EncodedPNG);
-            $decoded=base64_decode($EncodedPNG);
-            file_put_contents(Phpfox::getParam('core.dir_cache') . '1.png', $decoded);
+            $this->saveImageData($this->get('circleGraphImg'), $sCacheImagePrefix.'1.png');
+            $this->saveImageData($this->get('sessionMainChartImg'), $sCacheImagePrefix.'2.png');
+            $this->saveImageData($this->get('sessionMiniChartImage'), $sCacheImagePrefix.'3.png');
+            $this->saveImageData($this->get('userMiniChartImage'), $sCacheImagePrefix.'4.png');
+            $this->saveImageData($this->get('pageViewMiniChartImage'), $sCacheImagePrefix.'5.png');
+            $this->saveImageData($this->get('pagePerSessionMiniChartImage'), $sCacheImagePrefix.'6.png');
+            $this->saveImageData($this->get('avgTimePageMiniChartImage'), $sCacheImagePrefix.'7.png');
+            $this->saveImageData($this->get('bounceRateMiniChartImage'), $sCacheImagePrefix.'8.png');
+            $this->saveImageData($this->get('visitorPercentChartImage'), $sCacheImagePrefix.'9.png');
+            $sNewPdfFile = Phpfox::getService('dvs.analytics.export')->exportOverall(Phpfox::getParam('core.dir_cache').$sCacheImagePrefix, $iDay, $aDvs);
         } elseif ($sTab == 'video') {
-            $EncodedPNG = $this->get('circleGraphImg');
-            $EncodedPNG = str_replace(' ','+',$EncodedPNG);
-            $EncodedPNG =  str_replace('data:image/png;base64,', '', $EncodedPNG);
-            $decoded=base64_decode($EncodedPNG);
-            file_put_contents(Phpfox::getParam('core.dir_cache') . '1.png', $decoded);
-            Phpfox::getService('dvs.analytics.export')->exportVideo(Phpfox::getParam('core.dir_cache'), $iDay, $aDvs);
+            $this->saveImageData($this->get('circleGraphImg'), $sCacheImagePrefix.'1.png');
+            $sNewPdfFile = Phpfox::getService('dvs.analytics.export')->exportVideo(Phpfox::getParam('core.dir_cache').$sCacheImagePrefix, $iDay, $aDvs);
         } elseif ($sTab == 'sharing') {
-            $EncodedPNG = $this->get('circleGraphImg');
-            $EncodedPNG = str_replace(' ','+',$EncodedPNG);
-            $EncodedPNG =  str_replace('data:image/png;base64,', '', $EncodedPNG);
-            $decoded=base64_decode($EncodedPNG);
-            file_put_contents(Phpfox::getParam('core.dir_cache') . '1.png', $decoded);
+            $this->saveImageData($this->get('circleGraphImg'), $sCacheImagePrefix.'1.png');
+            if ($this->get('shareViewPieImage') != '') {
+                $this->saveImageData($this->get('shareViewPieImage'), $sCacheImagePrefix.'2.png');
+            }
+            $sNewPdfFile = Phpfox::getService('dvs.analytics.export')->exportSharing(Phpfox::getParam('core.dir_cache').$sCacheImagePrefix, $iDay, $aDvs);
         }
+        $sNewPdfFile = Phpfox::getParam('core.path') . 'file/cache/'.$sNewPdfFile;
+        $this->call('window.location.href="'.$sNewPdfFile.'";');
+    }
+
+    function saveImageData($EncodedPNG, $sFile) {
+        $EncodedPNG = str_replace(' ','+',$EncodedPNG);
+        $EncodedPNG =  str_replace('data:image/png;base64,', '', $EncodedPNG);
+        $decoded=base64_decode($EncodedPNG);
+        file_put_contents(Phpfox::getParam('core.dir_cache') . $sFile, $decoded);
     }
 }
 ?>

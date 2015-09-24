@@ -36,7 +36,20 @@ function exportAllChart() {
     var bounceRateMiniChartImage = (bounceRateMiniChart.getImageURI());
     var visitorPercentChartImage = (visitorPercentChart.getImageURI());
 
-    $.ajaxCall('dvs.analyticExportPdf', 'tab=overall&sessionMainChartImg='+circleGraphImage);
+    $.ajaxCall('dvs.analyticExportPdf',
+            'tab=overall'+
+            '&day='+window.iExportDay+
+            '&dvsId='+window.iDvsId+
+            '&circleGraphImg='+circleGraphImage+
+            '&sessionMainChartImg='+sessionMainChartImg+
+            '&sessionMiniChartImage='+sessionMiniChartImage+
+            '&userMiniChartImage='+userMiniChartImage+
+            '&pageViewMiniChartImage='+pageViewMiniChartImage+
+            '&pagePerSessionMiniChartImage='+pagePerSessionMiniChartImage+
+            '&avgTimePageMiniChartImage='+avgTimePageMiniChartImage+
+            '&bounceRateMiniChartImage='+bounceRateMiniChartImage+
+            '&visitorPercentChartImage='+visitorPercentChartImage
+    );
 }
 
 function drawCircleGraph(leadSent, inventoryClick, specialOfferClick, conversionRate) {
@@ -107,6 +120,12 @@ function drawMiniSession() {
     var options = {
         height: 105,
         chartArea: {left: 0, width: '100%', height: 75, top: 20},
+        title: window.sessionTotal,
+        titlePosition: 'in',
+        titleTextStyle: {
+            fontSize: 20,
+            bold: false
+        },
         legend: {position: 'top', textStyle: { color: '#000000', fontSize: 14}},
         vAxis: {gridlines: {count: 0}, baselineColor: 'transparent', maxValue: window.sessionMaxValue},
         hAxis: {gridlines: {count: 0}, baselineColor: 'transparent'},
@@ -114,7 +133,6 @@ function drawMiniSession() {
     };
     sessionMiniChart = new google.visualization.AreaChart(document.getElementById('mini-chart-session-content'));
     sessionMiniChart.draw(sessionData, options);
-    document.getElementById('mini-chart-session-total').style.display = 'block';
 }
 
 function drawMiniUser() {
@@ -125,6 +143,12 @@ function drawMiniUser() {
     var options = {
         height: 105,
         chartArea: {left: 0, width: '100%', height: 75, top: 20},
+        title: window.userTotal,
+        titlePosition: 'in',
+        titleTextStyle: {
+            fontSize: 20,
+            bold: false
+        },
         legend: {position: 'top', textStyle: { color: '#000000', fontSize: 14}},
         vAxis: {gridlines: {count: 0}, baselineColor: 'transparent', maxValue: window.userMaxValue},
         hAxis: {gridlines: {count: 0}, baselineColor: 'transparent'},
@@ -132,7 +156,6 @@ function drawMiniUser() {
     };
     userMiniChart = new google.visualization.AreaChart(document.getElementById('mini-chart-user-content'));
     userMiniChart.draw(userData, options);
-    document.getElementById('mini-chart-user-total').style.display = 'block';
 }
 
 function drawMiniPageView() {
@@ -143,6 +166,12 @@ function drawMiniPageView() {
     var options = {
         height: 105,
         chartArea: {left: 0, width: '100%', height: 75, top: 20},
+        title: window.pageViewTotal,
+        titlePosition: 'in',
+        titleTextStyle: {
+            fontSize: 20,
+            bold: false
+        },
         legend: {position: 'top', textStyle: { color: '#000000', fontSize: 14}},
         vAxis: {gridlines: {count: 0}, baselineColor: 'transparent', maxValue: window.pageViewMaxValue},
         hAxis: {gridlines: {count: 0}, baselineColor: 'transparent'},
@@ -150,7 +179,6 @@ function drawMiniPageView() {
     };
     pageViewMiniChart = new google.visualization.AreaChart(document.getElementById('mini-chart-pageview-content'));
     pageViewMiniChart.draw(pageViewData, options);
-    document.getElementById('mini-chart-pageview-total').style.display = 'block';
 }
 
 function drawMiniPagePerSession() {
@@ -161,6 +189,12 @@ function drawMiniPagePerSession() {
     var options = {
         height: 105,
         chartArea: {left: 0, width: '100%', height: 75, top: 20},
+        title: window.pagePerSessionTotal,
+        titlePosition: 'in',
+        titleTextStyle: {
+            fontSize: 20,
+            bold: false
+        },
         legend: {position: 'top', textStyle: { color: '#000000', fontSize: 14}},
         vAxis: {gridlines: {count: 0}, baselineColor: 'transparent', maxValue: window.pagePerSessionMaxValue},
         hAxis: {gridlines: {count: 0}, baselineColor: 'transparent'},
@@ -168,7 +202,6 @@ function drawMiniPagePerSession() {
     };
     pagePerSessionMiniChart = new google.visualization.AreaChart(document.getElementById('mini-chart-pagepersession-content'));
     pagePerSessionMiniChart.draw(pagePerSessionData, options);
-    document.getElementById('mini-chart-pagepersession-total').style.display = 'block';
 }
 
 function drawMiniAvgTimePage() {
@@ -179,6 +212,12 @@ function drawMiniAvgTimePage() {
     var options = {
         height: 105,
         chartArea: {left: 0, width: '100%', height: 75, top: 20},
+        title: window.avgTimePageTotal,
+        titlePosition: 'in',
+        titleTextStyle: {
+            fontSize: 20,
+            bold: false
+        },
         legend: {position: 'top', textStyle: { color: '#000000', fontSize: 14}},
         vAxis: {gridlines: {count: 0}, baselineColor: 'transparent', maxValue: window.avgTimePageMaxValue},
         hAxis: {gridlines: {count: 0}, baselineColor: 'transparent'},
@@ -186,7 +225,6 @@ function drawMiniAvgTimePage() {
     };
     avgTimePageMiniChart = new google.visualization.AreaChart(document.getElementById('mini-chart-avgtimepage-content'));
     avgTimePageMiniChart.draw(avgTimePageData, options);
-    document.getElementById('mini-chart-avgtimepage-total').style.display = 'block';
 }
 
 function drawMiniBounceRate() {
@@ -197,6 +235,12 @@ function drawMiniBounceRate() {
     var options = {
         height: 105,
         chartArea: {left: 0, width: '100%', height: 75, top: 20},
+        title: window.bounceRateTotal,
+        titlePosition: 'in',
+        titleTextStyle: {
+            fontSize: 20,
+            bold: false
+        },
         legend: {position: 'top', textStyle: { color: '#000000', fontSize: 14}},
         vAxis: {gridlines: {count: 0}, baselineColor: 'transparent', maxValue: window.bounceRateMaxValue},
         hAxis: {gridlines: {count: 0}, baselineColor: 'transparent'},
@@ -204,7 +248,6 @@ function drawMiniBounceRate() {
     };
     bounceRateMiniChart = new google.visualization.AreaChart(document.getElementById('mini-chart-bouncerate-content'));
     bounceRateMiniChart.draw(bounceRateData, options);
-    document.getElementById('mini-chart-bouncerate-total').style.display = 'block';
 }
 
 function drawVisitorPercent() {
