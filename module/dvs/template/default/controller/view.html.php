@@ -144,7 +144,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             {phrase var='dvs.cta_home'}
           </a>
           {if $aDvs.inventory_url}
-          <a href="{$aDvs.inventory_url}" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow" target="_parent">
+          <a href="{$aDvs.inventory_url}" class="dvs_inventory_link" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow" target="_parent">
             {phrase var='dvs.cta_inventory'}
           </a>
           {/if}
@@ -169,7 +169,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             {/if}
           {/if}
         </section>
-        
+
         <section id="action_links">
           <input type="hidden" value="{$sVideoHashCode}" id="video_hash_code" />
 			 {if !Phpfox::isUser()}

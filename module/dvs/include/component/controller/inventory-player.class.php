@@ -229,7 +229,7 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
         }
 
         $sVdpIframeUrl = $this->url()->makeUrl('dvs.utm') . '?utm_source=' . str_replace('&', '', $aDvs['dealer_name']) . ' DVS';
-        $sVdpIframeUrl .= '&utm_medium=VDP Button';
+        $sVdpIframeUrl .= '&utm_medium=VIN URL Player';
         $sVdpIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
         $sVdpIframeUrl .= '&utm_campaign=DVS Inventory';
         if(!$aDvs['is_active']) {

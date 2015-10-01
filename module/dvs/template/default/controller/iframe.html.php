@@ -80,7 +80,7 @@
           <tr>
           <td>
           {if $aDvs.inventory_url}
-          <a href="{$aDvs.inventory_url}" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow" target="_parent">
+          <a href="{$aDvs.inventory_url}" class="dvs_inventory_link" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow" target="_parent">
             {phrase var='dvs.cta_inventory'}
           </a>
           {/if}
