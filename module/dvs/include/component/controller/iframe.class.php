@@ -364,7 +364,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                     $sShareIframeUrl .= '&utm_medium=Email';
                     break;
                 case 'text':
-                    $sShareIframeUrl .= '&utm_medium=Text Link';
+                    $sShareIframeUrl .= '&utm_medium=Text Message';
                     break;
                 default:
                     $sShareIframeUrl .= '&utm_medium=Direct Link';
@@ -372,7 +372,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             }
 
             $sShareIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
-            if($sShareSource == 'qrcode') {
+            if($sShareSource == 'qrcode' || 'facebook' || 'twitter' || 'google' || 'crm' || 'direct' || 'email' || 'text') {
                 $sShareIframeUrl .= '&utm_campaign=DVS Share Links';
             } else {
                 $sShareIframeUrl .= '&utm_campaign=DVS iFrame';
@@ -382,7 +382,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
         $sVdpIframeUrl = '';
         if($sVdpEmbed) {
             $sVdpIframeUrl = $this->url()->makeUrl('dvs.utm') . '?utm_source=' . str_replace('&', '', $aDvs['dealer_name']) . ' DVS';
-            $sVdpIframeUrl .= '&utm_medium=VDP Button';
+            $sVdpIframeUrl .= '&utm_medium=iFrame Player';
             $sVdpIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
             $sVdpIframeUrl .= '&utm_campaign=DVS Inventory';
         }
