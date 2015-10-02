@@ -2042,8 +2042,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         } else {
             return false;
         }
-        $aDvs['title_url'] = 'sierratoyota';
-        $aDvs['dealer_name'] = 'Commonwealth Honda';
+
         $sCacheImagePrefix = md5($iDvsId.$sTab.$iDay);
 
         if ($sTab == 'overall') {
@@ -2067,8 +2066,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             }
             $sNewPdfFile = Phpfox::getService('dvs.analytics.export')->exportSharing(Phpfox::getParam('core.dir_cache').$sCacheImagePrefix, $iDay, $aDvs);
         }
-        $sNewPdfFile = Phpfox::getParam('core.path') . 'file/cache/'.$sNewPdfFile;
-        $this->call('window.location.href="'.$sNewPdfFile.'";');
+
+        $sNewPdfFile = Phpfox::getLib('url')->makeUrl('dvs.analytics.export', array('id'=>trim($aDvs['title_url']), 'file'=>'pdf'));
+        $this->call("$('#download_iframe').attr('src', '" . $sNewPdfFile . "')");
     }
 
     function saveImageData($EncodedPNG, $sFile) {
@@ -2076,6 +2076,37 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         $EncodedPNG =  str_replace('data:image/png;base64,', '', $EncodedPNG);
         $decoded=base64_decode($EncodedPNG);
         file_put_contents(Phpfox::getParam('core.dir_cache') . $sFile, $decoded);
+    }
+
+    public function analyticsExportCSV() {
+        $sTab = $this->get('tab');
+        $iDay = $this->get('day');
+
+        if ($iDvsId = $this->get('dvsId')) {
+            if (!Phpfox::getService('dvs')->hasAccess($iDvsId, Phpfox::getUserId())) {
+                return false;
+            }
+            $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+        } else {
+            return false;
+        }
+        $aDvs['title_url'] = 'sierratoyota';
+        $aDvs['dealer_name'] = 'Commonwealth Honda';
+
+        switch ($sTab) {
+            case 'video':
+                Phpfox::getService('dvs.analytics.export')->exportVideoCSV($iDay, $aDvs);
+                break;
+            case 'sharing':
+                Phpfox::getService('dvs.analytics.export')->exportSharingCSV($iDay, $aDvs);
+                break;
+            default:
+                Phpfox::getService('dvs.analytics.export')->exportOverallCSV($iDay, $aDvs);
+                break;
+        }
+
+        $sNewPdfFile = Phpfox::getLib('url')->makeUrl('dvs.analytics.export', array('id'=>trim($aDvs['title_url']), 'file'=>'csv'));
+        $this->call("$('#download_iframe').attr('src', '" . $sNewPdfFile . "')");
     }
 }
 ?>

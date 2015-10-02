@@ -12,8 +12,8 @@ class Dvs_Component_Block_Analytics_Sharing extends Phpfox_Component {
         $iEmailSentEvent = (int)$oEmailSentRequest->totalsForAllResults['ga:totalEvents'];
 
         // Emails Clicked
-        $oEmailClickedRequest = $oGAService->makeRequest('ga:totalEvents', array('filters'=>'ga:eventLabel==Email Share Clicked;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
-        $iEmailClickedEvent = (int)$oEmailClickedRequest->totalsForAllResults['ga:totalEvents'];
+        $oEmailClickedRequest = $oGAService->makeRequest('ga:sessions', array('filters'=>'ga:campaign==DVS Share Links;ga:medium==Email;ga:source=~^'.$aDvs['dealer_name']), $sDateFrom);
+        $iEmailClickedEvent = (int)$oEmailClickedRequest->totalsForAllResults['ga:sessions'];
 
         // Click-Through Rate
         if ($iEmailSentEvent > 0) {
@@ -24,8 +24,7 @@ class Dvs_Component_Block_Analytics_Sharing extends Phpfox_Component {
         }
 
         // Most Shares Viewed
-//        $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:medium','filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$aDvs['dealer_name'],'sort'=>'-ga:sessions'), $sDateFrom);
-        $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:medium','filters'=>'ga:campaign==DVS Share Links','sort'=>'-ga:sessions'), $sDateFrom);
+        $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:medium','filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$aDvs['dealer_name'],'sort'=>'-ga:sessions'), $sDateFrom);
         if ($oShareViewRequest->rows) {
             $sShareViewData = "[";
             foreach($oShareViewRequest->rows as $aDataRow) {

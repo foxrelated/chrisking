@@ -1,12 +1,12 @@
 <div id="chart-menu">
     <div class="chart-menu-item">
-        {if $sTab != 'overall'}<a class="chart-menu-item" href="{url link='dvs.analytics' id=$aDvs.dvs_id tab='overall' day=7}">{/if}Overall Stats{if $sTab != 'overall'}</a>{/if}
+        {if $sTab != 'overall'}<a class="chart-menu-item" href="{url link='dvs.analytics' id=$aDvs.dvs_id tab='overall' day=30}">{/if}Overall Stats{if $sTab != 'overall'}</a>{/if}
     </div>
     <div class="chart-menu-item">
-        {if $sTab != 'video'}<a class="chart-menu-item" href="{url link='dvs.analytics' id=$aDvs.dvs_id tab='video' day=7}">{/if}Videos Stats{if $sTab != 'video'}</a>{/if}
+        {if $sTab != 'video'}<a class="chart-menu-item" href="{url link='dvs.analytics' id=$aDvs.dvs_id tab='video' day=30}">{/if}Videos Stats{if $sTab != 'video'}</a>{/if}
     </div>
     <div class="chart-menu-item">
-        {if $sTab != 'sharing'}<a class="chart-menu-item" href="{url link='dvs.analytics' id=$aDvs.dvs_id tab='sharing' day=7}">{/if}Sharing Stats{if $sTab != 'sharing'}</a>{/if}
+        {if $sTab != 'sharing'}<a class="chart-menu-item" href="{url link='dvs.analytics' id=$aDvs.dvs_id tab='sharing' day=30}">{/if}Sharing Stats{if $sTab != 'sharing'}</a>{/if}
     </div>
     <div class="clear"></div>
 </div>
@@ -23,7 +23,7 @@
 
     <div id="chart-export">
         <span>Export: </span>
-        <a id="chart-export-csv" href="#">CSV</a>
+        <a id="chart-export-csv" href="#" onclick="exportCSV(); return false;">CSV</a>
         <a id="chart-export-pdf" href="#" onclick="exportAllChart(); return false;">PDF</a>
     </div>
     <div class="clear"></div>
@@ -41,6 +41,8 @@
 {if $sTab == 'sharing'}
     {module name='dvs.analytics.sharing'}
 {/if}
+
+<iframe id="download_iframe" width="1" height="1" src="#"></iframe>
 
 {$sGlobalJavascript}
 {literal}

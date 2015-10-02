@@ -14,6 +14,14 @@ function exportAllChart() {
     $.ajaxCall('dvs.analyticExportPdf', 'tab=video&day='+window.iExportDay+'&dvsId='+window.iDvsId+'&circleGraphImg='+circleGraphImage);
 }
 
+function exportCSV() {
+    $.ajaxCall('dvs.analyticsExportCSV',
+        'tab=video'+
+        '&day='+window.iExportDay+
+        '&dvsId='+window.iDvsId
+    );
+}
+
 function drawCircleGraph(videoView, playerLoad, playRate) {
     canvas = document.getElementById('circle-stats-canvas');
     if (canvas.getContext) {
@@ -66,7 +74,7 @@ function drawTopVideoChart() {
 function drawTopChapterChart() {
     var topChapterData = new google.visualization.DataTable();
     topChapterData.addColumn('string', 'Chapter');
-    topChapterData.addColumn('number', 'Views');
+    topChapterData.addColumn('number', 'Clicks');
     topChapterData.addRows(window.topChapterDataRaw);
 
     var topChapterTable = new google.visualization.Table(document.getElementById('top-chapter-table'));

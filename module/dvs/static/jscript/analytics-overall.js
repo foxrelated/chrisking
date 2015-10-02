@@ -52,6 +52,14 @@ function exportAllChart() {
     );
 }
 
+function exportCSV() {
+    $.ajaxCall('dvs.analyticsExportCSV',
+            'tab=overall'+
+            '&day='+window.iExportDay+
+            '&dvsId='+window.iDvsId
+    );
+}
+
 function drawCircleGraph(leadSent, inventoryClick, specialOfferClick, conversionRate) {
     canvas = document.getElementById('circle-stats-canvas');
     if (canvas.getContext) {
@@ -90,7 +98,7 @@ function drawCircleGraph(leadSent, inventoryClick, specialOfferClick, conversion
         ctx.fillText(leadSent, 122, 135);
         ctx.fillText(inventoryClick, 122 + 245, 135);
         ctx.fillText(specialOfferClick, 122 + 245 * 2, 135);
-        ctx.fillText(conversionRate, 122 + 245 * 3, 135);
+        ctx.fillText(conversionRate+'%', 122 + 245 * 3, 135);
     }
 }
 
@@ -207,7 +215,7 @@ function drawMiniPagePerSession() {
 function drawMiniAvgTimePage() {
     var avgTimePageData = new google.visualization.DataTable();
     avgTimePageData.addColumn('date', 'Date');
-    avgTimePageData.addColumn('number', 'Pages / Session');
+    avgTimePageData.addColumn('number', 'Avg. Time on Page');
     avgTimePageData.addRows(window.avgTimePageDataRaw);
     var options = {
         height: 105,

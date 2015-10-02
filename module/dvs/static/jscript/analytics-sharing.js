@@ -23,6 +23,14 @@ function exportAllChart() {
     }
 }
 
+function exportCSV() {
+    $.ajaxCall('dvs.analyticsExportCSV',
+        'tab=sharing'+
+        '&day='+window.iExportDay+
+        '&dvsId='+window.iDvsId
+    );
+}
+
 function drawCircleGraph(emailSent, emailClicked, CTRate) {
     canvas = document.getElementById('circle-stats-canvas');
     if (canvas.getContext) {
@@ -64,8 +72,8 @@ function drawCircleGraph(emailSent, emailClicked, CTRate) {
 
 function drawShareViewTable() {
     var shareViewData = new google.visualization.DataTable();
-    shareViewData.addColumn('string', 'City');
-    shareViewData.addColumn('number', 'Sessions');
+    shareViewData.addColumn('string', 'Share Type');
+    shareViewData.addColumn('number', 'Views');
     shareViewData.addRows(window.shareViewDataRaw);
 
     shareViewTable = new google.visualization.Table(document.getElementById('share-table-chart'));
@@ -74,8 +82,8 @@ function drawShareViewTable() {
 
 function drawShareViewPie() {
     var shareViewData = new google.visualization.DataTable();
-    shareViewData.addColumn('string', 'City');
-    shareViewData.addColumn('number', 'Sessions');
+    shareViewData.addColumn('string', 'Share Type');
+    shareViewData.addColumn('number', 'Views');
     shareViewData.addRows(window.shareViewDataRaw);
 
     var options = {

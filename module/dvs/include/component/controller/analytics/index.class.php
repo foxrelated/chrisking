@@ -1,6 +1,6 @@
 <?php
 
-class Dvs_Component_Controller_Analytics extends Phpfox_Component {
+class Dvs_Component_Controller_Analytics_Index extends Phpfox_Component {
     public function process() {
         if (($iDvsId = $this->request()->getInt('id'))) {
             if (!Phpfox::getService('dvs')->hasAccess($iDvsId, Phpfox::getUserId())) {
@@ -12,13 +12,9 @@ class Dvs_Component_Controller_Analytics extends Phpfox_Component {
             $this->url()->send('');
             return false;
         }
-//        $aDvs['title_url'] = 'commonwealthhonda';
-        $aDvs['title_url'] = 'sierratoyota';
-
-        $aDvs['dealer_name'] = 'Commonwealth Honda';
 
         $sTab = $this->request()->get('tab', 'overall');
-        $iDays = $this->request()->get('day', 7);
+        $iDays = $this->request()->get('day', 30);
         $sDateFrom = $iDays.'daysAgo';
         $sFullPath = $this->url()->makeUrl('dvs.analytics', array('id' => $iDvsId, 'tab' => $sTab, 'day' => 'tempdays'));
 
