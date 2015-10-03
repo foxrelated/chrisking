@@ -2043,6 +2043,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             return false;
         }
 
+//        $aDvs['title_url'] = 'commonwealthhonda';
+//        $aDvs['dealer_name'] = 'Commonwealth Honda';
+
         $sCacheImagePrefix = md5($iDvsId.$sTab.$iDay);
 
         if ($sTab == 'overall') {
@@ -2090,8 +2093,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         } else {
             return false;
         }
-        $aDvs['title_url'] = 'sierratoyota';
-        $aDvs['dealer_name'] = 'Commonwealth Honda';
+
+//        $aDvs['title_url'] = 'commonwealthhonda';
+//        $aDvs['dealer_name'] = 'Commonwealth Honda';
 
         switch ($sTab) {
             case 'video':

@@ -13,6 +13,9 @@ class Dvs_Component_Controller_Analytics_Index extends Phpfox_Component {
             return false;
         }
 
+//        $aDvs['title_url'] = 'commonwealthhonda';
+//        $aDvs['dealer_name'] = 'Commonwealth Honda';
+
         $sTab = $this->request()->get('tab', 'overall');
         $iDays = $this->request()->get('day', 30);
         $sDateFrom = $iDays.'daysAgo';
