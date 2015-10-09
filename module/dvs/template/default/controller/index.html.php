@@ -332,22 +332,20 @@ padding: 0;
                                  {if Phpfox::isAdmin()}
                                  <li><a href="{url link='dvs.manager' id=$aDvs.dvs_id}"><span>Managers Team</span></a></li>
                                  {/if}
-                                  <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}"><span>Reporting</span></a></li>
+                                  <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}"><span></span></a></li>
 							  </ul>
 						   </li>
-						   <li class=""><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a>
-							  <!-- 
-<ul>
-								 <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share"><span>Share Links</span></a></li>
-								 <li><a href="{url link='dvs.reports.share.'$aDvs.title_url}"><span>Share Report</span></a></li>
+						   <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a>
+							<ul>
+								 <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}"><span>Reporting</span></a></li>
 							  </ul>
- -->
 						   </li>
 						   <li class="has-sub"><a href="#"><span>Integrate</span></a>
 							  <ul>
 								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Embed Code</span></a></li>
                                 <li><a href="#" onclick="$('#vdp_embed_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>Inventory Embed Code</span></a></li>
                                 <li><a href="#" onclick="$('#vin_url_player_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>VIN URL Player Code</span></a></li>
+                                <li><a href="#" onclick="$('#vin_embed_player_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>VIN Embed Player Code</span></a></li>
                                 <li><hr></li>
                                 <li><a href="{url link='dvs.download-instruction' id=$aDvs.dvs_id}"><span><strong>Download Integration Instructions</strong></span></a></li>
 							  </ul>
@@ -405,9 +403,16 @@ WTVVIN.init({l}
 					</p>
             </div>
             
-            <div id="vin_url_player_{$aDvs.dvs_id}" title="VIN URL Player code" class="dvs_iframe_link_popup" style="display:none;">
+            <div id="vin_url_player_{$aDvs.dvs_id}" title="VIN URL Player" class="dvs_iframe_link_popup" style="display:none;">
                 <p>Use this URL to assign a video to the player using a VIN (replace # with VIN):</p>
                     <textarea rows="1" cols="50">{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#</textarea>
+                </p>
+                <p>Note: This is primarily used for CDK integrations which require the player be opened in a pop-up window or iframe that they control.</p>
+            </div>
+            
+            <div id="vin_embed_player_{$aDvs.dvs_id}" title="VIN Embed Player" class="dvs_iframe_link_popup" style="display:none;">
+                <p>Use this iFrame HTML to embed a standalone DVS player on a page using a VIN (replace # with VIN):</p>
+                    <textarea rows="4" cols="30">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#" frameborder="0" scrolling="no" marginwidth="0" marginheight="0" width="880px" height="540px" &gt;&lt;/iframe&gt;</textarea>
                 </p>
                 <p>Note: This is mostly for Cobalt/CDK integrations who require the player be opened in a pop-up window or iframe that they control.</p>
             </div>
