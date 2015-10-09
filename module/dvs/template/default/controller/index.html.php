@@ -316,9 +316,6 @@ padding: 0;
 					<td colspan="2" valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
 						<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}" target="_blank">{$aDvs.dealer_name}</a>
 					</td>
-					{*<td valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
-						<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}" target="_blank">{$aDvs.dvs_name}</a>
-					</td>*}
 					
 					<td valign="middle" style="text-align:right;vertical-align:middle;">
 						<div id="cssmenu">
@@ -332,14 +329,10 @@ padding: 0;
                                  {if Phpfox::isAdmin()}
                                  <li><a href="{url link='dvs.manager' id=$aDvs.dvs_id}"><span>Managers Team</span></a></li>
                                  {/if}
-                                  <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}"><span></span></a></li>
 							  </ul>
 						   </li>
-						   <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a>
-							<ul>
-								 <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}"><span>Reporting</span></a></li>
-							  </ul>
-						   </li>
+						   <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a></li>
+						   <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}"><span>Reporting</span></a></li>
 						   <li class="has-sub"><a href="#"><span>Integrate</span></a>
 							  <ul>
 								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Embed Code</span></a></li>
@@ -405,16 +398,16 @@ WTVVIN.init({l}
             
             <div id="vin_url_player_{$aDvs.dvs_id}" title="VIN URL Player" class="dvs_iframe_link_popup" style="display:none;">
                 <p>Use this URL to assign a video to the player using a VIN (replace # with VIN):</p>
-                    <textarea rows="1" cols="50">{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#</textarea>
+                    <textarea rows="1" cols="65">{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#</textarea>
                 </p>
-                <p>Note: This is primarily used for CDK integrations which require the player be opened in a pop-up window or iframe that they control.</p>
+                <p style="padding-top:10px;"><em>Note: This is primarily used for CDK integrations which requires the player to be opened in a pop-up window or iframe that they control.</em></p>
             </div>
             
             <div id="vin_embed_player_{$aDvs.dvs_id}" title="VIN Embed Player" class="dvs_iframe_link_popup" style="display:none;">
                 <p>Use this iFrame HTML to embed a standalone DVS player on a page using a VIN (replace # with VIN):</p>
-                    <textarea rows="4" cols="30">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#" frameborder="0" scrolling="no" marginwidth="0" marginheight="0" width="880px" height="540px" &gt;&lt;/iframe&gt;</textarea>
+                    <textarea rows="4" cols="65">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#" frameborder="0" scrolling="no" marginwidth="0" marginheight="0" width="880px" height="460px" &gt;&lt;/iframe&gt;</textarea>
                 </p>
-                <p>Note: This is mostly for Cobalt/CDK integrations who require the player be opened in a pop-up window or iframe that they control.</p>
+                <p style="padding-top:10px;"><em>Note: A VIN of any Year, Make, Model must be assigned in order to display a video.</em></p>
             </div>
 				
 			{/foreach}
