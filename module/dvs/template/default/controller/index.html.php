@@ -101,7 +101,7 @@ padding: 0;
 }
 #cssmenu > ul > li {
   margin:0;
-  padding-right:30px;
+  padding-right:20px;
   
 }
 #cssmenu > ul > li.has-sub:hover > a {
@@ -151,7 +151,7 @@ padding: 0;
   padding: 0 20px;
   position: relative;
   text-align: center;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  /* text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4); */
 }
 #cssmenu ul ul {
   width: 170px;
@@ -296,9 +296,6 @@ padding: 0;
 	<div id="dvss" {*if $bCanAddDvss}class="separate"{/if*} style="margin:50px 0px 0px 0px;">
 		<table style="width:100%;border-collapse:collapse;">
 			<tr style="border-bottom:1px solid #ccc;">
-				{*<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
-					DVS Name
-				</td>*}
 				<td colspan="2" valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
 					{if Phpfox::getLib('request')->get('sort') == 'descending'}
                     <a class="dealer_heading_asc" href="{$aSearchTool.filters.Sort.data.0.link}">Dealership Name</a>
@@ -307,7 +304,7 @@ padding: 0;
                     {/if}
 				</td>
 				<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
-					Options{*phrase var='dvs.settings'*}
+					Options
 				</td>
 			</tr>
 			<tr><td colspan="3">&nbsp;</td></tr>
