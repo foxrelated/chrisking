@@ -91,7 +91,7 @@ a:hover
 	/*background: #000;*/
 	display: inline-block;
 	vertical-align:top;
-	margin-top: 10px;
+	/* margin-top: 10px; */
 	padding: 10px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
