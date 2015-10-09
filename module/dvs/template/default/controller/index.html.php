@@ -332,6 +332,7 @@ padding: 0;
                                  {if Phpfox::isAdmin()}
                                  <li><a href="{url link='dvs.manager' id=$aDvs.dvs_id}"><span>Managers Team</span></a></li>
                                  {/if}
+                                  <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}"><span>Reporting</span></a></li>
 							  </ul>
 						   </li>
 						   <li class=""><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a>
