@@ -402,7 +402,7 @@ WTVVIN.init({l}
             
             <div id="vin_embed_player_{$aDvs.dvs_id}" title="VIN Embed Player" class="dvs_iframe_link_popup" style="display:none;">
                 <p>Use this iFrame HTML to embed a standalone DVS player on a page using a VIN (replace # with VIN):</p>
-                    <textarea rows="4" cols="65">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#" frameborder="0" scrolling="no" marginwidth="0" marginheight="0" width="880px" height="460px"&gt;&lt;/iframe&gt;</textarea>
+                    <textarea rows="4" cols="65">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#" frameborder="0" scrolling="no" marginwidth="0" marginheight="0" width="880px" height="480px"&gt;&lt;/iframe&gt;</textarea>
                 </p>
                 <p style="padding-top:10px;"><em>Note: A VIN of any Year, Make, Model must be assigned in order to display a video.</em></p>
             </div>

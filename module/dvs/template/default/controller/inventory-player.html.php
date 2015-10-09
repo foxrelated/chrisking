@@ -6,7 +6,7 @@
 
     body {l}
     background-color: #{$aDvs.player_background};
-    /* padding-top: 15px; */
+    padding-top: 15px;
     {r}
 
     #video_information {l}
