@@ -101,7 +101,7 @@ padding: 0;
 }
 #cssmenu > ul > li {
   margin:0;
-  padding-right:30px;
+  padding-right:15px;
   
 }
 #cssmenu > ul > li.has-sub:hover > a {
@@ -151,7 +151,7 @@ padding: 0;
   padding: 0 20px;
   position: relative;
   text-align: center;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  /* text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4); */
 }
 #cssmenu ul ul {
   width: 170px;
@@ -296,9 +296,6 @@ padding: 0;
 	<div id="dvss" {*if $bCanAddDvss}class="separate"{/if*} style="margin:50px 0px 0px 0px;">
 		<table style="width:100%;border-collapse:collapse;">
 			<tr style="border-bottom:1px solid #ccc;">
-				{*<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
-					DVS Name
-				</td>*}
 				<td colspan="2" valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
 					{if Phpfox::getLib('request')->get('sort') == 'descending'}
                     <a class="dealer_heading_asc" href="{$aSearchTool.filters.Sort.data.0.link}">Dealership Name</a>
@@ -307,7 +304,7 @@ padding: 0;
                     {/if}
 				</td>
 				<td valign="top" style="text-align:left;font-weight:bold;padding-bottom:5px;font-size:15px;">
-					Options{*phrase var='dvs.settings'*}
+					Options
 				</td>
 			</tr>
 			<tr><td colspan="3">&nbsp;</td></tr>
@@ -316,9 +313,6 @@ padding: 0;
 					<td colspan="2" valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
 						<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}" target="_blank">{$aDvs.dealer_name}</a>
 					</td>
-					{*<td valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
-						<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}" target="_blank">{$aDvs.dvs_name}</a>
-					</td>*}
 					
 					<td valign="middle" style="text-align:right;vertical-align:middle;">
 						<div id="cssmenu">
@@ -334,19 +328,14 @@ padding: 0;
                                  {/if}
 							  </ul>
 						   </li>
-						   <li class=""><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a>
-							  <!-- 
-<ul>
-								 <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share"><span>Share Links</span></a></li>
-								 <li><a href="{url link='dvs.reports.share.'$aDvs.title_url}"><span>Share Report</span></a></li>
-							  </ul>
- -->
-						   </li>
+						   <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a></li>
+						   <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}"><span>Reporting</span></a></li>
 						   <li class="has-sub"><a href="#"><span>Integrate</span></a>
 							  <ul>
 								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Embed Code</span></a></li>
                                 <li><a href="#" onclick="$('#vdp_embed_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>Inventory Embed Code</span></a></li>
                                 <li><a href="#" onclick="$('#vin_url_player_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>VIN URL Player Code</span></a></li>
+                                <li><a href="#" onclick="$('#vin_embed_player_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>VIN Embed Player Code</span></a></li>
                                 <li><hr></li>
                                 <li><a href="{url link='dvs.download-instruction' id=$aDvs.dvs_id}"><span><strong>Download Integration Instructions</strong></span></a></li>
 							  </ul>
@@ -404,11 +393,18 @@ WTVVIN.init({l}
 					</p>
             </div>
             
-            <div id="vin_url_player_{$aDvs.dvs_id}" title="VIN URL Player code" class="dvs_iframe_link_popup" style="display:none;">
+            <div id="vin_url_player_{$aDvs.dvs_id}" title="VIN URL Player" class="dvs_iframe_link_popup" style="display:none;">
                 <p>Use this URL to assign a video to the player using a VIN (replace # with VIN):</p>
-                    <textarea rows="1" cols="50">{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#</textarea>
+                    <textarea rows="1" cols="65">{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#</textarea>
                 </p>
-                <p>Note: This is mostly for Cobalt/CDK integrations who require the player be opened in a pop-up window or iframe that they control.</p>
+                <p style="padding-top:10px;"><em>Note: This is primarily used for CDK integrations which requires the player to be opened in a pop-up window or iframe that they control.</em></p>
+            </div>
+            
+            <div id="vin_embed_player_{$aDvs.dvs_id}" title="VIN Embed Player" class="dvs_iframe_link_popup" style="display:none;">
+                <p>Use this iFrame HTML to embed a standalone DVS player on a page using a VIN (replace # with VIN):</p>
+                    <textarea rows="4" cols="65">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#" frameborder="0" scrolling="no" marginwidth="0" marginheight="0" width="880px" height="500px"&gt;&lt;/iframe&gt;</textarea>
+                </p>
+                <p style="padding-top:10px;"><em>Note: A VIN of any Year, Make, Model must be assigned in order to display a video.</em></p>
             </div>
 				
 			{/foreach}

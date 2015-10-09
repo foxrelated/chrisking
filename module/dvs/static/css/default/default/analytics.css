@@ -1,0 +1,136 @@
+#chart-menu {
+    margin-bottom: 15px;
+}
+
+.chart-menu-item {
+    float: left;
+    display: block;
+    padding: 0 10px;
+    border-right: 2px solid #666666;
+    font-size: 15px;
+}
+
+.chart-menu-item:last-child {
+    border-right: none;
+}
+
+#date-selector-container {
+    text-align: center;
+}
+
+#chart-header {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#chart-export {
+    display: block;
+    width: 150px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    line-height: 31px;
+    font-size: 15px;
+}
+
+#chart-export-csv {
+    border-right: 1px solid #666666;
+    margin-right: 10px;
+    padding-right: 10px;
+}
+
+.DVSDateLabel {
+    font-size: 14px;
+    font-weight: bold;
+    padding-right: 15px;
+}
+
+#circle-stats-wrapper {
+    background-color: #E5E5E5;
+    margin-top: 20px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.DVSCicleGraph {
+    padding: 20px 0;
+    text-align: center;
+    display: inline-block;
+    width: 24%;
+}
+
+.DVSCicleGraph .DVSCircleLabel {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.DVSCicleGraph .DVSCircleNumber {
+    background-color: #018DCA;
+    width: 128px;
+    height: 128px;
+    line-height: 128px;
+    font-size: 38px;
+    color: #FFFFFF;
+    display: inline-block;
+    margin-top: 10px;
+    border-radius: 64px;
+}
+
+.DVSCicleGraph.circle-graph-green .DVSCircleNumber {
+    background-color: #4EB526;
+}
+
+#main-session-wrapper {
+    margin-bottom: 30px;
+}
+
+#mini-chart-left {
+    width: 75%;
+    float: left;
+    display: block;
+}
+
+.mini-chart {
+    position: relative;
+    display: block;
+    width: 30%;
+    float: left;
+    padding: 0 10px 0 0;
+    border-right: 1px solid #CCCCCC;
+    margin-right: 10px;
+    margin-bottom: 30px;
+}
+
+.mini-chart-total {
+    font-size: 20px;
+    position: absolute;
+    left: 0px;
+    top: 25px;
+    z-index: 99;
+}
+
+#mini-chart-right {
+    width: 25%;
+    float: right;
+    display: block;
+}
+
+#table-chart-left {
+    width: 47%;
+    float: left;
+}
+
+#table-chart-right {
+    width: 47%;
+    float: right;
+}
+
+#share-table-chart {
+    width: 50%;
+    float: left;
+}
+
+#share-pie-chart {
+    width: 50%;
+    float: right;
+}
