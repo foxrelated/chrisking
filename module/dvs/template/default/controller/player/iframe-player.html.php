@@ -179,8 +179,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {if $bIsDvs}
 {if !$bPreview}
 <meta itemprop="creator" content="{$aDvs.phrase_overrides.override_meta_itemprop_creator_meta}" />
-<meta itemprop="productionCompany" content="{$aDvs.dealer_name}" />
-<meta itemprop="contributor" content="{$aDvs.dealer_name}" />
 <meta itemprop="url" content="{$aFirstVideoMeta.url}" id="schema_video_url"/>
 <meta itemprop="thumbnailUrl" content="{$aFirstVideoMeta.thumbnail_url}"  id="schema_video_thumbnail_url"/>
 <meta itemprop="image" content="{$aFirstVideoMeta.thumbnail_url}"  id="schema_video_image"/>
@@ -286,47 +284,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </section>
 
 {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
-<section id="playlist_wrapper{if $inventoryList} inventory_wrapper{/if}">
-    {if $aDvs.inv_display_status}
-    {if $inventoryList}
-    <div class="inventory_info_message">
-        {if $inventoryList|count > 1}
-        {$inventoryList|count} {$aFirstVideo.model}’s available in inventory! Select one below:
-        {elseif $inventoryList|count == 1}
-        {$inventoryList|count} {$aFirstVideo.model} available in inventory! Select one below:
-        {/if}
-    </div>
-    <button class="prev playlist-button">&lt;</button>
-    <div class="playlist_carousel" id="overview_inventory">
-        <ul>
-            {foreach from=$inventoryList key=invKey item=inventoryItem}
-            <li>
-                <div class="inv_dvs_wrapper">
-                    <div class="inv_dvs_avatar">
-                        <a href="{$inventoryItem.link}" onclick="inventoryClickDvs();" target="_blank">
-                            {img path='core.url_file' file=$inventoryItem.image max_width=145 max_height=82}
-                        </a>
-                    </div>
-                    <div class="inv_dvs_info">
-                        <p><a href="{$inventoryItem.link}" onclick="inventoryClickDvs();" target="_blank">{$inventoryItem.title}</a></p>
-                        <p>{phrase var='dvs.color'}: {$inventoryItem.color}</p>
-                        <p>{phrase var='dvs.msrp'}: {$inventoryItem.price}</p>
-                        <p class="view_details">
-                            <a href="{$inventoryItem.link}" onclick="inventoryClickDvs();" title="{phrase var='dvs.view_details'}" target="_blank">{phrase var='dvs.view_details'}</a>
-                        </p>
-                    </div>
-                </div>
-            </li>
-            {/foreach}
-        </ul>
-    </div>
-    <button class="next playlist-button">&gt;</button>
-    {else}
-    <div class="inventory_info_message">
-        No {$aFirstVideo.model} in stock at this time. <a href="#" onclick="tb_show('Contact Dealer', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId={$aFirstVideo.referenceId}')); menuContact('Call To Action Menu Clicks'); return false;">Click here</a> to request this vehicle!
-    </div>
-    {/if}
-    {else}
+<section id="playlist_wrapper{if $inventoryList} inventory_wrapper{/if}">    
     <button class="prev playlist-button">&lt;</button>
     <div class="playlist_carousel" id="overview_playlist">
         <ul>
@@ -356,6 +314,5 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </ul>
     </div>
     <button class="next playlist-button">&gt;</button>
-    {/if}
 </section>
 {/if}
