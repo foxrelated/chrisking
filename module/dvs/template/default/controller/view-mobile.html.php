@@ -30,12 +30,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<section id="dealer_links">
 			
 			{if $aDvs.inventory_url}
-			<a href="{$aDvs.inventory_url}" class="dvs_inventory_link" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow">
+			<a href="{$aDvs.inventory_url}" class="dvs_inventory_link" onclick="menuInventory('Call To Action Menu Clicks');" target="_parent">
 				{phrase var='dvs.cta_inventory'}
 			</a>
 			{/if}
 			{if $aDvs.specials_url}
-			<a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow">
+			<a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" target="_parent">
 				{phrase var='dvs.cta_specials'}
 			</a>
 			{/if}
@@ -100,7 +100,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	<aside>
 		<p><strong>{$aDvs.dealer_name} Information</strong><br>
 		{if $aDvs.url}
-			{phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow">{$aDvs.url}</a>
+			{phrase var='dvs.website'}: <a href="{$aDvs.url}" rel="nofollow" target="_parent">{$aDvs.url}</a>
 			{/if}
 			{if $aDvs.phone}<br />{phrase var='dvs.phone'}: <span itemprop="telephone">{$aDvs.phone}</span>{/if}</p>
 		<p itemscope itemtype="http://schema.org/PostalAddress">

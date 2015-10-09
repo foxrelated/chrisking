@@ -99,7 +99,7 @@
 
         <section id="video_information">
             <h3 id="video_name" itemprop="name">
-                <a id="current_video_link" href="{$sNewParentUrl}" onclick="return false;" itemprop="url">
+                <a id="current_video_link" href="{$sNewParentUrl}" onclick="return false;" itemprop="url" target="_parent">
                     {$aDvs.phrase_overrides.override_video_name_display}
                 </a>
             </h3>

@@ -141,12 +141,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             {phrase var='dvs.cta_home'}
           </a>
           {if $aDvs.inventory_url}
-          <a href="{$aDvs.inventory_url}" class="dvs_inventory_link" onclick="menuInventory('Call To Action Menu Clicks');" rel="nofollow" target="_parent">
+          <a href="{$aDvs.inventory_url}" class="dvs_inventory_link" onclick="menuInventory('Call To Action Menu Clicks');" target="_parent">
             {phrase var='dvs.cta_inventory'}
           </a>
           {/if}
           {if $aDvs.specials_url}
-          <a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" rel="nofollow" target="_parent">
+          <a href="{$aDvs.specials_url}" onclick="menuOffers('Call To Action Menu Clicks');" target="_parent">
             {phrase var='dvs.cta_specials'}
           </a>
           {/if}
@@ -189,7 +189,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
       <section id="video_information">
         <h3 id="video_name" itemprop="name">
-          <a href="location.href" itemprop="url">
+          <a href="location.href" itemprop="url" target="_parent">
             {$aDvs.phrase_overrides.override_video_name_display}
           </a>
         </h3>
