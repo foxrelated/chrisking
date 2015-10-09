@@ -1,12 +1,12 @@
 <style type="text/css">
     #dvs_bc_player {l}
     width: {if $sBrowser == 'mobile'}{$iPlayerWidth}{else}720px{/if};
-    height: {if $sBrowser == 'mobile'}{$iPlayerHeight}{else}406px{/if};
+    height: {if $sBrowser == 'mobile'}{$iPlayerHeight}{else}405px{/if};
     {r}
 
     body {l}
     background-color: #{$aDvs.player_background};
-    padding-top: 15px;
+    /* padding-top: 15px; */
     {r}
 
     #video_information {l}
@@ -277,41 +277,6 @@
         <button type="button" id="chapter_container_Summary" class="disabled display" onclick="changeCuePoint('Summary');"></button>
     </section>
     {/if}
-    {*
-    {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
-    <section id="playlist_wrapper">
-        <button class="prev playlist-button">&lt;</button>
-        <div class="playlist_carousel" id="overview_playlist">
-            <ul>
-                {if $bIsDvs}
-                {foreach from=$aOverviewVideos key=iKey item=aVideo}
-                <li>
-                    <a class="playlist_carousel_image_link" {if $aDvs.gallery_target_setting==1}target="_blank" {/if} onclick="thumbnailClick({$iKey});thumbnailClickDvs();">
-                    {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
-                    <p>{$aVideo.year} {$aVideo.model}</p>
-                    </a>
-
-                </li>
-                {/foreach}
-                <li style='display: none;'></li>
-                {else}
-                {foreach from=$aVideos key=iKey item=aVideo}
-                <li>
-                    <a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});thumbnailClickIDrive();">
-                        {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
-                        <p>{$aVideo.year} {$aVideo.model}</p>
-                    </a>
-
-                </li>
-                {/foreach}
-                {$sExtraLi}
-                {/if}
-            </ul>
-        </div>
-        <button class="next playlist-button">&gt;</button>
-        {/if}
-    </section>
-    *}
     <p id="video_warning_text" style="padding-top:10px;color:#{$aPlayer.player_text};font-size:{$iWarningTextFontSize}px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
     </section>
 </article>
@@ -319,7 +284,6 @@
 <iframe src="{$sVdpIframeUrl}" height="1" width="1"></iframe>
 {if !$aDvs.is_active}
 {template file='dvs.block.deactive'}
-{*
 <script type="text/javascript">
     $Behavior.googleDvsDeactive = function() {l}
     {if $sBrowser == 'mobile'}
@@ -329,5 +293,4 @@
         {/if}
             {r}
 </script>
-*}
 {/if}
