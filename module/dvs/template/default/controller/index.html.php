@@ -101,7 +101,7 @@ padding: 0;
 }
 #cssmenu > ul > li {
   margin:0;
-  padding-right:20px;
+  padding-right:15px;
   
 }
 #cssmenu > ul > li.has-sub:hover > a {
