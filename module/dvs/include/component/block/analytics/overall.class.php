@@ -40,8 +40,8 @@ class Dvs_Component_Block_Analytics_Overall extends Phpfox_Component {
         list($sPagePerSessionLineData, $iPagePerSessionTotal, $iPagePerSessionMaxValue) = $oGAService->getChartData($oPagePerSessionLineRequest->rows, 'number', 'avg');
 
         // Avg. Time on Page
-        //$oAvgTimePageLineRequest = $oGAService->makeRequest('ga:avgTimeOnPage', array('dimensions'=>'ga:date','filters'=>'ga:source=~^'.$aDvs['title_url']), $sDateFrom);
-        $oAvgTimePageLineRequest = $oGAService->makeRequest('ga:avgSessionDuration', array('dimensions'=>'ga:date','filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'}: DVS Player'), $sDateFrom);
+        $oAvgTimePageLineRequest = $oGAService->makeRequest('ga:avgTimeOnPage', array('dimensions'=>'ga:date','filters'=>'ga:eventCategory~^{'.$aDvs['title_url'].'}'), $sDateFrom);
+        //$oAvgTimePageLineRequest = $oGAService->makeRequest('ga:avgSessionDuration', array('dimensions'=>'ga:date','filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
         
         list($sAvgTimePageLineData, $iAvgTimePageTotal, $iAvgTimePageMaxValue) = $oGAService->getChartData($oAvgTimePageLineRequest->rows, 'time', 'avg');
 
