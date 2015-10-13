@@ -41,7 +41,7 @@ class Dvs_Component_Block_Analytics_Overall extends Phpfox_Component {
 
         // Avg. Time on Page
         //$oAvgTimePageLineRequest = $oGAService->makeRequest('ga:avgTimeOnPage', array('dimensions'=>'ga:date','filters'=>'ga:source=~^'.$aDvs['title_url']), $sDateFrom);
-        $oAvgTimePageLineRequest = $oGAService->makeRequest('ga:avgSessionDuration', array('dimensions'=>'ga:date','filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'}: DVS iFrame'), $sDateFrom);
+        $oAvgTimePageLineRequest = $oGAService->makeRequest('ga:avgSessionDuration', array('dimensions'=>'ga:date','filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'}: DVS Player'), $sDateFrom);
         
         list($sAvgTimePageLineData, $iAvgTimePageTotal, $iAvgTimePageMaxValue) = $oGAService->getChartData($oAvgTimePageLineRequest->rows, 'time', 'avg');
 
