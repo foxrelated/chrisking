@@ -20,9 +20,9 @@
         <div id="mini-chart-pagepersession" class="mini-chart">
             <div id="mini-chart-pagepersession-content"></div>
         </div>
-        {*<div id="mini-chart-avgtimepage" class="mini-chart">
+        <div id="mini-chart-avgtimepage" class="mini-chart">
             <div id="mini-chart-avgtimepage-content"></div>
-        </div>*}
+        </div>
         <div id="mini-chart-bouncerate" class="mini-chart">
             <div id="mini-chart-bouncerate-content"></div>
         </div>
