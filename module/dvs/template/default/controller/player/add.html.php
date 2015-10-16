@@ -182,6 +182,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<div id="color_picker_player_background" class="colorSelector">	
 					<div style="background-color: #{if $bIsEdit}{$aForms.player_background}{else}{$sDefaultColor}{/if}"></div>
 				</div>
+				<span>&nbsp;&nbsp;Set this to the dealership's primary color</span>
 				<input type="hidden" id="color_picker_player_background_input" name="val[player_background]" {if $bIsEdit}value="{$aForms.player_background}"{else}value="{$sDefaultColor}"{/if}/>
 			</li>
 			<li>
@@ -189,6 +190,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<div id="color_picker_player_text" class="colorSelector">	
 					<div style="background-color: #{if $bIsEdit}{$aForms.player_text}{else}{$sDefaultColor}{/if}"></div>
 				</div>
+				<span>&nbsp;&nbsp;Set this to white for dark primary colors, or set this to black for light primary colors.</span>
 				<input type="hidden" id="color_picker_player_text_input" name="val[player_text]"  {if $bIsEdit}value="{$aForms.player_text}"{else}value="{$sDefaultColor}"{/if}/>
 			</li>
 		</ol>
@@ -202,6 +204,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<div id="color_picker_player_buttons" class="colorSelector">	
 					<div style="background-color: #{if $bIsEdit}{$aForms.player_buttons}{else}{$sDefaultColor}{/if}"></div>
 				</div>
+				<span>&nbsp;&nbsp;Set this to black.</span>
 				<input type="hidden" id="color_picker_player_buttons_input" name="val[player_buttons]" {if $bIsEdit}value="{$aForms.player_buttons}"{else}value="{$sDefaultColor}"{/if}/>
 			</li>
 			<li>
@@ -209,6 +212,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<div id="color_picker_player_button_icons" class="colorSelector">	
 					<div style="background-color: #{if $bIsEdit}{$aForms.player_button_icons}{else}{$sDefaultColor}{/if}"></div>
 				</div>
+				<span>&nbsp;&nbsp;Set this to white.</span>
 				<input type="hidden" id="color_picker_player_button_icons_input" name="val[player_button_icons]" {if $bIsEdit}value="{$aForms.player_button_icons}"{else}value="{$sDefaultColor}"{/if}/>
 			</li>
 			<li>
@@ -216,6 +220,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<div id="color_picker_player_progress_bar" class="colorSelector">	
 					<div style="background-color: #{if $bIsEdit}{$aForms.player_progress_bar}{else}{$sDefaultColor}{/if}"></div>
 				</div>
+				<span>&nbsp;&nbsp;Set this to same color as background.</span>
 				<input type="hidden" id="color_picker_player_progress_bar_input" name="val[player_progress_bar]" {if $bIsEdit}value="{$aForms.player_progress_bar}"{else}value="{$sDefaultColor}"{/if}/>
 			</li>
 		</ol>
@@ -228,6 +233,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<div id="color_picker_playlist_arrows" class="colorSelector">	
 					<div style="background-color: #{if $bIsEdit}{$aForms.playlist_arrows}{else}{$sDefaultColor}{/if}"></div>
 				</div>
+				<span>&nbsp;&nbsp;Set this to white.</span>
 				<input type="hidden" id="color_picker_playlist_arrows_input" name="val[playlist_arrows]" {if $bIsEdit}value="{$aForms.playlist_arrows}"{else}value="{$sDefaultColor}"{/if}/>
 			</li>
 			<li>
@@ -235,6 +241,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<div id="color_picker_playlist_border" class="colorSelector">	
 					<div style="background-color: #{if $bIsEdit}{$aForms.playlist_border}{else}{$sDefaultColor}{/if}"></div>
 				</div>
+				<span>&nbsp;&nbsp;Set this to black.</span>
 				<input type="hidden" id="color_picker_playlist_border_input" name="val[playlist_border]" {if $bIsEdit}value="{$aForms.playlist_border}"{else}value="{$sDefaultColor}"{/if}/>
 			</li>
 		</ol>
