@@ -231,15 +231,4 @@
 <iframe src="{$sVdpIframeUrl}" height="1" width="1"></iframe>
 {if !$aDvs.is_active}
 {template file='dvs.block.deactive'}
-{*
-<script type="text/javascript">
-$Behavior.googleDvsDeactive = function() {l}
-    {if $sBrowser == 'mobile'}
-    sendToGoogle('DVS Mobile', 'DVS Deactivated', 'Deactivation Message Shown');
-    {else}
-    sendToGoogle('DVS Site', 'DVS Deactivated', 'Deactivation Message Shown');
-    {/if}
-{r}
-</script>
-*}
 {/if}
