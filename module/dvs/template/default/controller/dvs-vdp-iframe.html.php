@@ -126,42 +126,6 @@
                 {/if}
             {r}
 
-//            {if $sBrowser != 'mobile'}
-//             function enableVideoSelectCarousel(){l}
-//                 if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
-//                 $('#overview_playlist').show();
-//                 $("#overview_playlist").jCarouselLite({l}
-//                     btnNext: ".next",
-//                     btnPrev: ".prev",
-//                     circular: false,
-//                     visible: 5,
-//                     scroll: 3,
-//                     speed: 900
-//                 {r});
-//             {r}
-//
-//             $Behavior.jCarousel = function() {l}
-//                 {if $bIsDvs}
-//                     $("#overview_playlist").jCarouselLite({l}
-//                         btnNext: ".next",
-//                         btnPrev: ".prev",
-//                         circular: false,
-//                         visible: 5,
-//                         scroll: 3,
-//                         speed: 900
-//                     {r});
-//                 {else}
-//                     $("#overview_playlist").jCarouselLite({l}
-//                         btnNext: ".next",
-//                         btnPrev: ".prev",
-//                         circular: false,
-//                         visible: {if ($bIsExternal || (!$bIsDvs && isset($iPlaylistThumbnails)))}{$iPlaylistThumbnails}{ else}4{/if},
-//                         scroll: {if ($bIsExternal || (!$bIsDvs && isset($iScrollAmt)))}{$iScrollAmt}{ else}3{/if},
-//                         speed: 900
-//                     {r});
-//                 {/if}
-//             {r}
-//            {/if}
         </script>
 
         {if ($bIsDvs && $aOverviewVideos) || (!$bIsDvs && $aVideos)}
@@ -260,41 +224,6 @@
             <button type="button" id="chapter_container_Summary" class="disabled display" onclick="changeCuePoint('Summary');"></button>
         </section>
         {/if}
-		{*
-        {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
-        <section id="playlist_wrapper">
-            <button class="prev playlist-button">&lt;</button>
-            <div class="playlist_carousel" id="overview_playlist">
-                <ul>
-                    {if $bIsDvs}
-                    {foreach from=$aOverviewVideos key=iKey item=aVideo}
-                    <li>
-                        <a class="playlist_carousel_image_link" {if $aDvs.gallery_target_setting==1}target="_blank" {/if} onclick="thumbnailClick({$iKey});thumbnailClickDvs();">
-                        {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
-                        <p>{$aVideo.year} {$aVideo.model}</p>
-                        </a>
-
-                    </li>
-                    {/foreach}
-                    <li style='display: none;'></li>
-                    {else}
-                    {foreach from=$aVideos key=iKey item=aVideo}
-                    <li>
-                        <a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});thumbnailClickIDrive();">
-                            {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
-                            <p>{$aVideo.year} {$aVideo.model}</p>
-                        </a>
-
-                    </li>
-                    {/foreach}
-                    {$sExtraLi}
-                    {/if}
-                </ul>
-            </div>
-            <button class="next playlist-button">&gt;</button>
-            {/if}
-        </section>
-        *}
         <p id="video_warning_text" style="padding-top:10px;color:#{$aPlayer.player_text};font-size:{$iWarningTextFontSize}px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
     </section>
 </article>
