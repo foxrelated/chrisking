@@ -10,7 +10,7 @@ class Dvs_Component_Controller_Download_Instruction extends Phpfox_Component {
             'iId' => $iId
         ));
         header("Content-type: text/plain");
-        header("Content-Disposition: attachment; filename={$aDvs.title_url} DVS Integration Instructions.txt");
+        header("Content-Disposition: attachment; filename=Standard DVS Integration Instructions.txt");
         $this->template()->setTemplate('');
 	}
 
