@@ -330,6 +330,7 @@ padding: 0;
 						   </li>
 						   <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a></li>
 						   <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}"><span>Reporting</span></a></li>
+						   {if Phpfox::isAdmin()}
 						   <li class="has-sub"><a href="#"><span>Integrate</span></a>
 							  <ul>
 								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>DVS Embed Code</span></a></li>
@@ -337,14 +338,15 @@ padding: 0;
                                 <li><a href="#" onclick="$('#vin_url_player_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>VIN URL Player Code</span></a></li>
                                 <li><a href="#" onclick="$('#vin_embed_player_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>VIN Embed Player Code</span></a></li>
                                 <li><hr></li>
-                                <li><a href="{url link='dvs.download-instruction' id=$aDvs.dvs_id}"><span><strong>Download Integration Instructions</strong></span></a></li>
+                                <li><a href="{url link='dvs.download-instruction' id=$aDvs.dvs_id}"><span><strong>Download Standard Instructions</strong></span></a></li>
+                                <li><a href="{url link='dvs.download-instruction-cdk' id=$aDvs.dvs_id}"><span><strong>Download CDK Instructions</strong></span></a></li>
+                                <li><a href="{url link='dvs.download-instruction-ddc' id=$aDvs.dvs_id}"><span><strong>Download Dealer.com Instructions</strong></span></a></li>
 							  </ul>
 						   </li>
+						   {/if}
 						   {if Phpfox::isAdmin()}
 						   <li class="active"><a href="#" onclick="if (confirm('{phrase var='core.are_you_sure' phpfox_squote=true}')) {left_curly} $(this).parents('#dvss:first').find('#dvs_{$aDvs.dvs_id}:first').hide('slow'); $.ajaxCall('dvs.deleteDvs', 'dvs_id={$aDvs.dvs_id}');{right_curly}"><span>Delete</span></a>
 						   </li>
-						   {/if}
-                            {if Phpfox::isAdmin()}
                             <li class="active activity_button">
                                 <div class="js_item_is_active"{if !$aDvs.is_active} style="display:none;"{/if}>
                                     <a href="#?call=dvs.updateActivity&amp;id={$aDvs.dvs_id}&amp;active=0" class="js_item_active_link" title="Click to Deactivate"><span>Active</span></a>
