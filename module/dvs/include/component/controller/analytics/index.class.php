@@ -25,6 +25,8 @@ class Dvs_Component_Controller_Analytics_Index extends Phpfox_Component {
         $this->setParam('sDateFrom', $sDateFrom);
 
         $this->template()
+            ->setTitle($aDvs['dealer_name'] . ' Report')
+            ->setBreadcrumb($aDvs['dealer_name'] . ' Report')
             ->setHeader(array(
                 'analytics.css' => 'module_dvs',
                 'analytics-'. $sTab .'.js' => 'module_dvs'

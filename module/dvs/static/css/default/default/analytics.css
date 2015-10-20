@@ -134,3 +134,13 @@
     width: 50%;
     float: right;
 }
+
+#reporting-loading {
+    padding: 50px 0;
+
+}
+
+#reporting-loading p {
+    text-align: center;
+    font-size: 25px;
+}

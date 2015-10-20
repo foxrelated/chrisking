@@ -13,6 +13,9 @@ var sessionCityTable = null;
 var canvas = null;
 
 function drawChart() {
+    var chartLoading = document.getElementById('reporting-loading');
+    chartLoading.style.display = 'none';
+
     drawCircleGraph(window.iLeadSentEvent, window.iInventoryClickEvent, window.iSpecialOfferClicksEvent, window.sConversionRate);
     drawMainSession();
     drawMiniSession();
@@ -215,7 +218,7 @@ function drawMiniPagePerSession() {
 function drawMiniAvgTimePage() {
     var avgTimePageData = new google.visualization.DataTable();
     avgTimePageData.addColumn('date', 'Date');
-    avgTimePageData.addColumn('number', 'Avg. Time on Page');
+    avgTimePageData.addColumn('number', 'Avg. Session Duration');
     avgTimePageData.addRows(window.avgTimePageDataRaw);
     var options = {
         height: 105,
