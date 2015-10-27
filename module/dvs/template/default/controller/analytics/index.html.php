@@ -30,18 +30,23 @@
     <div class="clear"></div>
 </div>
 
+<div id="reporting-loading">
+    <p>Data loading...</p>
+</div>
 
-{if $sTab == 'overall'}
+<div id="reporting-wrapper">
+    {if $sTab == 'overall'}
     {module name='dvs.analytics.overall'}
-{/if}
+    {/if}
 
-{if $sTab == 'video'}
+    {if $sTab == 'video'}
     {module name='dvs.analytics.video'}
-{/if}
+    {/if}
 
-{if $sTab == 'sharing'}
+    {if $sTab == 'sharing'}
     {module name='dvs.analytics.sharing'}
-{/if}
+    {/if}
+</div>
 
 <iframe id="download_iframe" width="1" height="1" src="#"></iframe>
 
@@ -50,8 +55,17 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
     function reloadChartPage(iDay) {
+        $('#reporting-wrapper').hide();
+        $('#reporting-loading').show();
         var sNewPath = sFullPath.replace('tempdays', iDay);
         window.location.href = sNewPath;
+    }
+
+    $Behavior.reportingPageInit = function() {
+        $('.chart-menu-item').click(function() {
+            $('#reporting-loading').show();
+            $('#reporting-wrapper').hide();
+        });
     }
 </script>
 {/literal}

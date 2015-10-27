@@ -50,7 +50,7 @@ class Dvs_Service_Analytics_Analytics extends Phpfox_Service {
         $iMaxValue = 0;
 
         foreach($aDataRows as $aRow) {
-            $sLineData .= "[new Date(".substr($aRow[0], 0, 4).",".substr($aRow[0], 4, 2).",".substr($aRow[0], 6, 2)."),".$aRow[1]."],";
+            $sLineData .= "[new Date(".substr($aRow[0], 0, 4).",".substr($aRow[0], 4, 2)."-1,".substr($aRow[0], 6, 2)."),".$aRow[1]."],";
             $iTotal += (int)$aRow[1];
             if ($iMaxValue < (int)$aRow[1]) {
                 $iMaxValue = (int)$aRow[1];
