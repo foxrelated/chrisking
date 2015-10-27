@@ -13,6 +13,9 @@ var sessionCityTable = null;
 var canvas = null;
 
 function drawChart() {
+    var chartLoading = document.getElementById('reporting-loading');
+    chartLoading.style.display = 'none';
+
     drawCircleGraph(window.iLeadSentEvent, window.iInventoryClickEvent, window.iSpecialOfferClicksEvent, window.sConversionRate);
     drawMainSession();
     drawMiniSession();
