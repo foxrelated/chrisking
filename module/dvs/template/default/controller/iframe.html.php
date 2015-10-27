@@ -98,12 +98,12 @@
         </section>
 
         <section id="video_information">
-            <h3 id="video_name">
-                <a id="current_video_link" href="{$sNewParentUrl}" onclick="return false;">
+            <h3 id="video_name" itemprop="name">
+                <a id="current_video_link" href="{$sNewParentUrl}" onclick="return false;" itemprop="url" target="_parent">
                     {$aDvs.phrase_overrides.override_video_name_display}
                 </a>
             </h3>
-            <p class="model_description" id="car_description">{$aDvs.phrase_overrides.override_video_description_display}</p>
+            <p class="model_description" id="car_description" itemprop="description">{$aDvs.phrase_overrides.override_video_description_display}</p>
         </section>
 
         {if Phpfox::isUser()}
