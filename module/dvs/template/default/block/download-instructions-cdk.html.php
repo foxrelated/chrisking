@@ -35,10 +35,10 @@ Target behavior: open new window (pop-up)
     {r});
 </script>
 
-3c. Add this HTML code for every vehicle listing on the New and Used Search Results template (above or below the View Details button) and replace # with the VIN:
+3c. Add this HTML code for every vehicle listing on the New and Used SRP template (below the thumbnail image of the vehicle):
 
-<div class="dvs_vin_btn" vin="#"></div>
+<div class="dvs_vin_btn" vin="%VIN%"></div>
 
-3d. Add this HTML code for every vehicle listing on the New and Used Vehicle Details template (below the Window Sticker button or below the video images) and replace # with the VIN:
+3d. Add this HTML code for every vehicle listing on the New and Used VDP template (below the thumbnail image of the vehicle):
 
-<div class="dvs_vin_btn" vin="#"></div> 
+<div class="dvs_vin_btn" vin="%VIN%"></div> 
