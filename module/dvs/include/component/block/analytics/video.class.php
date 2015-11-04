@@ -34,7 +34,6 @@ class Dvs_Component_Block_Analytics_Video extends Phpfox_Component {
                     'var iVideoViewEvent = "' .  $iVideoViewEvent . '";' .
                     'var iPlayerLoadEvent = "' . $iPlayerLoadEvent . '"; ' .
                     'var iPlayRate = "' . $iPlayRate . '%"; ' .
-
                     'var topVideoDataRaw = ' . $sTopVideoTableData . ';' .
                     'var topChapterDataRaw = ' . $sTopChapterTableData . ';' .
                     '</script>'
