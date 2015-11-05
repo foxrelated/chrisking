@@ -16,4 +16,5 @@
 3. Use the DVS third-party tool to integrate the DVS on the VLP and VDP templates for New and Used inventory using the following parameters:
 
 DVS ID: {$aDvs.dvs_id}
+
 Position: pricebot
