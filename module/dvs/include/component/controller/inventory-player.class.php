@@ -3,6 +3,7 @@ defined('PHPFOX') or exit('NO DICE!');
 
 class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
     public function process() {
+        $sOverride = false;
         $iDvsId = $this->request()->get('id');
         $sVin = $this->request()->get('vin');
         $sEdStyleId = $this->request()->get('edstyleid', null);
@@ -19,7 +20,7 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
         }
 
         $bNoVideo = false;
-        if(!$aRows || $aRows[$sVin]['title_url'] == 'no-video'){
+        if(!$aRows || !$aRows[$sVin]['url'] || $aRows[$sVin]['title_url'] == 'no-video'){
             $bNoVideo = true;
         }
         $bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
@@ -31,7 +32,9 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
 
         $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
 
-        $sOverride = $aRows[$sVin]['title_url'];
+        if (isset($aRows[$sVin]['title_url'])) {
+            $sOverride = $aRows[$sVin]['title_url'];
+        }
 
         Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
 

@@ -34,6 +34,8 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         foreach($aData as $sKey => $aRow) {
             if(isset($aVideos2[$aRow['videoId']])) {
                 $aData[$sKey]['video_title_url'] = $aVideos2[$aRow['videoId']];
+            } else {
+                $aData[$sKey]['video_title_url'] = '';
             }
         }
 
