@@ -1,4 +1,4 @@
-{*<canvas id="circle-stats-canvas" width="980" height="200"></canvas>*}
+<canvas id="circle-stats-canvas" width="980" height="200"></canvas>
 
 <div id="main-session-wrapper">
     <div id="session-line-chart"></div>
