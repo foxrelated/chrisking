@@ -105,7 +105,10 @@
             </h3>
             <p class="model_description" id="car_description" itemprop="description">{$aDvs.phrase_overrides.override_video_description_display}</p>
         </section>
-
+		
+		{if $aDvs.dealer_name == 'Credit Union Services'}
+		<br />
+		{else}
         {if Phpfox::isUser()}
         <section id="dealer_links">
             <table style="border-top:1px solid #ccc;">
@@ -171,6 +174,7 @@
                 </tr>
             </table>
         </section>
+        {/if}
         {/if}
     </article>
     <div class="clear"></div>
