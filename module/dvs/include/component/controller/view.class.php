@@ -182,6 +182,15 @@ class Dvs_Component_Controller_View extends Phpfox_Component
         $sLinkBase = Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'));
         $sLinkBase .= $aFirstVideo['video_title_url'];
 
+        $sOverrideLink = "";
+        if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
+            $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aFirstVideo['video_title_url']);
+        } else {
+            $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aFirstVideo['video_title_url']));
+        }
+
+        $sOverrideLink = rtrim($sOverrideLink, '/');
+
         //$sThumbnailUrl = Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['thumbnail_image'];
 
         /* new thumb path */
@@ -361,6 +370,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                 'iLongDescLimit' => Phpfox::getParam('dvs.long_desc_limit'),
                 'bSubdomainMode' => $bSubdomainMode,
                 'sBrowser' => $sBrowser,
+                'sOverrideLink' => $sOverrideLink,
                 'sCurrentUrlEncoded' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? urlencode(Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url'])) : urlencode(Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url'])))),
                 'sStaticPath' => Phpfox::getParam('core.path') . 'module/dvs/static/',
                 'sJavascript' => '<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>'
