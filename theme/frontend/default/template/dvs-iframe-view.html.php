@@ -42,7 +42,7 @@ defined('PHPFOX') or exit('NO DICE!');
     {if isset($sCustomHeader)}
     {$sCustomHeader}
     {/if}
-    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.1.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.1.js"></script>
     {if !empty($aDvs)}
     <style>
         /* This CSS is generated for the base DVS page */

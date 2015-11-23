@@ -381,7 +381,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                     . '<script type="text/javascript">var bGoogleAnalytics = true;</script>'
                     . '<script type="text/javascript">var aCurrentVideoMetaData = [];</script>'
                     . '<script type="text/javascript">aCurrentVideoMetaData.referenceId ="' . $aFirstVideo['referenceId'] . '";aCurrentVideoMetaData.year ="' . $aFirstVideo['year'] . '";aCurrentVideoMetaData.make ="' . $aFirstVideo['make'] . '";aCurrentVideoMetaData.model ="' . $aFirstVideo['model'] . '";</script> '
-                    . '<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>'
+                    . '<script type="text/javascript" src="https://sadmin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>'
                     . '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
                     . '<script type="text/javascript">' . $sDvsJs . '</script>'
             ));

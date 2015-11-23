@@ -14,7 +14,7 @@ defined('PHPFOX') or exit('NO DICE!');
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" dir="{$sLocaleDirection}" lang="{$sLocaleCode}">
 	<head>
-		<script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.1.js"></script>
+		<script src="https://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.1.js"></script>
 		<title>{title}</title>	
 		{header}
 	</head>
