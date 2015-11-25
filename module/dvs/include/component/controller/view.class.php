@@ -310,6 +310,24 @@ class Dvs_Component_Controller_View extends Phpfox_Component
             ));
         }
 
+        $sJavascript = '<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>'
+            . '<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>'
+            . '<script type="text/javascript">var bIsDvs = true</script>'
+            . '<script type="text/javascript">var sFirstVideoTitleUrl = "' . $aFirstVideo['video_title_url'] . '";</script>'
+            . '<script type="text/javascript">var sDvsTitleUrl = "' . $aDvs['title_url'] . '";</script>'
+            . '<script type="text/javascript">var bGoogleAnalytics = true;</script>'
+            . '<script type="text/javascript">var aCurrentVideoMetaData = [];</script>'
+            . '<script type="text/javascript">aCurrentVideoMetaData.referenceId ="' . $aFirstVideo['referenceId'] . '";aCurrentVideoMetaData.year ="' . $aFirstVideo['year'] . '";aCurrentVideoMetaData.make ="' . $aFirstVideo['make'] . '";aCurrentVideoMetaData.model ="' . $aFirstVideo['model'] . '";</script> '
+//                    . '<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
+            . '<script type="text/javascript">' . $sDvsJs . '</script>';
+
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+            $this->template()->assign(array('bSecureConnection' => true));
+            $sJavascript .= '<script type="text/javascript" src="//sadmin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
+        } else {
+            $sJavascript .= '<script type="text/javascript" src="//admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
+        }
+
         $this->template()
             ->setTemplate('dvs-view')
             ->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -373,17 +391,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                 'sOverrideLink' => $sOverrideLink,
                 'sCurrentUrlEncoded' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? urlencode(Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url'])) : urlencode(Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url'])))),
                 'sStaticPath' => Phpfox::getParam('core.path') . 'module/dvs/static/',
-                'sJavascript' => '<script type="text/javascript">var sBrowser = "' . $sBrowser . '"</script>'
-                    . '<script type="text/javascript">var bDebug = ' . (Phpfox::getParam('dvs.javascript_debug_mode') ? 'true' : 'false') . '</script>'
-                    . '<script type="text/javascript">var bIsDvs = true</script>'
-                    . '<script type="text/javascript">var sFirstVideoTitleUrl = "' . $aFirstVideo['video_title_url'] . '";</script>'
-                    . '<script type="text/javascript">var sDvsTitleUrl = "' . $aDvs['title_url'] . '";</script>'
-                    . '<script type="text/javascript">var bGoogleAnalytics = true;</script>'
-                    . '<script type="text/javascript">var aCurrentVideoMetaData = [];</script>'
-                    . '<script type="text/javascript">aCurrentVideoMetaData.referenceId ="' . $aFirstVideo['referenceId'] . '";aCurrentVideoMetaData.year ="' . $aFirstVideo['year'] . '";aCurrentVideoMetaData.make ="' . $aFirstVideo['make'] . '";aCurrentVideoMetaData.model ="' . $aFirstVideo['model'] . '";</script> '
-                    . '<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>'
-                    . '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
-                    . '<script type="text/javascript">' . $sDvsJs . '</script>'
+                'sJavascript' => $sJavascript
             ));
     }
 }
