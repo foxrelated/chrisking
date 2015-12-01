@@ -675,7 +675,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		// Change microdata
 		$this->call('$("#schema_video_thumbnail_url").attr("content", "' . $sThumbnailUrl . '");');
 		$this->call('$("#schema_video_image").attr("content", "' . $sThumbnailUrl. '");');
-		$this->call('$("#schema_video_embed_url").attr("content", "http://c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&isUI=1&domain=embed&playerID=1970101121001&publisherID=607012070001&videoID=' . $aVideo['referenceId'] . '");');
+		$this->call('$("#schema_video_embed_url").attr("content", "//c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&isUI=1&domain=embed&playerID=1970101121001&publisherID=607012070001&videoID=' . $aVideo['referenceId'] . '");');
 		$this->call('$("#schema_video_upload_date").attr("content", "' . date('Y-m-d', (int) ($aVideo['publishedDate'] / 1000)) . '");');
 		$this->call('$("#schema_video_duration").attr("content", "PT' . (int) ($aVideo['length'] / 1000) . 'S");');
 		$this->call('$("#schema_video_name").attr("content", "' . $aDvs['phrase_overrides']['override_video_name_display'] . '");');
@@ -902,7 +902,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         // Change microdata
         $this->call('$("#schema_video_thumbnail_url").attr("content", "' . $sThumbnailUrl . '");');
         $this->call('$("#schema_video_image").attr("content", "' . $sThumbnailUrl. '");');
-        $this->call('$("#schema_video_embed_url").attr("content", "http://c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&isUI=1&domain=embed&playerID=1970101121001&publisherID=607012070001&videoID=' . $aVideo['referenceId'] . '");');
+        $this->call('$("#schema_video_embed_url").attr("content", "//c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&isUI=1&domain=embed&playerID=1970101121001&publisherID=607012070001&videoID=' . $aVideo['referenceId'] . '");');
         $this->call('$("#schema_video_upload_date").attr("content", "' . date('Y-m-d', (int) ($aVideo['publishedDate'] / 1000)) . '");');
         $this->call('$("#schema_video_duration").attr("content", "PT' . (int) ($aVideo['length'] / 1000) . 'S");');
         $this->call('$("#schema_video_name").attr("content", "' . $aDvs['phrase_overrides']['override_video_name_display'] . '");');

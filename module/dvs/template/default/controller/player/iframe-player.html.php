@@ -234,6 +234,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     {/if}
     <param name="accountID" value="{$aDvs.dvs_google_id}" />
     <param name="showNoContentMessage" value="false" />
+    {if (isset($bSecureConnection) && ($bSecureConnection))}
+    <param name="secureConnections" value="true" />
+    <param name="secureHTMLConnections" value="true" />
+    {/if}
 	{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
     <param name="@videoPlayer" value="" />
 	<param id="forceHTML" name="forceHTML" value="true">
