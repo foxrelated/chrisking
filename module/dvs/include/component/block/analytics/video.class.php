@@ -12,7 +12,7 @@ class Dvs_Component_Block_Analytics_Video extends Phpfox_Component {
         $iVideoViewEvent = (int)$oVideoViewRequest->totalsForAllResults['ga:totalEvents'];
 
         // Player Loads
-        $oPlayerLoadRequest = $oGAService->makeRequest('ga:totalEvents', array('filters'=>'ga:eventLabel=~^Player Loaded;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
+        $oPlayerLoadRequest = $oGAService->makeRequest('ga:totalEvents', array('filters'=>'ga:eventLabel=~Player Loaded;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
         $iPlayerLoadEvent = (int)$oPlayerLoadRequest->totalsForAllResults['ga:totalEvents'];
 
         // Play Rate
