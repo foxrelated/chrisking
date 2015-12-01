@@ -284,10 +284,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{/if}
 	{/if}
 	<param name="showNoContentMessage" value="false" />
-	{if (isset($bSecureConnection) && ($bSecureConnection))}
-		<param name="secureConnections" value="true" />
-		<param name="secureHTMLConnections" value="true" />
-	{/if}
+    {if (isset($bSecureConnection) && ($bSecureConnection))}
+        <param name="secureConnections" value="true" />
+        <param name="secureHTMLConnections" value="true" />
+    {/if}
 	{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
 		<param id="forceHTML" name="forceHTML" value="false">
 		<param name="includeAPI" value="true" />
