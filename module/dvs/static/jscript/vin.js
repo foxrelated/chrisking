@@ -20,14 +20,22 @@ if (!window.WTVVIN) {
             }
 
             var sAllVin = '';
+            var sAllEdstyle = '';
             var x = this.GEBCN('dvs_vin_btn');
             for (i = 0; i < x.length; i++) {
                 sVinId = x[i].getAttribute('vin');
-                sAllVin += sVinId + ',';
+                sEdstyleId = x[i].getAttribute('edstyleid');
 
-                x[i].setAttribute('id', 'dvs_vin_btn_' + sVinId + '_' + i);
                 var sCurrentClass = x[i].getAttribute('class');
-                x[i].setAttribute('class', sCurrentClass + ' dvs_vin_btn_' + sVinId);
+                if (sVinId) {
+                    sAllVin += sVinId + ',';
+                    x[i].setAttribute('id', 'dvs_vin_btn_' + sVinId + '_' + i);
+                    x[i].setAttribute('class', sCurrentClass + ' dvs_vin_btn_' + sVinId);
+                } else {
+                    sAllEdstyle += sEdstyleId + ',';
+                    x[i].setAttribute('id', 'dvs_vin_btn_' + sEdstyleId + '_' + i);
+                    x[i].setAttribute('class', sCurrentClass + ' dvs_vin_btn_' + sEdstyleId);
+                }
 
                 var aLink = document.createElement('a');
                 aLink.style.display = 'none';
@@ -43,6 +51,10 @@ if (!window.WTVVIN) {
             }
             if(sAllVin.length > 0) {
                 sAllVin = sAllVin.substring(0, sAllVin.length - 1);
+            }
+
+            if(sAllEdstyle.length > 0) {
+                sAllEdstyle = sAllEdstyle.substring(0, sAllEdstyle.length - 1);
             }
 
             var layoutWrapper = document.createElement('div');
@@ -105,7 +117,7 @@ if (!window.WTVVIN) {
             document.body.appendChild(cclink);
 
             var ccscript = document.createElement('script');
-            ccscript.src = sScriptUrl + 'vin_' + sAllVin + '/height_' + this.screenHeight + '/width_' + this.screenWidth + '/';
+            ccscript.src = sScriptUrl + 'vin_' + sAllVin + '/edstyle_' + sAllEdstyle + '/height_' + this.screenHeight + '/width_' + this.screenWidth + '/';
             ccscript.type = 'text/javascript';
             document.body.appendChild(ccscript);
         },

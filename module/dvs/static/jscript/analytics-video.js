@@ -4,6 +4,9 @@ google.setOnLoadCallback(drawChart);
 var canvas = null;
 
 function drawChart() {
+    var chartLoading = document.getElementById('reporting-loading');
+    chartLoading.style.display = 'none';
+
     drawCircleGraph(window.iVideoViewEvent, window.iPlayerLoadEvent, window.iPlayRate);
     drawTopVideoChart();
     drawTopChapterChart();

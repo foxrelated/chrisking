@@ -632,12 +632,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aVideo);
 		$bVideoChanged = ($this->get('bVideoChanged') == 'true' ? true : false);
 
-		if (Phpfox::getParam('dvs.enable_subdomain_mode'))
-		{
+		if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
 			$sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url']);
-		}
-		else
-		{
+		} else {
 			$sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url']));
 		}
 
@@ -678,7 +675,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		// Change microdata
 		$this->call('$("#schema_video_thumbnail_url").attr("content", "' . $sThumbnailUrl . '");');
 		$this->call('$("#schema_video_image").attr("content", "' . $sThumbnailUrl. '");');
-		$this->call('$("#schema_video_embed_url").attr("content", "http://c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&isUI=1&domain=embed&playerID=1970101121001&publisherID=607012070001&videoID=' . $aVideo['referenceId'] . '");');
+		$this->call('$("#schema_video_embed_url").attr("content", "//c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&isUI=1&domain=embed&playerID=1970101121001&publisherID=607012070001&videoID=' . $aVideo['referenceId'] . '");');
 		$this->call('$("#schema_video_upload_date").attr("content", "' . date('Y-m-d', (int) ($aVideo['publishedDate'] / 1000)) . '");');
 		$this->call('$("#schema_video_duration").attr("content", "PT' . (int) ($aVideo['length'] / 1000) . 'S");');
 		$this->call('$("#schema_video_name").attr("content", "' . $aDvs['phrase_overrides']['override_video_name_display'] . '");');
@@ -746,21 +743,21 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		// Change twitter default text
 		// Repllace variables in the subject
 		$aFindReplace = array();
-		foreach ($aDvs as $sKey => $sValue)
-		{
-			if ($sKey == 'phrase_overrides')
-			{
-				continue;
-			}
-
-			$aFind[] = '{dvs_' . $sKey . '}';
-			$aReplace[] = '' . $sValue . '';
+		foreach ($aDvs as $sKey => $sValue) {
+            if ($sKey == 'phrase_overrides') {
+                continue;
+            }
+            if (!is_array($sValue)) {
+                $aFind[] = '{dvs_' . $sKey . '}';
+                $aReplace[] = '' . $sValue . '';
+            }
 		}
 
-		foreach ($aVideo as $sKey => $sValue)
-		{
-			$aFind[] = '{video_' . $sKey . '}';
-			$aReplace[] = '' . $sValue . '';
+		foreach ($aVideo as $sKey => $sValue) {
+            if (!is_array($sValue)) {
+                $aFind[] = '{video_' . $sKey . '}';
+                $aReplace[] = '' . $sValue . '';
+            }
 		}
 
 		if ($bVideoChanged)
@@ -859,19 +856,19 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         $aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aVideo);
         $bVideoChanged = ($this->get('bVideoChanged') == 'true' ? true : false);
 
-        if (Phpfox::getParam('dvs.enable_subdomain_mode'))
-        {
-            $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url']);
+        if ($aDvs['sitemap_parent_url']) {
+            $sOverrideLink = str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $aDvs['parent_video_url']);
+        } else {
+            if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
+                $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'] . '.iframe', $aVideo['video_title_url']);
+            } else {
+                $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs.iframe', array($aDvs['title_url'], $aVideo['video_title_url']));
+            }
+            $sOverrideLink = rtrim($sOverrideLink, '/');
         }
-        else
-        {
-            $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url']));
-        }
-
-        $sOverrideLink = rtrim($sOverrideLink, '/');
 
         //Change video information and reset description visibility
-        $this->html('#video_name a', $aDvs['phrase_overrides']['override_video_name_display']);
+        $this->html('#video_name','<a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a>');
         $this->html('#car_description', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
 
 //		$this->call('$("#twitter_share").prop("href", "https://twitter.com/intent/tweet?text=Check%20out%20" + sShareLink + "&url=" + sShareLink);');
@@ -905,7 +902,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         // Change microdata
         $this->call('$("#schema_video_thumbnail_url").attr("content", "' . $sThumbnailUrl . '");');
         $this->call('$("#schema_video_image").attr("content", "' . $sThumbnailUrl. '");');
-        $this->call('$("#schema_video_embed_url").attr("content", "http://c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&isUI=1&domain=embed&playerID=1970101121001&publisherID=607012070001&videoID=' . $aVideo['referenceId'] . '");');
+        $this->call('$("#schema_video_embed_url").attr("content", "//c.brightcove.com/services/viewer/federated_f9/1970101121001?isVid=1&isUI=1&domain=embed&playerID=1970101121001&publisherID=607012070001&videoID=' . $aVideo['referenceId'] . '");');
         $this->call('$("#schema_video_upload_date").attr("content", "' . date('Y-m-d', (int) ($aVideo['publishedDate'] / 1000)) . '");');
         $this->call('$("#schema_video_duration").attr("content", "PT' . (int) ($aVideo['length'] / 1000) . 'S");');
         $this->call('$("#schema_video_name").attr("content", "' . $aDvs['phrase_overrides']['override_video_name_display'] . '");');
@@ -973,21 +970,22 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         // Change twitter default text
         // Repllace variables in the subject
         $aFindReplace = array();
-        foreach ($aDvs as $sKey => $sValue)
-        {
-            if ($sKey == 'phrase_overrides')
-            {
+        foreach ($aDvs as $sKey => $sValue) {
+            if ($sKey == 'phrase_overrides') {
                 continue;
             }
 
-            $aFind[] = '{dvs_' . $sKey . '}';
-            $aReplace[] = '' . $sValue . '';
+            if (!is_array($sValue)) {
+                $aFind[] = '{dvs_' . $sKey . '}';
+                $aReplace[] = '' . $sValue . '';
+            }
         }
 
-        foreach ($aVideo as $sKey => $sValue)
-        {
-            $aFind[] = '{video_' . $sKey . '}';
-            $aReplace[] = '' . $sValue . '';
+        foreach ($aVideo as $sKey => $sValue) {
+            if (!is_array($sValue)) {
+                $aFind[] = '{video_' . $sKey . '}';
+                $aReplace[] = '' . $sValue . '';
+            }
         }
 
         if ($bVideoChanged)

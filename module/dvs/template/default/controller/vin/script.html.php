@@ -24,7 +24,7 @@ if(elements != null && elements.length > 0) {l}
         {r}
         {r}
 {foreach from=$aRows key=sKey item=aRow}
-if('{$sKey}' == elements[k].getAttribute("vin")) {l}
+    if(('{$sKey}' == elements[k].getAttribute("vin")) || ('{$sKey}' == elements[k].getAttribute("edstyleid"))) {l}
             {if $aRow.url}
             {if isset($vdp_background)}
             urlElement.innerHTML = '<img src="{$vdp_background}" alt="{$sButtonText}" title="{$sButtonText}" />';
@@ -51,7 +51,7 @@ if('{$sKey}' == elements[k].getAttribute("vin")) {l}
             urlElement.setAttribute('href', '{$aRow.url}');
             {/if}
             {/if}
-{r}
+    {r}
 {/foreach}
 
         loadingElement.style.display = 'none';

@@ -8,6 +8,92 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         $this->_sTable = Phpfox::getT('ko_dvs_vin_parsed');
     }
 
+    function getEdStyles($aEdStyles, $iDvsId, $iWidth, $iHeight) {
+        $aCompletedRows = array();
+        foreach($aEdStyles as $sEdStyleId) {
+            $aCompletedRows[$sEdStyleId] = array(
+                'url' => ''
+            );
+        }
+
+        if (!$aDvs = Phpfox::getService('dvs')->get($iDvsId)) {
+            return array($aCompletedRows, array());
+        }
+
+        list($aData, $aReferenceIds) = $this->getAllVideoIdByEdStyles($aEdStyles);
+        $aVideos = $this->database()
+            ->select('b.ko_id, b.referenceId, b.video_title_url, b.year, b.make')
+            ->from(Phpfox::getT('ko_brightcove'), 'b')
+            ->where("b.referenceId IN ('" . implode("','", $aReferenceIds) . "')")
+            ->execute('getRows');
+        $aVideos2 = array();
+        foreach($aVideos as $aVideo) {
+            $aVideos2[$aVideo['referenceId']] = $aVideo['video_title_url'];
+        }
+
+        foreach($aData as $sKey => $aRow) {
+            if(isset($aVideos2[$aRow['videoId']])) {
+                $aData[$sKey]['video_title_url'] = $aVideos2[$aRow['videoId']];
+            } else {
+                $aData[$sKey]['video_title_url'] = '';
+            }
+        }
+
+        foreach($aCompletedRows as $sKey => $aCompletedRow) {
+            if (isset($aData[$sKey])) {
+                $aCompletedRows[$sKey]['url'] = $aData[$sKey]['video_title_url'];
+            } else {
+                $aCompletedRows[$sKey]['url'] = '';
+            }
+        }
+
+        foreach($aCompletedRows as $iKey => $aCompletedRow) {
+            if(!$aCompletedRow['url']) {
+                continue;
+            }
+
+            $aFind = array(
+                'overview',
+                'used-car-report',
+                'test-drive'
+            );
+
+            $aReplace = array(
+                ($aDvs['1onone_override'] ? $aDvs['1onone_override'] : (Phpfox::getParam('dvs.1onone_video_url_replacement') ? Phpfox::getParam('dvs.1onone_video_url_replacement') : 'overview')),
+                ($aDvs['new2u_override'] ? $aDvs['new2u_override'] : (Phpfox::getParam('dvs.new2u_video_url_replacement') ? Phpfox::getParam('dvs.new2u_video_url_replacement') : 'used-car-report')),
+                ($aDvs['top200_override'] ? $aDvs['top200_override'] : (Phpfox::getParam('dvs.top200_video_url_replacement') ? Phpfox::getParam('dvs.top200_video_url_replacement') : 'test-drive'))
+            );
+
+            $aCompletedRow['url'] = str_replace($aFind, $aReplace, $aCompletedRow['url']);
+
+            if (Phpfox::getParam('dvs.dvs_info_video_url_replacement')) {
+                $aCompletedRow['url'] .= '-' . $aDvs['title_url'] . '-' . strtolower(str_replace(' ', '-', $aDvs['city'])) . '-' . strtolower(str_replace(' ', '-', $aDvs['state_string']));
+            }
+            if($aDvs['vpd_popup']) {
+                if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
+                    $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array('dvs-vdp-iframe', $aCompletedRow['url'], 'width_' . $iWidth, 'height_' . $iHeight));
+                } else {
+                    $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], 'dvs-vdp-iframe', $aCompletedRow['url'], 'width_' . $iWidth, 'height_' . $iHeight));
+                }
+            } else {
+                if ($aDvs['sitemap_parent_url'] && $aDvs['parent_video_url']) {
+                    $sOverrideLink = str_replace('WTVDVS_VIDEO_TEMP', $aCompletedRow['url'], $aDvs['parent_video_url']) . '&vdp=1';
+                } else {
+                    if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
+                        $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array($aCompletedRow['url'])) . 'vdp_1/';
+                    } else {
+                        $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aCompletedRow['url'])) . 'vdp_1/';
+                    }
+                }
+            }
+
+            $aCompletedRows[$iKey]['url'] = $sOverrideLink;
+            $aCompletedRows[$iKey]['title_url'] = $aCompletedRow['url'];
+        }
+
+        return array($aCompletedRows, $aDvs);
+    }
+
     public function getVins($aVins, $iDvsId, $iWidth, $iHeight) {
         $aQuishVin = array();
         $aFullRows = array();
@@ -86,6 +172,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         }
 
         list($aData, $aReferenceIds) = $this->getAllVideoIdByEdStyles($aEdStyleIds);
+
         $aVideos = $this->database()
             ->select('b.ko_id, b.referenceId, b.video_title_url, b.year, b.make')
             ->from(Phpfox::getT('ko_brightcove'), 'b')
@@ -177,7 +264,6 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         $event->setLabel('Inventory Pageviews');
         $event->setValue('1');
         $tracker->trackEvent($event, $session, $visitor);*/
-
         return array($aCompletedRows, $aDvs);
     }
 

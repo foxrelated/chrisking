@@ -3,27 +3,38 @@ defined('PHPFOX') or exit('NO DICE!');
 
 class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
     public function process() {
+        $sOverride = false;
         $iDvsId = $this->request()->get('id');
         $sVin = $this->request()->get('vin');
+        $sEdStyleId = $this->request()->get('edstyleid', null);
         $iMaxWidth = $this->request()->get('maxwidth', 580) - 32;
         $iMaxHeight = (int)($iMaxWidth / 29 * 16);
-        $aVins = explode(',', $sVin);
-        list($aRows, $aDvs) = Phpfox::getService('dvs.vin')->getVins($aVins, $iDvsId, $iMaxWidth, $iMaxHeight);
+
+        if ($sVin) {
+            $aVins = explode(',', $sVin);
+            list($aRows, $aDvs) = Phpfox::getService('dvs.vin')->getVins($aVins, $iDvsId, $iMaxWidth, $iMaxHeight);
+        } elseif ($sEdStyleId) {
+            $sVin = $sEdStyleId;
+            $aEdStyles = explode(',', $sEdStyleId);
+            list($aRows, $aDvs) = Phpfox::getService('dvs.vin')->getEdStyles($aEdStyles, $iDvsId, $iMaxWidth, $iMaxHeight);
+        }
+
         $bNoVideo = false;
-        if(!$aRows || $aRows[$sVin]['title_url'] == 'no-video'){
+        if(!$aRows || !$aRows[$sVin]['url'] || $aRows[$sVin]['title_url'] == 'no-video'){
             $bNoVideo = true;
         }
         $bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 
         $sDvsRequest = $aDvs['title_url'];
 
-
         $bPreview = false;
 
 
         $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
 
-        $sOverride = $aRows[$sVin]['title_url'];
+        if (isset($aRows[$sVin]['title_url'])) {
+            $sOverride = $aRows[$sVin]['title_url'];
+        }
 
         Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
 
@@ -307,7 +318,7 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
                     . '<script type="text/javascript">var bGoogleAnalytics = true;</script>'
                     . '<script type="text/javascript">var aCurrentVideoMetaData = [];</script>'
                     . '<script type="text/javascript">aCurrentVideoMetaData.referenceId ="' . $aFirstVideo['referenceId'] . '";aCurrentVideoMetaData.year ="' . $aFirstVideo['year'] . '";aCurrentVideoMetaData.make ="' . $aFirstVideo['make'] . '";aCurrentVideoMetaData.model ="' . $aFirstVideo['model'] . '";</script> '
-                    . '<script type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>'
+                    . '<script type="text/javascript" src="https://sadmin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>'
                     //. '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
                     . '<script type="text/javascript">' . $sDvsJs . '</script>'
                     . '<script type="text/javascript">var bUpdatedShareUrl = true;</script>'

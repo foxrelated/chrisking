@@ -6,6 +6,9 @@ var shareViewTable = null;
 var shareViewPie = null;
 
 function drawChart() {
+    var chartLoading = document.getElementById('reporting-loading');
+    chartLoading.style.display = 'none';
+
     drawCircleGraph(window.iEmailSentEvent, window.iEmailClickedEvent, window.iCTRate);
     if (window.shareViewDataRaw) {
         drawShareViewTable();

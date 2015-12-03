@@ -189,7 +189,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
       <section id="video_information">
         <h3 id="video_name" itemprop="name">
-          <a href="location.href" itemprop="url" target="_parent">
+          <a href="{$sOverrideLink}" itemprop="url" target="_parent">
             {$aDvs.phrase_overrides.override_video_name_display}
           </a>
         </h3>

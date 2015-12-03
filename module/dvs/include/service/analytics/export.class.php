@@ -23,8 +23,10 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         $pdf->AddPage('P');
         $pdf->SetDisplayMode('real', 'default');
         // Write 'Sharing Stats' Text
-        $pdf->SetXY(5, 5);
+        $pdf->SetXY(5, 4);
         $pdf->SetFontSize(15);
+        $pdf->Write(5, $aDvs["dealer_name"] . ' Report');
+        $pdf->SetXY(5, 12);
         $pdf->Write(5, 'Overall Stats');
         $pdf->Ln(10);
         // Show Circle Graph Image
@@ -80,8 +82,10 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         $pdf->AddPage('P');
         $pdf->SetDisplayMode('real', 'default');
         // Write 'Sharing Stats' Text
-        $pdf->SetXY(5, 5);
+        $pdf->SetXY(5, 4);
         $pdf->SetFontSize(15);
+        $pdf->Write(5, $aDvs["dealer_name"] . ' Report');
+        $pdf->SetXY(5, 12);
         $pdf->Write(5, 'Videos Stats');
         $pdf->Ln(10);
         // Show Circle Graph Image
@@ -142,8 +146,10 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         $pdf->AddPage('P');
         $pdf->SetDisplayMode('real', 'default');
         // Write 'Sharing Stats' Text
-        $pdf->SetXY(5, 5);
+        $pdf->SetXY(5, 4);
         $pdf->SetFontSize(15);
+        $pdf->Write(5, $aDvs["dealer_name"] . ' Report');
+        $pdf->SetXY(5, 12);
         $pdf->Write(5, 'Videos Stats');
         $pdf->Ln(10);
         // Show Circle Graph Image
