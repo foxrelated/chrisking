@@ -612,6 +612,7 @@ class Phpfox_Url
 					$aParts[0] = $this->aRewrite[$aParts[0]];
 				}	
 				$sUrls = preg_replace("/http:\/\/(.*?)\.(.*?)/i", "http://{$aParts[0]}.$2", Phpfox::getParam('core.path'));
+                $sUrls = preg_replace("/https:\/\/(.*?)\.(.*?)/i", "https://{$aParts[0]}.$2", Phpfox::getParam('core.path'));
 				$sUrls .= $this->_makeUrl($aParts, $aParams);
 				break;
 		}
@@ -633,7 +634,7 @@ class Phpfox_Url
 				}
 				else
 				{
-					$sUrls = str_replace('https://', 'http://', $sUrls);
+//					$sUrls = str_replace('https://', 'http://', $sUrls);
 				}
 			}
 		}
