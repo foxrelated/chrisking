@@ -99,13 +99,16 @@
 
         <section id="video_information">
             <h3 id="video_name" itemprop="name">
-                <a id="current_video_link" href="{$sNewParentUrl}" onclick="return false;" itemprop="url" target="_parent">
+                <a id="current_video_link" href="{$sOverrideLink}" onclick="return false;" itemprop="url" target="_parent">
                     {$aDvs.phrase_overrides.override_video_name_display}
                 </a>
             </h3>
             <p class="model_description" id="car_description" itemprop="description">{$aDvs.phrase_overrides.override_video_description_display}</p>
         </section>
-
+		
+		{if $aDvs.dealer_name == 'Credit Union Services'}
+		<br />
+		{else}
         {if Phpfox::isUser()}
         <section id="dealer_links">
             <table style="border-top:1px solid #ccc;">
@@ -171,6 +174,7 @@
                 </tr>
             </table>
         </section>
+        {/if}
         {/if}
     </article>
     <div class="clear"></div>

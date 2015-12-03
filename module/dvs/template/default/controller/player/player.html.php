@@ -283,7 +283,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<param name="accountID" value="{$aPlayer.google_id}" />
 		{/if}
 	{/if}
-	<param name="showNoContentMessage" value="false" />	
+	<param name="showNoContentMessage" value="false" />
+    {if (isset($bSecureConnection) && ($bSecureConnection))}
+        <param name="secureConnections" value="true" />
+        <param name="secureHTMLConnections" value="true" />
+    {/if}
 	{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
 		<param id="forceHTML" name="forceHTML" value="false">
 		<param name="includeAPI" value="true" />
