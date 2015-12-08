@@ -610,8 +610,12 @@ class Phpfox_Url
 				if (isset($this->aRewrite[$aParts[0]]) && !is_array($this->aRewrite[$aParts[0]]))
 				{
 					$aParts[0] = $this->aRewrite[$aParts[0]];
-				}	
-				$sUrls = preg_replace("/http:\/\/(.*?)\.(.*?)/i", "http://{$aParts[0]}.$2", Phpfox::getParam('core.path'));
+				}
+                if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+                    $sUrls = preg_replace("/https:\/\/(.*?)\.(.*?)/i", "https://{$aParts[0]}.$2", Phpfox::getParam('core.path'));
+                } else {
+                    $sUrls = preg_replace("/http:\/\/(.*?)\.(.*?)/i", "http://{$aParts[0]}.$2", Phpfox::getParam('core.path'));
+                }
 				$sUrls .= $this->_makeUrl($aParts, $aParams);
 				break;
 		}
@@ -633,7 +637,7 @@ class Phpfox_Url
 				}
 				else
 				{
-					$sUrls = str_replace('https://', 'http://', $sUrls);
+//					$sUrls = str_replace('https://', 'http://', $sUrls);
 				}
 			}
 		}
