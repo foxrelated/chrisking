@@ -563,8 +563,8 @@ function onVideoLoad(oMedia) {
 		"Model": aCurrentVideoMetaData.model,
 		}
 	);
-    
-    $.ajaxCall('dvs.iframeChangeVideo', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId);
+
+    $.ajaxCall('dvs.iframeChangeVideo', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId + '&bVideoClickable=0');
 
 	if (sBrowser !== 'mobile' && sBrowser !== 'ipad' || bIsHtml5) {
 		modMen.closeMenuPage();

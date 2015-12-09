@@ -14,7 +14,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             $bIsIframe = true;
             $bIsFindWidth = true;
             $sParentUrl = urldecode(base64_decode($sParentUrl));
-        } elseif(!empty($_SERVER["HTTP_REFERER"])) {
+        } elseif(isset($_SERVER["HTTP_REFERER"]) && !empty($_SERVER["HTTP_REFERER"])) {
             $bIsIframe = true;
             $bIsFindWidth = true;
             $sParentUrl = $_SERVER["HTTP_REFERER"];
@@ -31,11 +31,13 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             }
         }
         //BEGIN CHECK BLACK LISTS DOMAIN
-        $sCurrentUrl = $_SERVER["HTTP_REFERER"].$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
-        $aBlackListsDomain = phpfox::getService('dvs.blacklists')->getForCheck();
-        foreach($aBlackListsDomain as $aBlackList){
-            if($this->get_domain($aBlackList['domain']) == $this->get_domain($sCurrentUrl)){
-                die(Phpfox::getPhrase('dvs.deny_domain_access'));
+        if (isset($_SERVER["HTTP_REFERER"])) {
+            $sCurrentUrl = $_SERVER["HTTP_REFERER"].$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+            $aBlackListsDomain = phpfox::getService('dvs.blacklists')->getForCheck();
+            foreach($aBlackListsDomain as $aBlackList){
+                if($this->get_domain($aBlackList['domain']) == $this->get_domain($sCurrentUrl)){
+                    die(Phpfox::getPhrase('dvs.deny_domain_access'));
+                }
             }
         }
         //END CHECK BLACK LISTS DOMAIN
@@ -505,12 +507,12 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
 
     private function get_domain($url)
     {
-      $pieces = parse_url($url);
-      $domain = isset($pieces['host']) ? $pieces['host'] : '';
-      if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
-        return $regs['domain'];
-      }
-      return false;
+        $pieces = parse_url($url);
+        $domain = isset($pieces['host']) ? $pieces['host'] : '';
+        if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
+            return $regs['domain'];
+        }
+        return false;
     }
 }
 ?>
