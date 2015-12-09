@@ -150,37 +150,56 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         $pdf->SetFontSize(15);
         $pdf->Write(5, $aDvs["dealer_name"] . ' Report');
         $pdf->SetXY(5, 12);
-        $pdf->Write(5, 'Videos Stats');
-        $pdf->Ln(10);
-        // Show Circle Graph Image
-        $pdf->Image($sImagePrefix.'1.png', 5, null, 200, 40);
-        $pdf->Ln(40);
+//        $pdf->Write(5, 'Email Share Conversions');
+//        $pdf->Ln(10);
+//        // Show Circle Graph Image
+//        $pdf->Image($sImagePrefix.'1.png', 5, null, 200, 40);
+//        $pdf->Ln(40);
 
+        $aDefaultValue = array(
+            'Email' => 0,
+            'Text Message' => 0,
+            'CRM Embed' => 0,
+            'Facebook' => 0,
+            'Twitter' => 0,
+            'Google+' => 0,
+            'Direct Link' => 0,
+            'QRCode' => 0
+        );
         $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:medium','filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$aDvs['dealer_name'],'sort'=>'-ga:sessions'), $sDateFrom);
         if ($oShareViewRequest->rows) {
             // Draw Most Watched Videos Table
-            $pdf->SetXY(5, 75);
+            $pdf->SetXY(5, 25);
             $pdf->SetFont('Arial', 'B', 13);
             $pdf->Write(5, 'Most Shares Viewed');
-            $pdf->SetXY(5, 85);
+            $pdf->SetXY(5, 35);
             $pdf->SetFont('Arial', 'B', 10);
             $pdf->Cell(70, 7, 'Share Type', 1, 0, 'C');
             $pdf->Cell(20, 7, 'Views', 1, 0, 'C');
             $pdf->Ln();
             $pdf->SetFont('Arial', '', 8);
-            $iPointY = 85;
+            $iPointY = 35;
             foreach($oShareViewRequest->rows as $aRow) {
                 $iPointY += 7;
                 $pdf->SetXY(5, $iPointY);
                 $pdf->Cell(70, 7, $aRow[0], 1, 0);
                 $pdf->Cell(20, 7, $aRow[1], 1, 0, 'C');
+                if (isset($aDefaultValue[$aRow[0]])) {
+                    unset($aDefaultValue[$aRow[0]]);
+                }
             }
-            $pdf->Image($sImagePrefix.'2.png', 105, 75, 100, 40);
+            foreach($aDefaultValue as $sKey => $sValue) {
+                $iPointY += 7;
+                $pdf->SetXY(5, $iPointY);
+                $pdf->Cell(70, 7, $sKey, 1, 0);
+                $pdf->Cell(20, 7, $sValue, 1, 0, 'C');
+            }
+            $pdf->Image($sImagePrefix.'2.png', 105, 25, 100, 40);
         }
 
         $sNewFile = $aDvs['title_url'] . '_' . date('Ymd') . '.pdf';
         $pdf->Output(Phpfox::getParam('core.dir_cache') . $sNewFile, 'F');
-        unlink($sImagePrefix.'1.png');
+//        unlink($sImagePrefix.'1.png');
         if ($oShareViewRequest->rows) {
             unlink($sImagePrefix.'2.png');
         }
@@ -319,27 +338,37 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         $oFileHandler = fopen($sNewFile, 'w+');
         fputcsv($oFileHandler, array($aDvs['dvs_name'], $iDays . ' days from ' . date('m/d/Y'), ""));
 
-        // Emails Sent
-        $oEmailSentRequest = $oGAService->makeRequest('ga:totalEvents', array('filters'=>'ga:eventLabel==Email Share Sent;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
-        $iEmailSentEvent = (int)$oEmailSentRequest->totalsForAllResults['ga:totalEvents'];
-
-        // Emails Clicked
-        $oEmailClickedRequest = $oGAService->makeRequest('ga:sessions', array('filters'=>'ga:campaign==DVS Share Links;ga:medium==Email;ga:source=~^'.$aDvs['dealer_name']), $sDateFrom);
-        $iEmailClickedEvent = (int)$oEmailClickedRequest->totalsForAllResults['ga:sessions'];
-
-        // Click-Through Rate
-        if ($iEmailSentEvent > 0) {
-            $iCTRate = (int)$iEmailClickedEvent * 100 / (int)$iEmailSentEvent;
-            $iCTRate = number_format($iCTRate, 0);
-        } else {
-            $iCTRate = 0;
-        }
-
-        fputcsv($oFileHandler, array("", "", ""));
-        fputcsv($oFileHandler, array("Emails Sent", "Emails Clicked", "Click-Through Rate"));
-        fputcsv($oFileHandler, array($iEmailSentEvent, $iEmailClickedEvent, $iCTRate . "%"));
+//        // Emails Sent
+//        $oEmailSentRequest = $oGAService->makeRequest('ga:totalEvents', array('filters'=>'ga:eventLabel==Email Share Sent;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
+//        $iEmailSentEvent = (int)$oEmailSentRequest->totalsForAllResults['ga:totalEvents'];
+//
+//        // Emails Clicked
+//        $oEmailClickedRequest = $oGAService->makeRequest('ga:sessions', array('filters'=>'ga:campaign==DVS Share Links;ga:medium==Email;ga:source=~^'.$aDvs['dealer_name']), $sDateFrom);
+//        $iEmailClickedEvent = (int)$oEmailClickedRequest->totalsForAllResults['ga:sessions'];
+//
+//        // Click-Through Rate
+//        if ($iEmailSentEvent > 0) {
+//            $iCTRate = (int)$iEmailClickedEvent * 100 / (int)$iEmailSentEvent;
+//            $iCTRate = number_format($iCTRate, 0);
+//        } else {
+//            $iCTRate = 0;
+//        }
+//
+//        fputcsv($oFileHandler, array("", "", ""));
+//        fputcsv($oFileHandler, array("Emails Sent", "Emails Clicked", "Click-Through Rate"));
+//        fputcsv($oFileHandler, array($iEmailSentEvent, $iEmailClickedEvent, $iCTRate . "%"));
 
         // Most Shares Viewed
+        $aDefaultValue = array(
+            'Email' => 0,
+            'Text Message' => 0,
+            'CRM Embed' => 0,
+            'Facebook' => 0,
+            'Twitter' => 0,
+            'Google+' => 0,
+            'Direct Link' => 0,
+            'QRCode' => 0
+        );
         $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:medium','filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$aDvs['dealer_name'],'sort'=>'-ga:sessions'), $sDateFrom);
 
         fputcsv($oFileHandler, array("", "", ""));
@@ -348,6 +377,12 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         if ($oShareViewRequest->rows) {
             foreach($oShareViewRequest->rows as $aDataRow) {
                 fputcsv($oFileHandler, array($aDataRow[0], $aDataRow[1]));
+                if (isset($aDefaultValue[$aDataRow[0]])) {
+                    unset($aDefaultValue[$aDataRow[0]]);
+                }
+            }
+            foreach($aDefaultValue as $sKey => $sValue) {
+                fputcsv($oFileHandler, array($sKey, $sValue));
             }
         }
 

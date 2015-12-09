@@ -2066,7 +2066,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             $this->saveImageData($this->get('circleGraphImg'), $sCacheImagePrefix.'1.png');
             $sNewPdfFile = Phpfox::getService('dvs.analytics.export')->exportVideo(Phpfox::getParam('core.dir_cache').$sCacheImagePrefix, $iDay, $aDvs);
         } elseif ($sTab == 'sharing') {
-            $this->saveImageData($this->get('circleGraphImg'), $sCacheImagePrefix.'1.png');
+//            $this->saveImageData($this->get('circleGraphImg'), $sCacheImagePrefix.'1.png');
             if ($this->get('shareViewPieImage') != '') {
                 $this->saveImageData($this->get('shareViewPieImage'), $sCacheImagePrefix.'2.png');
             }

@@ -9,7 +9,7 @@ function drawChart() {
     var chartLoading = document.getElementById('reporting-loading');
     chartLoading.style.display = 'none';
 
-    drawCircleGraph(window.iEmailSentEvent, window.iEmailClickedEvent, window.iCTRate);
+//    drawCircleGraph(window.iEmailSentEvent, window.iEmailClickedEvent, window.iCTRate);
     if (window.shareViewDataRaw) {
         drawShareViewTable();
         drawShareViewPie();
@@ -17,12 +17,11 @@ function drawChart() {
 }
 
 function exportAllChart() {
-    var circleGraphImage = (canvas.toDataURL("image/png"));
     if (window.shareViewDataRaw) {
         var shareViewPieImage = (shareViewPie.getImageURI());
-        $.ajaxCall('dvs.analyticExportPdf', 'tab=sharing&day='+window.iExportDay+'&dvsId='+window.iDvsId+'&circleGraphImg='+circleGraphImage+'&shareViewPieImage='+shareViewPieImage);
+        $.ajaxCall('dvs.analyticExportPdf', 'tab=sharing&day='+window.iExportDay+'&dvsId='+window.iDvsId+'&shareViewPieImage='+shareViewPieImage);
     } else {
-        $.ajaxCall('dvs.analyticExportPdf', 'tab=sharing&day='+window.iExportDay+'&dvsId='+window.iDvsId+'&circleGraphImg='+circleGraphImage);
+        $.ajaxCall('dvs.analyticExportPdf', 'tab=sharing&day='+window.iExportDay+'&dvsId='+window.iDvsId);
     }
 }
 
