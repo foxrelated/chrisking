@@ -841,13 +841,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         $aVideo = Phpfox::getService('dvs.video')->get($sRefId);
         $aDvs = Phpfox::getService('dvs')->get(Phpfox::getLib('request')->get('iDvsId'));
 
-        // Change get price form values
-//		$this->html('.vehicle_year', $aVideo['year']);
-//		$this->html('.vehicle_make', $aVideo['make']);
-//		$this->html('.vehicle_model', $aVideo['model']);
-
-//		$this->val('#contact_video_ref_id', $aVideo['referenceId']);
-
         if (empty($aDvs) || empty($aVideo))
         {
             return false;
@@ -876,33 +869,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
         $this->html('#car_description', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
 
-//		$this->call('$("#twitter_share").prop("href", "https://twitter.com/intent/tweet?text=Check%20out%20" + sShareLink + "&url=" + sShareLink);');
-//		$this->html('#video_name', '<strong><a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a></strong>');
-//		$this->html('#video_long_description_text', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
-//		$this->html('#video_long_description_shortened_text', Phpfox::getLib('parse.output')->shorten(Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']), Phpfox::getParam('dvs.long_desc_limit'), '...'));
-//
-//		$this->hide('#video_long_description');
-//		$this->show('#video_long_description_shortened');
-
-//		if (strlen(Phpfox::getLib('parse.output')->clean($aVideo['longDescription'])) > Phpfox::getParam('dvs.long_desc_limit'))
-//		{
-//			$this->show('#video_long_description_control');
-//			$this->show('#video_long_description_shortened_control');
-//		}
-//		else
-//		{
-//			$this->hide('#video_long_description_control');
-//			$this->hide('#video_long_description_shortened_control');
-//		}
-
         $sThumbnailUrl = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.brightcove') . $aVideo['video_still_image'];
-        /* new thumb path */
-        /*if( file_exists(PHPFOX_DIR_FILE . "brightcove" . PHPFOX_DS . $aVideo['video_still_image'] ) {
-            $sThumbnailUrl = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . ''file.brightcove') . $aVideo['video_still_image'];
-        } else {
-            $sThumbnailUrl = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . ''theme.frontend.default.style.default.image.noimage') . 'item.png';
-        }
-        $sThumbnailUrl = str_replace('index.php?do=/', '', $sThumbnailUrl);*/
 
         // Change microdata
         $this->call('$("#schema_video_thumbnail_url").attr("content", "' . $sThumbnailUrl . '");');
@@ -1157,13 +1124,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 			Phpfox::getService('dvs.process')->updateContactCount($aDvs['dvs_id']);
 
-//			$this->call('$("#contact_dealer").hide().("#dvs_contact_success").show().delay(800).tb_remove();');
-
-//			$this->hide('#contact_dealer');
-//			$this->show('#dvs_contact_success');
-//			$this->call('$("#dvs_contact_success").show().after(function() {});');
-//			$this->call('tb_remove();');
-
 			$this->call('getPriceEmailSent();');
 		}
 		else
@@ -1180,10 +1140,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$aVals = Phpfox::getLib('request')->getArray('val');
 		$bIsError = false;
 
-		//if (!$aVals['sender_mobile']) {
-		//	Phpfox_Error::set('Please enter sender mobile');
-		//	$bIsError = true;
-		//}
 		if (!$aVals['receiver_mobile']) {
 			Phpfox_Error::set('Please enter receiver mobile');
 			$bIsError = true;
@@ -1652,23 +1608,11 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 	 */
 	public function videoSelect()
 	{
-		/*$iYear = $this->get('iYear');
-		$sMake = $this->get('sMake');
-		$sModel = $this->get('sModel');
-		$sPlaylistBorder = $this->get('sPlaylistBorder');
-		$aDvs = Phpfox::getService('dvs')->get($iDvsId);*/
 
         $iDvsId = $this->get('iDvsId');
         $sReferenceId = $this->get('sReferenceId');
 		Phpfox::getService('dvs.video')->setDvs($iDvsId);
 
-		/*$aVideos = array();
-        if(in_array($iYear, explode(',', Phpfox::getParam('research.new_model_year')))) {
-            $aVideos = Phpfox::getService('dvs.video')->getVideoSelect($iYear, $sMake, $sModel);
-            $aVideos = array_merge($aVideos, Phpfox::getService('dvs.video')->getRelated($aVideos[0]));
-        } elseif(!in_array($iYear, explode(',', Phpfox::getParam('research.used_model_year_exclusion')))) {
-            $aVideos = Phpfox::getService('dvs.video')->getModelsByYearMakeDvs($iDvsId, $iYear, $sMake);
-        }*/
         $aVideo = Phpfox::getService('dvs.video')->get($sReferenceId);
         $aVideos = Phpfox::getService('dvs.video')->getRelatedVideo($aVideo, $iDvsId);
 
@@ -1798,7 +1742,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         $this->remove('.twitter_popup');
         $this->call('$(\'#twitter_button_wrapper\').html(\'<a href="https://twitter.com/share?url=\' + encodeURIComponent(\'' . $sShareCode . '1\') + \'&text=\' + encodeURIComponent(\'' . $sTwitterText . '\') + \'" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>\');');
         $this->call('twttr.widgets.load();');
-        //$this->call('$(\'#current_video_link\').attr(\'href\', $(\'#parent_url\').val().replace(\'WTVDVS_VIDEO_TEMP\', \'' . $aVideo['video_title_url'] . '\'));');
 
         $this->val('#video_url', $aVideo['video_title_url']);
         $this->val('#video_hash_code', Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5));
@@ -1921,13 +1864,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
             Phpfox::getService('dvs.process')->updateContactCount($aDvs['dvs_id']);
 
-//			$this->call('$("#contact_dealer").hide().("#dvs_contact_success").show().delay(800).tb_remove();');
-
-//			$this->hide('#contact_dealer');
-//			$this->show('#dvs_contact_success');
-//			$this->call('$("#dvs_contact_success").show().after(function() {});');
-//			$this->call('tb_remove();');
-
             $this->hide('#loading_email_img')
                 ->show('.share_email_field');
 
@@ -1962,12 +1898,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         //if (count($aMakes) === 1) {
             // Yes, make the only make selected by default.
             $sSelectOptions = '<li class="init"><span class="init_selected">' . $aMakes[0]['make'] . '</span><ul>';
-        /*    $this->call('$.ajaxCall(\'dvs.getShareModels\', \'sDvsName=' . $aDvs['title_url'] . '&iYear=' . $iYear . '&sMake=' . $aMakes[0]['make'] . '\');');
-        } else {
-            // The first list item should be one to tell the user to select a make.
-            $sSelectOptions = '<li class="init"><span class="init_selected">' . Phpfox::getPhrase('dvs.select_make') . '</span><ul>';
-            $this->html('#models', '<li class="init">' . Phpfox::getPhrase('dvs.select_model') . '</li><ul><li>' . Phpfox::getPhrase('dvs.please_select_a_make_first') . '</li></ul>');
-        }*/
 
         // Build the ul list items
         foreach ($aMakes as $aMake) {
