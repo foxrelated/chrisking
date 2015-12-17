@@ -866,6 +866,19 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         } else {
             $this->html('#video_name', $aDvs['phrase_overrides']['override_video_name_display']);
         }
+<<<<<<< HEAD
+=======
+
+        $this->html('#car_description', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
+
+//		$this->call('$("#twitter_share").prop("href", "https://twitter.com/intent/tweet?text=Check%20out%20" + sShareLink + "&url=" + sShareLink);');
+//		$this->html('#video_name', '<strong><a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a></strong>');
+//		$this->html('#video_long_description_text', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
+//		$this->html('#video_long_description_shortened_text', Phpfox::getLib('parse.output')->shorten(Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']), Phpfox::getParam('dvs.long_desc_limit'), '...'));
+//
+//		$this->hide('#video_long_description');
+//		$this->show('#video_long_description_shortened');
+>>>>>>> 8d0025f1892347fc00f8802724cd175479b7ccc1
 
         $this->html('#car_description', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
 
@@ -1263,7 +1276,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				'sShareMessage' => nl2br(htmlentities($aVals['share_message'], ENT_QUOTES, 'UTF-8')),
 				'sShareEmail' => $aVals['share_email'],
 				'sMyShareEmail' => $aVals['my_share_email'],
-				'sMySharePhone' => $aDvs['phone'],
+                //'sMySharePhone' => $aDvs['phone'],
+				'sMySharePhone' => $aVals['my_share_tel'],
 				'sPagebg' => $aDvs['page_background'],
 				'sTextColor' => $aDvs['vin_text_color'],
 				'sLinkColor' => $aDvs['text_link'],
@@ -1397,7 +1411,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
                 'sShareMessage' => nl2br(htmlentities($aVals['share_message'], ENT_QUOTES, 'UTF-8')),
                 'sShareEmail' => $aVals['share_email'],
                 'sMyShareEmail' => $aVals['my_share_email'],
-                'sMySharePhone' => $aDvs['phone'],
+                //'sMySharePhone' => $aDvs['phone'],
+                'sMySharePhone' => $aVals['my_share_tel'],
                 'sPagebg' => $aDvs['page_background'],
                 'sTextColor' => $aDvs['vin_text_color'],
                 'sLinkColor' => $aDvs['text_link'],
