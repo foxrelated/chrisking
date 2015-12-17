@@ -22,7 +22,7 @@ var oCustomVars = [];
 //var bOverlayHold = false;
 
 if (bDebug) {
-	console.log('Page: ' + (bIsDvs ? 'DVS Overlay Player' : 'iDrive') + ' Browser Detected: ' + sBrowser);
+	console.log('Page: ' + (bIsDvs ? 'DVS URL Player' : 'iDrive') + ' Browser Detected: ' + sBrowser);
 }
 
 //Watch overviews.  Resets MediaID array and plays video 0.
@@ -98,10 +98,10 @@ function changeCuePoint(sCuePoint) {
 			}
 		};
 
-		sendToGoogle('DVS Overlay Player', 'Overlay Player', 'Chapter Clicked: ' + sCuePoint, oCustomVars);
+		sendToGoogle('DVS URL Player', 'URL Player', 'Chapter Clicked: ' + sCuePoint, oCustomVars);
 		mixpanel.track("Chapter Clicked", {
-			"Category" : "DVS Overlay Player",
-			"Action" : "Overlay Player",
+			"Category" : "DVS URL Player",
+			"Action" : "URL Player",
 			"Chapter": sCuePoint,
 			"Video ID": aCurrentVideoMetaData.referenceId,
 			"Year": aCurrentVideoMetaData.year,
@@ -149,9 +149,9 @@ function getPrice(iDvsId) {
 			}
 		};
 
-		sendToGoogle('DVS Overlay Player', 'Call To Action Menu Clicks', 'Get Price Clicked', oCustomVars);
+		sendToGoogle('DVS URL Player', 'Call To Action Menu Clicks', 'Get Price Clicked', oCustomVars);
 		mixpanel.track("Get Price Clicked", {
-			"Category" : "DVS Overlay Player",
+			"Category" : "DVS URL Player",
 			"Action" : "Calls to Action",
 			"Chapter": sCurrentCuePoint,
 			"Video ID": aCurrentVideoMetaData.referenceId,
@@ -197,9 +197,9 @@ function getPrice(iDvsId) {
 // 			}
 // 		};
 // 
-// 		sendToGoogle(sPlayerName, 'DVS Overlay Player', 'Call to Action Clicks', 'Get Price Clicked', oCustomVars);
+// 		sendToGoogle(sPlayerName, 'DVS URL Player', 'Call to Action Clicks', 'Get Price Clicked', oCustomVars);
 // 		mixpanel.track("Get Price Clicked", {
-// 			"Category" : "DVS Overlay Player",
+// 			"Category" : "DVS URL Player",
 // 			"Action" : "Calls to Action",
 // 			"Chapter": sCurrentCuePoint,
 // 			"Video ID": aCurrentVideoMetaData.referenceId,
@@ -219,11 +219,10 @@ function getPrice(iDvsId) {
 // 	}
 // }
 
-function getPriceExternal(sEmail) {
-	if (aCurrentVideoMetaData) {
-
-	}
-}
+//function getPriceExternal(sEmail) {
+//	if (aCurrentVideoMetaData) {
+//	}
+//}
 
 //Called when clicking a chapter or when the video rolls past a chapter, sets lights.
 function cueChange(sCuePoint) {
@@ -264,7 +263,7 @@ function cueChange(sCuePoint) {
 //Plays a new video on video end
 function playVideo(iVideoKey) {
 	if (bDebug) {
-		console.log('Overlay Player: Playing Video 2Key: ' + iVideoKey + ' from:');
+		console.log('URL Player: Playing Video 2Key: ' + iVideoKey + ' from:');
 		console.log(aMediaIds);
 	}
 
@@ -281,7 +280,7 @@ function playVideo(iVideoKey) {
 
 		modVid.loadVideoByID(aMediaIds[iVideoKey]);
 		if (bDebug) {
-			console.log('Overlay Player: Loading video...');
+			console.log('URL Player: Loading video...');
 		}
 	}
 	else
@@ -297,13 +296,13 @@ function onTemplateLoaded(experienceID)
 {
 
 	if (bDebug) {
-		console.log('Overlay Player: Template Loaded: ' + experienceID);
+		console.log('URL Player: Template Loaded: ' + experienceID);
 	}
 
 	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5)
 	{
 		if (bDebug) {
-			console.log('Overlay Player: Setting up Smart Player API');
+			console.log('URL Player: Setting up Smart Player API');
 		}
 
 		bcExp = brightcove.api.getExperience(experienceID);
@@ -321,7 +320,7 @@ function onTemplateLoaded(experienceID)
 	else
 	{
 		if (bDebug) {
-			console.log('Overlay Player: Setting up Flash Only API');
+			console.log('URL Player: Setting up Flash Only API');
 		}
 
 		bcExp = brightcove.getExperience(experienceID);
@@ -346,7 +345,7 @@ function onTemplateLoaded(experienceID)
 	}
 
 	if (bDebug) {
-		console.log('Overlay Player: Set up.');
+		console.log('URL Player: Set up.');
 	}
 	oChapterDivs['Intro'] = $('#chapter_container_Intro').html();
 	oChapterDivs['WhatsNew'] = $('#chapter_container_WhatsNew').html();
@@ -372,7 +371,7 @@ function onTemplateLoaded(experienceID)
 function onTemplateReady(oVideo) {
 
 	if (bDebug) {
-		console.log('Overlay Player: Template Ready.');
+		console.log('URL Player: Template Ready.');
 	}
 
 	if (!aMediaIds[iCurrentVideo])
@@ -391,7 +390,7 @@ function onTemplateReady(oVideo) {
 		}
 
 		if (bDebug) {
-			console.log('Overlay Player: Playing video: ' + aMediaIds[iCurrentVideo]);
+			console.log('URL Player: Playing video: ' + aMediaIds[iCurrentVideo]);
 		}
 	}
 	else
@@ -405,20 +404,20 @@ function onTemplateReady(oVideo) {
 		}
 
 		if (bDebug) {
-			console.log('Overlay Player: Cueing video: ' + aMediaIds[iCurrentVideo]);
+			console.log('URL Player: Cueing video: ' + aMediaIds[iCurrentVideo]);
 		}
 	}
 
 	if (bIsDvs) {
-		sPlayerName = 'DVS Overlay Player';
+		sPlayerName = 'DVS URL Player';
 	} else {
 		sPlayerName = 'iDrive iFrame Player';
 	}
 
-	sendToGoogle(sPlayerName, 'Overlay Player', 'Player Loaded');
+	sendToGoogle(sPlayerName, 'URL Player', 'Player Loaded');
 	mixpanel.track("Player Loaded", {
 		"Category": sPlayerName,
-		"Action": "Overlay Player"
+		"Action": "URL Player"
 		});
 }
 
@@ -471,10 +470,10 @@ function onVideoLoad(oMedia) {
 				}
 			};
 
-			sendToGoogle(sPlayerName, 'Overlay Player', 'Media Begin', oCustomVars);
+			sendToGoogle(sPlayerName, 'URL Player', 'Media Begin', oCustomVars);
 			mixpanel.track("Media Begin", {
 				"Category" : sPlayerName,
-				"Action" : "Overlay Player",
+				"Action" : "URL Player",
 				"Video ID": aCurrentVideoMetaData.referenceId,
 				"Year": aCurrentVideoMetaData.year,
 				"Make": aCurrentVideoMetaData.make,
@@ -495,10 +494,10 @@ function onVideoLoad(oMedia) {
 				}
 			};
 
-			sendToGoogle(sPlayerName, 'Overlay Player', 'Media Begin', oCustomVars);
+			sendToGoogle(sPlayerName, 'URL Player', 'Media Begin', oCustomVars);
 			mixpanel.track("Media Begin", {
 				"Category" : sPlayerName,
-				"Action" : "Overlay Player",
+				"Action" : "URL Player",
 				"Video ID": "Pre-roll",
 				"Year": aCurrentVideoMetaData.year,
 				"Make": aCurrentVideoMetaData.make,
@@ -518,7 +517,7 @@ function onVideoLoad(oMedia) {
 
 	sCurrentCuePoint = '';
 	if (bDebug) {
-		console.log('Overlay Player: Hiding all chapters');
+		console.log('URL Player: Hiding all chapters');
 	}
 
 	$('#chapter_buttons button').addClass('no_display').removeClass('display');
@@ -553,10 +552,10 @@ function onVideoLoad(oMedia) {
 		}
 	};
 
-	sendToGoogle(sPlayerName, 'Overlay Player', 'Video Load', oCustomVars);
+	sendToGoogle(sPlayerName, 'URL Player', 'Video Load', oCustomVars);
 	mixpanel.track("Video Loaded", {
 		"Category" : sPlayerName,
-		"Action" : "Overlay Player",
+		"Action" : "URL Player",
 		"Video ID": aCurrentVideoMetaData.referenceId,
 		"Year": aCurrentVideoMetaData.year,
 		"Make": aCurrentVideoMetaData.make,
@@ -573,7 +572,7 @@ function onVideoLoad(oMedia) {
 			modVid.loadVideo(oMedia.video.id);
 
 			if (bDebug && bIgnoreAutoPlaySetting && !bAutoplay) {
-				console.log('Overlay Player: Ignoring auto play setting, video loaded via thumbnail click or video select');
+				console.log('URL Player: Ignoring auto play setting, video loaded via thumbnail click or video select');
 			}
 		}
 		else
@@ -625,10 +624,10 @@ function onCuePointEvent(oCuePoint) {
 			}
 		};
 
-		sendToGoogle(sPlayerName, 'Overlay Player', 'Chapter Watched: ' + sCurrentCuePoint, oCustomVars);
+		sendToGoogle(sPlayerName, 'URL Player', 'Chapter Watched: ' + sCurrentCuePoint, oCustomVars);
 		mixpanel.track("Chapter Watched", {
 			"Category" : sPlayerName,
-			"Action" : "Overlay Player",
+			"Action" : "URL Player",
 			"Chapter": sCurrentCuePoint,
 			"Video ID": aCurrentVideoMetaData.referenceId,
 			"Year": aCurrentVideoMetaData.year,
@@ -648,14 +647,14 @@ function onCuePointEvent(oCuePoint) {
 //Plays next video if there are any
 function onVideoEnd(oVideo) {
 	if (bDebug) {
-		console.log('Overlay Player: Video End');
+		console.log('URL Player: Video End');
 	}
 	bDebug = true;
 	if (bAutoAdvance) {
 		iCurrentVideo++;
 
 		if (bDebug) {
-			console.log('Overlay Player: Auto Advance enabled. Advancing to Video key: ' + iCurrentVideo);
+			console.log('URL Player: Auto Advance enabled. Advancing to Video key: ' + iCurrentVideo);
 		}
 
 		if (aMediaIds[iCurrentVideo]) {
@@ -677,11 +676,11 @@ function onVideoEnd(oVideo) {
 	else
 	{
 		if (bDebug) {
-			console.log('Overlay Player: Auto Advance disabled.');
+			console.log('URL Player: Auto Advance disabled.');
 		}
 		// Handle chapter light states
 		if (bDebug) {
-			console.log('Overlay Player: Resetting chapter lights');
+			console.log('URL Player: Resetting chapter lights');
 		}
 
 		$.each(oChapterDivs, function(sChapter, sHtml) {
@@ -736,7 +735,7 @@ function isPlayingHandler(result) {
 	bPlaying = result;
 
 	if (bDebug) {
-		console.log('Overlay Player: isPlayingHandler result: ' + result);
+		console.log('URL Player: isPlayingHandler result: ' + result);
 	}
 }
 
@@ -746,7 +745,7 @@ function changeLights(sCuePoint) {
 	$('#chapter_buttons button.selected').attr('class', 'watched display');
 
 	if (bDebug) {
-		console.log('Overlay Player: Showing green for ' + sCuePoint);
+		console.log('URL Player: Showing green for ' + sCuePoint);
 	}
 
 	if (sCuePoint === 'Intro' || sCuePoint === 'Overview')
@@ -850,7 +849,7 @@ function cuePointsHandler(cuepoints) {
 
 function thumbnailClick(iKey) {
 	if (bDebug) {
-		console.log('Overlay Player: Playlist Thumbnail Click: #' + iKey);
+		console.log('URL Player: Playlist Thumbnail Click: #' + iKey);
 	}
 
 	if (bIsDvs) {
@@ -876,34 +875,34 @@ function thumbnailClick(iKey) {
 }
 
 function textOverlayClick(iDvsId) {
-	sendToGoogle('DVS Overlay Player', 'Overlay Player', 'Text Overlay Clicked');
+	sendToGoogle('DVS URL Player', 'URL Player', 'Text Overlay Clicked');
 	mixpanel.track("Text Overlay Clicked", {
-		"Category" : "DVS Overlay Player",
-		"Action" : "Overlay Player",
+		"Category" : "DVS URL Player",
+		"Action" : "URL Player",
 	});
 	
 }
 
 function getPriceOverlayClick(iDvsId) {
-	sendToGoogle('DVS Overlay Player', 'Overlay Player', 'Get Price Overlay Clicked');
+	sendToGoogle('DVS URL Player', 'URL Player', 'Get Price Overlay Clicked');
 	mixpanel.track("Get Price Overlay Clicked", {
-		"Category" : "DVS Overlay Player",
-		"Action" : "Overlay Player",
+		"Category" : "DVS URL Player",
+		"Action" : "URL Player",
 	});
 }
 
 // function thumbnailClickDvs(iDvsId) {
-// 	sendToGoogle('DVS Overlay Player', 'Playlist', 'Thumbnail Clicked');
+// 	sendToGoogle('DVS URL Player', 'Playlist', 'Thumbnail Clicked');
 // 	mixpanel.track("Thumbnail Clicked", {
-// 		"Category" : "DVS Overlay Player",
+// 		"Category" : "DVS URL Player",
 // 		"Action" : "Playlist",
 // 	});
 // }
 
 // function thumbnailClickIDrive(iIDriveId) {
-// 	sendToGoogle(sPlayerName, 'iDrive Overlay Player', 'Playlist', 'Thumbnail Clicked');
+// 	sendToGoogle(sPlayerName, 'iDrive URL Player', 'Playlist', 'Thumbnail Clicked');
 // }
 // 
 // function inventoryClickDvs(iDvsId) {
-// 	sendToGoogle('DVS Overlay Player', 'Playlist', 'Inventory Clicked');
+// 	sendToGoogle('DVS URL Player', 'Playlist', 'Inventory Clicked');
 // }
