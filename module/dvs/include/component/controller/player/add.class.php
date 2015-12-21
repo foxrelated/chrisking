@@ -64,6 +64,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 		{
 			$aMakes[$ik]['remake'] = str_replace(" ","-",$amk['make']); 
 		}
+        
 		//If there is an array 'val', attempt to validate and save player, otheriwse, display add/edit page.
 		if ($aVals = $this->request()->getArray('val'))
 		{
@@ -112,7 +113,9 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 
 				//DVS Players will always be interactive
 				$aVals['player_type'] = 0;
-
+                
+                //$player_type = (int) $aVals['player_type'];
+                //die($aVals['player_type']);
 				if (!$iPlayerId)
 				{
 					
@@ -219,7 +222,8 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 					->setBreadcrumb(Phpfox::getPhrase('dvs.edit_player'));
 				;
 			}
-		} else { //add & edit feature models
+		} 
+        else { //add & edit feature models
 			$iDvsId = $this->request()->getInt('id');
 
 			if (Phpfox::getService('dvs')->hasAccess($iDvsId, Phpfox::getUserId()))
@@ -235,6 +239,8 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 			//If there is a player, we're editing
 			if (($aPlayer = Phpfox::getService('dvs.player')->get($iDvsId)))
 			{
+                $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+                $aPlayer['player_st_type'] = $aDvs['player_type'];
 				$aPlayerModels = array();
                 $aSelectedMakes = array();
 				foreach ($aMakes as $iKey => $aMake)
@@ -262,8 +268,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 				}*/
 
                 $aPlayerModels = Phpfox::getService('dvs.video')->getFeatureModels($iDvsId, $aSelectedMakes);
-
-
+                //var_dump($aPlayer);
 				$this->template()
 					->assign(array(
 						'aForms' => $aPlayer,

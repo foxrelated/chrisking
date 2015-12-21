@@ -1055,9 +1055,10 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_comments'). ' ');
 			$bIsError = true;
 		}
-
+        
 		if (!$bIsError)
 		{
+            
 			$this->call("$('#contact_dealer').hide();");
 			$this->call("$('#dvs_contact_success').show();");
 			$this->call("setTimeout(function() { tb_remove(); }, 3000);");
@@ -1083,6 +1084,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 					'state_string' => $aDvs['state_string'],
 					'phone' => $aDvs['phone']
 			));
+            
 
             if($aDvs['email_format']){
                 $sBody = Phpfox::getPhrase('dvs.dealer_email_xml_body', array(
@@ -1116,15 +1118,35 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
                     'phone' => $aDvs['phone']
                 ));
             }
-			Phpfox::getLib('mail')
-				->to($aDvs['email'])
-				->subject($sSubject)
-				->message($sBody)
-				->send();
+            $sEmailSig = preg_replace('/\{phrase var=\'(.*)\'\}/ise', "'' . Phpfox::getPhrase('\\1', {$this->_sArray}, false, null, '". Phpfox::getParam('core.default_lang_id')."') . ''", Phpfox::getParam('core.mail_signature'));
+            
+			//Phpfox::getLib('mail')
+//				->to($aDvs['email'])
+//				->subject($sSubject)
+//				->message($sBody)
+//				->send();
+             $sTextHtml = Phpfox::getLib('template')->assign(array(
+                        'bHtml' => true,
+                        'sMessage' => str_replace("\n", "<br />", $sBody),
+                        'sEmailSig' => str_replace("\n", "<br />", $sEmailSig),
+                        'bMessageHeader' => $this->_bMessageHeader
+                    )
+                    )->getLayout('email', true);
+             Phpfox::getLibClass('phpfox.mail.interface');
+             
+            $toMail = explode(',',$aDvs['email']);
+                    
+            $oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
+            
+            foreach($toMail as $receipent){
+            $receipent = trim($receipent);    
+            $oMail->send($receipent, $sSubject, $sBody, $sTextHtml);
 
-			Phpfox::getService('dvs.process')->updateContactCount($aDvs['dvs_id']);
+            Phpfox::getService('dvs.process')->updateContactCount($aDvs['dvs_id']);
 
-			$this->call('getPriceEmailSent();');
+            $this->call('getPriceEmailSent();');    
+            }
+            
 		}
 		else
 		{
@@ -1858,18 +1880,39 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
                     'phone' => $aDvs['phone']
                 ));
             }
-            Phpfox::getLib('mail')
-                ->to($aDvs['email'])
-                ->subject($sSubject)
-                ->message($sBody)
-                ->send();
+            
+             $sEmailSig = preg_replace('/\{phrase var=\'(.*)\'\}/ise', "'' . Phpfox::getPhrase('\\1', {$this->_sArray}, false, null, '". Phpfox::getParam('core.default_lang_id')."') . ''", Phpfox::getParam('core.mail_signature'));
+            
+            //Phpfox::getLib('mail')
+//                ->to($aDvs['email'])
+//                ->subject($sSubject)
+//                ->message($sBody)
+//                ->send();
+             $sTextHtml = Phpfox::getLib('template')->assign(array(
+                        'bHtml' => true,
+                        'sMessage' => str_replace("\n", "<br />", $sBody),
+                        'sEmailSig' => str_replace("\n", "<br />", $sEmailSig),
+                        'bMessageHeader' => $this->_bMessageHeader
+                    )
+                    )->getLayout('email', true);
+             Phpfox::getLibClass('phpfox.mail.interface');
+             
+            $toMail = explode(',',$aDvs['email']);
+                    
+            $oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
+            
+            foreach($toMail as $receipent){
+            $receipent = trim($receipent);    
+            $oMail->send($receipent, $sSubject, $sBody, $sTextHtml);
 
             Phpfox::getService('dvs.process')->updateContactCount($aDvs['dvs_id']);
 
+            $this->call('getPriceEmailSent();');    
+            }
+           
             $this->hide('#loading_email_img')
                 ->show('.share_email_field');
 
-            $this->call('getPriceEmailSent();');
         }
         else
         {

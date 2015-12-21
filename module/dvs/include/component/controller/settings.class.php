@@ -32,6 +32,7 @@ class Dvs_Component_Controller_Settings extends Phpfox_Component {
 
 			if (($aDvs = Phpfox::getService('dvs')->get($iDvsId)))
 			{
+                //var_dump($aDvs);
 				if(is_array($aDvs['dealer_id'])) {
                     $aDvs['dealer_id'] = implode(', ', $aDvs['dealer_id']);
                 } else {

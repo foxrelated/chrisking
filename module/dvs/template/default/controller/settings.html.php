@@ -277,7 +277,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	
 			<li>
 				<label for="contact_email">{phrase var='dvs.contact_email'}:</label>
-				<input type="email" name="val[email]" value="{value type='input' id='email'}" id="email"  size="60" maxlength="200" />
+                <!--<input type="email" name="val[email]" value="{value type='input' id='email'}" id="email"  size="60" maxlength="200" />-->
+				<input type="text" name="val[email]" value="{value type='input' id='email'}" id="email"  size="60" maxlength="200" />
 				{*phrase var='dvs.contact_email_phrase'*}
 			</li>
 	
@@ -441,8 +442,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     <fieldset>
         <ol>
             <li>
-                <input type="radio" name="val[vpd_popup]" value="1" {if $bIsEdit && $aForms.vpd_popup == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
-                <input type="radio" name="val[vpd_popup]" value="0" {if $bIsEdit && $aForms.vpd_popup == 0}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_off'}
+                <input type="radio" name="val[vpd_popup]" value="1" {if $bIsEdit && $aForms.vpd_popup == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+                <input type="radio" name="val[vpd_popup]" value="0" {if $bIsEdit && $aForms.vpd_popup == 0}checked="checked"{/if}  />{phrase var='dvs.dvs_inventory_status_off'}
             </li>
         </ol>
     </fieldset>
@@ -464,7 +465,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </li>
         </ol>
     </fieldset>
-    <h1>Player Type</h1>
+   <!-- <h1>Player Type</h1>
     <fieldset>
         <ol>
             <li>
@@ -472,12 +473,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 <input type="radio" name="val[player_type]" value="1" {if $bIsEdit && $aForms.player_type == 1}checked="checked"{/if} />HTML5
             </li>
         </ol>
-    </fieldset>
+    </fieldset>-->
     <h1>Email Lead Format</h1>
     <fieldset>
         <ol>
             <li>
-                <input type="radio" name="val[email_format]" value="0" {if $bIsEdit && $aForms.email_format == 0}checked="checked"{/if} />Standard Email
+                <input type="radio" name="val[email_format]" value="0" {if $aForms.email_format != 1}checked="checked"{/if} />Standard Email
                 <input type="radio" name="val[email_format]" value="1" {if $bIsEdit && $aForms.email_format == 1}checked="checked"{/if} />ADF/XML
             </li>
         </ol>

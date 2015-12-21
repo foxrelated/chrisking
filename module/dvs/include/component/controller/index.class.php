@@ -76,7 +76,7 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
 					'sFormName' => 'add_dvs',
 					'aParams' => $aValidation
 				));
-
+                //die(var_dump($aVals));
 				if ($oValid->isValid($aVals)) {
 					if (strlen($aVals['welcome']) > Phpfox::getParam('dvs.welcome_greeting_max_chars')) {
 						$aVals['welcome'] = substr($aVals['welcome'], 0, Phpfox::getParam('dvs.welcome_greeting_max_chars'));

@@ -105,6 +105,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<a href="#" onclick="tb_show('{phrase var='idrive.domain_name' phpfox_squote=true}', $.ajaxBox('idrive.moreInfoDomainName', 'height=180&amp;width=320')); return false;" />{phrase var='idrive.more_info'}</a>
 			</li>*}
 			{else}
+            
+        
+            <li>
+            <label for="player_type">Player Type :</label>
+                <input type="radio" name="val[player_st_type]" value="0" {if $aForms.player_st_type != 1}checked="checked"{/if} />Flash
+                <input type="radio" name="val[player_st_type]" value="1" {if $bIsEdit && $aForms.player_st_type == 1}checked="checked"{/if} />HTML5
+            </li>
+        
 			<input type="hidden" name="val[player_type]" value="0" />
 			{/if}
 
@@ -171,6 +179,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		</ol>
 	</fieldset>
 	
+   
+    
 	<div {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
 	<h3>{phrase var='dvs.player_colors'}</h3>
 
