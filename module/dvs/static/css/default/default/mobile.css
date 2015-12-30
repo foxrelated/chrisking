@@ -138,7 +138,8 @@ aside
     text-align: center;
     vertical-align: top;
     width: 95%;
-    min-height: 655px;
+    /*min-height: 655px;*/
+    min-height: 370px;
 }
 
 #contact_box h2 {

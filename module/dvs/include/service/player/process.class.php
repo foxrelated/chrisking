@@ -17,18 +17,22 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 
 	public function __construct()
 	{
-		$this->_sTable = Phpfox::getT('ko_dvs_players');
+        $this->_sTable = Phpfox::getT('ko_dvs_players');
+		$this->_stTable = Phpfox::getT('ko_dvs');
 	}
 
 	public function add($aVals)
 	{
 		$oParseInput = Phpfox::getLib('parse.input');
-
+        
+        $aValst['player_type'] = $aVals['player_st_type'];
+        $this->database()->update($this->_stTable, $aValst, 'dvs_id = ' . (int) $aVals['dvs_id']);
+        
 		$iPlayerId = $this->database()
 				->insert($this->_sTable, array(
 			'dvs_id' => (int) $aVals['dvs_id'],
 //			'player_name' => $oParseInput->clean($aVals['player_name'], 255),
-			'player_type' => (int) $aVals['player_type'],
+            'player_type' => (int) $aVals['player_type'],
 			'domain' => $oParseInput->clean($aVals['domain'], 255),
 //			'logo_file_id' => (int) $aVals['logo_file_id'],
 			'preroll_file_id' => (int) $aVals['preroll_file_id'],
@@ -90,8 +94,10 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 
 	public function update($aVals)
 	{
+        
 		$aPlayer = Phpfox::getService('dvs.player')->get((int) $aVals['player_id']);
-
+        $aValst['player_type'] = $aVals['player_st_type'];
+        $this->database()->update($this->_stTable, $aValst, 'dvs_id = ' . (int) $aVals['dvs_id']);
 		
 		//if ($aPlayer['user_id'] != Phpfox::getUserId() && !Phpfox::isAdmin()) return false;
 		// Do we need to remove our old logo file?
@@ -110,7 +116,7 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 				->update($this->_sTable, array(
 					'dvs_id' => (int) $aVals['dvs_id'],
 //				'player_name' => $oParseInput->clean($aVals['player_name'], 255),
-					'player_type' => (int) $aVals['player_type'],
+                    'player_type' => (int) $aVals['player_type'],
 					'domain' => $oParseInput->clean($aVals['domain'], 255),
 //				'logo_file_id' => (int) $aVals['logo_file_id'],
 					'preroll_file_id' => (int) $aVals['preroll_file_id'],

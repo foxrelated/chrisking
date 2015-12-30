@@ -129,6 +129,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 </li>
             </ul>
             
+            <ul>
+                <li>
+                    <input type="tel" name="val[my_share_tel]" id="my_share_tel" placeholder="{phrase var='dvs.your_tel'}" value="{$your_tel}" class="inputShare"/>
+                </li>
+            </ul>
 
             <ul>
                 <li>

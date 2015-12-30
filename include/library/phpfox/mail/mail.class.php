@@ -316,8 +316,10 @@ class Phpfox_Mail
      */
     public function send($bDoCheck = false)
     {		
+        
 		if (defined('PHPFOX_SKIP_MAIL'))
 		{
+            
 			return true;
 		}
     	
@@ -326,6 +328,7 @@ class Phpfox_Mail
     	{
     		$this->_mTo = array($this->_mTo);
     	}
+        
 
 		// check if the mail(s) are valid
 		if ($bDoCheck && $this->checkEmail($this->_mTo) == false)
@@ -337,6 +340,7 @@ class Phpfox_Mail
     	{
     		return false;
     	}
+        
     	
     	if ($this->_sFromName === null)
 		{
@@ -352,7 +356,7 @@ class Phpfox_Mail
 		
 		$sIds = '';
 		$sEmails = '';
-
+        
 		if (!empty($this->_aUsers))
 		{
 			foreach ($this->_aUsers as $aUser)
@@ -377,11 +381,11 @@ class Phpfox_Mail
 				}
 			}			
 		}
+        
 		$sIds = rtrim($sIds, ',');
 		$sEmails = rtrim($sEmails, ',');
-		
 		$bIsSent = true;		
-
+        
 		if (!empty($sIds))
 		{
 			if ($this->_sNotification !== null)
@@ -592,6 +596,7 @@ class Phpfox_Mail
 		{
 			eval($sPlugin);
 		}
+        
 		
 		return $bIsSent;
     }
