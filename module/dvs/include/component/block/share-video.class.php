@@ -41,13 +41,18 @@ class Dvs_Component_Block_Share_Video extends Phpfox_Component {
                 $sVideoViewUrl = Phpfox::getLib('url')->makeUrl( '' ) . $sDvsTitle;
             }
         }*/
-
-
-
-
+        $GAParams[] = array();
+       
+        $GA_ID = Phpfox::getLib('database')->select("setting.value_actual")
+            ->from(Phpfox::getT('setting'), 'setting')
+            ->where('setting.setting_id=432')
+            ->execute('getSlaveRows');    
+        //var_dump($aDvs);    
+        $GlobalDvsId = $GA_ID[0]['value_actual'];
         $this->template()->assign(array(
             'aShareVideos' => $aShareVideos,
             'aDvs' => $aDvs,
+            'globalDvsId' => $GlobalDvsId,
             'sDvsUrl' => Phpfox::getLib('url')->makeUrl($aDvs['title_url']),
             'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
             'bDebug' => (Phpfox::getParam('dvs.javascript_debug_mode') ? true : false),

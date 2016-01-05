@@ -107,13 +107,12 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                         ));
                 }
             }
-
+            
             if (!$bIsOldShareSystem) {
                 $oShareService = Phpfox::getService('dvs.share');
                 $iVideoId = $oShareService->convertHashCodeToNumber(substr($sShareRequest, 0, 5));
                 $iDvs = $oShareService->convertHashCodeToNumber(substr($sShareRequest, 5, 3));
                 $iShareType = substr($sShareRequest, 8, 1);
-
                 if ($aDvs = Phpfox::getService('dvs')->get($iDvs)) {
                     Phpfox::getService('dvs.video')->setDvs($iDvs);
                     $aVideo = Phpfox::getService('dvs.video')->getVideoByKoId($iVideoId);
@@ -144,6 +143,9 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                             case '7':
                                 $sRedirectUrl .= '&share=text';
                                 break;
+                            case '8':
+                                $sRedirectUrl .= '&share=video-email';
+                                break;    
                         }
                     } else {
                         $sRedirectUrl = Phpfox::getLib('url')->makeUrl($aDvs['title_url']) . $aVideo['video_title_url'];
@@ -172,6 +174,9 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                             case '7':
                                 $sRedirectUrl .= '/share_text/';
                                 break;
+                            case '8':
+                                $sRedirectUrl .= '&share=video-email';
+                                break;        
                         }
                     }
 

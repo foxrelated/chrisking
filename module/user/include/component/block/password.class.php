@@ -31,6 +31,7 @@ class User_Component_Block_Password extends Phpfox_Component
 	{
 		(($sPlugin = Phpfox_Plugin::get('user.component_block_password_clean')) ? eval($sPlugin) : false);
 	}
+    
 }
 
 ?>
