@@ -102,8 +102,8 @@ defined('PHPFOX') or exit('NO DICE!');
 					<label for="password">{required}{phrase var='user.password'}:</label>
 				</div>
 				<div class="table_right">
-					<!--<div id="js_password_info" style="padding-top:2px;"><a href="#" onclick="tb_show('{phrase var='user.change_password' phpfox_squote=true}', $.ajaxBox('user.changePassword', 'height=250&amp;width=500')); return false;">{phrase var='user.change_password'}</a></div>-->
-                    <div id="js_password_info" style="padding-top:2px;"><a href="#" onclick="tb_show('{phrase var='user.change_password' phpfox_squote=true}', $.ajaxBox('user.changePassword','user={$aForms.user_id}&amp;height=250&amp;width=500')); return false;">{phrase var='user.change_password'}</a></div>
+					<div id="js_password_info" style="padding-top:2px;"><a href="#" onclick="tb_show('{phrase var='user.change_password' phpfox_squote=true}', $.ajaxBox('user.changePassword','user={$aForms.user_id}&amp;height=250&amp;width=500')); return false;">{phrase var='user.change_password'}</a></div>
+                    
 				</div>
 				<div class="clear"></div>
 			</div>

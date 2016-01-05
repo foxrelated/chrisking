@@ -118,7 +118,7 @@ class Phpfox_Ajax
 	 * @return bool If we can load the component we return true, false on failure
 	 */
 	public function process()
-	{			
+	{	
 		Phpfox::getService('log.session')->verifyToken();
 		
 		if (empty($this->_aRequest))
@@ -178,7 +178,6 @@ class Phpfox_Ajax
 				return true;
 			}
 		}		
-		
 		// Lets get the Ajax component for this module
 		if ($oObject = Phpfox::getComponent($sModule, array(), 'ajax'))
 		{
