@@ -124,11 +124,11 @@ class Admincp_Service_Setting_Setting extends Phpfox_Service
 					"AND language_phrase.var_name = setting.phrase_var_name"
 				)
 			)
-			->where($aCond)
+            ->where($aCond)
 			->group('setting.setting_id')
 			->order("setting.ordering ASC")
 			->execute('getSlaveRows');		
-		
+	
 		$sCdnDir = PHPFOX_DIR_LIB . PHPFOX_DS . 'phpfox' . PHPFOX_DS . 'cdn' . PHPFOX_DS . 'module' . PHPFOX_DS;
 		$aCdns = array();
 		$hDir = opendir($sCdnDir);		
@@ -298,7 +298,7 @@ class Admincp_Service_Setting_Setting extends Phpfox_Service
 					$aRows[$iKey]['value_actual'] = implode(',', $aRows[$iKey]['values']['values']);
 				}
 			}	
-
+            
 			if ($aRow['type_id'] == 'array')
 			{				
 				if (!empty($aRow['value_actual']))
@@ -415,7 +415,7 @@ class Admincp_Service_Setting_Setting extends Phpfox_Service
 		}	
 		
 		(($sPlugin = Phpfox_Plugin::get('admincp.service_setting_setting_get')) ? eval($sPlugin) : false);
-
+        
 		return $aRows;
 	}
 	

@@ -776,7 +776,14 @@ class User_Component_Ajax_Ajax extends Phpfox_Ajax
 	
 	public function changePassword()
 	{
-		Phpfox::getBlock('user.password');
+	  if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on'){
+     $userId = $this->get('user');
+     Phpfox::getService('user.auth')->setUserId($userId);
+     Phpfox::getService('user.auth')->setUser(Phpfox::getService('user.user')->getUser(Phpfox::getUserId()));    
+     }
+     Phpfox::getBlock('user.password');           
+     
+     
 	}
 	
 	public function updatePassword()

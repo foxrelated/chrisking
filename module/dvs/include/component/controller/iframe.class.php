@@ -95,6 +95,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
         {
             if ($bIsIframe) {
                 list($sOverride, $sNewParentUrl, $sOriginParentUrl, $aExtraParams) = Phpfox::getService('dvs.iframe')->parseUrl($sParentUrl);
+                
                 if($aExtraParams['share']) {
                     $sShareSource = $aExtraParams['share'];
                 }
@@ -377,13 +378,16 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 case 'text':
                     $sShareIframeUrl .= '&utm_medium=Text Message';
                     break;
+                case 'video-email':
+                    $sShareIframeUrl .='&utm_medium=Video Email';
+                    break;    
                 default:
                     $sShareIframeUrl .= '&utm_medium=Direct Link';
                     break;
             }
 
             $sShareIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
-            if($sShareSource == 'qrcode' || 'facebook' || 'twitter' || 'google' || 'crm' || 'direct' || 'email' || 'text') {
+            if($sShareSource == 'qrcode' || 'facebook' || 'twitter' || 'google' || 'crm' || 'direct' || 'email' || 'text' || 'video-email') {
                 $sShareIframeUrl .= '&utm_campaign=DVS Share Links';
             } else {
                 $sShareIframeUrl .= '&utm_campaign=DVS iFrame';
