@@ -148,9 +148,7 @@
                         </script>
                         {/if}
                     </td>
-                    </tr>
-                    {/if}
-                    
+                    </tr>                    
                     <tr>
                     <td>
                         Video Email Template
@@ -159,7 +157,7 @@
                     <td>
                         {if !$bIsIPhone}
                         <div id="dvs_share_copy_button_holder4_{$iKey}" class="dvs_share_copy_button_holder">
-                            <button id="copy_button4_{$iKey}">Copy Link</button>
+                            <button id="copy_button4_{$iKey}">Copy Code</button>
                         </div>
                         <script type="text/javascript">
                             var clip4_{$iKey} = new ZeroClipboard.Client();
@@ -168,13 +166,13 @@
                             clip4_{$iKey}.glue('copy_button4_{$iKey}', "dvs_share_copy_button_holder4_{$iKey}");
                             clip4_{$iKey}.addEventListener('onComplete', function(){l}
                             $.ajaxCall('dvs.copyCRM', 'shorturl={$aVideo.shorturl}');
-                            alert('URL has been copied to clipboard!');
+                            alert('HTML code has been copied to clipboard!');
                             {r});
                         </script>
                         {/if}
                     </td>
                     </tr>
-                    
+                    {/if}
                     </table>
                 </td>
             </tr>
