@@ -86,6 +86,9 @@ $.fn.ajaxCall = function(sCall, sExtra, bNoForm, sType)
 	oCacheAjaxRequest = $.ajax(
 	{
 			type: sType,
+            /* xhrFields: {
+     withCredentials: true
+   },*/
 		  	url: sUrl,//getParam('sJsStatic') + "ajax.php",
 		  	dataType: "script",	
 			data: sParams			
