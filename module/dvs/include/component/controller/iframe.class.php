@@ -379,7 +379,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                     $sShareIframeUrl .= '&utm_medium=Text Message';
                     break;
                 case 'video-email':
-                    $sShareIframeUrl .='&utm_medium=CRM Video Email Viewed';
+                    $sShareIframeUrl .='&utm_medium=CRM Video Email Click';
                     break;    
                 default:
                     $sShareIframeUrl .= '&utm_medium=Direct Link';
