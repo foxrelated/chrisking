@@ -164,7 +164,8 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
             'Twitter' => 0,
             'Google+' => 0,
             'Direct Link' => 0,
-            'QRCode' => 0
+            'QR Code' => 0,
+            'CRM Video Email' => 0,
         );
         $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:medium','filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$aDvs['dealer_name'],'sort'=>'-ga:sessions'), $sDateFrom);
         if ($oShareViewRequest->rows) {
@@ -367,7 +368,8 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
             'Twitter' => 0,
             'Google+' => 0,
             'Direct Link' => 0,
-            'QRCode' => 0
+            'QR Code' => 0,
+            'CRM Video Email' => 0
         );
         $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:medium','filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$aDvs['dealer_name'],'sort'=>'-ga:sessions'), $sDateFrom);
 
