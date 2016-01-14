@@ -57,9 +57,9 @@ function drawCircleGraph(emailOpened, emailClicked, CTRate) {
         ctx.font = "bold 15px Arial";
         ctx.textAlign = "center";
         ctx.fillStyle = "#000000";
-        ctx.fillText("Emails Opened", 245, 30);
-        ctx.fillText("Emails Clicked", 245 * 2, 30);
-        ctx.fillText("Click-Through Rate", 245 * 3, 30);
+        ctx.fillText("CRM Video Emails Opened", 245, 30);
+        ctx.fillText("CRM Video Emails Clicked", 245 * 2, 30);
+        ctx.fillText("CRM Video Email CTR", 245 * 3, 30);
 
         // Draw Content
         ctx.font = "normal 38px Arial";
