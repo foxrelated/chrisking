@@ -9,7 +9,7 @@ function drawChart() {
     var chartLoading = document.getElementById('reporting-loading');
     chartLoading.style.display = 'none';
 
-//    drawCircleGraph(window.iEmailSentEvent, window.iEmailClickedEvent, window.iCTRate);
+    drawCircleGraph(window.iEmailOpenEvent, window.iEmailClickEvent, window.iCTRate);
     if (window.shareViewDataRaw) {
         drawShareViewTable();
         drawShareViewPie();
@@ -33,7 +33,7 @@ function exportCSV() {
     );
 }
 
-function drawCircleGraph(emailSent, emailClicked, CTRate) {
+function drawCircleGraph(emailOpen, emailClick, CTRate) {
     canvas = document.getElementById('circle-stats-canvas');
     if (canvas.getContext) {
         var ctx = canvas.getContext('2d');
@@ -57,7 +57,7 @@ function drawCircleGraph(emailSent, emailClicked, CTRate) {
         ctx.font = "bold 15px Arial";
         ctx.textAlign = "center";
         ctx.fillStyle = "#000000";
-        ctx.fillText("Emails Sent", 245, 30);
+        ctx.fillText("Emails Opened", 245, 30);
         ctx.fillText("Emails Clicked", 245 * 2, 30);
         ctx.fillText("Click-Through Rate", 245 * 3, 30);
 

@@ -42,7 +42,8 @@ class Dvs_Component_Block_Analytics_Sharing extends Phpfox_Component {
             'Google' => 0,
             'Direct Link' => 0,
             'QR Code' => 0,
-            'CRM Video Email' => 0
+            'CRM Video Email Open' => 0,
+            'CRM Video Email Click' => 0
         );
         $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:medium','filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$aDvs['dealer_name'],'sort'=>'-ga:sessions'), $sDateFrom);
         if ($oShareViewRequest->rows) {
