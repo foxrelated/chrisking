@@ -7,21 +7,30 @@ class Dvs_Component_Block_Analytics_Sharing extends Phpfox_Component {
 
         $oGAService = Phpfox::getService('dvs.analytics');
 
-//        // Emails Sent
-//        $oEmailSentRequest = $oGAService->makeRequest('ga:totalEvents', array('filters'=>'ga:eventLabel==Email Share Sent;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
-//        $iEmailSentEvent = (int)$oEmailSentRequest->totalsForAllResults['ga:totalEvents'];
-//
-//        // Emails Clicked
-//        $oEmailClickedRequest = $oGAService->makeRequest('ga:sessions', array('filters'=>'ga:campaign==DVS Share Links;ga:medium==Email;ga:source=~^'.$aDvs['dealer_name']), $sDateFrom);
-//        $iEmailClickedEvent = (int)$oEmailClickedRequest->totalsForAllResults['ga:sessions'];
-//
-//        // Click-Through Rate
-//        if ($iEmailSentEvent > 0) {
-//            $iCTRate = (int)$iEmailClickedEvent * 100 / (int)$iEmailSentEvent;
-//            $iCTRate = number_format($iCTRate, 0);
-//        } else {
-//            $iCTRate = 0;
-//        }
+       // Emails Sent
+       //$oEmailSentRequest = $oGAService->makeRequest('ga:sessions', array('filters'=>'ga:eventLabel==Email Share Sent;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
+       //$iEmailSentEvent = (int)$oEmailSentRequest->totalsForAllResults['ga:totalEvents'];
+       
+       // Emails Clicked
+       //$oEmailClickedRequest = $oGAService->makeRequest('ga:sessions', array('filters'=>'ga:campaign==DVS Share Links;ga:medium==Email;ga:source=~^'.$aDvs['dealer_name']), $sDateFrom);
+       //$iEmailClickedEvent = (int)$oEmailClickedRequest->totalsForAllResults['ga:sessions'];
+		
+		//CRM Video Email Open
+		$oEmailOpenRequest = $oGAService->makeRequest('ga:sessions', array('filters'=>'ga:campaign==DVS Share Links;ga:medium==CRM Video Email Open;ga:source=~^'.$aDvs['dealer_name']), $sDateFrom);
+       $iEmailOpenEvent = (int)$oEmailOpenRequest->totalsForAllResults['ga:sessions'];
+       
+       
+       //CRM Video Email Click
+       $oEmailClickRequest = $oGAService->makeRequest('ga:sessions', array('filters'=>'ga:campaign==DVS Share Links;ga:medium==CRM Video Email Click;ga:source=~^'.$aDvs['dealer_name']), $sDateFrom);
+       $iEmailClickEvent = (int)$oEmailClickRequest->totalsForAllResults['ga:sessions'];
+
+       // Click-Through Rate
+       if ($iEmailOpenEvent > 0) {
+           $iCTRate = (int)$iEmailClickEvent * 100 / (int)$iEmailOpenEvent;
+           $iCTRate = number_format($iCTRate, 0);
+       } else {
+           $iCTRate = 0;
+       }
 
         // Most Shares Viewed
         $aDefaultValue = array(
