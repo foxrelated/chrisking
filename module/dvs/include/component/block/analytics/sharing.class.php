@@ -66,9 +66,9 @@ class Dvs_Component_Block_Analytics_Sharing extends Phpfox_Component {
             ->assign(array(
                 'sJavascript' =>
                     '<script type="text/javascript">' .
-//                    'var iEmailSentEvent = "' . $iEmailSentEvent . '";' .
-//                    'var iEmailClickedEvent = "' . $iEmailClickedEvent . '";' .
-//                    'var iCTRate = "' . $iCTRate . '%";' .
+                    'var iEmailOpenEvent = "' . $iEmailOpenEvent . '";' .
+                    'var iEmailClickEvent = "' . $iEmailClickEvent . '";' .
+                    'var iCTRate = "' . $iCTRate . '%";' .
                     'var shareViewDataRaw = ' . $sShareViewData . ';' .
                     '</script>'
             ));
