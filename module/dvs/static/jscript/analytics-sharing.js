@@ -33,7 +33,7 @@ function exportCSV() {
     );
 }
 
-function drawCircleGraph(emailOpen, emailClick, CTRate) {
+function drawCircleGraph(emailOpened, emailClicked, CTRate) {
     canvas = document.getElementById('circle-stats-canvas');
     if (canvas.getContext) {
         var ctx = canvas.getContext('2d');
@@ -66,7 +66,7 @@ function drawCircleGraph(emailOpen, emailClick, CTRate) {
         ctx.textAlign = "center";
         ctx.textBaseline = "bottom";
         ctx.fillStyle = "#FFFFFF";
-        ctx.fillText(emailSent, 245, 135);
+        ctx.fillText(emailOpened, 245, 135);
         ctx.fillText(emailClicked, 245 * 2, 135);
         ctx.fillText(CTRate, 245 * 3, 135);
     }
