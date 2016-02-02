@@ -16,7 +16,7 @@ if (!window.WTVDVS) {
             delete params.height;
             delete params.width;
 
-            var sIframe = '<iframe frameborder="0" width="100%" height="1000px" style="height:100%;width:100%;" src="' + params.iframeUrl + 'parent_' + this.encode_base64(encodeURIComponent(sParentUrl)) + '/maxwidth_' + iMaxWidth + '/"></iframe>';
+            var sIframe = '<iframe frameborder="0" width="100%" height="1000px" style="width:100%;height:1000px;" src="' + params.iframeUrl + 'parent_' + this.encode_base64(encodeURIComponent(sParentUrl)) + '/maxwidth_' + iMaxWidth + '/"></iframe>';
 
             if (wrapper) {
                 wrapper.innerHTML = sIframe, wrapper.style.width = sWrapperWidth, wrapper.style.height = '100%', wrapper.style.padding = 0, wrapper.style.display = 'block'; wrapper.style.maxWidth = iMaxWidth;
