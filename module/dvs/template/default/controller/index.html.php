@@ -323,9 +323,9 @@ padding: 0;
 								 <li><a href="{url link='dvs.customize' id=$aDvs.dvs_id}"><span>Customize Styling</span></a></li>
 								 <li><a href="{url link='dvs.player.add' id=$aDvs.dvs_id}"><span>Player Settings</span></a></li>
 								 <li><a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}"><span>Sales Team</span></a></li>
-                                 {if Phpfox::isAdmin()}
+                                 {*if Phpfox::isAdmin()*}
                                  <li><a href="{url link='dvs.manager' id=$aDvs.dvs_id}"><span>Managers Team</span></a></li>
-                                 {/if}
+                                 {*/if*}
 							  </ul>
 						   </li>
 						   <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a></li>
