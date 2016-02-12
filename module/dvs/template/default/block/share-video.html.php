@@ -81,7 +81,7 @@
                 <td>
                     <table>
                     <td>
-                        CRM/Email Embed Code
+                        Thumbnail HTML Embed Code
                         <input class="dvs_share_text_box" type="text" id="embed_code_{$iKey}" value='<div align="center"><div style="position:relative;width:500px;overflow:hidden;text-align:center;"><h2 style="text-align:center;"><a href="{url link='share.'$aVideo.share_hash_code'3'}">{$aVideo.name}</a></h2><div style="height:281px;left:0;top:0;width:500px;"><a href="{url link='share.'$aVideo.share_hash_code'3'}">{img server_id=$aVideo.image_server_id path="brightcove.url_image" file=$aVideo.image_path suffix="_email_500" max_width=500 max_height=281 title=$aVideo.name}</a></div></div></div>' />
                     </td>
                     <td>
