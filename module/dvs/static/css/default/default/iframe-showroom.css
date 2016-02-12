@@ -105,6 +105,7 @@ a:hover
 	display: none;
 	width: 360px;
 	text-align: center;
+	top:10px !important;
 }
 
 .dvs_overlay a
