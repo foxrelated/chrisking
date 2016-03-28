@@ -3,7 +3,6 @@
  * [PHPFOX_HEADER]
  */
 defined('PHPFOX') or exit('No direct script access allowed.');
-
 /**
  *
  *
@@ -51,31 +50,35 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{/if}
 	{if $bIsDvs}
 
-	{foreach from = $aOverviewVideos key = iKey item = aVideo}
-		aOverviewMediaIds[{$iKey}] = {$aVideo.id};
-	{/foreach}
+	    {foreach from = $aOverviewVideos key = iKey item = aVideo}
+		    aOverviewMediaIds[{$iKey}] = {$aVideo.id};
+	    {/foreach}
 
-	aMediaIds = aOverviewMediaIds;
-	
-	{if isset($aOverrideVideo.id)}
-		if (bDebug) console.log('Media: Override is set. aMediaIds:');
-		aMediaIds[0] = {$aOverrideVideo.id};
-	{else}
-		{if isset($aFeaturedVideo.id)}
-			if (bDebug) console.log('Media: Featured Video is set. aMediaIds:');
-			aMediaIds[0] = {$aFeaturedVideo.id};
-		{else}
-			if (bDebug) console.log('Media: No override or featuerd. aMediaIds:');
-			aMediaIds = aOverviewMediaIds;
-		{/if}
-	{/if}
-	if (bDebug) {l}
-	console.log(aMediaIds);
-	{r}
+	    aMediaIds = aOverviewMediaIds;
+	    
+	    
+        {if isset($aOverrideVideo.id)}
+		    if (bDebug) console.log('Media: Override is set. aMediaIds:');
+		    aMediaIds[0] = {$aOverrideVideo.id};
+	    {else}
+		    {if isset($aFeaturedVideo.id)}
+			    if (bDebug) console.log('Media: Featured Video is set. aMediaIds:');
+			    aMediaIds[0] = {$aFeaturedVideo.id};
+		    {else}
+			    if (bDebug) console.log('Media: No override or featuerd. aMediaIds:');
+			    aMediaIds = aOverviewMediaIds;
+		    {/if}
+	    {/if}
+        
+        
+	    if (bDebug) {l}
+	    console.log(aMediaIds);
+	    {r}
 
 	{if $aPlayer.custom_overlay_1_type}
 		if (bDebug) console.log('Overlay: Overlay 1 is active. Type: {$aPlayer.custom_overlay_1_type}. Start: {$aPlayer.custom_overlay_1_start}. Duration: {$aPlayer.custom_overlay_1_duration}.');
 		var bCustomOverlay1 = true;
+        
 		var iCustomOverlay1Start = {$aPlayer.custom_overlay_1_start};
 		var iCustomOverlay1Duration = {$aPlayer.custom_overlay_1_duration};
 	{else}
@@ -96,7 +99,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{if $aPlayer.custom_overlay_3_type}
 		if (bDebug) console.log('Overlay: Overlay 3 is active. Type: {$aPlayer.custom_overlay_3_type}. Start: {$aPlayer.custom_overlay_3_start}. Duration: {$aPlayer.custom_overlay_3_duration}.');
 		var bCustomOverlay3 = true;
-		var iCustomOverlay3Start = {$aPlayer.custom_overlay_3_start};
+        var iCustomOverlay3Start = {$aPlayer.custom_overlay_3_start};
 		var iCustomOverlay3Duration = {$aPlayer.custom_overlay_3_duration};
 	{else}
 		var bCustomOverlay3 = false;
@@ -202,7 +205,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{/if}
 	{r}
 </script>
-
 {if ($bIsDvs && $aOverviewVideos) || (!$bIsDvs && $aVideos)}
 <section id="dvs_bc_player"{if $bIsDvs} itemprop="video" itemscope itemtype="http://schema.org/VideoObject"{/if}>
 {if $bIsDvs}
@@ -246,7 +248,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </div>
 {/if}
 
-
 {/if}
 <object id="myExperience" class="BrightcoveExperience">
 	<param name="htmlFallback" value="true" />
@@ -258,6 +259,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		<param name="width" value="{$iPlayerWidth}" />
 		<param name="height" value="{$iPlayerHeight}" />
 	{/if}
+
 	{if $bIsExternal}
 		{if $sBrowser == 'mobile' || $sBrowser == 'ipad' || $aDvs.player_type}
 		<param name="@videoPlayer" value="{$iPlayerId}" />

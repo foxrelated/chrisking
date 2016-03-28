@@ -3,7 +3,6 @@
  * [PHPFOX_HEADER]
  */
 defined('PHPFOX') or exit('No direct script access allowed.');
-
 /**
  *
  *
@@ -37,9 +36,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </style>
         {/literal}
         {module name='dvstour.addtour'}
+        {if $aPlayer.player_type != "2"}
         <section id="player">
             {template file='dvs.controller.player.player}
         </section>
+        {else}
+        <section id="player">
+            {template file='dvs.controller.player.playerhtml5}
+        </section>
+        {/if}
     {/if}
 {else}
   {if $sBrowser == 'mobile'}
@@ -88,12 +93,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </ul>
       </nav>
     </header>
-	
     <article>
+    <!-- HTML5 V2 RealIT Services -->
+    {if $aPlayer.player_type != "2"}
       <section id="player">
         {template file='dvs.controller.player.player}
       </section>
-
+    {else}
+    <section id="player">
+    {template file = 'dvs.controller.player.playerhtml5}
+    </section>
+    {/if}  
       <div id="player_right">
         <section id="select_new">
           {if $aVideoSelectYears}

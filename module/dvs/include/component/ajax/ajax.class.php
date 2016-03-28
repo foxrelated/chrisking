@@ -833,6 +833,188 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         }
 	}
 
+     function changehtml5Video(){
+        //Change RefID for contact form
+        $sRefId = Phpfox::getLib('request')->get('sRefId');
+        Phpfox::getService('dvs.video')->setDvs(Phpfox::getLib('request')->get('iDvsId'));
+        $aVideo = Phpfox::getService('dvs.video')->get($sRefId);
+        $aDvs = Phpfox::getService('dvs')->get(Phpfox::getLib('request')->get('iDvsId'));
+
+
+        if (empty($aDvs) || empty($aVideo))
+        {
+            return false;
+        }
+
+        $aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aVideo);
+        $bVideoChanged = ($this->get('bVideoChanged') == 'true' ? true : false);
+
+        if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
+            $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url']);
+        } else {
+            $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url']));
+        }
+
+        $sOverrideLink = rtrim($sOverrideLink, '/');
+
+        //Change video information and reset description visibility
+        $this->html('#video_name', '<a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a>');
+        $this->html('#car_description', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
+
+
+        $sThumbnailUrl = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.brightcove') . $aVideo['video_still_image'];
+        // Change inventory link URL
+        $sInventoryLink = str_replace('{$sMake}', urlencode($aVideo['make']), html_entity_decode($aDvs['inventory_url']));
+        $sInventoryLink = str_replace('{$sModel}', urlencode($aVideo['model']), $sInventoryLink);
+        $sInventoryLink = str_replace('{$iYear}', urlencode($aVideo['year']), $sInventoryLink);
+
+        if (Phpfox::getParam('dvs.javascript_debug_mode'))
+        {
+            $this->call('console.log("Page: Inventory link: ' . $aDvs['inventory_url'] . '");');
+            $this->call('console.log("Page: Setting Inventory link: ' . $sInventoryLink . '");');
+        }
+
+        $this->call('$(".dvs_inventory_link").attr("href", "' . $sInventoryLink . '");');
+
+        //Change address bar contents
+        $sBrowser = Phpfox::getService('dvs')->getBrowser();
+
+        $sTitle = $aDvs['phrase_overrides']['override_page_title_display_video_specified'];
+        $sUrl = $aVideo['video_title_url'];
+
+        // Only change the URL if the video is not the default video
+        if ($bVideoChanged)
+        {
+            if (Phpfox::getParam('dvs.javascript_debug_mode'))
+            {
+                $this->call('console.log("AJAX: Video is changed.  Changing URL...");');
+            }
+
+            $this->call('window.parent.history.pushState("string", "' . $sTitle . '", "' . $sUrl . '");');
+
+            // Most browsers do not support changing the page title via pushState
+            $this->call('document.title = "' . $sTitle . '";');
+        }
+        else
+        {
+            if (Phpfox::getParam('dvs.javascript_debug_mode'))
+            {
+                $this->call('console.log("AJAX: Video is unchanged.");');
+            }
+        }
+
+        // Change share links
+        $this->call('sShareLink = "' . $sOverrideLink . '";');
+
+        if (Phpfox::getParam('dvs.javascript_debug_mode'))
+        {
+            $this->call('console.log("Page: Setting share URL to: ' . Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $sUrl) . '");');
+        }
+
+       // if ($sBrowser == 'mobile' || $sBrowser == 'ipad')
+//        {
+//            $this->attr('#bc_player_param_linkbase', 'value', Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $sUrl));
+//        }
+//        else
+//        {
+//            $this->call('modSoc.setLink("' . Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $sUrl) . '");');
+//        }
+//
+//        $this->call('$("#schema_video_url").attr("content", "' . Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $sUrl) . '");');
+
+        // Change twitter default text
+        // Repllace variables in the subject
+        $aFindReplace = array();
+        foreach ($aDvs as $sKey => $sValue) {
+            if ($sKey == 'phrase_overrides') {
+                continue;
+            }
+            if (!is_array($sValue)) {
+                $aFind[] = '{dvs_' . $sKey . '}';
+                $aReplace[] = '' . $sValue . '';
+            }
+        }
+
+        foreach ($aVideo as $sKey => $sValue) {
+            if (!is_array($sValue)) {
+                $aFind[] = '{video_' . $sKey . '}';
+                $aReplace[] = '' . $sValue . '';
+            }
+        }
+
+        if ($bVideoChanged)
+        {
+            $this->val('#video_hash_code', Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5));
+
+            $sTwitterText = Phpfox::getPhrase('dvs.twitter_default_share_text');
+            $sTwitterText = str_replace($aFind, $aReplace, $sTwitterText);
+
+            $sShareCode = Phpfox::getLib('url')->makeUrl('share') . Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5) . Phpfox::getService('dvs.share')->convertNumberToHashCode($aDvs['dvs_id'], 3);
+            $this->remove('.twitter_popup');
+            $this->html('#twitter_button_wrapper', '<a href="https://twitter.com/share?url=' . urlencode($sShareCode) . '&text=' . urlencode($sTwitterText) . '" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>');
+            $this->call('twttr.widgets.load();');
+        }
+
+        if($aDvs['inv_display_status']){
+            $inventoryList = Phpfox::getService('dvs')->getModelInventory($aVideo['ko_id']);
+            $sPlaylistHtml = '<div class="inventory_info_message">';
+            if(count($inventoryList) > 1){
+                $sPlaylistHtml .= count($inventoryList).' '.$aVideo['model'].'\'s available in inventory! Select one below:';
+            }elseif(count($inventoryList) == 1){
+                $sPlaylistHtml .= count($inventoryList).' '.$aVideo['model'].' available in inventory! Select one below:';
+            }else{
+                $sPlaylistHtml .= Phpfox::getPhrase('dvs.we_dont_have').' '.$aVideo['model'].' '.Phpfox::getPhrase('dvs.in_stock_at_this_time').'. <a href="#" onclick="tb_show(\'Contact Dealer\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId='.$aDvs['dvs_id'].'&amp;sRefId='.$aVideo['referenceId'].'\')); menuContact(\'Call To Action Menu Clicks\'); return false;">Click here</a> to request this vehicle instead!';
+            }
+            $sPlaylistHtml .= '</div>';
+
+            if($inventoryList){
+                $sPlaylistHtml .= '<button class="prev playlist-button">&lt;</button>';
+                $sPlaylistHtml .= '<div class="playlist_carousel" id="overview_inventory">';
+                $sPlaylistHtml .= '<ul>';
+                foreach ($inventoryList as $iKey => $inventoryItem)
+                {
+                    $sThumbnailImageHtml = Phpfox::getLib('image.helper')->display(array(
+                        'path' => 'dvs.video_url_image',
+                        'file' => Phpfox::getParam('core.path') . '/file/' . $inventoryItem['image'],
+                        'max_width' => 145,
+                        'max_height' => 82));
+
+                    $sPlaylistHtml .= '<li><div class="inv_dvs_wrapper">' .
+                            '<div class="inv_dvs_avatar"><a href="'.$inventoryItem['link'].'" target="_blank">' . $sThumbnailImageHtml . '</a></div>' .
+                            '<div class="inv_dvs_info">' .
+                                '<p><a href="'.$inventoryItem['link'].'" target="_blank">'.$inventoryItem['title'].'</a></p>' .
+                                '<p>'.Phpfox::getPhrase('dvs.color').': '.$inventoryItem['color'].'</p>' .
+                                '<p>'.Phpfox::getPhrase('dvs.msrp').': '.$inventoryItem['price'].'</p>' .
+                                '<p class="view_details">' .
+                                    '<a href="'.$inventoryItem['link'].'" title="'.Phpfox::getPhrase('dvs.view_details').'" target="_blank">'.Phpfox::getPhrase('dvs.view_details').'</a>' .
+                                '</p>' .
+                            '</div>' .
+                        '</div></li>';
+                }
+
+                $sPlaylistHtml .= '</ul>';
+                $sPlaylistHtml .= '</div>';
+                $sPlaylistHtml .= '<button class="next playlist-button">&gt;</button>';
+
+                $this->html('#playlist_wrapper', $sPlaylistHtml);
+                if ($sBrowser != 'mobile')
+                {
+                    $this->call('enableInventoryCarousel();');
+                }
+            }else{
+                $this->html('#playlist_wrapper', $sPlaylistHtml);
+            }
+        }
+
+        $this->val('#contact_dvs_id', $aDvs['dvs_id']);
+
+
+        if($aDvs['footer_toggle']) {
+            Phpfox::getBlock('dvs.related-video', array('aDvs' => $aDvs, 'aVideo' => $aVideo));
+            $this->html('#related_videos', $this->getContent(false));
+        }
+    }
+    
     public function iframeChangeVideo()
     {
         //Change RefID for contact form
@@ -966,6 +1148,192 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             $sTwitterText = str_replace($aFind, $aReplace, $sTwitterText);
 
 			$sShareCode = Phpfox::getLib('url')->makeUrl('share') . Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5) . Phpfox::getService('dvs.share')->convertNumberToHashCode($aDvs['dvs_id'], 3);
+            $this->remove('.twitter_popup');
+            $this->html('#twitter_button_wrapper', '<a href="https://twitter.com/share?url=' . urlencode($sShareCode) . '&text=' . urlencode($sTwitterText) . '" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>');
+            $this->call('twttr.widgets.load();');
+        }
+
+        if($aDvs['inv_display_status']){
+            $inventoryList = Phpfox::getService('dvs')->getModelInventory($aVideo['ko_id']);
+            $sPlaylistHtml = '<div class="inventory_info_message">';
+            if(count($inventoryList) > 1){
+                $sPlaylistHtml .= count($inventoryList).' '.$aVideo['model'].'�s available in inventory! Select one below:';
+            }elseif(count($inventoryList) > 1){
+                $sPlaylistHtml .= count($inventoryList).' '.$aVideo['model'].' available in inventory! Select one below:';
+            }else{
+                $sPlaylistHtml .= 'We don�t have the '.$aVideo['model'].' in stock at this time. <a href="#" onclick="tb_show(\'Contact Dealer\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId='.$aDvs['dvs_id'].'&amp;sRefId='.$aVideo['referenceId'].'\')); menuContact(\'Call To Action Menu Clicks\'); return false;">Click here</a> to request this vehicle instead!';
+            }
+            $sPlaylistHtml .= '</div>';
+
+            if($inventoryList){
+                $sPlaylistHtml .= '<button class="prev playlist-button">&lt;</button>';
+                $sPlaylistHtml .= '<div class="playlist_carousel" id="overview_inventory">';
+                $sPlaylistHtml .= '<ul>';
+                foreach ($inventoryList as $iKey => $inventoryItem)
+                {
+                    $sThumbnailImageHtml = Phpfox::getLib('image.helper')->display(array(
+                        'path' => 'dvs.video_url_image',
+                        'file' => Phpfox::getParam('core.path') . '/file/' . $inventoryItem['image'],
+                        'max_width' => 145,
+                        'max_height' => 82));
+
+                    $sPlaylistHtml .= '<li><div class="inv_dvs_wrapper">' .
+                        '<div class="inv_dvs_avatar"><a href="'.$inventoryItem['link'].'" target="_blank">' . $sThumbnailImageHtml . '</a></div>' .
+                        '<div class="inv_dvs_info">' .
+                        '<p><a href="'.$inventoryItem['link'].'" target="_blank">'.$inventoryItem['title'].'</a></p>' .
+                        '<p>'.Phpfox::getPhrase('dvs.color').': '.$inventoryItem['color'].'</p>' .
+                        '<p>'.Phpfox::getPhrase('dvs.msrp').': '.$inventoryItem['price'].'</p>' .
+                        '<p class="view_details">' .
+                        '<a href="'.$inventoryItem['link'].'" title="'.Phpfox::getPhrase('dvs.view_details').'" target="_blank">'.Phpfox::getPhrase('dvs.view_details').'</a>' .
+                        '</p>' .
+                        '</div>' .
+                        '</div></li>';
+                }
+
+                $sPlaylistHtml .= '</ul>';
+                $sPlaylistHtml .= '</div>';
+                $sPlaylistHtml .= '<button class="next playlist-button">&gt;</button>';
+
+                $this->html('#playlist_wrapper', $sPlaylistHtml);
+                if ($sBrowser != 'mobile')
+                {
+                    $this->call('enableInventoryCarousel();');
+                }
+            }else{
+                $this->html('#playlist_wrapper', $sPlaylistHtml);
+            }
+        }
+
+        $this->val('#contact_dvs_id', $aDvs['dvs_id']);
+    }
+    
+      public function iframeChangehtml5Video()
+    {
+        //Change RefID for contact form
+        $sRefId = Phpfox::getLib('request')->get('sRefId');
+        Phpfox::getService('dvs.video')->setDvs(Phpfox::getLib('request')->get('iDvsId'));
+        $aVideo = Phpfox::getService('dvs.video')->get($sRefId);
+        $aDvs = Phpfox::getService('dvs')->get(Phpfox::getLib('request')->get('iDvsId'));
+
+        if (empty($aDvs) || empty($aVideo))
+        {
+            return false;
+        }
+
+        $aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aVideo);
+        $bVideoChanged = ($this->get('bVideoChanged') == 'true' ? true : false);
+
+        if ($aDvs['sitemap_parent_url']) {
+            $sOverrideLink = str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $aDvs['parent_video_url']);
+        } else {
+            if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
+                $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'] . '.iframe', $aVideo['video_title_url']);
+            } else {
+                $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs.iframe', array($aDvs['title_url'], $aVideo['video_title_url']));
+            }
+            $sOverrideLink = rtrim($sOverrideLink, '/');
+        }
+
+        //Change video information and reset description visibility
+        if ($this->get('bVideoClickable', 1)) {
+            $this->html('#video_name','<a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a>');
+        } else {
+            $this->html('#video_name', $aDvs['phrase_overrides']['override_video_name_display']);
+        }
+
+        $this->html('#car_description', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
+
+        $sThumbnailUrl = Phpfox::getLib('url')->makeUrl((Phpfox::getParam('dvs.enable_subdomain_mode') ? 'www.' : '') . 'file.brightcove') . $aVideo['video_still_image'];
+
+        // Change inventory link URL
+        $sInventoryLink = str_replace('{$sMake}', urlencode($aVideo['make']), html_entity_decode($aDvs['inventory_url']));
+        $sInventoryLink = str_replace('{$sModel}', urlencode($aVideo['model']), $sInventoryLink);
+        $sInventoryLink = str_replace('{$iYear}', urlencode($aVideo['year']), $sInventoryLink);
+
+        if (Phpfox::getParam('dvs.javascript_debug_mode'))
+        {
+            $this->call('console.log("Page: Inventory link: ' . $aDvs['inventory_url'] . '");');
+            $this->call('console.log("Page: Setting Inventory link: ' . $sInventoryLink . '");');
+        }
+
+        $this->call('$(".dvs_inventory_link").attr("href", "' . $sInventoryLink . '");');
+
+        //Change address bar contents
+        $sBrowser = Phpfox::getService('dvs')->getBrowser();
+
+        $sTitle = $aDvs['phrase_overrides']['override_page_title_display_video_specified'];
+        $sUrl = $aVideo['video_title_url'];
+
+        // Only change the URL if the video is not the default video
+        if ($bVideoChanged)
+        {
+            
+            if (Phpfox::getParam('dvs.javascript_debug_mode'))
+            {
+                $this->call('console.log("AJAX: Video is changed.  Changing URL...");');
+            }
+
+            $this->call('window.parent.history.pushState("string", "' . $sTitle . '", "' . $sUrl . '");');
+
+            // Most browsers do not support changing the page title via pushState
+            $this->call('document.title = "' . $sTitle . '";');
+        }
+        else
+        {
+            if (Phpfox::getParam('dvs.javascript_debug_mode'))
+            {
+                $this->call('console.log("AJAX: Video is unchanged.");');
+            }
+        }
+
+        // Change share links
+        $this->call('sShareLink = "' . $sOverrideLink . '";');
+
+        if (Phpfox::getParam('dvs.javascript_debug_mode'))
+        {
+            $this->call('console.log("Page: Setting share URL to: ' . Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $sUrl) . '");');
+        }
+
+        //if ($sBrowser == 'mobile' || $sBrowser == 'ipad')
+//        {
+//            $this->attr('#bc_player_param_linkbase', 'value', Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $sUrl));
+//        }
+//        else
+//        {
+//            $this->call('modSoc.setLink("' . Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $sUrl) . '");');
+//        }
+//
+//        $this->call('$("#schema_video_url").attr("content", "' . Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'), $sUrl) . '");');
+
+        // Change twitter default text
+        // Repllace variables in the subject
+        $aFindReplace = array();
+        foreach ($aDvs as $sKey => $sValue) {
+            if ($sKey == 'phrase_overrides') {
+                continue;
+            }
+
+            if (!is_array($sValue)) {
+                $aFind[] = '{dvs_' . $sKey . '}';
+                $aReplace[] = '' . $sValue . '';
+            }
+        }
+
+        foreach ($aVideo as $sKey => $sValue) {
+            if (!is_array($sValue)) {
+                $aFind[] = '{video_' . $sKey . '}';
+                $aReplace[] = '' . $sValue . '';
+            }
+        }
+
+        if ($bVideoChanged)
+        {
+            $this->val('#video_hash_code', Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5));
+            
+            $sTwitterText = Phpfox::getPhrase('dvs.twitter_default_share_text');
+            $sTwitterText = str_replace($aFind, $aReplace, $sTwitterText);
+
+            $sShareCode = Phpfox::getLib('url')->makeUrl('share') . Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5) . Phpfox::getService('dvs.share')->convertNumberToHashCode($aDvs['dvs_id'], 3);
             $this->remove('.twitter_popup');
             $this->html('#twitter_button_wrapper', '<a href="https://twitter.com/share?url=' . urlencode($sShareCode) . '&text=' . urlencode($sTwitterText) . '" class="twitter-share-button twitter_popup" data-size="large" data-count="none" id="dvs_twitter_share_link"></a>');
             $this->call('twttr.widgets.load();');
@@ -1557,6 +1925,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 		// Get all of the makes for the DVS for the selected year.
 		$aMakes = Phpfox::getService('dvs.video')->getValidVSMakesByDealer($iYear, $aPlayer['makes'], $aDvs['dvs_id']);
+        
 
 		// Did we get more than one make?
 		if (count($aMakes) === 1) {
@@ -1600,7 +1969,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 		// Add each model to the drop down.
 		foreach ($aModels as $aModel) {
-			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.videoSelect\', \'sReferenceId=' . $aModel['referenceId'] . '&amp;sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=' . $iDvsId . '&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
+			$sSelectOptions .= '<li onclick="$.ajaxCall(\'dvs.videoSelect\', \'sReferenceId=' . $aModel['referenceId'] . '&amp;sModel=' . $aModel['model'] . '&amp;iYear=' . $aModel['year'] . '&amp;sMake=' . $aModel['make'] . '&amp;iDvsId=' . $iDvsId . '&amp;sPlaylistBorder=\' + $(\'#dvs_playlist_border_color\').val());showspinner();">' . $aModel['year'] . ' ' . $aModel['model'] . (Phpfox::getParam('dvs.javascript_debug_mode') ? ' (' . $aModel['video_type'] . ')' : '') . '</li>';
 		}
 
 		$sSelectOptions .= '</ul></li>';
@@ -1633,10 +2002,12 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 	public function videoSelect()
 	{
 
+        
         $iDvsId = $this->get('iDvsId');
         $sReferenceId = $this->get('sReferenceId');
 		Phpfox::getService('dvs.video')->setDvs($iDvsId);
-
+        $aPlayer = Phpfox::getService('dvs.player')->get($iDvsId);
+        //var_dump($aPlayer);
         $aVideo = Phpfox::getService('dvs.video')->get($sReferenceId);
         $aVideos = Phpfox::getService('dvs.video')->getRelatedVideo($aVideo, $iDvsId);
 
@@ -1651,6 +2022,10 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		//Build playlist html and set
 		Phpfox::getLib('setting')->setParam(array('dvs.video_url_image' => Phpfox::getParam('core.url_file') . 'brightcove/'));
 		$sPlaylistHtml = '<ul>';
+        
+        //if ($aPlayer['player_type'] != "2"){
+//            $playlistLink = '<a href="#" onclick="thumbnailClick (' . $iKey . ');thumbnailClickDvs();return false;">' ;
+//        }
 
 		foreach ($aVideos as $iKey => $aVideo)
 		{
@@ -1659,10 +2034,17 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				'file' => $aVideo['thumbnail_image'],
 				'max_width' => 145,
 				'max_height' => 82));
+            //$sPlaylistHtml .= '<li>' .
+//                '<a href="#" onclick="thumbnailClick (' . $iKey . ');thumbnailClickDvs();return false;">' .
 
-            $sPlaylistHtml .= '<li>' .
-                '<a href="#" onclick="thumbnailClick (' . $iKey . ');thumbnailClickDvs();return false;">' .
+        if ($aPlayer['player_type'] != "2"){
+            $playlistLink = '<a href="#" onclick="thumbnailClick (' . $iKey . ');thumbnailClickDvs();return false;">' ;
+        }else{
+            $playlistLink = '<a class="playlist_carousel_image_link" id="thumbnail_link_'.$iKey.'">' ;
+        }
 
+            $sPlaylistHtml .= '<li>' . $playlistLink .
+                
                 $sThumbnailImageHtml . '<p>' . $aVideo['year'] . ' ' . $aVideo['model'] . '</p></a>' .
                 '</li>';
 		}
@@ -1679,6 +2061,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 		//Switch to Video Select
 		$this->call('watchVideoSelect(aVideoSelectMediaIds);');
+        
 	}
 
 	public function copyCRM()

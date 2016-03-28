@@ -3,7 +3,6 @@
  * [PHPFOX_HEADER]
  */
 defined('PHPFOX') or exit('No direct script access allowed.');
-
 /**
  *
  *

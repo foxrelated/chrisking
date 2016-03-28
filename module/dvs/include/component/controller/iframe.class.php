@@ -420,12 +420,20 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             . '<script type="text/javascript">' . $sDvsJs . '</script>'
             . '<script type="text/javascript">var bUpdatedShareUrl = true;</script>';
 
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' && $aPlayer['player_type'] != "2") {
             $this->template()->assign(array('bSecureConnection' => true));
             $sJavascript .= '<script type="text/javascript" src="//sadmin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
         } else {
             $sJavascript .= '<script type="text/javascript" src="//admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
         }
+        
+         /*HTML5 v2 RealIT Services*/
+        if($aPlayer['player_type'] !="2"){
+            $jsFile = 'iframe-player.js';
+        }else{
+            $jsFile = 'iframe-playerhtml5.js';
+        }
+
 
         $this->template()
             ->setTemplate('dvs-iframe-view')
@@ -437,7 +445,8 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             ->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
             ->setHeader(array(
                 //'player.js' => 'module_dvs',
-                'iframe-player.js' => 'module_dvs',
+                $jsFile => 'module_dvs',
+              //  'iframe-player.js' => 'module_dvs',
                 'shorten.js' => 'module_dvs',
 //				'modernizr.js' => 'module_dvs',
                 'google_analytics.js' => 'module_dvs',
@@ -481,6 +490,8 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 'aVideoSelectModels' => $aVideoSelect,
                 'aPlayer' => $aPlayer,
                 'iDvsId' => $aDvs['dvs_id'],
+                'prerollUrl' => Phpfox::getParam('core.url_file') . 'dvs/preroll/'.$aDvs['preroll_file_name'],
+                'prerollClickUrl' => $aDvs['preroll_url'],
                 'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('dvs.player.prxml', array('id' => $aDvs['dvs_id'])), '', -1) . '  ? ',
                 'aOverviewVideos' => $aOverviewVideos,
                 'bPreview' => $bPreview,

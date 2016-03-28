@@ -248,13 +248,20 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
             . '<script type="text/javascript">' . $sDvsJs . '</script>'
             . '<script type="text/javascript">var bUpdatedShareUrl = true;</script>';
 
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' && $aPlayer['player_type'] != "2") {
             $this->template()->assign(array('bSecureConnection' => true));
             $sJavascript .= '<script type="text/javascript" src="//sadmin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
         } else {
             $sJavascript .= '<script type="text/javascript" src="//admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
         }
 
+         if($aPlayer['player_type'] !="2"){
+            $jsFile = 'overlay-player.js';
+            $player_type=1;
+        }else{
+            $jsFile = 'overlay-playerhtml5.js';
+            $player_type=2;
+        }
         $this->template()
             ->setTemplate('dvs-iframe-view')
             ->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -265,7 +272,7 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
             ->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
             ->setHeader(array(
                 //'player.js' => 'module_dvs',
-                'overlay-player.js' => 'module_dvs',
+                $jsFile => 'module_dvs',
                 'overlay-dvs.js' => 'module_dvs',
                 'shorten.js' => 'module_dvs',
 //				'modernizr.js' => 'module_dvs',
@@ -299,6 +306,8 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
                 'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
                 'aPlayer' => $aPlayer,
                 'iDvsId' => $aDvs['dvs_id'],
+                'prerollUrl' => Phpfox::getParam('core.url_file') . 'dvs/preroll/'.$aDvs['preroll_file_name'],
+                'prerollClickUrl' => $aDvs['preroll_url'],
                 'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('dvs.player.prxml', array('id' => $aDvs['dvs_id'])), '', -1) . '  ? ',
                 'aOverviewVideos' => $aOverviewVideos,
                 'bPreview' => $bPreview,
@@ -308,6 +317,7 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
                 'aOverrideVideo' => $aOverrideVideo,
                 'sLinkBase' => $sLinkBase,
                 'aFirstVideoMeta' => $aFirstVideoMeta,
+                'player_type' => $player_type,
                 'bOverrideOpenGraph' => true,
                 'iLongDescLimit' => Phpfox::getParam('dvs.long_desc_limit'),
                 'bSubdomainMode' => $bSubdomainMode,
