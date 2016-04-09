@@ -111,7 +111,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         
             <li>
             <label for="player_type">Player Type :</label>
-                <input type="radio" name="val[player_st_type]" value="0" {if $aForms.player_st_type != 1}checked="checked"{/if} />Flash
+            
+                <input type="radio" name="val[player_st_type]" value="0" {if $aForms.player_st_type != 1 && $aForms.player_st_type != 2}checked="checked"{/if} />Flash
                 <input type="radio" name="val[player_st_type]" value="1" {if $bIsEdit && $aForms.player_st_type == 1}checked="checked"{/if} />HTML5
                 <input type="radio" name="val[player_st_type]" value="2" {if $bIsEdit && $aForms.player_st_type == 2}checked="checked"{/if} />HTML5 V2
             </li>

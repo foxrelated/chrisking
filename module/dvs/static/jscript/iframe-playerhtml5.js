@@ -70,9 +70,17 @@ videojs("bcv2").ready(function(){
       
           if(preRollPlayed){
           
+          $("#chapter_buttons").children().removeClass('display').addClass('no_display');     
           trackIndex = myPlayer.textTracks().length -1;
           tt = myPlayer.textTracks()[trackIndex];
           cuePointArr = myPlayer.mediainfo.cue_points;
+          
+           var i, totalItems = cuePointArr.length
+            for (i = 0; i < totalItems; i++) {
+              $("#chapter_container_"+cuePointArr[i]['name']).removeClass('no_display').addClass('display');
+            }
+            $("#chapter_container_Get_Price").removeClass('no_display').addClass('display');
+            
           }else{
               //preRollPlayed = true;
           }    
@@ -214,6 +222,7 @@ videojs("bcv2").ready(function(){
        }); 
        
        $("#chapter_buttons button").not("#chapter_container_Get_Price").on('click',function(){
+           $(".vjs-custom-overlay").remove();
            var cueName = this.id;
            cueName = cueName.replace('chapter_container_','');
            changeCuePoint(cueName);
@@ -292,38 +301,38 @@ function getSubArray(targetArray, objProperty, value) {
   };
       
 function cueChange(sCuePoint) {
-    if (currentCuePoint !== sCuePoint || bVideoChanged) {
+    //if (currentCuePoint !== sCuePoint || bVideoChanged) {
         currentCuePoint = sCuePoint;
         changeLights(sCuePoint);
-    }
-    else
-    {
-        if (bDebug) {
-            console.log('Media: Cuepoint already set: ' + sCuePoint);
-        }
-    }
+    //}
+    //else
+//    {
+//        if (bDebug) {
+//            console.log('Media: Cuepoint already set: ' + sCuePoint);
+//        }
+//    }
 
     if (!bVideoChanged && !urlChanged && !bPreview && bIsDvs) {
         window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
         bUrlChanged = true;
  }
 
-    if (sCuePoint === 'Post-roll') {
-        // Handle chapter light states
-        // Mediaevent "complete" doesn't fire on replays, so we need to make sure chapter lights are reset on a video replay here
-        if (bDebug) {
-            console.log('Player: Resetting chapter lights');
-        }
-
-        $.each(oChapterDivs, function(sChapter, sHtml) {
-            // Is the chapter button we are setting to display shown before the video ended?
-            if ($('#chapter_container_' + sChapter).hasClass('display'))
-            {
-                $('#chapter_container_' + sChapter).attr('class', 'display disabled');
-            }
-
-        });
-    }
+    //if (sCuePoint === 'Post-roll') {
+//        // Handle chapter light states
+//        // Mediaevent "complete" doesn't fire on replays, so we need to make sure chapter lights are reset on a video replay here
+//        if (bDebug) {
+//            console.log('Player: Resetting chapter lights');
+//        }
+//
+//        $.each(oChapterDivs, function(sChapter, sHtml) {
+//            // Is the chapter button we are setting to display shown before the video ended?
+//            if ($('#chapter_container_' + sChapter).hasClass('display'))
+//            {
+//                $('#chapter_container_' + sChapter).attr('class', 'display disabled');
+//            }
+//
+//        });
+//    }
 }
 
 function changeLights(sCuePoint) {
@@ -346,7 +355,8 @@ function changeLights(sCuePoint) {
 }      
          
 function changeCuePoint(sCuePoint) {
-    if (currentCuePoint !== sCuePoint && !$('#chapter_container_' + sCuePoint).hasClass('disabled')) {
+    //if (currentCuePoint !== sCuePoint && !$('#chapter_container_' + sCuePoint).hasClass('disabled')) {
+    if (!$('#chapter_container_' + sCuePoint).hasClass('disabled')) {
         var seekTimeArr = getSubArray(cuePointArr,'name',sCuePoint);
         var seekTime = seekTimeArr[0].time;
         var oCustomVars = {

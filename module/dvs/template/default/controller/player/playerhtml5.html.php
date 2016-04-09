@@ -20,7 +20,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         width: {$iPlayerWidth}px;
         height: {$iPlayerHeight}px;
         {/if}
-    {r}    
+    {r}
+#overview_playlist {l}
+height: 110px !important;
+{r}       
 #overview_playlist ul li img {l}
 width: 149px !important;
 {r}    
@@ -298,28 +301,28 @@ function enableVideoSelectCarousel(){l}
 </section>
 
 <section id="chapter_buttons">
-    <button type="button" id="chapter_container_Intro" class="disabled display"></button>
+    <button type="button" id="chapter_container_Intro" class="disabled no_display"></button>
     <button type="button" id="chapter_container_Overview" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_WhatsNew" class="disabled display"></button>
-    <button type="button" id="chapter_container_Exterior" class="disabled display"></button>
-    <button type="button" id="chapter_container_Interior" class="disabled display"></button>
+    <button type="button" id="chapter_container_WhatsNew" class="disabled no_display"></button>
+    <button type="button" id="chapter_container_Exterior" class="disabled no_display"></button>
+    <button type="button" id="chapter_container_Interior" class="disabled no_display"></button>
     <button type="button" id="chapter_container_Features" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_Power" class="disabled display"></button>
-    <button type="button" id="chapter_container_Fuel" class="disabled display"></button>
-    <button type="button" id="chapter_container_Safety" class="disabled display"></button>
-    <button type="button" id="chapter_container_Warranty" class="disabled display"></button>
+    <button type="button" id="chapter_container_Power" class="disabled no_display"></button>
+    <button type="button" id="chapter_container_Fuel" class="disabled no_display"></button>
+    <button type="button" id="chapter_container_Safety" class="disabled no_display"></button>
+    <button type="button" id="chapter_container_Warranty" class="disabled no_display"></button>
     <button type="button" id="chapter_container_Performance" class="disabled no_display"></button>
     <button type="button" id="chapter_container_MPG" class="disabled no_display"></button>
     <button type="button" id="chapter_container_Honors" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_Summary" class="disabled display"></button>
+    <button type="button" id="chapter_container_Summary" class="disabled no_display"></button>
     {if (Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req2') == 'iframe') || (!Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req3') == 'iframe')}
     {else}
         {if $bIsDvs && !$bPreview}
-        <button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + myPlayer.mediainfo.reference_id)); return false;"></button>
+        <button type="button" id="chapter_container_Get_Price" class="disabled no_display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + myPlayer.mediainfo.reference_id)); return false;"></button>
         {elseif !$bIsExternal && !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}
-        <button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;sRefId=' + myPlayer.mediainfo.reference_id));getPriceIDrive(); return false;"></button>
+        <button type="button" id="chapter_container_Get_Price" class="disabled no_display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;sRefId=' + myPlayer.mediainfo.reference_id));getPriceIDrive(); return false;"></button>
         {elseif $bIsExternal && $bShowGetPrice}
-        <button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="getPriceExternal('{$sEmail}');"></button>
+        <button type="button" id="chapter_container_Get_Price" class="disabled no_display" onclick="getPriceExternal('{$sEmail}');"></button>
         {/if}
     {/if}
 </section>

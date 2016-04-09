@@ -192,6 +192,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 <form method="post" action="" id="import_dvs" name="import_dvs">
 </form>
+
 <form method="post" action="{url link='dvs.index'}" id="add_dvs" name="add_dvs">
 	<fieldset>
 		<ol>
@@ -474,6 +475,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </li>
         </ol>
     </fieldset>-->
+    <!--<input type="hidden" name="val[player_type]" value="{$aForms.player_type}">-->
     <h1>Email Lead Format</h1>
     <fieldset>
         <ol>
