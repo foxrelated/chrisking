@@ -877,7 +877,8 @@ function thumbnailClick(iKey) {
 
 
 	if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
-		modVid.loadVideoByID(aMediaIds[iKey]);
+		
+        modVid.loadVideoByID(aMediaIds[iKey]);
 	}
 	else
 	{

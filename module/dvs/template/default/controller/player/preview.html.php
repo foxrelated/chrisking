@@ -11,7 +11,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @author  		Konsort.org
  * @package 		DVS
  */
-
 ?>
 {$sJavascript}
 <style>

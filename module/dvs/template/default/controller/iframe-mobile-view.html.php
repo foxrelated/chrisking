@@ -13,12 +13,19 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 
 ?>
+
 <meta name="viewport" content="width=600, initial-scale=0.5, maximum-scale=1.0, user-scalable=0">
 <header></header>
 <article>
-    <section id="player">
+    {if $aPlayer.player_type != "2"}
+      <section id="player">
         {template file='dvs.controller.player.player-mobile}
     </section>
+    {else}
+    <section id="player">
+    {template file='dvs.controller.player.player-mobilehtml5}
+    </section>
+    {/if}  
 
     <div id="player_right">
         <section id="dealer_links">

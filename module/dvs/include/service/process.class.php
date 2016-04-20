@@ -168,6 +168,7 @@ class Dvs_Service_Process extends Phpfox_Service {
         }
 
         if(Phpfox::isAdmin()) {
+            
             $aSql['banner_toggle'] = $this->preParse()->clean($aDvs['banner_toggle'], 1);
             $aSql['footer_toggle'] = $this->preParse()->clean($aDvs['footer_toggle'], 1);
             $aSql['topmenu_toggle'] = $this->preParse()->clean($aDvs['topmenu_toggle'], 1);
@@ -181,7 +182,7 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['used_car_videos'] = $this->preParse()->clean($aDvs['used_car_videos'], 1);
             $aSql['iframe_contact_form'] = $this->preParse()->clean($aDvs['iframe_contact_form'], 1);
             $aSql['vpd_popup'] = $this->preParse()->clean($aDvs['vpd_popup'], 1);
-            $aSql['player_type'] = $this->preParse()->clean($aDvs['player_type'], 1);
+           // $aSql['player_type'] = $this->preParse()->clean($aDvs['player_type'], 1);
             $aSql['email_format'] = $this->preParse()->clean($aDvs['email_format'], 1);
             $aSql['country_iso'] = $this->preParse()->clean($aDvs['country_iso'], 2);
             if(isset($aDvs['parent_url'])) {
@@ -191,6 +192,7 @@ class Dvs_Service_Process extends Phpfox_Service {
             if(isset($aDvs['parent_video_url'])) {
                 $aSql['parent_video_url'] = $this->preParse()->clean($aDvs['parent_video_url']);
             }
+            
         }
 
 		$this->database()->update($this->_sTable, $aSql, 'dvs_id = ' . (int) $aDvs['dvs_id']);

@@ -97,6 +97,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<select name="val[player_type]" id="player_type" onchange="newPlayerType($('#player_type').val())">
 					{if Phpfox::getUserParam('idrive.enable_interactive_player')}<option value="0" {if isset($aForms) && $aForms.player_type == 0}selected="selected"{/if}}>{phrase var='idrive.interactive'}</option>{/if}
 					{if Phpfox::getUserParam('idrive.single_player')}<option value="1" {if isset($aForms) && $aForms.player_type == 1}selected="selected"{/if}}>{phrase var='idrive.single'}</option>{/if}
+                    <option value="2" {if isset($aForms) && $aForms.player_type == 2}selected="selected"{/if}}>HTML5 V2</option>
 				</select>
 				<a href="#" onclick="tb_show('{phrase var='idrive.player_type' phpfox_squote=true}', $.ajaxBox('idrive.moreInfoPlayerType', 'height=180&amp;width=320')); return false;" />{phrase var='idrive.more_info'}</a>
 			</li>
@@ -110,8 +111,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         
             <li>
             <label for="player_type">Player Type :</label>
-                <input type="radio" name="val[player_st_type]" value="0" {if $aForms.player_st_type != 1}checked="checked"{/if} />Flash
+            
+                <input type="radio" name="val[player_st_type]" value="0" {if $aForms.player_st_type != 1 && $aForms.player_st_type != 2}checked="checked"{/if} />Flash
                 <input type="radio" name="val[player_st_type]" value="1" {if $bIsEdit && $aForms.player_st_type == 1}checked="checked"{/if} />HTML5
+                <input type="radio" name="val[player_st_type]" value="2" {if $bIsEdit && $aForms.player_st_type == 2}checked="checked"{/if} />HTML5 V2
             </li>
         
 			<input type="hidden" name="val[player_type]" value="0" />

@@ -22,9 +22,19 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{/if}
 </header>
 <article>
-	<section id="player">
-		{template file='dvs.controller.player.player-mobile}
-	</section>
+
+{if $aPlayer.player_type != "2"}
+  <section id="player">
+    {template file='dvs.controller.player.player-mobile}
+</section>
+{else}
+<section id="player">
+{template file='dvs.controller.player.player-mobilehtml5}
+</section>
+{/if}  
+	<!--<section id="player">
+		{*template file='dvs.controller.player.player-mobile*}
+	</section>-->
 
 	<div id="player_right">
 		<section id="dealer_links">

@@ -3,7 +3,6 @@
  * [PHPFOX_HEADER]
  */
 defined('PHPFOX') or exit('No direct script access allowed.');
-
 /**
  *
  *
@@ -76,6 +75,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
         //Load player data
         $aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
+        //var_dump($aPlayer);
 
         if ($aPlayer['featured_model']) {
             $aFeaturedVideo = Phpfox::getService('dvs.video')->get('', false, $aPlayer['featured_year'], $aPlayer['featured_make'], $aPlayer['featured_model']);
@@ -97,7 +97,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
         }
 
         $aOverviewVideos = Phpfox::getService('dvs.video')->getOverviewVideos($aDvs['dvs_id']);
-
+        
         //Here we shift array keys to start at 1 so thumbnails play the proper videos when we load a featured video or override video on to the front of the array
         //array_unshift($aOverviewVideos, '');
         //unset($aOverviewVideos[0]);
@@ -181,7 +181,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
         $sLinkBase = Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'));
         $sLinkBase .= $aFirstVideo['video_title_url'];
-
+        
         $sOverrideLink = "";
         if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
             $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aFirstVideo['video_title_url']);
@@ -224,7 +224,6 @@ class Dvs_Component_Controller_View extends Phpfox_Component
         $aDvs['inventory_url'] = str_replace('{$sMake}', urlencode($aFirstVideo['make']), $aDvs['inventory_url']);
         $aDvs['inventory_url'] = str_replace('{$sModel}', urlencode($aFirstVideo['model']), $aDvs['inventory_url']);
         $aDvs['inventory_url'] = str_replace('{$iYear}', urlencode($aFirstVideo['year']), $aDvs['inventory_url']);
-
         if ($aDvs['dvs_google_id'] || Phpfox::getParam('dvs.global_google_id')) {
             $sDvsJs .= 'var _gaq = _gaq || [];' .
                 '_gaq.push([\'_setAccount\', \'' . $aDvs['dvs_google_id'] . '\']);' .
@@ -321,13 +320,21 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 //                    . '<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
             . '<script type="text/javascript">' . $sDvsJs . '</script>';
 
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' && $aPlayer['player_type'] != "2") {
             $this->template()->assign(array('bSecureConnection' => true));
             $sJavascript .= '<script type="text/javascript" src="//sadmin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
         } else {
             $sJavascript .= '<script type="text/javascript" src="//admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
         }
-
+        
+        //var_dump($aDvs);
+        
+        /*HTML5 v2 RealIT Services*/
+        if($aPlayer['player_type'] !="2"){
+            $jsFile = 'player.js';
+        }else{
+            $jsFile = 'playerhtml5.js';
+        }
         $this->template()
             ->setTemplate('dvs-view')
             ->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -340,7 +347,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                 '<style type="text/css">' . Phpfox::getService('dvs')->getinvCss($aDvs) . '</style>',
 //				'<style type="text/css">' . Phpfox::getService('dvs')->getCss($aDvs, $bSubdomainMode) . '</style>',
 //				'<style type="text/css">' . Phpfox::getService('dvs.player')->getCss($aPlayer) . '</style>',
-                'player.js' => 'module_dvs',
+//                'player.js' => 'module_dvs',
+                $jsFile => 'module_dvs',
                 'shorten.js' => 'module_dvs',
 //				'modernizr.js' => 'module_dvs',
                 'google_analytics.js' => 'module_dvs',
@@ -373,6 +381,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                 'aPlayer' => $aPlayer,
                 'iDvsId' => $aDvs['dvs_id'],
                 'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('dvs.player.prxml', array('id' => $aDvs['dvs_id'])), '', -1) . '  ? ',
+                'prerollUrl' => Phpfox::getParam('core.url_file') . 'dvs/preroll/'.$aDvs['preroll_file_name'],
+                'prerollClickUrl' => $aDvs['preroll_url'],
                 'aOverviewVideos' => $aOverviewVideos,
                 'bPreview' => $bPreview,
                 'bIsDvs' => true,

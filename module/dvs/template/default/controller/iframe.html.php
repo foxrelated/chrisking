@@ -1,3 +1,4 @@
+
     {if $sBrowser == 'mobile'}
         {template file='dvs.controller.iframe-mobile-view}
     {else}
@@ -62,9 +63,18 @@
         </section>
     </header>
     <article>
-        <section id="player">
+    
+        <!-- HTML5 V2 RealIT Services -->
+        {if $aPlayer.player_type != "2"}
+          <section id="player">
             {template file='dvs.controller.player.iframe-player}
         </section>
+        {else}
+        <section id="player">
+        {template file = 'dvs.controller.player.iframe-playerhtml5}
+        </section>
+        {/if}  
+        
 
         {if $aDvs.iframe_contact_form}
         <aside>
