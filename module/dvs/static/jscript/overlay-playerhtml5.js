@@ -40,8 +40,9 @@ videojs("bcv2").ready(function(){
     if (!bPreview && bIsDvs || bIdriveGetPrice) {
         oChapterDivs['Get_Price'] = $('#chapter_container_Get_Price').html();
     }
-    
+    if ( typeof sendToGoogle == 'function' ) { 
     sendToGoogle(sPlayerName, 'Player', 'Player Loaded');
+    }
      if(bPreRoll){
          var preRollPlayed = false;
          var preRollAdvance = true;
@@ -69,7 +70,7 @@ videojs("bcv2").ready(function(){
           trackIndex = myPlayer.textTracks().length -1;
           tt = myPlayer.textTracks()[trackIndex];
           cuePointArr = myPlayer.mediainfo.cue_points;
-          
+          var i, totalItems = cuePointArr.length
             for (i = 0; i < totalItems; i++) {
               $("#chapter_container_"+cuePointArr[i]['name']).removeClass('no_display').addClass('display');
             }
@@ -121,7 +122,9 @@ videojs("bcv2").ready(function(){
             }
         };
 
+        if ( typeof sendToGoogle == 'function' ) { 
         sendToGoogle(sPlayerName, 'Player', 'Chapter Watched: ' + currentCuePoint, oCustomVars);
+        }
         mixpanel.track("Chapter Watched", {
             "Category": sPlayerName,
             "Action": "Player",
@@ -251,7 +254,9 @@ videojs("bcv2").ready(function(){
         console.log("Player: Switching to Video Select");
     }
 
+    if ( typeof sendToGoogle == 'function' ) { 
     sendToGoogle('DVS Site', 'Menu', 'Video Select');
+    }
     mixpanel.track("Video Selector", {
         "Category": "DVS Site",
         "Action": "Menu",
@@ -304,25 +309,25 @@ function cueChange(sCuePoint) {
 
     if (!bVideoChanged && !urlChanged && !bPreview && bIsDvs) {
         window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
-        bUrlChanged = true;
+        urlChanged = true;
  }
 
-    if (sCuePoint === 'Post-roll') {
-        // Handle chapter light states
-        // Mediaevent "complete" doesn't fire on replays, so we need to make sure chapter lights are reset on a video replay here
-        if (bDebug) {
-            console.log('Player: Resetting chapter lights');
-        }
-
-        $.each(oChapterDivs, function(sChapter, sHtml) {
-            // Is the chapter button we are setting to display shown before the video ended?
-            if ($('#chapter_container_' + sChapter).hasClass('display'))
-            {
-                $('#chapter_container_' + sChapter).attr('class', 'display disabled');
-            }
-
-        });
-    }
+   // if (sCuePoint === 'Post-roll') {
+//        // Handle chapter light states
+//        // Mediaevent "complete" doesn't fire on replays, so we need to make sure chapter lights are reset on a video replay here
+//        if (bDebug) {
+//            console.log('Player: Resetting chapter lights');
+//        }
+//
+//        $.each(oChapterDivs, function(sChapter, sHtml) {
+//            // Is the chapter button we are setting to display shown before the video ended?
+//            if ($('#chapter_container_' + sChapter).hasClass('display'))
+//            {
+//                $('#chapter_container_' + sChapter).attr('class', 'display disabled');
+//            }
+//
+//        });
+//    }
 }
 
 function changeLights(sCuePoint) {
@@ -372,7 +377,9 @@ if (!$('#chapter_container_' + sCuePoint).hasClass('disabled')) {
             }
         };
 
-       sendToGoogle(sPlayerName, 'Player', 'Chapter Clicked: ' + sCuePoint, oCustomVars);
+        if ( typeof sendToGoogle == 'function' ) { 
+            sendToGoogle(sPlayerName, 'Player', 'Chapter Clicked: ' + sCuePoint, oCustomVars);
+        }
         mixpanel.track("Chapter Clicked", {
             "Category": sPlayerName,
             "Action": "Player",
@@ -463,7 +470,9 @@ function getPrice() {
             }
         };
        
+       if ( typeof sendToGoogle == 'function' ) { 
         sendToGoogle('DVS Site', 'Call To Action Menu Clicks', 'Get Price Clicked', oCustomVars);
+       }
         mixpanel.track("Get Price Clicked", {
             "Category": "DVS Site",
             "Action": "Calls to Action",
@@ -498,7 +507,9 @@ function playPreroll(ap){
             }
         };
 
+        if ( typeof sendToGoogle == 'function' ) { 
         sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
+        }
         mixpanel.track("Media Begin", {
             "Category": sPlayerName,
             "Action": "Player",
@@ -544,7 +555,9 @@ function loadVideo(iKey){
         }
     };
 
+    if ( typeof sendToGoogle == 'function' ) { 
     sendToGoogle(sPlayerName, 'Player', 'Video Load', oCustomVars);
+    }
     mixpanel.track("Video Loaded", {
         "Category": sPlayerName,
         "Action": "Player",
@@ -579,7 +592,9 @@ function playVideo(mkey,autoplay){
         }
     };
 
+    if ( typeof sendToGoogle == 'function' ) { 
     sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
+    }
     mixpanel.track("Media Begin", {
         "Category": sPlayerName,
         "Action": "Player",
@@ -642,21 +657,27 @@ playVideo(iKey,true);
 }
 
 function thumbnailClickDvs(iDvsId) {
+    if ( typeof sendToGoogle == 'function' ) { 
     sendToGoogle('DVS Site', 'Playlist', 'Thumbnail Clicked');
+    }
     mixpanel.track("Thumbnail Clicked", {
         "Category": "DVS Site",
         "Action": "Playlist"
     });
 }
 textOverlayClick = function() {
+    if ( typeof sendToGoogle == 'function' ) { 
     sendToGoogle('DVS Site', 'Overlay Banner', 'Text Overlay Clicked');
+    }
     mixpanel.track("Text Overlay Clicked", {
         "Category": "DVS Site",
         "Action": "Overlay Banner"
         });
 }
 getPriceOverlayClick = function() {
+    if ( typeof sendToGoogle == 'function' ) { 
     sendToGoogle('DVS Site', 'Overlay Banner', 'Get Price Overlay Clicked');
+    }
     mixpanel.track("Get Price Overlay Clicked", {
         "Category": "DVS Site",
         "Action": "Overlay Banner"

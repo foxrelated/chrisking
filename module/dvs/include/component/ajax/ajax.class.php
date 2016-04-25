@@ -1954,7 +1954,6 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         $iDvsId = $this->get('iDvsId');
 		$sMake = $this->get('sMake');
 		$iYear = $this->get('iYear');
-
 		// Get a list of models that belong to the make and year.
 		$aModels = Phpfox::getService('dvs.video')->getModelsByYearMakeDvs($iDvsId, $iYear, $sMake, '', true);
 

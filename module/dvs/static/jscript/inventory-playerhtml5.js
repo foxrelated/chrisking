@@ -1,7 +1,7 @@
 var myPlayer;
 var sPlayerName = "DVS Player";
 var bVideoChanged=false,
-urlChanged=false,
+urlChanged,
 queuedTime,
 currentPoster,
 currentVideo,
@@ -13,16 +13,10 @@ watchVideoSelect,
 getPriceOverlayClick,
 textOverlayClick,
 thumbkey = -1,
-timeOut,
 oChapterDivs = {};
-$(document).ready(function(){
-    
 
 videojs("bcv2").ready(function(){
       myPlayer = this;
-      
-     
-      
       var cuePointArr=[],
       allCuePointData,
       
@@ -47,9 +41,8 @@ videojs("bcv2").ready(function(){
         oChapterDivs['Get_Price'] = $('#chapter_container_Get_Price').html();
     }
     if ( typeof sendToGoogle == 'function' ) { 
-     sendToGoogle(sPlayerName, 'Player', 'Player Loaded');   
+    sendToGoogle(sPlayerName, 'Player', 'Player Loaded');
     }
-     
      if(bPreRoll){
          var preRollPlayed = false;
          var preRollAdvance = true;
@@ -57,42 +50,39 @@ videojs("bcv2").ready(function(){
          var preRollPlayed = true;
      } 
      
-    
      if(preRollPlayed){
      if (bDebug) 
      {
         console.log('Media: No Preroll Set');
      }
-         
+     
      playVideo(0,bAutoplay);    
      }else{
     
-        
      playPreroll(bAutoplay);    
      } 
      
-//       myPlayer.one("loadedmetadata",function(){
+     
        myPlayer.on("loadedmetadata",function(){
-           
-      if(preRollPlayed){
-          
-          $("#chapter_buttons").children().removeClass('display').addClass('no_display');
+      
+          if(preRollPlayed){
+          $("#chapter_buttons").children().removeClass('display').addClass('no_display');     
           trackIndex = myPlayer.textTracks().length -1;
           tt = myPlayer.textTracks()[trackIndex];
           cuePointArr = myPlayer.mediainfo.cue_points;
           
-           var i, totalItems = cuePointArr.length
+          var i, totalItems = cuePointArr.length
             for (i = 0; i < totalItems; i++) {
               $("#chapter_container_"+cuePointArr[i]['name']).removeClass('no_display').addClass('display');
             }
             $("#chapter_container_Get_Price").removeClass('no_display').addClass('display');
+          }else{
+              //preRollPlayed = true;
+          }    
           
-          
-      }else{
-          //preRollPlayed = true;
-      }    
-         tt.oncuechange = function() { 
-           if(tt.activeCues[0]){
+         tt.oncuechange = function() {
+        
+            if(tt.activeCues[0]){
                var startTime = tt.activeCues[0].startTime;
            }
            if(tt.activeCues[1]){
@@ -106,11 +96,11 @@ videojs("bcv2").ready(function(){
            allCuePointData = getSubArray(cuePointArr,'time',startTime);    
            }
            if(allCuePointData[0]){
-              $(".vjs-overlay").hide();
+               $(".vjs-overlay").hide();
            cuePointName = allCuePointData[0].name;    
            }
            
-           var oCustomVars = {
+            var oCustomVars = {
             1: {
                 name: 'Video Reference ID',
                 value: aCurrentVideoMetaData.referenceId
@@ -148,9 +138,9 @@ videojs("bcv2").ready(function(){
         );
            
            cueChange(cuePointName);
-           //$('#chapter_container_' + cuePointName).addClass('display selected');
+           $('#chapter_container_' + cuePointName).addClass('display selected');
+           
           }    
-      
        }); 
        if(!bAutoAdvance && !preRollAdvance && inventory_btn){
        myPlayer.customEndscreen({
@@ -177,46 +167,16 @@ videojs("bcv2").ready(function(){
               align: 'top-middle'
             }]
           });
-
-      //myPlayer.on("timeupdate",function(){
-         // if(!preRollPlayed){
-          //    myPlayer.addClass("testClass");
-              //$(".vjs-text-track-display")
-      //})   
-      if(!preRollPlayed){ 
+          
+          if(!preRollPlayed){ 
       $("#bcv2 > :not(.vjs-control-bar):not(.vjs-big-play-button)").on("click",function(){
         window.open(preRollUrl, '_blank');
        });
-      } 
-      
-      myPlayer.on("userinactive",function(){
-         // myPlayer.controls(false);
-      });
-      myPlayer.on("useractive",function(){
-          //window.clearTimeout(timeOut);  
-          //$("#bcv2").removeClass("vjs-user-inactive");
-          //myPlayer.removeClass("vjs-user-inactive");
-          //myPlayer.addClass("vjs-user-active");
-          
-          
-        // timeOut = window.setTimeout(function(){
-              //myPlayer.removeClass("vjs-user-active");
-            //  myPlayer.addClass("vjs-user-inactive");
-              
-             // myPlayer.trigger("userinactive");
-             // myPlayer.controls(false);
-            //myPlayer.addClass('vjs-controls-disabled'); 
-           // console.log('inactive');
-       //   }, 1000);
-          
-      }); 
-      
+      }  
        
-       myPlayer.on("ended",function(){
-
-           $(".vjs-overlay").hide();
+      myPlayer.on("ended",function(){
+          $(".vjs-overlay").hide();
            if (bAutoAdvance || preRollAdvance) {
-               
              
                if(preRollAdvance){
                    preRollAdvance = false;
@@ -265,57 +225,36 @@ videojs("bcv2").ready(function(){
        });
        //$(".playlist_carousel_image_link").on('click',function(){
        $(document).on('click',".playlist_carousel_image_link",function(){
-           $(".vjs-overlay").hide();
+           
            var currentVidId = this.id;
            currentVideo =  currentVidId.replace('thumbnail_link_','');
-            //if(cuePointName != "Intro"){
-               resetChapters('');
-           //}
            thumbnailClick(currentVideo);
            thumbnailClickDvs();
-          
-           
+           //if(cuePointName != "Intro"){
+               resetChapters('');
+           //}
        })
        $("#chapter_container_Get_Price").on('click',function(){
            getPrice();
        });
-      
- //function clearoverlays(tm){
-//     if(bCustomOverlay1){
-//         if(iCustomOverlay1Start != tm){
-//             $(".vjs-overlay").hide();
-//         }
-//     }
-//     if(bCustomOverlay2){
-//         if(iCustomOverlay2Start != tm){
-//             $(".vjs-overlay").hide();
-//         }
-//     }if(bCustomOverlay3){
-//         if(iCustomOverlay3Start != tm){
-//             $(".vjs-overlay").hide();
-//         }
-//     }
-// }      
-       
- //function watchVideoSelect(aVideoSelectMediaIds) {alert('called');alert('called');
- watchVideoSelect = function(aVideoSelectMediaIds) {
+  
+  watchVideoSelect = function(aVideoSelectMediaIds) {
     //bIgnoreAutoPlaySetting = true;
     bVideoChanged = true;
     aMediaIds = aVideoSelectMediaIds;
     $(".vjs-overlay").hide();
     $(".vjs-custom-overlay").hide();
     resetChapters('');
-    
     if(preRollPlayed){
     playVideo(0,true);
     }else{
         $(".vjs-loading-spinner").hide();
         myPlayer.play();
     }
-    
     if (bDebug) {
         console.log("Player: Switching to Video Select");
     }
+
     if ( typeof sendToGoogle == 'function' ) { 
     sendToGoogle('DVS Site', 'Menu', 'Video Select');
     }
@@ -327,6 +266,7 @@ videojs("bcv2").ready(function(){
         resetOverlays();
     }
 }      
+              
        
 function resetChapters(className){
     $.each(oChapterDivs, function(sChapter, sHtml) {
@@ -355,19 +295,13 @@ function getSubArray(targetArray, objProperty, value) {
     }
     return idxArr;
   };
-
- //function hideControls(){
-//     myPlayer.controls(false);
-// }
       
 function cueChange(sCuePoint) {
     //if (currentCuePoint !== sCuePoint || bVideoChanged) {
-    //if (bVideoChanged) {
-        //console.log('hello');
         currentCuePoint = sCuePoint;
         changeLights(sCuePoint);
     //}
-    //else
+//    else
 //    {
 //        if (bDebug) {
 //            console.log('Media: Cuepoint already set: ' + sCuePoint);
@@ -398,8 +332,7 @@ function cueChange(sCuePoint) {
 }
 
 function changeLights(sCuePoint) {
-    
-    
+
     if(bVideoChanged){
         $('#chapter_buttons button.selected').removeClass('selected').attr('class', 'display active');
     }else{
@@ -414,14 +347,12 @@ function changeLights(sCuePoint) {
     }
     //$('#chapter_container_' + sCuePoint).addClass('display selected');
     
-    $('#chapter_container_' + sCuePoint).attr('class', 'display selected');        
-    
-    
+    $('#chapter_container_' + sCuePoint).attr('class', 'display selected');  
 }      
          
 function changeCuePoint(sCuePoint) {
-    //if (currentCuePoint !== sCuePoint && !$('#chapter_container_' + sCuePoint).hasClass('disabled')) {
-    if (!$('#chapter_container_' + sCuePoint).hasClass('disabled')) {
+//    if (currentCuePoint !== sCuePoint && !$('#chapter_container_' + sCuePoint).hasClass('disabled')) {
+if (!$('#chapter_container_' + sCuePoint).hasClass('disabled')) {
         var seekTimeArr = getSubArray(cuePointArr,'name',sCuePoint);
         var seekTime = seekTimeArr[0].time;
         var oCustomVars = {
@@ -446,6 +377,7 @@ function changeCuePoint(sCuePoint) {
                 value: currentCuePoint
             }
         };
+
         if ( typeof sendToGoogle == 'function' ) { 
        sendToGoogle(sPlayerName, 'Player', 'Chapter Clicked: ' + sCuePoint, oCustomVars);
         }
@@ -516,8 +448,8 @@ function seek(time)
 function getPrice() {
     if (aCurrentVideoMetaData) {
 
-        var oCustomVars = {
-            1: {
+         var oCustomVars = {
+             1: {
                 name: 'Video Reference ID',
                 value: aCurrentVideoMetaData.referenceId
             },
@@ -538,7 +470,7 @@ function getPrice() {
                 value: currentCuePoint
             }
         };
-
+       
        if ( typeof sendToGoogle == 'function' ) { 
         sendToGoogle('DVS Site', 'Call To Action Menu Clicks', 'Get Price Clicked', oCustomVars);
        }
@@ -564,37 +496,39 @@ function getPrice() {
 }
 
 function playPreroll(ap){
-   // alert('hello');
-    if (bDebug) {
+    
+     if (bDebug) {
             console.log('Media: Preroll Set');
         }
 
-    var oCustomVars = {
-        1: {
-            name: 'Video Reference ID',
-            value: 'Pre-roll'
-        }
-    };
+        var oCustomVars = {
+            1: {
+                name: 'Video Reference ID',
+                value: 'Pre-roll'
+            }
+        };
 
-    if ( typeof sendToGoogle == 'function' ) { 
-    sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
-    }
-    mixpanel.track("Media Begin", {
-        "Category": sPlayerName,
-        "Action": "Player",
-        "Video ID": "Pre-roll",
-        "Year": aCurrentVideoMetaData.year,
-        "Make": aCurrentVideoMetaData.make,
-        "Model": aCurrentVideoMetaData.model,
+        if ( typeof sendToGoogle == 'function' ) { 
+        sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
         }
-    );    
+        mixpanel.track("Media Begin", {
+            "Category": sPlayerName,
+            "Action": "Player",
+            "Video ID": "Pre-roll",
+            "Year": aCurrentVideoMetaData.year,
+            "Make": aCurrentVideoMetaData.make,
+            "Model": aCurrentVideoMetaData.model,
+            }
+        );    
         
+   // alert('hello');
    myPlayer.src({"type":"video/mp4", "src":bPreRollUrl});
    if(ap){
     myPlayer.play();   
    }
     
 }
+
 
 function loadVideo(iKey){
     aCurrentVideoMetaData = myPlayer.mediainfo.custom_fields;
@@ -621,7 +555,7 @@ function loadVideo(iKey){
             value: aCurrentVideoMetaData.model
         }
     };
-    
+
     if ( typeof sendToGoogle == 'function' ) { 
     sendToGoogle(sPlayerName, 'Player', 'Video Load', oCustomVars);
     }
@@ -637,8 +571,10 @@ function loadVideo(iKey){
     
     $.ajaxCall('dvs.changehtml5Video', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId);
 }
+
 function playVideo(mkey,autoplay){
-    var oCustomVars = {
+     //playVideo(myPlayer,0);
+     var oCustomVars = {
         1: {
             name: 'Video Reference ID',
             value: aCurrentVideoMetaData.referenceId
@@ -656,6 +592,7 @@ function playVideo(mkey,autoplay){
             value: aCurrentVideoMetaData.model
         }
     };
+
     if ( typeof sendToGoogle == 'function' ) { 
     sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
     }
@@ -667,14 +604,12 @@ function playVideo(mkey,autoplay){
         "Make": aCurrentVideoMetaData.make,
         "Model": aCurrentVideoMetaData.model,
         }
-    );
-     //playVideo(myPlayer,0);
+    );    
       myPlayer.catalog.getVideo(aMediaIds[mkey], function(error,video) {
         //deal with error
         myPlayer.catalog.load(video);
         $(".vjs-loading-spinner").hide();
         loadVideo(mkey);
-        //seek(0);
        if(autoplay){
         myPlayer.play();
        }
@@ -683,11 +618,11 @@ function playVideo(mkey,autoplay){
         //currentVideoKey = myPlayer.mediainfo.id;
         currentVideoKey = mkey;
         $(".vjs-loading-spinner").hide();
-        
         });
-}      
+}   
+
+
 function thumbnailClick(iKey) {
-   
     if (bDebug) {
         console.log('Player: Playlist Thumbnail Click: #' + iKey);
     }
@@ -695,7 +630,7 @@ function thumbnailClick(iKey) {
 
     if (bIsDvs) {
 
-       // resetOverlays();
+        resetOverlays();
     }
 
     bVideoChanged = true;
@@ -712,7 +647,8 @@ function thumbnailClick(iKey) {
 //    {
 //        modCon.getMediaAsynch(aMediaIds[iKey]);
 //    }
-if(preRollPlayed){
+
+ if(preRollPlayed){
 playVideo(iKey,true);
 }else{
     thumbkey = iKey;
@@ -739,7 +675,6 @@ textOverlayClick = function() {
         "Action": "Overlay Banner"
         });
 }
-//function getPriceOverlayClick() {
 getPriceOverlayClick = function() {
     if ( typeof sendToGoogle == 'function' ) { 
     sendToGoogle('DVS Site', 'Overlay Banner', 'Get Price Overlay Clicked');
@@ -751,11 +686,7 @@ getPriceOverlayClick = function() {
 }    
 
 });
-})
+
 function showspinner(){
       $(".vjs-loading-spinner").show();
   }  
-
-
-       
-            

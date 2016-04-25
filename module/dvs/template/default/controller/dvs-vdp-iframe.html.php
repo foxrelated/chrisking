@@ -22,6 +22,10 @@
         margin-left:10px;
         font-size:{if $sBrowser == 'mobile'}{$iHeaderTextFontSize}px{else}18px{/if};
     {r}
+    
+    #video_information a {l}
+        font-size:inherit;
+    {r}
 </style>
 {if $player_type == 2}
 <style type="text/css">
@@ -67,6 +71,7 @@ width:100% !important;
 <article>
     <section id="video_information">
         <h3 id="video_name">
+            
             {$aDvs.phrase_overrides.override_video_name_display}
         </h3>
     </section>
