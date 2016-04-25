@@ -248,6 +248,17 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
                 'deactive.css' => 'module_dvs'
             ));
         }
+        
+          /*HTML5 v2 RealIT Services*/
+        if($aPlayer['player_type'] !="2"){
+            $jsFile = 'inventory-player.js';
+            $player_type = 1;
+        }else{
+            $jsFile = 'inventory-playerhtml5.js';
+            $player_type = 2;
+        }
+
+        
         $this->template()
             ->setTemplate('dvs-iframe-view')
             ->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -258,7 +269,8 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
             ->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
             ->setHeader(array(
                 //'player.js' => 'module_dvs',
-                'inventory-player.js' => 'module_dvs',
+//                'inventory-player.js' => 'module_dvs',
+                $jsFile => 'module_dvs',
                 'shorten.js' => 'module_dvs',
 //				'modernizr.js' => 'module_dvs',
                 'google_analytics.js' => 'module_dvs',
@@ -306,6 +318,7 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
                 'bSubdomainMode' => $bSubdomainMode,
                 //'aFooterLinks' => $aFooterLinks,
                 'sBrowser' => $sBrowser,
+                'player_type' => $player_type,
                 'iWarningTextFontSize' => $iWarningTextFontSize,
                 'iHeaderTextFontSize' => $iHeaderTextFontSize,
                 'sCurrentUrlEncoded' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? urlencode(Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url'])) : urlencode(Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url'])))),

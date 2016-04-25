@@ -22,6 +22,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     });
   }
 </script>
+
 {/literal}
 
 {if $bc == 'refid' || $bPreview}

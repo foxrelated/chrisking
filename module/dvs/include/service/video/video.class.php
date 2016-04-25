@@ -785,11 +785,10 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
             $aVideos = array($aVideo);
             unset($aVideo);
         }
-
+        
         foreach ($aVideos as $iKey => $aVideo)
         {
             $aVideos[$iKey]['video_type'] = substr($aVideo['referenceId'], 0, strpos($aVideo['referenceId'], '_'));
-
             if (!empty($this->aDvs))
             {
                 // If this is for a DVS, use phrase overrides for video title URLs
@@ -798,12 +797,14 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
                     'used-car-report',
                     'test-drive'
                 );
-
+                
+                
                 $aReplace = array(
                     ($this->aDvs['1onone_override'] ? $this->aDvs['1onone_override'] : (Phpfox::getParam('dvs.1onone_video_url_replacement') ? Phpfox::getParam('dvs.1onone_video_url_replacement') : 'overview')),
                     ($this->aDvs['new2u_override'] ? $this->aDvs['new2u_override'] : (Phpfox::getParam('dvs.new2u_video_url_replacement') ? Phpfox::getParam('dvs.new2u_video_url_replacement') : 'used-car-report')),
                     ($this->aDvs['top200_override'] ? $this->aDvs['top200_override'] : (Phpfox::getParam('dvs.top200_video_url_replacement') ? Phpfox::getParam('dvs.top200_video_url_replacement') : 'test-drive'))
                 );
+                
 
                 $aVideos[$iKey]['video_title_url'] = str_replace($aFind, $aReplace, $aVideo['video_title_url']);
 
@@ -812,10 +813,33 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
                     $aVideos[$iKey]['video_title_url'] .= '-' . $this->aDvs['title_url'] . '-' . strtolower(str_replace(' ', '-', $this->aDvs['city'])) . '-' . strtolower(str_replace(' ', '-', $this->aDvs['state_string']));
                 }
             }
-        }
+            //echo $aVideos[$iKey]['referenceId'].' '.$aVideos[$iKey]['video_type'];
 
+              if($aVideos[$iKey]['video_type'] == "New2U"){
+              $arr_expl = explode('_',$aVideos[$iKey]['referenceId'],2);    
+              $anew2uVideos[$iKey]['referenceId'] = $arr_expl[1];    
+              }
+              
+        }
+           
+        foreach($anew2uVideos as $key => $value){
+            
+          $aVideos =  $this->filter_array('1onONE_'.$value['referenceId'],$aVideos);
+            
+                
+        }
         return ($bSingleVideo ? $aVideos[0] : $aVideos);
     }
+    
+   public function filter_array($needle, $haystack) {
+    
+     foreach($haystack as $key => $element) {
+          if($needle == $element['referenceId']){
+              unset($haystack[$key]);
+          }
+     }      
+   return $haystack;
+}
 
     public function getRelatedVideo($aVideo, $iDvsId) {
         if(!in_array($aVideo['year'], Phpfox::getParam('dvs.vf_video_select_allowed_years'))) {
@@ -1022,7 +1046,7 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
             
             /*Inventory*/
             
-            $aDvs = Phpfox::getService('dvs')->get($sDvsId);                              
+            $aDvs = Phpfox::getService('dvs')->get($sDvsId); 
             if(!is_array($aDvs['dealer_id']) || !count($aDvs['dealer_id'])) {
                 //return array();
             }
@@ -1099,7 +1123,6 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
         } else {
             $aDvs = Phpfox::getService('dvs')->get($iDvsId);
         }
-
         $aAllowedYears = Phpfox::getParam('dvs.vf_overview_allowed_years');
 
         $sWhere = '1';
@@ -1170,7 +1193,8 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
                 ->execute('getRows');
             }
         }
-
+        
+        
         return $this->prepareVideos($aVideos);
     }
 
