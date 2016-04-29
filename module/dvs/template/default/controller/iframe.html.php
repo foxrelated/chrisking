@@ -9,7 +9,6 @@
                         <td>
                             <h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
                         </td>
-                        {*if isset($aVideoSelectYears.1)*}
                         <td>
                             <ul id="year">
                             <li class="init"><span class="init_selected">Select Year</span>
@@ -23,7 +22,6 @@
                             </li>
                             </ul>
                         </td>
-                        {*/if*}
 
                         <td>
                             <ul id="makes">
