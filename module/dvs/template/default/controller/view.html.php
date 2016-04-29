@@ -99,7 +99,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
           {if $aVideoSelectYears}
           <h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
 
-          {if isset($aVideoSelectYears.0)}
+          
           <ul id="year">
             <li class="init"><span class="init_selected">Select Year</span>
               <ul>
@@ -111,7 +111,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
               </ul>
             </li>
           </ul>
-          {/if}
+         
 
           <ul id="makes">
             <li class="init">
