@@ -143,7 +143,7 @@
         <meta itemprop="name" content="{$aDvs.phrase_overrides.override_meta_itemprop_name_meta}"  id="schema_video_name"/>
         <meta itemprop="description" content="{$aDvs.phrase_overrides.override_meta_itemprop_description_meta}"  id="schema_video_description"/>
         {/if}
-
+			{if $sBrowser != 'mobile'}
 			{if $aPlayer.custom_overlay_1_type}
 			<div id="dvs_overlay_1" class="dvs_overlay">
 				{if $aPlayer.custom_overlay_1_type == 1}
@@ -170,6 +170,7 @@
 				<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_3_text}</a>
 				{/if}
 			</div>
+			{/if}
 			{/if}
         {/if}
         <object id="myExperience" class="BrightcoveExperience">
