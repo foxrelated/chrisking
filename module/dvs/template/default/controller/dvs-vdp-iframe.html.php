@@ -72,7 +72,7 @@ width:100% !important;
     <section id="video_information">
         <h3 id="video_name">
             
-            {$aDvs.phrase_overrides.override_video_name_display}
+            Now Playing : {$aDvs.phrase_overrides.override_video_name_display}
         </h3>
     </section>
     <section id="player">

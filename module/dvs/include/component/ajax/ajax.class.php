@@ -839,7 +839,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         Phpfox::getService('dvs.video')->setDvs(Phpfox::getLib('request')->get('iDvsId'));
         $aVideo = Phpfox::getService('dvs.video')->get($sRefId);
         $aDvs = Phpfox::getService('dvs')->get(Phpfox::getLib('request')->get('iDvsId'));
-
+        $vidtype = Phpfox::getLib('request')->get('vidtype');
 
         if (empty($aDvs) || empty($aVideo))
         {
@@ -858,7 +858,15 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         $sOverrideLink = rtrim($sOverrideLink, '/');
 
         //Change video information and reset description visibility
-        $this->html('#video_name', '<a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a>');
+        if($vidtype == "inventory"){
+        $this->html('#video_name', $aDvs['phrase_overrides']['override_video_name_display']);            
+        }else if( $vidtype == 'vdpiframe'){
+        $this->html('#video_name', "Now Playing : ".$aDvs['phrase_overrides']['override_video_name_display']);            
+        }
+        else{
+        $this->html('#video_name', '<a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a>');    
+        }
+        
         $this->html('#car_description', Phpfox::getLib('parse.output')->clean($aDvs['phrase_overrides']['override_video_description_display']));
 
 
@@ -874,7 +882,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             $this->call('console.log("Page: Setting Inventory link: ' . $sInventoryLink . '");');
         }
 
-        $this->call('$(".dvs_inventory_link").attr("href", "' . $sInventoryLink . '");');
+        $this->call('$(".dvs_inventory_link").attr("href", "' . $sInventoryLink . '");');    
+        
+        
 
         //Change address bar contents
         $sBrowser = Phpfox::getService('dvs')->getBrowser();
@@ -885,15 +895,18 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         // Only change the URL if the video is not the default video
         if ($bVideoChanged)
         {
-            if (Phpfox::getParam('dvs.javascript_debug_mode'))
-            {
-                $this->call('console.log("AJAX: Video is changed.  Changing URL...");');
-            }
+            
+            
+                if (Phpfox::getParam('dvs.javascript_debug_mode'))
+                {
+                    $this->call('console.log("AJAX: Video is changed.  Changing URL...");');
+                }
 
-            $this->call('window.parent.history.pushState("string", "' . $sTitle . '", "' . $sUrl . '");');
+                $this->call('window.parent.history.pushState("string", "' . $sTitle . '", "' . $sUrl . '");');
 
-            // Most browsers do not support changing the page title via pushState
-            $this->call('document.title = "' . $sTitle . '";');
+                // Most browsers do not support changing the page title via pushState
+                $this->call('document.title = "' . $sTitle . '";');
+            
         }
         else
         {

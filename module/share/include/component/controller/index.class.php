@@ -71,7 +71,8 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                         'img server_id' => $aFirstVideo['image_server_id'],
                         'path' => 'brightcove.url_image',
                         'file' => $aFirstVideo['image_path'],
-                        'suffix' => '_email_300',
+//                        'suffix' => '_email_300',
+                        'suffix' => '_500',
                         'return_url' => true
                     ));
 
@@ -184,7 +185,8 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                         'img server_id' => $aVideo['image_server_id'],
                         'path' => 'brightcove.url_image',
                         'file' => $aVideo['image_path'],
-                        'suffix' => '_email_300',
+//                        'suffix' => '_email_300',
+                        'suffix' => '_500',
                         'return_url' => true
                     ));
 

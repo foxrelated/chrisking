@@ -15,13 +15,7 @@
     width: 100%;
     {r}
 
-    #video_information h3 {l}
-    color: #{$aPlayer.player_text};
-    padding:0px;
-    margin: 0px;
-    margin-left:10px;
-    font-size:{if $sBrowser == 'mobile'}{$iHeaderTextFontSize}px{else}18px{/if};
-    {r}
+    
     #video_information a {l}
         font-size:inherit;
     {r}
@@ -46,7 +40,14 @@
     {r}  
     .vjs-overlay-buttons {l}
     display:none !important;
-{r}          
+{r}  
+#video_information h3 {l}
+    color: #fff !important;
+    padding:0px;
+    margin: 0px;
+    margin-left:10px;
+    font-size:{if $sBrowser == 'mobile'}{$iHeaderTextFontSize}px{else}18px{/if};
+{r}        
 .vjs-overlay {l}
 background:none !important;
 width:100% !important;
@@ -240,7 +241,15 @@ width:100% !important;
 <script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"></script>
 
 {else}
-
+<style type="text/css">
+#video_information h3 {l}
+    color: #{$aPlayer.player_text};
+    padding:0px;
+    margin: 0px;
+    margin-left:10px;
+    font-size:{if $sBrowser == 'mobile'}{$iHeaderTextFontSize}px{else}18px{/if};
+    {r}
+</style>
 
 <script type="text/javascript">
     $Behavior.removeNoVideo = function() {l}

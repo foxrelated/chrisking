@@ -309,7 +309,7 @@ function cueChange(sCuePoint) {
 //    }
 
     if (!bVideoChanged && !urlChanged && !bPreview && bIsDvs) {
-        window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
+        //window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
         urlChanged = true;
  }
 
@@ -569,7 +569,7 @@ function loadVideo(iKey){
         }
     );
     
-    $.ajaxCall('dvs.changehtml5Video', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId);
+    $.ajaxCall('dvs.changehtml5Video', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId + '&vidtype=inventory');
 }
 
 function playVideo(mkey,autoplay){
