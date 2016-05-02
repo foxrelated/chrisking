@@ -861,7 +861,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         if($vidtype == "inventory"){
         $this->html('#video_name', $aDvs['phrase_overrides']['override_video_name_display']);            
         }else if( $vidtype == 'vdpiframe'){
-        $this->html('#video_name', "Now Playing : ".$aDvs['phrase_overrides']['override_video_name_display']);            
+        $this->html('#video_name', $aDvs['phrase_overrides']['override_video_name_display']);            
         }
         else{
         $this->html('#video_name', '<a href="' . $sOverrideLink . '">' . $aDvs['phrase_overrides']['override_video_name_display'] . '</a>');    
