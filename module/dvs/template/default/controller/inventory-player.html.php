@@ -70,7 +70,8 @@ width:100% !important;
     .vjs-big-play-button {l}
     top: 125px !important;
     left: 280px !important;
-{r}
+    {r}
+
 </style>
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">
 <link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'>
