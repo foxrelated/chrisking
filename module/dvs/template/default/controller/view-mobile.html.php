@@ -44,10 +44,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</a>
 		</section>
 		<section id="select_new">
-			{if $aVideoSelectYears}
+			{*if $aVideoSelectYears*}
 			<h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
-
-			
 			<ul id="year">
 				<li class="init"><span class="init_selected">Select Year</span>
 					<ul>
@@ -82,7 +80,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					</ul>
 				</li>
 			</ul>
-			{/if}
+			{*/if*}
 		</section>
 		
 	</div>
