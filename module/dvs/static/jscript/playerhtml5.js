@@ -12,8 +12,10 @@ trackIndex,
 watchVideoSelect,
 getPriceOverlayClick,
 textOverlayClick,
+sCurrentCuePoint,
 thumbkey = -1,
 timeOut,
+media_begin = 0,
 oChapterDivs = {};
 $(document).ready(function(){
     
@@ -23,8 +25,8 @@ videojs("bcv2").ready(function(){
       
      
       
-      var cuePointArr=[],
-      allCuePointData,
+      var cuePointArr=[];
+      var allCuePointData,
       
       currentCuePoint;
       
@@ -91,23 +93,66 @@ videojs("bcv2").ready(function(){
       }else{
           //preRollPlayed = true;
       }    
-         tt.oncuechange = function() { 
+         tt.oncuechange = function() {
+           if((!myPlayer.paused()) && (media_begin == 0))
+           {//alert('zz');
+               var oCustomVars = {
+                    1: {
+                        name: 'Video Reference ID',
+                        value: aCurrentVideoMetaData.referenceId
+                    },
+                    2: {
+                        name: 'Vehicle Year',
+                        value: aCurrentVideoMetaData.year
+                    },
+                    3: {
+                        name: 'Vehicle Make',
+                        value: aCurrentVideoMetaData.make
+                    },
+                    4: {
+                        name: 'Vehicle Model',
+                        value: aCurrentVideoMetaData.model
+                    }
+                };
+                if ( typeof sendToGoogle == 'function' ) { 
+                sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
+                }
+                mixpanel.track("Media Begin", {
+                    "Category": sPlayerName,
+                    "Action": "Player",
+                    "Video ID": aCurrentVideoMetaData.referenceId,
+                    "Year": aCurrentVideoMetaData.year,
+                    "Make": aCurrentVideoMetaData.make,
+                    "Model": aCurrentVideoMetaData.model,
+                    }
+                );
+               media_begin = 1;
+           } 
            if(tt.activeCues[0]){
                var startTime = tt.activeCues[0].startTime;
            }
            if(tt.activeCues[1]){
                var firstStartTime = tt.activeCues[1].startTime;
            }
+           
+           
+           
            if(myPlayer.mediainfo.cue_points[0].time == startTime){
+           
            if(firstStartTime){
+               
            allCuePointData = getSubArray(cuePointArr,'time',firstStartTime);        
            }    
            }else{
+           
            allCuePointData = getSubArray(cuePointArr,'time',startTime);    
            }
+           
+           if(allCuePointData){
            if(allCuePointData[0]){
               $(".vjs-overlay").hide();
            cuePointName = allCuePointData[0].name;    
+           }
            }
            
            var oCustomVars = {
@@ -365,6 +410,7 @@ function cueChange(sCuePoint) {
     //if (bVideoChanged) {
         //console.log('hello');
         currentCuePoint = sCuePoint;
+        sCurrentCuePoint = currentCuePoint;
         changeLights(sCuePoint);
     //}
     //else
@@ -569,25 +615,25 @@ function playPreroll(ap){
             console.log('Media: Preroll Set');
         }
 
-    var oCustomVars = {
-        1: {
-            name: 'Video Reference ID',
-            value: 'Pre-roll'
-        }
-    };
-
-    if ( typeof sendToGoogle == 'function' ) { 
-    sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
-    }
-    mixpanel.track("Media Begin", {
-        "Category": sPlayerName,
-        "Action": "Player",
-        "Video ID": "Pre-roll",
-        "Year": aCurrentVideoMetaData.year,
-        "Make": aCurrentVideoMetaData.make,
-        "Model": aCurrentVideoMetaData.model,
-        }
-    );    
+   // var oCustomVars = {
+//        1: {
+//            name: 'Video Reference ID',
+//            value: 'Pre-roll'
+//        }
+//    };
+//
+//    if ( typeof sendToGoogle == 'function' ) { 
+//    sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
+//    }
+//    mixpanel.track("Media Begin", {
+//        "Category": sPlayerName,
+//        "Action": "Player",
+//        "Video ID": "Pre-roll",
+//        "Year": aCurrentVideoMetaData.year,
+//        "Make": aCurrentVideoMetaData.make,
+//        "Model": aCurrentVideoMetaData.model,
+//        }
+//    );    
         
    myPlayer.src({"type":"video/mp4", "src":bPreRollUrl});
    if(ap){
@@ -638,36 +684,38 @@ function loadVideo(iKey){
     $.ajaxCall('dvs.changehtml5Video', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId);
 }
 function playVideo(mkey,autoplay){
-    var oCustomVars = {
-        1: {
-            name: 'Video Reference ID',
-            value: aCurrentVideoMetaData.referenceId
-        },
-        2: {
-            name: 'Vehicle Year',
-            value: aCurrentVideoMetaData.year
-        },
-        3: {
-            name: 'Vehicle Make',
-            value: aCurrentVideoMetaData.make
-        },
-        4: {
-            name: 'Vehicle Model',
-            value: aCurrentVideoMetaData.model
-        }
-    };
-    if ( typeof sendToGoogle == 'function' ) { 
-    sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
-    }
-    mixpanel.track("Media Begin", {
-        "Category": sPlayerName,
-        "Action": "Player",
-        "Video ID": aCurrentVideoMetaData.referenceId,
-        "Year": aCurrentVideoMetaData.year,
-        "Make": aCurrentVideoMetaData.make,
-        "Model": aCurrentVideoMetaData.model,
-        }
-    );
+    //var oCustomVars = {
+//        1: {
+//            name: 'Video Reference ID',
+//            value: aCurrentVideoMetaData.referenceId
+//        },
+//        2: {
+//            name: 'Vehicle Year',
+//            value: aCurrentVideoMetaData.year
+//        },
+//        3: {
+//            name: 'Vehicle Make',
+//            value: aCurrentVideoMetaData.make
+//        },
+//        4: {
+//            name: 'Vehicle Model',
+//            value: aCurrentVideoMetaData.model
+//        }
+//    };
+//    if ( typeof sendToGoogle == 'function' ) { 
+//    sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
+//    }
+//    mixpanel.track("Media Begin", {
+//        "Category": sPlayerName,
+//        "Action": "Player",
+//        "Video ID": aCurrentVideoMetaData.referenceId,
+//        "Year": aCurrentVideoMetaData.year,
+//        "Make": aCurrentVideoMetaData.make,
+//        "Model": aCurrentVideoMetaData.model,
+//        }
+//    );
+
+
      //playVideo(myPlayer,0);
       myPlayer.catalog.getVideo(aMediaIds[mkey], function(error,video) {
         //deal with error
