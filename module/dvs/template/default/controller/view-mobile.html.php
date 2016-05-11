@@ -39,12 +39,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{phrase var='dvs.cta_specials'}
 			</a>
 			{/if}
-			<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=600&amp;width=520&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); menuContact('Call To Action Menu Clicks'); return false;">
+			{*<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=600&amp;width=520&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); menuContact('Call To Action Menu Clicks'); return false;">
 				{phrase var='dvs.cta_contact'}
-			</a>
+			</a>*}
 		</section>
 		<section id="select_new">
-			{*if $aVideoSelectYears*}
+			{if $aVideoSelectYears}
 			<h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
 			<ul id="year">
 				<li class="init"><span class="init_selected">Select Year</span>
@@ -57,7 +57,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					</ul>
 				</li>
 			</ul>
-			
 
 			<ul id="makes">
 				<li class="init">
@@ -80,9 +79,16 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 					</ul>
 				</li>
 			</ul>
-			{*/if*}
+			{/if}
 		</section>
-		
+		{if $aDvs.iframe_contact_form}
+            <aside>
+                <div id="contact_box">
+                    <h2>Contact {$aDvs.dealer_name}</h2>
+                    {template file='dvs.block.contact-iframe}
+                </div>
+            </aside>
+            {/if}
 	</div>
 
 	<section id="video_information">

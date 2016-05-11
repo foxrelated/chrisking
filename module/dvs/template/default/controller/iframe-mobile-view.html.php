@@ -33,14 +33,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 {phrase var='dvs.cta_specials'}
             </a>
             {/if}
-            {if $aDvs.iframe_contact_form}
-            <aside>
-                <div id="contact_box">
-                    <h2>Contact {$aDvs.dealer_name}</h2>
-                    {template file='dvs.block.contact-iframe}
-                </div>
-            </aside>
-            {/if}
         </section>
         <section id="select_new">
             {if $aVideoSelectYears}
@@ -77,7 +69,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 </li>
             </ul>
             {/if}
-        </section>   
+        </section>
+        {if $aDvs.iframe_contact_form}
+            <aside>
+                <div id="contact_box">
+                    <h2>Contact {$aDvs.dealer_name}</h2>
+                    {template file='dvs.block.contact-iframe}
+                </div>
+            </aside>
+            {/if}   
     </div>
     <br><br>
 </article>
