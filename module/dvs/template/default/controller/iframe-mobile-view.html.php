@@ -34,6 +34,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </a>
             {/if}
         </section>
+        <br />
         <section id="select_new">
             {if $aVideoSelectYears}
             <h3>{phrase var='dvs.choose_new_vehicle'}:</h3>
