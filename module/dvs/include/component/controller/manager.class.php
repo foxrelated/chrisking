@@ -2,8 +2,9 @@
 
 class Dvs_Component_Controller_Manager extends Phpfox_Component {
     public function process() {
-        Phpfox::isAdmin(true);
-
+        //Phpfox::isAdmin(true);
+		Phpfox::isUser(true);
+        
         if (($iDvsId = $this->request()->getInt('id'))) {
             if (!Phpfox::getService('dvs')->hasAccess($iDvsId, Phpfox::getUserId())) {
                 $this->url()->send('dvs');
@@ -11,9 +12,11 @@ class Dvs_Component_Controller_Manager extends Phpfox_Component {
 
             if (($aDvs = Phpfox::getService('dvs')->get($iDvsId))) {
                 if ($aDvs['user_id'] == Phpfox::getUserId() || Phpfox::isAdmin()) {
-
-                } else {
-                    $this->url()->send('dvs');
+				} else {
+                    if (Phpfox::getService('dvs.manager')->get(Phpfox::getUserId(), $iDvsId)) {
+                	} else {
+                    	$this->url()->send('dvs');
+                    }
                 }
             } else {
                 $this->url()->send('dvs');
@@ -25,7 +28,6 @@ class Dvs_Component_Controller_Manager extends Phpfox_Component {
 
         if ($aVals = $this->request()->getArray('val')) {
             if (isset($aVals['user_id']) && $aVals['user_id']) {
-                // Dont add dupes
                 $aTeamMember = Phpfox::getService('dvs.manager')->get($aVals['user_id'], $aDvs['dvs_id']);
                 if (empty($aTeamMember)) {
                     Phpfox::getService('dvs.manager.process')->add($aDvs['dvs_id'], $aVals['user_id']);
@@ -34,7 +36,6 @@ class Dvs_Component_Controller_Manager extends Phpfox_Component {
                     $this->url()->send('dvs.manager', array('id' => $iDvsId), 'User already invited.');
                 }
             }
-
 
             if (isset($aVals['email']) && $aVals['email']) {
                 // See if member exists

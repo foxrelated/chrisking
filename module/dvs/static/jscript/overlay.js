@@ -24,7 +24,7 @@ function hideOverlay(iOverlayId) {
 		top: 0
 	},
 	{
-		duration: 500,
+		duration: 1000,
 		specialEasing: {
 			bottom: "easeOutBack"
 		},

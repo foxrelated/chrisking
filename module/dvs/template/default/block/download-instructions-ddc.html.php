@@ -17,4 +17,4 @@
 
 DVS ID: {$aDvs.dvs_id}
 
-Position: pricebot
+Position: mediabot
