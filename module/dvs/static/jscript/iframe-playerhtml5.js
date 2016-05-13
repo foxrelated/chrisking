@@ -10,6 +10,8 @@ currentVideo,
 currentVideoKey,
 cuePointName,
 tt = [],
+media_begin = 0,
+sCurrentCuePoint,
 trackIndex,
 watchVideoSelect,
 getPriceOverlayClick,
@@ -87,7 +89,41 @@ videojs("bcv2").ready(function(){
           }    
           
          tt.oncuechange = function() {
-        
+            if((!myPlayer.paused()) && (media_begin == 0))
+           {//alert('zz');
+               var oCustomVars = {
+                    1: {
+                        name: 'Video Reference ID',
+                        value: aCurrentVideoMetaData.referenceId
+                    },
+                    2: {
+                        name: 'Vehicle Year',
+                        value: aCurrentVideoMetaData.year
+                    },
+                    3: {
+                        name: 'Vehicle Make',
+                        value: aCurrentVideoMetaData.make
+                    },
+                    4: {
+                        name: 'Vehicle Model',
+                        value: aCurrentVideoMetaData.model
+                    }
+                };
+                if ( typeof sendToGoogle == 'function' ) { 
+                sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
+                }
+                mixpanel.track("Media Begin", {
+                    "Category": sPlayerName,
+                    "Action": "Player",
+                    "Video ID": aCurrentVideoMetaData.referenceId,
+                    "Year": aCurrentVideoMetaData.year,
+                    "Make": aCurrentVideoMetaData.make,
+                    "Model": aCurrentVideoMetaData.model,
+                    }
+                );
+               media_begin = 1;
+           } 
+             
             if(tt.activeCues[0]){
                var startTime = tt.activeCues[0].startTime;
            }
@@ -101,9 +137,11 @@ videojs("bcv2").ready(function(){
            }else{
            allCuePointData = getSubArray(cuePointArr,'time',startTime);    
            }
+           if(allCuePointData){
            if(allCuePointData[0]){
                $(".vjs-overlay").hide();
            cuePointName = allCuePointData[0].name;    
+           }
            }
            
             var oCustomVars = {
@@ -307,6 +345,8 @@ function getSubArray(targetArray, objProperty, value) {
 function cueChange(sCuePoint) {
     //if (currentCuePoint !== sCuePoint || bVideoChanged) {
         currentCuePoint = sCuePoint;
+        sCurrentCuePoint = currentCuePoint;
+        
         changeLights(sCuePoint);
     //}
     //else
@@ -509,24 +549,24 @@ function playPreroll(ap){
             console.log('Media: Preroll Set');
         }
 
-        var oCustomVars = {
-            1: {
-                name: 'Video Reference ID',
-                value: 'Pre-roll'
-            }
-        };
-        if ( typeof sendToGoogle == 'function' ) { 
-        sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
-        }
-        mixpanel.track("Media Begin", {
-            "Category": sPlayerName,
-            "Action": "Player",
-            "Video ID": "Pre-roll",
-            "Year": aCurrentVideoMetaData.year,
-            "Make": aCurrentVideoMetaData.make,
-            "Model": aCurrentVideoMetaData.model,
-            }
-        );    
+        //var oCustomVars = {
+//            1: {
+//                name: 'Video Reference ID',
+//                value: 'Pre-roll'
+//            }
+//        };
+//        if ( typeof sendToGoogle == 'function' ) { 
+//        sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
+//        }
+//        mixpanel.track("Media Begin", {
+//            "Category": sPlayerName,
+//            "Action": "Player",
+//            "Video ID": "Pre-roll",
+//            "Year": aCurrentVideoMetaData.year,
+//            "Make": aCurrentVideoMetaData.make,
+//            "Model": aCurrentVideoMetaData.model,
+//            }
+//        );    
         
    myPlayer.src({"type":"video/mp4", "src":bPreRollUrl});
    if(ap){
@@ -579,37 +619,37 @@ function loadVideo(iKey){
 
 function playVideo(mkey,autoplay){
      //playVideo(myPlayer,0);
-      var oCustomVars = {
-        1: {
-            name: 'Video Reference ID',
-            value: aCurrentVideoMetaData.referenceId
-        },
-        2: {
-            name: 'Vehicle Year',
-            value: aCurrentVideoMetaData.year
-        },
-        3: {
-            name: 'Vehicle Make',
-            value: aCurrentVideoMetaData.make
-        },
-        4: {
-            name: 'Vehicle Model',
-            value: aCurrentVideoMetaData.model
-        }
-    };
-
-    if ( typeof sendToGoogle == 'function' ) { 
-    sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
-    }
-    mixpanel.track("Media Begin", {
-        "Category": sPlayerName,
-        "Action": "Player",
-        "Video ID": aCurrentVideoMetaData.referenceId,
-        "Year": aCurrentVideoMetaData.year,
-        "Make": aCurrentVideoMetaData.make,
-        "Model": aCurrentVideoMetaData.model,
-        }
-    );  
+      //var oCustomVars = {
+//        1: {
+//            name: 'Video Reference ID',
+//            value: aCurrentVideoMetaData.referenceId
+//        },
+//        2: {
+//            name: 'Vehicle Year',
+//            value: aCurrentVideoMetaData.year
+//        },
+//        3: {
+//            name: 'Vehicle Make',
+//            value: aCurrentVideoMetaData.make
+//        },
+//        4: {
+//            name: 'Vehicle Model',
+//            value: aCurrentVideoMetaData.model
+//        }
+//    };
+//
+//    if ( typeof sendToGoogle == 'function' ) { 
+//    sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
+//    }
+//    mixpanel.track("Media Begin", {
+//        "Category": sPlayerName,
+//        "Action": "Player",
+//        "Video ID": aCurrentVideoMetaData.referenceId,
+//        "Year": aCurrentVideoMetaData.year,
+//        "Make": aCurrentVideoMetaData.make,
+//        "Model": aCurrentVideoMetaData.model,
+//        }
+//    );  
     
       myPlayer.catalog.getVideo(aMediaIds[mkey], function(error,video) {
         //deal with error

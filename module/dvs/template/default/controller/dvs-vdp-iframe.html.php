@@ -71,7 +71,6 @@ width:100% !important;
 <article>
     <section id="video_information">
         <h3 id="video_name">
-            
             {$aDvs.phrase_overrides.override_video_name_display}
         </h3>
     </section>
@@ -356,7 +355,7 @@ width:100% !important;
         <meta itemprop="name" content="{$aDvs.phrase_overrides.override_meta_itemprop_name_meta}"  id="schema_video_name"/>
         <meta itemprop="description" content="{$aDvs.phrase_overrides.override_meta_itemprop_description_meta}"  id="schema_video_description"/>
         {/if}
-
+			
 			{if $aPlayer.custom_overlay_1_type}
 			<div id="dvs_overlay_1" class="dvs_overlay">
 				{if $aPlayer.custom_overlay_1_type == 1}

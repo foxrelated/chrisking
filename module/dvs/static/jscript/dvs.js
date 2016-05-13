@@ -228,7 +228,9 @@ function shareEmailSent() {
 }
 
 function getPriceEmailSent() {
+    
 	if (aCurrentVideoMetaData) {
+        console.log(aCurrentVideoMetaData);
 		var oCustomVars = {
 			1: {
 				name: 'Video Reference ID',
