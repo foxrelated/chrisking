@@ -1,3 +1,4 @@
+//bDebug = false;
 var myPlayer;
 var sPlayerName = "DVS Player";
 var bVideoChanged=false,
@@ -15,7 +16,9 @@ textOverlayClick,
 sCurrentCuePoint,
 thumbkey = -1,
 timeOut,
+clicked = 0,
 media_begin = 0,
+inventory_new,
 oChapterDivs = {};
 $(document).ready(function(){
     
@@ -155,6 +158,9 @@ videojs("bcv2").ready(function(){
            }
            }
            
+           
+           if(allCuePointData[0]){
+           if(clicked != 1){
            var oCustomVars = {
             1: {
                 name: 'Video Reference ID',
@@ -191,18 +197,24 @@ videojs("bcv2").ready(function(){
             "Model": aCurrentVideoMetaData.model,
             }
         );
+           }else{
+               clicked = 0;
+           }
+        }
            
            cueChange(cuePointName);
            //$('#chapter_container_' + cuePointName).addClass('display selected');
           }    
-      
+       
+//       alert('asd'+inventory_new);
        }); 
        if(!bAutoAdvance && !preRollAdvance && inventory_btn){
        myPlayer.customEndscreen({
-        "content": "<a href="+inventory_btn+" class='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
+        "content": "<a href="+inventory_btn+" class='dvs_inventory_link' id='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
       })    
        }
        
+      
         myPlayer.overlay({
             //content: bCustomOverlay1Content,
             overlays: [{
@@ -489,10 +501,11 @@ function changeCuePoint(sCuePoint) {
             },
             5: {
                 name: 'Video Chapter',
-                value: currentCuePoint
+                value: sCuePoint
             }
         };
-        if ( typeof sendToGoogle == 'function' ) { 
+        if ( typeof sendToGoogle == 'function' ) {
+        clicked = 1; 
        sendToGoogle(sPlayerName, 'Player', 'Chapter Clicked: ' + sCuePoint, oCustomVars);
         }
         mixpanel.track("Chapter Clicked", {
@@ -682,6 +695,7 @@ function loadVideo(iKey){
     );
     
     $.ajaxCall('dvs.changehtml5Video', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId);
+    
 }
 function playVideo(mkey,autoplay){
     //var oCustomVars = {
@@ -799,6 +813,9 @@ getPriceOverlayClick = function() {
 }    
 
 });
+$(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
+    jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a").attr('href',inventory_new);
+});    
 })
 function showspinner(){
       $(".vjs-loading-spinner").show();

@@ -14,8 +14,11 @@ watchVideoSelect,
 getPriceOverlayClick,
 textOverlayClick,
 media_begin = 0,
+clicked = 0,
 thumbkey = -1,
 oChapterDivs = {};
+
+$(document).ready(function(){
 
 videojs("bcv2").ready(function(){
       myPlayer = this;
@@ -137,6 +140,10 @@ videojs("bcv2").ready(function(){
            }
            }
            
+           
+           
+           if(allCuePointData[0]){
+               if(clicked != 1){
             var oCustomVars = {
             1: {
                 name: 'Video Reference ID',
@@ -173,6 +180,11 @@ videojs("bcv2").ready(function(){
             "Model": aCurrentVideoMetaData.model,
             }
         );
+        
+               }else{
+                   clicked = 0;
+               }
+           }
            
            cueChange(cuePointName);
            $('#chapter_container_' + cuePointName).addClass('display selected');
@@ -412,11 +424,12 @@ if (!$('#chapter_container_' + sCuePoint).hasClass('disabled')) {
             },
             5: {
                 name: 'Video Chapter',
-                value: currentCuePoint
+                value: sCuePoint
             }
         };
 
         if ( typeof sendToGoogle == 'function' ) { 
+            clicked = 1;
             sendToGoogle(sPlayerName, 'Player', 'Chapter Clicked: ' + sCuePoint, oCustomVars);
         }
         mixpanel.track("Chapter Clicked", {
@@ -724,7 +737,10 @@ getPriceOverlayClick = function() {
 }    
 
 });
-
+$(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
+    jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a").attr('href',inventory_new);
+});
+});
 function showspinner(){
       $(".vjs-loading-spinner").show();
   }  

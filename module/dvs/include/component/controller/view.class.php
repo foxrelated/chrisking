@@ -334,6 +334,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
             $jsFile = 'player.js';
         }else{
             $jsFile = 'playerhtml5.js';
+//            $jsFile = 'test.js';
         }
         $this->template()
             ->setTemplate('dvs-view')

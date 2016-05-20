@@ -127,7 +127,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             {if !$aDvs.is_active}bAutoplay = false;{/if}
         var bAutoAdvance = true;
     {/if}
-
+    
     function enableVideoSelectCarousel(){l}
         if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
     {r}
@@ -175,6 +175,8 @@ min-height:0 !important;
 .vjs-overlay {l}
 background:none !important;
 width:100% !important;
+padding-top:0 !important;
+top:0 !important;
 {r}
 
 {if !$bIsExternal}    
@@ -227,7 +229,7 @@ bottom : 0;
                 {/if}
             {/if}
             <div style="display:none;"></div>
-            <video id="bcv2" data-account="607012070001" data-setup="{}" data-player="0d15f8a3-b382-44ca-a53b-51870dd2ad3f" data-embed="default" class="video-js" controls>
+            <video loop autoplay  id="bcv2" data-account="607012070001" data-setup="{}" data-player="0d15f8a3-b382-44ca-a53b-51870dd2ad3f" data-embed="default" class="video-js" controls="true" width="100%" height="100%" preload="">
  
              </video>
             
