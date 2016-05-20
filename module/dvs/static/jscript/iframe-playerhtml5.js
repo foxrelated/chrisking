@@ -11,6 +11,7 @@ currentVideoKey,
 cuePointName,
 tt = [],
 media_begin = 0,
+clicked = 0,
 sCurrentCuePoint,
 trackIndex,
 watchVideoSelect,
@@ -19,6 +20,8 @@ textOverlayClick,
 thumbkey = -1,
 
 oChapterDivs = {};
+
+$(document).ready(function(){
 
 videojs("bcv2").ready(function(){
       myPlayer = this;
@@ -144,6 +147,8 @@ videojs("bcv2").ready(function(){
            }
            }
            
+           if(allCuePointData[0]){
+                if(clicked != 1){
             var oCustomVars = {
             1: {
                 name: 'Video Reference ID',
@@ -179,6 +184,10 @@ videojs("bcv2").ready(function(){
             "Model": aCurrentVideoMetaData.model,
             }
         );
+         }else{
+                   clicked = 0;
+               }
+           }
            
            cueChange(cuePointName);
            $('#chapter_container_' + cuePointName).addClass('display selected');
@@ -357,7 +366,7 @@ function cueChange(sCuePoint) {
 //    }
 
     if (!bVideoChanged && !urlChanged && !bPreview && bIsDvs) {
-        window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
+       // window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
         urlChanged = true;
  }
 
@@ -422,11 +431,12 @@ function changeCuePoint(sCuePoint) {
             },
             5: {
                 name: 'Video Chapter',
-                value: currentCuePoint
+                value: sCuePoint
             }
         };
 
-       if ( typeof sendToGoogle == 'function' ) {  
+       if ( typeof sendToGoogle == 'function' ) { 
+       clicked = 1; 
        sendToGoogle(sPlayerName, 'Player', 'Chapter Clicked: ' + sCuePoint, oCustomVars);
        }
         mixpanel.track("Chapter Clicked", {
@@ -734,6 +744,10 @@ getPriceOverlayClick = function() {
 
 });
 
+$(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
+    jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a").attr('href',inventory_new);
+});
+});
 function showspinner(){
       $(".vjs-loading-spinner").show();
   }  

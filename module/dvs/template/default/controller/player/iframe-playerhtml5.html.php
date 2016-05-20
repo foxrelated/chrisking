@@ -34,6 +34,8 @@ height: 106px !important;
 .vjs-overlay {l}
 background:none !important;
 width:100% !important;
+padding-top:0 !important;
+top:0 !important;
 {r}     
 .vjs-overlay-buttons {l}
     display:none !important;

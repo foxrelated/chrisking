@@ -883,6 +883,8 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         }
 
         $this->call('$(".dvs_inventory_link").attr("href", "' . $sInventoryLink . '");');    
+        $this->call('inventory_new = "'.$sInventoryLink.'";');    
+        
         
         
 
@@ -1270,7 +1272,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         }
 
         $this->call('$(".dvs_inventory_link").attr("href", "' . $sInventoryLink . '");');
-
+        $this->call('inventory_new = "'.$sInventoryLink.'";');    
         //Change address bar contents
         $sBrowser = Phpfox::getService('dvs')->getBrowser();
 
