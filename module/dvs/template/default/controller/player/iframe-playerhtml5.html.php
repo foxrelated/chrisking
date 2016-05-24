@@ -260,7 +260,7 @@ function enableVideoSelectCarousel(){l}
 <meta itemprop="description" content="{$aDvs.phrase_overrides.override_meta_itemprop_description_meta}"  id="schema_video_description"/>
 {/if}
 {/if}
-<video loop autoplay  id="bcv2" data-account="607012070001" data-player="0d15f8a3-b382-44ca-a53b-51870dd2ad3f" data-embed="default" class="video-js" controls="true" width="100%" height="100%" preload=""></video>
+<video id="bcv2" data-account="607012070001" data-player="0d15f8a3-b382-44ca-a53b-51870dd2ad3f" data-embed="default" class="video-js" controls="true" preload=""></video>
 </section>
  
 <!--<section id="playlist_wrapper{if $inventoryList} inventory_wrapper{/if}">
