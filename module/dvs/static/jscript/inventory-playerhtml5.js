@@ -14,6 +14,7 @@ media_begin = 0,
 clicked = 0,
 watchVideoSelect,
 getPriceOverlayClick,
+inventory_new,
 textOverlayClick,
 thumbkey = -1,
 oChapterDivs = {};
@@ -192,7 +193,7 @@ videojs("bcv2").ready(function(){
            
           }    
        }); 
-       if(!bAutoAdvance && !preRollAdvance && inventory_btn){
+       if(!bAutoAdvance && inventory_btn){
        myPlayer.customEndscreen({
         "content": "<a href="+inventory_btn+" class='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
       })    

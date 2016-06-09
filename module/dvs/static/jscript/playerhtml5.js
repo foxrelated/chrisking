@@ -208,7 +208,9 @@ videojs("bcv2").ready(function(){
        
 //       alert('asd'+inventory_new);
        }); 
-       if(!bAutoAdvance && !preRollAdvance && inventory_btn){
+       
+       if(!bAutoAdvance && inventory_btn){
+           
        myPlayer.customEndscreen({
         "content": "<a href="+inventory_btn+" class='dvs_inventory_link' id='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
       })    
@@ -270,13 +272,14 @@ videojs("bcv2").ready(function(){
       
        
        myPlayer.on("ended",function(){
-
+       
            $(".vjs-overlay").hide();
            if (bAutoAdvance || preRollAdvance) {
                
              
                if(preRollAdvance){
                    preRollAdvance = false;
+                  
                    if(thumbkey >= 0){
                    currentVideoKey = thumbkey;                       
                    thumbkey = -1;

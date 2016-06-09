@@ -327,6 +327,12 @@ class Dvs_Component_Controller_View extends Phpfox_Component
             $sJavascript .= '<script type="text/javascript" src="//admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
         }
         
+         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ){
+             $ref = "https://";
+         }else{
+             $ref = "http://";
+         }
+     $core_url = Phpfox::getParam('core.host');    
         //var_dump($aDvs);
         
         /*HTML5 v2 RealIT Services*/
@@ -402,7 +408,9 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                 'sOverrideLink' => $sOverrideLink,
                 'sCurrentUrlEncoded' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? urlencode(Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url'])) : urlencode(Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url'])))),
                 'sStaticPath' => Phpfox::getParam('core.path') . 'module/dvs/static/',
-                'sJavascript' => $sJavascript
+                'sJavascript' => $sJavascript,
+                'core_url' => $core_url,
+                'ref' => $ref
             ));
     }
 }

@@ -19,6 +19,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     var aOverviewMediaIds = [];
     var aTestDriveMediaIds = [];
     var bIsHtml5 = false;
+    var ovdr = "preroll";
     {if $aDvs.player_type}
         var bIsHtml5 = true;
     {/if}
@@ -53,6 +54,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         
         {if $aPlayer.custom_overlay_1_type == 1}
          var bCustomOverlay1Content = '<a href="#" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=600&amp;width=520&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
+         {elseif $aPlayer.custom_overlay_1_type == 3}
+            {if $aPlayer.custom_overlay_1_text != ''}
+             var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_1_text}"></a>';
+             {else}
+             var bCustomOverlay1Content = '';
+             bCustomOverlay1 = false;
+             {/if}
         {else}
         var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_1_text}</a>';
         {/if}
@@ -70,6 +78,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         
         {if $aPlayer.custom_overlay_2_type == 1}
           var bCustomOverlay2Content =  '<a href="#" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=600&amp;width=520&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
+          
+          {elseif $aPlayer.custom_overlay_2_type == 3}
+              {if $aPlayer.custom_overlay_2_text != ''}
+                     var bCustomOverlay2Content = '<a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_2_text}"></a>';
+                     {else}
+                     var bCustomOverlay2Content = '';
+                 bCustomOverlay2 = false;
+                     {/if}
         {else}
         var bCustomOverlay2Content = '<a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_2_text}</a>';
         {/if}
@@ -85,6 +101,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         var bCustomOverlay3 = true;
         {if $aPlayer.custom_overlay_3_type == 1}
            var bCustomOverlay3Content = '<a href="#" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=600&amp;width=520&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>'
+        {elseif $aPlayer.custom_overlay_3_type == 3}
+         {if $aPlayer.custom_overlay_3_text != ''}
+         var bCustomOverlay3Content = '<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_3_text}"></a>';
+        {else}
+        var bCustomOverlay3Content = ''; 
+        bCustomOverlay3 = false;
+        {/if}   
         {else}
         var bCustomOverlay3Content = '<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_3_text}</a>';
         {/if}

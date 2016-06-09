@@ -257,6 +257,13 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
             $jsFile = 'inventory-playerhtml5.js';
             $player_type = 2;
         }
+        
+        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ){
+             $ref = "https://";
+         }else{
+             $ref = "http://";
+         }
+     $core_url = Phpfox::getParam('core.host');    
 
         
         $this->template()
@@ -302,6 +309,8 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
                 //'iBackgroundAlpha' => $iBackgroundAlpha,
                 'sImagePath' => ($bSubdomainMode ? Phpfox::getLib('url')->makeUrl('www.module.dvs.static.image') : Phpfox::getLib('url')->makeUrl('module.dvs.static.image')),
                 'aPlayer' => $aPlayer,
+                'core_url' => $core_url,
+                'ref' => $ref,
                 'iDvsId' => $aDvs['dvs_id'],
                 'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('dvs.player.prxml', array('id' => $aDvs['dvs_id'])), '', -1) . '  ? ',
                 'aOverviewVideos' => $aOverviewVideos,

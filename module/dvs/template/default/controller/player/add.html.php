@@ -323,20 +323,49 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<ol>
 				<li>
 					<label for="custom_overlay_1_disabled" class="inline_radio">Disabled:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').hide('fast');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 0 || !isset($aForms.custom_overlay_1_type)}checked="checked"{/if} value="0" name="val[custom_overlay_1_type]" id="custom_overlay_1_disabled" />
+					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').hide('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 0 || !isset($aForms.custom_overlay_1_type)}checked="checked"{/if} value="0" name="val[custom_overlay_1_type]" id="custom_overlay_1_disabled" />
 
 						   <label for="custom_overlay_1_price_overlay" class="inline_radio">Get Price Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').show('fast');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_1_type]" id="custom_overlay_1_price_overlay" />
+					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_1_type]" id="custom_overlay_1_price_overlay" />
 
 						   <label for="custom_overlay_1_link_overlay" class="inline_radio">Link Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').show('fast');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 2 }checked="checked"{/if} value="2" name="val[custom_overlay_1_type]" id="custom_overlay_1_link_overlay" />
+					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 2 }checked="checked"{/if} value="2" name="val[custom_overlay_1_type]" id="custom_overlay_1_link_overlay" />
+                    
+                    <!-- Custom Image Overlay -->
+                    <label for="custom_overlay_1_img_overlay" class="inline_radio">Custom Image Overlay:</label> 
+                    <input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1_text').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1_link').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 3 }checked="checked"{/if} value="3" name="val[custom_overlay_1_type]" id="custom_overlay_1_img_overlay" />
 				</li>
+                 <div id="js_image_overlay1_file_upload_error" style="display:none;">
+                    <div class="error_message" id="js_image_overlay1_file_upload_message"></div>     
+                    
+                    <div class="main_break"></div>
+                </div>  
+                <li class="custom_overlay_1_extras3 {if isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type != 3 }hidden{/if} {if !isset($aForms.custom_overlay_1_type)}hidden{/if}">
+                    <label for="custom_overlay_1_img">Image File:</label>
+                    
+                <input type="hidden" id="overlay1_target" value="{url link='dvs.player.image-overlay-form'}{if $bIsEdit}image-overlay-id_1{/if}">
+                <iframe id="js_image_overlay1_upload_frame" name="js_image_overlay1_upload_frame" src="{url link='dvs.player.image-overlay-form'}{if $bIsEdit} image-overlay-id_1{/if}" scrolling="no" frameborder="0" width="256" height="36" {if $bIsEdit}style="display:none;"{/if}></iframe>
+                <div id="image_overlay1_preview" {if !$bIsEdit}style="display: none" {else} style="display:inline-block"{/if}>
+                {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 3 && $aForms.custom_overlay_1_text != ''}
+                <img src="{$ref}{$core_url}/file/dvs/preroll/{value type='input' id='custom_overlay_1_text'}" id="overlay1_img"><br>             
+                {else}
+                No Overlay Image
+                {/if} 
+                     {if $bIsEdit}
+               <a href="#" onclick="window.parent.document.getElementById('js_image_overlay1_upload_frame').style.display = 'block'; window.parent.document.getElementById('image_overlay1_preview').style.display = 'none'; return false;">
+               Change Overlay Image</a>
+                - 
+                <a href="#" onclick="if (confirm('Are you sure?')){l}window.parent.document.getElementById('js_image_overlay1_upload_frame').style.display = 'block'; window.parent.document.getElementById('image_overlay1_preview').style.display = 'none'; window.parent.document.getElementById('image_overlay1_file_path').value = ''; window.parent.document.getElementById('overlay1_img').src='';$('#custom_overlay_1_text').val('');{r} return false;">Remove Overlay Image</a>
+                    {/if}
+               </div>     
+               <input type="hidden" id="image_overlay1_file_path" name="val[image_overlay1_file_path]" value="{if $bIsEdit && $aForms.custom_overlay_1_type == 3}{value type='input' id='custom_overlay_1_text'}{else}{/if}"/>     
+                </li>
                 
-				<li class="custom_overlay_1_extras1 {if isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type != 2 }hidden{/if} {if !isset($aForms.custom_overlay_1_type)}hidden{/if}">
+				<li class="custom_overlay_1_extras1 custom_overlay_1_extras1_text {if isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type != 2}hidden{/if} {if !isset($aForms.custom_overlay_1_type)}hidden{/if}">
 					<label for="custom_overlay_1_text">Link Text:</label>
 					<input type="text" name="val[custom_overlay_1_text]" value="{value type='input' id='custom_overlay_1_text'}" id="custom_overlay_1_text" class="m_left_5"/>
 				</li>
-				<li class="custom_overlay_1_extras1 {if isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type != 2}hidden{/if} {if !isset($aForms.custom_overlay_1_type)}hidden{/if}">
+				<li class="custom_overlay_1_extras1 custom_overlay_1_extras1_link {if isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type != 2 && $aForms.custom_overlay_1_type != 3}hidden{/if} {if !isset($aForms.custom_overlay_1_type)}hidden{/if}">
 					<label for="custom_overlay_1_url">Link URL:</label>
 					<input type="text" name="val[custom_overlay_1_url]" value="{value type='input' id='custom_overlay_1_url'}" id="custom_overlay_1_url" class="m_top_left_5" />
 				</li>
@@ -357,19 +386,53 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<ol>
 				<li>
 					<label for="custom_overlay_2_disabled" class="inline_radio">Disabled:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').hide('fast');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 0 || !isset($aForms.custom_overlay_2_type)}checked="checked"{/if} value="0" name="val[custom_overlay_2_type]" id="custom_overlay_2_disabled" />
+					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').hide('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_2_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 0 || !isset($aForms.custom_overlay_2_type)}checked="checked"{/if} value="0" name="val[custom_overlay_2_type]" id="custom_overlay_2_disabled" />
 
 						   <label for="custom_overlay_2_price_overlay" class="inline_radio">Get Price Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').show('fast');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_2_type]" id="custom_overlay_2_price_overlay" />
+					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_2_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_2_type]" id="custom_overlay_2_price_overlay" />
 
 						   <label for="custom_overlay_2_link_overlay" class="inline_radio">Link Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').show('fast');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 2 }checked="checked"{/if} value="2" name="val[custom_overlay_2_type]" id="custom_overlay_2_link_overlay" />
+					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_2_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 2 }checked="checked"{/if} value="2" name="val[custom_overlay_2_type]" id="custom_overlay_2_link_overlay" />
+                    
+                    <label for="custom_overlay_2_img_overlay" class="inline_radio">Custom Image Overlay:</label> 
+                    <input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1_text').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1_link').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras3').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_2_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 3 }checked="checked"{/if} value="3" name="val[custom_overlay_2_type]" id="custom_overlay_2_link_overlay" />
+                    
+                    
 				</li>
-				<li class="custom_overlay_2_extras1 {if isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type != 2}hidden{/if} {{if !isset($aForms.custom_overlay_2_type)}hidden{/if}">
+                 <div id="js_image_overlay2_file_upload_error" style="display:none;">
+                    <div class="error_message" id="js_image_overlay2_file_upload_message"></div> 
+                  <div class="main_break"></div>
+                </div>  
+                  <li class="custom_overlay_2_extras3 {if isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type != 3 }hidden{/if} {if !isset($aForms.custom_overlay_2_type)}hidden{/if}">
+                    <label for="custom_overlay_1_img">Image File:</label>
+                    
+                            
+                    
+                <input type="hidden" id="overlay2_target" value="{url link='dvs.player.image-overlay-form'}{if $bIsEdit}image-overlay-id_2{/if}">
+                <iframe id="js_image_overlay2_upload_frame" name="js_image_overlay2_upload_frame" src="{url link='dvs.player.image-overlay-form'}{if $bIsEdit}image-overlay-id_2{/if}" scrolling="no" frameborder="0" width="256" height="36" {if $bIsEdit}style="display:none;"{/if}></iframe>
+                <div id="image_overlay2_preview" {if !$bIsEdit}style="display: none"{else}style="display:inline-block"{/if}>
+                {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 3 && $aForms.custom_overlay_2_text != ''}
+                
+                <img src="{$ref}{$core_url}/file/dvs/preroll/{value type='input' id='custom_overlay_2_text'}" id="overlay2_img"><br>
+                {else}
+                No Overlay Image
+                {/if}     
+                     {if $bIsEdit}
+               <a href="#" onclick="window.parent.document.getElementById('js_image_overlay2_upload_frame').style.display = 'block'; window.parent.document.getElementById('image_overlay2_preview').style.display = 'none'; return false;">
+               Change Overlay Image</a>
+                - 
+                <a href="#" onclick="if (confirm('Are you sure?')){l}window.parent.document.getElementById('js_image_overlay2_upload_frame').style.display = 'block'; window.parent.document.getElementById('image_overlay2_preview').style.display = 'none'; window.parent.document.getElementById('image_overlay2_file_path').value = ''; $.ajaxCall('dvs.removeImageOverlayFile', 'iImageOverlayFileId={$aForms.image_overlay2_id}'); window.parent.document.getElementById('overlay2_img').src='';$('#custom_overlay_2_text').val('');{r} return false;">Remove Overlay Image</a>
+                    {/if}
+               </div>     
+               <input type="hidden" id="image_overlay2_file_path" name="val[image_overlay2_file_path]" value="{if $bIsEdit && $aForms.custom_overlay_2_type == 3}{value type='input' id='custom_overlay_2_text'}{else}{/if}"/>          
+                </li>
+                
+                
+				<li class="custom_overlay_2_extras1 custom_overlay_2_extras1_text {if isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type != 2}hidden{/if} {{if !isset($aForms.custom_overlay_2_type)}hidden{/if} ">
 					<label for="custom_overlay_2_text">Link Text:</label>
 					<input type="text" name="val[custom_overlay_2_text]" value="{value type='input' id='custom_overlay_2_text'}" id="custom_overlay_2_text" class="m_left_5" />
 				</li>
-				<li class="custom_overlay_2_extras1 {if isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type != 2}hidden{/if} {if !isset($aForms.custom_overlay_2_type)}hidden{/if}">
+				<li class="custom_overlay_2_extras1 custom_overlay_2_extras1_link {if isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type != 2  && $aForms.custom_overlay_2_type != 3}hidden{/if} {if !isset($aForms.custom_overlay_2_type)}hidden{/if}">
 					<label for="custom_overlay_2_url">Link URL:</label>
 					<input type="text" name="val[custom_overlay_2_url]" value="{value type='input' id='custom_overlay_2_url'}" id="custom_overlay_2_url" class="m_top_left_5" />
 				</li>
@@ -389,19 +452,51 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<li>
 
 					<label for="custom_overlay_3_disabled" class="inline_radio">Disabled:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').hide('fast');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 0 || !isset($aForms.custom_overlay_3_type)}checked="checked"{/if} value="0" name="val[custom_overlay_3_type]" id="custom_overlay_3_disabled" />
+					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').hide('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 0 || !isset($aForms.custom_overlay_3_type)}checked="checked"{/if} value="0" name="val[custom_overlay_3_type]" id="custom_overlay_3_disabled" />
 
 						   <label for="custom_overlay_3_price_overlay" class="inline_radio">Get Price Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').show('fast');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_3_type]" id="custom_overlay_3_price_overlay" />
+					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_3_type]" id="custom_overlay_3_price_overlay" />
 
 						   <label for="custom_overlay_3_link_overlay" class="inline_radio">Link Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').show('fast');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 2 }checked="checked"{/if} value="2" name="val[custom_overlay_3_type]" id="custom_overlay_3_link_overlay" />
+					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 2 }checked="checked"{/if} value="2" name="val[custom_overlay_3_type]" id="custom_overlay_3_link_overlay" />
+                    
+                    <label for="custom_overlay_3_img_overlay" class="inline_radio">Custom Image Overlay:</label> 
+                    <input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1_link').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1_text').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 3 }checked="checked"{/if} value="3" name="val[custom_overlay_3_type]" id="custom_overlay_3_link_overlay" />
+                    
+                    
 				</li>
-				<li class="custom_overlay_3_extras1 {if isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type != 2}hidden{/if} {if !isset($aForms.custom_overlay_3_type)}hidden{/if}">
+                 <div id="js_image_overlay3_file_upload_error" style="display:none;">
+                    <div class="error_message" id="js_image_overlay3_file_upload_message"></div>       
+                 <div class="main_break"></div>
+                </div>   
+                <li class="custom_overlay_3_extras3 {if isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type != 3}hidden{/if} {if !isset($aForms.custom_overlay_3_type)}hidden{/if}">
+                    <label for="custom_overlay_3_text">Image File:</label>
+                    
+                
+                    
+                <input type="hidden" id="overlay3_target" value="{url link='dvs.player.image-overlay-form'}{if $bIsEdit}image-overlay-id_3{/if}">
+                <iframe id="js_image_overlay3_upload_frame" name="js_image_overlay3_upload_frame" src="{url link='dvs.player.image-overlay-form'}{if $bIsEdit}image-overlay-id_3{/if}" scrolling="no" frameborder="0" width="256" height="36" {if $bIsEdit}style="display:none;"{/if}></iframe>
+                <div id="image_overlay3_preview" {if !$bIsEdit}style="display: none"{else}style="display:inline-block"{/if}>
+                {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 3 && $aForms.custom_overlay_3_text != ''}
+                <img src="{$ref}{$core_url}/file/dvs/preroll/{value type='input' id='custom_overlay_3_text'}" id="overlay3_img"><br>
+                {else}
+                No Overlay Image
+                {/if} 
+                     {if $bIsEdit}
+               <a href="#" onclick="window.parent.document.getElementById('js_image_overlay3_upload_frame').style.display = 'block'; window.parent.document.getElementById('image_overlay3_preview').style.display = 'none'; return false;">
+               Change Overlay Image</a>
+                - 
+                <a href="#" onclick="if (confirm('Are you sure?')){l}window.parent.document.getElementById('js_image_overlay3_upload_frame').style.display = 'block'; window.parent.document.getElementById('image_overlay3_preview').style.display = 'none'; window.parent.document.getElementById('image_overlay3_file_path').value = ''; $.ajaxCall('dvs.removeImageOverlayFile', 'iImageOverlayFileId={$aForms.image_overlay3_id}'); window.parent.document.getElementById('overlay3_img').src='';$('#custom_overlay_3_text').val('');{r} return false;">Remove Overlay Image</a>
+                    {/if}
+               </div>     
+               <input type="hidden" id="image_overlay3_file_path" name="val[image_overlay3_file_path]" value="{if $bIsEdit && $aForms.custom_overlay_3_type == 3}{value type='input' id='custom_overlay_3_text'}{else}{/if}"/>          
+                </li>
+                
+				<li class="custom_overlay_3_extras1 custom_overlay_3_extras1_text {if isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type != 2}hidden{/if} {if !isset($aForms.custom_overlay_3_type)}hidden{/if}">
 					<label for="custom_overlay_3_text">Link Text:</label>
 					<input type="text" name="val[custom_overlay_3_text]" value="{value type='input' id='custom_overlay_3_text'}" id="custom_overlay_3_text" class="m_left_5" />
 				</li>
-				<li class="custom_overlay_3_extras1 {if isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type != 2}hidden{/if} {if !isset($aForms.custom_overlay_3_type)}hidden{/if}">
+				<li class="custom_overlay_3_extras1 custom_overlay_3_extras1_link {if isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type != 2  && $aForms.custom_overlay_3_type != 3}hidden{/if} {if !isset($aForms.custom_overlay_3_type)}hidden{/if}">
 					<label for="custom_overlay_3_url">Link URL:</label>
 					<input type="text" name="val[custom_overlay_3_url]" value="{value type='input' id='custom_overlay_3_url'}" id="custom_overlay_3_url" class="m_top_left_5" />
 				</li>
@@ -415,6 +510,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</li>
 			</ol>
 		</fieldset>
+        
 		<br><p><i>Note: Custom Overlays are not HTML5 compatible so they will not work on mobile or tablet devices.</i></p>
 	</div>
 	{/if}

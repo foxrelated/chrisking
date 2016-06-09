@@ -160,7 +160,9 @@ class Phpfox_File
 		
 		if (count($aSupported) && !in_array(strtolower($this->_aFile['ext']), $aSupported))
 		{
-			return Phpfox_Error::set(Phpfox::getPhrase('core.not_a_valid_file_extension_we_only_accept_support', array('support' => implode(', ', $aSupported))));
+			
+            
+            return Phpfox_Error::set(Phpfox::getPhrase('core.not_a_valid_file_extension_we_only_accept_support', array('support' => implode(', ', $aSupported))));
 		}		
 		
 		if (!($bReturn = $this->_verify($this->_aFile['tmp_name'])))
@@ -197,6 +199,7 @@ class Phpfox_File
 	 */
     public function upload($sFormItem, $sDestination, $sFileName, $bModifyFileName = true, $iPerm = 0644, $buildDir = true, $bCdn = true)
     {
+        
         (($sPlugin = Phpfox_Plugin::get('file_upload_start')) ? eval($sPlugin) : false);
         
 		if ($buildDir)
@@ -209,6 +212,7 @@ class Phpfox_File
 		}
 	
         if ($sPlugin = Phpfox_Plugin::get('library_phpfox_file_file_upload_1')){eval($sPlugin);if (isset($mReturnFromPlugin)){return $mReturnFromPlugin;}}
+        
     	if (!defined('PHPFOX_APP_USER_ID') && !is_uploaded_file($this->_aFile['tmp_name']) && !defined('PHPFOX_HTML5_PHOTO_UPLOAD'))
         {
             return Phpfox_Error::set(Phpfox::getPhrase('core.unable_to_upload_the_image'));
@@ -965,7 +969,7 @@ class Phpfox_File
      * @param string $sFormItem The ID to connect with the $_FORM variable
      */
     private function _buildFile($sFormItem)
-    { 	
+    {
     	if (strpos($sFormItem, ']') === false)
         {
             $this->_aFile = $_FILES[$sFormItem];

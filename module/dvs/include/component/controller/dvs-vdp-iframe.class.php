@@ -262,6 +262,14 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
             $jsFile = 'overlay-playerhtml5.js';
             $player_type=2;
         }
+        
+        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ){
+             $ref = "https://";
+         }else{
+             $ref = "http://";
+         }
+     $core_url = Phpfox::getParam('core.host');    
+        
         $this->template()
             ->setTemplate('dvs-iframe-view')
             ->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -327,7 +335,9 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
                 'iHeaderTextFontSize' => $iHeaderTextFontSize,
                 'sCurrentUrlEncoded' => (Phpfox::getParam('dvs.enable_subdomain_mode') ? urlencode(Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url'])) : urlencode(Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aVideo['video_title_url'])))),
                 'sStaticPath' => Phpfox::getParam('core.path') . 'module/dvs/static/',
-                'sJavascript' => $sJavascript
+                'sJavascript' => $sJavascript,
+                'core_url' => $core_url,
+                'ref' => $ref
             ));
     }
 }

@@ -16,7 +16,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 	public function process()
 	{
 		Phpfox::isUser(true);
-
+        
 		if (Phpfox::getParam('dvs.enable_subdomain_mode'))
 		{
 			$sSwfUrl = Phpfox::getLib('url')->makeUrl('www.module.dvs.static.swf');
@@ -235,7 +235,16 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 				$this->url()->send('');
 				return false;
 			}
-
+            
+             if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ){
+                     $ref = "https://";
+                 }else{
+                     $ref = "http://";
+                 }
+             $core_url = Phpfox::getParam('core.host');    
+            
+            
+                 
 			//If there is a player, we're editing
 			if (($aPlayer = Phpfox::getService('dvs.player')->get($iDvsId)))
 			{
@@ -342,7 +351,9 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 			))
 			->assign(array(
 				'bIsDvs' => true,
-				'bIsExternal' => false
+				'bIsExternal' => false,
+                'ref' => $ref,
+                'core_url' => $core_url
 		));
 		
 	}

@@ -14,6 +14,7 @@ media_begin = 0,
 clicked = 0,
 sCurrentCuePoint,
 trackIndex,
+inventory_new,
 watchVideoSelect,
 getPriceOverlayClick,
 textOverlayClick,
@@ -195,7 +196,7 @@ videojs("bcv2").ready(function(){
            
           }    
        }); 
-       if(!bAutoAdvance && !preRollAdvance && inventory_btn){
+       if(!bAutoAdvance && inventory_btn){
        myPlayer.customEndscreen({
         "content": "<a href="+inventory_btn+" class='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
       })    
@@ -625,6 +626,7 @@ function loadVideo(iKey){
     );
     
     $.ajaxCall('dvs.changehtml5Video', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId);
+//    alert(inventory_new+'zzz');
 }
 
 function playVideo(mkey,autoplay){

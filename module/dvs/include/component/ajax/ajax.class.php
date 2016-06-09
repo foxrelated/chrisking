@@ -394,6 +394,38 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		}
 	}
 
+    
+    public function imageoverlayProcess()
+    {
+        $iUserId = $this->get('user_id');
+        $this->errorSet('#js_image_overlay'.$overlay_id.'_file_upload_message');
+
+        $overlay_id = $this->get('image_overlay');
+       
+       $sOverlayFile = $this->get('image_overlay'.$overlay_id.'_file');
+      
+       
+            // windows
+            if (strpos($sOverlayFile, "\\"))
+            {
+                $aParts = explode('\\', $sOverlayFile);
+                if (isset($aParts[count($aParts) - 1]))
+                {
+                    $sOverlayFile = $aParts[count($aParts) - 1];
+                }
+            }
+            
+         
+            $this
+            //->attr('#js_view_preroll_file_link', 'href', Phpfox::getLib('url')->makeUrl('file', array('redirect' => $iId)))
+                ->html('#js_image_overlay'.$overlay_id.'_upload_file_name', htmlentities(addslashes($sOverlayFile)))
+//                ->val('.js_cache_image_overlay'.$overlay_id.'_file_id', $iId)
+                ->submit('#js_image_overlay'.$overlay_id.'_file_form')
+                ->show('#js_image_overlay'.$overlay_id.'_file_process');
+        
+        
+    }
+    
 	public function removeBrandingFile()
 	{
 		$iBrandingId = $this->get('iBrandingFileId');

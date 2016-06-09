@@ -20,8 +20,10 @@ class Dvs_Component_Controller_Player_Preroll_File_Frame extends Phpfox_Componen
 		{
 			exit;
 		}
+        
 		if (!isset($_FILES['preroll_file']['name']))
 		{
+            
 			Phpfox::getService('dvs.file.process')->removePreroll($this->request()->get('preroll_file_id'));
 			echo '<script type="text/javascript">';
 			echo 'window.parent.document.getElementById(\'js_preroll_file_upload_error\').style.display = \'block\';';

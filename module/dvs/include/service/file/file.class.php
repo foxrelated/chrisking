@@ -246,6 +246,8 @@ class Dvs_Service_File_File extends Phpfox_Service {
 			return $iId;
 		}
 	}
+    
+
 
 
 	public function addPrerollFile($iPrerollFileId)
