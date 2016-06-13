@@ -72,6 +72,7 @@ videojs("bcv2").ready(function(){
        myPlayer.on("loadedmetadata",function(){
       
           if(preRollPlayed){
+          $("#chapter_buttons").children().removeClass('selected').addClass('active');              
           $("#chapter_buttons").children().removeClass('display').addClass('no_display');     
           trackIndex = myPlayer.textTracks().length -1;
           tt = myPlayer.textTracks()[trackIndex];
