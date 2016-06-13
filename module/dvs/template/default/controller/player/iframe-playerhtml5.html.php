@@ -296,20 +296,20 @@ function enableVideoSelectCarousel(){l}
         <button class="next playlist-button">&gt;</button>
 </section>-->
 {else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}<section id="chapter_buttons">
-    <button type="button" id="chapter_container_Intro" class="disabled no_display"></button>
+    <button type="button" id="chapter_container_Intro" class="disabled display"></button>
     <button type="button" id="chapter_container_Overview" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_WhatsNew" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_Exterior" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_Interior" class="disabled no_display"></button>
+    <button type="button" id="chapter_container_WhatsNew" class="disabled display"></button>
+    <button type="button" id="chapter_container_Exterior" class="disabled display"></button>
+    <button type="button" id="chapter_container_Interior" class="disabled display"></button>
     <button type="button" id="chapter_container_Features" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_Power" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_Fuel" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_Safety" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_Warranty" class="disabled no_display"></button>
+    <button type="button" id="chapter_container_Power" class="disabled display"></button>
+    <button type="button" id="chapter_container_Fuel" class="disabled display"></button>
+    <button type="button" id="chapter_container_Safety" class="disabled display"></button>
+    <button type="button" id="chapter_container_Warranty" class="disabled display"></button>
     <button type="button" id="chapter_container_Performance" class="disabled no_display"></button>
     <button type="button" id="chapter_container_MPG" class="disabled no_display"></button>
     <button type="button" id="chapter_container_Honors" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_Summary" class="disabled no_display"></button>
+    <button type="button" id="chapter_container_Summary" class="disabled display"></button>
     {if (Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req2') == 'iframe') || (!Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req3') == 'iframe')}
     {else}
     {if $bIsDvs && !$bPreview}
