@@ -219,7 +219,14 @@ background: #{$aPlayer.player_progress_bar} !important;
 {/if}        
 .vjs-big-play-button {l}
     top: 135px !important;
-    left: 270px !important;
+    left: 250px !important;
+    margin-left:0 !important;
+    margin-top:0 !important;
+    width:3em !important;
+    height:1.5em !important;
+    line-height:1.5em !important;
+    border-radius:0.3em !important;
+    color:#fff !important;
 {r}
 .vjs-fullscreen {l}
 overflow : visible;

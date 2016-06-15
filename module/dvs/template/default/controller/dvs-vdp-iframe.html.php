@@ -66,6 +66,13 @@ top:0 !important;
     .vjs-big-play-button {l}
     top: 125px !important;
     left: 280px !important;
+    margin-left:0 !important;
+    margin-top:0 !important;
+    width:3em !important;
+    height:1.5em !important;
+    line-height:1.5em !important;
+    border-radius:0.3em !important;
+    color:#fff !important;
 {r}
 </style>
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">
@@ -381,31 +388,62 @@ top:0 !important;
         {/if}
 			{if $sBrowser != 'mobile'}
 			{if $aPlayer.custom_overlay_1_type}
-			<div id="dvs_overlay_1" class="dvs_overlay">
+			
 				{if $aPlayer.custom_overlay_1_type == 1}
+                <div id="dvs_overlay_1" class="dvs_overlay">
 				<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>
+                </div>
+                {elseif $aPlayer.custom_overlay_1_type == 3}
+                {if $aPlayer.custom_overlay_1_text != ''}
+                 <div id="dvs_overlay_1" class="dvs_overlay" style="left:0;width:84% !important;">
+                 <a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/preroll/{$aPlayer.custom_overlay_1_text}"></a>
+                 </div>
+                {/if}
 				{else}
+                <div id="dvs_overlay_1" class="dvs_overlay">
 				<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_1_text}</a>
+                </div>
 				{/if}
-			</div>
+			
 			{/if}
 			{if $aPlayer.custom_overlay_2_type}
-			<div id="dvs_overlay_2" class="dvs_overlay">
+			
 				{if $aPlayer.custom_overlay_2_type == 1}
+                <div id="dvs_overlay_2" class="dvs_overlay">
 				<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>
+                </div>
+                {elseif $aPlayer.custom_overlay_2_type == 3}
+                {if $aPlayer.custom_overlay_2_text != ''}
+                
+                 <div id="dvs_overlay_2" class="dvs_overlay" style="left:0;width:84% !important;">
+                 <a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/preroll/{$aPlayer.custom_overlay_2_text}"></a>
+                 </div>
+                {/if}
 				{else}
-				<a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_2_text}</a>
+				<div id="dvs_overlay_2" class="dvs_overlay">
+                <a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_2_text}</a>
+                </div>
 				{/if}
-			</div>
+			
 			{/if}
 			{if $aPlayer.custom_overlay_3_type}
-			<div id="dvs_overlay_3" class="dvs_overlay" >
+			
 				{if $aPlayer.custom_overlay_3_type == 1}
+                <div id="dvs_overlay_3" class="dvs_overlay" >
 				<a href="#" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png"/></a>
+                </div>
+                {elseif $aPlayer.custom_overlay_3_type == 3}
+                {if $aPlayer.custom_overlay_3_text != ''}
+                 <div id="dvs_overlay_3" class="dvs_overlay" style="left:0;width:84% !important;">
+                 <a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/preroll/{$aPlayer.custom_overlay_3_text}"></a>
+                 </div>
+                {/if}
 				{else}
+                <div id="dvs_overlay_3" class="dvs_overlay" >
 				<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_3_text}</a>
+                </div>
 				{/if}
-			</div>
+			
 			{/if}
 			{/if}
         {/if}
