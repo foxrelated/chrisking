@@ -73,6 +73,19 @@ top:0 !important;
     line-height:1.5em !important;
     border-radius:0.3em !important;
     color:#fff !important;*/
+    .vjs-custom-overlay {l}
+		position: absolute;
+		color: #fff;
+		font-size: 36px;
+		top: 35%;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		padding: 1em 2em;
+		text-align: center;
+		letter-spacing: 1px;
+		background-color: #000;
+    {r}
 {r}
 </style>
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">
