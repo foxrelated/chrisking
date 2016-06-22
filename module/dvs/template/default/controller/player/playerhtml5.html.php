@@ -313,8 +313,7 @@ function enableVideoSelectCarousel(){l}
                 {if $bIsDvs}
                 {foreach from=$aOverviewVideos key=iKey item=aVideo}
                 <li>
-                    <!--<a class="playlist_carousel_image_link" id="thumbnail_link_{$iKey}" {if $aDvs.gallery_target_setting==1}target="_blank" {/if} onclick="thumbnailClick({$iKey});thumbnailClickDvs();">-->
-                    <a class="playlist_carousel_image_link" id="thumbnail_link_{$iKey}" {if $aDvs.gallery_target_setting==1}target="_blank" {/if}>
+                    <a class="playlist_carousel_image_link" id="thumbnail_link_{$iKey}" onclick="thumbnailClickDvs();">
                         {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
                     <p>{$aVideo.year} {$aVideo.model}</p>
                     </a>
@@ -324,12 +323,10 @@ function enableVideoSelectCarousel(){l}
                 {else}
                 {foreach from=$aVideos key=iKey item=aVideo}
                 <li>
-                    <!--<a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});thumbnailClickIDrive();">-->
-                    <a class="playlist_carousel_image_link">
+                    <a class="playlist_carousel_image_link" onclick="thumbnailClickIDrive();">
                         {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
                     <p>{$aVideo.year} {$aVideo.model}</p>
                     </a>
-                    
                 </li>
                 {/foreach}
                 {$sExtraLi}
@@ -368,7 +365,6 @@ function enableVideoSelectCarousel(){l}
 </section>
 
 <script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js"></script> 
-
 <script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.min.js"></script>
 <script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"></script>
 

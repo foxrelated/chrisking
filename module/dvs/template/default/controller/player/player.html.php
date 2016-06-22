@@ -55,8 +55,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	    {/foreach}
 
 	    aMediaIds = aOverviewMediaIds;
-	    
-	    
+	     
         {if isset($aOverrideVideo.id)}
 		    if (bDebug) console.log('Media: Override is set. aMediaIds:');
 		    aMediaIds[0] = {$aOverrideVideo.id};

@@ -296,37 +296,6 @@ function enableVideoSelectCarousel(){l}
 {/if}
 <video id="bcv2" data-account="607012070001" data-player="0d15f8a3-b382-44ca-a53b-51870dd2ad3f" data-embed="default" class="video-js" controls="true" preload=""></video>
 </section>
- 
-<!--<section id="playlist_wrapper{if $inventoryList} inventory_wrapper{/if}">
-        <button class="prev playlist-button">&lt;</button>
-        <div class="playlist_carousel" id="overview_playlist">
-            <ul>
-                {if $bIsDvs}
-                {foreach from=$aOverviewVideos key=iKey item=aVideo}
-                <li>
-                    <a class="playlist_carousel_image_link" id="thumbnail_link_{$iKey}" {if $aDvs.gallery_target_setting==1}target="_blank" {/if}>
-                        {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
-                    <p>{$aVideo.year} {$aVideo.model}</p>
-                    </a>
-                </li>
-                {/foreach}
-                <li style='display: none;'></li>
-                {else}
-                {foreach from=$aVideos key=iKey item=aVideo}
-                <li>
-                    <a class="playlist_carousel_image_link">
-                        {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
-                    <p>{$aVideo.year} {$aVideo.model}</p>
-                    </a>
-                    
-                </li>
-                {/foreach}
-                {$sExtraLi}
-                {/if}
-            </ul>
-        </div>
-        <button class="next playlist-button">&gt;</button>
-</section>-->
 {else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}<section id="chapter_buttons">
     <button type="button" id="chapter_container_Intro" class="disabled display"></button>
     <button type="button" id="chapter_container_Overview" class="disabled no_display"></button>
