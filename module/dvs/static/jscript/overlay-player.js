@@ -884,6 +884,15 @@ function textOverlayClick(iDvsId) {
 	
 }
 
+function customImageOverlayClicked(iDvsId) {
+	sendToGoogle('DVS Overlay Player', 'Overlay Player', 'Custom Image Overlay Clicked');
+	mixpanel.track("Custom Image Overlay Clicked", {
+		"Category" : "DVS Overlay Player",
+		"Action" : "Overlay Player",
+	});
+	
+}
+
 function getPriceOverlayClick(iDvsId) {
 	sendToGoogle('DVS Overlay Player', 'Overlay Player', 'Get Price Overlay Clicked');
 	mixpanel.track("Get Price Overlay Clicked", {
