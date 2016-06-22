@@ -56,7 +56,7 @@ color:#{$aPlayer.player_button_icons} !important;
 background: #{$aPlayer.player_progress_bar} !important;
 {r}
 {/if}
-.vjs-big-play-button {l}
+/*.vjs-big-play-button {l}
     top: 125px !important;
     left: 280px !important;
     margin-left:0 !important;
@@ -66,7 +66,7 @@ background: #{$aPlayer.player_progress_bar} !important;
     line-height:1.5em !important;
     border-radius:0.3em !important;
     color:#fff !important;
-{r}
+{r}*/
 </style>
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">
 <link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'>
@@ -78,6 +78,7 @@ background: #{$aPlayer.player_progress_bar} !important;
     var aOverviewMediaIds = [];
     var aTestDriveMediaIds = [];
     var bIsHtml5 = false;
+    var aPoster = '';
     var ovdr = "preroll";
     {if $aDvs.player_type}
         if (bIsSupportVideo) {l}
@@ -87,6 +88,10 @@ background: #{$aPlayer.player_progress_bar} !important;
     {if $bIsDvs}
 
     {foreach from = $aOverviewVideos key = iKey item = aVideo}
+        {if $iKey == 0}
+            aPoster = '{$aVideo.videoStillURL}';
+            
+        {/if}
         aOverviewMediaIds[{$iKey}] = {$aVideo.id};
     {/foreach}
 

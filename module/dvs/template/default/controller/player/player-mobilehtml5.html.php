@@ -18,6 +18,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     var aMediaIds = [];
     var aOverviewMediaIds = [];
     var aTestDriveMediaIds = [];
+    var aPoster = '';
     var bIsHtml5 = false;
     var ovdr = "preroll";
     {if $aDvs.player_type}
@@ -26,6 +27,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     {if $bIsDvs}
 
     {foreach from = $aOverviewVideos key = iKey item = aVideo}
+        {if $iKey == 0}
+            aPoster = '{$aVideo.videoStillURL}';    
+        {/if}
         aOverviewMediaIds[{$iKey}] = {$aVideo.id};
     {/foreach}
 
@@ -217,7 +221,7 @@ color:#{$aPlayer.player_button_icons} !important;
 background: #{$aPlayer.player_progress_bar} !important;
 {r}
 {/if}        
-.vjs-big-play-button {l}
+/*.vjs-big-play-button {l}
     top: 135px !important;
     left: 250px !important;
     margin-left:0 !important;
@@ -227,7 +231,7 @@ background: #{$aPlayer.player_progress_bar} !important;
     line-height:1.5em !important;
     border-radius:0.3em !important;
     color:#fff !important;
-{r}
+{r}*/
 .vjs-fullscreen {l}
 overflow : visible;
 {r}

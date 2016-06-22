@@ -412,6 +412,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                 'core_url' => $core_url,
                 'ref' => $ref
             ));
+            
+            
     }
 }
 

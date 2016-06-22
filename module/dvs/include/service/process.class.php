@@ -110,7 +110,7 @@ class Dvs_Service_Process extends Phpfox_Service {
 
         /** DEFAULT VALUE FOR DEALER_ID */
         if($aSql['dealer_id'] == '') {
-            $this->database()->update($this->_sTable, array('dealer_id' => serialize(array($iId))), 'dvs_id = ' . $iId);
+          //  $this->database()->update($this->_sTable, array('dealer_id' => serialize(array($iId))), 'dvs_id = ' . $iId);
         }
 
 		return $iId;

@@ -56,6 +56,13 @@ videojs("bcv2").ready(function(){
     }
      
      if(bPreRoll){
+         
+         
+         if(aPoster != ''){
+         jQuery(".vjs-poster").removeClass('vjs-hidden');
+         jQuery(".vjs-poster").css('background-image','url("'+aPoster+'")');    
+         }
+         
          var preRollPlayed = false;
          var preRollAdvance = true;
      }else{
@@ -78,7 +85,9 @@ videojs("bcv2").ready(function(){
      
 //       myPlayer.one("loadedmetadata",function(){
        myPlayer.on("loadedmetadata",function(){
-           
+          console.log('hello') ;
+          console.log(myPlayer.mediainfo) ;
+          console.log('hello') ;
       if(preRollPlayed){
           $("#chapter_buttons").children().removeClass('selected').addClass('active');
           $("#chapter_buttons").children().removeClass('display').addClass('no_display');
@@ -242,7 +251,7 @@ videojs("bcv2").ready(function(){
           //    myPlayer.addClass("testClass");
               //$(".vjs-text-track-display")
       //})   
-      if(!preRollPlayed){ 
+      if(!preRollPlayed && preRollUrl != ''){ 
       $("#bcv2 > :not(.vjs-control-bar):not(.vjs-big-play-button)").on("click",function(){
         window.open(preRollUrl, '_blank');
        });

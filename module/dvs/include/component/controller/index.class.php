@@ -76,22 +76,26 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
 					'sFormName' => 'add_dvs',
 					'aParams' => $aValidation
 				));
-                //die(var_dump($aVals));
+                
 				if ($oValid->isValid($aVals)) {
+                    
 					if (strlen($aVals['welcome']) > Phpfox::getParam('dvs.welcome_greeting_max_chars')) {
 						$aVals['welcome'] = substr($aVals['welcome'], 0, Phpfox::getParam('dvs.welcome_greeting_max_chars'));
 					}
-
+                    
 					if (isset($aVals['dvs_id']) && $aVals['dvs_id']) {
+                        
 						Phpfox::getService('dvs.process')->update($aVals);						Phpfox::getService('dvs.override.process')->addUpdateRemove($aVals['dvs_id'], $aVals['phrase_overrides']);
 						$sMessage = Phpfox::getPhrase('dvs.settings_saved_successfully');
 					} else {
+                        
 						$iId = Phpfox::getService('dvs.process')->add($aVals);
 						Phpfox::getService('dvs.override.process')->addUpdateRemove($iId, $aVals['phrase_overrides']);
 
 						$this->url()->send('dvs.customize', array('id' => $iId));
 					}
 				} else {
+                    
 				//Validation failed, reload all JS and pass aVals back to contrller as aForms. We need to load the dvs JS for preview.
 					Phpfox::getLib('module')->setController('dvs.settings');
 
@@ -103,7 +107,8 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
 							->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'), Phpfox::getLib('url')->makeUrl('dvs'))
 							->setBreadcrumb(Phpfox::getPhrase('dvs.edit_dealer_video_showroom'));
 				}
-			} else if ($aVals['step'] == 'customize') {
+			} 
+            else if ($aVals['step'] == 'customize') {
 				if ($aVals['is_edit']) {
 					Phpfox::getService('dvs.style.process')->update($aVals);
 					$sMessage = Phpfox::getPhrase('dvs.customization_saved_successfully');

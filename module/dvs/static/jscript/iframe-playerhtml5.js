@@ -53,6 +53,10 @@ videojs("bcv2").ready(function(){
     sendToGoogle(sPlayerName, 'Player', 'Player Loaded');
     }
      if(bPreRoll){
+         if(aPoster != ''){
+         jQuery(".vjs-poster").removeClass('vjs-hidden');
+         jQuery(".vjs-poster").css('background-image','url("'+aPoster+'")');    
+         }
          var preRollPlayed = false;
          var preRollAdvance = true;
      }else{
@@ -223,7 +227,7 @@ videojs("bcv2").ready(function(){
             }]
           });
           
-          if(!preRollPlayed){ 
+          if(!preRollPlayed && preRollUrl != ''){ 
       $("#bcv2 > :not(.vjs-control-bar):not(.vjs-big-play-button)").on("click",function(){
         window.open(preRollUrl, '_blank');
        });
