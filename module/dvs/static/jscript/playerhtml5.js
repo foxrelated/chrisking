@@ -13,6 +13,7 @@ trackIndex,
 watchVideoSelect,
 getPriceOverlayClick,
 textOverlayClick,
+customImageOverlayClick,
 sCurrentCuePoint,
 thumbkey = -1,
 timeOut,
@@ -809,6 +810,16 @@ textOverlayClick = function() {
     sendToGoogle('DVS Site', 'Overlay Banner', 'Text Overlay Clicked');
     }
     mixpanel.track("Text Overlay Clicked", {
+        "Category": "DVS Site",
+        "Action": "Overlay Banner"
+        });
+}
+
+customImageOverlayClick = function() {
+    if ( typeof sendToGoogle == 'function' ) { 
+    sendToGoogle('DVS Site', 'Overlay Banner', 'Custom Image Overlay Clicked');
+    }
+    mixpanel.track("Custom Image Overlay Clicked", {
         "Category": "DVS Site",
         "Action": "Overlay Banner"
         });
