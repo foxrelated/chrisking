@@ -197,7 +197,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
      {elseif $aPlayer.custom_overlay_1_type == 3}
         {if $aPlayer.custom_overlay_1_text != ''}
          <div id="dvs_overlay_1" class="dvs_overlay" style="left:0;width:84% !important;">
-         <a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/preroll/{$aPlayer.custom_overlay_1_text}"></a>
+         <a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/preroll/{$aPlayer.custom_overlay_1_text}"></a>
          </div>
         {/if}
     {else}
@@ -215,7 +215,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     {elseif $aPlayer.custom_overlay_2_type == 3}
         {if $aPlayer.custom_overlay_2_text != ''}
          <div id="dvs_overlay_2" class="dvs_overlay" style="left:0;width:84% !important;">
-         <a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/preroll/{$aPlayer.custom_overlay_2_text}"></a>
+         <a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/preroll/{$aPlayer.custom_overlay_2_text}"></a>
          </div>
         {/if}
     {else}
@@ -233,7 +233,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     {elseif $aPlayer.custom_overlay_3_type == 3}
         {if $aPlayer.custom_overlay_3_text != ''}
          <div id="dvs_overlay_3" class="dvs_overlay" style="left:0;width:84% !important;">
-         <a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/preroll/{$aPlayer.custom_overlay_3_text}"></a>
+         <a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/preroll/{$aPlayer.custom_overlay_3_text}"></a>
          </div>
         {/if}
     {else}

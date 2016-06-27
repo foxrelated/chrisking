@@ -16,6 +16,7 @@ watchVideoSelect,
 getPriceOverlayClick,
 inventory_new,
 textOverlayClick,
+customImageOverlayClick,
 thumbkey = -1,
 oChapterDivs = {};
 
@@ -709,6 +710,15 @@ textOverlayClick = function() {
     sendToGoogle('DVS Site', 'Overlay Banner', 'Text Overlay Clicked');
     }
     mixpanel.track("Text Overlay Clicked", {
+        "Category": "DVS Site",
+        "Action": "Overlay Banner"
+        });
+}
+customImageOverlayClick = function() {
+    if ( typeof sendToGoogle == 'function' ) { 
+    sendToGoogle('DVS Site', 'Overlay Banner', 'Custom Image Overlay Clicked');
+    }
+    mixpanel.track("Custom Image Overlay Clicked", {
         "Category": "DVS Site",
         "Action": "Overlay Banner"
         });

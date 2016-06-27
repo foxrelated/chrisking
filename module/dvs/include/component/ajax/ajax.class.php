@@ -880,6 +880,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
         $aDvs['phrase_overrides'] = Phpfox::getService('dvs.override')->getAll($aDvs, $aVideo);
         $bVideoChanged = ($this->get('bVideoChanged') == 'true' ? true : false);
+        
 
         if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
             $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aVideo['video_title_url']);
@@ -1320,7 +1321,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
                 $this->call('console.log("AJAX: Video is changed.  Changing URL...");');
             }
 
-            $this->call('window.parent.history.pushState("string", "' . $sTitle . '", "' . $sUrl . '");');
+//            $this->call('window.parent.history.pushState("string", "' . $sTitle . '", "' . $sUrl . '");');
 
             // Most browsers do not support changing the page title via pushState
             $this->call('document.title = "' . $sTitle . '";');

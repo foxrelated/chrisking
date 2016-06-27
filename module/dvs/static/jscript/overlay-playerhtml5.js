@@ -13,6 +13,7 @@ sCurrentCuePoint,
 watchVideoSelect,
 getPriceOverlayClick,
 textOverlayClick,
+customImageOverlayClick,
 inventory_new,
 media_begin = 0,
 clicked = 0,
@@ -732,6 +733,17 @@ textOverlayClick = function() {
         "Action": "Overlay Banner"
         });
 }
+
+customImageOverlayClick = function() {
+    if ( typeof sendToGoogle == 'function' ) { 
+    sendToGoogle('DVS Site', 'Overlay Banner', 'Custom Image Overlay Clicked');
+    }
+    mixpanel.track("Custom Image Overlay Clicked", {
+        "Category": "DVS Site",
+        "Action": "Overlay Banner"
+        });
+}
+
 getPriceOverlayClick = function() {
     if ( typeof sendToGoogle == 'function' ) { 
     sendToGoogle('DVS Site', 'Overlay Banner', 'Get Price Overlay Clicked');

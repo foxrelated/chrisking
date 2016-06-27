@@ -96,7 +96,7 @@ margin-top:0 !important;
     
     {foreach from = $aOverviewVideos key = iKey item = aVideo}
         {if $iKey == 0}
-            aPoster = '{$aVideo.videoStillURL}';
+            aPoster = '{$poster_img}';
             
         {/if}
         aOverviewMediaIds[{$iKey}] = {$aVideo.id};
@@ -132,7 +132,7 @@ margin-top:0 !important;
          var bCustomOverlay1Content = '<a href="#" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
         {elseif $aPlayer.custom_overlay_1_type == 3}
         {if $aPlayer.custom_overlay_1_text != ''}
-         var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_1_text}"></a>';
+         var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_1_text}"></a>';
          {else}
          var bCustomOverlay1Content = '';
          bCustomOverlay1 = false;
@@ -156,7 +156,7 @@ margin-top:0 !important;
           var bCustomOverlay2Content =  '<a href="#" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
         {elseif $aPlayer.custom_overlay_2_type == 3}
         {if $aPlayer.custom_overlay_2_text != ''}
-         var bCustomOverlay2Content = '<a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_2_text}"></a>';
+         var bCustomOverlay2Content = '<a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_2_text}"></a>';
          {else}
          var bCustomOverlay2Content = '';
          bCustomOverlay2 = false;
@@ -178,7 +178,7 @@ margin-top:0 !important;
            var bCustomOverlay3Content = '<a href="#" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>'
         {elseif $aPlayer.custom_overlay_3_type == 3}
         {if $aPlayer.custom_overlay_3_text != ''}
-         var bCustomOverlay3Content = '<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_3_text}"></a>';
+         var bCustomOverlay3Content = '<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_3_text}"></a>';
         {else}
         var bCustomOverlay3Content = ''; 
         bCustomOverlay3 = false;
@@ -313,8 +313,7 @@ function enableVideoSelectCarousel(){l}
                 {if $bIsDvs}
                 {foreach from=$aOverviewVideos key=iKey item=aVideo}
                 <li>
-                    <!--<a class="playlist_carousel_image_link" id="thumbnail_link_{$iKey}" {if $aDvs.gallery_target_setting==1}target="_blank" {/if} onclick="thumbnailClick({$iKey});thumbnailClickDvs();">-->
-                    <a class="playlist_carousel_image_link" id="thumbnail_link_{$iKey}" {if $aDvs.gallery_target_setting==1}target="_blank" {/if}>
+                    <a class="playlist_carousel_image_link" id="thumbnail_link_{$iKey}" onclick="thumbnailClickDvs();">
                         {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
                     <p>{$aVideo.year} {$aVideo.model}</p>
                     </a>
@@ -324,12 +323,10 @@ function enableVideoSelectCarousel(){l}
                 {else}
                 {foreach from=$aVideos key=iKey item=aVideo}
                 <li>
-                    <!--<a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});thumbnailClickIDrive();">-->
-                    <a class="playlist_carousel_image_link">
+                    <a class="playlist_carousel_image_link" onclick="thumbnailClickIDrive();">
                         {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
                     <p>{$aVideo.year} {$aVideo.model}</p>
                     </a>
-                    
                 </li>
                 {/foreach}
                 {$sExtraLi}
@@ -368,7 +365,6 @@ function enableVideoSelectCarousel(){l}
 </section>
 
 <script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js"></script> 
-
 <script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.min.js"></script>
 <script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"></script>
 

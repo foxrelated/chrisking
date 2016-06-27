@@ -89,7 +89,7 @@ background: #{$aPlayer.player_progress_bar} !important;
 
     {foreach from = $aOverviewVideos key = iKey item = aVideo}
         {if $iKey == 0}
-            aPoster = '{$aVideo.videoStillURL}';
+            aPoster = '{$poster_img}';
             
         {/if}
         aOverviewMediaIds[{$iKey}] = {$aVideo.id};
@@ -125,7 +125,7 @@ background: #{$aPlayer.player_progress_bar} !important;
          var bCustomOverlay1Content = '<a href="#" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
          {elseif $aPlayer.custom_overlay_1_type == 3}
          {if $aPlayer.custom_overlay_1_text != ''}
-         var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_1_text}"></a>';
+         var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_1_text}"></a>';
          {else}
          var bCustomOverlay1Content = '';
          bCustomOverlay1 = false;
@@ -149,7 +149,7 @@ background: #{$aPlayer.player_progress_bar} !important;
           var bCustomOverlay2Content =  '<a href="#" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
         {elseif $aPlayer.custom_overlay_2_type == 3}
          {if $aPlayer.custom_overlay_2_text != ''}
-         var bCustomOverlay2Content = '<a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_2_text}"></a>';
+         var bCustomOverlay2Content = '<a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_2_text}"></a>';
          {else}
          var bCustomOverlay2Content = '';
      bCustomOverlay2 = false;
@@ -171,7 +171,7 @@ background: #{$aPlayer.player_progress_bar} !important;
            var bCustomOverlay3Content = '<a href="#" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>'
         {elseif $aPlayer.custom_overlay_3_type == 3}
          {if $aPlayer.custom_overlay_3_text != ''}
-         var bCustomOverlay3Content = '<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="textOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_3_text}"></a>';
+         var bCustomOverlay3Content = '<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_3_text}"></a>';
         {else}
         var bCustomOverlay3Content = ''; 
         bCustomOverlay3 = false;
@@ -226,7 +226,7 @@ function enableVideoSelectCarousel(){l}
         btnNext: ".next",
         btnPrev: ".prev",
         circular: false,
-        visible: 4,
+        visible: 5,
         scroll: 3,
         speed: 900
     {r});
@@ -261,7 +261,7 @@ function enableVideoSelectCarousel(){l}
             btnNext: ".next",
             btnPrev: ".prev",
             circular: false,
-            visible: 4,
+            visible: 5,
             scroll: 3,
             speed: 900
             {r});
@@ -296,37 +296,6 @@ function enableVideoSelectCarousel(){l}
 {/if}
 <video id="bcv2" data-account="607012070001" data-player="0d15f8a3-b382-44ca-a53b-51870dd2ad3f" data-embed="default" class="video-js" controls="true" preload=""></video>
 </section>
- 
-<!--<section id="playlist_wrapper{if $inventoryList} inventory_wrapper{/if}">
-        <button class="prev playlist-button">&lt;</button>
-        <div class="playlist_carousel" id="overview_playlist">
-            <ul>
-                {if $bIsDvs}
-                {foreach from=$aOverviewVideos key=iKey item=aVideo}
-                <li>
-                    <a class="playlist_carousel_image_link" id="thumbnail_link_{$iKey}" {if $aDvs.gallery_target_setting==1}target="_blank" {/if}>
-                        {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
-                    <p>{$aVideo.year} {$aVideo.model}</p>
-                    </a>
-                </li>
-                {/foreach}
-                <li style='display: none;'></li>
-                {else}
-                {foreach from=$aVideos key=iKey item=aVideo}
-                <li>
-                    <a class="playlist_carousel_image_link">
-                        {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
-                    <p>{$aVideo.year} {$aVideo.model}</p>
-                    </a>
-                    
-                </li>
-                {/foreach}
-                {$sExtraLi}
-                {/if}
-            </ul>
-        </div>
-        <button class="next playlist-button">&gt;</button>
-</section>-->
 {else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}<section id="chapter_buttons">
     <button type="button" id="chapter_container_Intro" class="disabled display"></button>
     <button type="button" id="chapter_container_Overview" class="disabled no_display"></button>

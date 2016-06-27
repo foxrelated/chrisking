@@ -440,6 +440,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
          }
      $core_url = Phpfox::getParam('core.host');    
 
+     $aVideo['image_path'] = str_replace('%s','',$aVideo['image_path']);
 
         $this->template()
             ->setTemplate('dvs-iframe-view')
@@ -524,7 +525,8 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 'sStaticPath' => Phpfox::getParam('core.path') . 'module/dvs/static/',
                 'sJavascript' => $sJavascript,
                 'core_url' => $core_url,
-                'ref' => $ref
+                'ref' => $ref,
+                'poster_img' => Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.pic.brightcove').$aVideo['image_path'],
             ));
     }
 

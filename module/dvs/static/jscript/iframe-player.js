@@ -885,6 +885,14 @@ function textOverlayClick(iDvsId) {
 	});
 }
 
+function customImageOverlayClick(iDvsId) {
+	sendToGoogle('DVS iFrame', 'Overlay Banner', 'Custom Image Overlay Clicked');
+	mixpanel.track("Custom Image Overlay Clicked", {
+		"Category": "DVS iFrame",
+		"Action": "Overlay Banner"
+	});
+}
+
 function getPriceOverlayClick(iDvsId) {
 	sendToGoogle('DVS iFrame', 'Overlay Banner', 'Get Price Overlay Clicked');
 	mixpanel.track("Get Price Overlay Clicked", {

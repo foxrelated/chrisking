@@ -18,6 +18,7 @@ inventory_new,
 watchVideoSelect,
 getPriceOverlayClick,
 textOverlayClick,
+customImageOverlayClick,
 thumbkey = -1,
 
 oChapterDivs = {};
@@ -630,7 +631,7 @@ function loadVideo(iKey){
         }
     );
     
-    $.ajaxCall('dvs.changehtml5Video', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId);
+    $.ajaxCall('dvs.iframeChangehtml5Video', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId);
 //    alert(inventory_new+'zzz');
 }
 
@@ -736,6 +737,15 @@ textOverlayClick = function() {
     sendToGoogle('DVS Site', 'Overlay Banner', 'Text Overlay Clicked');
     }
     mixpanel.track("Text Overlay Clicked", {
+        "Category": "DVS Site",
+        "Action": "Overlay Banner"
+        });
+}
+customImageOverlayClick = function() {
+    if ( typeof sendToGoogle == 'function' ) { 
+    sendToGoogle('DVS Site', 'Overlay Banner', 'Custom Image Overlay Clicked');
+    }
+    mixpanel.track("Custom Image Overlay Clicked", {
         "Category": "DVS Site",
         "Action": "Overlay Banner"
         });
