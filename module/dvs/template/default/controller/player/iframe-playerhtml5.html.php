@@ -89,7 +89,7 @@ background: #{$aPlayer.player_progress_bar} !important;
 
     {foreach from = $aOverviewVideos key = iKey item = aVideo}
         {if $iKey == 0}
-            aPoster = '{$aVideo.videoStillURL}';
+            aPoster = '{$poster_img}';
             
         {/if}
         aOverviewMediaIds[{$iKey}] = {$aVideo.id};
@@ -226,7 +226,7 @@ function enableVideoSelectCarousel(){l}
         btnNext: ".next",
         btnPrev: ".prev",
         circular: false,
-        visible: 4,
+        visible: 5,
         scroll: 3,
         speed: 900
     {r});
@@ -261,7 +261,7 @@ function enableVideoSelectCarousel(){l}
             btnNext: ".next",
             btnPrev: ".prev",
             circular: false,
-            visible: 4,
+            visible: 5,
             scroll: 3,
             speed: 900
             {r});

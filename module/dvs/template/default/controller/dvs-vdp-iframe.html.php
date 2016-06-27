@@ -114,7 +114,7 @@ top:0 !important;
             {if $bIsDvs}
                 {foreach from = $aOverviewVideos key = iKey item = aVideo}
                     {if $iKey == 0}
-                        aPoster = '{$aVideo.videoStillURL}';    
+                        aPoster = '{$poster_img}';
                     {/if}
                     aOverviewMediaIds[{$iKey}] = {$aVideo.id};
                 {/foreach}

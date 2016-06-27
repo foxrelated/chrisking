@@ -311,6 +311,7 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
                 'aPlayer' => $aPlayer,
                 'core_url' => $core_url,
                 'ref' => $ref,
+                'poster_img' => Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.pic.brightcove').$aVideo['image_path'],
                 'iDvsId' => $aDvs['dvs_id'],
                 'sPrerollXmlUrl' => substr_replace(Phpfox::getLib('url')->makeUrl('dvs.player.prxml', array('id' => $aDvs['dvs_id'])), '', -1) . '  ? ',
                 'prerollUrl' => Phpfox::getParam('core.url_file') . 'dvs/preroll/'.$aDvs['preroll_file_name'],

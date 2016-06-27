@@ -192,7 +192,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
         $sOverrideLink = rtrim($sOverrideLink, '/');
 
         //$sThumbnailUrl = Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['thumbnail_image'];
-
+        
         /* new thumb path */
         if (file_exists(PHPFOX_DIR_FILE . "brightcove" . PHPFOX_DS . $aFirstVideo['thumbnail_image'])) {
             $sThumbnailUrl = Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['thumbnail_image'];
@@ -342,6 +342,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
             $jsFile = 'playerhtml5.js';
 //            $jsFile = 'test.js';
         }
+        $aVideo['image_path'] = str_replace('%s','',$aVideo['image_path']);
         $this->template()
             ->setTemplate('dvs-view')
             ->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -410,7 +411,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                 'sStaticPath' => Phpfox::getParam('core.path') . 'module/dvs/static/',
                 'sJavascript' => $sJavascript,
                 'core_url' => $core_url,
-                'ref' => $ref
+                'ref' => $ref,
+                'poster_img' => Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.pic.brightcove').$aVideo['image_path'],
             ));
             
             
