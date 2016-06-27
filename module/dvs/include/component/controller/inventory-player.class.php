@@ -265,7 +265,7 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
          }
      $core_url = Phpfox::getParam('core.host');    
 
-        
+        $aVideo['image_path'] = str_replace('%s','',$aVideo['image_path']);
         $this->template()
             ->setTemplate('dvs-iframe-view')
             ->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))

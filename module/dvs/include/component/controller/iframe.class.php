@@ -440,6 +440,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
          }
      $core_url = Phpfox::getParam('core.host');    
 
+     $aVideo['image_path'] = str_replace('%s','',$aVideo['image_path']);
 
         $this->template()
             ->setTemplate('dvs-iframe-view')
