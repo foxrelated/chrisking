@@ -3,7 +3,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 ?>
 <style type="text/css">
 #dvs_bc_player {l}
-        width: 717px;
+        width: 716px;
         height: 526px;
         position: relative;
     {r}
