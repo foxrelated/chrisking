@@ -28,3 +28,17 @@ function newPlayerType(iType) {
 
 
 }
+//$(document).ready(function(){
+//      //  alert('zxzxzx');
+//        $(document).on('change','#ui-multiselect-makes-option-0',function(){
+//            if($(this).is(':checked')){
+//                $(".ui-multiselect-checkboxes input[type='checkbox']").prop("checked",true);
+//                $("#makes option").prop("selected",true);
+//                
+//            }else{
+//                $(".ui-multiselect-checkboxes input[type='checkbox']").prop("checked",false);
+//                $("#makes option").prop("selected",false);
+//            }
+//        //    alert('sad');
+//        })
+//    })
