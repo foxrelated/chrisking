@@ -39,9 +39,16 @@
         height: {$iPlayerHeight}px;
         {/if}
     {r}  
-    .vjs-overlay-buttons {l}
-    display:none !important;
-{r}          
+.vjs-overlay-buttons {l}
+display:none !important;
+{r}  
+.vjs-using-native-controls .vjs-poster,.vjs-using-native-controls .vjs-big-play-button  {l}
+display:inline-block;
+{r}
+.vjs-has-started .vjs-poster,.vjs-has-started .vjs-big-play-button {l}
+display:none !important;
+{r}
+        
 .vjs-overlay {l}
 background:none !important;
 width:100% !important;

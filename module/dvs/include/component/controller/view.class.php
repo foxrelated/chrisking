@@ -320,11 +320,13 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 //                    . '<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
             . '<script type="text/javascript">' . $sDvsJs . '</script>';
 
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' && $aPlayer['player_type'] != "2") {
+        if($aPlayer['player_type'] != "2"){    
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
             $this->template()->assign(array('bSecureConnection' => true));
             $sJavascript .= '<script type="text/javascript" src="//sadmin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
         } else {
             $sJavascript .= '<script type="text/javascript" src="//admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
+        }
         }
         
          if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ){

@@ -97,7 +97,7 @@ margin-top:0 !important;
     {foreach from = $aOverviewVideos key = iKey item = aVideo}
         {if $iKey == 0}
             aPoster = '{$poster_img}';
-            
+            console.log(aPoster);
         {/if}
         aOverviewMediaIds[{$iKey}] = {$aVideo.id};
     {/foreach}

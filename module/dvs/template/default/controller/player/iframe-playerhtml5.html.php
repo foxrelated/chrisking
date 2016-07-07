@@ -55,7 +55,15 @@ color:#{$aPlayer.player_button_icons} !important;
 .vjs-play-progress, .vjs-volume-level {l}
 background: #{$aPlayer.player_progress_bar} !important;
 {r}
+
 {/if}
+.vjs-using-native-controls .vjs-poster,.vjs-using-native-controls .vjs-big-play-button  {l}
+display:inline-block;
+{r}
+.vjs-has-started .vjs-poster,.vjs-has-started .vjs-big-play-button {l}
+display:none !important;
+{r}
+
 /*.vjs-big-play-button {l}
     top: 125px !important;
     left: 280px !important;

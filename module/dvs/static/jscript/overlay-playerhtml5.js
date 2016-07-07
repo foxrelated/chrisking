@@ -148,7 +148,7 @@ videojs("bcv2").ready(function(){
            }
            
            
-           
+           if(allCuePointData){
            if(allCuePointData[0]){
                if(clicked != 1){
             var oCustomVars = {
@@ -192,7 +192,7 @@ videojs("bcv2").ready(function(){
                    clicked = 0;
                }
            }
-           
+           }
            cueChange(cuePointName);
            $('#chapter_container_' + cuePointName).addClass('display selected');
            
@@ -366,7 +366,7 @@ function cueChange(sCuePoint) {
 //    }
 
     if (!bVideoChanged && !urlChanged && !bPreview && bIsDvs) {
-        window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
+//        window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
         urlChanged = true;
  }
 
@@ -688,7 +688,7 @@ function thumbnailClick(iKey) {
 
     if (bIsDvs) {
 
-        resetOverlays();
+//        resetOverlays();
     }
 
     bVideoChanged = true;
