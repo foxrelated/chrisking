@@ -32,8 +32,10 @@
     #bcv2 {l}
         display: block;
         {if $bIsDvs}
-        width: 720px;
-        height: 405px;
+/*        width: 720px;*/
+/*        height: 405px;*/
+          width:100%;
+          height:100%;
         {else}
         width: {$iPlayerWidth}px;
         height: {$iPlayerHeight}px;
