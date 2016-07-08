@@ -32,16 +32,25 @@
     #bcv2 {l}
         display: block;
         {if $bIsDvs}
-        width: 720px;
-        height: 405px;
+/*        width: 720px;*/
+/*        height: 405px;*/
+          width:100%;
+          height:100%;
         {else}
         width: {$iPlayerWidth}px;
         height: {$iPlayerHeight}px;
         {/if}
     {r}  
-    .vjs-overlay-buttons {l}
-    display:none !important;
-{r}          
+.vjs-overlay-buttons {l}
+display:none !important;
+{r}  
+.vjs-using-native-controls .vjs-poster,.vjs-using-native-controls .vjs-big-play-button  {l}
+display:inline-block;
+{r}
+.vjs-has-started .vjs-poster,.vjs-has-started .vjs-big-play-button {l}
+display:none !important;
+{r}
+        
 .vjs-overlay {l}
 background:none !important;
 width:100% !important;

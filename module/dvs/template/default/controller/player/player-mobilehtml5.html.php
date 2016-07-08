@@ -29,6 +29,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     {foreach from = $aOverviewVideos key = iKey item = aVideo}
         {if $iKey == 0}
             aPoster = '{$poster_img}';
+            console.log('hello');
+            console.log(aPoster);
         {/if}
         aOverviewMediaIds[{$iKey}] = {$aVideo.id};
     {/foreach}
@@ -175,6 +177,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         #playlist_wrapper{l}
             width: {$iPlayerWidth}px;
         {r}
+        
+        
        
         
     </style>
@@ -239,7 +243,12 @@ overflow : visible;
 position : fixed !important;
 bottom : 0;
 {r}
-
+.vjs-using-native-controls .vjs-poster,.vjs-using-native-controls .vjs-big-play-button {l}
+display:inline-block;
+{r}
+.vjs-has-started .vjs-poster,.vjs-has-started .vjs-big-play-button {l}
+display:none !important;
+{r}
 
 </style>
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">

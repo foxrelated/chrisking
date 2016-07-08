@@ -86,10 +86,9 @@ videojs("bcv2").ready(function(){
      
 //       myPlayer.one("loadedmetadata",function(){
        myPlayer.on("loadedmetadata",function(){
-          console.log('hello') ;
-          console.log(myPlayer.mediainfo) ;
-          console.log('hello') ;
+         
       if(preRollPlayed){
+          
           $("#chapter_buttons").children().removeClass('selected').addClass('active');
           $("#chapter_buttons").children().removeClass('display').addClass('no_display');
           trackIndex = myPlayer.textTracks().length -1;
@@ -168,7 +167,7 @@ videojs("bcv2").ready(function(){
            }
            }
            
-           
+           if(allCuePointData){
            if(allCuePointData[0]){
            if(clicked != 1){
            var oCustomVars = {
@@ -211,6 +210,7 @@ videojs("bcv2").ready(function(){
                clicked = 0;
            }
         }
+         }
            
            cueChange(cuePointName);
            //$('#chapter_container_' + cuePointName).addClass('display selected');
@@ -314,6 +314,7 @@ videojs("bcv2").ready(function(){
                         console.log('Media: Playing next video');
                     }
                         resetChapters('');
+                        
                         thumbnailClick(currentVideoKey);
                         thumbnailClickDvs();
                   

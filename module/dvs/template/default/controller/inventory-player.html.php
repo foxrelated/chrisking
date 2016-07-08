@@ -54,6 +54,7 @@ width:100% !important;
 padding-top:0 !important;
 top:0 !important;
 {r}
+
     {if !$bIsExternal}    
     .vjs-time-control {l}
     color:#{$aPlayer.player_text}

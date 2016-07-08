@@ -59,15 +59,34 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	{literal}
 	$Behavior.multiSelect = function() {
 	    $("#makes").multiselect({
-	        header: false,
+	        header: true,
+            checkAllText: "Select All",
+            uncheckAllText: "DeSelect all",
 			click: function(event, ui){
+                
 			    $("[id='make_select_" + ui.value + "']").val((ui.checked ? 1 : 0));
 					if (ui.checked) {
 			            iSelectedMakes++;
 			        } else {
 			            iSelectedMakes = iSelectedMakes - 1; ;
 			        }
-			    }
+		   },
+           checkAll: function() {
+            //this._toggleChecked(!0);
+//            this._trigger("checkAll")
+            iSelectedMakes = 0;
+            $(".player_make_select").each(function(){
+             $(this).val(1);
+             iSelectedMakes++;    
+            })
+            
+           },
+           uncheckAll: function() {
+            //this._toggleChecked(!1);
+//            this._trigger("uncheckAll")
+            $(".player_make_select").val(0);
+            iSelectedMakes = 0;
+            },     
 	    });
 	}
 
@@ -79,7 +98,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 	    return window.bIsValid
 	}
+    
 	{/literal}
+    
 </script>
 <form id="add_player" method="post" action="{if $bIsDvs}{url link='dvs.player.add'}{else}{url link='idrive.add'}{/if}" onsubmit="return validateDvsForm();">
 
@@ -123,8 +144,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<li {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
 				<label for="makes">{phrase var='dvs.make'}:</label>
 				<select name="val[makes]" id="makes" onchange="$.ajaxCall('dvs.getFeaturedModels', 'iDvs={$iDvsId}&aMakes=' + $('#makes').val());" multiple="multiple">
+                    
 					{foreach from=$aMakes item=aMake}
-					<option value="{$aMake.make}"{if $bIsEdit && isset($aMake.selected)} selected="selected"{/if}>{$aMake.make}</option>
+					<option value="{$aMake.make}"{if ($bIsEdit && isset($aMake.selected)) || $am.all == "selected"} selected="selected"{/if}>{$aMake.make}</option>
 					{/foreach}
 				</select>
 				{foreach from=$aMakes item=aMake}
