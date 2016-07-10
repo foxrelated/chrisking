@@ -72,7 +72,7 @@
     box-shadow: 0 0 10px #222222;
     border-radius: 10px;
     z-index:10002;
-    top: 33%;
+    top: 25%;
 {r}
 
 #dvs_vin_popup_content {l}

@@ -143,11 +143,6 @@
                         
                         {footer}		
 		</div>
-		{literal}
-<link href="https://calendly.com/assets/external/widget.css" rel="stylesheet">
-<script src="https://calendly.com/assets/external/widget.js" type="text/javascript"></script>
-<script type="text/javascript">Calendly.initBadgeWidget({url: 'https://calendly.com/dealervideoshowroom/get-in-touch', text: 'Need Help? Get in touch!', color: '#00a2ff', branding: true});</script>
-{/literal}
     </body>
 </html>
 {/if}
