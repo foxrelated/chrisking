@@ -235,6 +235,13 @@ videojs("bcv2").ready(function(){
       }  
        
       myPlayer.on("ended",function(){
+          
+          if (navigator.userAgent.match(/(\(iPhone)/)) {
+            if(!preRollPlayed){
+                $('video').get(0).webkitExitFullscreen();
+            }
+           }
+          
           $(".vjs-overlay").hide(); 
           if (bAutoAdvance || preRollAdvance) {
              

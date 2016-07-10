@@ -340,7 +340,8 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
                 'sJavascript' => $sJavascript,
                 'core_url' => $core_url,
                 'ref' => $ref,
-                'poster_img' => Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.pic.brightcove').$aVideo['image_path'],
+//                'poster_img' => Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.pic.brightcove').$aVideo['image_path'],
+                'poster_img' => Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove').$aVideo['video_still_image'],
             ));
     }
 }
