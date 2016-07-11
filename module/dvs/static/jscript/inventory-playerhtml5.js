@@ -674,7 +674,7 @@ function thumbnailClick(iKey) {
 
     if (bIsDvs) {
 
-        resetOverlays();
+//        resetOverlays();
     }
 
     bVideoChanged = true;

@@ -54,6 +54,12 @@ width:100% !important;
 padding-top:0 !important;
 top:0 !important;
 {r}
+.vjs-using-native-controls .vjs-poster,.vjs-using-native-controls .vjs-big-play-button  {l}
+display:inline-block;
+{r}
+.vjs-has-started .vjs-poster,.vjs-has-started .vjs-big-play-button {l}
+display:none !important;
+{r}
 
     {if !$bIsExternal}    
     .vjs-time-control {l}
