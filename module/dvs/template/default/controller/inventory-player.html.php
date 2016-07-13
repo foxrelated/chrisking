@@ -1,3 +1,4 @@
+<meta name="viewport" content="width=device-width, initial-scale=.85, minimum-scale=.8, maximum-scale=1, user-scalable=yes, target-densitydpi=device-dpi" />
 <style type="text/css">
     #dvs_bc_player {l}
     width: {if $sBrowser == 'mobile'}{$iPlayerWidth}{else}720px{/if};
@@ -91,6 +92,7 @@ display:none !important;
 </style>
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">
 <link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'>
+
 <article>
     <section id="video_information">
         <h3 id="video_name">
