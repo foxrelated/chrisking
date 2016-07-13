@@ -1,4 +1,3 @@
-<meta name="viewport" content="width=device-width, initial-scale=.85, minimum-scale=.8, maximum-scale=1, user-scalable=yes, target-densitydpi=device-dpi" />
 <style type="text/css">
     #dvs_bc_player {l}
     width: {if $sBrowser == 'mobile'}{$iPlayerWidth}{else}720px{/if};
