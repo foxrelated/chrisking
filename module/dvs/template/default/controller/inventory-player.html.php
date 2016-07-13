@@ -42,7 +42,7 @@
     display:none !important;
 {r}  
 #video_information h3 {l}
-    color: #fff !important;
+    color: #{$aPlayer.player_text};
     padding:0px;
     margin: 0px;
     margin-left:10px;
