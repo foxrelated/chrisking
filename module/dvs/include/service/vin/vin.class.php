@@ -95,6 +95,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
     }
 
     public function getVins($aVins, $iDvsId, $iWidth, $iHeight) {
+        //var_dump($aVins).' '.$iDvsId; 
         $aQuishVin = array();
         $aFullRows = array();
         $aCompletedRows = array();
@@ -111,9 +112,11 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
             }
         }
 
+
         if (!$aDvs = Phpfox::getService('dvs')->get($iDvsId)) {
             return array($aCompletedRows, array());
         }
+        
 
         $aPlayer = Phpfox::getService('dvs.player')->get($iDvsId);
         $aMakes = array();
@@ -142,6 +145,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
             }
         }
 
+        
         $aRows = $this->database()
             ->select('v.squish_vin_id, v.ed_style_id')
             ->from($this->_sTable, 'v')
@@ -152,6 +156,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
             $aEdStyleIds[] = $aRow['ed_style_id'];
             $aFullRows[$aRow['squish_vin_id']]['ed_style_id'] = $aRow['ed_style_id'];
         }
+        
         $aQuishVin = array();
         foreach($aFullRows as $sKey => $aFullRow) {
             if(!$aFullRow['ed_style_id']) {
@@ -159,7 +164,8 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
             }
         }
 
-        foreach($aQuishVin as $sVin) {
+         
+        foreach($aQuishVin as $sVin) {     // Didn't get called as there are no empty style id for any quish vins
             list($aStyles, $aParams) = $this->getStyleByVin($sVin);
             if(isset($aStyles[0]['id'])) {
                 $this->database()->insert($this->_sTable, array(
@@ -169,8 +175,9 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
                 $aEdStyleIds[] = (string)$aStyles[0]['id'];
                 $aFullRows[$sVin]['ed_style_id'] = (string)$aStyles[0]['id'];
             }
-        }
+        }              
 
+        
         list($aData, $aReferenceIds) = $this->getAllVideoIdByEdStyles($aEdStyleIds);
 
         $aVideos = $this->database()
@@ -288,13 +295,14 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
     public function getAllVideoIdByEdStyles($aEdStyleIds) {
         $sEdStyleIds = implode('/', $aEdStyleIds) . '/';
         $sTargetUrl = 'http://api.wheelstv.co/v1/edstyleid/' . $sEdStyleIds;
+         
         $ch = curl_init($sTargetUrl);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
         $oResponse = curl_exec($ch);
         $oOutput= @json_decode($oResponse);
-
+        
         $aData = array();
         $aReferenceIds = array();
         foreach($oOutput->items as $aItem) {
@@ -307,18 +315,30 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         return array($aData, $aReferenceIds);
     }
 
-    public function getStyleByVin($sVin) {
+    public function getStyleByVin($sVin) {       
         $aParams = array();
         $aStyles = array();
         $sApiKey = 'wztmmwrvnegb6b547asz8u2a';
 
         $sTargetUrl = "https://api.edmunds.com/api/vehicle/v2/squishvins/" . trim($sVin) . "/?fmt=json&api_key=" . $sApiKey;
+        
         $ch = curl_init($sTargetUrl);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         $oResponse = curl_exec($ch);
-
+        
         $oOutput= @json_decode($oResponse);
+        
+        if($oOutput->status == "NOT_FOUND"){
+            $log_file =  PHPFOX_DIR.'module/dvs/vin_log.txt';
+            $log_data = "[".date('Y/m/d h:i:s a', time())."] 404 Error for squish VIN :" . $sVin . ". API source : " . $_SERVER['HTTP_REFERER'] . " \n";
+            
+            $f = fopen($log_file,'a');
+            fwrite($f, $log_data);
+            fclose($f);
+            
+        }
+        
 
         if ($oOutput === null || !isset($oOutput->make)) {
             return array($aStyles, $aParams);

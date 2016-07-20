@@ -5,7 +5,8 @@ if (!window.WTVVIN) {
         screenWidth: 0,
         screenHeight: 0,
         init: function (params) {
-
+            
+            
             this.sApiUrl = params.apiUrl;
             this.iDvsId = params.dvs;
 
@@ -22,6 +23,7 @@ if (!window.WTVVIN) {
             var sAllVin = '';
             var sAllEdstyle = '';
             var x = this.GEBCN('dvs_vin_btn');
+            console.log(x);
             for (i = 0; i < x.length; i++) {
                 sVinId = x[i].getAttribute('vin');
                 sEdstyleId = x[i].getAttribute('edstyleid');

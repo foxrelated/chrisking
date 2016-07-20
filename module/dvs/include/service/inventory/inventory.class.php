@@ -192,6 +192,16 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         $oResponse = curl_exec($ch);
 
         $oOutput= @json_decode($oResponse);
+        
+        if($oOutput->status == "NOT_FOUND"){
+            $log_file =  PHPFOX_DIR.'module/dvs/vin_log.txt';
+            $log_data = "[".date('Y/m/d h:i:s a', time())."] 404 Error for squish VIN :" . $sVin . ". API source : Inventory Update \n";
+            
+            $f = fopen($log_file,'a');
+            fwrite($f, $log_data);
+            fclose($f);
+            
+        }
 
         if ($oOutput === null || !isset($oOutput->make)) {
             return array($aStyles, $aParams);
@@ -271,7 +281,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
             return false;
         }
 
-
+         
         $sFile = '';
         while (false !== ($sTempFile = readdir($oDir))) {
             if ($sTempFile == "." || $sTempFile == "..")
@@ -281,7 +291,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
                 break;
             }
         }
-
+        
         if(!$sFile) {
             die('Could not find VINVENTORY.zip');
             return false;
@@ -291,12 +301,12 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
             die('Could not open VINVENTORY.zip');
             return false;
         }
-
+         
         if (!$fLocal = @fopen(Phpfox::getParam('dvs.csv_folder') . $sFile, 'w')) {
             die('Could not open VINVENTORY.zip');
             return false;
         }
-
+       
         $iRead = 0;
         $iFilesize = filesize("ssh2.sftp://{$oStream}/{$sFile}");
         while ($iRead < $iFilesize && ($iBuffer = fread($fRemote, $iFilesize - $iRead))) {
