@@ -19,7 +19,8 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
             $aBaseUrl = true;
         }
         /*phpmasterminds*/
-        $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
+        $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true, true);
+        $sDvsRequest = $aDvs['title_url'];
 
         $sOverride = ($bSubdomainMode ? $this->request()->get('req3') : $this->request()->get('req4'));
 

@@ -25,12 +25,12 @@ class Dvs_Component_Controller_Dvs_Sitemap extends Phpfox_Component {
 
 		if ($bSubdomain)
 		{
-			$aDvs = Phpfox::getService('dvs')->get($this->request()->get('req1'), true);
+			$aDvs = Phpfox::getService('dvs')->get($this->request()->get('req1'), true, true);
 			$sDvsUrl = Phpfox::getLib('url')->makeUrl($aDvs['title_url']);
 		}
 		else
 		{
-			$aDvs = Phpfox::getService('dvs')->get($this->request()->get('req2'), true);
+			$aDvs = Phpfox::getService('dvs')->get($this->request()->get('req2'), true, true);
 			$sDvsUrl = Phpfox::getLib('url')->makeUrl('dvs') . $aDvs['title_url'] . '/';
 		}
 

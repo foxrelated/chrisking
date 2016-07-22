@@ -19,21 +19,30 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
 		$sDvsRequest = $this->request()->get(($bSubdomainMode ? 'req1' : 'req2'));
 
 		if ($aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true)) {
+
 			if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'sitemap') {
+                //done
 				return Phpfox::getLib('module')->setController('dvs.dvs-sitemap');
 			} else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'share') {
+                //done
 				return Phpfox::getLib('module')->setController('dvs.share');
 			} else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'gallery') {
+                //done
 				return Phpfox::getLib('module')->setController('dvs.gallery');
 			} else if ($this->request()->get($bSubdomainMode ? 'req3' : 'req4') == 'player') {
+
 				return Phpfox::getLib('module')->setController('dvs.player.player');
 			} else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'iframe') {
+                //done
                 return Phpfox::getLib('module')->setController('dvs.iframe');
             } else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'inventory-player') {
+                //done
                 return Phpfox::getLib('module')->setController('dvs.inventory-player');
             } else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'dvs-vdp-iframe') {
+                //done
                 return Phpfox::getLib('module')->setController('dvs.dvs-vdp-iframe');
             } else {
+                //done
 				return Phpfox::getLib('module')->setController('dvs.view');
 			}
 		} else {

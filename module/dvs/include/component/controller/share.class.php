@@ -24,8 +24,8 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 
 		$sDvsTitle = $this->request()->get(($bSubdomainMode ? 'req1' : 'req2'));
 
-		$aDvs = Phpfox::getService('dvs')->get($sDvsTitle, true);
-
+		$aDvs = Phpfox::getService('dvs')->get($sDvsTitle, true, true);
+        $sDvsTitle = $aDvs['title_url'];
 		//Load player data
 		$aPlayer = Phpfox::getService('dvs.player')->get($aDvs['dvs_id']);
 

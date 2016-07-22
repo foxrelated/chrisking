@@ -20,7 +20,7 @@ class Dvs_Component_Controller_Gallery extends Phpfox_Component {
 
 		$sDvsTitle = $this->request()->get(($bSubdomainMode ? 'req1' : 'req2'));
 
-		$aDvs = Phpfox::getService('dvs')->get($sDvsTitle, true);
+		$aDvs = Phpfox::getService('dvs')->get($sDvsTitle, true, true);
 		Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
 
 		//Load player data

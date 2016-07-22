@@ -65,7 +65,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             $aBaseUrl = true;
         }
         /*phpmasterminds*/
-        $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
+        $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true, true);
 
         // Try a short URL
         if (empty($aDvs))
@@ -77,7 +77,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                 $aShortUrl = Phpfox::getService('dvs.shorturl')->get($this->request()->get('req2'));
             }
 
-            $aDvs = Phpfox::getService('dvs')->get($aShortUrl['dvs_id']);
+            $aDvs = Phpfox::getService('dvs')->get($aShortUrl['dvs_id'], false, true);
 
             if ($aShortUrl['video_ref_id'])
             {

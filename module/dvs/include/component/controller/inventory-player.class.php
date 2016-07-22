@@ -30,8 +30,8 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
         $bPreview = false;
 
 
-        $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
-
+        $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true, true);
+        $sDvsRequest = $aDvs['title_url'];
         if (isset($aRows[$sVin]['title_url'])) {
             $sOverride = $aRows[$sVin]['title_url'];
         }

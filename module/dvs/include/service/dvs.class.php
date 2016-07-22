@@ -702,7 +702,7 @@ public function aaasort (&$array, $key) {
 	}
 
 
-	public function get($mDvs, $bUseTitle = false)
+	public function get($mDvs, $bUseTitle = false, $bDeep = false)
 	{
 		if (!$mDvs)
 		{
@@ -733,11 +733,18 @@ public function aaasort (&$array, $key) {
 			->join(Phpfox::getT('user'), 'u', 'u.user_id = d.user_id')
 			->execute('getRow');
 
-        if(isset($aDvs['font_family_id'])) {
+        if (isset($aDvs['cdk_id']) && $aDvs['cdk_id'] > 0 && $bDeep) {
+            $aDvsCdk = $this->get($aDvs['cdk_id'], false, false);
+            if (isset($aDvsCdk['dvs_id'])) {
+                return $aDvsCdk;
+            }
+        }
+
+        if (isset($aDvs['font_family_id'])) {
             $aDvs['font_family'] = Phpfox::getService('dvs.style')->getFontFamily($aDvs['font_family_id']);
         }
 
-        if(isset($aDvs['dealer_id']) && ($aDvs['dealer_id'])) {
+        if (isset($aDvs['dealer_id']) && ($aDvs['dealer_id'])) {
             $aDvs['dealer_id'] = @unserialize($aDvs['dealer_id']);
             if(!is_array($aDvs['dealer_id'])) {
                 $aDvs['dealer_id'] = array();

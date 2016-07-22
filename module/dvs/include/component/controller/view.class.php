@@ -34,15 +34,15 @@ class Dvs_Component_Controller_View extends Phpfox_Component
         if ($this->request()->get('req3') === 'preview') {
             $bPreview = true;
             $this->template()->setHeader(array('preview.css' => 'module_dvs'));
-            $aDvs = Phpfox::getService('dvs')->get($this->request()->get('req4'), false);
+            $aDvs = Phpfox::getService('dvs')->get($this->request()->get('req4'), false, true);
             if ($this->request()->get('req5')) {
                 $aDvs = null;
                 $sDvsRequest = $this->request()->get('req5');
             } else {
-                $aDvs = Phpfox::getService('dvs')->get($this->request()->get('req4'), false);
+                $aDvs = Phpfox::getService('dvs')->get($this->request()->get('req4'), false, true);
             }
         } else {
-            $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
+            $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true, true);
         }
 
         // Try a short URL
@@ -53,7 +53,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                 $aShortUrl = Phpfox::getService('dvs.shorturl')->get($this->request()->get('req2'));
             }
 
-            $aDvs = Phpfox::getService('dvs')->get($aShortUrl['dvs_id']);
+            $aDvs = Phpfox::getService('dvs')->get($aShortUrl['dvs_id'],false, true);
 
             if ($aShortUrl['video_ref_id']) {
                 $aVideo = Phpfox::getService('dvs.video')->get($aShortUrl['video_ref_id']);
