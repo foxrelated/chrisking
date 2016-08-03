@@ -301,7 +301,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</li>
 			</ol>
 			<br />
-			<h3 style="font-size:26px;">Custom ID Settings (optional)</h3>
+			<h1>Custom ID Settings (optional)</h1>
 			<ol>
 			<li>
                 <label for="cdk_web_id">CDK Web ID:</label>
