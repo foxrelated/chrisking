@@ -299,7 +299,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<label for="dealer_specials_url">{phrase var='dvs.dealer_specials_url'}:</label>
 				<input type="url" name="val[specials_url]" value="{value type='input' id='specials_url'}" id="specials_url" size="120" maxlength="300" />
 			</li>
-
+			<li>
+                <label for="cdk_web_id">CDK Web Id:</label>
+                <input type="text" name="val[cdk_id]" value="{value type='input' id='cdk_id'}" id="cdk_id" maxlength=30 />
+            </li>
             <li>
                 <label for="dealer_id">Dealer ID:</label>
                 <input type="text" name="val[dealer_id]" value="{value type='input' id='dealer_id'}" id="dealer_id" size="60" maxlength="255" />
@@ -349,9 +352,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 <input type="radio" name="val[iframe_contact_form]" value="1" {if $bIsEdit && $aForms.iframe_contact_form == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
                 <input type="radio" name="val[iframe_contact_form]" value="0" {if $bIsEdit && $aForms.iframe_contact_form == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
             </li>
-            <li>
-                <label for="cdk_web_id">CDK Web Id:</label>
-                <input type="text" name="val[cdk_id]" value="{value type='input' id='cdk_id'}" id="cdk_id" maxlength=30 /></li>
 		</ol>
 		</fieldset>
 
