@@ -301,18 +301,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</li>
 			</ol>
 			<br />
-			<h3 style="font-size:26px;">Custom ID Settings</h3>
+			<h3 style="font-size:26px;">Custom ID Settings (optional)</h3>
 			<ol>
 			<li>
-                <label for="cdk_web_id">CDK Web ID (optional)</label>
+                <label for="cdk_web_id">CDK Web ID:</label>
                 <input type="text" name="val[cdk_id]" value="{value type='input' id='cdk_id'}" id="cdk_id" maxlength=30 />
             </li>
             <li>
-                <label for="dealer_id">Dealer ID (optional):</label>
+                <label for="dealer_id">Dealer ID:</label>
                 <input type="text" name="val[dealer_id]" value="{value type='input' id='dealer_id'}" id="dealer_id" size="60" maxlength="255" />
             </li>
 			<li>
-				<label for="google_analytics_id">{phrase var='dvs.google_analytics_id'} (optional):</label>
+				<label for="google_analytics_id">{phrase var='dvs.google_analytics_id'}:</label>
 				<input type="text" name="val[dvs_google_id]" value="{value type='input' id='dvs_google_id'}" id="dvs_google_id" size="60" maxlength="20" />
 			</li>
 			{*<li>
