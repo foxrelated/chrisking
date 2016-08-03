@@ -299,16 +299,20 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<label for="dealer_specials_url">{phrase var='dvs.dealer_specials_url'}:</label>
 				<input type="url" name="val[specials_url]" value="{value type='input' id='specials_url'}" id="specials_url" size="120" maxlength="300" />
 			</li>
+			</ol>
+			<br />
+			<h3 style="font-size:26px;">Custom ID Settings</h3>
+			<ol>
 			<li>
-                <label for="cdk_web_id">CDK Web Id:</label>
+                <label for="cdk_web_id">CDK Web ID (optional)</label>
                 <input type="text" name="val[cdk_id]" value="{value type='input' id='cdk_id'}" id="cdk_id" maxlength=30 />
             </li>
             <li>
-                <label for="dealer_id">Dealer ID:</label>
+                <label for="dealer_id">Dealer ID (optional):</label>
                 <input type="text" name="val[dealer_id]" value="{value type='input' id='dealer_id'}" id="dealer_id" size="60" maxlength="255" />
             </li>
 			<li>
-				<label for="google_analytics_id">{phrase var='dvs.google_analytics_id'}:</label>
+				<label for="google_analytics_id">{phrase var='dvs.google_analytics_id'} (optional):</label>
 				<input type="text" name="val[dvs_google_id]" value="{value type='input' id='dvs_google_id'}" id="dvs_google_id" size="60" maxlength="20" />
 			</li>
 			{*<li>
