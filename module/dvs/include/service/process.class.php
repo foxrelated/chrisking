@@ -123,6 +123,17 @@ class Dvs_Service_Process extends Phpfox_Service {
 		$sAddress = Phpfox::getService('dvs')->makeAddress($aDvs['country_child_id'], $aDvs['city'], $aDvs['postal_code'], $aDvs['address']);
 		$aGeoCode = Phpfox::getService('dvs')->geoCode($sAddress);
 
+        if (isset($aDvs['cdk_id']) && ($aDvs['cdk_id'] != '')) {
+            //vdd($aDvs['cdk_id']);
+            $aDvsCdk = Phpfox::getService('dvs')->get($aDvs['cdk_id'], true, false);
+            if (isset($aDvsCdk['dvs_id'])) {
+                $aDvs['cdk_id'] = $aDvsCdk['dvs_id'];
+            } else {
+                $aDvs['cdk_id'] = 0;
+            }
+        } else {
+            $aDvs['cdk_id'] = 0;
+        }
         $aSql = array(
             //'user_id' => Phpfox::getUserId(),
             'dealer_name' => $this->preParse()->clean($aDvs['dealer_name'], 255),

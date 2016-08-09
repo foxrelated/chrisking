@@ -94,6 +94,16 @@ class Dvs_Component_Controller_Settings extends Phpfox_Component {
 
         $aCountries = Phpfox::getService('dvs')->getCountry();
 
+        // THE BIG DEV
+        if (isset($aDvs['cdk_id']) && $aDvs['cdk_id'] > 0) {
+            //vdd($aDvs['cdk_id']);
+            $aDvsCdk = Phpfox::getService('dvs')->get($aDvs['cdk_id'], false, false);
+            $aDvs['cdk_id'] = $aDvsCdk['title_url'];
+        } else {
+            $aDvs['cdk_id'] = '';
+        }
+        // END
+
         $this->template()
 			->setHeader(array(
 				'country.js' => 'module_core',
