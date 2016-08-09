@@ -1,0 +1,18 @@
+[2016/07/20 07:38:30 pm] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/20 07:38:48 pm] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/23 06:47:47 pm] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/23 11:41:51 pm] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/24 11:16:48 am] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/24 11:20:23 am] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/24 11:22:52 am] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/24 11:23:15 am] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/24 11:29:41 am] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/24 11:31:05 am] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/24 11:32:51 am] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/24 11:37:13 am] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/31 08:54:12 am] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/31 09:36:44 am] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/31 09:58:28 am] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/31 10:57:54 am] 404 Error for squish VIN :JM1DKFD7H0. API source : http://wheelstv.net/sandbox/vintest.html 
+[2016/07/31 11:53:17 am] 404 Error for squish VIN :1B7FL26XXS. API source : Inventory Update 
+[2016/07/31 11:53:17 am] 404 Error for squish VIN :1B7GL22XWS. API source : Inventory Update 
