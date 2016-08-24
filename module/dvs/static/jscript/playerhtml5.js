@@ -141,24 +141,40 @@ videojs("bcv2").ready(function(){
                media_begin = 1;
            } 
            if(tt.activeCues[0]){
+               
                var startTime = tt.activeCues[0].startTime;
+               
            }
            if(tt.activeCues[1]){
                var firstStartTime = tt.activeCues[1].startTime;
            }
            
            
+//           console.log('here');
+//           console.log(myPlayer.mediainfo.cue_points);
+              console.log("Active Cuepoints :");
+              console.log(tt.activeCues);
+           console.log(tt.activeCues[0]);
+           console.log(tt.activeCues[1]);
+           console.log(cuePointArr);
            
            if(myPlayer.mediainfo.cue_points[0].time == startTime){
            
            if(firstStartTime){
                
            allCuePointData = getSubArray(cuePointArr,'time',firstStartTime);        
+           }
+           else{ 
+//               allCuePointData = getSubArray(cuePointArr,'time',startTime);    
            }    
            }else{
-           
+
            allCuePointData = getSubArray(cuePointArr,'time',startTime);    
+           
            }
+           
+           
+           
            
            if(allCuePointData){
            if(allCuePointData[0]){
@@ -424,7 +440,9 @@ function getSubArray(targetArray, objProperty, value) {
       objFound = false,
       idxArr = [];
     for (i = 0; i < totalItems; i++) {
+        console.log(targetArray[i][objProperty]+'sdsdsd'+value);
       if (targetArray[i][objProperty] === value) {
+          
         objFound = true;
         idxArr.push(targetArray[i]);
       }
@@ -482,6 +500,7 @@ function changeLights(sCuePoint) {
     }else{
         $('#chapter_buttons button.selected').attr('class', 'watched display');    
     }
+    
     
 
     if (sCuePoint === 'Intro' || sCuePoint === 'Overview')
