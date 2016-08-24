@@ -154,6 +154,7 @@ videojs("bcv2").ready(function(){
            }
            }
            
+           if(allCuePointData){
            if(allCuePointData[0]){
                 if(clicked != 1){
             var oCustomVars = {
@@ -195,6 +196,7 @@ videojs("bcv2").ready(function(){
                    clicked = 0;
                }
            }
+         }
            
            cueChange(cuePointName);
            $('#chapter_container_' + cuePointName).addClass('display selected');
