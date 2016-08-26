@@ -15,7 +15,7 @@ if (!window.WTVDVS) {
 
             delete params.height;
             delete params.width;
-            var iframeUrl = params.rootUrl.replace("http://www",  params.cdkWebId);
+            var iframeUrl = params.rootUrl.replace("www",  params.cdkWebId);
             //var iframeUrl = params.rootUrl + params.cdkWebId + '/';
             iframeUrl = iframeUrl + 'iframe/cdk/';
             var sIframe = '<iframe frameborder="0" width="100%" height="1000px" style="width:100%;height:1000px;" src="' + iframeUrl + 'parent_' + this.encode_base64(encodeURIComponent(sParentUrl)) + '/maxwidth_' + iMaxWidth + '/"></iframe>';
