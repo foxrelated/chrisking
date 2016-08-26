@@ -9,13 +9,13 @@ if (!window.WTVDVS) {
             if(iMaxWidth == 0) {
 	            iMaxWidth = window.innerWidth;
 	            if (iMaxWidth > 980) {
-	            	sWrapperWidth = '980px';
+	            	sWrapperWidth = '980px';t
 	            }
             }
 
             delete params.height;
             delete params.width;
-            var iframeUrl = params.rootUrl.replace("http://www", "htpp://www." + params.cdkWebId);
+            var iframeUrl = params.rootUrl.replace("http://www", "http://www." + params.cdkWebId);
             //var iframeUrl = params.rootUrl + params.cdkWebId + '/';
             iframeUrl = iframeUrl + 'iframe/cdk/';
             var sIframe = '<iframe frameborder="0" width="100%" height="1000px" style="width:100%;height:1000px;" src="' + iframeUrl + 'parent_' + this.encode_base64(encodeURIComponent(sParentUrl)) + '/maxwidth_' + iMaxWidth + '/"></iframe>';
