@@ -304,7 +304,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<h1>Custom ID Settings (optional)</h1>
 			<ol>
 			<li>
-                <label for="cdk_web_id">CDK Web ID:</label>
+                <label for="cdk_id">CDK Web ID:</label>
                 <input type="text" name="val[cdk_id]" value="{value type='input' id='cdk_id'}" id="cdk_id" maxlength=30 />
             </li>
             <li>

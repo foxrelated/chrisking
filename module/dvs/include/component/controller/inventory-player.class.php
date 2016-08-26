@@ -30,8 +30,8 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
         $bPreview = false;
 
 
-        $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true, true);
-        $sDvsRequest = $aDvs['title_url'];
+        $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
+
         if (isset($aRows[$sVin]['title_url'])) {
             $sOverride = $aRows[$sVin]['title_url'];
         }
@@ -248,8 +248,8 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
                 'deactive.css' => 'module_dvs'
             ));
         }
-        
-          /*HTML5 v2 RealIT Services*/
+
+        /*HTML5 v2 RealIT Services*/
         if($aPlayer['player_type'] !="2"){
             $jsFile = 'inventory-player.js';
             $player_type = 1;
@@ -257,13 +257,13 @@ class Dvs_Component_Controller_Inventory_Player extends Phpfox_Component {
             $jsFile = 'inventory-playerhtml5.js';
             $player_type = 2;
         }
-        
+
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ){
-             $ref = "https://";
-         }else{
-             $ref = "http://";
-         }
-     $core_url = Phpfox::getParam('core.host');    
+            $ref = "https://";
+        }else{
+            $ref = "http://";
+        }
+        $core_url = Phpfox::getParam('core.host');
 
         $aVideo['image_path'] = str_replace('%s','',$aVideo['image_path']);
         $this->template()

@@ -57,6 +57,11 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
         {
             $sDvsRequest = $this->request()->get('req2');
         }
+
+        if (($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'iframe')
+            && ($this->request()->get(($bSubdomainMode ? 'req3' : 'req4')) == 'cdk')) {
+            $sDvsRequest = Phpfox::getService('dvs')->getTitleByCdk($sDvsRequest);
+        }
         $bPreview = false;
 
         /*phpmasterminds*/
@@ -95,7 +100,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
         {
             if ($bIsIframe) {
                 list($sOverride, $sNewParentUrl, $sOriginParentUrl, $aExtraParams) = Phpfox::getService('dvs.iframe')->parseUrl($sParentUrl);
-                
+
                 if($aExtraParams['share']) {
                     $sShareSource = $aExtraParams['share'];
                 }
@@ -380,7 +385,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
                     break;
                 case 'video-email':
                     $sShareIframeUrl .='&utm_medium=CRM Video Email Click';
-                    break;    
+                    break;
                 default:
                     $sShareIframeUrl .= '&utm_medium=Direct Link';
                     break;
@@ -420,7 +425,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             . '<script type="text/javascript">' . $sDvsJs . '</script>'
             . '<script type="text/javascript">var bUpdatedShareUrl = true;</script>';
 
-        if($aPlayer['player_type'] != "2"){    
+        if($aPlayer['player_type'] != "2"){
         if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
             $this->template()->assign(array('bSecureConnection' => true));
             $sJavascript .= '<script type="text/javascript" src="//sadmin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
@@ -428,7 +433,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             $sJavascript .= '<script type="text/javascript" src="//admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
         }
         }
-        
+
          /*HTML5 v2 RealIT Services*/
         if($aPlayer['player_type'] !="2"){
             $jsFile = 'iframe-player.js';
@@ -440,7 +445,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
          }else{
              $ref = "http://";
          }
-     $core_url = Phpfox::getParam('core.host');    
+     $core_url = Phpfox::getParam('core.host');
 
      $aVideo['image_path'] = str_replace('%s','',$aVideo['image_path']);
 
