@@ -230,7 +230,7 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
         $sVdpIframeUrl .= '&utm_medium=Overlay Player';
         $sVdpIframeUrl .= '&utm_content=' . str_replace('&', '', $aFirstVideo['name']);
         $sVdpIframeUrl .= '&utm_campaign=DVS Inventory';
-			
+
         if(!$aDvs['is_active']) {
             $this->template()->setHeader('cache', array(
                 'deactive.css' => 'module_dvs'
@@ -248,30 +248,30 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
             . '<script type="text/javascript">' . $sDvsJs . '</script>'
             . '<script type="text/javascript">var bUpdatedShareUrl = true;</script>';
 
-        if($aPlayer['player_type'] != "2"){    
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-            $this->template()->assign(array('bSecureConnection' => true));
-            $sJavascript .= '<script type="text/javascript" src="//sadmin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
-        } else {
-            $sJavascript .= '<script type="text/javascript" src="//admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
-        }
+        if($aPlayer['player_type'] != "2"){
+            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+                $this->template()->assign(array('bSecureConnection' => true));
+                $sJavascript .= '<script type="text/javascript" src="//sadmin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
+            } else {
+                $sJavascript .= '<script type="text/javascript" src="//admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
+            }
         }
 
-         if($aPlayer['player_type'] !="2"){
+        if($aPlayer['player_type'] !="2"){
             $jsFile = 'overlay-player.js';
             $player_type=1;
         }else{
             $jsFile = 'overlay-playerhtml5.js';
             $player_type=2;
         }
-        
+
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ){
-             $ref = "https://";
-         }else{
-             $ref = "http://";
-         }
-     $core_url = Phpfox::getParam('core.host');    
-       $aVideo['image_path'] = str_replace('%s','',$aVideo['image_path']); 
+            $ref = "https://";
+        }else{
+            $ref = "http://";
+        }
+        $core_url = Phpfox::getParam('core.host');
+        $aVideo['image_path'] = str_replace('%s','',$aVideo['image_path']);
         $this->template()
             ->setTemplate('dvs-iframe-view')
             ->setTitle(($aOverrideVideo ? $aDvs['phrase_overrides']['override_page_title_display_video_specified'] : $aDvs['phrase_overrides']['override_page_title_display']))
@@ -299,11 +299,11 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
                 'sDvsRequest' => $sDvsRequest,
                 'sVideoUrl' => $aVideo['video_title_url'],
                 'sVideoThumb' => Phpfox::getLib('image.helper')->display(array(
-                        'server_id' => $aVideo['server_id'],
-                        'path' => 'core.url_file',
-                        'file' => 'brightcove/' . $aVideo['thumbnail_image'],
-                        'return_url' => true
-                    )),
+                    'server_id' => $aVideo['server_id'],
+                    'path' => 'core.url_file',
+                    'file' => 'brightcove/' . $aVideo['thumbnail_image'],
+                    'return_url' => true
+                )),
 
                 'aDvs' => $aDvs,
                 'aBaseUrl' => $aBaseUrl,

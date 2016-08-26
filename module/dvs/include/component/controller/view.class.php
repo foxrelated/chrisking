@@ -97,7 +97,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
         }
 
         $aOverviewVideos = Phpfox::getService('dvs.video')->getOverviewVideos($aDvs['dvs_id']);
-        
+
         //Here we shift array keys to start at 1 so thumbnails play the proper videos when we load a featured video or override video on to the front of the array
         //array_unshift($aOverviewVideos, '');
         //unset($aOverviewVideos[0]);
@@ -181,7 +181,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
         $sLinkBase = Phpfox::getLib('url')->makeUrl((Phpfox::getService('dvs')->getCname() ? Phpfox::getService('dvs')->getCname() : 'dvs'));
         $sLinkBase .= $aFirstVideo['video_title_url'];
-        
+
         $sOverrideLink = "";
         if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
             $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'], $aFirstVideo['video_title_url']);
@@ -192,7 +192,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
         $sOverrideLink = rtrim($sOverrideLink, '/');
 
         //$sThumbnailUrl = Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['thumbnail_image'];
-        
+
         /* new thumb path */
         if (file_exists(PHPFOX_DIR_FILE . "brightcove" . PHPFOX_DS . $aFirstVideo['thumbnail_image'])) {
             $sThumbnailUrl = Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove') . $aFirstVideo['thumbnail_image'];
@@ -320,23 +320,23 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 //                    . '<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false&amp;key=' . Phpfox::getParam('dvs.google_maps_api_key') . '"></script>'
             . '<script type="text/javascript">' . $sDvsJs . '</script>';
 
-        if($aPlayer['player_type'] != "2"){    
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-            $this->template()->assign(array('bSecureConnection' => true));
-            $sJavascript .= '<script type="text/javascript" src="//sadmin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
-        } else {
-            $sJavascript .= '<script type="text/javascript" src="//admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
+        if($aPlayer['player_type'] != "2"){
+            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+                $this->template()->assign(array('bSecureConnection' => true));
+                $sJavascript .= '<script type="text/javascript" src="//sadmin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
+            } else {
+                $sJavascript .= '<script type="text/javascript" src="//admin.brightcove.com/js/BrightcoveExperiences' . ($sBrowser == 'mobile' || $sBrowser == 'ipad' ? '' : '_all') . '.js"></script>';
+            }
         }
+
+        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ){
+            $ref = "https://";
+        }else{
+            $ref = "http://";
         }
-        
-         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ){
-             $ref = "https://";
-         }else{
-             $ref = "http://";
-         }
-     $core_url = Phpfox::getParam('core.host');    
+        $core_url = Phpfox::getParam('core.host');
         //var_dump($aDvs);
-        
+
         /*HTML5 v2 RealIT Services*/
         if($aPlayer['player_type'] !="2"){
             $jsFile = 'player.js';
@@ -417,8 +417,8 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 //                'poster_img' => Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.pic.brightcove').$aVideo['image_path'],
                 'poster_img' => Phpfox::getLib('url')->makeUrl(($bSubdomainMode ? 'www.' : '') . 'file.brightcove').$aVideo['video_still_image'],
             ));
-            
-            
+
+
     }
 }
 
