@@ -713,6 +713,18 @@ class Dvs_Service_Dvs extends Phpfox_Service {
             return $sCdkWebId;
         }
     }
+    public function getIdByCdk($sCdkWebId) {
+        $iDvsId = $this->database()
+            ->select('d.dvs_id')
+            ->from($this->_sTable, 'd')
+            ->where('d.cdk_id = \'' . $sCdkWebId . '\'')
+            ->execute('getField');
+        if ($iDvsId != '') {
+            return $iDvsId;
+        } else {
+            return $sCdkWebId;
+        }
+    }
     public function get($mDvs, $bUseTitle = false)
     {
         if (!$mDvs)

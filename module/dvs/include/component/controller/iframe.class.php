@@ -70,7 +70,7 @@ class Dvs_Component_Controller_Iframe extends Phpfox_Component {
             $aBaseUrl = true;
         }
         /*phpmasterminds*/
-        $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true, true);
+        $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
 
         // Try a short URL
         if (empty($aDvs))
