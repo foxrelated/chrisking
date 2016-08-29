@@ -52,7 +52,7 @@
     {/if}
 {r}
 
-.dvs_vin_loading {l}
+.div[class*="dvs_vin_loading"] {l}
     background: url('{$aStyle.loading_image}') no-repeat scroll top left transparent;
     display: block;
     width: 16px;
