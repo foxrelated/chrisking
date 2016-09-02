@@ -40,6 +40,7 @@ include PHPFOX_DIR . PHPFOX_DS . 'include' . PHPFOX_DS . 'init.inc.php';
 
 if (Phpfox::isModule('dvs')) {
     $bReturn = Phpfox::getService('dvs.inventory')->getPending('style');
+    
     if($bReturn > 0) {
         Phpfox::getService('dvs.inventory')->updateEdStyleId();
         $bReturn = Phpfox::getService('dvs.inventory')->getPending('style');
