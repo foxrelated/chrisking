@@ -20,7 +20,7 @@ timeOut,
 clicked = 0,
 media_begin = 0,
 inventory_new,
-oChapterDivs = {};
+oChapterDivs = {};  
 $(document).ready(function(){
     
 
@@ -91,7 +91,7 @@ videojs("bcv2").ready(function(){
           
           $("#chapter_buttons").children().removeClass('selected').addClass('active');
           $("#chapter_buttons").children().removeClass('display').addClass('no_display');
-          trackIndex = myPlayer.textTracks().length -1;
+          trackIndex = myPlayer.textTracks().length -1;   
           tt = myPlayer.textTracks()[trackIndex];
           cuePointArr = myPlayer.mediainfo.cue_points;
           
@@ -104,7 +104,7 @@ videojs("bcv2").ready(function(){
           
       }else{
           //preRollPlayed = true;
-      }    
+      }              
          tt.oncuechange = function() {
            if((!myPlayer.paused()) && (media_begin == 0))
            {//alert('zz');
@@ -139,7 +139,7 @@ videojs("bcv2").ready(function(){
                     }
                 );
                media_begin = 1;
-           } 
+           }  
            if(tt.activeCues[0]){
                
                var startTime = tt.activeCues[0].startTime;
@@ -150,13 +150,13 @@ videojs("bcv2").ready(function(){
            }
            
            
-//           console.log('here');
+//           console.log('here');              
 //           console.log(myPlayer.mediainfo.cue_points);
-              console.log("Active Cuepoints :");
-              console.log(tt.activeCues);
-           console.log(tt.activeCues[0]);
-           console.log(tt.activeCues[1]);
-           console.log(cuePointArr);
+              //console.log("Active Cuepoints :");
+//              console.log(tt.activeCues);
+//           console.log(tt.activeCues[0]);
+//           console.log(tt.activeCues[1]);
+//           console.log(cuePointArr);
            
            if(myPlayer.mediainfo.cue_points[0].time == startTime){
            
@@ -440,7 +440,7 @@ function getSubArray(targetArray, objProperty, value) {
       objFound = false,
       idxArr = [];
     for (i = 0; i < totalItems; i++) {
-        console.log(targetArray[i][objProperty]+'sdsdsd'+value);
+//        console.log(targetArray[i][objProperty]+'sdsdsd'+value);
       if (targetArray[i][objProperty] === value) {
           
         objFound = true;
@@ -459,7 +459,7 @@ function cueChange(sCuePoint) {
     //if (bVideoChanged) {
         //console.log('hello');
         currentCuePoint = sCuePoint;
-        sCurrentCuePoint = currentCuePoint;
+        sCurrentCuePoint = currentCuePoint;    
         changeLights(sCuePoint);
     //}
     //else
