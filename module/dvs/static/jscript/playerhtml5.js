@@ -313,7 +313,7 @@ videojs("bcv2").ready(function(){
            var cueName = this.id;
            cueName = cueName.replace('chapter_container_','');
            if(currentCuePoint != cueName){
-            $(".vjs-overlay").hide();         
+//            $(".vjs-overlay").hide();         
            } 
            changeCuePoint(cueName);
        });
