@@ -6,12 +6,17 @@ class Dvs_Component_Controller_VIN_Script extends Phpfox_Component {
         $iScreenHeight = $this->request()->get('height');
         $iScreenWidth = $this->request()->get('width');
         $iDvsId = $this->request()->get('id');
+        $bLoadByCdk = false;
+        if ($iDvsId == '') {
+            $sDvsCdk = $this->request()->get('cdk');
+            $iDvsId = Phpfox::getService('dvs')->getIdByCdk($sDvsCdk);
+            $bLoadByCdk = true;
+        }
         $sAllVin = $this->request()->get('vin');
         $sAllEdStyle = $this->request()->get('edstyle');
         $aRows = array();
         $aVins = array();
         $aEdStyles = array();
-
         if ($sAllVin) {
             $aVins = explode(',', $sAllVin);
             list($aRows, $aDvs) = Phpfox::getService('dvs.vin')->getVins($aVins, $iDvsId, $iScreenWidth, $iScreenHeight);
@@ -34,7 +39,8 @@ class Dvs_Component_Controller_VIN_Script extends Phpfox_Component {
             'aDvs' => $aDvs,
             'aRows' => $aRows,
             'iTotalVin' => count($aVins) + count($aEdStyles),
-            'sButtonText' => str_replace("'", "\\'", $aDvs['vin_button_label'])
+            'sButtonText' => str_replace("'", "\\'", $aDvs['vin_button_label']),
+            'bLoadByCdk' => $bLoadByCdk,
         ));
 
         if($aDvs['vdp_file_name']) {
