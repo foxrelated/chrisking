@@ -149,7 +149,7 @@ videojs("bcv2").ready(function(){
            }
            if(allCuePointData){
            if(allCuePointData[0]){
-               $(".vjs-overlay").hide();
+//               $(".vjs-overlay").hide();
            cuePointName = allCuePointData[0].name;    
            }
            }
@@ -290,6 +290,9 @@ videojs("bcv2").ready(function(){
            $(".vjs-custom-overlay").remove();
            var cueName = this.id;
            cueName = cueName.replace('chapter_container_','');
+           if(currentCuePoint != cueName){
+//            $(".vjs-overlay").hide();         
+           }
            changeCuePoint(cueName);
        });
        //$(".playlist_carousel_image_link").on('click',function(){
@@ -368,7 +371,8 @@ function getSubArray(targetArray, objProperty, value) {
   };
       
 function cueChange(sCuePoint) {
-    //if (currentCuePoint !== sCuePoint || bVideoChanged) {
+    //if (currentCuePoint !== sCuePoint || bVideoChanged) { 
+     
         currentCuePoint = sCuePoint;
         sCurrentCuePoint = currentCuePoint;
         

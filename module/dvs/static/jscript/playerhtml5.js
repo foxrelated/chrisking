@@ -1,4 +1,3 @@
-//bDebug = false;
 var myPlayer;
 var sPlayerName = "DVS Player";
 var bVideoChanged=false,
@@ -19,6 +18,7 @@ thumbkey = -1,
 timeOut,
 clicked = 0,
 media_begin = 0,
+//st,icst1start,icst1end,icst2start,icst2end,icst3start,icst3end,
 inventory_new,
 oChapterDivs = {};  
 $(document).ready(function(){
@@ -26,9 +26,6 @@ $(document).ready(function(){
 
 videojs("bcv2").ready(function(){
       myPlayer = this;
-      
-     
-      
       var cuePointArr=[];
       var allCuePointData,
       
@@ -55,22 +52,17 @@ videojs("bcv2").ready(function(){
     if ( typeof sendToGoogle == 'function' ) { 
      sendToGoogle(sPlayerName, 'Player', 'Player Loaded');   
     }
-     
      if(bPreRoll){
-         
-         
          if(aPoster != ''){
          jQuery(".vjs-poster").removeClass('vjs-hidden');
          jQuery(".vjs-poster").css('background-image','url("'+aPoster+'")');    
          }
-         
          var preRollPlayed = false;
          var preRollAdvance = true;
      }else{
          var preRollPlayed = true;
      } 
      
-    
      if(preRollPlayed){
      if (bDebug) 
      {
@@ -87,7 +79,7 @@ videojs("bcv2").ready(function(){
 //       myPlayer.one("loadedmetadata",function(){
        myPlayer.on("loadedmetadata",function(){
          
-      if(preRollPlayed){
+         if(preRollPlayed){
           
           $("#chapter_buttons").children().removeClass('selected').addClass('active');
           $("#chapter_buttons").children().removeClass('display').addClass('no_display');
@@ -101,10 +93,9 @@ videojs("bcv2").ready(function(){
             }
             $("#chapter_container_Get_Price").removeClass('no_display').addClass('display');
           
-          
-      }else{
-          //preRollPlayed = true;
-      }              
+          }else{
+              //preRollPlayed = true;
+          }              
          tt.oncuechange = function() {
            if((!myPlayer.paused()) && (media_begin == 0))
            {//alert('zz');
@@ -140,45 +131,41 @@ videojs("bcv2").ready(function(){
                 );
                media_begin = 1;
            }  
+//           if(tt.activeCues && tt.activeCues[0]){
            if(tt.activeCues[0]){
                
                var startTime = tt.activeCues[0].startTime;
                
            }
+//           if(tt.activeCues && tt.activeCues[1]){
            if(tt.activeCues[1]){
                var firstStartTime = tt.activeCues[1].startTime;
            }
            
-           
-//           console.log('here');              
-//           console.log(myPlayer.mediainfo.cue_points);
-              //console.log("Active Cuepoints :");
-//              console.log(tt.activeCues);
-//           console.log(tt.activeCues[0]);
-//           console.log(tt.activeCues[1]);
-//           console.log(cuePointArr);
+ 
            
            if(myPlayer.mediainfo.cue_points[0].time == startTime){
-           
            if(firstStartTime){
-               
            allCuePointData = getSubArray(cuePointArr,'time',firstStartTime);        
            }
-           else{ 
-//               allCuePointData = getSubArray(cuePointArr,'time',startTime);    
-           }    
            }else{
-
            allCuePointData = getSubArray(cuePointArr,'time',startTime);    
-           
            }
-           
-           
-           
-           
            if(allCuePointData){
            if(allCuePointData[0]){
-              $(".vjs-overlay").hide();
+              // 
+//                st = parseFloat(allCuePointData[0].startTime);
+//               icst1start = parseFloat(iCustomOverlay1Start); 
+//               icst1end = parseFloat(iCustomOverlay1Duration+iCustomOverlay1Start);
+//               icst2start = parseFloat(iCustomOverlay2Start); 
+//               icst2end = parseFloat(iCustomOverlay2Duration+iCustomOverlay2Start);
+//               icst3start = parseFloat(iCustomOverlay3Start); 
+//               icst3end = parseFloat(iCustomOverlay3Duration+iCustomOverlay3Start);
+//               
+//               if(((st < icst1start) || (st > icst1end)) && ((st < icst2start) || (st > icst2end)) && ((st < icst3start) || (st > icst3end))){
+//               $(".vjs-overlay").hide();     
+//               }
+//           
            cuePointName = allCuePointData[0].name;    
            }
            }
@@ -229,20 +216,20 @@ videojs("bcv2").ready(function(){
          }
            
            cueChange(cuePointName);
-           //$('#chapter_container_' + cuePointName).addClass('display selected');
+           //!-
+           $('#chapter_container_' + cuePointName).addClass('display selected');
+           $(".vjs-loading-spinner").hide();
+           ///-!
           }    
-       
-//       alert('asd'+inventory_new);
+ 
        }); 
        
        if(!bAutoAdvance && inventory_btn){
-           
        myPlayer.customEndscreen({
         "content": "<a href="+inventory_btn+" class='dvs_inventory_link' id='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
       })    
        }
        
-      
         myPlayer.overlay({
             //content: bCustomOverlay1Content,
             overlays: [{
@@ -263,41 +250,13 @@ videojs("bcv2").ready(function(){
             }]
           });
 
-      //myPlayer.on("timeupdate",function(){
-         // if(!preRollPlayed){
-          //    myPlayer.addClass("testClass");
-              //$(".vjs-text-track-display")
-      //})   
       if(!preRollPlayed && preRollUrl != ''){ 
       $("#bcv2 > :not(.vjs-control-bar):not(.vjs-big-play-button)").on("click",function(){
         window.open(preRollUrl, '_blank');
        });
       } 
       
-      myPlayer.on("userinactive",function(){
-         // myPlayer.controls(false);
-      });
-      myPlayer.on("useractive",function(){
-          //window.clearTimeout(timeOut);  
-          //$("#bcv2").removeClass("vjs-user-inactive");
-          //myPlayer.removeClass("vjs-user-inactive");
-          //myPlayer.addClass("vjs-user-active");
-          
-          
-        // timeOut = window.setTimeout(function(){
-              //myPlayer.removeClass("vjs-user-active");
-            //  myPlayer.addClass("vjs-user-inactive");
-              
-             // myPlayer.trigger("userinactive");
-             // myPlayer.controls(false);
-            //myPlayer.addClass('vjs-controls-disabled'); 
-           // console.log('inactive');
-       //   }, 1000);
-          
-      }); 
-      
-       
-       myPlayer.on("ended",function(){
+      myPlayer.on("ended",function(){
        
            if (navigator.userAgent.match(/(\(iPhone)/)) {
             if(!preRollPlayed){
@@ -353,6 +312,9 @@ videojs("bcv2").ready(function(){
            $(".vjs-custom-overlay").remove();
            var cueName = this.id;
            cueName = cueName.replace('chapter_container_','');
+           if(currentCuePoint != cueName){
+//            $(".vjs-overlay").hide();         
+           } 
            changeCuePoint(cueName);
        });
        //$(".playlist_carousel_image_link").on('click',function(){
@@ -371,25 +333,6 @@ videojs("bcv2").ready(function(){
        $("#chapter_container_Get_Price").on('click',function(){
            getPrice();
        });
-      
- //function clearoverlays(tm){
-//     if(bCustomOverlay1){
-//         if(iCustomOverlay1Start != tm){
-//             $(".vjs-overlay").hide();
-//         }
-//     }
-//     if(bCustomOverlay2){
-//         if(iCustomOverlay2Start != tm){
-//             $(".vjs-overlay").hide();
-//         }
-//     }if(bCustomOverlay3){
-//         if(iCustomOverlay3Start != tm){
-//             $(".vjs-overlay").hide();
-//         }
-//     }
-// }      
-       
- //function watchVideoSelect(aVideoSelectMediaIds) {alert('called');alert('called');
  watchVideoSelect = function(aVideoSelectMediaIds) {
     //bIgnoreAutoPlaySetting = true;
     bVideoChanged = true;
@@ -440,24 +383,17 @@ function getSubArray(targetArray, objProperty, value) {
       objFound = false,
       idxArr = [];
     for (i = 0; i < totalItems; i++) {
-//        console.log(targetArray[i][objProperty]+'sdsdsd'+value);
       if (targetArray[i][objProperty] === value) {
-          
         objFound = true;
         idxArr.push(targetArray[i]);
       }
     }
     return idxArr;
   };
-
- //function hideControls(){
-//     myPlayer.controls(false);
-// }
-      
+ 
 function cueChange(sCuePoint) {
     //if (currentCuePoint !== sCuePoint || bVideoChanged) {
-    //if (bVideoChanged) {
-        //console.log('hello');
+        
         currentCuePoint = sCuePoint;
         sCurrentCuePoint = currentCuePoint;    
         changeLights(sCuePoint);
@@ -474,22 +410,7 @@ function cueChange(sCuePoint) {
         urlChanged = true;
  }
 
-    //if (sCuePoint === 'Post-roll') {
-//        // Handle chapter light states
-//        // Mediaevent "complete" doesn't fire on replays, so we need to make sure chapter lights are reset on a video replay here
-//        if (bDebug) {
-//            console.log('Player: Resetting chapter lights');
-//        }
-//
-//        $.each(oChapterDivs, function(sChapter, sHtml) {
-//            // Is the chapter button we are setting to display shown before the video ended?
-//            if ($('#chapter_container_' + sChapter).hasClass('display'))
-//            {
-//                $('#chapter_container_' + sChapter).attr('class', 'display disabled');
-//            }
-//
-//        });
-//    }
+
 }
 
 function changeLights(sCuePoint) {
@@ -772,8 +693,9 @@ function playVideo(mkey,autoplay){
       myPlayer.catalog.getVideo(aMediaIds[mkey], function(error,video) {
         //deal with error
         myPlayer.catalog.load(video);
-        $(".vjs-loading-spinner").hide();
+        
         loadVideo(mkey);
+        $(".vjs-loading-spinner").hide();
         //seek(0);
        if(autoplay){
         myPlayer.play();
@@ -782,12 +704,9 @@ function playVideo(mkey,autoplay){
         //console.log(aMediaIds[0]);
         //currentVideoKey = myPlayer.mediainfo.id;
         currentVideoKey = mkey;
-        $(".vjs-loading-spinner").hide();
-        
         });
 }      
-function thumbnailClick(iKey) {
-   
+function thumbnailClick(iKey) {           
     if (bDebug) {
         console.log('Player: Playlist Thumbnail Click: #' + iKey);
     }
