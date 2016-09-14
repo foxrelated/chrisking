@@ -17,12 +17,6 @@ class Dvs_Component_Controller_Vin_Style extends Phpfox_Component {
         );
 
         $iDvsId = $this->request()->get('id');
-        $bLoadByCdk = false;
-        if ($iDvsId == '') {
-            $sDvsCdk = $this->request()->get('cdk');
-            $iDvsId = Phpfox::getService('dvs')->getIdByCdk($sDvsCdk);
-            $bLoadByCdk = true;
-        }
         if ($aDvs = Phpfox::getService('dvs')->get($iDvsId)) {
             $aStyle['vin_top_gradient'] = '#' . $aDvs['vin_top_gradient'];
             $aStyle['vin_bottom_gradient'] = '#' . $aDvs['vin_bottom_gradient'];
@@ -76,8 +70,7 @@ class Dvs_Component_Controller_Vin_Style extends Phpfox_Component {
                 'theme' => 'layout/thickbox_bg.png',
                 'return_url' => true
             )),
-            'aDvs' => $aDvs,
-            'bLoadByCdk' => $bLoadByCdk,
+            'aDvs' => $aDvs
         ));
 
         $lastModified = filemtime(PHPFOX_DIR . 'module' . PHPFOX_DS . 'dvs' . PHPFOX_DS . 'include' . PHPFOX_DS . 'component' . PHPFOX_DS . 'controller' . PHPFOX_DS . 'vin' . PHPFOX_DS . 'style.class.php');
