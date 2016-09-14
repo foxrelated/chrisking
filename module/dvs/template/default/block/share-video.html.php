@@ -125,7 +125,7 @@
                         {/if}
                     </td>
                     </tr>
-                    {if Phpfox::isAdmin()}
+                    
                     <tr>
                     <td>
                         QR Code Link
@@ -173,7 +173,7 @@
                         {/if}
                     </td>
                     </tr>
-                    {/if}
+                    
                     </table>
                 </td>
             </tr>
