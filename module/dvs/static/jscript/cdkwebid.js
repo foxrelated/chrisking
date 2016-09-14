@@ -4,7 +4,6 @@ if (!window.CDKDVS) {
         iDvsId: 0,
         screenWidth: 0,
         screenHeight: 0,
-        offsetWidth: 0,
         render_iframe:function (params) {
             var sParentUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + window.location.search;
             var height = params.height, width = params.width;
