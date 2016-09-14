@@ -5,8 +5,7 @@ if (!window.WTVVIN) {
         screenWidth: 0,
         screenHeight: 0,
         init: function (params) {
-            
-            
+
             this.sApiUrl = params.apiUrl;
             this.iDvsId = params.dvs;
 
@@ -19,32 +18,25 @@ if (!window.WTVVIN) {
             } else {
                 var sScriptUrl = params.styleUrl.replace('vin/style/id', 'vin/script/id');
             }
-              
+
             var sAllVin = '';
             var sAllEdstyle = '';
             var x = this.GEBCN('dvs_vin_btn');
-
             for (i = 0; i < x.length; i++) {
-
                 sVinId = x[i].getAttribute('vin');
                 sEdstyleId = x[i].getAttribute('edstyleid');
 
                 var sCurrentClass = x[i].getAttribute('class');
-                
                 if (sVinId) {
                     sAllVin += sVinId + ',';
                     x[i].setAttribute('id', 'dvs_vin_btn_' + sVinId + '_' + i);
-                    x[i].setAttribute('class', sCurrentClass + ' dvs_vin_btn_' + sVinId + ' dvs_vin_al');    
-                    
-                    
+                    x[i].setAttribute('class', sCurrentClass + ' dvs_vin_btn_' + sVinId);
                 } else {
                     sAllEdstyle += sEdstyleId + ',';
                     x[i].setAttribute('id', 'dvs_vin_btn_' + sEdstyleId + '_' + i);
-                    x[i].setAttribute('class', sCurrentClass + ' dvs_vin_btn_' + sEdstyleId + ' dvs_vin_al');    
-                    
+                    x[i].setAttribute('class', sCurrentClass + ' dvs_vin_btn_' + sEdstyleId);
                 }
-                 
-                 
+
                 var aLink = document.createElement('a');
                 aLink.style.display = 'none';
                 aLink.setAttribute('href', '#');
@@ -205,11 +197,6 @@ if (!window.WTVVIN) {
                 return false;
             }
             return false;
-        },
-        
-        
-            
-        
-        
+        }
     }
 }

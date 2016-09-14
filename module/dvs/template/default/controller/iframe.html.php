@@ -145,7 +145,7 @@
         </section>
         <div class="clear"></div>
         {else}
-        {*if $aPlayer.player_type != "2"*}
+        {if $aPlayer.player_type != "2"}
         <section id="share_links">
             <input type="hidden" value="{$sNewParentUrl}" id="parent_url">
             <input type="hidden" value="{$sVideoUrl}" id="video_url">
@@ -184,7 +184,7 @@
                 </tr>
             </table>
         </section>
-        {*/if*}
+        {/if}
         {/if}
         {/if}
     </article>
