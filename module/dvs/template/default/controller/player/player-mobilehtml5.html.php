@@ -252,8 +252,7 @@ display:none !important;
 
 </style>
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">
-<!--<link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'>-->
-<link href="//players.brightcove.net/videojs-overlay/1/videojs-overlay.css" rel='stylesheet'>
+<link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'>
 
 <div id="dvs_player_container_mobile">
     {if ($bIsDvs && $aOverviewVideos) || (!$bIsDvs && $aVideos)}
@@ -281,5 +280,4 @@ display:none !important;
 </div>
 <script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js"></script> 
 <script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.min.js"></script>
-<!--<script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"></script>-->
-<script src="//players.brightcove.net/videojs-overlay/1/videojs-overlay.js"></script>
+<script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"></script>

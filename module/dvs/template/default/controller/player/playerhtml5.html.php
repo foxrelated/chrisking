@@ -70,8 +70,7 @@ margin-top:0 !important;
 
 </style>
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">
-<!--<link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'>-->
-<link href="//players.brightcove.net/videojs-overlay/1/videojs-overlay.css" rel='stylesheet'>
+<link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'>
 
 {if !empty($sJavascript)}{$sJavascript}{/if}
 <script type="text/javascript">
@@ -305,8 +304,7 @@ function enableVideoSelectCarousel(){l}
 {/if}
 
 {/if}
-<!--<video id="bcv2" data-account="607012070001" data-player="0d15f8a3-b382-44ca-a53b-51870dd2ad3f" data-embed="default" class="video-js" controls="true"></video>-->
-<video id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls="true"></video>
+<video id="bcv2" data-account="607012070001" data-player="0d15f8a3-b382-44ca-a53b-51870dd2ad3f" data-embed="default" class="video-js" controls="true"></video>
  
 <section id="playlist_wrapper">
         <button class="prev playlist-button">&lt;</button>
@@ -366,9 +364,7 @@ function enableVideoSelectCarousel(){l}
     {/if}
 </section>
 
-<!--<script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js"></script> -->
-<script src="//players.brightcove.net/607012070001/default_default/index.min.js"></script> 
+<script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js"></script> 
 <script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.min.js"></script>
-<!--<script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"></script>-->
-<script src="//players.brightcove.net/videojs-overlay/1/videojs-overlay.js"></script>
+<script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"></script>
 
