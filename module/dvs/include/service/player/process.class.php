@@ -77,6 +77,11 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 			'custom_overlay_3_url' => $oParseInput->clean($aVals['custom_overlay_3_url'], 255),
 			'custom_overlay_3_start' => (int) $aVals['custom_overlay_3_start'],
 			'custom_overlay_3_duration' => (int) $aVals['custom_overlay_3_duration'],
+            'video_endscreen_iframe' => (int) $aVals['video_endscreen_iframe'],
+            'video_endscreen_overlay' => (int) $aVals['video_endscreen_overlay'],
+            'video_endscreen_inventory' => (int) $aVals['video_endscreen_inventory'],
+            'video_endscreen_mobile' => (int) $aVals['video_endscreen_mobile'],
+            'video_endscreen_player' => (int) $aVals['video_endscreen_player'],
 			'timestamp' => PHPFOX_TIME
 		));
 
@@ -170,6 +175,11 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 					'custom_overlay_3_url' => $oParseInput->clean($aVals['custom_overlay_3_url'], 255),
 					'custom_overlay_3_start' => (int) $aVals['custom_overlay_3_start'],
 					'custom_overlay_3_duration' => (int) $aVals['custom_overlay_3_duration'],
+                    'video_endscreen_iframe' => (int) $aVals['video_endscreen_iframe'],
+                    'video_endscreen_overlay' => (int) $aVals['video_endscreen_overlay'],
+                    'video_endscreen_inventory' => (int) $aVals['video_endscreen_inventory'],
+                    'video_endscreen_mobile' => (int) $aVals['video_endscreen_mobile'],
+                    'video_endscreen_player' => (int) $aVals['video_endscreen_player'],
 					'timestamp' => PHPFOX_TIME
 						), 'player_id =' . (int) $aVals['player_id']);
 

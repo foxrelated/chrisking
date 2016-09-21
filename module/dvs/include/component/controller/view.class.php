@@ -133,7 +133,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
         if (!$bIsSetFirstVideo) {
             $aFirstVideo = $aOverviewVideos[0];
-        }
+        }                         
         /*phpmasterminds Edited for sort in gallery and footer starts*/
         /*foreach($aOverviewVideos as $ik=>$aVal)
         {

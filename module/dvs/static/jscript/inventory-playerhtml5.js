@@ -18,10 +18,15 @@ inventory_new,
 textOverlayClick,
 customImageOverlayClick,
 thumbkey = -1,
+aNewVideoTitle,
+interval,
+fck=0,
 oChapterDivs = {};
 
 $(document).ready(function(){
-
+$(document).on('click','a#endscr_cform',function(){
+    $("#chapter_container_Get_Price").trigger('click');
+})
 videojs("bcv2").ready(function(){
       myPlayer = this;
       var cuePointArr=[],
@@ -199,9 +204,17 @@ videojs("bcv2").ready(function(){
            
           }    
        }); 
-       if(!bAutoAdvance && inventory_btn){
+       
+       
+       if(endscreen_player == 1){
+       if(bAutoAdvance){
+        var endscr_bottom_nvideo = '<h4 class="endscr_bottom_nvideo"><p>Next video starts in <span id="nvideo_timer">5</span>:</p><p id="nvideo_title"></p></h4>';    
+        }else{
+        var endscr_bottom_nvideo = '';        
+        }
        myPlayer.customEndscreen({
-        "content": "<a href="+inventory_btn+" class='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
+//        "content": "<a href="+inventory_btn+" class='dvs_inventory_link' id='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
+        "content": '<h4 class="endscr_title">Next steps...</h4><p><a href='+inventory_btn+' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Top Menu Clicks\');" rel="nofollow" target="_parent">'+inventory_text+'</a></p> <p><a href="javascript:void(0);" id="endscr_cform" class="endscr_btn">Contact Dealer</a></p>'+endscr_bottom_nvideo
       })    
        }
        
@@ -252,7 +265,10 @@ videojs("bcv2").ready(function(){
                    $("#bcv2> :not(.vjs-control-bar):not(.vjs-big-play-button)").off();
                    preRollPlayed = true;
                }else{
-                currentVideoKey++; 
+                if(fck == 0){
+                currentVideoKey++;     
+                fck = 1;
+                } 
                   if (bDebug) {
                     console.log('Player: Auto Advance enabled. Advancing to Video key: ' + currentVideoKey);
                 }
@@ -262,12 +278,44 @@ videojs("bcv2").ready(function(){
 
               
                 if (aMediaIds[currentVideoKey]) {
-                    if (bDebug) {
+                    
+                     if(endscreen_player == 1){ 
+                    myPlayer.catalog.getVideo(aMediaIds[currentVideoKey], function(error,video) {
+                          
+                           aNewVideoTitle = video.custom_fields;
+                           $("#nvideo_title").html(aNewVideoTitle.year+" "+aNewVideoTitle.make+" "+aNewVideoTitle.model);
+                        });
+                    }
+                    
+                    if(bAutoAdvance && endscreen_player == 1){
+                       var counter = 5;
+                       interval = setInterval(function() {
+                           
+                            counter--;
+                            $("#nvideo_timer").html(counter);
+                            
+                            // Display 'counter' wherever you want to display it.
+                            if (counter == 0) {
+                                if (bDebug) {
+                                    console.log('Media: Playing next video');
+                                }
+                                resetChapters('');
+                                thumbnailClick(currentVideoKey);
+                                thumbnailClickDvs();   
+                                clearInterval(interval)
+                            }
+                        }, 1000);
+ 
+                    }else{
+                     if (bDebug) {
                         console.log('Media: Playing next video');
                     }
                         resetChapters('');
                         thumbnailClick(currentVideoKey);
-                        thumbnailClickDvs();
+                        thumbnailClickDvs();   
+                    }
+                    
+                    
                   
                 }
             }//else{
@@ -280,6 +328,7 @@ videojs("bcv2").ready(function(){
        }); 
        
        $("#chapter_buttons button").not("#chapter_container_Get_Price").on('click',function(){
+           clearInterval(interval);
            $(".vjs-custom-overlay").remove();
            var cueName = this.id;
            cueName = cueName.replace('chapter_container_','');
@@ -290,7 +339,7 @@ videojs("bcv2").ready(function(){
        });
        //$(".playlist_carousel_image_link").on('click',function(){
        $(document).on('click',".playlist_carousel_image_link",function(){
-           
+           clearInterval(interval);
            var currentVidId = this.id;
            currentVideo =  currentVidId.replace('thumbnail_link_','');
            thumbnailClick(currentVideo);
@@ -300,6 +349,8 @@ videojs("bcv2").ready(function(){
            //}
        })
        $("#chapter_container_Get_Price").on('click',function(){
+           clearInterval(interval);
+           $(".endscr_bottom_nvideo").hide();
            getPrice();
        });
   
@@ -307,6 +358,7 @@ videojs("bcv2").ready(function(){
     //bIgnoreAutoPlaySetting = true;
     bVideoChanged = true;
     aMediaIds = aVideoSelectMediaIds;
+    clearInterval(interval);
     $(".vjs-overlay").hide();
     $(".vjs-custom-overlay").hide();
     resetChapters('');
@@ -701,6 +753,7 @@ playVideo(iKey,true);
     thumbkey = iKey;
     myPlayer.play();
 }
+fck = 0;
     return false;
 }
 
@@ -744,7 +797,7 @@ getPriceOverlayClick = function() {
 });
 
 $(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
-    jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a").attr('href',inventory_new);
+    jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#dvs_inventory_link").attr('href',inventory_new);
 });
 });
 

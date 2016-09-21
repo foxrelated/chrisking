@@ -20,7 +20,59 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         width: {$iPlayerWidth}px;
         height: {$iPlayerHeight}px;
         {/if}
-    {r}  
+    {r} 
+
+
+.vjs-ended .vjs-custom-overlay{l}
+    background-color:transparent;  
+    padding:0;
+{r}
+.endscr_title,.endscr_bottom_nvideo{l}
+color:#fff;
+font-size:20px;    
+margin-bottom:10px;
+{r}
+.vjs-custom-overlay{l}
+margin-top:85px;
+{r}
+.vjs-custom-overlay p{l}
+margin-top:20px;
+{r}
+
+.vjs-custom-overlay p a{l}
+padding: 8px 25px;
+background-color:#{$aDvs.button_background};
+border:1px solid #{$aDvs.button_border};
+background-image: -webkit-linear-gradient(top, #{$aDvs.button_top_gradient}, #{$aDvs.button_bottom_gradient}); */
+background-image: -moz-linear-gradient( center top, #{$aDvs.button_top_gradient} 5%, #{$aDvs.button_bottom_gradient} 100% );
+background-image: -ms-linear-gradient( bottom, #{$aDvs.button_top_gradient} 0%, #{$aDvs.button_bottom_gradient} 100% );
+background-image: linear-gradient(to bottom, #{$aDvs.button_top_gradient} 0%, #{$aDvs.button_bottom_gradient} 100% );
+background-image: -o-linear-gradient(bottom, #{$aDvs.button_top_gradient} 0%, #{$aDvs.button_bottom_gradient} 100% );
+color:#{$aDvs.button_text};
+font-size:20px;
+border-radius:10px;
+{r}
+.vjs-custom-overlay p a:hover{l}
+background-image: -webkit-linear-gradient(top, #{$aDvs.button_bottom_gradient}, #{$aDvs.button_top_gradient});
+background-image: -moz-linear-gradient(center top, #{$aDvs.button_bottom_gradient} 5%, #{$aDvs.button_top_gradient} 100%);
+background-image: -ms-linear-gradient(bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
+background-image: linear-gradient(to bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
+background-image: -o-linear-gradient(bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
+{r}                          
+
+.endscr_bottom_nvideo{l}
+     position: absolute;
+    bottom: 50px;
+    width: 100%;
+    text-align: center;
+
+{r}
+.endscr_bottom_nvideo #nvideo_title{l}
+ font-size:17px;
+ margin-top:5px;
+{r}    
+    
+     
 #overview_playlist {l}
 height: 110px !important;
 {r}           
@@ -63,7 +115,12 @@ display:inline-block;
 .vjs-has-started .vjs-poster,.vjs-has-started .vjs-big-play-button {l}
 display:none !important;
 {r}
-
+.vjs-ended .vjs-poster{l}
+    display: block !important;
+    {if $aPlayer.video_endscreen_iframe == 1}
+    opacity:0.3;
+    {/if}
+{r}
 /*.vjs-big-play-button {l}
     top: 125px !important;
     left: 280px !important;
@@ -88,10 +145,14 @@ display:none !important;
     var bIsHtml5 = false;
     var aPoster = '';
     var ovdr = "preroll";
+    var endscreen_player = 0;
     {if $aDvs.player_type}
         if (bIsSupportVideo) {l}
         var bIsHtml5 = true;
         {r}
+    {/if}
+    {if $aPlayer.video_endscreen_iframe == 1}
+    endscreen_player = 1;
     {/if}
     {if $bIsDvs}
 
@@ -216,7 +277,7 @@ display:none !important;
         var iCurrentVideo = {$aCurrentVideo};
         var bAutoAdvance = {if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
         var inventory_btn = {if $aDvs.inventory_url} "{$aDvs.inventory_url}" {else} "" {/if};
-        var inventory_text = {if $aDvs.inventory_url} "{phrase var='dvs.show_inventory'}" {else} "" {/if};
+        var inventory_text = {if $aDvs.inventory_url} "View Inventory" {else} "" {/if};
     {else}
         var bPreRoll = false;
         var iDvsId = 0;

@@ -11,7 +11,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @author  		Konsort.org
  * @package 		DVS
  */
+ 
 ?>
+
 <div id="dvs_error_messages"></div>
 {if $bCanAddPlayers || $bIsEdit}
 <script type="text/javascript">
@@ -537,6 +539,68 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</div>
 	{/if}
 	<br>
+    
+    <div id="video_end_screen_container">
+
+        <h3>Video End Screen Settings</h3>
+
+        <fieldset>
+            
+            <ol>
+                <li>
+                    <label for="custom_overlay_1_text">iFrame Player</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_iframe) && $aForms.video_endscreen_iframe == 1 }checked="checked"{/if} 
+                    value="1" name="val[video_endscreen_iframe]" id="video_endscreen_iframe" />
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_iframe) && $aForms.video_endscreen_iframe == 0 }checked="checked"{/if} 
+                    value="0" name="val[video_endscreen_iframe]" id="video_endscreen_iframe" />
+                    
+                </li>
+                <li>
+                    <label for="custom_overlay_1_text">Overlay Player</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_overlay) && $aForms.video_endscreen_overlay == 1 }checked="checked"{/if} 
+                    value="1" name="val[video_endscreen_overlay]" id="video_endscreen_overlay" />
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_overlay) && $aForms.video_endscreen_overlay == 0 }checked="checked"{/if} 
+                    value="0" name="val[video_endscreen_overlay]" id="video_endscreen_overlay" />
+                    
+                </li>
+                <li>
+                    <label for="custom_overlay_1_text">Inventory URL Player</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_inventory) && $aForms.video_endscreen_inventory == 1 }checked="checked"{/if} 
+                    value="1" name="val[video_endscreen_inventory]" id="video_endscreen_inventory" />
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_inventory) && $aForms.video_endscreen_inventory == 0 }checked="checked"{/if} 
+                    value="0" name="val[video_endscreen_inventory]" id="video_endscreen_inventory" />
+                    
+                </li>
+                <li>
+                    <label for="custom_overlay_1_text">Mobile Player</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_mobile) && $aForms.video_endscreen_mobile == 1 }checked="checked"{/if} 
+                    value="1" name="val[video_endscreen_mobile]" id="video_endscreen_mobile" /> 
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_mobile) && $aForms.video_endscreen_mobile == 0 }checked="checked"{/if} 
+                    value="0" name="val[video_endscreen_mobile]" id="video_endscreen_mobile" /> 
+                </li>
+                 <li>
+                    <label for="custom_overlay_1_text">Player</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_player) && $aForms.video_endscreen_player == 1 }checked="checked"{/if} 
+                    value="1" name="val[video_endscreen_player]" id="video_endscreen_player" /> 
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_player) && $aForms.video_endscreen_player == 0 }checked="checked"{/if} 
+                    value="0" name="val[video_endscreen_player]" id="video_endscreen_player" /> 
+                </li>
+            </ol>
+        </fieldset>
+       
+    </div>
+    <br>
+    
 	<fieldset>
 		{if $bIsDvs}
 		<input type="hidden" name="val[dvs_id]" value="{$iDvsId}">

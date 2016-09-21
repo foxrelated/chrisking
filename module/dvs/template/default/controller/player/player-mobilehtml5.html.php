@@ -21,8 +21,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     var aPoster = '';
     var bIsHtml5 = false;
     var ovdr = "preroll";
+    var endscreen_player = 0;
     {if $aDvs.player_type}
         var bIsHtml5 = true;
+    {/if}
+    {if $aPlayer.video_endscreen_mobile == 1}
+        endscreen_player = 1;
     {/if}
     {if $bIsDvs}
 
@@ -146,7 +150,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         var iCurrentVideo = {$aCurrentVideo};
         var bAutoAdvance ={if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
         var inventory_btn = {if $aDvs.inventory_url} "{$aDvs.inventory_url}" {else} "" {/if};
-        var inventory_text = {if $aDvs.inventory_url} "{phrase var='dvs.show_inventory'}" {else} "" {/if};
+//        var inventory_text = {if $aDvs.inventory_url} "{phrase var='dvs.show_inventory'}" {else} "" {/if};
+        var inventory_text = {if $aDvs.inventory_url} "View Inventory" {else} "" {/if};
     {else}
         var bPreRoll = false;
         var iDvsId = 0;
@@ -163,25 +168,21 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </script>
 
 {if ($bIsExternal || (!$bIsDvs && isset($iChapterButtonLeft)))}
-    <style type="text/css">
-        #chapter_buttons {l}
-            left: {$iChapterButtonLeft}px;
-            /*left: 50px;*/
-        {r}
-        #dvs_player_container {l}
-            width: {$iBackgroundWidth}px;
-            height: {$iBackgroundHeight}px;
-            /*width: 100px;
-            height: 100px;*/
-        {r}
-        #playlist_wrapper{l}
-            width: {$iPlayerWidth}px;
-        {r}
-        
-        
-       
-        
-    </style>
+<style type="text/css">
+#chapter_buttons {l}
+    left: {$iChapterButtonLeft}px;
+    /*left: 50px;*/
+{r}
+#dvs_player_container {l}
+    width: {$iBackgroundWidth}px;
+    height: {$iBackgroundHeight}px;
+    /*width: 100px;
+    height: 100px;*/
+{r}
+#playlist_wrapper{l}
+    width: {$iPlayerWidth}px;
+{r}
+</style>
 {/if}
 <style type="text/css">
 .video-js {l}
@@ -248,6 +249,60 @@ display:inline-block;
 {r}
 .vjs-has-started .vjs-poster,.vjs-has-started .vjs-big-play-button {l}
 display:none !important;
+{r}
+.vjs-ended .vjs-poster{l}
+    display: block !important;
+    {if $aPlayer.video_endscreen_mobile == 1}
+    opacity:0.3;
+    {/if}
+{r}
+.vjs-ended .vjs-custom-overlay{l}
+    background-color:transparent;  
+    padding:0;
+{r}
+.endscr_title,.endscr_bottom_nvideo{l}
+color:#fff;
+font-size:15px;    
+margin-bottom:10px;
+{r}
+.vjs-custom-overlay{l}
+margin-top:55px;
+{r}
+.vjs-custom-overlay p{l}
+margin-top:8px;
+
+{r}
+.vjs-custom-overlay p a{l}
+padding: 8px 25px;
+background-color:#{$aDvs.button_background};
+border:1px solid #{$aDvs.button_border};
+background-image: -webkit-linear-gradient(top, #{$aDvs.button_top_gradient}, #{$aDvs.button_bottom_gradient}); */
+background-image: -moz-linear-gradient( center top, #{$aDvs.button_top_gradient} 5%, #{$aDvs.button_bottom_gradient} 100% );
+background-image: -ms-linear-gradient( bottom, #{$aDvs.button_top_gradient} 0%, #{$aDvs.button_bottom_gradient} 100% );
+background-image: linear-gradient(to bottom, #{$aDvs.button_top_gradient} 0%, #{$aDvs.button_bottom_gradient} 100% );
+background-image: -o-linear-gradient(bottom, #{$aDvs.button_top_gradient} 0%, #{$aDvs.button_bottom_gradient} 100% );
+color:#{$aDvs.button_text};
+font-size:20px;
+border-radius:10px;
+{r}
+.vjs-custom-overlay p a:hover{l}
+background-image: -webkit-linear-gradient(top, #{$aDvs.button_bottom_gradient}, #{$aDvs.button_top_gradient});
+background-image: -moz-linear-gradient(center top, #{$aDvs.button_bottom_gradient} 5%, #{$aDvs.button_top_gradient} 100%);
+background-image: -ms-linear-gradient(bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
+background-image: linear-gradient(to bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
+background-image: -o-linear-gradient(bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
+{r}                                         
+
+.endscr_bottom_nvideo{l}
+     position: absolute;
+    bottom: 50px;
+    width: 100%;
+    text-align: center;
+
+{r}
+.endscr_bottom_nvideo #nvideo_title{l}
+ font-size:14px;
+ margin-top:5px;
 {r}
 
 </style>
