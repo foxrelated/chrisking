@@ -25,7 +25,28 @@ oChapterDivs = {};
 
 $(document).ready(function(){
 $(document).on('click','a#endscr_cform',function(){
-    $("#chapter_container_Get_Price").trigger('click');
+//         getPrice();
+         clearInterval(interval);
+           $(".vjs-endscreen-overlay-content").hide();
+           $(".endscr_bottom_nvideo").hide();
+
+        $(".vjs-endscreen-overlay-content").empty();
+        
+        $(".js_box").hide();
+        $(".vjs-custom-overlay").css('margin-top','0');
+        $(".vjs-custom-overlay").css('font-size','14px');
+        $(".js_box").appendTo(".vjs-endscreen-overlay-content");    
+        $(".vjs-endscreen-overlay-content").show();
+         $(".js_box").show();
+         
+                 waitForElementToDisplay(".js_box #contact_dealer",10);
+         
+})
+$(document).on('click',".vjs-endscreen-overlay-content #dvs_inventory_link",function(){
+//    $("#dvs_vin_popup_wrapper").css('display','none');
+//    $("#dvs_vin_popup_wrapper").css('opacity','0');
+//    window.parent.$("#dvs_vin_popup a#dvs_vin_close_btn").trigger('click');
+    
 }) 
 videojs("bcv2").ready(function(){
       myPlayer = this;
@@ -205,13 +226,25 @@ videojs("bcv2").ready(function(){
        }); 
        if(endscreen_player == 1){
        if(bAutoAdvance){
-        var endscr_bottom_nvideo = '<h4 class="endscr_bottom_nvideo"><p>Next video starts in <span id="nvideo_timer">5</span>:</p><p id="nvideo_title"></p></h4>';    
+        var endscr_bottom_nvideo = '<h4 class="endscr_bottom_nvideo"><p>Next video starts in <span id="nvideo_timer">10</span>:</p><p id="nvideo_title"></p></h4>';    
         }else{
         var endscr_bottom_nvideo = '';        
         }
+        if(endscreen_inventory == 1){
+            var invcontent =  '<p><a href='+inventory_btn+' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Top Menu Clicks\');" rel="nofollow" target="_parent">'+inventory_text+'</a></p>';
+        }else{
+            var invcontent = '';
+        }
+        if(endscreen_inventory == 1 || endscreen_cform == 1 || bAutoAdvance){
+            var endscreenTitle =  '<h4 class="endscr_title">Next steps...</h4>';
+        }else{
+            var endscreenTitle = '';
+        }
+        
        myPlayer.customEndscreen({
 //        "content": "<a href="+inventory_btn+" class='dvs_inventory_link' id='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
-        "content": '<h4 class="endscr_title">Next steps...</h4><p><a href='+inventory_btn+' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Top Menu Clicks\');" rel="nofollow" target="_parent">'+inventory_text+'</a></p> <p><a href="javascript:void(0);" id="endscr_cform" class="endscr_btn">Contact Dealer</a></p>'+endscr_bottom_nvideo
+//        "content": '<h4 class="endscr_title">Next steps...</h4><p><a href='+inventory_btn+' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Top Menu Clicks\');" rel="nofollow" target="_parent">'+inventory_text+'</a></p> <p><a href="javascript:void(0);" id="endscr_cform" class="endscr_btn">Contact Dealer</a></p>'+endscr_bottom_nvideo
+        "content": endscreenTitle + ''+ invcontent +''+ cdContent+''+endscr_bottom_nvideo
       })    
        }
        
@@ -242,11 +275,14 @@ videojs("bcv2").ready(function(){
       }  
        
       myPlayer.on("ended",function(){
+          $(".js_box").remove();
           if (navigator.userAgent.match(/(\(iPhone)/)) {
-            if(!preRollPlayed){
+//            if(!preRollPlayed){
                 $('video').get(0).webkitExitFullscreen();
-            }
+//            }
            }
+          
+          $(".vjs-endscreen-overlay-content").fadeIn(1000);
           $(".vjs-overlay").hide();
            if (bAutoAdvance || preRollAdvance) {
              
@@ -286,7 +322,7 @@ videojs("bcv2").ready(function(){
                     }
       
                     if(bAutoAdvance && endscreen_player == 1){
-                       var counter = 5;
+                       var counter = 10;
                        interval = setInterval(function() {
                            
                             counter--;
@@ -300,7 +336,8 @@ videojs("bcv2").ready(function(){
                                 resetChapters('');
                                 thumbnailClick(currentVideoKey);
                                 thumbnailClickDvs();   
-                                clearInterval(interval)
+                                clearInterval(interval);
+                                $(".vjs-endscreen-overlay-content").hide();
                             }
                         }, 1000);
  
@@ -327,6 +364,8 @@ videojs("bcv2").ready(function(){
        
        $("#chapter_buttons button").not("#chapter_container_Get_Price").on('click',function(){
            clearInterval(interval);
+           $(".js_box .js_box_close a").trigger('click');
+           $(".vjs-endscreen-overlay-content").hide();
            $(".vjs-custom-overlay").remove();
            var cueName = this.id;
            cueName = cueName.replace('chapter_container_','');
@@ -338,6 +377,8 @@ videojs("bcv2").ready(function(){
        //$(".playlist_carousel_image_link").on('click',function(){
        $(document).on('click',".playlist_carousel_image_link",function(){
            clearInterval(interval);
+           $(".js_box .js_box_close a").trigger('click');
+           $(".vjs-endscreen-overlay-content").hide();
            var currentVidId = this.id;
            currentVideo =  currentVidId.replace('thumbnail_link_','');
            thumbnailClick(currentVideo);
@@ -348,6 +389,7 @@ videojs("bcv2").ready(function(){
        })
        $("#chapter_container_Get_Price").on('click',function(){
            clearInterval(interval);
+//           $(".vjs-endscreen-overlay-content").hide();
            $(".endscr_bottom_nvideo").hide();
            getPrice();
        });
@@ -357,6 +399,8 @@ videojs("bcv2").ready(function(){
     bVideoChanged = true;
     aMediaIds = aVideoSelectMediaIds;
     clearInterval(interval);
+    $(".js_box .js_box_close a").trigger('click');
+    $(".vjs-endscreen-overlay-content").hide();
     $(".vjs-overlay").hide();
     $(".vjs-custom-overlay").hide();
     resetChapters('');
@@ -818,7 +862,25 @@ getPriceOverlayClick = function() {
 $(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
     jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#dvs_inventory_link").attr('href',inventory_new);
 });
+$(document).on('DOMNodeInserted','.vjs-custom-overlay, .vjs-overlay',function(){
+    $(".gp_ov").attr("onclick",'tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId='+jQuery("#bc_dvs").val()+'&sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();');
+})
 });
 function showspinner(){
       $(".vjs-loading-spinner").show();
-  }  
+}
+function waitForElementToDisplay(selector, time) {
+//        if(document.querySelector(selector)!=null) {
+
+        if($(selector).length > 0) {
+        $(".js_box #contact_dealer p").wrapAll("<div class='uleft cdtxt'></div>");
+        $(".js_box #contact_dealer ul, .js_box #contact_dealer input[type='submit']").wrapAll("<div class='uleft cdfields'></div>");
+        
+         
+        }
+        else {
+            setTimeout(function() {
+                waitForElementToDisplay(selector, time);
+            }, time);
+        }
+    }    
