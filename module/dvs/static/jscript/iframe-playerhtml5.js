@@ -470,7 +470,7 @@ function cueChange(sCuePoint) {
 //    }
 
     if (!bVideoChanged && !urlChanged && !bPreview && bIsDvs) {
-       // window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
+//        window.parent.history.pushState("string", "", sFirstVideoTitleUrl);
         urlChanged = true;
  }
 
