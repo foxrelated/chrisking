@@ -95,11 +95,14 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
     }
 
     public function getVins($aVins, $iDvsId, $iWidth, $iHeight) {
+        //var_dump($aVins).' '.$iDvsId; 
         $aQuishVin = array();
         $aFullRows = array();
         $aCompletedRows = array();
+        
         foreach($aVins as $sVin) {
             if($sQuishVin = $this->getQuishVin($sVin)) {
+                
                 $aFullRows[$sQuishVin]['ed_style_id'] = '';
                 if(!isset($aFullRows[$sQuishVin])) {
                     $aFullRows[$sQuishVin]['vin'] = array();
@@ -111,9 +114,11 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
             }
         }
 
+
         if (!$aDvs = Phpfox::getService('dvs')->get($iDvsId)) {
             return array($aCompletedRows, array());
         }
+        
 
         $aPlayer = Phpfox::getService('dvs.player')->get($iDvsId);
         $aMakes = array();
@@ -141,7 +146,9 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
                 }
             }
         }
+        
 
+        
         $aRows = $this->database()
             ->select('v.squish_vin_id, v.ed_style_id')
             ->from($this->_sTable, 'v')
@@ -152,15 +159,55 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
             $aEdStyleIds[] = $aRow['ed_style_id'];
             $aFullRows[$aRow['squish_vin_id']]['ed_style_id'] = $aRow['ed_style_id'];
         }
+        
         $aQuishVin = array();
         foreach($aFullRows as $sKey => $aFullRow) {
+            
             if(!$aFullRow['ed_style_id']) {
-                $aQuishVin[] = $sKey;
+                $qsvin = $sKey;
+                $qvin = $aFullRow['vin'][0];
+                
+                /*Check if it is a number*/
+                $ch = substr($qvin,6,1);
+                
+                if(is_numeric($ch)){
+                    $type = "num";
+                }else{
+                    $type = "alpha";
+                }
+                
+                $aLookupYear = $this->database()
+                    ->select('b.year')
+                    ->from(Phpfox::getT('dvs_vin_year_lookup'), 'b')
+                    ->where("b.vin_digit = '".$ch."' AND b.type = '".$type."'")
+                    ->execute('getRow');
+                    
+                $qsyear = intval($aLookupYear['year']);
+                if($qsyear < 2008){
+                    
+                }else{
+                    $aVinnf = $this->database()
+                    ->select('b.*')
+                    ->from(Phpfox::getT('ko_dvs_vin_parsed_notfound'), 'b')
+                    ->where("b.vin = '".$qvin."' AND b.squishvin = '".$qsvin."'")
+                    ->execute('getRows');
+                    
+                   $rowCount = count($aVinnf);
+                   if($rowCount > 0){
+                     
+                   }else{
+                    $aQuishVin[] = $sKey;         
+                   }
+                }
+                
+                
             }
         }
-
-        foreach($aQuishVin as $sVin) {
-            list($aStyles, $aParams) = $this->getStyleByVin($sVin);
+          
+//        var_dump($aQuishVin);
+       
+        foreach($aQuishVin as $sVin) {     // Didn't get called as there are no empty style id for any quish vins
+            list($aStyles, $aParams) = $this->getStyleByVin($sVin,$aFullRows[$sVin]['vin'][0]);
             if(isset($aStyles[0]['id'])) {
                 $this->database()->insert($this->_sTable, array(
                     'squish_vin_id' => $sVin,
@@ -169,8 +216,9 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
                 $aEdStyleIds[] = (string)$aStyles[0]['id'];
                 $aFullRows[$sVin]['ed_style_id'] = (string)$aStyles[0]['id'];
             }
-        }
+        }              
 
+        
         list($aData, $aReferenceIds) = $this->getAllVideoIdByEdStyles($aEdStyleIds);
 
         $aVideos = $this->database()
@@ -288,13 +336,14 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
     public function getAllVideoIdByEdStyles($aEdStyleIds) {
         $sEdStyleIds = implode('/', $aEdStyleIds) . '/';
         $sTargetUrl = 'http://api.wheelstv.co/v1/edstyleid/' . $sEdStyleIds;
+         
         $ch = curl_init($sTargetUrl);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
         $oResponse = curl_exec($ch);
         $oOutput= @json_decode($oResponse);
-
+        
         $aData = array();
         $aReferenceIds = array();
         foreach($oOutput->items as $aItem) {
@@ -307,18 +356,48 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         return array($aData, $aReferenceIds);
     }
 
-    public function getStyleByVin($sVin) {
+    public function getStyleByVin($sVin,$cstVin = '') {
+    
         $aParams = array();
         $aStyles = array();
         $sApiKey = 'wztmmwrvnegb6b547asz8u2a';
-
+        
         $sTargetUrl = "https://api.edmunds.com/api/vehicle/v2/squishvins/" . trim($sVin) . "/?fmt=json&api_key=" . $sApiKey;
+        
+        
         $ch = curl_init($sTargetUrl);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         $oResponse = curl_exec($ch);
-
+        
         $oOutput= @json_decode($oResponse);
+        $logg = 0;
+        
+        if($oOutput->status == "NOT_FOUND"){
+           $referer = $_SERVER['HTTP_REFERER']; 
+           
+           
+           $q = $this->database()->insert(Phpfox::getT('ko_dvs_vin_parsed_notfound'), array(
+                    'vin' => $cstVin,
+                    'squishvin' => $sVin,
+                    'source' => $referer, 
+            ));
+            
+            
+            
+            if($logg == 1){
+                
+            
+                $log_file =  PHPFOX_DIR.'module/dvs/vin_log.txt';
+                $log_data = "[".date('Y/m/d h:i:s a', time())."] 404 Error for squish VIN :" . $sVin . ". API source : " . $_SERVER['HTTP_REFERER'] . " \n";
+                
+                $f = fopen($log_file,'a');
+                fwrite($f, $log_data);
+                fclose($f);
+            }    
+            
+        }
+        
 
         if ($oOutput === null || !isset($oOutput->make)) {
             return array($aStyles, $aParams);
@@ -367,6 +446,19 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         }
 
         return $object;
+    }
+    
+    function runCron14(){
+        $aVins = $this->database()
+            ->select('b.vin,b.id')
+            ->from(Phpfox::getT('ko_dvs_vin_parsed_notfound'), 'b')
+            ->where("timestamp + INTERVAL 14 DAY < NOW()")
+            ->execute('getRows');
+          
+        foreach($aVins as $aVin){
+            $this->database()->delete(Phpfox::getT('ko_dvs_vin_parsed_notfound'), 'id = ' . (int) $aVin['id']);
+        }    
+         
     }
 }
 ?>
