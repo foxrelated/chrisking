@@ -82,22 +82,22 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
             ->where('i.ed_style_id < 5')
             ->group('i.squish_vin_id')
             ->limit($iLimit)
+            ->order('i.inventory_id')
             ->execute('getRows');
-        
-        
+
         foreach($aRows as $aRow) {                   
             if($aRow['ed_style_id_parsed'] > 0) {    
                 $this->database()->update($this->_sTable, array('ed_style_id' => $aRow['ed_style_id_parsed']), 'squish_vin_id = \'' . $aRow['squish_vin_id'] . '\'');
-            } else {                            
+            } else {
                 $qsvin = $aRow['squish_vin_id'];
                 $qvin = $aRow['vin_id'];
                 
                 
                 $ch = substr($qvin,6,1);
-                
-                if(is_numeric($ch)){
+
+                if (is_numeric($ch)) {
                     $type = "num";
-                }else{
+                } else {
                     $type = "alpha";
                 }
                 
@@ -106,36 +106,35 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
                     ->from(Phpfox::getT('dvs_vin_year_lookup'), 'b')
                     ->where("b.vin_digit = '".$ch."' AND b.type = '".$type."'")
                     ->execute('getRow');
-                    
-                $qsyear = intval($aLookupYear['year']);
-                if($qsyear < 2008){
-                    
-                }else{
-                    $aVinnf = $this->database()
-                    ->select('b.*')
-                    ->from(Phpfox::getT('ko_dvs_vin_parsed_notfound'), 'b')
-                    ->where("b.vin = '".$qvin."' AND b.squishvin = '".$qsvin."'")
-                    ->execute('getRows');
-                    
-                   $rowCount = count($aVinnf);
-                   if($rowCount > 0){
-                     
-                   }else{
-                    list($aStyles, $aParams) = $this->getStyleByVin($aRow['squish_vin_id'],$aRow['vin_id']);
-                if(isset($aStyles[0]['id'])) {
-                    $this->database()->insert(Phpfox::getT('ko_dvs_vin_parsed'), array(
-                        'squish_vin_id' => $aRow['squish_vin_id'],
-                        'ed_style_id' => $aStyles[0]['id']
-                    ));
-                    $this->database()->update($this->_sTable, array('ed_style_id' => $aStyles[0]['id']), 'squish_vin_id = \'' . $aRow['squish_vin_id'] . '\'');
+
+                $qsyear = isset($aLookupYear['year']) ? intval($aLookupYear['year']) : 0;
+                if($qsyear < 2008) {
+                    $this->database()->update($this->_sTable, array('ed_style_id' => 5), 'squish_vin_id = \'' . $aRow['squish_vin_id'] . '\'');
                 } else {
-                    // MARK THIS INVENTORY
-                    $this->database()->update($this->_sTable, array('ed_style_id' => (int)$aRow['ed_style_id'] + 1), 'squish_vin_id = \'' . $aRow['squish_vin_id'] . '\'');
-                }
+                    $aVinnf = $this->database()
+                        ->select('b.*')
+                        ->from(Phpfox::getT('ko_dvs_vin_parsed_notfound'), 'b')
+                        ->where("b.vin = '".$qvin."' AND b.squishvin = '".$qsvin."'")
+                        ->execute('getRows');
+                    $rowCount = count($aVinnf);
+
+                    if ($rowCount > 0) {
+                        $this->database()->update($this->_sTable, array('ed_style_id' => 5), 'squish_vin_id = \'' . $aRow['squish_vin_id'] . '\'');
+                    } else {
+                        list($aStyles, $aParams) = $this->getStyleByVin($aRow['squish_vin_id'],$aRow['vin_id']);
+
+                        if(isset($aStyles[0]['id'])) {
+                            $this->database()->insert(Phpfox::getT('ko_dvs_vin_parsed'), array(
+                                'squish_vin_id' => $aRow['squish_vin_id'],
+                                'ed_style_id' => $aStyles[0]['id']
+                            ));
+                            $this->database()->update($this->_sTable, array('ed_style_id' => $aStyles[0]['id']), 'squish_vin_id = \'' . $aRow['squish_vin_id'] . '\'');
+                        } else {
+                            // MARK THIS INVENTORY
+                            $this->database()->update($this->_sTable, array('ed_style_id' => (int)$aRow['ed_style_id'] + 1), 'squish_vin_id = \'' . $aRow['squish_vin_id'] . '\'');
+                        }
                    }
                 }
-                
-                
             }
         }
 
@@ -230,25 +229,23 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
 
         $oOutput= @json_decode($oResponse);
         $logg = 0;
-        
-        if($oOutput->status == "NOT_FOUND"){
+
+        if (isset($oOutput->status) && ($oOutput->status == "NOT_FOUND")) {
             $referer = "Inventory Cron";
             
             $q = $this->database()->insert(Phpfox::getT('ko_dvs_vin_parsed_notfound'), array(
-                    'vin' => $cstvin,
-                    'squishvin' => $sVin,
-                    'source' => $referer, 
+                'vin' => $cstvin,
+                'squishvin' => $sVin,
+                'source' => $referer,
             ));
             
-            if($logg == 1){
-                
+            if($logg == 1) {
+                $log_file =  PHPFOX_DIR.'module/dvs/vin_log.txt';
+                $log_data = "[".date('Y/m/d h:i:s a', time())."] 404 Error for squish VIN :" . $sVin . ". API source : Inventory Update \n";
             
-            $log_file =  PHPFOX_DIR.'module/dvs/vin_log.txt';
-            $log_data = "[".date('Y/m/d h:i:s a', time())."] 404 Error for squish VIN :" . $sVin . ". API source : Inventory Update \n";
-            
-            $f = fopen($log_file,'a');
-            fwrite($f, $log_data);
-            fclose($f);
+                $f = fopen($log_file,'a');
+                fwrite($f, $log_data);
+                fclose($f);
             }
             
         }
