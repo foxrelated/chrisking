@@ -230,8 +230,9 @@
 <script type="text/javascript">
 window.onboardX = {l}
   'onepage' : false, //true if your app is single page application type
-  'obx_domain' : 'onboardx.com', //don't change
+  'obx_domain' : 'www.onboardx.com', //don't change
   'app': 'wxtWT8', //don't change
+  'type':'visitor',
   'email':'{$aDvs.email}', //required
   'name':'{$aDvs.dealer_name}', //required
   "signed_up':'{$iTime|date:'core.extended_global_time_stamp'}", //required (timestamp)
