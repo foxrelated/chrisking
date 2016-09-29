@@ -17,12 +17,36 @@ sCurrentCuePoint,
 thumbkey = -1,
 timeOut,
 clicked = 0,
-media_begin = 0,
+media_begin = 0, 
+aNewVideoTitle,
+interval,
+fck=0,
 //st,icst1start,icst1end,icst2start,icst2end,icst3start,icst3end,
 inventory_new,
 oChapterDivs = {};  
 $(document).ready(function(){
-    
+
+$(document).on('click','a#endscr_cform',function(){
+//    $("#chapter_container_Get_Price").trigger('click');
+//         getPrice();
+         
+         clearInterval(interval);
+         
+          $(".vjs-endscreen-overlay-content").hide();
+           $(".endscr_bottom_nvideo").hide();
+
+        $(".vjs-endscreen-overlay-content").empty();
+        
+        $(".js_box").hide();
+        $(".vjs-custom-overlay").css('margin-top','0');
+        $(".vjs-custom-overlay").css('font-size','14px');
+        $(".js_box").appendTo(".vjs-endscreen-overlay-content");    
+        $(".vjs-endscreen-overlay-content").show();
+         $(".vjs-endscreen-overlay-content .js_box").show();
+         
+                 waitForElementToDisplay(".js_box #contact_dealer",10);
+         
+})    
 
 videojs("bcv2").ready(function(){
       myPlayer = this;
@@ -224,9 +248,27 @@ videojs("bcv2").ready(function(){
  
        }); 
        
-       if(!bAutoAdvance && inventory_btn){
+//       if(!bAutoAdvance && inventory_btn){
+       if(endscreen_player == 1){
+       if(bAutoAdvance){
+        var endscr_bottom_nvideo = '<h4 class="endscr_bottom_nvideo"><p>Next video starts in <span id="nvideo_timer">10</span>:</p><p id="nvideo_title"></p></h4>';    
+        }else{
+        var endscr_bottom_nvideo = '';        
+        }
+        if(endscreen_inventory == 1){
+            var invcontent =  '<p><a href='+inventory_btn+' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Top Menu Clicks\');" rel="nofollow" target="_parent">'+inventory_text+'</a></p>';
+        }else{
+            var invcontent = '';
+        }
+        if(endscreen_inventory == 1 || endscreen_cform == 1 || bAutoAdvance){
+            var endscreenTitle =  '<h4 class="endscr_title">Next steps...</h4>';
+        }else{
+            var endscreenTitle = '';
+        }
        myPlayer.customEndscreen({
-        "content": "<a href="+inventory_btn+" class='dvs_inventory_link' id='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
+//        "content": "<a href="+inventory_btn+" class='dvs_inventory_link' id='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
+//        "content": '<h4 class="endscr_title">Next steps...</h4><p><a href='+inventory_btn+' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Top Menu Clicks\');" rel="nofollow" target="_parent">'+inventory_text+'</a></p> <p><a href="javascript:void(0);" id="endscr_cform" class="endscr_btn">Contact Dealer</a></p>'+endscr_bottom_nvideo
+        "content": endscreenTitle + ''+ invcontent +''+ cdContent+''+endscr_bottom_nvideo
       })    
        }
        
@@ -257,15 +299,16 @@ videojs("bcv2").ready(function(){
       } 
       
       myPlayer.on("ended",function(){
-       
+           $(".js_box").remove();
            if (navigator.userAgent.match(/(\(iPhone)/)) {
-            if(!preRollPlayed){
+//            if(!preRollPlayed){
                 $('video').get(0).webkitExitFullscreen();
-            }
+//            }
            }
            $(".vjs-overlay").hide();
+           $(".vjs-endscreen-overlay-content").fadeIn(1000);
            if (bAutoAdvance || preRollAdvance) {
-               
+                                                      
              
                if(preRollAdvance){
                    preRollAdvance = false;
@@ -280,23 +323,61 @@ videojs("bcv2").ready(function(){
                    $("#bcv2> :not(.vjs-control-bar):not(.vjs-big-play-button)").off();
                    preRollPlayed = true;
                }else{
-                currentVideoKey++; 
+                if(fck == 0){
+                currentVideoKey++;     
+                fck = 1;
+                }   
+                
                   if (bDebug) {
                     console.log('Player: Auto Advance enabled. Advancing to Video key: ' + currentVideoKey);
                 }
   
                }
                 
-
+               
               
                 if (aMediaIds[currentVideoKey]) {
-                    if (bDebug) {
+                    
+                    if(endscreen_player == 1){ 
+                    myPlayer.catalog.getVideo(aMediaIds[currentVideoKey], function(error,video) {
+                          
+                           aNewVideoTitle = video.custom_fields;
+                           $("#nvideo_title").html(aNewVideoTitle.year+" "+aNewVideoTitle.make+" "+aNewVideoTitle.model);
+                        });
+                    }                                          
+                    
+      
+                    if(bAutoAdvance && endscreen_player == 1){
+                       var counter = 10;
+                       interval = setInterval(function() {
+                           
+                            counter--;
+                            $("#nvideo_timer").html(counter);
+                            
+                            // Display 'counter' wherever you want to display it.
+                            if (counter == 0) {
+                                if (bDebug) {
+                                    console.log('Media: Playing next video');
+                                }
+                                resetChapters('');
+                                
+                                thumbnailClick(currentVideoKey);
+                                thumbnailClickDvs();   
+                                clearInterval(interval);
+                                $(".vjs-endscreen-overlay-content").hide();
+                            }
+                        }, 1000);
+ 
+                    }else{
+                     if (bDebug) {
                         console.log('Media: Playing next video');
                     }
                         resetChapters('');
                         
                         thumbnailClick(currentVideoKey);
-                        thumbnailClickDvs();
+                        thumbnailClickDvs();   
+                    }
+                    
                   
                 }
             }//else{
@@ -309,16 +390,22 @@ videojs("bcv2").ready(function(){
        }); 
        
        $("#chapter_buttons button").not("#chapter_container_Get_Price").on('click',function(){
+           clearInterval(interval);
+           $(".js_box .js_box_close a").trigger('click');
+           $(".vjs-endscreen-overlay-content").hide();
            $(".vjs-custom-overlay").remove();
            var cueName = this.id;
            cueName = cueName.replace('chapter_container_','');
            if(currentCuePoint != cueName){
-//            $(".vjs-overlay").hide();         
+            $(".vjs-overlay").hide();         
            } 
            changeCuePoint(cueName);
        });
        //$(".playlist_carousel_image_link").on('click',function(){
        $(document).on('click',".playlist_carousel_image_link",function(){
+           clearInterval(interval);
+           $(".js_box .js_box_close a").trigger('click');
+           $(".vjs-endscreen-overlay-content").hide();
            $(".vjs-overlay").hide();
            var currentVidId = this.id;
            currentVideo =  currentVidId.replace('thumbnail_link_','');
@@ -331,12 +418,18 @@ videojs("bcv2").ready(function(){
            
        })
        $("#chapter_container_Get_Price").on('click',function(){
+           clearInterval(interval);
+//           $(".vjs-endscreen-overlay-content").hide();
+           $(".endscr_bottom_nvideo").hide();
            getPrice();
        });
  watchVideoSelect = function(aVideoSelectMediaIds) {
     //bIgnoreAutoPlaySetting = true;
     bVideoChanged = true;
     aMediaIds = aVideoSelectMediaIds;
+    clearInterval(interval);
+    $(".js_box .js_box_close a").trigger('click');
+    $(".vjs-endscreen-overlay-content").hide();
     $(".vjs-overlay").hide();
     $(".vjs-custom-overlay").hide();
     resetChapters('');
@@ -617,6 +710,8 @@ function playPreroll(ap){
 function loadVideo(iKey){
     aCurrentVideoMetaData = myPlayer.mediainfo.custom_fields;
     aCurrentVideoMetaData.referenceId = myPlayer.mediainfo.reference_id;
+    
+    
     if (bDebug) {
         console.log('Media: Current Video Meta Data Follows:');
         console.log(aCurrentVideoMetaData);
@@ -655,41 +750,12 @@ function loadVideo(iKey){
     
     $.ajaxCall('dvs.changehtml5Video', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId);
     
+    
 }
 function playVideo(mkey,autoplay){
-    //var oCustomVars = {
-//        1: {
-//            name: 'Video Reference ID',
-//            value: aCurrentVideoMetaData.referenceId
-//        },
-//        2: {
-//            name: 'Vehicle Year',
-//            value: aCurrentVideoMetaData.year
-//        },
-//        3: {
-//            name: 'Vehicle Make',
-//            value: aCurrentVideoMetaData.make
-//        },
-//        4: {
-//            name: 'Vehicle Model',
-//            value: aCurrentVideoMetaData.model
-//        }
-//    };
-//    if ( typeof sendToGoogle == 'function' ) { 
-//    sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
-//    }
-//    mixpanel.track("Media Begin", {
-//        "Category": sPlayerName,
-//        "Action": "Player",
-//        "Video ID": aCurrentVideoMetaData.referenceId,
-//        "Year": aCurrentVideoMetaData.year,
-//        "Make": aCurrentVideoMetaData.make,
-//        "Model": aCurrentVideoMetaData.model,
-//        }
-//    );
+ 
 
-
-     //playVideo(myPlayer,0);
+     
       myPlayer.catalog.getVideo(aMediaIds[mkey], function(error,video) {
         //deal with error
         myPlayer.catalog.load(video);
@@ -710,6 +776,7 @@ function thumbnailClick(iKey) {
     if (bDebug) {
         console.log('Player: Playlist Thumbnail Click: #' + iKey);
     }
+    
     $(".vjs-custom-overlay").hide();
 
     if (bIsDvs) {
@@ -719,24 +786,14 @@ function thumbnailClick(iKey) {
 
     bVideoChanged = true;
 
-   // iCurrentVideo = iKey;
-//
-//    bIgnoreAutoPlaySetting = true;
-//
-//
-//    if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
-//        modVid.loadVideoByID(aMediaIds[iKey]);
-//    }
-//    else
-//    {
-//        modCon.getMediaAsynch(aMediaIds[iKey]);
-//    }
+   
 if(preRollPlayed){
 playVideo(iKey,true);
 }else{
     thumbkey = iKey;
     myPlayer.play();
 }
+fck = 0;
     return false;
 }
 
@@ -781,13 +838,32 @@ getPriceOverlayClick = function() {
 
 });
 $(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
-    jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a").attr('href',inventory_new);
-});    
+    jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#dvs_inventory_link").attr('href',inventory_new);
+//    jQuery(".vjs-custom-overlay  #nvideo_title").html(aNewVideoTitle);
+//    jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#endscr_cform").attr('onclick','tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();');
+});
+$(document).on('DOMNodeInserted','.vjs-custom-overlay, .vjs-overlay',function(){
+    $(".gp_ov").attr("onclick",'tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId='+jQuery("#bc_dvs").val()+'&sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();');
+})    
 })
 function showspinner(){
       $(".vjs-loading-spinner").show();
   }  
+function waitForElementToDisplay(selector, time) {
+//        if(document.querySelector(selector)!=null) {
 
+        if($(selector).length > 0) {
+        $(".js_box #contact_dealer p").wrapAll("<div class='uleft cdtxt'></div>");
+        $(".js_box #contact_dealer ul, .js_box #contact_dealer input[type='submit']").wrapAll("<div class='uleft cdfields'></div>");
+        
+         
+        }
+        else {
+            setTimeout(function() {
+                waitForElementToDisplay(selector, time);
+            }, time);
+        }
+    }
 
        
             

@@ -154,7 +154,7 @@ padding: 0;
   /* text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4); */
 }
 #cssmenu ul ul {
-  width: 210px;
+  width: 170px;
   
 }
 #cssmenu ul ul a {
@@ -338,15 +338,7 @@ padding: 0;
                                 <li><a href="{url link='dvs.download-instruction' id=$aDvs.dvs_id}"><span><strong>Standard Instructions</strong></span></a></li>
                                 <li><hr></li>
 								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>Virtual Test Drive Embed</span></a></li>
-                                  {if ($aDvs.cdk_id =='')}
-                                  {else}
-                                <li><a href="#" onclick="$('#dvs_iframe_link_cdk_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>Virtual Test Drive Embed By Cdk</span></a></li>
-                                  {/if}
                                 <li><a href="#" onclick="$('#vdp_embed_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>SRP and VDP Embed</span></a></li>
-                                  {if ($aDvs.cdk_id =='')}
-                                  {else}
-                                <li><a href="#" onclick="$('#vdp_embed_link_cdk_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>SRP and VDP Embed By Cdk</span></a></li>
-                                  {/if}
                                 <li><a href="#" onclick="$('#vin_url_player_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>VIN URL Player</span></a></li>
                                 <li><a href="#" onclick="$('#vin_embed_player_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>VIN Embed Player</span></a></li>
 							  </ul>
@@ -383,22 +375,6 @@ padding: 0;
 					</p>
 					
 				</div>
-            <div id="dvs_iframe_link_cdk_{$aDvs.dvs_id}" title="DVS Embed Code" class="dvs_iframe_link_popup" style="display:none;">
-                <p>Add this javascript code to a new page called "Virtual Test Drive" and link to it under New Inventory navigation menu:</p>
-                <p><textarea rows="13" cols="71">&lt;div id="dvs_wrapper">&lt;/div&gt;
-&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/cdkwebid.js"&gt;&lt;/script&gt;
-&lt;script type="text/javascript"&gt;
-    CDKDVS.render_iframe({l}
-        "id" : "dvs_wrapper",
-        "width" : 952,
-        "height" : 1000,
-        "cdkWebId" : "{$aDvs.cdk_id}",
-        "rootUrl" :"{$sCorePath}"
-    {r});
-&lt;/script&gt;</textarea>
-                </p>
-
-            </div>
 
             <div id="vdp_embed_link_{$aDvs.dvs_id}" title="Inventory Embed Code" class="dvs_iframe_link_popup" style="display:none;">
                 <p>Step 1: Add this code right before the &lt;/body&gt; tag of the SRP and VDP template page:</p>
@@ -409,17 +385,6 @@ WTVVIN.init({l}
     "apiUrl" : "{url link=''}",
     "styleUrl" : "{url link='dvs.vin.style' id=$aDvs.dvs_id}",
     "scriptUrl" : "{url link='dvs.vin.script' id=$aDvs.dvs_id}"
-{r});
-&lt;/script&gt;</textarea>
-            <div id="vdp_embed_link_cdk_{$aDvs.dvs_id}" title="Inventory Embed Code" class="dvs_iframe_link_popup" style="display:none;">
-                    <p>Step 1: Add this code right before the &lt;/body&gt; tag of the SRP and VDP template page:</p>
-                    <textarea rows="10" cols="71">&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/cdkwebid.js"&gt;&lt;/script&gt;
-&lt;script type="text/javascript"&gt;
-CDKDVS.init({l}
-    "cdkWebId" : "{$aDvs.cdk_id}",
-    "apiUrl" : "{url link=''}",
-    "styleUrl" : "{url link='dvs.vin.style' cdk=$aDvs.cdk_id}",
-    "scriptUrl" : "{url link='dvs.vin.script' cdk=$aDvs.cdk_id}"
 {r});
 &lt;/script&gt;</textarea>
                 </p>
