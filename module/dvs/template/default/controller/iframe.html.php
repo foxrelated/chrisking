@@ -145,7 +145,7 @@
         </section>
         <div class="clear"></div>
         {else}
-        {*if $aPlayer.player_type != "2"*}
+        {if $aPlayer.player_type != "2"}
         <section id="share_links">
             <input type="hidden" value="{$sNewParentUrl}" id="parent_url">
             <input type="hidden" value="{$sVideoUrl}" id="video_url">
@@ -184,7 +184,7 @@
                 </tr>
             </table>
         </section>
-        {*/if*}
+        {/if}
         {/if}
         {/if}
     </article>
@@ -226,17 +226,3 @@
                 {r}
     </script>
 {/if}
-
-<script type="text/javascript">
-window.onboardX = {l}
-  'onepage' : false, //true if your app is single page application type
-  'obx_domain' : 'www.onboardx.com', //don't change
-  'app': 'wxtWT8', //don't change
-  'type':'visitor',
-  'email':'{$aDvs.email}', //required
-  'name':'{$aDvs.dealer_name}', //required
-  "signed_up':'{$iTime|date:'core.extended_global_time_stamp'}", //required (timestamp)
-  
-{r};
-(function(o,b,x){ var a=o.createElement(b);a.type="text/javascript";a.async=!0;a.src=x;var s=o.getElementsByTagName(b)[0];s.parentNode.insertBefore(a,s);})(document,"script","//cdn."+window.onboardX.obx_domain+"/obx.js");
-</script>
