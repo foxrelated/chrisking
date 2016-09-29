@@ -1004,7 +1004,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         }
 
         if($aDvs['inv_display_status']){
-            $inventoryList = Phpfox::getService('dvs')->getModelInventory($aVideo['ko_id']);
+            $inventoryList = Phpfox::getService('dvs')->getModelInventory($aVideo['ko_id']);         
             $sPlaylistHtml = '<div class="inventory_info_message">';
             if(count($inventoryList) > 1){
                 $sPlaylistHtml .= count($inventoryList).' '.$aVideo['model'].'\'s available in inventory! Select one below:';
@@ -1020,7 +1020,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
                 $sPlaylistHtml .= '<div class="playlist_carousel" id="overview_inventory">';
                 $sPlaylistHtml .= '<ul>';
                 foreach ($inventoryList as $iKey => $inventoryItem)
-                {
+                {                                                  
                     $sThumbnailImageHtml = Phpfox::getLib('image.helper')->display(array(
                         'path' => 'dvs.video_url_image',
                         'file' => Phpfox::getParam('core.path') . '/file/' . $inventoryItem['image'],

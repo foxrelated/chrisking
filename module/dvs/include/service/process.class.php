@@ -33,6 +33,7 @@ class Dvs_Service_Process extends Phpfox_Service {
 			$aGeoCode['latitude'] = 0;
 			$aGeoCode['longitude'] = 0;
 		}
+
         $aSql = array(
             'user_id' => Phpfox::getUserId(),
             'dvs_name' => $this->preParse()->clean($aDvs['dvs_name'], 255),
@@ -60,7 +61,6 @@ class Dvs_Service_Process extends Phpfox_Service {
             'new2u_override' => (isset($aDvs['new2u_override']) ? $this->preParse()->clean($aDvs['new2u_override'], 128) : ''),
             'top200_override' => (isset($aDvs['top200_override']) ? $this->preParse()->clean($aDvs['top200_override'], 128) : ''),
             'dvs_time_stamp' => PHPFOX_TIME,
-            'cdk_id' => $this->preParse()->clean($aDvs['cdk_id'], 255)
         );
 
         $aDvs['dealer_id'] = $this->preParse()->clean($aDvs['dealer_id'], 255);
@@ -147,7 +147,6 @@ class Dvs_Service_Process extends Phpfox_Service {
             'new2u_override' => (isset($aDvs['new2u_override']) ? $this->preParse()->clean($aDvs['new2u_override'], 128) : ''),
             'top200_override' => (isset($aDvs['top200_override']) ? $this->preParse()->clean($aDvs['top200_override'], 128) : ''),
             'dvs_time_stamp' => PHPFOX_TIME,
-            'cdk_id' => $this->preParse()->clean($aDvs['cdk_id'], 255)
         );
 
         $aDvs['dealer_id'] = $this->preParse()->clean($aDvs['dealer_id'], 255);

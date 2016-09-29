@@ -1,4 +1,3 @@
-//bDebug = false;
 var myPlayer;
 var sPlayerName = "DVS Player";
 var bVideoChanged=false,
@@ -18,17 +17,39 @@ sCurrentCuePoint,
 thumbkey = -1,
 timeOut,
 clicked = 0,
-media_begin = 0,
+media_begin = 0, 
+aNewVideoTitle,
+interval,
+fck=0,
+//st,icst1start,icst1end,icst2start,icst2end,icst3start,icst3end,
 inventory_new,
-oChapterDivs = {};
+oChapterDivs = {};  
 $(document).ready(function(){
-    
+
+$(document).on('click','a#endscr_cform',function(){
+//    $("#chapter_container_Get_Price").trigger('click');
+//         getPrice();
+         
+         clearInterval(interval);
+         
+          $(".vjs-endscreen-overlay-content").hide();
+           $(".endscr_bottom_nvideo").hide();
+
+        $(".vjs-endscreen-overlay-content").empty();
+        
+        $(".js_box").hide();
+        $(".vjs-custom-overlay").css('margin-top','0');
+        $(".vjs-custom-overlay").css('font-size','14px');
+        $(".js_box").appendTo(".vjs-endscreen-overlay-content");    
+        $(".vjs-endscreen-overlay-content").show();
+         $(".vjs-endscreen-overlay-content .js_box").show();
+         
+                 waitForElementToDisplay(".js_box #contact_dealer",10);
+         
+})    
 
 videojs("bcv2").ready(function(){
       myPlayer = this;
-      
-     
-      
       var cuePointArr=[];
       var allCuePointData,
       
@@ -55,22 +76,17 @@ videojs("bcv2").ready(function(){
     if ( typeof sendToGoogle == 'function' ) { 
      sendToGoogle(sPlayerName, 'Player', 'Player Loaded');   
     }
-     
      if(bPreRoll){
-         
-         
          if(aPoster != ''){
          jQuery(".vjs-poster").removeClass('vjs-hidden');
          jQuery(".vjs-poster").css('background-image','url("'+aPoster+'")');    
          }
-         
          var preRollPlayed = false;
          var preRollAdvance = true;
      }else{
          var preRollPlayed = true;
      } 
      
-    
      if(preRollPlayed){
      if (bDebug) 
      {
@@ -87,11 +103,11 @@ videojs("bcv2").ready(function(){
 //       myPlayer.one("loadedmetadata",function(){
        myPlayer.on("loadedmetadata",function(){
          
-      if(preRollPlayed){
+         if(preRollPlayed){
           
           $("#chapter_buttons").children().removeClass('selected').addClass('active');
           $("#chapter_buttons").children().removeClass('display').addClass('no_display');
-          trackIndex = myPlayer.textTracks().length -1;
+          trackIndex = myPlayer.textTracks().length -1;   
           tt = myPlayer.textTracks()[trackIndex];
           cuePointArr = myPlayer.mediainfo.cue_points;
           
@@ -101,10 +117,9 @@ videojs("bcv2").ready(function(){
             }
             $("#chapter_container_Get_Price").removeClass('no_display').addClass('display');
           
-          
-      }else{
-          //preRollPlayed = true;
-      }    
+          }else{
+              //preRollPlayed = true;
+          }              
          tt.oncuechange = function() {
            if((!myPlayer.paused()) && (media_begin == 0))
            {//alert('zz');
@@ -139,46 +154,42 @@ videojs("bcv2").ready(function(){
                     }
                 );
                media_begin = 1;
-           } 
+           }  
+//           if(tt.activeCues && tt.activeCues[0]){
            if(tt.activeCues[0]){
                
                var startTime = tt.activeCues[0].startTime;
                
            }
+//           if(tt.activeCues && tt.activeCues[1]){
            if(tt.activeCues[1]){
                var firstStartTime = tt.activeCues[1].startTime;
            }
            
-           
-//           console.log('here');
-//           console.log(myPlayer.mediainfo.cue_points);
-              console.log("Active Cuepoints :");
-              console.log(tt.activeCues);
-           console.log(tt.activeCues[0]);
-           console.log(tt.activeCues[1]);
-           console.log(cuePointArr);
+ 
            
            if(myPlayer.mediainfo.cue_points[0].time == startTime){
-           
            if(firstStartTime){
-               
            allCuePointData = getSubArray(cuePointArr,'time',firstStartTime);        
            }
-           else{ 
-//               allCuePointData = getSubArray(cuePointArr,'time',startTime);    
-           }    
            }else{
-
            allCuePointData = getSubArray(cuePointArr,'time',startTime);    
-           
            }
-           
-           
-           
-           
            if(allCuePointData){
            if(allCuePointData[0]){
-              $(".vjs-overlay").hide();
+              // 
+//                st = parseFloat(allCuePointData[0].startTime);
+//               icst1start = parseFloat(iCustomOverlay1Start); 
+//               icst1end = parseFloat(iCustomOverlay1Duration+iCustomOverlay1Start);
+//               icst2start = parseFloat(iCustomOverlay2Start); 
+//               icst2end = parseFloat(iCustomOverlay2Duration+iCustomOverlay2Start);
+//               icst3start = parseFloat(iCustomOverlay3Start); 
+//               icst3end = parseFloat(iCustomOverlay3Duration+iCustomOverlay3Start);
+//               
+//               if(((st < icst1start) || (st > icst1end)) && ((st < icst2start) || (st > icst2end)) && ((st < icst3start) || (st > icst3end))){
+//               $(".vjs-overlay").hide();     
+//               }
+//           
            cuePointName = allCuePointData[0].name;    
            }
            }
@@ -229,20 +240,38 @@ videojs("bcv2").ready(function(){
          }
            
            cueChange(cuePointName);
-           //$('#chapter_container_' + cuePointName).addClass('display selected');
+           //!-
+           $('#chapter_container_' + cuePointName).addClass('display selected');
+           $(".vjs-loading-spinner").hide();
+           ///-!
           }    
-       
-//       alert('asd'+inventory_new);
+ 
        }); 
        
-       if(!bAutoAdvance && inventory_btn){
-           
+//       if(!bAutoAdvance && inventory_btn){
+       if(endscreen_player == 1){
+       if(bAutoAdvance){
+        var endscr_bottom_nvideo = '<h4 class="endscr_bottom_nvideo"><p>Next video starts in <span id="nvideo_timer">10</span>:</p><p id="nvideo_title"></p></h4>';    
+        }else{
+        var endscr_bottom_nvideo = '';        
+        }
+        if(endscreen_inventory == 1){
+            var invcontent =  '<p><a href='+inventory_btn+' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Top Menu Clicks\');" rel="nofollow" target="_parent">'+inventory_text+'</a></p>';
+        }else{
+            var invcontent = '';
+        }
+        if(endscreen_inventory == 1 || endscreen_cform == 1 || bAutoAdvance){
+            var endscreenTitle =  '<h4 class="endscr_title">Next steps...</h4>';
+        }else{
+            var endscreenTitle = '';
+        }
        myPlayer.customEndscreen({
-        "content": "<a href="+inventory_btn+" class='dvs_inventory_link' id='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
+//        "content": "<a href="+inventory_btn+" class='dvs_inventory_link' id='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
+//        "content": '<h4 class="endscr_title">Next steps...</h4><p><a href='+inventory_btn+' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Top Menu Clicks\');" rel="nofollow" target="_parent">'+inventory_text+'</a></p> <p><a href="javascript:void(0);" id="endscr_cform" class="endscr_btn">Contact Dealer</a></p>'+endscr_bottom_nvideo
+        "content": endscreenTitle + ''+ invcontent +''+ cdContent+''+endscr_bottom_nvideo
       })    
        }
        
-      
         myPlayer.overlay({
             //content: bCustomOverlay1Content,
             overlays: [{
@@ -263,50 +292,23 @@ videojs("bcv2").ready(function(){
             }]
           });
 
-      //myPlayer.on("timeupdate",function(){
-         // if(!preRollPlayed){
-          //    myPlayer.addClass("testClass");
-              //$(".vjs-text-track-display")
-      //})   
       if(!preRollPlayed && preRollUrl != ''){ 
       $("#bcv2 > :not(.vjs-control-bar):not(.vjs-big-play-button)").on("click",function(){
         window.open(preRollUrl, '_blank');
        });
       } 
       
-      myPlayer.on("userinactive",function(){
-         // myPlayer.controls(false);
-      });
-      myPlayer.on("useractive",function(){
-          //window.clearTimeout(timeOut);  
-          //$("#bcv2").removeClass("vjs-user-inactive");
-          //myPlayer.removeClass("vjs-user-inactive");
-          //myPlayer.addClass("vjs-user-active");
-          
-          
-        // timeOut = window.setTimeout(function(){
-              //myPlayer.removeClass("vjs-user-active");
-            //  myPlayer.addClass("vjs-user-inactive");
-              
-             // myPlayer.trigger("userinactive");
-             // myPlayer.controls(false);
-            //myPlayer.addClass('vjs-controls-disabled'); 
-           // console.log('inactive');
-       //   }, 1000);
-          
-      }); 
-      
-       
-       myPlayer.on("ended",function(){
-       
+      myPlayer.on("ended",function(){
+           $(".js_box").remove();
            if (navigator.userAgent.match(/(\(iPhone)/)) {
-            if(!preRollPlayed){
+//            if(!preRollPlayed){
                 $('video').get(0).webkitExitFullscreen();
-            }
+//            }
            }
            $(".vjs-overlay").hide();
+           $(".vjs-endscreen-overlay-content").fadeIn(1000);
            if (bAutoAdvance || preRollAdvance) {
-               
+                                                      
              
                if(preRollAdvance){
                    preRollAdvance = false;
@@ -321,23 +323,61 @@ videojs("bcv2").ready(function(){
                    $("#bcv2> :not(.vjs-control-bar):not(.vjs-big-play-button)").off();
                    preRollPlayed = true;
                }else{
-                currentVideoKey++; 
+                if(fck == 0){
+                currentVideoKey++;     
+                fck = 1;
+                }   
+                
                   if (bDebug) {
                     console.log('Player: Auto Advance enabled. Advancing to Video key: ' + currentVideoKey);
                 }
   
                }
                 
-
+               
               
                 if (aMediaIds[currentVideoKey]) {
-                    if (bDebug) {
+                    
+                    if(endscreen_player == 1){ 
+                    myPlayer.catalog.getVideo(aMediaIds[currentVideoKey], function(error,video) {
+                          
+                           aNewVideoTitle = video.custom_fields;
+                           $("#nvideo_title").html(aNewVideoTitle.year+" "+aNewVideoTitle.make+" "+aNewVideoTitle.model);
+                        });
+                    }                                          
+                    
+      
+                    if(bAutoAdvance && endscreen_player == 1){
+                       var counter = 10;
+                       interval = setInterval(function() {
+                           
+                            counter--;
+                            $("#nvideo_timer").html(counter);
+                            
+                            // Display 'counter' wherever you want to display it.
+                            if (counter == 0) {
+                                if (bDebug) {
+                                    console.log('Media: Playing next video');
+                                }
+                                resetChapters('');
+                                
+                                thumbnailClick(currentVideoKey);
+                                thumbnailClickDvs();   
+                                clearInterval(interval);
+                                $(".vjs-endscreen-overlay-content").hide();
+                            }
+                        }, 1000);
+ 
+                    }else{
+                     if (bDebug) {
                         console.log('Media: Playing next video');
                     }
                         resetChapters('');
                         
                         thumbnailClick(currentVideoKey);
-                        thumbnailClickDvs();
+                        thumbnailClickDvs();   
+                    }
+                    
                   
                 }
             }//else{
@@ -350,13 +390,22 @@ videojs("bcv2").ready(function(){
        }); 
        
        $("#chapter_buttons button").not("#chapter_container_Get_Price").on('click',function(){
+           clearInterval(interval);
+           $(".js_box .js_box_close a").trigger('click');
+           $(".vjs-endscreen-overlay-content").hide();
            $(".vjs-custom-overlay").remove();
            var cueName = this.id;
            cueName = cueName.replace('chapter_container_','');
+           if(currentCuePoint != cueName){
+            $(".vjs-overlay").hide();         
+           } 
            changeCuePoint(cueName);
        });
        //$(".playlist_carousel_image_link").on('click',function(){
        $(document).on('click',".playlist_carousel_image_link",function(){
+           clearInterval(interval);
+           $(".js_box .js_box_close a").trigger('click');
+           $(".vjs-endscreen-overlay-content").hide();
            $(".vjs-overlay").hide();
            var currentVidId = this.id;
            currentVideo =  currentVidId.replace('thumbnail_link_','');
@@ -369,31 +418,18 @@ videojs("bcv2").ready(function(){
            
        })
        $("#chapter_container_Get_Price").on('click',function(){
+           clearInterval(interval);
+//           $(".vjs-endscreen-overlay-content").hide();
+           $(".endscr_bottom_nvideo").hide();
            getPrice();
        });
-      
- //function clearoverlays(tm){
-//     if(bCustomOverlay1){
-//         if(iCustomOverlay1Start != tm){
-//             $(".vjs-overlay").hide();
-//         }
-//     }
-//     if(bCustomOverlay2){
-//         if(iCustomOverlay2Start != tm){
-//             $(".vjs-overlay").hide();
-//         }
-//     }if(bCustomOverlay3){
-//         if(iCustomOverlay3Start != tm){
-//             $(".vjs-overlay").hide();
-//         }
-//     }
-// }      
-       
- //function watchVideoSelect(aVideoSelectMediaIds) {alert('called');alert('called');
  watchVideoSelect = function(aVideoSelectMediaIds) {
     //bIgnoreAutoPlaySetting = true;
     bVideoChanged = true;
     aMediaIds = aVideoSelectMediaIds;
+    clearInterval(interval);
+    $(".js_box .js_box_close a").trigger('click');
+    $(".vjs-endscreen-overlay-content").hide();
     $(".vjs-overlay").hide();
     $(".vjs-custom-overlay").hide();
     resetChapters('');
@@ -440,26 +476,19 @@ function getSubArray(targetArray, objProperty, value) {
       objFound = false,
       idxArr = [];
     for (i = 0; i < totalItems; i++) {
-        console.log(targetArray[i][objProperty]+'sdsdsd'+value);
       if (targetArray[i][objProperty] === value) {
-          
         objFound = true;
         idxArr.push(targetArray[i]);
       }
     }
     return idxArr;
   };
-
- //function hideControls(){
-//     myPlayer.controls(false);
-// }
-      
+ 
 function cueChange(sCuePoint) {
     //if (currentCuePoint !== sCuePoint || bVideoChanged) {
-    //if (bVideoChanged) {
-        //console.log('hello');
+        
         currentCuePoint = sCuePoint;
-        sCurrentCuePoint = currentCuePoint;
+        sCurrentCuePoint = currentCuePoint;    
         changeLights(sCuePoint);
     //}
     //else
@@ -474,22 +503,7 @@ function cueChange(sCuePoint) {
         urlChanged = true;
  }
 
-    //if (sCuePoint === 'Post-roll') {
-//        // Handle chapter light states
-//        // Mediaevent "complete" doesn't fire on replays, so we need to make sure chapter lights are reset on a video replay here
-//        if (bDebug) {
-//            console.log('Player: Resetting chapter lights');
-//        }
-//
-//        $.each(oChapterDivs, function(sChapter, sHtml) {
-//            // Is the chapter button we are setting to display shown before the video ended?
-//            if ($('#chapter_container_' + sChapter).hasClass('display'))
-//            {
-//                $('#chapter_container_' + sChapter).attr('class', 'display disabled');
-//            }
-//
-//        });
-//    }
+
 }
 
 function changeLights(sCuePoint) {
@@ -696,6 +710,8 @@ function playPreroll(ap){
 function loadVideo(iKey){
     aCurrentVideoMetaData = myPlayer.mediainfo.custom_fields;
     aCurrentVideoMetaData.referenceId = myPlayer.mediainfo.reference_id;
+    
+    
     if (bDebug) {
         console.log('Media: Current Video Meta Data Follows:');
         console.log(aCurrentVideoMetaData);
@@ -734,46 +750,18 @@ function loadVideo(iKey){
     
     $.ajaxCall('dvs.changehtml5Video', 'bVideoChanged=' + bVideoChanged + '&sRefId=' + aCurrentVideoMetaData.referenceId + '&iDvsId=' + iDvsId);
     
+    
 }
 function playVideo(mkey,autoplay){
-    //var oCustomVars = {
-//        1: {
-//            name: 'Video Reference ID',
-//            value: aCurrentVideoMetaData.referenceId
-//        },
-//        2: {
-//            name: 'Vehicle Year',
-//            value: aCurrentVideoMetaData.year
-//        },
-//        3: {
-//            name: 'Vehicle Make',
-//            value: aCurrentVideoMetaData.make
-//        },
-//        4: {
-//            name: 'Vehicle Model',
-//            value: aCurrentVideoMetaData.model
-//        }
-//    };
-//    if ( typeof sendToGoogle == 'function' ) { 
-//    sendToGoogle(sPlayerName, 'Player', 'Media Begin', oCustomVars);
-//    }
-//    mixpanel.track("Media Begin", {
-//        "Category": sPlayerName,
-//        "Action": "Player",
-//        "Video ID": aCurrentVideoMetaData.referenceId,
-//        "Year": aCurrentVideoMetaData.year,
-//        "Make": aCurrentVideoMetaData.make,
-//        "Model": aCurrentVideoMetaData.model,
-//        }
-//    );
+ 
 
-
-     //playVideo(myPlayer,0);
+     
       myPlayer.catalog.getVideo(aMediaIds[mkey], function(error,video) {
         //deal with error
         myPlayer.catalog.load(video);
-        $(".vjs-loading-spinner").hide();
+        
         loadVideo(mkey);
+        $(".vjs-loading-spinner").hide();
         //seek(0);
        if(autoplay){
         myPlayer.play();
@@ -782,15 +770,13 @@ function playVideo(mkey,autoplay){
         //console.log(aMediaIds[0]);
         //currentVideoKey = myPlayer.mediainfo.id;
         currentVideoKey = mkey;
-        $(".vjs-loading-spinner").hide();
-        
         });
 }      
-function thumbnailClick(iKey) {
-   
+function thumbnailClick(iKey) {           
     if (bDebug) {
         console.log('Player: Playlist Thumbnail Click: #' + iKey);
     }
+    
     $(".vjs-custom-overlay").hide();
 
     if (bIsDvs) {
@@ -800,24 +786,14 @@ function thumbnailClick(iKey) {
 
     bVideoChanged = true;
 
-   // iCurrentVideo = iKey;
-//
-//    bIgnoreAutoPlaySetting = true;
-//
-//
-//    if (sBrowser === 'mobile' || sBrowser === 'ipad' || bIsHtml5) {
-//        modVid.loadVideoByID(aMediaIds[iKey]);
-//    }
-//    else
-//    {
-//        modCon.getMediaAsynch(aMediaIds[iKey]);
-//    }
+   
 if(preRollPlayed){
 playVideo(iKey,true);
 }else{
     thumbkey = iKey;
     myPlayer.play();
 }
+fck = 0;
     return false;
 }
 
@@ -862,13 +838,32 @@ getPriceOverlayClick = function() {
 
 });
 $(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
-    jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a").attr('href',inventory_new);
-});    
+    jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#dvs_inventory_link").attr('href',inventory_new);
+//    jQuery(".vjs-custom-overlay  #nvideo_title").html(aNewVideoTitle);
+//    jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#endscr_cform").attr('onclick','tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();');
+});
+$(document).on('DOMNodeInserted','.vjs-custom-overlay, .vjs-overlay',function(){
+    $(".gp_ov").attr("onclick",'tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId='+jQuery("#bc_dvs").val()+'&sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();');
+})    
 })
 function showspinner(){
       $(".vjs-loading-spinner").show();
   }  
+function waitForElementToDisplay(selector, time) {
+//        if(document.querySelector(selector)!=null) {
 
+        if($(selector).length > 0) {
+        $(".js_box #contact_dealer p").wrapAll("<div class='uleft cdtxt'></div>");
+        $(".js_box #contact_dealer ul, .js_box #contact_dealer input[type='submit']").wrapAll("<div class='uleft cdfields'></div>");
+        
+         
+        }
+        else {
+            setTimeout(function() {
+                waitForElementToDisplay(selector, time);
+            }, time);
+        }
+    }
 
        
             
