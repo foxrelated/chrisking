@@ -11,7 +11,16 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @author  		Konsort.org
  * @package 		DVS
  */
+ 
 ?>
+<style type="text/css">
+.endscreen_options{l}
+display:none;
+{r}
+.es_template{l}
+font-weight:bold;
+{r}
+</style>
 <div id="dvs_error_messages"></div>
 {if $bCanAddPlayers || $bIsEdit}
 <script type="text/javascript">
@@ -537,6 +546,200 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 	</div>
 	{/if}
 	<br>
+    
+    <div id="video_end_screen_container">
+
+        <h3>Video End Screen Settings</h3>
+
+        <fieldset>
+            
+            <ol>
+                <li>
+                    <label class="es_template">iFrame Player</label>
+                    On : <input type="radio" class="inline_radio endscreen_template" 
+                    {if $bIsEdit }{if isset($aForms.video_endscreen_iframe) && $aForms.video_endscreen_iframe == 1 }checked="checked"{/if}
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_iframe]" id="video_endscreen_iframe" />
+                    Off : <input type="radio" class="inline_radio endscreen_template" 
+                    {if $bIsEdit}{if isset($aForms.video_endscreen_iframe) && $aForms.video_endscreen_iframe == 0 }checked="checked"{/if}{/if} 
+                    value="0" name="val[video_endscreen_iframe]" id="video_endscreen_iframe" />
+                    
+                </li>
+                <li class="iframe_endbuttons endscreen_options" {if $bIsEdit }{if isset($aForms.video_endscreen_iframe) && $aForms.video_endscreen_iframe == 1 }style="display:block"{/if}
+                    {else}{if !$bIsEdit }style="display:block"{/if}{/if}>
+                    <label for="custom_overlay_1_text">Show Contact Form :</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit }{if isset($aForms.video_endscreen_iframe_cform) && $aForms.video_endscreen_iframe_cform == 1 }checked="checked"{/if}
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_iframe_cform]" id="video_endscreen_iframe_cform" />
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit}{if isset($aForms.video_endscreen_iframe_cform) && $aForms.video_endscreen_iframe_cform == 0 }checked="checked"{/if}{/if} 
+                    value="0" name="val[video_endscreen_iframe_cform]" id="video_endscreen_iframe_cform" />
+                    
+                </li>
+                <li class="iframe_endbuttons endscreen_options" {if $bIsEdit }{if isset($aForms.video_endscreen_iframe) && $aForms.video_endscreen_iframe == 1 }style="display:block"{/if}
+                    {else}{if !$bIsEdit }style="display:block"{/if}{/if}>
+                    <label>Show Inventory Button :</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit }{if isset($aForms.video_endscreen_iframe_inventory) && $aForms.video_endscreen_iframe_inventory == 1 }checked="checked"{/if}
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_iframe_inventory]" id="video_endscreen_iframe_inventory" />
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit}{if isset($aForms.video_endscreen_iframe_inventory) && $aForms.video_endscreen_iframe_inventory == 0 }checked="checked"{/if}{/if} 
+                    value="0" name="val[video_endscreen_iframe_inventory]" id="video_endscreen_iframe_inventory" />
+                    
+                </li>
+                <li>
+                    <label class="es_template">Overlay Player</label>
+                    On : <input type="radio" class="inline_radio endscreen_template" 
+                    {if $bIsEdit} {if isset($aForms.video_endscreen_overlay) && $aForms.video_endscreen_overlay == 1 }checked="checked"{/if} 
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_overlay]" id="video_endscreen_overlay" />
+                    Off : <input type="radio" class="inline_radio endscreen_template" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_overlay) && $aForms.video_endscreen_overlay == 0 }checked="checked"{/if} 
+                    value="0" name="val[video_endscreen_overlay]" id="video_endscreen_overlay" />
+                    
+                </li>
+                
+                <li class="overlay_endbuttons endscreen_options" {if $bIsEdit }{if isset($aForms.video_endscreen_overlay) && $aForms.video_endscreen_overlay == 1 }style="display:block"{/if}
+                    {else}{if !$bIsEdit }style="display:block"{/if}{/if}>
+                    <label>Show Contact Form :</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit }{if isset($aForms.video_endscreen_overlay_cform) && $aForms.video_endscreen_overlay_cform == 1 }checked="checked"{/if}
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_overlay_cform]" id="video_endscreen_overlay_cform" />
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit}{if isset($aForms.video_endscreen_overlay_cform) && $aForms.video_endscreen_overlay_cform == 0 }checked="checked"{/if}{/if} 
+                    value="0" name="val[video_endscreen_overlay_cform]" id="video_endscreen_overlay_cform" />
+                    
+                </li>
+                <li class="overlay_endbuttons endscreen_options" {if $bIsEdit }{if isset($aForms.video_endscreen_overlay) && $aForms.video_endscreen_overlay == 1 }style="display:block"{/if}
+                    {else}{if !$bIsEdit }style="display:block"{/if}{/if}>
+                    <label>Show Inventory Button :</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit }{if isset($aForms.video_endscreen_overlay_inventory) && $aForms.video_endscreen_overlay_inventory == 1 }checked="checked"{/if}
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_overlay_inventory]" id="video_endscreen_overlay_inventory" />
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit}{if isset($aForms.video_endscreen_overlay_inventory) && $aForms.video_endscreen_overlay_inventory == 0 }checked="checked"{/if}{/if} 
+                    value="0" name="val[video_endscreen_overlay_inventory]" id="video_endscreen_overlay_inventory" />
+                    
+                </li>
+                
+                <li>
+                    <label class="es_template">Inventory URL Player</label>
+                    On : <input type="radio" class="inline_radio endscreen_template" 
+                    {if $bIsEdit} {if isset($aForms.video_endscreen_inventory) && $aForms.video_endscreen_inventory == 1 }checked="checked"{/if} 
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_inventory]" id="video_endscreen_inventory" />
+                    Off : <input type="radio" class="inline_radio endscreen_template" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_inventory) && $aForms.video_endscreen_inventory == 0 }checked="checked"{/if} 
+                    value="0" name="val[video_endscreen_inventory]" id="video_endscreen_inventory" />
+                    
+                </li>
+                
+                <li class="inventory_endbuttons endscreen_options" {if $bIsEdit }{if isset($aForms.video_endscreen_inventory) && $aForms.video_endscreen_inventory == 1 }style="display:block"{/if}
+                    {else}{if !$bIsEdit }style="display:block"{/if}{/if}>
+                    <label>Show Contact Form :</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit }{if isset($aForms.video_endscreen_inventory_cform) && $aForms.video_endscreen_inventory_cform == 1 }checked="checked"{/if}
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_inventory_cform]" id="video_endscreen_inventory_cform" />
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit}{if isset($aForms.video_endscreen_inventory_cform) && $aForms.video_endscreen_inventory_cform == 0 }checked="checked"{/if}{/if} 
+                    value="0" name="val[video_endscreen_inventory_cform]" id="video_endscreen_inventory_cform" />
+                    
+                </li>
+                <li class="inventory_endbuttons endscreen_options" {if $bIsEdit }{if isset($aForms.video_endscreen_inventory) && $aForms.video_endscreen_inventory == 1 }style="display:block"{/if}
+                    {else}{if !$bIsEdit }style="display:block"{/if}{/if}>
+                    <label>Show Inventory Button :</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit }{if isset($aForms.video_endscreen_inventory_inventory) && $aForms.video_endscreen_inventory_inventory == 1 }checked="checked"{/if}
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_inventory_inventory]" id="video_endscreen_inventory_inventory" />
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit}{if isset($aForms.video_endscreen_inventory_inventory) && $aForms.video_endscreen_inventory_inventory == 0 }checked="checked"{/if}{/if} 
+                    value="0" name="val[video_endscreen_inventory_inventory]" id="video_endscreen_inventory_inventory" />
+                    
+                </li>
+                
+                <li>
+                    <label class="es_template">Mobile Player</label>
+                    On : <input type="radio" class="inline_radio endscreen_template" 
+                    {if $bIsEdit} {if isset($aForms.video_endscreen_mobile) && $aForms.video_endscreen_mobile == 1 }checked="checked"{/if} 
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_mobile]" id="video_endscreen_mobile" /> 
+                    Off : <input type="radio" class="inline_radio endscreen_template" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_mobile) && $aForms.video_endscreen_mobile == 0 }checked="checked"{/if} 
+                    value="0" name="val[video_endscreen_mobile]" id="video_endscreen_mobile" /> 
+                </li>
+                
+                <li class="mobile_endbuttons endscreen_options" {if $bIsEdit }{if isset($aForms.video_endscreen_mobile) && $aForms.video_endscreen_mobile == 1 }style="display:block"{/if}
+                    {else}{if !$bIsEdit }style="display:block"{/if}{/if}>
+                    <label>Show Contact Form :</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit }{if isset($aForms.video_endscreen_mobile_cform) && $aForms.video_endscreen_mobile_cform == 1 }checked="checked"{/if}
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_mobile_cform]" id="video_endscreen_mobile_cform" />
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit}{if isset($aForms.video_endscreen_mobile_cform) && $aForms.video_endscreen_mobile_cform == 0 }checked="checked"{/if}{/if} 
+                    value="0" name="val[video_endscreen_mobile_cform]" id="video_endscreen_mobile_cform" />
+                    
+                </li>
+                <li class="mobile_endbuttons endscreen_options" {if $bIsEdit }{if isset($aForms.video_endscreen_mobile) && $aForms.video_endscreen_mobile == 1 }style="display:block"{/if}
+                    {else}{if !$bIsEdit }style="display:block"{/if}{/if}>
+                    <label>Show Inventory Button :</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit }{if isset($aForms.video_endscreen_mobile_inventory) && $aForms.video_endscreen_mobile_inventory == 1 }checked="checked"{/if}
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_mobile_inventory]" id="video_endscreen_mobile_inventory" />
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit}{if isset($aForms.video_endscreen_mobile_inventory) && $aForms.video_endscreen_mobile_inventory == 0 }checked="checked"{/if}{/if} 
+                    value="0" name="val[video_endscreen_mobile_inventory]" id="video_endscreen_mobile_inventory" />
+                    
+                </li>
+                
+                 <li>
+                    <label class="es_template">Player</label>
+                    On : <input type="radio" class="inline_radio endscreen_template" 
+                    {if $bIsEdit}{if isset($aForms.video_endscreen_player) && $aForms.video_endscreen_player == 1 }checked="checked"{/if} 
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_player]" id="video_endscreen_player" /> 
+                    Off : <input type="radio" class="inline_radio endscreen_template" 
+                    {if $bIsEdit && isset($aForms.video_endscreen_player) && $aForms.video_endscreen_player == 0 }checked="checked"{/if} 
+                    value="0" name="val[video_endscreen_player]" id="video_endscreen_player" /> 
+                </li>
+                
+                <li class="player_endbuttons endscreen_options" {if $bIsEdit }{if isset($aForms.video_endscreen_player) && $aForms.video_endscreen_player == 1 }style="display:block"{/if}
+                    {else}{if !$bIsEdit }style="display:block"{/if}{/if}>
+                    <label>Show Contact Form :</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit }{if isset($aForms.video_endscreen_player_cform) && $aForms.video_endscreen_player_cform == 1 }checked="checked"{/if}
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_player_cform]" id="video_endscreen_player_cform" />
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit}{if isset($aForms.video_endscreen_player_cform) && $aForms.video_endscreen_player_cform == 0 }checked="checked"{/if}{/if} 
+                    value="0" name="val[video_endscreen_player_cform]" id="video_endscreen_player_cform" />
+                    
+                </li>
+                <li class="player_endbuttons endscreen_options" {if $bIsEdit }{if isset($aForms.video_endscreen_player) && $aForms.video_endscreen_player == 1 }style="display:block"{/if}
+                    {else}{if !$bIsEdit }style="display:block"{/if}{/if}>
+                    <label>Show Inventory Button :</label>
+                    On : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit }{if isset($aForms.video_endscreen_player_inventory) && $aForms.video_endscreen_player_inventory == 1 }checked="checked"{/if}
+                    {else}{if !$bIsEdit }checked="checked"{/if}{/if} 
+                    value="1" name="val[video_endscreen_player_inventory]" id="video_endscreen_player_inventory" />
+                    Off : <input type="radio" class="inline_radio" 
+                    {if $bIsEdit}{if isset($aForms.video_endscreen_player_inventory) && $aForms.video_endscreen_player_inventory == 0 }checked="checked"{/if}{/if} 
+                    value="0" name="val[video_endscreen_player_inventory]" id="video_endscreen_player_inventory" />
+                    
+                </li>
+            </ol>
+        </fieldset>
+       
+    </div>
+    <br>
+    
 	<fieldset>
 		{if $bIsDvs}
 		<input type="hidden" name="val[dvs_id]" value="{$iDvsId}">

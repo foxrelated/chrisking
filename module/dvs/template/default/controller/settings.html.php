@@ -299,14 +299,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<label for="dealer_specials_url">{phrase var='dvs.dealer_specials_url'}:</label>
 				<input type="url" name="val[specials_url]" value="{value type='input' id='specials_url'}" id="specials_url" size="120" maxlength="300" />
 			</li>
-			</ol>
-			<br />
-			<h1>Custom ID Settings (optional)</h1>
-			<ol>
-			<li>
-                <label for="cdk_id">CDK Web ID:</label>
-                <input type="text" name="val[cdk_id]" value="{value type='input' id='cdk_id'}" id="cdk_id" maxlength=30 />
-            </li>
+
             <li>
                 <label for="dealer_id">Dealer ID:</label>
                 <input type="text" name="val[dealer_id]" value="{value type='input' id='dealer_id'}" id="dealer_id" size="60" maxlength="255" />
