@@ -28,6 +28,20 @@ function newPlayerType(iType) {
 
 
 }
+$(document).ready(function(){
+//    alert('asdasdad');
+    $("#video_end_screen_container .endscreen_template").on('click',function(){
+//        alert('asd');
+        var vall = $(this).attr('value');
+        var radio = $(this).attr('id').replace('video_endscreen_','');
+        if(vall == 1){
+        $("."+radio+"_endbuttons").slideDown(700);    
+        }else{
+         $("."+radio+"_endbuttons").slideUp(700);   
+        }
+        
+    })
+})
 //$(document).ready(function(){
 //      //  alert('zxzxzx');
 //        $(document).on('change','#ui-multiselect-makes-option-0',function(){
