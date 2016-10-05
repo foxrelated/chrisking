@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('NO DICE!');
 
 if (!defined('PHPFOX_DEBUG'))
 {
-	define('PHPFOX_DEBUG', false);
+	define('PHPFOX_DEBUG', true);
 }
 
 if (!defined('PHPFOX_DEBUG_LEVEL'))

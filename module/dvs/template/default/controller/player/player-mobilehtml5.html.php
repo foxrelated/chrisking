@@ -279,6 +279,9 @@ margin-top:55px;
 margin-top:30px;
 display:block;
 {r}
+.vjs-ended video{l}
+ visibility:hidden;
+{r}
 .vjs-endscreen-overlay-content {l}
 display:none;
 {r}

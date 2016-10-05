@@ -29,10 +29,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     opacity:0.3;
     {/if}
 {r}
+.vjs-ended video{l}
+ visibility:hidden;
+{r}
+
 .vjs-ended .vjs-custom-overlay{l}
     background-color:transparent;  
     padding:0;
 {r}
+
 .endscr_title,.endscr_bottom_nvideo{l}
 color:#fff;
 font-size:20px;    
@@ -40,6 +45,10 @@ margin-bottom:10px;
 {r}
 .vjs-custom-overlay{l}
 margin-top:85px;
+{r}
+.vjs-custom-overlay.vjs_dealer_form{l}
+margin-top:0;
+font-size:14px;
 {r}
 .vjs-custom-overlay p{l}
 margin-top:20px;

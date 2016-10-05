@@ -23,6 +23,7 @@ thumbkey = -1,
 aNewVideoTitle,
 interval,
 fck=0,
+timer,
 oChapterDivs = {};
 
 $(document).ready(function(){
@@ -33,20 +34,112 @@ $(document).on('click','a#endscr_cform',function(){
            $(".vjs-endscreen-overlay-content").hide();
            $(".endscr_bottom_nvideo").hide();
 
-        $(".vjs-endscreen-overlay-content").empty();
+//        $(".vjs-endscreen-overlay-content").empty();
+          $(".vjs-endscreen-overlay-content h4,.vjs-endscreen-overlay-content p").hide();
         
         $(".js_box").hide();
-        $(".vjs-custom-overlay").css('margin-top','0');
-        $(".vjs-custom-overlay").css('font-size','14px');
+        $(".vjs-custom-overlay").addClass('vjs_dealer_form');
+//        $(".vjs-custom-overlay.vjs_dealer_form").addClass('vjs_dealer_form');
+        
+        $(".vjs-custom-overlay.vjs_dealer_form").css('margin-top','0');
+        $(".vjs-custom-overlay.vjs_dealer_form").css('font-size','14px');
         $(".js_box").appendTo(".vjs-endscreen-overlay-content");    
         $(".vjs-endscreen-overlay-content").show();
-         $(".js_box").show();
+        $(".vjs-endscreen-overlay-content .js_box").show();
          
-                 waitForElementToDisplay(".js_box #contact_dealer",10);
+        waitForElementToDisplay(".js_box #contact_dealer",10);
          
 })     
 
 videojs("bcv2").ready(function(){
+     
+     //$(document).on( 'submit','.vjs-endscreen-overlay-content #contact_dealer',function() {
+$(document).on( 'submit','#contact_dealer',function() {
+        
+       var element = $(".vjs-endscreen-overlay-content .js_box");
+       if(endscreen_player == 1){
+        timer = setInterval( function() {
+            if( element.is( ':hidden' ) ) {
+                
+                    $(".endscr_bottom_nvideo").show();
+                    $(".vjs-endscreen-overlay-content h4,.vjs-endscreen-overlay-content p").show();
+                    $(".js_box").remove();
+                    $(".vjs-custom-overlay").removeClass('vjs_dealer_form');
+                    $(".vjs-custom-overlay").removeAttr('style');
+                    $(".vjs-endscreen-overlay-content").show();
+                    if(bAutoAdvance){
+                    $("#nvideo_timer").html(10);
+                      clearInterval(interval);
+                       var counter = 10;
+                       interval = setInterval(function() {
+                           
+                            counter--;
+                            $("#nvideo_timer").html(counter);
+                            
+                            
+                            // Display 'counter' wherever you want to display it.
+                            if (counter == 0) {
+                                if (bDebug) {
+                                    console.log('Media: Playing next video');
+                                }
+                                resetChapters('');
+                                
+                                thumbnailClick(currentVideoKey);
+                                thumbnailClickDvs();   
+                                clearInterval(interval);
+                                $(".vjs-endscreen-overlay-content").hide();
+                            }
+                        }, 1000);
+                            
+                    }
+                
+                clearInterval(timer);
+            } else {
+//                $( '#status' ).text( '' );
+            }
+}, 300 );}
+});
+
+//$(document).on('click','.vjs-endscreen-overlay-content .js_box .js_box_close a',function() {
+$(document).on('click','.js_box .js_box_close a',function() {
+        
+       var element = $(".vjs-endscreen-overlay-content .js_box");
+       //clearInterval(interval);
+       if(endscreen_player == 1){
+                    $(".endscr_bottom_nvideo").show();   
+                    $(".vjs-endscreen-overlay-content h4,.vjs-endscreen-overlay-content p").show();
+//                    $(".js_box").remove();
+                    $(".vjs-custom-overlay").removeClass('vjs_dealer_form');
+                    $(".vjs-custom-overlay").removeAttr('style');
+                    $(".vjs-endscreen-overlay-content").show();
+                    if(bAutoAdvance){
+                    $("#nvideo_timer").html(10);
+                       clearInterval(interval);
+                       var counter = 10;
+                       interval = setInterval(function() {
+                           
+                            counter--;
+                            $("#nvideo_timer").html(counter);
+                            
+                            // Display 'counter' wherever you want to display it.
+                            if (counter == 0) {
+                                if (bDebug) {
+                                    console.log('Media: Playing next video');
+                                }
+                                resetChapters('');
+                                
+                                thumbnailClick(currentVideoKey);
+                                thumbnailClickDvs();   
+                                clearInterval(interval);
+                                $(".vjs-endscreen-overlay-content").hide();
+                            }
+                        }, 1000);
+ 
+                }
+                }
+});      
+          
+    
       myPlayer = this;
       var cuePointArr=[],
       allCuePointData,
