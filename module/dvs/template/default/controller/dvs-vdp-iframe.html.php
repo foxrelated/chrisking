@@ -1,3 +1,4 @@
+
 <style type="text/css">
     #dvs_bc_player {l}
         width: {if $sBrowser == 'mobile'}{$iPlayerWidth}px{else}717px{/if};
@@ -67,6 +68,9 @@ top:0 !important;
 .vjs-ended .vjs-custom-overlay{l}
     background-color:transparent;  
     padding:0;
+{r}
+.vjs-ended video{l}
+ visibility:hidden;
 {r}
 .endscr_title,.endscr_bottom_nvideo{l}
 color:#fff;

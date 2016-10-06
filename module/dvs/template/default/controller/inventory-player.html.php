@@ -41,6 +41,7 @@
     .vjs-overlay-buttons {l}
     display:none !important;
 {r}  
+
 #video_information h3 {l}
     color: #{$aPlayer.player_text};
     padding:0px;
@@ -82,6 +83,9 @@ display:none !important;
     {if $aPlayer.video_endscreen_inventory == 1}
     opacity:0.3;
     {/if}
+{r}
+.vjs-ended video{l}
+ visibility:hidden;
 {r}
 .vjs-ended .vjs-custom-overlay{l}
     background-color:transparent;  

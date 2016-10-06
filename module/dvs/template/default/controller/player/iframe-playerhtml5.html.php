@@ -27,6 +27,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     background-color:transparent;  
     padding:0;
 {r}
+.vjs-ended video{l}
+ visibility:hidden;
+{r}
 .endscr_title,.endscr_bottom_nvideo{l}
 color:#fff;
 font-size:20px;    
