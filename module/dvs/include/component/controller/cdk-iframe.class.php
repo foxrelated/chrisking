@@ -119,7 +119,7 @@ class Dvs_Component_Controller_Cdk_Iframe extends Phpfox_Component {
                     $aBaseUrl = false;
                 }
             } else {
-                $sOverride = ($bSubdomainMode ? $this->request()->get('req3') : $this->request()->get('req4'));
+                $sOverride = ($bSubdomainMode ? $this->request()->get('req4') : $this->request()->get('req5'));
                 $sNewParentUrl = $sParentUrl . 'WTVDVS_VIDEO_TEMP';
             }
         }

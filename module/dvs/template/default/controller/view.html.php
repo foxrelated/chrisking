@@ -234,7 +234,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         var dt = document.createElement('script');
         dt.type = 'text/javascript';
         dt.async = true;
-        var pa = ‘WheelsTV’;
+        var pa = 'WheelsTV';
         var src = document.location.protocol + '//dt.admission.net/dt.js?sitetype=dealer&format=js&cblttags=1&framed=1';
         src += '&referrer=' + encodeURIComponent(document.referrer.substr(0,2000));
         src += '&cs:pg=' + encodeURIComponent(pa + ' - ' + document.location.pathname);
