@@ -393,11 +393,13 @@ padding: 0;
         "width" : 952,
         "height" : 1000,
         "cdkWebId" : "{$aDvs.cdk_id}",
-        "rootUrl" :"{$sCorePath}"
+        "rootUrl" :"{$sCorePath}",
+        "styleUrl" : "{url link='dvs.vin.style' id=$aDvs.dvs_id}",
+        "popup": true
     {r});
 &lt;/script&gt;</textarea>
                 </p>
-
+                <p>Set popup to false if you do not want to show it as modal window</p>
             </div>
 
             <div id="vdp_embed_link_{$aDvs.dvs_id}" title="Inventory Embed Code" class="dvs_iframe_link_popup" style="display:none;">
