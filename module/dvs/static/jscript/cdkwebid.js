@@ -12,8 +12,8 @@ if (!window.CDKDVS) {
 
             delete params.height;
             delete params.width;
-            //this.iframeUrl = params.rootUrl.replace("www",  params.cdkWebId);
-            this.iframeUrl = params.rootUrl + params.cdkWebId + '/';
+            this.iframeUrl = params.rootUrl.replace("www",  params.cdkWebId);
+            //this.iframeUrl = params.rootUrl + params.cdkWebId + '/';
             this.iframeUrl = this.iframeUrl + 'iframe/cdk/parent_' + this.encode_base64(encodeURIComponent(sParentUrl)) ;
 
             if ((typeof params.popup !== "undefined") && (params.popup == true)) {
