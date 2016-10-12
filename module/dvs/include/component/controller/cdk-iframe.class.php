@@ -49,12 +49,9 @@ class Dvs_Component_Controller_Cdk_Iframe extends Phpfox_Component {
         // Are subdomains enabled? If yes, our dealer title url is in a different place.
         $bSubdomainMode = Phpfox::getParam('dvs.enable_subdomain_mode');
 
-        if ($bSubdomainMode)
-        {
+        if ($bSubdomainMode) {
             $sDvsRequest = $this->request()->get('req1');
-        }
-        else
-        {
+        } else {
             $sDvsRequest = $this->request()->get('req2');
         }
 
@@ -73,45 +70,32 @@ class Dvs_Component_Controller_Cdk_Iframe extends Phpfox_Component {
         $aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true);
 
         // Try a short URL
-        if (empty($aDvs))
-        {
+        if (empty($aDvs)) {
             $aShortUrl = Phpfox::getService('dvs.shorturl')->get($sDvsRequest);
             // Even with ShortURL mode on, the short url should come in as req2
-            if (empty($aShortUrl))
-            {
+            if (empty($aShortUrl)) {
                 $aShortUrl = Phpfox::getService('dvs.shorturl')->get($this->request()->get('req2'));
             }
 
             $aDvs = Phpfox::getService('dvs')->get($aShortUrl['dvs_id']);
 
-            if ($aShortUrl['video_ref_id'])
-            {
+            if ($aShortUrl['video_ref_id']) {
                 $aVideo = Phpfox::getService('dvs.video')->get($aShortUrl['video_ref_id']);
                 $sOverride = $aVideo['video_title_url'];
-            }
-            else
-            {
+            } else {
                 $sOverride = '';
             }
 
             Phpfox::getService('dvs.shorturl.clicks.process')->click($aShortUrl['shorturl_id'], Phpfox::getUserId());
-        }
-        else
-        {
+        } else {
             if ($bIsIframe) {
-                list($sOverride, $sNewParentUrl, $sOriginParentUrl, $aExtraParams) = Phpfox::getService('dvs.iframe')->parseUrl($sParentUrl);
+                list($sOverride, $sNewParentUrl, $sOriginParentUrl, $aExtraParams) = Phpfox::getService('dvs.iframe')->parseUrlCdk($sParentUrl);
 
                 if($aExtraParams['share']) {
                     $sShareSource = $aExtraParams['share'];
                 }
                 if($aExtraParams['vdp']) {
                     $sVdpEmbed = true;
-                }
-                /*if(($aDvs['parent_url'] != $sOriginParentUrl) || ($aDvs['parent_video_url'] != $sNewParentUrl)) {
-                    Phpfox::getService('dvs.iframe')->updateSitemapUrl($aDvs['dvs_id'], $sNewParentUrl, $sOriginParentUrl);
-                }*/
-                if(!$aDvs['parent_url'] || !$aDvs['parent_video_url']) {
-                    Phpfox::getService('dvs.iframe')->updateSitemapUrl($aDvs['dvs_id'], $sNewParentUrl, $sOriginParentUrl);
                 }
                 if($sOverride) {
                     $aBaseUrl = true;
