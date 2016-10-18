@@ -4,29 +4,52 @@ if (!window.CDKDVS) {
         iDvsId: 0,
         screenWidth: 0,
         screenHeight: 0,
+        iframeUrl: '',
         render_iframe:function (params) {
             var sParentUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + window.location.search;
             var height = params.height, width = params.width;
             var wrapper = document.getElementById(params.id);
-            var iMaxWidth = wrapper.offsetWidth;
-            var sWrapperWidth = '100%';
-            if(iMaxWidth == 0) {
-	            iMaxWidth = window.innerWidth;
-	            if (iMaxWidth > 980) {
-	            	sWrapperWidth = '980px';
-	            }
-            }
 
             delete params.height;
             delete params.width;
-            var iframeUrl = params.rootUrl.replace("www",  params.cdkWebId);
-            //var iframeUrl = params.rootUrl + params.cdkWebId + '/';
-            iframeUrl = iframeUrl + 'iframe/cdk/';
-            var sIframe = '<iframe frameborder="0" width="100%" height="1000px" style="width:100%;height:1000px;" src="' + iframeUrl + 'parent_' + this.encode_base64(encodeURIComponent(sParentUrl)) + '/maxwidth_' + iMaxWidth + '/"></iframe>';
+            this.iframeUrl = params.rootUrl.replace("www",  params.cdkWebId);
+            //this.iframeUrl = params.rootUrl + params.cdkWebId + '/';
+            this.iframeUrl = this.iframeUrl + 'iframe/cdk/parent_' + this.encode_base64(encodeURIComponent(sParentUrl)) ;
 
-            if (wrapper) {
-                wrapper.innerHTML = sIframe, wrapper.style.width = sWrapperWidth, wrapper.style.height = '100%', wrapper.style.padding = 0, wrapper.style.display = 'block'; wrapper.style.maxWidth = iMaxWidth;
-            } else if (window.console && console.error)console.error('DVS: Could not find DOM element with ID: ' + id)
+            if ((typeof params.popup !== "undefined") && (params.popup == true)) {
+                this.screenWidth = window.innerWidth;
+                this.screenHeight = window.innerHeight;
+
+                this.initModal();
+
+                var cclink = document.createElement('link');
+                cclink.href = params.styleUrl + 'height_' + this.screenHeight + '/width_' + this.screenWidth + '/';
+                cclink.type = 'text/css';
+                cclink.charset = 'utf-8';
+                cclink.rel = 'stylesheet';
+                document.body.appendChild(cclink);
+            } else {
+                if (wrapper) {
+                    var iMaxWidth = wrapper.offsetWidth;
+                    var sWrapperWidth = '100%';
+                    if(iMaxWidth == 0) {
+                        iMaxWidth = window.innerWidth;
+                        if (iMaxWidth > 980) {
+                            sWrapperWidth = '980px';
+                        }
+                    }
+                    var sIframe = '<iframe frameborder="0" width="100%" height="1000px" style="width:100%;height:1000px;" src="' + this.iframeUrl + '/maxwidth_' + iMaxWidth + '/"></iframe>';
+
+                    wrapper.innerHTML = sIframe, wrapper.style.width = sWrapperWidth, wrapper.style.height = '100%', wrapper.style.padding = 0, wrapper.style.display = 'block'; wrapper.style.maxWidth = iMaxWidth;
+                } else if (window.console && console.error)console.error('DVS: Could not find DOM element with ID: ' + id)
+            }
+        },
+
+        open_iframe: function() {
+            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + this.iframeUrl + '" height="100%" width="100%" style="height:100%;" frameborder="0"></iframe>';
+            CDKDVS.fadeIn('dvs_vin_layout_wrapper', 9);
+            CDKDVS.fadeIn('dvs_vin_popup_wrapper', 10);
+            return false;
         },
 
         encode_base64: function(data) {
@@ -62,6 +85,61 @@ if (!window.CDKDVS) {
 
             return (r ? enc.slice(0, r - 3) : enc) + '==='.slice(r || 3);
         },
+
+        initModal: function() {
+            var layoutWrapper = document.createElement('div');
+            layoutWrapper.setAttribute('id', 'dvs_vin_layout_wrapper');
+            if(layoutWrapper.addEventListener) {
+                layoutWrapper.addEventListener('click', function() {
+                    CDKDVS.close_popup(); return false;
+                });
+            } else {
+                layoutWrapper.attachEvent('onclick', function() {
+                    CDKDVS.close_popup(); return false;
+                });
+            }
+            document.body.appendChild(layoutWrapper);
+
+            var popupWrapper = document.createElement('div');
+            popupWrapper.setAttribute('id', 'dvs_vin_popup_wrapper');
+            if(popupWrapper.addEventListener) {
+                popupWrapper.addEventListener('click', function() {
+                    CDKDVS.close_popup(); return false;
+                });
+            } else {
+                popupWrapper.attachEvent('onclick', function() {
+                    CDKDVS.close_popup(); return false;
+                });
+            }
+
+            var popup =document.createElement('div');
+            popup.setAttribute('id', 'dvs_vin_popup');
+            popupWrapper.appendChild(popup);
+
+            var closeButton = document.createElement('a');
+            closeButton.setAttribute('id', 'dvs_vin_close_btn');
+            //closeButton.setAttribute('href', '#');
+            if(closeButton.addEventListener) {
+                closeButton.addEventListener('click', function() {
+                    CDKDVS.close_popup(); return false;
+                });
+            } else {
+                closeButton.attachEvent('onclick', function() {
+                    CDKDVS.close_popup(); return false;
+                });
+            }
+
+            var text = document.createTextNode('Close');
+            closeButton.appendChild(text);
+            popup.appendChild(closeButton);
+
+            var popupContent = document.createElement('div');
+            popupContent.setAttribute('id', 'dvs_vin_popup_content');
+            popup.appendChild(popupContent);
+
+            document.body.appendChild(popupWrapper);
+        },
+
         init: function (params) {
             this.sApiUrl = params.apiUrl;
             this.iDvsId = params.cdkWebId;
@@ -114,57 +192,7 @@ if (!window.CDKDVS) {
                 sAllEdstyle = sAllEdstyle.substring(0, sAllEdstyle.length - 1);
             }
 
-            var layoutWrapper = document.createElement('div');
-            layoutWrapper.setAttribute('id', 'dvs_vin_layout_wrapper');
-            if(layoutWrapper.addEventListener) {
-                layoutWrapper.addEventListener('click', function() {
-                    CDKDVS.close_popup(); return false;
-                });
-            } else {
-                layoutWrapper.attachEvent('onclick', function() {
-                    CDKDVS.close_popup(); return false;
-                });
-            }
-            document.body.appendChild(layoutWrapper);
-
-            var popupWrapper = document.createElement('div');
-            popupWrapper.setAttribute('id', 'dvs_vin_popup_wrapper');
-            if(popupWrapper.addEventListener) {
-                popupWrapper.addEventListener('click', function() {
-                    CDKDVS.close_popup(); return false;
-                });
-            } else {
-                popupWrapper.attachEvent('onclick', function() {
-                    CDKDVS.close_popup(); return false;
-                });
-            }
-
-            var popup =document.createElement('div');
-            popup.setAttribute('id', 'dvs_vin_popup');
-            popupWrapper.appendChild(popup);
-
-            var closeButton = document.createElement('a');
-            closeButton.setAttribute('id', 'dvs_vin_close_btn');
-            //closeButton.setAttribute('href', '#');
-            if(closeButton.addEventListener) {
-                closeButton.addEventListener('click', function() {
-                    CDKDVS.close_popup(); return false;
-                });
-            } else {
-                closeButton.attachEvent('onclick', function() {
-                    CDKDVS.close_popup(); return false;
-                });
-            }
-
-            var text = document.createTextNode('Close');
-            closeButton.appendChild(text);
-            popup.appendChild(closeButton);
-
-            var popupContent = document.createElement('div');
-            popupContent.setAttribute('id', 'dvs_vin_popup_content');
-            popup.appendChild(popupContent);
-
-            document.body.appendChild(popupWrapper);
+            this.initModal();
 
             var cclink = document.createElement('link');
             cclink.href = params.styleUrl + 'height_' + this.screenHeight + '/width_' + this.screenWidth + '/';
@@ -209,7 +237,6 @@ if (!window.CDKDVS) {
         },
 
         show_popup: function(sLink) {
-            console.log(sLink);
             //var sLink = oLink.getAttribute('href');
             document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" height="100%" width="100%" style="height:100%;" frameborder="0" scrolling="no"></iframe>';
             CDKDVS.fadeIn('dvs_vin_layout_wrapper', 9);

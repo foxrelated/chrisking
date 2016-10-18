@@ -19,7 +19,7 @@ class Dvs_Component_Controller_VIN_Script extends Phpfox_Component {
         $aEdStyles = array();
         if ($sAllVin) {
             $aVins = explode(',', $sAllVin);
-            list($aRows, $aDvs) = Phpfox::getService('dvs.vin')->getVins($aVins, $iDvsId, $iScreenWidth, $iScreenHeight);
+            list($aRows, $aDvs) = Phpfox::getService('dvs.vin')->getVins($aVins, $iDvsId, $iScreenWidth, $iScreenHeight, $bLoadByCdk);
         }
 
         if ($sAllEdStyle) {

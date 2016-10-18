@@ -94,7 +94,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         return array($aCompletedRows, $aDvs);
     }
 
-    public function getVins($aVins, $iDvsId, $iWidth, $iHeight) {
+    public function getVins($aVins, $iDvsId, $iWidth, $iHeight, $bLoadCdk = false) {
         $aQuishVin = array();
         $aFullRows = array();
         $aCompletedRows = array();
@@ -226,18 +226,18 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
             }
             if($aDvs['vpd_popup']) {
                 if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
-                    $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array('dvs-vdp-iframe', $aCompletedRow['url'], 'width_' . $iWidth, 'height_' . $iHeight));
+                    $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array('dvs-vdp-iframe', $aCompletedRow['url'], 'width_' . $iWidth, 'height_' . $iHeight, 'cdk_' . ($bLoadCdk ? '1' : '0')));
                 } else {
-                    $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], 'dvs-vdp-iframe', $aCompletedRow['url'], 'width_' . $iWidth, 'height_' . $iHeight));
+                    $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], 'dvs-vdp-iframe', $aCompletedRow['url'], 'width_' . $iWidth, 'height_' . $iHeight, 'cdk_' . ($bLoadCdk ? '1' : '0')));
                 }
             } else {
                 if ($aDvs['sitemap_parent_url'] && $aDvs['parent_video_url']) {
-                    $sOverrideLink = str_replace('WTVDVS_VIDEO_TEMP', $aCompletedRow['url'], $aDvs['parent_video_url']) . '&vdp=1';
+                    $sOverrideLink = str_replace('WTVDVS_VIDEO_TEMP', $aCompletedRow['url'], $aDvs['parent_video_url']) . '&vdp=1&cdk=' . ($bLoadCdk ? '1' : '0');
                 } else {
                     if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
-                        $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array($aCompletedRow['url'])) . 'vdp_1/';
+                        $sOverrideLink = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array($aCompletedRow['url'])) . 'vdp_1/cdk_' . ($bLoadCdk ? '1/' : '0/');
                     } else {
-                        $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aCompletedRow['url'])) . 'vdp_1/';
+                        $sOverrideLink = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], $aCompletedRow['url'])) . 'vdp_1/cdk_' . ($bLoadCdk ? '1/' : '0/');
                     }
                 }
             }

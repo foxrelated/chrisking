@@ -13,6 +13,8 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
         }
         $bPreview = false;
 
+        $bLoadByCdk = $this->request()->get('cdk', 0);
+
         /*phpmasterminds*/
         $aBaseUrl = false;
         if ($this->request()->get('req3')) {
@@ -295,6 +297,7 @@ class Dvs_Component_Controller_Dvs_Vdp_Iframe extends Phpfox_Component {
                 'jquery.placeholder.js' => 'module_dvs'
             ))
             ->assign(array(
+                'bLoadByCdk' => $bLoadByCdk,
                 'sVdpIframeUrl' => $sVdpIframeUrl,
                 'sDvsRequest' => $sDvsRequest,
                 'sVideoUrl' => $aVideo['video_title_url'],
