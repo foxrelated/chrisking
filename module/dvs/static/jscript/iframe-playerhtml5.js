@@ -369,6 +369,7 @@ $(document).on('click','.js_box .js_box_close a',function() {
       }  
        
       myPlayer.on("ended",function(){
+          
           $(".js_box").remove();
           if (navigator.userAgent.match(/(\(iPhone)/)) {
 //            if(!preRollPlayed){
@@ -861,8 +862,11 @@ function playVideo(mkey,autoplay){
     
       myPlayer.catalog.getVideo(aMediaIds[mkey], function(error,video) {
         //deal with error
-        myPlayer.catalog.load(video);
-        
+//        myPlayer.catalog.load(video);
+        try { 
+          myPlayer.catalog.load(video); 
+        } catch (e) { 
+        }
         loadVideo(mkey);
         $(".vjs-loading-spinner").hide();
        if(autoplay){

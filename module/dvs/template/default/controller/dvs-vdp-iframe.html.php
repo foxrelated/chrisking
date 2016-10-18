@@ -73,7 +73,7 @@ top:0 !important;
  visibility:hidden;
 {r}
 .endscr_title,.endscr_bottom_nvideo{l}
-color:#fff;
+color:#fff !important;
 font-size:20px;    
 margin-bottom:10px;
 {r}
@@ -137,7 +137,15 @@ text-align:left;
 {r}
 .cdfields input, #contact_dealer .cdfields textarea{l}
      width:100%;
+     color:#333;
 {r}     
+.uleft.cdtxt p,.vjs-custom-overlay #dvs_contact_success{l}
+color:#000;
+{r}     
+/*input:-ms-input-placeholder, textarea:-ms-input-placeholder{l}*/
+:-ms-input-placeholder{l}
+color:#666 !important;
+{r}  
  input[type="submit"]{l}
      float:right;
      font-size:18px;
@@ -188,6 +196,16 @@ text-align:left;
 </style>
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">
 <link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'>
+<!--[if lte IE 9]>
+<style type="text/css">
+.vjs-custom-overlay{l}
+    color:#000;
+{r}
+.vjs-custom-overlay .js_box_title {l}
+color:#fff;
+{r}
+</style>
+<![endif]-->
 <article>
     <section id="video_information">
         <h3 id="video_name">
@@ -197,6 +215,7 @@ text-align:left;
     <section id="player">
         {if !empty($sJavascript)}{$sJavascript}{/if}
         <script type="text/javascript">
+            var contact_dealer = "{phrase var='dvs.contact_dealer'}";
             var bIsSupportVideo = !!document.createElement('video').canPlayType;
             var aMediaIds = [];
             var aOverviewMediaIds = [];
@@ -244,7 +263,7 @@ text-align:left;
                     console.log(aMediaIds);
                 {r}
                  
-        var contact_dealer = "{phrase var='dvs.contact_dealer'}";
+//        var contact_dealer = "{phrase var='dvs.contact_dealer'}";
             {if $aPlayer.custom_overlay_1_type}
                 if (bDebug) console.log('Overlay: Overlay 1 is active. Type: {$aPlayer.custom_overlay_1_type}. Start: {$aPlayer.custom_overlay_1_start}. Duration: {$aPlayer.custom_overlay_1_duration}.');
                 var bCustomOverlay1 = true;
