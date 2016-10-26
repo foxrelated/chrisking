@@ -311,7 +311,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         $aParams = array();
         $aStyles = array();
         $sApiKey = 'wztmmwrvnegb6b547asz8u2a';
-
+        //https://api.edmunds.com/api/vehicle/v2/squishvins/SQUISHVIN/?fmt=json&api_key=wztmmwrvnegb6b547asz8u2a
         $sTargetUrl = "https://api.edmunds.com/api/vehicle/v2/squishvins/" . trim($sVin) . "/?fmt=json&api_key=" . $sApiKey;
         $ch = curl_init($sTargetUrl);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
