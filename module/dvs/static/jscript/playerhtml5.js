@@ -45,9 +45,11 @@ $(document).on('click','a#endscr_cform',function(){
         
         $(".vjs-custom-overlay.vjs_dealer_form").css('margin-top','0');
         $(".vjs-custom-overlay.vjs_dealer_form").css('font-size','14px');
+        
         $(".js_box").appendTo(".vjs-endscreen-overlay-content"); 
-           
+        
         $(".vjs-endscreen-overlay-content").show();
+        
 //        $(".vjs-custom-overlay p, .vjs-custom-overlay #")
          $(".vjs-endscreen-overlay-content .js_box").show();
          
@@ -111,6 +113,7 @@ $(document).on('click','.js_box .js_box_close a',function() {
        var element = $(".vjs-endscreen-overlay-content .js_box");
        //clearInterval(interval);
        if(endscreen_player == 1){
+//                    element.remove();
                     $(".endscr_bottom_nvideo").show();   
                     $(".vjs-endscreen-overlay-content h4,.vjs-endscreen-overlay-content p").show();
 //                    $(".js_box").remove();
