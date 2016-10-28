@@ -12,7 +12,7 @@ class Dvs_Service_Cdk_Cdk extends Phpfox_Service {
     }
 
     public function export($aDvs) {
-        $sTodayTime = strtotime('00:00:00') - 120 * 24 * 3600;
+        $sTodayTime = strtotime('00:00:00');
         $sYear = date('Y', $sTodayTime);
         $sMonth = date('m', $sTodayTime);
 
