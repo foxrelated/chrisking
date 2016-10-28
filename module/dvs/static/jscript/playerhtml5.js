@@ -1,4 +1,3 @@
-
 var myPlayer;
 var sPlayerName = "DVS Player";
 var bVideoChanged=false,
@@ -27,6 +26,7 @@ timer,
 inventory_new,
 oChapterDivs = {};  
 $(document).ready(function(){
+
 $(document).on('click','a#endscr_cform',function(){
 //    $("#chapter_container_Get_Price").trigger('click');
 //         getPrice();
@@ -45,8 +45,12 @@ $(document).on('click','a#endscr_cform',function(){
         
         $(".vjs-custom-overlay.vjs_dealer_form").css('margin-top','0');
         $(".vjs-custom-overlay.vjs_dealer_form").css('font-size','14px');
-        $(".js_box").appendTo(".vjs-endscreen-overlay-content");    
+        
+        $(".js_box").appendTo(".vjs-endscreen-overlay-content"); 
+        
         $(".vjs-endscreen-overlay-content").show();
+        
+//        $(".vjs-custom-overlay p, .vjs-custom-overlay #")
          $(".vjs-endscreen-overlay-content .js_box").show();
          
          waitForElementToDisplay(".js_box #contact_dealer",10);
@@ -109,6 +113,7 @@ $(document).on('click','.js_box .js_box_close a',function() {
        var element = $(".vjs-endscreen-overlay-content .js_box");
        //clearInterval(interval);
        if(endscreen_player == 1){
+//                    element.remove();
                     $(".endscr_bottom_nvideo").show();   
                     $(".vjs-endscreen-overlay-content h4,.vjs-endscreen-overlay-content p").show();
 //                    $(".js_box").remove();
@@ -215,6 +220,7 @@ $(document).on('click','.js_box .js_box_close a',function() {
               //preRollPlayed = true;
           }              
          tt.oncuechange = function() {
+//            alert('hello'); 
            if((!myPlayer.paused()) && (media_begin == 0))
            {//alert('zz');
                var oCustomVars = {
@@ -417,6 +423,7 @@ $(document).on('click','.js_box .js_box_close a',function() {
                    $("#bcv2> :not(.vjs-control-bar):not(.vjs-big-play-button)").off();
                    preRollPlayed = true;
                }else{
+                   
                 if(fck == 0){
                 currentVideoKey++;     
                 fck = 1;
@@ -610,7 +617,7 @@ function changeLights(sCuePoint) {
     }
     
     
-
+    
     if (sCuePoint === 'Intro' || sCuePoint === 'Overview')
     {
         $('#chapter_buttons button.disabled').addClass('active').removeClass('disabled');
@@ -852,8 +859,20 @@ function playVideo(mkey,autoplay){
      
       myPlayer.catalog.getVideo(aMediaIds[mkey], function(error,video) {
         //deal with error
-        myPlayer.catalog.load(video);
         
+        try { 
+          myPlayer.catalog.load(video); 
+        } catch (e) { 
+           
+//           alert(e); 
+//          myPlayer.catalog.load(video); 
+        } 
+
+//        if(video != null && video != ''){
+//            myPlayer.catalog.load(video);    
+//        }
+        
+   
         loadVideo(mkey);
         $(".vjs-loading-spinner").hide();
         //seek(0);
@@ -947,9 +966,9 @@ function waitForElementToDisplay(selector, time) {
 //        if(document.querySelector(selector)!=null) {
 
         if($(selector).length > 0) {
+        
         $(".js_box #contact_dealer p").wrapAll("<div class='uleft cdtxt'></div>");
         $(".js_box #contact_dealer ul, .js_box #contact_dealer input[type='submit']").wrapAll("<div class='uleft cdfields'></div>");
-        
          
         }
         else {

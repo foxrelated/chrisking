@@ -88,97 +88,103 @@
         background: #{$aPlayer.player_progress_bar} !important;
     {r}
     {/if}
+    
+.vjs-ended .vjs-poster{l}
+    display: block !important;
+    {if $aPlayer.video_endscreen_inventory == 1}
+    opacity:0.3;
+    {/if}
+{r}
+.vjs-ended video{l}
+ visibility:hidden;
+{r}
+.vjs-ended .vjs-custom-overlay{l}
+    background-color:transparent;  
+    padding:0;
+{r}
+.endscr_title,.endscr_bottom_nvideo{l}
+color:#fff !important;
+font-size:20px;    
+margin-bottom:10px;
+{r}
+.vjs-custom-overlay{l}
+margin-top:85px;
+{r}
+.vjs-custom-overlay p{l}
+margin-top:20px;
+{r}
+.vjs-endscreen-overlay-content {l}
+display:none;
+{r}
+.vjs-custom-overlay p a{l}
+padding: 8px 25px;
+background-color:#{$aDvs.button_background};
+border:1px solid #{$aDvs.button_border};
+background-image: -webkit-linear-gradient(top, #{$aDvs.button_top_gradient}, #{$aDvs.button_bottom_gradient}); */
+background-image: -moz-linear-gradient( center top, #{$aDvs.button_top_gradient} 5%, #{$aDvs.button_bottom_gradient} 100% );
+background-image: -ms-linear-gradient( bottom, #{$aDvs.button_top_gradient} 0%, #{$aDvs.button_bottom_gradient} 100% );
+background-image: linear-gradient(to bottom, #{$aDvs.button_top_gradient} 0%, #{$aDvs.button_bottom_gradient} 100% );
+background-image: -o-linear-gradient(bottom, #{$aDvs.button_top_gradient} 0%, #{$aDvs.button_bottom_gradient} 100% );
+color:#{$aDvs.button_text};
+font-size:20px;
+border-radius:10px;
+{r}
+.vjs-custom-overlay p a:hover{l}
+background-image: -webkit-linear-gradient(top, #{$aDvs.button_bottom_gradient}, #{$aDvs.button_top_gradient});
+background-image: -moz-linear-gradient(center top, #{$aDvs.button_bottom_gradient} 5%, #{$aDvs.button_top_gradient} 100%);
+background-image: -ms-linear-gradient(bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
+background-image: linear-gradient(to bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
+background-image: -o-linear-gradient(bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
+{r}                                          
+.vjs-custom-overlay .js_box{l}
+    
+    float: left !important;
+    width: 100% !important;
+    position: static !important;
+    top: 0 !important;
+    left: 0 !important;
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+{r}
+.endscr_bottom_nvideo{l}
+     position: absolute;
+    bottom: 50px;
+    width: 100%;
+    text-align: center;
 
-    .vjs-ended .vjs-poster{l}
-        display: block !important;
-        {if $aPlayer.video_endscreen_inventory == 1}
-        opacity:0.3;
-        {/if}
-    {r}
-
-    .vjs-ended video{l}
-        visibility:hidden;
-    {r}
-
-    .vjs-ended .vjs-custom-overlay{l}
-        background-color:transparent;
-        padding:0;
-    {r}
-
-    .endscr_title,.endscr_bottom_nvideo{l}
-        color:#fff;
-        font-size:20px;
-        margin-bottom:10px;
-    {r}
-
-    .vjs-custom-overlay{l}
-        margin-top:85px;
-    {r}
-
-    .vjs-custom-overlay p{l}
-        margin-top:20px;
-    {r}
-    .vjs-endscreen-overlay-content {l}
-        display:none;
-    {r}
-    .vjs-custom-overlay p a{l}
-        padding: 8px 25px;
-        background-color:#{$aDvs.button_background};
-        border:1px solid #{$aDvs.button_border};
-        background-image: -webkit-linear-gradient(top, #{$aDvs.button_top_gradient}, #{$aDvs.button_bottom_gradient}); */
-        background-image: -moz-linear-gradient( center top, #{$aDvs.button_top_gradient} 5%, #{$aDvs.button_bottom_gradient} 100% );
-        background-image: -ms-linear-gradient( bottom, #{$aDvs.button_top_gradient} 0%, #{$aDvs.button_bottom_gradient} 100% );
-        background-image: linear-gradient(to bottom, #{$aDvs.button_top_gradient} 0%, #{$aDvs.button_bottom_gradient} 100% );
-        background-image: -o-linear-gradient(bottom, #{$aDvs.button_top_gradient} 0%, #{$aDvs.button_bottom_gradient} 100% );
-        color:#{$aDvs.button_text};
-        font-size:20px;
-        border-radius:10px;
-    {r}
-    .vjs-custom-overlay p a:hover{l}
-        background-image: -webkit-linear-gradient(top, #{$aDvs.button_bottom_gradient}, #{$aDvs.button_top_gradient});
-        background-image: -moz-linear-gradient(center top, #{$aDvs.button_bottom_gradient} 5%, #{$aDvs.button_top_gradient} 100%);
-        background-image: -ms-linear-gradient(bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
-        background-image: linear-gradient(to bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
-        background-image: -o-linear-gradient(bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
-    {r}
-    .vjs-custom-overlay .js_box{l}
-        float: left !important;
-        width: 100% !important;
-        position: static !important;
-        top: 0 !important;
-        left: 0 !important;
-        margin-top: 0 !important;
-        margin-left: 0 !important;
-    {r}
-    .endscr_bottom_nvideo{l}
-        position: absolute;
-        bottom: 50px;
-        width: 100%;
-        text-align: center;
-    {r}
-    .uleft {l}
-        float:left;
-    {r}
-    .uleft.cdtxt{l}
-        width:40%;
-        text-align:left;
-    {r}
-    .uleft.cdfields{l}
-        width: 40%;
-        float: right;
-        text-align:left;
-    {r}
-    .cdfields input, #contact_dealer .cdfields textarea{l}
-         width:100%;
-    {r}
-    input[type="submit"]{l}
-        float:right;
-        font-size:18px;
-    {r}
-    .endscr_bottom_nvideo #nvideo_title{l}
-        font-size:17px;
-        margin-top:5px;
-    {r}
+{r}
+.uleft{l}
+ float:left;
+{r}
+.uleft.cdtxt{l}
+width:40%;
+text-align:left;
+{r}
+.uleft.cdfields{l}
+width: 40%;
+float: right;
+text-align:left;
+{r}
+.cdfields input, #contact_dealer .cdfields textarea{l}
+     width:100%;
+     color:#333;
+{r}     
+.uleft.cdtxt p,.vjs-custom-overlay #dvs_contact_success{l}
+color:#000;
+{r}     
+/*input:-ms-input-placeholder, textarea:-ms-input-placeholder{l}*/
+:-ms-input-placeholder{l}
+color:#666 !important;
+{r}  
+ input[type="submit"]{l}
+     float:right;
+     font-size:18px;
+{r}
+.endscr_bottom_nvideo #nvideo_title{l}
+ font-size:17px;
+ margin-top:5px;
+{r}
+    
 
    /* .vjs-big-play-button {l}
     top: 125px !important;
@@ -195,6 +201,16 @@
 </style>
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">
 <link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'>
+<!--[if lte IE 9]>
+<style type="text/css">
+.vjs-custom-overlay{l}
+    color:#000;
+{r}
+.vjs-custom-overlay .js_box_title {l}
+color:#fff;
+{r}
+</style>
+<![endif]-->
 
 <script type="text/javascript">
     $Behavior.removeNoVideo = function() {l}
@@ -215,6 +231,7 @@
     <section id="player">
         {if !empty($sJavascript)}{$sJavascript}{/if}
         <script type="text/javascript">
+            var contact_dealer = "{phrase var='dvs.contact_dealer'}";
             var bIsSupportVideo = !!document.createElement('video').canPlayType;
             var aMediaIds = [];
             var aOverviewMediaIds = [];
@@ -261,8 +278,10 @@
                 if (bDebug) {l}
                     console.log(aMediaIds);
                 {r}
-
+		
+		//comment or no?
         var contact_dealer = "{phrase var='dvs.contact_dealer'}";
+
             {if $aPlayer.custom_overlay_1_type}
                 if (bDebug) console.log('Overlay: Overlay 1 is active. Type: {$aPlayer.custom_overlay_1_type}. Start: {$aPlayer.custom_overlay_1_start}. Duration: {$aPlayer.custom_overlay_1_duration}.');
                 var bCustomOverlay1 = true;

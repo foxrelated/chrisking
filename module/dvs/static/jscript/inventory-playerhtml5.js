@@ -833,7 +833,10 @@ function playVideo(mkey,autoplay){
 //    );    
       myPlayer.catalog.getVideo(aMediaIds[mkey], function(error,video) {
         //deal with error
-        myPlayer.catalog.load(video);
+        try { 
+          myPlayer.catalog.load(video); 
+        } catch (e) { 
+        }
         $(".vjs-loading-spinner").hide();
         loadVideo(mkey);
        if(autoplay){
