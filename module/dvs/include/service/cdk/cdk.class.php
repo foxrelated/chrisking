@@ -92,7 +92,7 @@ class Dvs_Service_Cdk_Cdk extends Phpfox_Service {
             $aDefaultValue['CRM Email CTR'] = (int)((float)$aDefaultValue['CRM Video Email Click'] * 100 / (float)$aDefaultValue['CRM Video Email Open']);
         }
 
-        $sFileName = 'wheelstv_dvs_' . $aDvs['cdk_id'] .'_' . PHPFOX_TIME . '.csv';
+        $sFileName = 'wheelstv_dvs_' . $aDvs['cdk_id'] .'_' . date('YmdHis', time()) . '.csv';
         $sNewFile = Phpfox::getParam('core.dir_cache') . $sFileName;
         $oFileHandler = fopen($sNewFile, 'w+');
         fputcsv($oFileHandler, array(
@@ -121,16 +121,16 @@ class Dvs_Service_Cdk_Cdk extends Phpfox_Service {
     }
 
     public function uploadToClient($sFileName) {
-        $sftp = new Net_SFTP('reporting.wheelstv.co');
+        $sftp = new Net_SFTP('sftp.bi.cdk.com');
         $Key = new Crypt_RSA();
 
         $Key->loadKey(file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'id_rsa'));
 
-        if (!$sftp->login('cdk', $Key)) {
+        if (!$sftp->login('wheelstv', $Key)) {
             return false;
         }
 
-        $sftp->put("/home/cdk/". $sFileName, Phpfox::getParam('core.dir_cache') . $sFileName, NET_SFTP_LOCAL_FILE);
+        $sftp->put("/home/websites/video/wheelstv/". $sFileName, Phpfox::getParam('core.dir_cache') . $sFileName, NET_SFTP_LOCAL_FILE);
 
         return true;
     }
