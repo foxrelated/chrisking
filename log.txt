@@ -144,3 +144,6 @@ Phrase: Manage blacklist domain |  Link: dvs.blacklists
 *****************************************************   #629   *****************************************************
 ### DATABASE:
     - ALTER TABLE `phpfox_ko_dvs` ADD `country_iso` CHAR(2) NULL DEFAULT NULL AFTER `email_format`;
+
+*******************************************    CDK EXPORTING   *****************************************************
+ALTER TABLE `phpfox_ko_dvs` ADD `cdk_export_time` INT(11) UNSIGNED NOT NULL AFTER `cdk_id`;
