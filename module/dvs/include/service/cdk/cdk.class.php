@@ -145,6 +145,7 @@ class Dvs_Service_Cdk_Cdk extends Phpfox_Service {
             ->execute('getRow');
 
         if (!isset($aDvs['dvs_id'])) {
+            echo 'Completed';
             return false;
         }
 
@@ -154,7 +155,7 @@ class Dvs_Service_Cdk_Cdk extends Phpfox_Service {
 
         unlink(Phpfox::getParam('core.dir_cache') . $sCsvFile);
         $this->database()->update($this->_sTable, array('cdk_export_time' => PHPFOX_TIME), 'dvs_id = ' . $aDvs['dvs_id']);
-
+        echo 'Exported Data: ' . $aDvs['cdk_id'];
         return true;
     }
 }
