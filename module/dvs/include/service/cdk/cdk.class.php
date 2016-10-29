@@ -92,7 +92,7 @@ class Dvs_Service_Cdk_Cdk extends Phpfox_Service {
             $aDefaultValue['CRM Email CTR'] = (int)((float)$aDefaultValue['CRM Video Email Click'] * 100 / (float)$aDefaultValue['CRM Video Email Open']);
         }
 
-        $sFileName = 'wheelstv_dvs_' . $aDvs['cdk_id'] .'_' . date('YmdHis', time()) . '.csv';
+        $sFileName = 'wheelstv_dvs_' . $aDvs['cdk_id'] .'_' . date('Ymd', time()) . '.csv';
         $sNewFile = Phpfox::getParam('core.dir_cache') . $sFileName;
         $oFileHandler = fopen($sNewFile, 'w+');
         fputcsv($oFileHandler, array(
@@ -151,10 +151,10 @@ class Dvs_Service_Cdk_Cdk extends Phpfox_Service {
 
         $sCsvFile = $this->export($aDvs);
 
-        $this->uploadToClient($sCsvFile);
-
-        unlink(Phpfox::getParam('core.dir_cache') . $sCsvFile);
-        $this->database()->update($this->_sTable, array('cdk_export_time' => PHPFOX_TIME), 'dvs_id = ' . $aDvs['dvs_id']);
+//        $this->uploadToClient($sCsvFile);
+//
+//        unlink(Phpfox::getParam('core.dir_cache') . $sCsvFile);
+//        $this->database()->update($this->_sTable, array('cdk_export_time' => PHPFOX_TIME), 'dvs_id = ' . $aDvs['dvs_id']);
         echo 'Exported Data: ' . $aDvs['cdk_id'];
         return true;
     }
