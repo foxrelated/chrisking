@@ -366,7 +366,7 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
             'CRM Embed' => 0,
             'Facebook' => 0,
             'Twitter' => 0,
-            'Google+' => 0,
+            'Google' => 0,
             'Direct Link' => 0,
             'QR Code' => 0,
             'CRM Video Email' => 0

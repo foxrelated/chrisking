@@ -785,6 +785,8 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
             $aVideos = array($aVideo);
             unset($aVideo);
         }
+
+        $anew2uVideos = array();
         
         foreach ($aVideos as $iKey => $aVideo)
         {
@@ -815,19 +817,16 @@ class Dvs_Service_Video_Video extends Phpfox_Service {
             }
             //echo $aVideos[$iKey]['referenceId'].' '.$aVideos[$iKey]['video_type'];
 
-              if($aVideos[$iKey]['video_type'] == "New2U"){
-              $arr_expl = explode('_',$aVideos[$iKey]['referenceId'],2);    
-              $anew2uVideos[$iKey]['referenceId'] = $arr_expl[1];    
-              }
+            if($aVideos[$iKey]['video_type'] == "New2U") {
+                $arr_expl = explode('_',$aVideos[$iKey]['referenceId'],2);
+                $anew2uVideos[$iKey]['referenceId'] = $arr_expl[1];
+            }
               
         }
            
-        foreach($anew2uVideos as $key => $value){
-            
-          $aVideos =  $this->filter_array('1onONE_'.$value['referenceId'],$aVideos);
-            
-                
-        }
+//        foreach($anew2uVideos as $key => $value) {
+//            $aVideos =  $this->filter_array('1onONE_'.$value['referenceId'],$aVideos);
+//        }
         return ($bSingleVideo ? $aVideos[0] : $aVideos);
     }
     

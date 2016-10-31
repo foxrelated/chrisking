@@ -22,6 +22,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
             $sDvsRequest = $this->request()->get('req2');
         }
         $sVdpEmbed = $this->request()->get('vdp', false);
+        $bLoadByCdk = $this->request()->get('cdk', 0);
         $bPreview = false;
 
         /*phpmasterminds*/
@@ -133,7 +134,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
 
         if (!$bIsSetFirstVideo) {
             $aFirstVideo = $aOverviewVideos[0];
-        }
+        }                         
         /*phpmasterminds Edited for sort in gallery and footer starts*/
         /*foreach($aOverviewVideos as $ik=>$aVal)
         {
@@ -377,6 +378,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                 'sDvsHashCode' => Phpfox::getService('dvs.share')->convertNumberToHashCode($aDvs['dvs_id'], 3),
                 'sShareCode' => $this->url()->makeUrl('share') . Phpfox::getService('dvs.share')->convertNumberToHashCode($aVideo['ko_id'], 5) . Phpfox::getService('dvs.share')->convertNumberToHashCode($aDvs['dvs_id'], 3),
                 'sVdpIframeUrl' => $sVdpIframeUrl,
+                'bLoadByCdk' => $bLoadByCdk,
                 'aDvs' => $aDvs,
                 'aBaseUrl' => $aBaseUrl,
                 'aCurrentVideo' => $aCurrentVideo,

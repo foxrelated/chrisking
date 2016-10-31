@@ -8,7 +8,7 @@ var elements = [];
                 elements.push(document.getElementById("dvs_vin_btn_{$sKey}_"+i));
             {r}
         {r}
-    {/foreach} 
+    {/foreach}
 if(elements != null && elements.length > 0) {l}
     for(var k = 0; k < elements.length; k++) {l}
         if(elements[k] != null) {l}
@@ -22,7 +22,7 @@ if(elements != null && elements.length > 0) {l}
         if(elements[k].childNodes[i].tagName == "A") {l}
         var urlElement = elements[k].childNodes[i];
         {r}
-        {r}          
+        {r}
 {foreach from=$aRows key=sKey item=aRow}
     if(('{$sKey}' == elements[k].getAttribute("vin")) || ('{$sKey}' == elements[k].getAttribute("edstyleid"))) {l}
             {if $aRow.url}
@@ -38,11 +38,11 @@ if(elements != null && elements.length > 0) {l}
             if(urlElement.addEventListener) {l}
             urlElement.addEventListener('click', function(evt) {l}
             evt.preventDefault();
-            WTVVIN.show_popup('{$aRow.url}'); return false;
+            {if $bLoadByCdk}CDKDVS{else}WTVVIN{/if}.show_popup('{$aRow.url}'); return false;
             {r}, false);
             {r} else {l}
             urlElement.attachEvent('onclick', function() {l}
-            WTVVIN.show_popup('{$aRow.url}');
+            {if $bLoadByCdk}CDKDVS{else}WTVVIN{/if}.show_popup('{$aRow.url}');
             window.event.returnValue = false;
             return false;
             {r});
@@ -53,7 +53,7 @@ if(elements != null && elements.length > 0) {l}
             {/if}
     {r}
 {/foreach}
-                                              
+
         loadingElement.style.display = 'none';
         {r}
     {r}
