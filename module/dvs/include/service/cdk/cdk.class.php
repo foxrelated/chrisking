@@ -99,7 +99,7 @@ class Dvs_Service_Cdk_Cdk extends Phpfox_Service {
             'wheelstv',
             'dvs',
             $aDvs['cdk_id'],
-            $sMonth . '/1/' . $sYear,
+            $sMonth . '-01-' . $sYear,
             $iPlayerLoaded,
             $iVideoView,
             $iPlayRate,
