@@ -343,8 +343,8 @@ padding: 0;
 						   </li>
 						   <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a></li>
 						   <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}"><span>Reporting</span></a></li>
+						   
 						   {if Phpfox::isAdmin()}
-                           
 						   <li class="has-sub"><a href="#"><span>Integrate</span></a>
 							  <ul>
                                 <li><a href="{url link='dvs.download-instruction-cdk' id=$aDvs.dvs_id}"><span><strong>CDK Instructions</strong></span></a></li>
@@ -380,7 +380,6 @@ padding: 0;
 						</ul>
 						</div>
 					</td>
-<!--		"iframeUrl" : "{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}iframe/"			-->
 				</tr>
 				<tr><td colspan="3">&nbsp;</td></tr>
 				<div id="dvs_iframe_link_{$aDvs.dvs_id}" title="DVS Embed Code" class="dvs_iframe_link_popup" style="display:none;">
@@ -400,10 +399,11 @@ padding: 0;
 					</p>
 					
 				</div>
+            
             <div id="dvs_iframe_link_cdk_{$aDvs.dvs_id}" title="DVS Embed Code" class="dvs_iframe_link_popup" style="display:none;">
                 <p>Add this javascript code to a new page called "Virtual Test Drive" and link to it under New Inventory navigation menu:</p>
                 <p><textarea rows="13" cols="71">&lt;div id="dvs_wrapper">&lt;/div&gt;
-&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/cdkwebid.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="{$stCorePath}module/dvs/static/jscript/cdkwebid.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
 
     CDKDVS.render_iframe({l}
@@ -411,9 +411,9 @@ padding: 0;
         "width" : 952,
         "height" : 1000,
         "cdkWebId" : "{$aDvs.cdk_id}",
-        "rootUrl" :"{$sCorePath}",
-        "styleUrl" : "{url link='dvs.vin.style' id=$aDvs.dvs_id}",
-        "popup": true
+        "rootUrl" :"{$stCorePath}",
+        //"styleUrl" : "{url link='dvs.vin.style' id=$aDvs.dvs_id}",
+        //"popup": true
     {r});
 &lt;/script&gt;</textarea>
                 </p>
@@ -431,9 +431,14 @@ WTVVIN.init({l}
     "scriptUrl" : "{$scriptURL}"
 {r});
 &lt;/script&gt;</textarea>
+				<p>Step 2: Add button code for each vehicle listing and replace # with VIN:</p> 
+					<textarea rows="1" cols="71">&lt;div class="dvs_vin_btn" vin="#"&gt;&lt;/div&gt; </textarea>
+				</p>
+			</div>
+            
             <div id="vdp_embed_link_cdk_{$aDvs.dvs_id}" title="Inventory Embed Code" class="dvs_iframe_link_popup" style="display:none;">
                     <p>Step 1: Add this code right before the &lt;/body&gt; tag of the SRP and VDP template page:</p>
-                    <textarea rows="10" cols="71">&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/cdkwebid.js"&gt;&lt;/script&gt;
+                    <textarea rows="10" cols="71">&lt;script type="text/javascript" src="{$stCorePath}module/dvs/static/jscript/cdkwebid.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
 CDKDVS.init({l}
     "cdkWebId" : "{$aDvs.cdk_id}",
@@ -445,19 +450,19 @@ CDKDVS.init({l}
                 </p>
                 <p>Step 2: Add button code for each vehicle listing and replace # with VIN:</p> 
 					<textarea rows="1" cols="71">&lt;div class="dvs_vin_btn" vin="#"&gt;&lt;/div&gt; </textarea>
-					</p>
+				</p>
             </div>
             
             <div id="vin_url_player_{$aDvs.dvs_id}" title="VIN URL Player" class="dvs_iframe_link_popup" style="display:none;">
                 <p>Use this URL to assign a video to the player using a VIN (replace # with VIN):</p>
-                    <textarea rows="1" cols="65">{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#</textarea>
+                    <textarea rows="1" cols="65">{url link=$aDvs.title_url}inventory-player/id_{$aDvs.dvs_id}/vin_#</textarea>
                 </p>
                 <p style="padding-top:10px;"><em>Note: This is primarily used for CDK integrations which requires the player to be opened in a pop-up window or iframe that they control.</em></p>
             </div>
             
             <div id="vin_embed_player_{$aDvs.dvs_id}" title="VIN Embed Player" class="dvs_iframe_link_popup" style="display:none;">
                 <p>Use this iFrame HTML to embed a standalone DVS player on a page using a VIN (replace # with VIN):</p>
-                    <textarea rows="4" cols="65">&lt;iframe src="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}inventory-player/id_{$aDvs.dvs_id}/vin_#" frameborder="0" scrolling="no" marginwidth="0" marginheight="0" width="880px" height="500px"&gt;&lt;/iframe&gt;</textarea>
+                    <textarea rows="4" cols="65">&lt;iframe src="{url link=$aDvs.title_url}inventory-player/id_{$aDvs.dvs_id}/vin_#" frameborder="0" scrolling="no" marginwidth="0" marginheight="0" width="880px" height="500px"&gt;&lt;/iframe&gt;</textarea>
                 </p>
                 <p style="padding-top:10px;"><em>Note: A VIN of any Year, Make, Model must be assigned in order to display a video.</em></p>
             </div>

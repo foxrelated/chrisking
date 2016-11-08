@@ -1,13 +1,13 @@
 1. Create a new page called Virtual Test Drive and add this javascript code as HTML source code (not as an iframe widget):
 
 <div id="dvs_wrapper"></div>
-<script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/embed.js"></script>
+<script type="text/javascript" src="{$stCorePath}module/dvs/static/jscript/embed.js"></script>
 <script type="text/javascript">
     WTVDVS.render_iframe({l}
         "id" : "dvs_wrapper",
         "width" : 952,
         "height" : 1000,
-        "iframeUrl" : "{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}iframe/"
+        "iframeUrl" : "{$surl}iframe/"
     {r});
 </script>
 
