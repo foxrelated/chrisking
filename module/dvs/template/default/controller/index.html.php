@@ -410,7 +410,7 @@ padding: 0;
         "height" : 1000,
         "cdkWebId" : "{$aDvs.cdk_id}",
         "rootUrl" :"{$stCorePath}",
-        //"styleUrl" : "{surl link='dvs.vin.style' id=$aDvs.dvs_id}",
+        //"styleUrl" : "{url link='dvs.vin.style' id=$aDvs.dvs_id}",
         //"popup": true
     {r});
 &lt;/script&gt;</textarea>
