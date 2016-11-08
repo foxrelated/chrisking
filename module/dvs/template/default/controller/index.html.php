@@ -386,7 +386,7 @@ padding: 0;
         "id" : "dvs_wrapper",
         "width" : 952,
         "height" : 1000,
-        "iframeUrl" : "{$surl}iframe/"
+        "iframeUrl" : "{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}{$surl}iframe/"
     {r});
 &lt;/script&gt;</textarea>
 					</p>
