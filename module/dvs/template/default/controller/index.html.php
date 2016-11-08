@@ -312,12 +312,7 @@ padding: 0;
 			{foreach from=$aDvss item=aDvs}
                 {assign var="turl" value=$aDvs.title_url}
                 {assign var="tdvs" value=$aDvs.dvs_id}
-                
-                {if $bSubdomainMode}
-                    {assign var="surl" value="//".$turl.".".$urll."/"}
-                {else}
-                    {assign var="surl" value="//dvs.".$urll."/".$turl."/"}    
-                {/if}
+                {assign var="surl" value="//".$turl.".".$urll."/"}
                 {assign var="styleURL" value="//dvs.".$urll."/vin/style/id_".$tdvs."/"}
                 {assign var="scriptURL" value="//dvs.".$urll."/vin/script/id_".$tdvs."/"}
                 {assign var="apiURL" value="www.".$urll}
@@ -391,7 +386,7 @@ padding: 0;
         "id" : "dvs_wrapper",
         "width" : 952,
         "height" : 1000,
-        "iframeUrl" : "{$surl}iframe/"
+        "iframeUrl" : "{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}{$surl}iframe/"
     {r});
 &lt;/script&gt;</textarea>
 					</p>
