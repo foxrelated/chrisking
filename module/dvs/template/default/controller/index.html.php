@@ -336,9 +336,7 @@ padding: 0;
 								 <li><a href="{url link='dvs.customize' id=$aDvs.dvs_id}"><span>Customize Styling</span></a></li>
 								 <li><a href="{url link='dvs.player.add' id=$aDvs.dvs_id}"><span>Player Settings</span></a></li>
 								 <li><a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}"><span>Sales Team</span></a></li>
-                                 {*if Phpfox::isAdmin()*}
                                  <li><a href="{url link='dvs.manager' id=$aDvs.dvs_id}"><span>Managers Team</span></a></li>
-                                 {*/if*}
 							  </ul>
 						   </li>
 						   <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a></li>
@@ -351,15 +349,15 @@ padding: 0;
                                 <li><a href="{url link='dvs.download-instruction-ddc' id=$aDvs.dvs_id}"><span><strong>Dealer.com Instructions</strong></span></a></li>
                                 <li><a href="{url link='dvs.download-instruction' id=$aDvs.dvs_id}"><span><strong>Standard Instructions</strong></span></a></li>
                                 <li><hr></li>
-								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>Virtual Test Drive Embed</span></a></li>
+								<li><a href="#" onclick="$('#dvs_iframe_link_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>Virtual Test Drive Embed</span></a></li>
                                   {if ($aDvs.cdk_id =='')}
                                   {else}
-                                <li><a href="#" onclick="$('#dvs_iframe_link_cdk_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>Virtual Test Drive Embed By Cdk</span></a></li>
+                                <li><a href="#" onclick="$('#dvs_iframe_link_cdk_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>CDK - Virtual Test Drive Embed</span></a></li>
                                   {/if}
-                                <li><a href="#" onclick="$('#vdp_embed_link_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>SRP and VDP Embed</span></a></li>
+                                <li><a href="#" onclick="$('#vdp_embed_link_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>SRP and VDP Embed</span></a></li>
                                   {if ($aDvs.cdk_id =='')}
                                   {else}
-                                <li><a href="#" onclick="$('#vdp_embed_link_cdk_{$aDvs.dvs_id}').dialog({l}width: 500{r});"><span>SRP and VDP Embed By Cdk</span></a></li>
+                                <li><a href="#" onclick="$('#vdp_embed_link_cdk_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>CDK - SRP and VDP Embed</span></a></li>
                                   {/if}
                                 <li><a href="#" onclick="$('#vin_url_player_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>VIN URL Player</span></a></li>
                                 <li><a href="#" onclick="$('#vin_embed_player_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>VIN Embed Player</span></a></li>
