@@ -276,6 +276,7 @@ padding: 0;
 				$('#dvs_message').show('slow');
 				$('#dvs_message').animate({top: 0}, 1000).hide('slow');
 			}
+            
 		</script>
 	{/literal}
 
@@ -309,6 +310,18 @@ padding: 0;
 			</tr>
 			<tr><td colspan="3">&nbsp;</td></tr>
 			{foreach from=$aDvss item=aDvs}
+                {assign var="turl" value=$aDvs.title_url}
+                {assign var="tdvs" value=$aDvs.dvs_id}
+                
+                {if $bSubdomainMode}
+                    {assign var="surl" value="//".$turl.".".$urll."/"}
+                {else}
+                    {assign var="surl" value="//dvs.".$urll."/".$turl."/"}    
+                {/if}
+                {assign var="styleURL" value="//dvs.".$urll."/vin/style/id_".$tdvs."/"}
+                {assign var="scriptURL" value="//dvs.".$urll."/vin/script/id_".$tdvs."/"}
+                {assign var="apiURL" value="www.".$urll}
+                
 				<tr id="dvs_{$aDvs.dvs_id}">
 					<td colspan="2" valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
 						<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}" target="_blank">{$aDvs.dealer_name}</a>
@@ -331,6 +344,7 @@ padding: 0;
 						   <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a></li>
 						   <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}"><span>Reporting</span></a></li>
 						   {if Phpfox::isAdmin()}
+                           
 						   <li class="has-sub"><a href="#"><span>Integrate</span></a>
 							  <ul>
                                 <li><a href="{url link='dvs.download-instruction-cdk' id=$aDvs.dvs_id}"><span><strong>CDK Instructions</strong></span></a></li>
@@ -351,6 +365,7 @@ padding: 0;
                                 <li><a href="#" onclick="$('#vin_embed_player_{$aDvs.dvs_id}').dialog({l}width: 550{r});"><span>VIN Embed Player</span></a></li>
 							  </ul>
 						   </li>
+                           
 						   <li class="active"><a href="#" onclick="if (confirm('{phrase var='core.are_you_sure' phpfox_squote=true}')) {left_curly} $(this).parents('#dvss:first').find('#dvs_{$aDvs.dvs_id}:first').hide('slow'); $.ajaxCall('dvs.deleteDvs', 'dvs_id={$aDvs.dvs_id}');{right_curly}"><span>Delete</span></a>
 						   </li>
                             <li class="active activity_button">
@@ -365,19 +380,21 @@ padding: 0;
 						</ul>
 						</div>
 					</td>
-					
+<!--		"iframeUrl" : "{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}iframe/"			-->
 				</tr>
 				<tr><td colspan="3">&nbsp;</td></tr>
 				<div id="dvs_iframe_link_{$aDvs.dvs_id}" title="DVS Embed Code" class="dvs_iframe_link_popup" style="display:none;">
 					<p>Add this javascript code to a new page called "Virtual Test Drive" and link to it under New Inventory navigation menu:</p>
+                    
 						<p><textarea rows="13" cols="71">&lt;div id="dvs_wrapper">&lt;/div&gt;
-&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/embed.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="{$stCorePath}module/dvs/static/jscript/embed.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
+
     WTVDVS.render_iframe({l}
         "id" : "dvs_wrapper",
         "width" : 952,
         "height" : 1000,
-        "iframeUrl" : "{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}iframe/"
+        "iframeUrl" : "{$surl}iframe/"
     {r});
 &lt;/script&gt;</textarea>
 					</p>
@@ -388,6 +405,7 @@ padding: 0;
                 <p><textarea rows="13" cols="71">&lt;div id="dvs_wrapper">&lt;/div&gt;
 &lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/cdkwebid.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
+
     CDKDVS.render_iframe({l}
         "id" : "dvs_wrapper",
         "width" : 952,
@@ -404,13 +422,13 @@ padding: 0;
 
             <div id="vdp_embed_link_{$aDvs.dvs_id}" title="Inventory Embed Code" class="dvs_iframe_link_popup" style="display:none;">
                 <p>Step 1: Add this code right before the &lt;/body&gt; tag of the SRP and VDP template page:</p>
-                    <textarea rows="10" cols="71">&lt;script type="text/javascript" src="{$sCorePath}module/dvs/static/jscript/vin.js"&gt;&lt;/script&gt;
+                    <textarea rows="10" cols="71">&lt;script type="text/javascript" src="{$stCorePath}module/dvs/static/jscript/vin.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
 WTVVIN.init({l}
     "dvs" : {$aDvs.dvs_id},
-    "apiUrl" : "{url link=''}",
-    "styleUrl" : "{url link='dvs.vin.style' id=$aDvs.dvs_id}",
-    "scriptUrl" : "{url link='dvs.vin.script' id=$aDvs.dvs_id}"
+    "apiUrl" : "{'//'.$apiURL.'/'}",
+    "styleUrl" : "{$styleURL}",
+    "scriptUrl" : "{$scriptURL}"
 {r});
 &lt;/script&gt;</textarea>
             <div id="vdp_embed_link_cdk_{$aDvs.dvs_id}" title="Inventory Embed Code" class="dvs_iframe_link_popup" style="display:none;">

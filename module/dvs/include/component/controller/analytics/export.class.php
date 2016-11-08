@@ -4,9 +4,11 @@ class Dvs_Component_Controller_Analytics_Export extends Phpfox_Component {
     public function process() {
         $sDvsTitleUrl = $this->request()->get('id', '');
         $sFileType = $this->request()->get('file', 'pdf');
+        $sTab = $this->request()->get('tab','');
 
-        $sNewFile = Phpfox::getParam('core.dir_cache') . trim($sDvsTitleUrl) . '_' . date('Ymd') . '.' . $sFileType;
+        $sNewFile = Phpfox::getParam('core.dir_cache') . trim($sDvsTitleUrl) . '_' . $sTab . '_' . date('Ymd') . '.' . $sFileType;
         if (file_exists($sNewFile)) {
+            echo 'hell';
             header('Content-Description: File Transfer');
             header('Content-Type: application/force-download');
             header('Content-Disposition: attachment; filename='.basename($sNewFile));
