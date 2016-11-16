@@ -322,7 +322,7 @@ padding: 0;
                 {assign var="scriptURL" value="//dvs.".$urll."/vin/script/id_".$tdvs."/"}
                 {assign var="apiURL" value="www.".$urll}
                 
-				<tr id="dvs_{$aDvs.dvs_id}">
+                <tr id="dvs_{$aDvs.dvs_id}">
 					<td colspan="2" valign="middle" style="text-align:left;vertical-align:middle;font-size:15px;">
 						<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}" target="_blank">{$aDvs.dealer_name}</a>
 					</td>
