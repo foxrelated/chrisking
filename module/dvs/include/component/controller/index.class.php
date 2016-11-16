@@ -250,7 +250,7 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
             'bSubdomainMode' => $bSubdomainMode,
             'sCorePath' => Phpfox::getParam('core.path'),
             'stCorePath' => $stCorePath,
-            'urll' => $_SERVER['SERVER_NAME'] 
+            'urll' => str_replace('dvs.wtvdvs','wtvdvs',$_SERVER['SERVER_NAME'])
         ))
             ->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
             ->setHeader('cache', array(
