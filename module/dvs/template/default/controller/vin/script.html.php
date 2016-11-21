@@ -27,7 +27,7 @@ if(elements != null && elements.length > 0) {l}
     if(('{$sKey}' == elements[k].getAttribute("vin")) || ('{$sKey}' == elements[k].getAttribute("edstyleid"))) {l}
             {if $aRow.url}
             {if isset($vdp_background)}
-            urlElement.innerHTML = '<img src="{$vdp_background}" alt="{$sButtonText}" title="{$sButtonText}" />';
+            urlElement.innerHTML = '<img src="{$vdp_background}" alt="{$sButtonText}" title="{$sButtonText}" style="height:auto;" />';
             urlElement.style.display = 'inline-block';
             {else}
             urlElement.style.display = 'block';
