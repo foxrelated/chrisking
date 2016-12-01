@@ -192,28 +192,28 @@ function drawMiniPageView() {
     pageViewMiniChart.draw(pageViewData, options);
 }
 
-// function drawMiniPagePerSession() {
-//     var pagePerSessionData = new google.visualization.DataTable();
-//     pagePerSessionData.addColumn('date', 'Date');
-//     pagePerSessionData.addColumn('number', 'Pages / Session');
-//     pagePerSessionData.addRows(window.pagePerSessionDataRaw);
-//     var options = {
-//         height: 105,
-//         chartArea: {left: 0, width: '100%', height: 75, top: 20},
-//         title: window.pagePerSessionTotal,
-//         titlePosition: 'in',
-//         titleTextStyle: {
-//             fontSize: 20,
-//             bold: false
-//         },
-//         legend: {position: 'top', textStyle: { color: '#000000', fontSize: 14}},
-//         vAxis: {gridlines: {count: 0}, baselineColor: 'transparent', maxValue: window.pagePerSessionMaxValue},
-//         hAxis: {gridlines: {count: 0}, baselineColor: 'transparent'},
-//         series: {0: {color: '#059EDA', areaOpacity: 0.1}}
-//     };
-//     pagePerSessionMiniChart = new google.visualization.AreaChart(document.getElementById('mini-chart-pagepersession-content'));
-//     pagePerSessionMiniChart.draw(pagePerSessionData, options);
-// }
+function drawMiniPagePerSession() {
+    var pagePerSessionData = new google.visualization.DataTable();
+    pagePerSessionData.addColumn('date', 'Date');
+    pagePerSessionData.addColumn('number', 'Pages / Session');
+    pagePerSessionData.addRows(window.pagePerSessionDataRaw);
+    var options = {
+        height: 105,
+        chartArea: {left: 0, width: '100%', height: 75, top: 20},
+        title: window.pagePerSessionTotal,
+        titlePosition: 'in',
+        titleTextStyle: {
+            fontSize: 20,
+            bold: false
+        },
+        legend: {position: 'top', textStyle: { color: '#000000', fontSize: 14}},
+        vAxis: {gridlines: {count: 0}, baselineColor: 'transparent', maxValue: window.pagePerSessionMaxValue},
+        hAxis: {gridlines: {count: 0}, baselineColor: 'transparent'},
+        series: {0: {color: '#059EDA', areaOpacity: 0.1}}
+    };
+    pagePerSessionMiniChart = new google.visualization.AreaChart(document.getElementById('mini-chart-pagepersession-content'));
+    pagePerSessionMiniChart.draw(pagePerSessionData, options);
+}
 
 function drawMiniAvgTimePage() {
     var avgTimePageData = new google.visualization.DataTable();

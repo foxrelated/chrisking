@@ -36,8 +36,8 @@ class Dvs_Component_Block_Analytics_Overall extends Phpfox_Component {
         list($sPageViewLineData, $iPageViewTotal, $iPageViewMaxValue) = $oGAService->getChartData($oPageViewLineRequest->rows);
 
         // Pages / Session
-        //$oPagePerSessionLineRequest = $oGAService->makeRequest('ga:pageviewsPerSession', array('dimensions'=>'ga:date','filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
-        //list($sPagePerSessionLineData, $iPagePerSessionTotal, $iPagePerSessionMaxValue) = //$oGAService->getChartData($oPagePerSessionLineRequest->rows, 'number', 'avg');
+        $oPagePerSessionLineRequest = $oGAService->makeRequest('ga:pageviewsPerSession', array('dimensions'=>'ga:date','filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
+        list($sPagePerSessionLineData, $iPagePerSessionTotal, $iPagePerSessionMaxValue) = $oGAService->getChartData($oPagePerSessionLineRequest->rows, 'number', 'avg');
 
         // Avg. Time on Page
         $oAvgTimePageLineRequest = $oGAService->makeRequest('ga:avgTimeOnPage', 
@@ -66,7 +66,7 @@ class Dvs_Component_Block_Analytics_Overall extends Phpfox_Component {
                 'iSessionTotal' => $iSessionTotal,
                 'iUserTotal' => $iUserTotal,
                 'iPageViewTotal' => $iPageViewTotal,
-                //'iPagePerSessionTotal' => $iPagePerSessionTotal,
+                'iPagePerSessionTotal' => $iPagePerSessionTotal,
                 'iAvgTimePageTotal' => $iAvgTimePageTotal,
                 'iBounceRateTotal' => $iBounceRateTotal,
 
@@ -85,9 +85,9 @@ class Dvs_Component_Block_Analytics_Overall extends Phpfox_Component {
                     'var pageViewDataRaw = ' . $sPageViewLineData . ';' .
                     'var pageViewTotal = "' . $iPageViewTotal . '";' .
                     'var pageViewMaxValue = ' . $iPageViewMaxValue . ';' .
-                    //'var pagePerSessionDataRaw = ' . $sPagePerSessionLineData . ';' .
-                    //'var pagePerSessionTotal = "' . $iPagePerSessionTotal . '";' .
-                    //'var pagePerSessionMaxValue = ' . $iPagePerSessionMaxValue . ';' .
+                    'var pagePerSessionDataRaw = ' . $sPagePerSessionLineData . ';' .
+                    'var pagePerSessionTotal = "' . $iPagePerSessionTotal . '";' .
+                    'var pagePerSessionMaxValue = ' . $iPagePerSessionMaxValue . ';' .
                     'var avgTimePageDataRaw = ' . $sAvgTimePageLineData . ';' .
                     'var avgTimePageTotal = "' . $iAvgTimePageTotal . '";' .
                     'var avgTimePageMaxValue = ' . $iAvgTimePageMaxValue . ';' .
