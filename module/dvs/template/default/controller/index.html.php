@@ -290,8 +290,9 @@ padding: 0;
 	<a href="{url link='dvs.settings'}" class="button-link" style="width:90px;height:10px;padding:2px 2px 15px 2px;margin:0px;">{phrase var='dvs.add_dvs'}</a>
 	<div class="main_break"></div>
 </div>
-{pager}
+
 <div class="clear"></div>
+{pager}
 {if $aDvss}
 	<div id="dvss" {*if $bCanAddDvss}class="separate"{/if*} style="margin:50px 0px 0px 0px;">
 		<table style="width:100%;border-collapse:collapse;">
