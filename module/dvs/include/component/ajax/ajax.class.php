@@ -2462,7 +2462,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             $this->saveImageData($this->get('sessionMiniChartImage'), $sCacheImagePrefix.'3.png');
             $this->saveImageData($this->get('userMiniChartImage'), $sCacheImagePrefix.'4.png');
             $this->saveImageData($this->get('pageViewMiniChartImage'), $sCacheImagePrefix.'5.png');
-            $this->saveImageData($this->get('pagePerSessionMiniChartImage'), $sCacheImagePrefix.'6.png');
+            //$this->saveImageData($this->get('pagePerSessionMiniChartImage'), $sCacheImagePrefix.'6.png');
             $this->saveImageData($this->get('avgTimePageMiniChartImage'), $sCacheImagePrefix.'7.png');
             $this->saveImageData($this->get('bounceRateMiniChartImage'), $sCacheImagePrefix.'8.png');
             $this->saveImageData($this->get('visitorPercentChartImage'), $sCacheImagePrefix.'9.png');
