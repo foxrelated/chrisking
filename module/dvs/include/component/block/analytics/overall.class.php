@@ -40,19 +40,13 @@ class Dvs_Component_Block_Analytics_Overall extends Phpfox_Component {
         list($sPagePerSessionLineData, $iPagePerSessionTotal, $iPagePerSessionMaxValue) = $oGAService->getChartData($oPagePerSessionLineRequest->rows, 'number', 'avg');
 
         // Avg. Time on Page
-        $oAvgTimePageLineRequest = $oGAService->makeRequest('ga:avgSessionDuration', 
-        
-        array('dimensions'=>'ga:date','filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
-        // ^ change array to filter by hostname (e.g. [dealer_name].wtvdvs.com) to display avg. time on page
-        
+        $oAvgTimePageLineRequest = $oGAService->makeRequest('ga:avgTimeOnPage', 
+        array('dimensions'=>'ga:date','filters'=>'ga:hostname=~^'.$aDvs['title_url'].''), $sDateFrom);        
         list($sAvgTimePageLineData, $iAvgTimePageTotal, $iAvgTimePageMaxValue) = $oGAService->getChartData($oAvgTimePageLineRequest->rows, 'time', 'avg');
 
         // Bounce Rate
         $oBounceRateLineRequest = $oGAService->makeRequest('ga:bounceRate', 
-        
-        array('dimensions'=>'ga:date','filters'=>'ga:medium!=Overlay Player;ga:source=~^'.$aDvs['dealer_name']), $sDateFrom);
-        // ^ change array to filter by hostname (e.g. [dealer_name].wtvdvs.com) to display bounce rate
-        
+        array('dimensions'=>'ga:date','filters'=>'ga:hostname=~^'.$aDvs['title_url'].''), $sDateFrom);        
         list($sBounceRateLineData, $iBounceRateTotal, $iBounceRateMaxValue) = $oGAService->getChartData($oBounceRateLineRequest->rows, 'number', 'avg');
 
         // New User Percent
