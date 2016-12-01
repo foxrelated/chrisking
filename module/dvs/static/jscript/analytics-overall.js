@@ -218,7 +218,7 @@ function drawMiniPageView() {
 function drawMiniAvgTimePage() {
     var avgTimePageData = new google.visualization.DataTable();
     avgTimePageData.addColumn('date', 'Date');
-    avgTimePageData.addColumn('number', 'Avg. Time on DVS Pages);
+    avgTimePageData.addColumn('number', 'Avg. Time on DVS Pages');
     avgTimePageData.addRows(window.avgTimePageDataRaw);
     var options = {
         height: 105,
