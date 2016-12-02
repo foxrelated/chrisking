@@ -55,6 +55,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$aDvs.button_top_gradient}', endColorstr='#{$aDvs.button_bottom_gradient}');
 		border: 1px solid #{$aDvs.button_border};
 		color: #{$aDvs.button_text};
+		float:none;
 	{r}
 	
 	input.dvs_form_button:hover {l}

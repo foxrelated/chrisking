@@ -44,11 +44,13 @@ class Dvs_Component_Block_Analytics_Overall extends Phpfox_Component {
         list($sAvgTimePageLineData, $iAvgTimePageTotal, $iAvgTimePageMaxValue) = $oGAService->getChartData($oAvgTimePageLineRequest->rows, 'time', 'avg');
 
         // Bounce Rate
-        $oBounceRateLineRequest = $oGAService->makeRequest('ga:bounceRate', array('dimensions'=>'ga:date','filters'=>'ga:medium!=Overlay Player;ga:source=~^'.$aDvs['dealer_name']), $sDateFrom);
+        $oBounceRateLineRequest = $oGAService->makeRequest('ga:bounceRate', //array('dimensions'=>'ga:date','filters'=>'ga:medium!=Overlay Player;ga:source=~^'.$aDvs['dealer_name']), $sDateFrom);
+        array('dimensions'=>'ga:date','filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
         list($sBounceRateLineData, $iBounceRateTotal, $iBounceRateMaxValue) = $oGAService->getChartData($oBounceRateLineRequest->rows, 'number', 'avg');
 
         // New User Percent
-        $oNewVisitorPieRequest = $oGAService->makeRequest('ga:percentNewSessions', array('filters'=>'ga:source=~^'.$aDvs['dealer_name']), $sDateFrom);
+        $oNewVisitorPieRequest = $oGAService->makeRequest('ga:percentNewSessions', //array('filters'=>'ga:source=~^'.$aDvs['dealer_name']), $sDateFrom);
+        array('dimensions'=>'ga:date','filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
         $iNewSession = (float)$oNewVisitorPieRequest->totalsForAllResults['ga:percentNewSessions'];
         $iOldSession = 100 - $iNewSession;
         $iNewSession = number_format($iNewSession, 2);

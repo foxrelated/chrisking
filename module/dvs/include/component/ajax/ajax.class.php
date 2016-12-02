@@ -2466,19 +2466,19 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             $this->saveImageData($this->get('avgTimePageMiniChartImage'), $sCacheImagePrefix.'7.png');
             $this->saveImageData($this->get('bounceRateMiniChartImage'), $sCacheImagePrefix.'8.png');
             $this->saveImageData($this->get('visitorPercentChartImage'), $sCacheImagePrefix.'9.png');
-            $sNewPdfFile = Phpfox::getService('dvs.analytics.export')->exportOverall(Phpfox::getParam('core.dir_cache').$sCacheImagePrefix, $iDay, $aDvs);
+            $sNewPdfFile = Phpfox::getService('dvs.analytics.export')->exportOverall(Phpfox::getParam('core.dir_cache').$sCacheImagePrefix, $iDay, $aDvs,'overallstats');
         } elseif ($sTab == 'video') {
             $this->saveImageData($this->get('circleGraphImg'), $sCacheImagePrefix.'1.png');
-            $sNewPdfFile = Phpfox::getService('dvs.analytics.export')->exportVideo(Phpfox::getParam('core.dir_cache').$sCacheImagePrefix, $iDay, $aDvs);
+            $sNewPdfFile = Phpfox::getService('dvs.analytics.export')->exportVideo(Phpfox::getParam('core.dir_cache').$sCacheImagePrefix, $iDay, $aDvs,'videostats');
         } elseif ($sTab == 'sharing') {
             $this->saveImageData($this->get('circleGraphImg'), $sCacheImagePrefix.'1.png');
             if ($this->get('shareViewPieImage') != '') {
                 $this->saveImageData($this->get('shareViewPieImage'), $sCacheImagePrefix.'2.png');
             }
-            $sNewPdfFile = Phpfox::getService('dvs.analytics.export')->exportSharing(Phpfox::getParam('core.dir_cache').$sCacheImagePrefix, $iDay, $aDvs);
+            $sNewPdfFile = Phpfox::getService('dvs.analytics.export')->exportSharing(Phpfox::getParam('core.dir_cache').$sCacheImagePrefix, $iDay, $aDvs,'sharingstats');
         }
 
-        $sNewPdfFile = Phpfox::getLib('url')->makeUrl('dvs.analytics.export', array('id'=>trim($aDvs['title_url']), 'file'=>'pdf'));
+        $sNewPdfFile = Phpfox::getLib('url')->makeUrl('dvs.analytics.export', array('id'=>trim($aDvs['title_url']), 'file'=>'pdf','tab' => $sTab.'stats'));
         $this->call("$('#download_iframe').attr('src', '" . $sNewPdfFile . "')");
     }
 
@@ -2507,17 +2507,17 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
         switch ($sTab) {
             case 'video':
-                Phpfox::getService('dvs.analytics.export')->exportVideoCSV($iDay, $aDvs);
+                Phpfox::getService('dvs.analytics.export')->exportVideoCSV($iDay, $aDvs,'videostats');
                 break;
             case 'sharing':
-                Phpfox::getService('dvs.analytics.export')->exportSharingCSV($iDay, $aDvs);
+                Phpfox::getService('dvs.analytics.export')->exportSharingCSV($iDay, $aDvs,'sharingstats');
                 break;
             default:
-                Phpfox::getService('dvs.analytics.export')->exportOverallCSV($iDay, $aDvs);
+                Phpfox::getService('dvs.analytics.export')->exportOverallCSV($iDay, $aDvs,'overallstats');
                 break;
         }
 
-        $sNewPdfFile = Phpfox::getLib('url')->makeUrl('dvs.analytics.export', array('id'=>trim($aDvs['title_url']), 'file'=>'csv'));
+        $sNewPdfFile = Phpfox::getLib('url')->makeUrl('dvs.analytics.export', array('id'=>trim($aDvs['title_url']), 'file'=>'csv', 'tab'=>$sTab.'stats'));
         $this->call("$('#download_iframe').attr('src', '" . $sNewPdfFile . "')");
     }
 }

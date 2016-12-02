@@ -13,7 +13,7 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
 
     }
 
-    public function exportOverall($sImagePrefix, $iDays = 30, $aDvs) {
+    public function exportOverall($sImagePrefix, $iDays = 30, $aDvs,$sTab = '') {
         $sDateFrom = $iDays.'daysAgo';
         $oGAService = Phpfox::getService('dvs.analytics');
         $pdf = new FPDF();
@@ -64,7 +64,11 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         }
 
         $pdf->Ln(10);
-        $sNewFile = $aDvs['title_url'] . '_' . date('Ymd') . '.pdf';
+        if($sTab == ''){
+        $sNewFile = $aDvs['title_url'] . '_' . date('Ymd') . '.pdf';    
+        }else{
+        $sNewFile = $aDvs['title_url'] . '_' .$sTab. '_'. date('Ymd') . '.pdf';    
+        }
         $pdf->Output(Phpfox::getParam('core.dir_cache') . $sNewFile, 'F');
         for($i=1; $i<=9; $i++) {
             unlink($sImagePrefix.$i.'.png');
@@ -72,7 +76,7 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         return $sNewFile;
     }
 
-    public function exportVideo($sImagePrefix, $iDays = 30, $aDvs) {
+    public function exportVideo($sImagePrefix, $iDays = 30, $aDvs,$sTab = '') {
         $sDateFrom = $iDays.'daysAgo';
         $oGAService = Phpfox::getService('dvs.analytics');
         $pdf = new FPDF();
@@ -130,13 +134,18 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
             $pdf->Cell(20, 7, $aRow[1], 1, 0, 'C');
         }
 
-        $sNewFile = $aDvs['title_url'] . '_' . date('Ymd') . '.pdf';
+        if($sTab == ''){
+        $sNewFile = $aDvs['title_url'] . '_' . date('Ymd') . '.pdf';    
+        }else{
+        $sNewFile = $aDvs['title_url'] . '_' .$sTab. '_'. date('Ymd') . '.pdf';    
+        }
+//        $sNewFile = $aDvs['title_url'] . '_' . date('Ymd') . '.pdf';
         $pdf->Output(Phpfox::getParam('core.dir_cache') . $sNewFile, 'F');
         unlink($sImagePrefix.'1.png');
         return $sNewFile;
     }
 
-    public function exportSharing($sImagePrefix, $iDays = 30, $aDvs) {
+    public function exportSharing($sImagePrefix, $iDays = 30, $aDvs,$sTab = '') {
         $sDateFrom = $iDays.'daysAgo';
         $oGAService = Phpfox::getService('dvs.analytics');
         $pdf = new FPDF();
@@ -150,6 +159,7 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         $pdf->SetFontSize(15);
         $pdf->Write(5, $aDvs["dealer_name"] . ' Report');
         $pdf->SetXY(5, 12);
+        $pdf->Write(5, 'Sharing Stats');
 //        $pdf->Write(5, 'Email Share Conversions');
 //        $pdf->Ln(10);
 //        // Show Circle Graph Image
@@ -198,7 +208,12 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
             $pdf->Image($sImagePrefix.'2.png', 105, 25, 100, 40);
         }
 
-        $sNewFile = $aDvs['title_url'] . '_' . date('Ymd') . '.pdf';
+        if($sTab == ''){
+        $sNewFile = $aDvs['title_url'] . '_' . date('Ymd') . '.pdf';    
+        }else{
+        $sNewFile = $aDvs['title_url'] . '_' .$sTab. '_'. date('Ymd') . '.pdf';    
+        }
+//        $sNewFile = $aDvs['title_url'] . '_' . date('Ymd') . '.pdf';
         $pdf->Output(Phpfox::getParam('core.dir_cache') . $sNewFile, 'F');
 //        unlink($sImagePrefix.'1.png');
         if ($oShareViewRequest->rows) {
@@ -207,14 +222,22 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         return $sNewFile;
     }
 
-    public function exportOverallCSV($iDays = 30, $aDvs) {
+    public function exportOverallCSV($iDays = 30, $aDvs,$sTab = '') {
         $sDateFrom = $iDays . 'daysAgo';
         $oGAService = Phpfox::getService('dvs.analytics');
 
-        $sNewFile = Phpfox::getParam('core.dir_cache') . $aDvs['title_url'] . '_' . date('Ymd') . '.csv';
+//        $sNewFile = Phpfox::getParam('core.dir_cache') . $aDvs['title_url'] . '_' . date('Ymd') . '.csv';
+        if($sTab != ''){
+        
+        $sNewFile = Phpfox::getParam('core.dir_cache') . $aDvs['title_url'] . '_' . $sTab . '_'. date('Ymd') . '.csv';            
+        }else{
+        $sNewFile = Phpfox::getParam('core.dir_cache') . $aDvs['title_url'] . '_' . date('Ymd') . '.csv';    
+        }
         $oFileHandler = fopen($sNewFile, 'w+');
         fputcsv($oFileHandler, array($aDvs['dvs_name'], $iDays . ' days from ' . date('m/d/Y'), "", "", "", "", "", "", "", "", "", ""));
-
+        if($sTab != ''){
+        fputcsv($oFileHandler, array("Overall Stats", "", "", "", "", "", "", "", "", "", "", ""));    
+        }
         // Leads Sent
         $oLeadSentRequest = $oGAService->makeRequest('ga:totalEvents', array('filters'=>'ga:eventLabel==Lead Sent;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
         $iLeadSentEvent = (int)$oLeadSentRequest->totalsForAllResults['ga:totalEvents'];
@@ -276,13 +299,21 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         fclose($oFileHandler);
     }
 
-    public function exportVideoCSV($iDays = 30, $aDvs) {
+    public function exportVideoCSV($iDays = 30, $aDvs,$sTab = '') {
         $sDateFrom = $iDays . 'daysAgo';
         $oGAService = Phpfox::getService('dvs.analytics');
 
-        $sNewFile = Phpfox::getParam('core.dir_cache') . $aDvs['title_url'] . '_' . date('Ymd') . '.csv';
+        if($sTab != ''){
+        $sNewFile = Phpfox::getParam('core.dir_cache') . $aDvs['title_url'] . '_' . $sTab . '_'. date('Ymd') . '.csv';            
+        }else{
+        $sNewFile = Phpfox::getParam('core.dir_cache') . $aDvs['title_url'] . '_' . date('Ymd') . '.csv';    
+        }
+        
         $oFileHandler = fopen($sNewFile, 'w+');
         fputcsv($oFileHandler, array($aDvs['dvs_name'], $iDays . ' days from ' . date('m/d/Y'), "", ""));
+        if($sTab != ''){
+        fputcsv($oFileHandler, array("Video Stats", "", "", "", "", "", "", "", "", "", "", ""));    
+        }
 
         // Video Views
         $oVideoViewRequest = $oGAService->makeRequest('ga:totalEvents', array('filters'=>'ga:eventLabel==Media Begin;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
@@ -331,13 +362,21 @@ class Dvs_Service_Analytics_Export extends Phpfox_Service {
         fclose($oFileHandler);
     }
 
-    public function exportSharingCSV($iDays = 30, $aDvs) {
+    public function exportSharingCSV($iDays = 30, $aDvs,$sTab = '') {
         $sDateFrom = $iDays . 'daysAgo';
         $oGAService = Phpfox::getService('dvs.analytics');
 
-        $sNewFile = Phpfox::getParam('core.dir_cache') . $aDvs['title_url'] . '_' . date('Ymd') . '.csv';
+//        $sNewFile = Phpfox::getParam('core.dir_cache') . $aDvs['title_url'] . '_' . date('Ymd') . '.csv';
+        if($sTab != ''){
+        $sNewFile = Phpfox::getParam('core.dir_cache') . $aDvs['title_url'] . '_' . $sTab . '_'. date('Ymd') . '.csv';            
+        }else{
+        $sNewFile = Phpfox::getParam('core.dir_cache') . $aDvs['title_url'] . '_' . date('Ymd') . '.csv';    
+        }
         $oFileHandler = fopen($sNewFile, 'w+');
         fputcsv($oFileHandler, array($aDvs['dvs_name'], $iDays . ' days from ' . date('m/d/Y'), ""));
+        if($sTab != ''){
+        fputcsv($oFileHandler, array("Sharing Stats", "", "", "", "", "", "", "", "", "", "", ""));    
+        }
 
 //        // Emails Sent
 //        $oEmailSentRequest = $oGAService->makeRequest('ga:totalEvents', array('filters'=>'ga:eventLabel==Email Share Sent;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);

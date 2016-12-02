@@ -231,19 +231,26 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
 		list($aDvss, $iCnt) = Phpfox::getService('dvs')->listDvss($iPage, $iPageSize, Phpfox::getUserId(), true, Phpfox::getUserParam('dvs.can_view_other_dvs'));
 
         Phpfox::getLib('pager')->set(array('page' => $iPage, 'size' => $iPageSize, 'count' => $iCnt));*/
-
+        
+        $stCorePath = str_replace('https:','',Phpfox::getParam('core.path'));
+        $stCorePath = str_replace('http:','',$stCorePath);
+        
+        
         if ($iCnt < Phpfox::getUserParam('dvs.dvss')) {
             $bCanAddDvss = true;
         } else {
             $bCanAddDvss = false;
-        }
+        }                                 
+        
 
         $this->template()->assign(array(
             'sMessage' => $sMessage,
             'aDvss' => $aDvss,
             'bCanAddDvss' => $bCanAddDvss,
             'bSubdomainMode' => $bSubdomainMode,
-            'sCorePath' => Phpfox::getParam('core.path')
+            'sCorePath' => Phpfox::getParam('core.path'),
+            'stCorePath' => $stCorePath,
+            'urll' => str_replace('dvs.wtvdvs','wtvdvs',$_SERVER['SERVER_NAME'])
         ))
             ->setBreadcrumb(Phpfox::getPhrase('dvs.my_dealer_video_showrooms'))
             ->setHeader('cache', array(
