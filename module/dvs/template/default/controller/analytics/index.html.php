@@ -1,10 +1,9 @@
-<div style="font-size:14px;font-weight:bold;padding:5px;background-color:#fffab4;text-align:center;">Note: Reporting is in BETA so there may be some kinks we're actively working on.</div><br>
 <div id="chart-menu">
     <div class="chart-menu-item">
         {if $sTab != 'overall'}<a class="chart-menu-item" href="{url link='dvs.analytics' id=$aDvs.dvs_id tab='overall' day=30}">{/if}Overall Stats{if $sTab != 'overall'}</a>{/if}
     </div>
     <div class="chart-menu-item">
-        {if $sTab != 'video'}<a class="chart-menu-item" href="{url link='dvs.analytics' id=$aDvs.dvs_id tab='video' day=30}">{/if}Videos Stats{if $sTab != 'video'}</a>{/if}
+        {if $sTab != 'video'}<a class="chart-menu-item" href="{url link='dvs.analytics' id=$aDvs.dvs_id tab='video' day=30}">{/if}Video Stats{if $sTab != 'video'}</a>{/if}
     </div>
     <div class="chart-menu-item">
         {if $sTab != 'sharing'}<a class="chart-menu-item" href="{url link='dvs.analytics' id=$aDvs.dvs_id tab='sharing' day=30}">{/if}Sharing Stats{if $sTab != 'sharing'}</a>{/if}
