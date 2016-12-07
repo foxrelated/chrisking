@@ -2,7 +2,7 @@
 <style type="text/css">
     #dvs_bc_player {l}
         width: {if $sBrowser == 'mobile'}{$iPlayerWidth}px{else}717px{/if};
-        height: {if $sBrowser == 'mobile'}{$iPlayerHeight}px{else}406px{/if};
+        height: {if $sBrowser == 'mobile'}{$iPlayerHeight}px{else}404px{/if};
     {r}
 
     body {l}
