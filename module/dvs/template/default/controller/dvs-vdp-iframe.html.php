@@ -207,11 +207,11 @@ color:#fff;
 </style>
 <![endif]-->
 <article>
-    <section id="video_information">
+    <!--<section id="video_information">
         <h3 id="video_name">
             {$aDvs.phrase_overrides.override_video_name_display}
         </h3>
-    </section>
+    </section>-->
     <section id="player">
         {if !empty($sJavascript)}{$sJavascript}{/if}
         <script type="text/javascript">
