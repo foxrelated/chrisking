@@ -29,7 +29,7 @@
 3a. To add the Virtual Test Drive button to the New & Used VDP and SRP templates, use the Logo Framework section:
 
 Logo: find the attached logo/button image.
-Link: {$surl."inventory-player/id_".$tdvs."/vin_#Vin"}
+Link: {$url."inventory-player/id_".$tdvs."/vin_#Vin"}
 Target behavior: open new window (pop-up)
 
 *** If dealer site is on Legacy Site platform, perform steps 3b-3d instead ***
