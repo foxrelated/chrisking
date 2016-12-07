@@ -3,13 +3,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 ?>
 <style type="text/css">
 #dvs_bc_player {l}
-        width: 716px;
-        height: 526px;
+        width: 715px;
+        height: 540px;
         position: relative;
     {r}
 #playlist_wrapper {l}
         position: absolute;
-        bottom: 0px;
+        bottom: 12px;
+        right:14px;
     {r}
  #bcv2 {l}
         display: block;

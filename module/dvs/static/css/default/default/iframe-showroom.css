@@ -67,6 +67,14 @@ body:before
 	display: none;
 }
 
+
+.player_instructions {
+font-size:16px !important;
+text-align:center;
+padding:none;
+margin:none;
+}
+
 body
 {
 /*	background: #000000 url(http://www.wtvdvs-dev.com/file/dvs/background/2013/09/963624e7a2616f81d5238b0c7a5d41d9.png);*/
@@ -92,7 +100,7 @@ a:hover
 	display: inline-block;
 	vertical-align:top;
 	/* margin-top: 10px; */
-	padding: 10px;
+	padding: 10px 10px 5px 10px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
@@ -128,11 +136,13 @@ a:hover
 
 /* Left-side playlist links */
 
+/* 
 #playlist_wrapper
 {
 	margin-top: 10px;
 	height: 86px;
 }
+ */
 
 #playlist_wrapper button.playlist-button
 {
@@ -438,7 +448,7 @@ article aside {
 	float: right;
 	font-size: 1.25em;
 	margin-top: 10px;
-	width:255px;
+	width:262px;
 }
 
 aside h2 {
@@ -468,6 +478,6 @@ cursor:pointer;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
-    min-height: 320px;
+    min-height: 310px;
     min-width: 235px;
 }

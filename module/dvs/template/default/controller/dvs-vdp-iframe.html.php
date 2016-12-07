@@ -1,8 +1,11 @@
 
 <style type="text/css">
+#player {l}
+padding:3px 10px 5px 12px !important;
+{r}
     #dvs_bc_player {l}
         width: {if $sBrowser == 'mobile'}{$iPlayerWidth}px{else}717px{/if};
-        height: {if $sBrowser == 'mobile'}{$iPlayerHeight}px{else}406px{/if};
+        height: {if $sBrowser == 'mobile'}{$iPlayerHeight}px{else}404px{/if};
     {r}
 
     body {l}
@@ -207,11 +210,11 @@ color:#fff;
 </style>
 <![endif]-->
 <article>
-    <section id="video_information">
+    <!--<section id="video_information">
         <h3 id="video_name">
             {$aDvs.phrase_overrides.override_video_name_display}
         </h3>
-    </section>
+    </section>-->
     <section id="player">
         {if !empty($sJavascript)}{$sJavascript}{/if}
         <script type="text/javascript">
