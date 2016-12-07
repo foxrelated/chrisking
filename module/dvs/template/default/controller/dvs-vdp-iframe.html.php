@@ -1,7 +1,7 @@
 
 <style type="text/css">
 #player {l}
-padding-top:3px 10px 5px 12px !important;
+padding:3px 10px 5px 12px !important;
 {r}
     #dvs_bc_player {l}
         width: {if $sBrowser == 'mobile'}{$iPlayerWidth}px{else}717px{/if};
