@@ -4,15 +4,16 @@ if (!window.WTVVIN) {
         iDvsId: 0,
         screenWidth: 0,
         screenHeight: 0,
+        wtvVideo: '',
+        iframeUrl: '',
         init: function (params) {
-            
-            
             this.sApiUrl = params.apiUrl;
             this.iDvsId = params.dvs;
 
             this.screenWidth = window.innerWidth;
             this.screenHeight = window.innerHeight;
 
+            this.wtvVideo = this.getURLParameter('wtvVideo');
 
             if (typeof params.scriptUrl != 'undefined') {
                 var sScriptUrl = params.scriptUrl;
@@ -23,7 +24,7 @@ if (!window.WTVVIN) {
             var sAllVin = '';
             var sAllEdstyle = '';
             var x = this.GEBCN('dvs_vin_btn');
-            console.log(x);
+
             for (i = 0; i < x.length; i++) {
                 sVinId = x[i].getAttribute('vin');
                 sEdstyleId = x[i].getAttribute('edstyleid');
@@ -119,9 +120,16 @@ if (!window.WTVVIN) {
             document.body.appendChild(cclink);
 
             var ccscript = document.createElement('script');
-            ccscript.src = sScriptUrl + 'vin_' + sAllVin + '/edstyle_' + sAllEdstyle + '/height_' + this.screenHeight + '/width_' + this.screenWidth + '/';
+            ccscript.src = sScriptUrl + 'vin_' + sAllVin + '/edstyle_' + sAllEdstyle + '/height_' + this.screenHeight + '/width_' + this.screenWidth + '/wtvVideo_' + this.wtvVideo + '/';
             ccscript.type = 'text/javascript';
             document.body.appendChild(ccscript);
+        },
+
+        open_iframe: function() {
+            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" height="100%" width="100%" style="height:100%;" frameborder="0" scrolling="no"></iframe>';
+            WTVVIN.fadeIn('dvs_vin_layout_wrapper', 9);
+            WTVVIN.fadeIn('dvs_vin_popup_wrapper', 10);
+            return false;
         },
 
         GEBCN: function(cn){
@@ -154,7 +162,6 @@ if (!window.WTVVIN) {
         },
 
         show_popup: function(sLink) {
-            //var sLink = oLink.getAttribute('href');
             document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" height="100%" width="100%" style="height:100%;" frameborder="0" scrolling="no"></iframe>';
             WTVVIN.fadeIn('dvs_vin_layout_wrapper', 9);
             WTVVIN.fadeIn('dvs_vin_popup_wrapper', 10);
@@ -199,6 +206,9 @@ if (!window.WTVVIN) {
                 return false;
             }
             return false;
+        },
+        getURLParameter: function(name) {
+            return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || '';
         }
     }
 }

@@ -40,7 +40,12 @@ if (!window.CDKDVS) {
                     }
                     var sIframe = '<iframe frameborder="0" width="100%" height="1000px" style="width:100%;height:1000px;" src="' + this.iframeUrl + '/maxwidth_' + iMaxWidth + '/"></iframe>';
 
-                    wrapper.innerHTML = sIframe, wrapper.style.width = sWrapperWidth, wrapper.style.height = '100%', wrapper.style.padding = 0, wrapper.style.display = 'block'; wrapper.style.maxWidth = iMaxWidth;
+                    wrapper.innerHTML = sIframe;
+                    wrapper.style.width = sWrapperWidth;
+                    wrapper.style.height = '100%';
+                    wrapper.style.padding = 0;
+                    wrapper.style.display = 'block';
+                    wrapper.style.maxWidth = iMaxWidth;
                 } else if (window.console && console.error)console.error('DVS: Could not find DOM element with ID: ' + id)
             }
         },

@@ -17,7 +17,6 @@ class Share_Component_Controller_Index extends Phpfox_Component {
 
                     $sParentUrl = urldecode(base64_decode($this->request()->get('parent')));
                     $sOverride = $this->request()->get('video');
-
                     $sRedirectUrl = str_replace('WTVDVS_VIDEO_TEMP', $sOverride, $sParentUrl);
                     if ($sShare != '') {
                         $sRedirectUrl .= '&share=' . $sShare;
@@ -119,6 +118,9 @@ class Share_Component_Controller_Index extends Phpfox_Component {
                     $aVideo = Phpfox::getService('dvs.video')->getVideoByKoId($iVideoId);
                     if ($aDvs['sitemap_parent_url'] && $aDvs['parent_video_url']) {
                         $sRedirectUrl = str_replace('WTVDVS_VIDEO_TEMP', $aVideo['video_title_url'], $aDvs['parent_video_url']);
+                        if (isset($aDvs['modal_player']) && ($aDvs['modal_player'] == 1)) {
+                            $sRedirectUrl = str_replace('?video=', '?wtvVideo=', $sRedirectUrl);
+                        }
                         switch ($iShareType) {
                             case '0':
                                 $sRedirectUrl .= '&share=facebook';

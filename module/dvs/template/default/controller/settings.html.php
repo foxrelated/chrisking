@@ -443,6 +443,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</li>
 			{else}
 			{/if}
+            <li>
+                <label for="modal_player">Enable modal player window: </label>
+                <input type="radio" name="val[modal_player]" value="1" {if $bIsEdit && isset($aForms.modal_player) && $aForms.modal_player == 1}checked="checked"{/if}/>{phrase var='dvs.dvs_inventory_status_on'}
+                <input type="radio" name="val[modal_player]" value="0" {if !$bIsEdit || !isset($aForms.modal_player) || ($bIsEdit && $aForms.modal_player == 0)}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+            </li>
         </ol>
     </fieldset>
 

@@ -35,12 +35,25 @@ class Dvs_Component_Controller_VIN_Script extends Phpfox_Component {
             exit;
         }
 
+
+        // Load wtvVideo
+        $sIframeUrl = '';
+        if (isset($aDvs['modal_player']) && ($aDvs['modal_player'] == 1) && $sWtvVideo = $this->request()->get('wtvVideo', '')) {
+            if (Phpfox::getParam('dvs.enable_subdomain_mode')) {
+                $sIframeUrl = Phpfox::getLib('url')->makeUrl($aDvs['title_url'],  array('dvs-vdp-iframe', $sWtvVideo, 'width_' . $iScreenWidth, 'height_' . $iScreenHeight, 'cdk_' . ($bLoadByCdk ? '1' : '0')));
+            } else {
+                $sIframeUrl = Phpfox::getLib('url')->makeUrl('dvs', array($aDvs['title_url'], 'dvs-vdp-iframe', $sWtvVideo, 'width_' . $iScreenWidth, 'height_' . $iScreenHeight, 'cdk_' . ($bLoadByCdk ? '1' : '0')));
+            }
+        }
+
+
         $this->template()->assign(array(
             'aDvs' => $aDvs,
             'aRows' => $aRows,
             'iTotalVin' => count($aVins) + count($aEdStyles),
             'sButtonText' => str_replace("'", "\\'", $aDvs['vin_button_label']),
             'bLoadByCdk' => $bLoadByCdk,
+            'sIframeUrl' => $sIframeUrl
         ));
 
         if($aDvs['vdp_file_name']) {

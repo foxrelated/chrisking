@@ -209,7 +209,7 @@ form#add_dvs ol ol li {
 form#add_dvs label {
 	float: left;
 	font-size: 13px;
-	width: 150px;
+	width: 185px;
 }
 
 form#add_dvs label.inline_radio {

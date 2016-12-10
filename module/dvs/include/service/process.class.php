@@ -60,7 +60,7 @@ class Dvs_Service_Process extends Phpfox_Service {
             'new2u_override' => (isset($aDvs['new2u_override']) ? $this->preParse()->clean($aDvs['new2u_override'], 128) : ''),
             'top200_override' => (isset($aDvs['top200_override']) ? $this->preParse()->clean($aDvs['top200_override'], 128) : ''),
             'dvs_time_stamp' => PHPFOX_TIME,
-            'cdk_id' => $this->preParse()->clean($aDvs['cdk_id'], 255)
+            'cdk_id' => $this->preParse()->clean($aDvs['cdk_id'], 255),
         );
 
         $aDvs['dealer_id'] = $this->preParse()->clean($aDvs['dealer_id'], 255);
@@ -91,6 +91,7 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['inv_domain'] = $this->preParse()->clean($aDvs['inv_domain'], 255);
             $aSql['inv_schedule_hours'] = $this->preParse()->clean($aDvs['inv_schedule_hours'], 255);*/
             $aSql['sitemap_parent_url'] = $this->preParse()->clean($aDvs['sitemap_parent_url'], 1);
+            $aSql['modal_player'] = $this->preParse()->clean($aDvs['modal_player'], 1);
             $aSql['new_car_videos'] = $this->preParse()->clean($aDvs['new_car_videos'], 1);
             $aSql['used_car_videos'] = $this->preParse()->clean($aDvs['used_car_videos'], 1);
             $aSql['iframe_contact_form'] = $this->preParse()->clean($aDvs['iframe_contact_form'], 1);
@@ -179,6 +180,7 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['inv_domain'] = $this->preParse()->clean($aDvs['inv_domain'], 255);
             $aSql['inv_schedule_hours'] = $this->preParse()->clean($aDvs['inv_schedule_hours'], 255);*/
             $aSql['sitemap_parent_url'] = $this->preParse()->clean($aDvs['sitemap_parent_url'], 1);
+            $aSql['modal_player'] = $this->preParse()->clean($aDvs['modal_player'], 1);
             $aSql['new_car_videos'] = $this->preParse()->clean($aDvs['new_car_videos'], 1);
             $aSql['used_car_videos'] = $this->preParse()->clean($aDvs['used_car_videos'], 1);
             $aSql['iframe_contact_form'] = $this->preParse()->clean($aDvs['iframe_contact_form'], 1);
