@@ -336,7 +336,7 @@ color:#fff;
         var iCurrentVideo = {$aCurrentVideo};
         var bAutoAdvance = {if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
         var inventory_btn = {if $aDvs.inventory_url} "{$aDvs.inventory_url}" {else} "" {/if};
-        var inventory_text = {if $aDvs.inventory_url} "View Inventory" {else} "" {/if};
+        var inventory_text = {if $aDvs.inventory_url} "View {$aVideo.model} Inventory" {else} "" {/if};
     {else}
         var bPreRoll = false;
         var iDvsId = 0;
@@ -422,11 +422,10 @@ function enableVideoSelectCarousel(){l}
 <meta itemprop="description" content="{$aDvs.phrase_overrides.override_meta_itemprop_description_meta}"  id="schema_video_description"/>
 {/if}
 {/if}
-<!--<video id="bcv2" data-account="607012070001" data-player="0d15f8a3-b382-44ca-a53b-51870dd2ad3f" data-embed="default" class="video-js" controls="true" preload=""></video>-->
 <input type="hidden" id="bc_ref" value="{*aCurrentVideoMetaData.referenceId*}">
 <input type="hidden" id="bc_oimgpath" value="{$sImagePath}">
 <input type="hidden" id="bc_dvs" value="{$iDvsId}">
-<video id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls="true" preload="" playsinline></video>
+<video playsinline id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls="true" preload=""></video>
 </section>
 {else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}<section id="chapter_buttons">
     <button type="button" id="chapter_container_Intro" class="disabled display"></button>

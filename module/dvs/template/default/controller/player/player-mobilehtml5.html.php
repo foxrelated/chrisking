@@ -159,7 +159,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         var bAutoAdvance ={if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
         var inventory_btn = {if $aDvs.inventory_url} "{$aDvs.inventory_url}" {else} "" {/if};
 //        var inventory_text = {if $aDvs.inventory_url} "{phrase var='dvs.show_inventory'}" {else} "" {/if};
-        var inventory_text = {if $aDvs.inventory_url} "View Inventory" {else} "" {/if};
+        var inventory_text = {if $aDvs.inventory_url} "View {$aVideo.model} Inventory" {else} "" {/if};
     {else}
         var bPreRoll = false;
         var iDvsId = 0;
@@ -398,13 +398,14 @@ color:#fff;
             <input type="hidden" id="bc_ref" value="{*aCurrentVideoMetaData.referenceId*}">
             <input type="hidden" id="bc_oimgpath" value="{$sImagePath}">
             <input type="hidden" id="bc_dvs" value="{$iDvsId}">
-            <video id="bcv2" data-account="607012070001" data-player="0d15f8a3-b382-44ca-a53b-51870dd2ad3f" data-embed="default" class="video-js" controls="true" width="100%" height="100%" preload="" playsinline></video>
-            
+            <!--<video playsinline id="bcv2" data-account="607012070001" data-player="0d15f8a3-b382-44ca-a53b-51870dd2ad3f" data-embed="default" class="video-js" controls="true" width="100%" height="100%" preload=""></video>-->
+            <video playsinline id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls="true" width="100%" height="100%" preload=""></video>
         </div>
     {else}
         <div class="player_error">{phrase var='dvs.no_videos_error'}</div>
     {/if}
 </div>
-<script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js"></script> 
+<!--<script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js"></script>--> 
+<script src="//players.brightcove.net/607012070001/default_default/index.min.js"></script>
 <script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.min.js"></script>
 <script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"></script>

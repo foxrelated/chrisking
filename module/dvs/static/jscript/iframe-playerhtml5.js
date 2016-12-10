@@ -330,7 +330,7 @@ $(document).on('click','.js_box .js_box_close a',function() {
             var invcontent = '';
         }
         if(endscreen_inventory == 1 || endscreen_cform == 1 || bAutoAdvance){
-            var endscreenTitle =  '<h4 class="endscr_title">Next steps...</h4>';
+            var endscreenTitle =  '<h4 class="endscr_title">Choose your next step:</h4>';
         }else{
             var endscreenTitle = '';
         }

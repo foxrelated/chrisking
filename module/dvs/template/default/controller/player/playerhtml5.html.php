@@ -334,7 +334,7 @@ color:#fff;
         var bAutoAdvance = {if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
         var inventory_btn = {if $aDvs.inventory_url} "{$aDvs.inventory_url}" {else} "" {/if};
 //        var inventory_text = {if $aDvs.inventory_url} "{phrase var='dvs.show_inventory'}" {else} "" {/if};
-        var inventory_text = {if $aDvs.inventory_url} "View Inventory" {else} "" {/if};
+        var inventory_text = {if $aDvs.inventory_url} "View {$aVideo.model} Inventory" {else} "" {/if};
         
         
     {else}
@@ -429,7 +429,7 @@ function enableVideoSelectCarousel(){l}
 <input type="hidden" id="bc_ref" value="{*aCurrentVideoMetaData.referenceId*}">
 <input type="hidden" id="bc_oimgpath" value="{$sImagePath}">
 <input type="hidden" id="bc_dvs" value="{$iDvsId}">
-<video id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls="true" playsinline></video>
+<video playsinline id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls="true"></video>
  
 <section id="playlist_wrapper">
         <button class="prev playlist-button">&lt;</button>
