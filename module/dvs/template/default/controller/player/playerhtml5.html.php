@@ -489,8 +489,7 @@ function enableVideoSelectCarousel(){l}
     {/if}
 </section>
 
-<!--<script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js"></script> -->
-<script src="//players.brightcove.net/607012070001/default_default/index.min.js"></script> 
+<script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js"></script><!-- <script src="//players.brightcove.net/607012070001/default_default/index.min.js"></script>  -->
 <script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.min.js"></script>
 <script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"></script>
 
