@@ -334,7 +334,7 @@ color:#fff;
         var bAutoAdvance = {if isset($aPlayer.autoadvance) && $aPlayer.autoadvance}true{else}false{/if};
         var inventory_btn = {if $aDvs.inventory_url} "{$aDvs.inventory_url}" {else} "" {/if};
 //        var inventory_text = {if $aDvs.inventory_url} "{phrase var='dvs.show_inventory'}" {else} "" {/if};
-        var inventory_text = {if $aDvs.inventory_url} "View {$aVideo.model} Inventory" {else} "" {/if};
+        var inventory_text = {if $aDvs.inventory_url} "View Inventory" {else} "" {/if};
         
         
     {else}
