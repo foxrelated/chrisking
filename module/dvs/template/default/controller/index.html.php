@@ -292,7 +292,7 @@ padding: 0;
 </div>
 
 <div class="clear"></div>
-
+{pager}
 {if $aDvss}
 	<div id="dvss" {*if $bCanAddDvss}class="separate"{/if*} style="margin:50px 0px 0px 0px;">
 		<table style="width:100%;border-collapse:collapse;">
@@ -380,7 +380,6 @@ padding: 0;
 						</ul>
 						</div>
 					</td>
-<!--		"iframeUrl" : "{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}iframe/"			-->
 				</tr>
 				<tr><td colspan="3">&nbsp;</td></tr>
 				<div id="dvs_iframe_link_{$aDvs.dvs_id}" title="DVS Embed Code" class="dvs_iframe_link_popup" style="display:none;">
@@ -463,7 +462,6 @@ CDKDVS.init({l}
             </div>
 				
 			{/foreach}
-{pager}
 		</table>
 	</div>
 {/if}
