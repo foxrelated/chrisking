@@ -425,7 +425,7 @@ function enableVideoSelectCarousel(){l}
 <input type="hidden" id="bc_ref" value="{*aCurrentVideoMetaData.referenceId*}">
 <input type="hidden" id="bc_oimgpath" value="{$sImagePath}">
 <input type="hidden" id="bc_dvs" value="{$iDvsId}">
-<video id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls preload playsinline style="width:100%;height:100%;"></video>
+<video id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls preload playsinline width="100%" height="100%"></video>
 </section>
 {else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}<section id="chapter_buttons">
     <button type="button" id="chapter_container_Intro" class="disabled display"></button>
