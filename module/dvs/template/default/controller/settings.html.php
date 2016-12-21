@@ -315,107 +315,22 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<label for="google_analytics_id">{phrase var='dvs.google_analytics_id'}:</label>
 				<input type="text" name="val[dvs_google_id]" value="{value type='input' id='dvs_google_id'}" id="dvs_google_id" size="60" maxlength="20" />
 			</li>
-			{*<li>
-				<label for="welcome_greeting" style="width:250px;">{phrase var='dvs.welcome_greeting_max_char_max' max=$iWelcomeGreetingMaxChars}:</label>
-				{editor id='welcome' rows='5'}
-				{phrase var='dvs.welcome_message_phrase'}
-			</li>*}
-	
-			{*<li>
-				<label for="custom_seo_tags">{phrase var='dvs.custom_seo_tags'}:</label>
-				<input type="text" name="val[seo_tags]" value="{value type='input' id='seo_tags'}" id="seo_tags" size="60" maxlength="100" />
-				&nbsp;Note: Separate tags with commas{phrase var='dvs.seo_tags_phrase'}
-			</li>*}
-	
-			
 		</ol>
 		</fieldset>
 
 		<div {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
-		<br /><h3 style="font-size:26px;">Admin Only Settings</h3>
-		{*<h3>Layout Toggles</h3>*}
+		<br />
+		<h3 style="font-size:26px;">Admin Only Settings</h3>
 		<fieldset>
 		<ol>
-			{*<li>
-				<label for="banner_toggle">Banner:</label>
-				<input type="radio" name="val[banner_toggle]" value="1" {if $bIsEdit && $aForms.banner_toggle == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
-				<input type="radio" name="val[banner_toggle]" value="0" {if $bIsEdit && $aForms.banner_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
-			</li>
-			<li>
-				<label for="top_menu_toggle">Top Menu:</label>
-				<input type="radio" name="val[topmenu_toggle]" value="1" {if $bIsEdit && $aForms.topmenu_toggle == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
-				<input type="radio" name="val[topmenu_toggle]" value="0" {if $bIsEdit && $aForms.topmenu_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
-			</li>
-			<li>
-				<label for="footer_toggle">Footer Links:</label>
-				<input type="radio" name="val[footer_toggle]" value="1" {if $bIsEdit && $aForms.footer_toggle == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
-				<input type="radio" name="val[footer_toggle]" value="0" {if $bIsEdit && $aForms.footer_toggle == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
-			</li>*}
 			<li>
 				<label for="contactform_toggle">iFrame Contact Form:</label>
                 <input type="radio" name="val[iframe_contact_form]" value="1" {if $bIsEdit && $aForms.iframe_contact_form == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
-                <input type="radio" name="val[iframe_contact_form]" value="0" {if $bIsEdit && $aForms.iframe_contact_form == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+                <input type="radio" name="val[iframe_contact_form]" value="0" {if $bIsEdit && $aForms.iframe_contact_form == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'} <p><strong>Note: The iFrame Contact Form must be set to <span style="color: #ff0000;">OFF</span> for all GM dealers (Buick, GMC, Cadillac Chevrolet).</strong></p>
             </li>
-		</ol>
+            </ol>
 		</fieldset>
-
-		{*<h3>Gallery Link Target</h3>
-		<fieldset>
-		<ol>
-			<li>
-				<input type="radio" name="val[gallery_target_setting]" value="0" {if $bIsEdit && $aForms.gallery_target_setting == 0}checked="checked"{/if} {if !$bIsEdit}checked="checked"{/if}/>{phrase var='dvs.open_on_same_page'}
-			</li>
-		
-			<li>
-				<input type="radio" name="val[gallery_target_setting]" value="1" {if $bIsEdit && $aForms.gallery_target_setting == 1}checked="checked"{/if} />{phrase var='dvs.open_in_new_window'}
-			</li>
-		</ol>
-		</fieldset>
-
-		<h3>{phrase var='dvs.inventory_display_settings'}</h3>
-
-		<fieldset>
-		<ol>
-			<li>
-				<input type="radio" name="val[inv_display_status]" value="1" id="inv_display_status_on" {if $bIsEdit && $aForms.inv_display_status == 1}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_on'}
-				<input type="radio" name="val[inv_display_status]" value="0" id="inv_display_status_off" {if $bIsEdit && $aForms.inv_display_status == 0}checked="checked"{/if} {if !$bIsEdit}checked="checked"{/if}/>{phrase var='dvs.dvs_inventory_status_off'}
-				
-			</li>
-			<div class="inv_display_row_wrapper">
-			<li>
-				<label for="inventory_settings_feed_type">{phrase var='dvs.inventory_settings_feed_type'}:</label>
-				<select name="val[inv_feed_type]" id="inv_feed_type">
-					<option value=""></option>
-					{if $connectors}
-						{foreach from=$connectors item=connector name=iConnector}
-							<option value="{$connector.connector_id}" {if $aForms.inv_feed_type == $connector.connector_id}selected="selected"{/if}>{$connector.title}</option>
-						{/foreach}
-					{/if}
-				</select>
-			</li>
-			<li>
-				<label for="inventory_settings_domain">{phrase var='dvs.inventory_settings_domain'}:</label>
-				<input type="text" name="val[inv_domain]" value="{value type='input' id='inv_domain'}" id="inv_domain" maxlength=30 />
-			</li>
-			<li>
-				<label for="dvs_inventory_schedule">{phrase var='dvs.dvs_inventory_shedule'}:</label>
-				{phrase var='dvs.dvs_inventory_shedule_every'} <input type="text" name="val[inv_schedule_hours]" value="{value type='input' id='inv_schedule_hours'}" id="inv_schedule_hours" maxlength=3 style="width:20px;" /> {phrase var='dvs.dvs_inventory_shedule_hours'}
-			</li>
-			<li>
-				<div class="import_button_wrapper">
-					<button class="button" id="inventory_import_button_ajax" name="inventory_import_button_ajax">{phrase var='dvs.dvs_inventory_import'}</button>
-				</div>
-				<div class="progress_bar_wrapper">
-					<div id="progress_outer">
-						<div id="progress_percentage">0%</div>
-						<div id="progress_inner"></div>
-					</div>
-					<div id="progress_update"></div>
-				</div>
-			</li>
-			</div>
-		</ol>
-	</fieldset>*}    
+    
     <h1>Virtual Test Drive Page</h1>
     <fieldset>
         <ol>
@@ -461,7 +376,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </ol>
     </fieldset>
 
-
     <h1>Allowed Video Types</h1>
     <fieldset>
         <ol>
@@ -478,16 +392,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </li>
         </ol>
     </fieldset>
-   <!-- <h1>Player Type</h1>
-    <fieldset>
-        <ol>
-            <li>
-                <input type="radio" name="val[player_type]" value="0" {if $bIsEdit && $aForms.player_type == 0}checked="checked"{/if} />Flash
-                <input type="radio" name="val[player_type]" value="1" {if $bIsEdit && $aForms.player_type == 1}checked="checked"{/if} />HTML5
-            </li>
-        </ol>
-    </fieldset>-->
-    <!--<input type="hidden" name="val[player_type]" value="{$aForms.player_type}">-->
     <h1>Email Lead Format</h1>
     <fieldset>
         <ol>

@@ -387,10 +387,10 @@ color:#fff;
         {/if}
         
 
-<!--       <video id="bcv2" data-account="607012070001" data-player="0d15f8a3-b382-44ca-a53b-51870dd2ad3f" data-embed="default" class="video-js" controls></video>-->   <input type="hidden" id="bc_ref" value="{*aCurrentVideoMetaData.referenceId*}">
+		<input type="hidden" id="bc_ref" value="{*aCurrentVideoMetaData.referenceId*}">
         <input type="hidden" id="bc_oimgpath" value="{$sImagePath}">
         <input type="hidden" id="bc_dvs" value="{$iDvsId}">
-       <video id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls></video>
+       	<video id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls playsinline></video>
        
         </section>{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}
         {if $sBrowser != 'mobile'}<section id="chapter_buttons">
@@ -413,7 +413,6 @@ color:#fff;
         <p id="video_warning_text" style="padding-top:10px;color:#{$aPlayer.player_text};font-size:{$iWarningTextFontSize}px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
     </section>
 </article>
-<!--<script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js"></script> -->
 <script src="//players.brightcove.net/607012070001/default_default/index.min.js"></script> 
 <script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.min.js"></script>
 <script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"></script>

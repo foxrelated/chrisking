@@ -542,7 +542,7 @@ font-weight:bold;
 			</ol>
 		</fieldset>
         
-		<br><p><i>Note: Custom Overlays are not HTML5 compatible so they will not work on mobile or tablet devices.</i></p>
+		<br><p><i>Note: Custom Overlays require the use of the HTML5 v2 player.</i></p>
 	</div>
 	{/if}
 	<br>
