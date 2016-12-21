@@ -78,6 +78,10 @@ class Phpfox_Mail_Driver_Phpmailer_Smtp implements Phpfox_Mail_Interface
 	    $this->_oMail->CharSet = 'utf-8';  
 	    $this->_oMail->SMTPDebug = 2;  	
     }
+
+    public function addAttachment($sFilePath, $sFileName) {
+        $this->_oMail->AddAttachment($sFilePath, $sFileName);
+    }
     
     /**
      * Sends out an email.

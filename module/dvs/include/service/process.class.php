@@ -61,6 +61,9 @@ class Dvs_Service_Process extends Phpfox_Service {
             'top200_override' => (isset($aDvs['top200_override']) ? $this->preParse()->clean($aDvs['top200_override'], 128) : ''),
             'dvs_time_stamp' => PHPFOX_TIME,
             'cdk_id' => $this->preParse()->clean($aDvs['cdk_id'], 255),
+            'reporting' => $this->preParse()->clean($aDvs['reporting'], 1),
+            'reporting_email' => $this->preParse()->clean($aDvs['reporting_email'], 75),
+            'reporting_time' => $this->preParse()->clean($aDvs['reporting_time'], 15),
         );
 
         $aDvs['dealer_id'] = $this->preParse()->clean($aDvs['dealer_id'], 255);
@@ -148,7 +151,10 @@ class Dvs_Service_Process extends Phpfox_Service {
             'new2u_override' => (isset($aDvs['new2u_override']) ? $this->preParse()->clean($aDvs['new2u_override'], 128) : ''),
             'top200_override' => (isset($aDvs['top200_override']) ? $this->preParse()->clean($aDvs['top200_override'], 128) : ''),
             'dvs_time_stamp' => PHPFOX_TIME,
-            'cdk_id' => $this->preParse()->clean($aDvs['cdk_id'], 255)
+            'cdk_id' => $this->preParse()->clean($aDvs['cdk_id'], 255),
+            'reporting' => $this->preParse()->clean($aDvs['reporting'], 1),
+            'reporting_email' => $this->preParse()->clean($aDvs['reporting_email'], 75),
+            'reporting_time' => $this->preParse()->clean($aDvs['reporting_time'], 15),
         );
 
         $aDvs['dealer_id'] = $this->preParse()->clean($aDvs['dealer_id'], 255);

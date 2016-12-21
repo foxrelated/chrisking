@@ -368,7 +368,7 @@ $(document).ready(function () {
                     }
 
                     if (bAutoAdvance && endscreen_player == 1) {
-                        var counter = 10;
+                        var counter = 1000;
                         interval = setInterval(function () {
                             counter--;
                             $("#nvideo_timer").html(counter);
@@ -558,7 +558,12 @@ $(document).ready(function () {
                 if (bDebug) {
                     console.log('Media: Cuepoint Manually Changed to ' + sCuePoint);
                 }
-                seek(seekTime + 0.001);
+                if (navigator.userAgent.toLowerCase().indexOf('safari/') > -1) {
+                    seek(seekTime + 0.05);
+                } else {
+                    seek(seekTime + 0.001);
+                }
+
                 cueChange(sCuePoint);
             }
             else {

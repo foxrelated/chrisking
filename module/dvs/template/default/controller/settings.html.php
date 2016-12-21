@@ -497,6 +497,29 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </li>
         </ol>
     </fieldset>
+
+    <h1>Reporting Settings</h1>
+    <fieldset>
+        <ol>
+            <li>
+                <input type="radio" name="val[reporting]" value="1" {if $bIsEdit && $aForms.reporting == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
+                <input type="radio" name="val[reporting]" value="0" {if $bIsEdit && $aForms.reporting == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+            </li>
+
+            <li>
+                <label for="reporting_email">Reporting Email:</label>
+                <input type="text" maxlength="255" size="60" style="width:600px;" id="reporting_email" name="val[reporting_email]" value="{value type='input' id='reporting_email'}">
+            </li>
+
+            <li>
+                <label for="reporting_time">Reporting Time:</label>
+                <select name="val[reporting_time]" id="reporting_time">
+                    <option value="weekly" {if $bIsEdit && $aForms.reporting_time=="weekly"}selected="selected"{/if}>Weekly</option>
+                    <option value="monthly" {if $bIsEdit && $aForms.reporting_time=="monthly"}selected="selected"{/if}>Monthly</option>
+                </select>
+            </li>
+        </ol>
+    </fieldset>
 	</div>
 <br>
 	{*

@@ -147,3 +147,6 @@ Phrase: Manage blacklist domain |  Link: dvs.blacklists
 
 *******************************************    CDK EXPORTING   *****************************************************
 ALTER TABLE `phpfox_ko_dvs` ADD `cdk_export_time` INT(11) UNSIGNED NOT NULL AFTER `cdk_id`;
+
+*******************************************   EXPORTING  12/18/2016  *****************************************************
+ALTER TABLE `phpfox_ko_dvs` ADD `reporting` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `modal_player`, ADD `reporting_email` VARCHAR(75) NOT NULL AFTER `reporting`, ADD `reporting_time` VARCHAR(15) NOT NULL AFTER `reporting_email`, ADD `last_reporting` INT(11) UNSIGNED NOT NULL AFTER `reporting_time`;

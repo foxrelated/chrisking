@@ -42,6 +42,10 @@ class Phpfox_Mail_Driver_Phpmailer_Mail implements Phpfox_Mail_Interface
 	    $this->_oMail->WordWrap = 75;	   
 	    $this->_oMail->CharSet = 'utf-8'; 
     }
+
+    public function addAttachment($sFilePath, $sFileName) {
+        $this->_oMail->AddAttachment($sFilePath, $sFileName);
+    }
     
     /**
      * Sends out an email.
