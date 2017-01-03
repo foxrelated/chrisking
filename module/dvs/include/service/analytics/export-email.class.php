@@ -622,7 +622,7 @@ class Dvs_Service_Analytics_Export_Email extends Phpfox_Service {
             $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sOverallFile, 'overall.pdf');
             $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sVideoFile, 'video.pdf');
             $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sSharingFile, 'sharing.pdf');
-            $oMail->send($aDvs['reporting_email'], 'DVS Export Weekly', '', '');
+            $oMail->send($aDvs['reporting_email'], 'Your Weekly DVS Report', 'Hello, please find your latest DVS Report attached for the past 7 days. If you have any questions about this report, please reply to this email. Thanks! - DVS Team', 'Hello, please find your latest DVS Report attached for the past 7 days. If you have any questions about this report, please reply to this email. Thanks! - DVS Team');
 
             $this->database()
                 ->update($this->_sTable, array('last_reporting' => PHPFOX_TIME), 'dvs_id = ' . $aDvs['dvs_id']);
@@ -661,7 +661,7 @@ class Dvs_Service_Analytics_Export_Email extends Phpfox_Service {
             $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sOverallFile, 'overall.pdf');
             $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sVideoFile, 'video.pdf');
             $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sSharingFile, 'sharing.pdf');
-            $oMail->send($aDvs['reporting_email'], 'DVS Export Monthly', '', '');
+            $oMail->send($aDvs['reporting_email'], 'Your Monthly DVS Report', 'Hello, please find your latest DVS Report attached for the past 30 days. If you have any questions about this report, please reply to this email. Thanks! - DVS Team', 'Hello, please find your latest DVS Report attached for the past 30 days. If you have any questions about this report, please reply to this email. Thanks! - DVS Team');
 
             $this->database()
                 ->update($this->_sTable, array('last_reporting' => PHPFOX_TIME), 'dvs_id = ' . $aDvs['dvs_id']);
