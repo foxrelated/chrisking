@@ -368,7 +368,7 @@ $(document).ready(function () {
                     }
 
                     if (bAutoAdvance && endscreen_player == 1) {
-                        var counter = 1000;
+                        var counter = 10;
                         interval = setInterval(function () {
                             counter--;
                             $("#nvideo_timer").html(counter);
