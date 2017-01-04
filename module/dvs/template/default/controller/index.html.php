@@ -340,7 +340,7 @@ padding: 0;
 							  </ul>
 						   </li>
 						   <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a></li>
-						   <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}/tab_video/day_30/"><span>Reporting</span></a></li>
+						   <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}tab_video/day_30/"><span>Reporting</span></a></li>
 						   {if Phpfox::isAdmin()}
                            
 						   <li class="has-sub"><a href="#"><span>Integrate</span></a>
