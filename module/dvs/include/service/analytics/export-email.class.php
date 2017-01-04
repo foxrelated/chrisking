@@ -619,9 +619,9 @@ class Dvs_Service_Analytics_Export_Email extends Phpfox_Service {
 
             Phpfox::getLibClass('phpfox.mail.interface');
             $oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
-            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sOverallFile, 'overall.pdf');
-            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sVideoFile, 'video.pdf');
-            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sSharingFile, 'sharing.pdf');
+            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sOverallFile, $sOverallFile);
+            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sVideoFile, $sVideoFile);
+            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sSharingFile, $sSharingFile);
             $oMail->send($aDvs['reporting_email'], 'Your Weekly DVS Report', 'Hello, please find your latest DVS Report attached for the past 7 days. If you have any questions about this report, please reply to this email. Thanks! - DVS Team', 'Hello, please find your latest DVS Report attached for the past 7 days. If you have any questions about this report, please reply to this email. Thanks! - DVS Team');
 
             $this->database()
@@ -658,9 +658,9 @@ class Dvs_Service_Analytics_Export_Email extends Phpfox_Service {
 
             Phpfox::getLibClass('phpfox.mail.interface');
             $oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
-            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sOverallFile, 'overall.pdf');
-            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sVideoFile, 'video.pdf');
-            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sSharingFile, 'sharing.pdf');
+            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sOverallFile, $sOverallFile);
+            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sVideoFile, $sVideoFile);
+            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sSharingFile, $sSharingFile);
             $oMail->send($aDvs['reporting_email'], 'Your Monthly DVS Report', 'Hello, please find your latest DVS Report attached for the past 30 days. If you have any questions about this report, please reply to this email. Thanks! - DVS Team', 'Hello, please find your latest DVS Report attached for the past 30 days. If you have any questions about this report, please reply to this email. Thanks! - DVS Team');
 
             $this->database()
