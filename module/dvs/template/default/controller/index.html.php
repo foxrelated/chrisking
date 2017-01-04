@@ -183,9 +183,8 @@ padding: 0;
 }
 #cssmenu ul .has-sub {
   position: relative;
-  
-  
 }
+
 #cssmenu ul .has-sub ul {
   -moz-border-radius: 0 3px 3px 3px;
   -webkit-border-radius: 0 3px 3px 3px;
@@ -207,7 +206,6 @@ padding: 0;
   padding: 8px 8px 8px 16px;
   border-bottom: 1px solid transparent;
   text-align: left;
-  
 }
 #cssmenu ul .has-sub ul .has-sub a:after {
   content: none;
@@ -342,7 +340,7 @@ padding: 0;
 							  </ul>
 						   </li>
 						   <li><a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="mixpanel.track('Share Link Button');"><span>Share Links</span></a></a></li>
-						   <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}"><span>Reporting</span></a></li>
+						   <li><a href="{url link='dvs.analytics' id=$aDvs.dvs_id}/tab_video/day_30/"><span>Reporting</span></a></li>
 						   {if Phpfox::isAdmin()}
                            
 						   <li class="has-sub"><a href="#"><span>Integrate</span></a>
