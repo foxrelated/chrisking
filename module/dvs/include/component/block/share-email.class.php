@@ -16,8 +16,9 @@ class Dvs_Component_Block_Share_Email extends Phpfox_Component {
 	public function process() {
         $iDvsId = $this->request()->getInt('iDvsId');       
         $aDvs  = Phpfox::getService('dvs')->get($iDvsId);
+        $phone = '';
         if($aDvs['user_id'] == Phpfox::getUserId() || Phpfox::isAdmin()){
-        $phone = $aDvs['phone'];    
+            $phone = $aDvs['phone'];
         }
         
 		$this->template()
