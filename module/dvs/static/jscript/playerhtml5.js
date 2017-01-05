@@ -781,7 +781,7 @@ $(document).ready(function () {
         jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#dvs_inventory_link").attr('href', inventory_new);
     });
     $(document).on('DOMNodeInserted', '.vjs-custom-overlay, .vjs-overlay', function () {
-        $(".gp_ov").attr("onclick", 'tb_show(\'' + contact_dealer + '\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));getPriceOverlayClick();');
+        $(".gp_ov").attr("onclick", 'tb_show(\'' + contact_dealer + '\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));menuContact(\'Call To Action Menu Clicks\');');
     })
 });
 
