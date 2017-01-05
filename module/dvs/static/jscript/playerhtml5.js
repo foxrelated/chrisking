@@ -289,12 +289,12 @@ $(document).ready(function () {
                 var endscr_bottom_nvideo = '';
             }
             if (endscreen_inventory == 1) {
-                var invcontent = '<p><a href=' + inventory_btn + ' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Top Menu Clicks\');" rel="nofollow" target="_parent">' + inventory_text + '</a></p>';
+                var invcontent = '<p><a href=' + inventory_btn + ' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Call To Action Menu Clicks\');" rel="nofollow" target="_parent">' + inventory_text + '</a></p>';
             } else {
                 var invcontent = '';
             }
             if (endscreen_inventory == 1 || endscreen_cform == 1 || bAutoAdvance) {
-                var endscreenTitle = '<h4 class="endscr_title">Next steps...</h4>';
+                var endscreenTitle = '<h4 class="endscr_title">Choose your next step:</h4>';
             } else {
                 var endscreenTitle = '';
             }
@@ -781,7 +781,7 @@ $(document).ready(function () {
         jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#dvs_inventory_link").attr('href', inventory_new);
     });
     $(document).on('DOMNodeInserted', '.vjs-custom-overlay, .vjs-overlay', function () {
-        $(".gp_ov").attr("onclick", 'tb_show(\'' + contact_dealer + '\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));getPriceOverlayClick();');
+        $(".gp_ov").attr("onclick", 'tb_show(\'' + contact_dealer + '\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));menuContact(\'Call To Action Menu Clicks\');');
     })
 });
 

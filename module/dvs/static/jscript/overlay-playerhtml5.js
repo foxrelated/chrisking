@@ -321,7 +321,7 @@ $(document).on('click','.js_box .js_box_close a',function() {
         var endscr_bottom_nvideo = '';        
         }
         if(endscreen_inventory == 1){
-            var invcontent =  '<p><a href='+inventory_btn+' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Top Menu Clicks\');" rel="nofollow" target="_parent">'+inventory_text+'</a></p>';
+            var invcontent =  '<p><a href='+inventory_btn+' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Call To Action Menu Clicks\');" rel="nofollow" target="_parent">'+inventory_text+'</a></p>';
         }else{
             var invcontent = '';
         }
@@ -332,8 +332,6 @@ $(document).on('click','.js_box .js_box_close a',function() {
         }
         
        myPlayer.customEndscreen({
-//        "content": "<a href="+inventory_btn+" class='dvs_inventory_link' id='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
-//        "content": '<h4 class="endscr_title">Next steps...</h4><p><a href='+inventory_btn+' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Top Menu Clicks\');" rel="nofollow" target="_parent">'+inventory_text+'</a></p> <p><a href="javascript:void(0);" id="endscr_cform" class="endscr_btn">Contact Dealer</a></p>'+endscr_bottom_nvideo
         "content": endscreenTitle + ''+ invcontent +''+ cdContent+''+endscr_bottom_nvideo
       })    
        }
@@ -953,7 +951,7 @@ $(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
     jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#dvs_inventory_link").attr('href',inventory_new);
 });
 $(document).on('DOMNodeInserted','.vjs-custom-overlay, .vjs-overlay',function(){
-    $(".gp_ov").attr("onclick",'tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId='+jQuery("#bc_dvs").val()+'&sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();');
+    $(".gp_ov").attr("onclick",'tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId='+jQuery("#bc_dvs").val()+'&sRefId= '+aCurrentVideoMetaData.referenceId+'\'));menuContact(\'Call To Action Menu Clicks\');');
 })
 });
 function showspinner(){

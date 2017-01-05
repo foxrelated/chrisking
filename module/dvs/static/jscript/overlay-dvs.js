@@ -2,24 +2,21 @@
 // 	sendToGoogle('DVS iFrame', sSource, 'Home');
 // 	mixpanel.track("Home Clicked");
 // }
-// 
-// function menuInventory(sSource) {
-// 	sendToGoogle('DVS iFrame', sSource, 'Show Inventory');
-// 	mixpanel.track("View Inventory Clicked");
-// }
-// 
+
+function menuInventory(sSource) {
+	sendToGoogle('DVS Player', sSource, 'Show Inventory');
+}
+ 
 // function menuOffers(sSource) {
 // 	sendToGoogle('DVS iFrame', sSource, 'Special Offers');
 // 		mixpanel.track("Special Offers Clicked");
 // 
 // }
-// 
-// function menuContact(sSource) {
-// 	sendToGoogle('DVS iFrame', sSource, 'Contact Dealer');
-// 		mixpanel.track("Contact Dealer Clicked");
-// 
-// }
-// 
+
+function menuContact(sSource) {
+	sendToGoogle('DVS Player', sSource, 'Contact Dealer');
+}
+
 // function menuEmail(sSource) {
 // 	sendToGoogle('DVS iFrame', sSource, 'Email Menu Link');
 // 		mixpanel.track("Email Menu Clicked");
