@@ -329,8 +329,6 @@ $(document).on('click','.js_box .js_box_close a',function() {
             var endscreenTitle = '';
         }
        myPlayer.customEndscreen({
-//        "content": "<a href="+inventory_btn+" class='dvs_inventory_link' id='dvs_inventory_link' onclick='menuInventory('Top Menu Clicks');' rel='nofollow' target='_parent'>"+inventory_text+"</a>"
-//        "content": '<h4 class="endscr_title">Next steps...</h4><p><a href='+inventory_btn+' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Top Menu Clicks\');" rel="nofollow" target="_parent">'+inventory_text+'</a></p> <p><a href="javascript:void(0);" id="endscr_cform" class="endscr_btn">Contact Dealer</a></p>'+endscr_bottom_nvideo
         "content": endscreenTitle + ''+ invcontent +''+ cdContent+''+endscr_bottom_nvideo
       })    
        }
