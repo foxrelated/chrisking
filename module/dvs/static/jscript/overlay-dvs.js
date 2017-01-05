@@ -16,6 +16,20 @@ function menuInventory(sSource) {
 function menuContact(sSource) {
 	sendToGoogle('DVS Player', sSource, 'Contact Dealer');
 }
+function endscreenInventory(sSource){
+    sendToGoogle('DVS Player', sSource, 'Show Inventory');
+    //mixpanel.track("View Inventory Clicked", {
+//    "Category": "DVS Player",
+//    "Source": sSource,
+//    });
+}
+function endscreenContact(sSource){
+   sendToGoogle('DVS Player', sSource, 'Contact Dealer');
+    //mixpanel.track("Contact Dealer Clicked", {
+//    "Category": "DVS Player",
+//    "Source": sSource,
+//    });  
+}
 
 // function menuEmail(sSource) {
 // 	sendToGoogle('DVS iFrame', sSource, 'Email Menu Link');
