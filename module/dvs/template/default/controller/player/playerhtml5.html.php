@@ -199,7 +199,7 @@ color:#fff;
     var endscreen_cform = {$aPlayer.video_endscreen_player_cform};
     var endscreen_inventory = {$aPlayer.video_endscreen_player_inventory};
     {if $aPlayer.video_endscreen_player_cform == 1}
-    cdContent = '<p><a href="#" id="endscr_cform" class="endscr_btn gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));menuContact(\'Call To Action Menu Clicks\');">Contact Dealer</a></p>';
+    cdContent = '<p><a href="#" id="endscr_cform" class="endscr_btn gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));endscreenContact(\'Video End Screen\');">Contact Dealer</a></p>';
     {/if}
     {/if}
     

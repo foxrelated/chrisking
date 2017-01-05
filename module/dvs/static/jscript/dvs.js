@@ -13,7 +13,20 @@ function menuInventory(sSource) {
 	"Source": sSource,
 	});
 }
-
+function endscreenInventory(sSource){
+    sendToGoogle('DVS Player', sSource, 'Show Inventory');
+    mixpanel.track("View Inventory Clicked", {
+    "Category": "DVS Player",
+    "Source": sSource,
+    });
+}
+function endscreenContact(sSource){
+   sendToGoogle('DVS Player', sSource, 'Contact Dealer');
+    mixpanel.track("Contact Dealer Clicked", {
+    "Category": "DVS Player",
+    "Source": sSource,
+    });  
+}
 function menuOffers(sSource) {
 	sendToGoogle('DVS Site', sSource, 'Special Offers');
 	mixpanel.track("Special Offers Clicked", {
