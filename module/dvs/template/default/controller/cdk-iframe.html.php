@@ -200,21 +200,6 @@ defined('PHPFOX') or exit('NO DICE!');
 {/if}
 
 {literal}
-<script type='text/javascript'>
-    (function() {
-        var dt = document.createElement('script');
-        dt.type = 'text/javascript';
-        dt.async = true;
-        var pa = 'WheelsTV';
-        var src = document.location.protocol + '//dt.admission.net/dt.js?sitetype=dealer&format=js&cblttags=1&framed=1';
-        src += '&referrer=' + encodeURIComponent(document.referrer.substr(0,2000));
-        src += '&cs:pg=' + encodeURIComponent(pa + ' - ' + document.location.pathname);
-        dt.src = src;
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(dt,s);
-    })();
-</script>
-
 <script type="text/javascript">
     $Behavior.loadUrlVideo = function() {
         setInterval(function() {

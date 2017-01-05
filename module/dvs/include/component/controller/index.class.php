@@ -22,6 +22,26 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
             $sDvsRequest = Phpfox::getService('dvs')->getTitleByCdk($sDvsRequest);
         }
         if ($aDvs = Phpfox::getService('dvs')->get($sDvsRequest, true)) {
+            if (isset($aDvs['cdk_id']) && $aDvs['cdk_id']) {
+                define('DVS__CDK_ASSIGNED', true);
+                $this->template()->setHeader('cache', array(
+                    "<script type='text/javascript'>
+                        (function() {
+                            var dt = document.createElement('script');
+                            dt.type = 'text/javascript';
+                            dt.async = true;
+                            var pa = 'WheelsTV';
+                            var src = document.location.protocol + '//dt.admission.net/dt.js?sitetype=dealer&format=js&cblttags=1&framed=1';
+                            src += '&referrer=' + encodeURIComponent(document.referrer.substr(0,2000));
+                            src += '&cs:pg=' + encodeURIComponent(pa + ' - ' + document.location.pathname);
+                            dt.src = src;
+                            var s = document.getElementsByTagName('script')[0];
+                            s.parentNode.insertBefore(dt,s);
+                        })();
+                    </script>"
+                ));
+            }
+
             if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'sitemap') {
                 return Phpfox::getLib('module')->setController('dvs.dvs-sitemap');
             } else if ($this->request()->get(($bSubdomainMode ? 'req2' : 'req3')) == 'share') {
