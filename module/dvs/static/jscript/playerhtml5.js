@@ -289,7 +289,7 @@ $(document).ready(function () {
                 var endscr_bottom_nvideo = '';
             }
             if (endscreen_inventory == 1) {
-                var invcontent = '<p><a href=' + inventory_btn + ' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Top Menu Clicks\');" rel="nofollow" target="_parent">' + inventory_text + '</a></p>';
+                var invcontent = '<p><a href=' + inventory_btn + ' class="dvs_inventory_link endscr_btn" id="dvs_inventory_link" onclick="menuInventory(\'Call To Action Menu Clicks\');" rel="nofollow" target="_parent">' + inventory_text + '</a></p>';
             } else {
                 var invcontent = '';
             }
