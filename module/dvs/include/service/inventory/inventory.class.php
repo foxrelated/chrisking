@@ -338,7 +338,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         while (false !== ($sTempFile = readdir($oDir))) {
             if ($sTempFile == "." || $sTempFile == "..")
                 continue;
-            if(strpos($sTempFile, 'VINVENTORY') === 0) {
+            if(strpos($sTempFile, 'inventory') === 0) {
                 $sFile = $sTempFile;
                 break;
             }
