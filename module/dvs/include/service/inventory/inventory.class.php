@@ -349,7 +349,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
             return false;
         }
 
-        if (!$fRemote = @fopen("ssh2.sftp://{$oStream}/home/dvs/public_html/output/{$sFile}", 'r')) {
+        if (!$fRemote = @fopen("ssh2.sftp://{$oStream}/./home/dvs/public_html/feeds/output/{$sFile}", 'r')) {
             die('Could not open VINVENTORY.zip');
             return false;
         }
