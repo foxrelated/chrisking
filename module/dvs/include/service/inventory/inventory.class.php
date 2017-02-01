@@ -8,8 +8,8 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
 	
 	private $_sHost = 'feeds.dealervideoshowroom.com';
     private $_sPort = '21';
-    private $_sUsername = 'feeds@dealervideoshowroom.com';
-    private $_sPassword = 'WheelsTV123';
+    private $_sUsername = 'feedimport@dealervideoshowroom.com';
+    private $_sPassword = 'P)n~4pC6b-hE';
 	
     function __construct() {
         $this->_sTable = Phpfox::getT('tbd_dvs_inventory');
