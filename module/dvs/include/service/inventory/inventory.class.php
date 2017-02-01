@@ -1,11 +1,16 @@
 <?php
 
 class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
-    private $_sHost = 'sftp.dmotorworks.com';
-    private $_sPort = '22';
-    private $_sUsername = 'WTVMain';
-    private $_sPassword = '$new123';
-
+    //private $_sHost = 'sftp.dmotorworks.com';
+    //private $_sPort = '22';
+    //private $_sUsername = 'WTVMain';
+    //private $_sPassword = '$new123';
+	
+	private $_sHost = 'feeds.dealervideoshowroom.com';
+    private $_sPort = '21';
+    private $_sUsername = 'feeds@dealervideoshowroom.com';
+    private $_sPassword = 'WheelsTV123';
+	
     function __construct() {
         $this->_sTable = Phpfox::getT('tbd_dvs_inventory');
         Phpfox::getLib('setting')->setParam('dvs.csv_folder', PHPFOX_DIR . 'file' . PHPFOX_DS . 'inventory' . PHPFOX_DS);
