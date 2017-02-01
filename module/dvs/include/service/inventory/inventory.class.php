@@ -8,7 +8,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
 	
 	private $_sHost = 'dealervideoshowroom.com';
     private $_sPort = '22';
-    private $_sUsername = 'dvs@dealervideoshowroom.com';
+    private $_sUsername = 'dvs';
     private $_sPassword = 'wh33l5tvh0trod';
 	
     function __construct() {
@@ -328,7 +328,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         }
 
 
-        if (!$oDir = opendir("ssh2.sftp://{$oStream}/public_html/feeds/output/")) {
+        if (!$oDir = opendir("ssh2.sftp://{$oStream}/./public_html/feeds/output/")) {
             die('Could not open the directory');
             return false;
         }
