@@ -328,7 +328,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         }
 
 
-        if (!$oDir = opendir("ssh2.sftp://{$oStream}/public_html/feeds/output/")) {
+        if (!$oDir = opendir("ssh2.sftp://{$oStream}/./home/dvs/public_html/feeds/output/")) {
             die('Could not open the directory');
             return false;
         }
