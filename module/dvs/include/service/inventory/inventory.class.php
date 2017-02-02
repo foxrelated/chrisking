@@ -360,7 +360,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         }
        
         $iRead = 0;
-        $iFilesize = filesize("ssh2.sftp://{$oStream}/{$sFile}");
+        $iFilesize = filesize("ssh2.sftp://{$oStream}/./home/dvs/public_html/feeds/output/{$sFile}");
         while ($iRead < $iFilesize && ($iBuffer = fread($fRemote, $iFilesize - $iRead))) {
             $iRead += strlen($iBuffer);
             if (fwrite($fLocal, $iBuffer) === FALSE) {
