@@ -380,9 +380,10 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         if ($oRes === TRUE) {
             $oZip->extractTo(Phpfox::getParam('dvs.csv_folder'));
             $oZip->close();
-
-            if (!rename(Phpfox::getParam('dvs.csv_folder') . str_replace('.zip', '.txt', $sFile), Phpfox::getParam('dvs.csv_folder') . 'inventory.csv')) {
-                return false;
+            if (file_exists(Phpfox::getParam('dvs.csv_folder') . str_replace('.zip', '.txt', $sFile))) {
+                if (!rename(Phpfox::getParam('dvs.csv_folder') . str_replace('.zip', '.txt', $sFile), Phpfox::getParam('dvs.csv_folder') . 'inventory.csv')) {
+                    return false;
+                }
             }
             @unlink(Phpfox::getParam('dvs.csv_folder') . $sFile);
             return true;
