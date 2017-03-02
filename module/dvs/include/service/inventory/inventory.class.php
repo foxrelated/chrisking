@@ -392,18 +392,14 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         }
     }
 
-    // public function runCronjob() {
-//         if($sFile = $this->downloadZipFile()) {
-//             if ($this->extracFile($sFile)) {
-//                 $this->importFile();
-//             }
-//             return true;
-//         }
-//         return false;
-//     }
-    
     public function runCronjob() {
-    	$this->importFile();
+        if($sFile = $this->downloadZipFile()) {
+            if ($this->extracFile($sFile)) {
+                $this->importFile();
+            }
+            return true;
+        }
+        return false;
     }
     
 }
