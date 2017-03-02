@@ -30,14 +30,20 @@ if (!window.WTVVIN) {
                 sEdstyleId = x[i].getAttribute('edstyleid');
 
                 var sCurrentClass = x[i].getAttribute('class');
+
+                if (sCurrentClass.indexOf(' loaded ') !== -1) {
+                    sAllVin += 'A,';
+                    continue;
+                }
+
                 if (sVinId) {
                     sAllVin += sVinId + ',';
                     x[i].setAttribute('id', 'dvs_vin_btn_' + sVinId + '_' + i);
-                    x[i].setAttribute('class', sCurrentClass + ' dvs_vin_btn_' + sVinId);
+                    x[i].setAttribute('class', sCurrentClass + ' loaded dvs_vin_btn_' + sVinId);
                 } else {
                     sAllEdstyle += sEdstyleId + ',';
                     x[i].setAttribute('id', 'dvs_vin_btn_' + sEdstyleId + '_' + i);
-                    x[i].setAttribute('class', sCurrentClass + ' dvs_vin_btn_' + sEdstyleId);
+                    x[i].setAttribute('class', sCurrentClass + ' loaded dvs_vin_btn_' + sEdstyleId);
                 }
 
                 var aLink = document.createElement('a');
