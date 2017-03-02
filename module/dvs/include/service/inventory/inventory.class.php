@@ -6,6 +6,11 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
     //private $_sUsername = 'WTVMain';
     //private $_sPassword = '$new123';
 
+	private $_sHost = 'dealervideoshowroom.com';
+    private $_sPort = '22';
+    private $_sUsername = 'dvs';
+    private $_sPassword = 'wh33l5tvh0trod';
+	
     function __construct() {
         $this->_sTable = Phpfox::getT('tbd_dvs_inventory');
         Phpfox::getLib('setting')->setParam('dvs.csv_folder', PHPFOX_DIR . 'file' . PHPFOX_DS . 'inventory' . PHPFOX_DS);
@@ -323,7 +328,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         }
 
 
-        if (!$oDir = opendir("ssh2.sftp://{$oStream}/./")) {
+        if (!$oDir = opendir("ssh2.sftp://{$oStream}/./home/dvs/public_html/feeds/output/")) {
             die('Could not open the directory');
             return false;
         }
@@ -344,7 +349,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
             return false;
         }
 
-        if (!$fRemote = @fopen("ssh2.sftp://{$oStream}/{$sFile}", 'r')) {
+        if (!$fRemote = @fopen("ssh2.sftp://{$oStream}/./home/dvs/public_html/feeds/output/{$sFile}", 'r')) {
             die('Could not open VINVENTORY.zip');
             return false;
         }
@@ -355,7 +360,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         }
        
         $iRead = 0;
-        $iFilesize = filesize("ssh2.sftp://{$oStream}/{$sFile}");
+        $iFilesize = filesize("ssh2.sftp://{$oStream}/./home/dvs/public_html/feeds/output/{$sFile}");
         while ($iRead < $iFilesize && ($iBuffer = fread($fRemote, $iFilesize - $iRead))) {
             $iRead += strlen($iBuffer);
             if (fwrite($fLocal, $iBuffer) === FALSE) {
@@ -375,9 +380,10 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         if ($oRes === TRUE) {
             $oZip->extractTo(Phpfox::getParam('dvs.csv_folder'));
             $oZip->close();
-
-            if (!rename(Phpfox::getParam('dvs.csv_folder') . str_replace('.zip', '.txt', $sFile), Phpfox::getParam('dvs.csv_folder') . 'inventory.csv')) {
-                return false;
+            if (file_exists(Phpfox::getParam('dvs.csv_folder') . str_replace('.zip', '.txt', $sFile))) {
+                if (!rename(Phpfox::getParam('dvs.csv_folder') . str_replace('.zip', '.txt', $sFile), Phpfox::getParam('dvs.csv_folder') . 'inventory.csv')) {
+                    return false;
+                }
             }
             @unlink(Phpfox::getParam('dvs.csv_folder') . $sFile);
             return true;
