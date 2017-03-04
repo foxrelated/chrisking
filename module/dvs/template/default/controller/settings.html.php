@@ -292,7 +292,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<li>
 				<label for="inventory_url">{phrase var='dvs.inventory_url'}:</label>
 				<input type="url" name="val[inventory_url]" value="{value type='input' id='inventory_url'}" id="inventory_url" size="120" maxlength="300"/>
-				{*phrase var='dvs.inventory_url_phrase'*} <strong>Supported variables: {literal}{$iYear} {$sMake} {$sModel}{/literal}</strong>
+				{*phrase var='dvs.inventory_url_phrase'*} <strong>Supported variables: {literal}{$iYear}+{$sMake}+{$sModel}{/literal}</strong>
 			</li>
 	
 			<li>
