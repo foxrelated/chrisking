@@ -33,7 +33,7 @@ class Dvs_Component_Controller_Index extends Phpfox_Component {
                             var pa = 'WheelsTV';
                             var src = document.location.protocol + '//dt.cobaltgroup.com/dt.js?sitetype=dealer&format=js&cblttags=1&framed=1';
                             src += '&referrer=' + encodeURIComponent(document.referrer.substr(0,2000));
-                            src += '&cs:pg=' + encodeURIComponent(pa + ' - Contact');
+                            src += '&cs:pg=' + encodeURIComponent(pa + ' - DVS Lead');
                             src += '&cs:pa=' + pa;
                             dt.src = src;
                             var s = document.getElementsByTagName('script')[0];
