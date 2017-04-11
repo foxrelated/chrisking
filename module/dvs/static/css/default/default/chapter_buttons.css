@@ -16,342 +16,528 @@
 
 #chapter_container_Intro.active
 {
-	background:url('../../../image/intro-active.png');
+	/* background:url('../../../image/intro-active.png'); */
+	background:url('../../../image/default-intro.png');
 }
 
 #chapter_container_Intro.selected
 {
+/* 
 	background:url('../../../image/intro-selected.png');
+ */
+	background:url('../../../image/current-intro.png');
 }
 
 #chapter_container_Intro.watched
 {
+/* 
 	background:url('../../../image/intro-watched.png');
+ */
+	background:url('../../../image/watched-intro.png');
+
 }
 
 #chapter_container_Intro.disabled
 {
+/* 
 	background:url('../../../image/intro-disabled.png');
+ */
+	background:url('../../../image/disabled-intro.png');
+
 }
 
 /* CSS for WhatsNew button*/
 
 #chapter_container_WhatsNew.active
 {
+/* 
 	background:url('../../../image/whatsnew-active.png');
+ */
+	background:url('../../../image/default-whatsnew.png');
 }
 
 #chapter_container_WhatsNew.selected
 {
+/* 
 	background:url('../../../image/whatsnew-selected.png');
+ */
+	background:url('../../../image/current-whatsnew.png');
 }
 
 #chapter_container_WhatsNew.watched
 {
+/* 
 	background:url('../../../image/whatsnew-watched.png');
+ */
+	background:url('../../../image/watched-whatsnew.png');
 }
 
 #chapter_container_WhatsNew.disabled
 {
+/* 
 	background:url('../../../image/whatsnew-disabled.png');
+ */
+	background:url('../../../image/disabled-whatsnew.png');
 }
 
 /* CSS for Exterior button*/
 
 #chapter_container_Exterior.active
 {
+/* 
 	background:url('../../../image/exterior-active.png');
+ */
+	background:url('../../../image/default-exterior.png');
 }
 
 #chapter_container_Exterior.selected
 {
+/* 
 	background:url('../../../image/exterior-selected.png');
+ */
+	background:url('../../../image/current-exterior.png');
 }
 
 #chapter_container_Exterior.watched
 {
+/* 
+	background:url('../../../image/exterior-watched.png');
+ */
 	background:url('../../../image/exterior-watched.png');
 }
 
 #chapter_container_Exterior.disabled
 {
+/* 
 	background:url('../../../image/exterior-disabled.png');
+ */
+	background:url('../../../image/disabled-exterior.png');
 }
 
 /* CSS for the Interior button*/
 
 #chapter_container_Interior.active
 {
+/* 
 	background:url('../../../image/interior-active.png');
+ */
+	background:url('../../../image/default-interior.png');
 }
 
 #chapter_container_Interior.selected
 {
+/* 
 	background:url('../../../image/interior-selected.png');
+ */
+	background:url('../../../image/current-interior.png');
 }
 
 #chapter_container_Interior.watched
 {
+/* 
 	background:url('../../../image/interior-watched.png');
+ */
+	background:url('../../../image/watched-interior.png');
 }
 
 #chapter_container_Interior.disabled
 {
+/* 
 	background:url('../../../image/interior-disabled.png');
+ */
+	background:url('../../../image/disabled-interior.png');
 }
 
 /* CSS for the Power button*/
 
 #chapter_container_Power.active
 {
+/* 
 	background:url('../../../image/power-active.png');
+ */
+	background:url('../../../image/default-power.png');
 }
 
 #chapter_container_Power.selected
 {
+/* 
 	background:url('../../../image/power-selected.png');
+ */
+	background:url('../../../image/current-power.png');
 }
 
 #chapter_container_Power.watched
 {
+/* 
 	background:url('../../../image/power-watched.png');
+ */
+	background:url('../../../image/watched-power.png');
 }
 
 #chapter_container_Power.disabled
 {
+/* 
 	background:url('../../../image/power-disabled.png');
+ */
+	background:url('../../../image/disabled-power.png');
 }
 
 /* CSS for the Fuel button*/
 
 #chapter_container_Fuel.active
 {
+/* 
 	background:url('../../../image/fuel-active.png');
+ */
+	background:url('../../../image/default-fuel.png');
 }
 
 #chapter_container_Fuel.selected
 {
+/* 
 	background:url('../../../image/fuel-selected.png');
+ */
+	background:url('../../../image/current-fuel.png');
 }
 
 #chapter_container_Fuel.watched
 {
+/* 
 	background:url('../../../image/fuel-watched.png');
+ */
+	background:url('../../../image/watched-fuel.png');
 }
 
 #chapter_container_Fuel.disabled
 {
+/* 
 	background:url('../../../image/fuel-disabled.png');
+ */
+	background:url('../../../image/disabled-fuel.png');
 }
 
 /* CSS for the Features button*/
 
 #chapter_container_Features.active
 {
+/* 
 	background:url('../../../image/features-active.png');
+ */
+	background:url('../../../image/default-features.png');
 }
 
 #chapter_container_Features.selected
 {
+/* 
 	background:url('../../../image/features-selected.png');
+ */
+	background:url('../../../image/current-features.png');
 }
 
 #chapter_container_Features.watched
 {
+/* 
 	background:url('../../../image/features-watched.png');
+ */
+	background:url('../../../image/watched-features.png');
 }
 
 #chapter_container_Features.disabled
 {
+/* 
 	background:url('../../../image/features-disabled.png');
+ */
+	background:url('../../../image/disabled-features.png');
 }
 
 /* CSS for the Safety button*/
 
 #chapter_container_Safety.active
 {
+/* 
 	background:url('../../../image/safety-active.png');
+ */
+	background:url('../../../image/default-safety.png');
 }
 
 #chapter_container_Safety.selected
 {
+/* 
 	background:url('../../../image/safety-selected.png');
+ */
+	background:url('../../../image/current-safety.png');
 }
 
 #chapter_container_Safety.watched
 {
+/* 
 	background:url('../../../image/safety-watched.png');
+ */
+	background:url('../../../image/watched-safety.png');
 }
 
 #chapter_container_Safety.disabled
 {
+/* 
 	background:url('../../../image/safety-disabled.png');
+ */
+	background:url('../../../image/disabled-safety.png');
 }
 
 /* CSS for the Pricing button*/
 
 #chapter_container_Pricing.active
 {
+/* 
 	background:url('../../../image/pricing-active.png');
+ */
+	background:url('../../../image/default-pricing.png');
 }
 
 #chapter_container_Pricing.selected
 {
+/* 
 	background:url('../../../image/pricing-selected.png');
+ */
+	background:url('../../../image/current-pricing.png');
 }
 
 #chapter_container_Pricing.watched
 {
+/* 
 	background:url('../../../image/pricing-watched.png');
+ */
+	background:url('../../../image/watched-pricing.png');
 }
 
 #chapter_container_Pricing.disabled
 {
+/* 
 	background:url('../../../image/pricing-disabled.png');
+ */
+	background:url('../../../image/disabled-pricing.png');
 }
 
 /* CSS for the Warranty button*/
 
 #chapter_container_Warranty.active
 {
+/* 
 	background:url('../../../image/warranty-active.png');
+ */
+	background:url('../../../image/default-warranty.png');
 }
 
 #chapter_container_Warranty.selected
 {
+/* 
 	background:url('../../../image/warranty-selected.png');
+ */
+	background:url('../../../image/current-warranty.png');
 }
 
 #chapter_container_Warranty.watched
 {
+/* 
 	background:url('../../../image/warranty-watched.png');
+ */
+	background:url('../../../image/watched-warranty.png');
 }
 
 #chapter_container_Warranty.disabled
 {
+/* 
 	background:url('../../../image/warranty-disabled.png');
+ */
+	background:url('../../../image/disabled-warranty.png');
 }
 
 /* CSS for the Summary button*/
 
 #chapter_container_Summary.active
 {
+/* 
 	background:url('../../../image/summary-active.png');
+ */
+	background:url('../../../image/default-summary.png');
 }
 
 #chapter_container_Summary.selected
 {
+/* 
 	background:url('../../../image/summary-selected.png');
+ */
+	background:url('../../../image/current-summary.png');
 }
 
 #chapter_container_Summary.watched
 {
+/* 
 	background:url('../../../image/summary-watched.png');
+ */
+	background:url('../../../image/watched-summary.png');
 }
 
 #chapter_container_Summary.disabled
 {
+/* 
 	background:url('../../../image/summary-disabled.png');
+ */
+	background:url('../../../image/disabled-summary.png');
 }
 
 /* CSS for the Overview button*/
 
 #chapter_container_Overview.active
 {
+/* 
 	background:url('../../../image/overview-active.png');
+ */
+	background:url('../../../image/default-overview.png');
 }
 
 #chapter_container_Overview.selected
 {
+/* 
 	background:url('../../../image/overview-selected.png');
+ */
+	background:url('../../../image/current-overview.png');
 }
 
 #chapter_container_Overview.watched
 {
+/* 
 	background:url('../../../image/overview-watched.png');
+ */
+	background:url('../../../image/watched-overview.png');
 }
 
 #chapter_container_Overview.disabled
 {
+/* 
 	background:url('../../../image/overview-disabled.png');
+ */
+	background:url('../../../image/disabled-overview.png');
 }
 
 /* CSS for the Performance button*/
 
 #chapter_container_Performance.active
 {
+/* 
 	background:url('../../../image/performance-active.png');
+ */
+	background:url('../../../image/default-performance.png');
 }
 
 #chapter_container_Performance.selected
 {
+/* 
 	background:url('../../../image/performance-selected.png');
+ */
+	background:url('../../../image/current-performance.png');
 }
 
 #chapter_container_Performance.watched
 {
+/* 
 	background:url('../../../image/performance-watched.png');
+ */
+	background:url('../../../image/watched-performance.png');
 }
 
 #chapter_container_Performance.disabled
 {
+/* 
 	background:url('../../../image/performance-disabled.png');
+ */
+	background:url('../../../image/disabled-performance.png');
 }
 
 /* CSS for the MPG button*/
 
 #chapter_container_MPG.active
 {
+/* 
 	background:url('../../../image/mpg-active.png');
+ */
+	background:url('../../../image/default-mpg.png');
 }
 
 #chapter_container_MPG.selected
 {
+/* 
 	background:url('../../../image/mpg-selected.png');
+ */
+	background:url('../../../image/current-mpg.png');
 }
 
 #chapter_container_MPG.watched
 {
+/* 
 	background:url('../../../image/mpg-watched.png');
+ */
+	background:url('../../../image/watched-mpg.png');
 }
 
 #chapter_container_MPG.disabled
 {
+/* 
 	background:url('../../../image/mpg-disabled.png');
+ */
+	background:url('../../../image/disabled-mpg.png');
 }
 
 /*CSS for the Honors button*/
 
 #chapter_container_Honors.active
 {
+/* 
 	background:url('../../../image/honors-active.png');
+ */
+	background:url('../../../image/default-honors.png');
 }
 
 #chapter_container_Honors.selected
 {
+/* 
 	background:url('../../../image/honors-selected.png');
+ */
+	background:url('../../../image/current-honors.png');
 }
 
 #chapter_container_Honors.watched
 {
+/* 
 	background:url('../../../image/honors-watched.png');
+ */
+	background:url('../../../image/watched-honors.png');
 }
 
 #chapter_container_Honors.disabled
 {
+/* 
 	background:url('../../../image/honors-disabled.png');
+ */
+	background:url('../../../image/disabled-honors.png');
 }
 
 /* CSS for the Get Price button*/
 
 #chapter_container_Get_Price.active
 {
+/* 
 	background:url('../../../image/get-price.png');
+ */
+	background:url('../../../image/default-getprice.png');
 }
 
 #chapter_container_Get_Price.disabled
 {
+/* 
 	background:url('../../../image/getprice-disabled.png');
+ */
+	background:url('../../../image/disabled-getprice.png');
 }
 
 /* Remove border on selected buttons */
