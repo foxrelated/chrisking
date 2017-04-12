@@ -307,9 +307,46 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         return array($aData, $aReferenceIds);
     }
 
+    public function getYearFromVin($sVin) {
+        $sYearChar = substr($sVin,6,1);
+
+        if (is_numeric($sYearChar)) {
+            $sType = 'num';
+        } else {
+            $sType = 'alpha';
+        }
+
+        $aLookupYear = $this->database()
+            ->select('b.year')
+            ->from(Phpfox::getT('dvs_vin_year_lookup'), 'b')
+            ->where('b.vin_digit = "' . $sYearChar . '" AND b.type = "' . $sType . '"')
+            ->execute('getRow');
+
+        $iYear = isset($aLookupYear['year']) ? intval($aLookupYear['year']) : 0;
+
+        return $iYear;
+    }
+
+
     public function getStyleByVin($sVin) {
         $aParams = array();
         $aStyles = array();
+
+        // Exit if VIN year < 2008
+        if ($this->getYearFromVin($sVin) < 2008) {
+            return array($aStyles, $aParams);
+        }
+
+        // Check from Parsed_Notfound
+        $aVinnf = $this->database()
+            ->select('b.*')
+            ->from(Phpfox::getT('ko_dvs_vin_parsed_notfound'), 'b')
+            ->where('b.squishvin = "' . $sVin . '"')
+            ->execute('getRows');
+        if (count($aVinnf) > 0) {
+            return array($aStyles, $aParams);
+        }
+
         $sApiKey = 'wztmmwrvnegb6b547asz8u2a';
         //https://api.edmunds.com/api/vehicle/v2/squishvins/SQUISHVIN/?fmt=json&api_key=wztmmwrvnegb6b547asz8u2a
         $sTargetUrl = "https://api.edmunds.com/api/vehicle/v2/squishvins/" . trim($sVin) . "/?fmt=json&api_key=" . $sApiKey;
@@ -321,6 +358,12 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         $oOutput= @json_decode($oResponse);
 
         if ($oOutput === null || !isset($oOutput->make)) {
+            // Track error VIN
+            $this->database()->insert(Phpfox::getT('ko_dvs_vin_parsed_notfound'), array(
+                'vin' => '',
+                'squishvin' => $sVin,
+                'source' => 'VDP or VIN Embed'
+            ));
             return array($aStyles, $aParams);
         }
 
