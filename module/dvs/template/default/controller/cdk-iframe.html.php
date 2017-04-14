@@ -2,7 +2,7 @@
 defined('PHPFOX') or exit('NO DICE!');
 ?>
     {if $sBrowser == 'mobile'}
-        {template file='dvs.controller.iframe-mobile-view}
+        {template file='dvs.controller.cdk-iframe-mobile-view}
     {else}
     <header>
         <section id="select_new">
