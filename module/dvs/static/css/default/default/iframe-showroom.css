@@ -476,9 +476,9 @@ cursor:pointer;
     vertical-align:top;
     margin-top: 10px;
     padding: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
     min-height: 310px;
     min-width: 235px;
 }
