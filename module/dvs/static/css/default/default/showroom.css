@@ -143,7 +143,7 @@ header nav a:hover
 	padding: 10px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
-	border-radius: 10px;
+	border-radius: 5px;
 }
 
 .dvs_overlay
@@ -409,7 +409,7 @@ button.playlist-button:hover
 	display: block;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
-	border-radius: 10px;
+	border-radius: 5px;
 	font-family: arial;
 	font-size: 1.5em;
 	padding: 4px 0px;
