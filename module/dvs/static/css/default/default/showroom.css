@@ -141,8 +141,8 @@ header nav a:hover
 	vertical-align:top;
 	margin-top: 10px;
 	padding: 10px;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
 	border-radius: 5px;
 }
 
@@ -407,8 +407,8 @@ button.playlist-button:hover
 
 #dealer_links a {
 	display: block;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
 	border-radius: 5px;
 	font-family: arial;
 	font-size: 1.5em;
