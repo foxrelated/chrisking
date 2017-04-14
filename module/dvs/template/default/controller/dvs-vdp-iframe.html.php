@@ -4,8 +4,8 @@
 padding:3px 10px 5px 12px !important;
 {r}
     #dvs_bc_player {l}
-        width: {if $sBrowser == 'mobile'}{$iPlayerWidth}px{else}717px{/if};
-        height: {if $sBrowser == 'mobile'}{$iPlayerHeight}px{else}404px{/if};
+        width: {if $sBrowser == 'mobile'}{$iPlayerWidth}px{else}720px{/if};
+        height: {if $sBrowser == 'mobile'}{$iPlayerHeight}px{else}405px{/if};
     {r}
 
     body {l}
