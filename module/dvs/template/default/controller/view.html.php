@@ -93,7 +93,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
           </li>
         </ul>
       </nav>
+      
     </header>
+    <p class="model_description player_instructions">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
     <article>
     <!-- HTML5 V2 RealIT Services -->
     {if $aPlayer.player_type != "2"}

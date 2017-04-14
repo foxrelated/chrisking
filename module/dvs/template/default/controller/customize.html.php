@@ -314,7 +314,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 		</tr>
 	</table>
-	
+	<!-- 
 	<table>
 		<tr class="tr_interactive">
 			<td class="dvs_add_td">
@@ -353,8 +353,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			</td>
 		</tr>
 	</table>
-
-    <table>
+	<table>
         <tr class="tr_interactive">
             <td class="dvs_add_td">
                 Background Repeat:
@@ -373,7 +372,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </td>
         </tr>
     </table>
-
     <table>
         <tr class="tr_interactive">
             <td class="dvs_add_td">
@@ -387,6 +385,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </td>
         </tr>
     </table>
+     -->
 	<br>
 	<div {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
 	<h3>Page Styling</h3>

@@ -2,7 +2,6 @@
     {if $sBrowser == 'mobile'}
         {template file='dvs.controller.iframe-mobile-view}
     {else}
-    <p class="model_description player_instructions">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
     <header>
         <section id="select_new">
             {if $aVideoSelectYears}
@@ -60,6 +59,7 @@
                 </table>
             {/if}
         </section>
+        <p class="model_description player_instructions">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
     </header>
     <article>
     

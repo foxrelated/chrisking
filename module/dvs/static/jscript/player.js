@@ -112,7 +112,13 @@ function changeCuePoint(sCuePoint) {
 		if (bDebug) {
 			console.log('Media: Cuepoint Manually Changed to ' + sCuePoint);
 		}
-		seek(oCuePoints[sCuePoint]);
+
+        if (navigator.userAgent.toLowerCase().indexOf('safari/') > -1) {
+            seek(oCuePoints[sCuePoint] + 0.05);
+        } else {
+            seek(oCuePoints[sCuePoint] + 0.001);
+        }
+
 		cueChange(sCuePoint);
 	}
 	else

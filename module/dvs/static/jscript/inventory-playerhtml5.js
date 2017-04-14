@@ -638,8 +638,13 @@ if (!$('#chapter_container_' + sCuePoint).hasClass('disabled')) {
         if (bDebug) {
             console.log('Media: Cuepoint Manually Changed to ' + sCuePoint);
         }
-        //seek(oCuePoints[sCuePoint]);
-        seek(seekTime);
+
+        if (navigator.userAgent.toLowerCase().indexOf('safari/') > -1) {
+            seek(seekTime + 0.05);
+        } else {
+            seek(seekTime + 0.001);
+        }
+
         cueChange(sCuePoint);
     }
     else

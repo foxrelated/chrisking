@@ -252,7 +252,6 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
                 fwrite($f, $log_data);
                 fclose($f);
             }
-            
         }
 
         if ($oOutput === null || !isset($oOutput->make)) {

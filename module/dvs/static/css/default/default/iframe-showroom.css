@@ -1,78 +1,79 @@
 body:before
 {
 	content: 
-		url('../../../image/intro-active.png')
-		url('../../../image/intro-selected.png')
-		url('../../../image/intro-watched.png')
-		url('../../../image/intro-disabled.png')
-		url('../../../image/whatsnew-active.png')
-		url('../../../image/whatsnew-selected.png')
-		url('../../../image/whatsnew-watched.png')
-		url('../../../image/whatsnew-disabled.png')
-		url('../../../image/exterior-active.png')
-		url('../../../image/exterior-selected.png')
-		url('../../../image/exterior-watched.png')
-		url('../../../image/exterior-disabled.png')
-		url('../../../image/interior-active.png')
-		url('../../../image/interior-selected.png')
-		url('../../../image/interior-watched.png')
-		url('../../../image/interior-disabled.png')
-		url('../../../image/power-active.png')
-		url('../../../image/power-selected.png')
-		url('../../../image/power-watched.png')
-		url('../../../image/power-disabled.png')
-		url('../../../image/fuel-active.png')
-		url('../../../image/fuel-selected.png')
-		url('../../../image/fuel-watched.png')
-		url('../../../image/fuel-disabled.png')
-		url('../../../image/features-active.png')
-		url('../../../image/features-selected.png')
-		url('../../../image/features-watched.png')
-		url('../../../image/features-disabled.png')
-		url('../../../image/safety-active.png')
-		url('../../../image/safety-selected.png')
-		url('../../../image/safety-watched.png')
-		url('../../../image/safety-disabled.png')
-		url('../../../image/pricing-active.png')
-		url('../../../image/pricing-selected.png')
-		url('../../../image/pricing-watched.png')
-		url('../../../image/pricing-disabled.png')
-		url('../../../image/warranty-active.png')
-		url('../../../image/warranty-selected.png')
-		url('../../../image/warranty-watched.png')
-		url('../../../image/warranty-disabled.png')
-		url('../../../image/summary-active.png')
-		url('../../../image/summary-selected.png')
-		url('../../../image/summary-watched.png')
-		url('../../../image/summary-disabled.png')
-		url('../../../image/overview-active.png')
-		url('../../../image/overview-selected.png')
-		url('../../../image/overview-watched.png')
-		url('../../../image/overview-disabled.png')
-		url('../../../image/performance-active.png')
-		url('../../../image/performance-selected.png')
-		url('../../../image/performance-watched.png')
-		url('../../../image/performance-disabled.png')
-		url('../../../image/mpg-active.png')
-		url('../../../image/mpg-selected.png')
-		url('../../../image/mpg-watched.png')
-		url('../../../image/mpg-disabled.png')
-		url('../../../image/honors-active.png')
-		url('../../../image/honors-selected.png')
-		url('../../../image/honors-watched.png')
-		url('../../../image/honors-disabled.png')
+		url('../../../image/default-intro.png')
+		url('../../../image/current-intro.png')
+		url('../../../image/watched-intro.png')
+		url('../../../image/disabled-intro.png')
+		url('../../../image/default-whatsnew.png')
+		url('../../../image/current-whatsnew.png')
+		url('../../../image/watched-whatsnew.png')
+		url('../../../image/disabled-whatsnew.png')
+		url('../../../image/default-exterior.png')
+		url('../../../image/current-exterior.png')
+		url('../../../image/watched-exterior.png')
+		url('../../../image/disabled-exterior.png')
+		url('../../../image/default-interior.png')
+		url('../../../image/current-interior.png')
+		url('../../../image/watched-interior.png')
+		url('../../../image/disabled-interior.png')
+		url('../../../image/default-power.png')
+		url('../../../image/current-power.png')
+		url('../../../image/watched-power.png')
+		url('../../../image/disabled-power.png')
+		url('../../../image/default-fuel.png')
+		url('../../../image/current-fuel.png')
+		url('../../../image/watched-fuel.png')
+		url('../../../image/disabled-fuel.png')
+		url('../../../image/default-features.png')
+		url('../../../image/current-features.png')
+		url('../../../image/watched-features.png')
+		url('../../../image/disabled-features.png')
+		url('../../../image/default-safety.png')
+		url('../../../image/current-safety.png')
+		url('../../../image/watched-safety.png')
+		url('../../../image/disabled-safety.png')
+		url('../../../image/default-pricing.png')
+		url('../../../image/current-pricing.png')
+		url('../../../image/watched-pricing.png')
+		url('../../../image/disabled-pricing.png')
+		url('../../../image/default-warranty.png')
+		url('../../../image/current-warranty.png')
+		url('../../../image/watched-warranty.png')
+		url('../../../image/disabled-warranty.png')
+		url('../../../image/default-summary.png')
+		url('../../../image/current-summary.png')
+		url('../../../image/watched-summary.png')
+		url('../../../image/disabled-summary.png')
+		url('../../../image/default-overview.png')
+		url('../../../image/current-overview.png')
+		url('../../../image/watched-overview.png')
+		url('../../../image/disabled-overview.png')
+		url('../../../image/default-performance.png')
+		url('../../../image/current-performance.png')
+		url('../../../image/watched-performance.png')
+		url('../../../image/disabled-performance.png')
+		url('../../../image/default-mpg.png')
+		url('../../../image/current-mpg.png')
+		url('../../../image/watched-mpg.png')
+		url('../../../image/disabled-mpg.png')
+		url('../../../image/default-honors.png')
+		url('../../../image/current-honors.png')
+		url('../../../image/watched-honors.png')
+		url('../../../image/disabled-honors.png')
 		/*url('../../../image/get-price.png')
-		url('../../../image/getprice-disabled.png')*/
+		url('../../../image/getprice.png')*/
 		;
 	display: none;
 }
 
 
 .player_instructions {
-font-size:16px !important;
+font-size:14px !important;
 text-align:center;
-padding:none;
-margin:none;
+padding:0;
+margin:0;
+margin-top:5px;
 }
 
 body
@@ -440,7 +441,7 @@ section#share_links
 {
 	font-size: 14px;
 	/*color: #fff;*/
-	margin-bottom: 10px;
+	/* margin-bottom: 5px; */
 }
 
 article aside {

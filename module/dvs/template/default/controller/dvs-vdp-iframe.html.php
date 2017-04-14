@@ -4,8 +4,8 @@
 padding:3px 10px 5px 12px !important;
 {r}
     #dvs_bc_player {l}
-        width: {if $sBrowser == 'mobile'}{$iPlayerWidth}px{else}717px{/if};
-        height: {if $sBrowser == 'mobile'}{$iPlayerHeight}px{else}404px{/if};
+        width: {if $sBrowser == 'mobile'}{$iPlayerWidth}px{else}720px{/if};
+        height: {if $sBrowser == 'mobile'}{$iPlayerHeight}px{else}405px{/if};
     {r}
 
     body {l}
@@ -210,6 +210,7 @@ color:#fff;
 </style>
 <![endif]-->
 <article>
+<p class="model_description player_instructions" style="margin-top:0;margin-bottom:5px;">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
     <!--<section id="video_information">
         <h3 id="video_name">
             {$aDvs.phrase_overrides.override_video_name_display}
