@@ -210,6 +210,7 @@ color:#fff;
 </style>
 <![endif]-->
 <article>
+<p class="model_description player_instructions">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
     <!--<section id="video_information">
         <h3 id="video_name">
             {$aDvs.phrase_overrides.override_video_name_display}
