@@ -71,8 +71,8 @@ body:before
 .player_instructions {
 font-size:14px !important;
 text-align:center;
-padding:none;
-margin:none;
+padding:0;
+margin:0;
 }
 
 body
@@ -440,7 +440,7 @@ section#share_links
 {
 	font-size: 14px;
 	/*color: #fff;*/
-	margin-bottom: 5px;
+	/* margin-bottom: 5px; */
 }
 
 article aside {
