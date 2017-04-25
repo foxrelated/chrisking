@@ -432,7 +432,7 @@ color:#fff;
                     {/if}
                     <td style="vertical-align:middle;padding-left:2px;padding-right:2px;">
                         <span id="twitter_button_wrapper">
-                        <a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aFirstVideo.year video_make=$aFirstVideo.make video_model=$aFirstVideo.model dvs_dealer_name=$aDvs.dealer_name}&url={$sShareCode}1" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" target="_blank" /></a>
+                        <a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aFirstVideo.year video_make=$aFirstVideo.make video_model=$aFirstVideo.model dvs_dealer_name=$aDvs.dealer_name}&url={$sShareCode}1" id="twitter_share" target="_blank"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
                         </span>
                     </td>
                     {if Phpfox::isModule('redirect')}
