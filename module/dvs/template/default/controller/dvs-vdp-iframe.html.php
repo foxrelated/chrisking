@@ -407,7 +407,7 @@ color:#fff;
         {/if}
         <p id="video_warning_text" style="padding-top:10px;color:#{$aPlayer.player_text};font-size:{$iWarningTextFontSize}px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
     </section>
-    <section id="share_links">
+    <section id="share_links" style="margin-left:10px;margin-top:10px;">
             <input type="hidden" value="{$sNewParentUrl}" id="parent_url">
             <input type="hidden" value="{$sVideoUrl}" id="video_url">
             <input type="hidden" value="{$sVideoHashCode}" id="video_hash_code">
@@ -432,7 +432,7 @@ color:#fff;
                     {/if}
                     <td style="vertical-align:middle;padding-left:2px;padding-right:2px;">
                         <span id="twitter_button_wrapper">
-                        <a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aFirstVideo.year video_make=$aFirstVideo.make video_model=$aFirstVideo.model dvs_dealer_name=$aDvs.dealer_name}&url={$sShareCode}1" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
+                        <a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aFirstVideo.year video_make=$aFirstVideo.make video_model=$aFirstVideo.model dvs_dealer_name=$aDvs.dealer_name}&url={$sShareCode}1" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" target="_blank" /></a>
                         </span>
                     </td>
                     {if Phpfox::isModule('redirect')}
