@@ -423,6 +423,7 @@ color:#fff;
                             <img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
                         </a>
                     </td>
+                   {*
                     {if Phpfox::isModule('redirect')}
                    <td style="vertical-align:middle;">
                         <a href="#" onclick="window.open('https://www.facebook.com/share.php?u=' + encodeURI('{url link='share'}' + $('#video_hash_code').val() + '{$sDvsHashCode}0'), 'Facebook Share', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
@@ -442,6 +443,7 @@ color:#fff;
                         </a>
                     </td>
                     {/if}
+                    *}
                 </tr>
             </table>
         </section>
