@@ -146,7 +146,7 @@ defined('PHPFOX') or exit('NO DICE!');
         <div class="clear"></div>
         {else}
         {*if $aPlayer.player_type != "2"*}
-        <section id="share_links">
+        <section id="share_links" style="margin-top:-40px;margin-right:5px;float:right;">
             <input type="hidden" value="{$sNewParentUrl}" id="parent_url">
             <input type="hidden" value="{$sVideoUrl}" id="video_url">
             <input type="hidden" value="{$sVideoHashCode}" id="video_hash_code">

@@ -209,7 +209,7 @@ color:#fff;
 </style>
 <![endif]-->
 <article>
-<p class="model_description player_instructions" style="margin-top:0;margin-bottom:5px;">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
+<p class="model_description player_instructions" style="margin-top:0;margin-bottom:5px;color:#{$aPlayer.player_text};">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
     <!--<section id="video_information">
         <h3 id="video_name">
             {$aDvs.phrase_overrides.override_video_name_display}
@@ -435,11 +435,11 @@ color:#fff;
                         </a>
                     </td>
                     {/if}
-                    <td style="vertical-align:middle;padding-left:2px;padding-right:2px;">
+                    {*<td style="vertical-align:middle;padding-left:2px;padding-right:2px;">
                         <span id="twitter_button_wrapper">
                         <a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aFirstVideo.year video_make=$aFirstVideo.make video_model=$aFirstVideo.model dvs_dealer_name=$aDvs.dealer_name}&url={$sShareCode}1" id="twitter_share"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
                         </span>
-                    </td>
+                    </td>*}
                     {if Phpfox::isModule('redirect')}
                     <td style="vertical-align:middle;">
                         <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURI('{url link='share'}' + $('#video_hash_code').val() + '{$sDvsHashCode}2')); googleShareClick('Share Links'); return false;">
