@@ -371,8 +371,7 @@ class Dvs_Component_Controller_View extends Phpfox_Component
                 'chapter_buttons.css' => 'module_dvs',
 
                 'dropdown.js' => 'module_dvs',
-                'jquery.placeholder.js' => 'module_dvs',
-                '<meta name = "robots" content = "noindex, follow">'
+                'jquery.placeholder.js' => 'module_dvs'
             ))
             ->assign(array(
                 'sVideoHashCode' => Phpfox::getService('dvs.share')->convertNumberToHashCode($aFirstVideo['ko_id'], 5),
