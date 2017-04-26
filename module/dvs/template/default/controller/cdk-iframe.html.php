@@ -61,7 +61,7 @@ defined('PHPFOX') or exit('NO DICE!');
                 </table>
             {/if}
         </section>
-        <!--<p class="model_description player_instructions">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>-->
+        <p class="model_description player_instructions" style="color:#{$aPlayer.player_text};margin:0;padding:0;">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
     </header>
     <article>
     
@@ -75,18 +75,6 @@ defined('PHPFOX') or exit('NO DICE!');
         {template file = 'dvs.controller.player.iframe-playerhtml5}
         </section>
         {/if}  
-        
-{*
-
-        {if $aDvs.iframe_contact_form}
-        <aside>
-            <div id="contact_box">
-                <h2>Contact {$aDvs.dealer_name}</h2>
-                {template file='dvs.block.contact-iframe}
-            </div>
-        </aside>
-        {/if}
-*} 
         <section id="dealer_links">
           <table>
           <tr>

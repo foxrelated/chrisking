@@ -151,7 +151,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         <input type="hidden" name="val[parent_url]" id="parent_url" value="{$sParentUrl}" />
     </fieldset>
     <fieldset class="share_email_field">
-        <input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button"/>
+        <input type="submit" value="{phrase var='dvs.send'}" class="dvs_form_button" style="float:none;"/>
     </fieldset>
 </form>
 <div id="dvs_share_email_success" style="display:none;">
