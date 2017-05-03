@@ -61,7 +61,7 @@ defined('PHPFOX') or exit('NO DICE!');
                 </table>
             {/if}
         </section>
-        <p class="model_description player_instructions">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
+        <p class="model_description player_instructions" style="margin:0;padding:2px;">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
     </header>
     <article>
     
@@ -75,18 +75,6 @@ defined('PHPFOX') or exit('NO DICE!');
         {template file = 'dvs.controller.player.iframe-playerhtml5}
         </section>
         {/if}  
-        
-{*
-
-        {if $aDvs.iframe_contact_form}
-        <aside>
-            <div id="contact_box">
-                <h2>Contact {$aDvs.dealer_name}</h2>
-                {template file='dvs.block.contact-iframe}
-            </div>
-        </aside>
-        {/if}
-*} 
         <section id="dealer_links">
           <table>
           <tr>
@@ -108,45 +96,8 @@ defined('PHPFOX') or exit('NO DICE!');
           </tr>
           </table>
         </section>
-{*
-        <section id="video_information">
-            <h3 id="video_name" itemprop="name">
-                <a id="current_video_link" href="{$sOverrideLink}" onclick="return false;" itemprop="url" target="_parent">
-                    {$aDvs.phrase_overrides.override_video_name_display}
-                </a>
-            </h3>
-            <p class="model_description" id="car_description" itemprop="description">{$aDvs.phrase_overrides.override_video_description_display}</p>
-        </section>
-*}        
-        {if Phpfox::isUser()}
-        <section id="dealer_links">
-            <table style="border-top:1px solid #ccc;">
-                <tr><td colspan="4">&nbsp;</td></tr>
-                <tr>
-                    <td>
-                        <p><b>Dealer-Only Links:</b>&nbsp;</p>
-                    </td>
-                    <td>
-                        <a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}share" onclick="" rel="nofollow" target="_blank" style="font-size:16px;">
-                        {phrase var='dvs.dealer_share_links'}
-                        </a>
-                    </td>
-                    <td>&nbsp;</td>
-                    <td>
-                        {if Phpfox::getUserId() == $aDvs.user_id || Phpfox::isAdmin()}
-                        <a href="{url link='dvs.salesteam' id=$aDvs.dvs_id}" onclick="" rel="nofollow" target="_blank"  style="font-size:16px;">
-                        {phrase var='dvs.manage_sales_team'}
-                        </a>
-                        {/if}
-                    </td>
-                </tr>
-                <tr><td colspan="4"><p><i>*Dealer-Only Links (and this message) are not seen by the public. You are seeing this because you are logged into the DVS backend at http://www.wtvdvs.com</i></p></td></tr>
-            </table>
-        </section>
-        <div class="clear"></div>
-        {else}
-        {if $aPlayer.player_type != "2"}
-        <section id="share_links">
+       
+        <section id="share_links" style="margin-top:-40px;margin-right:5px;float:right;">
             <input type="hidden" value="{$sNewParentUrl}" id="parent_url">
             <input type="hidden" value="{$sVideoUrl}" id="video_url">
             <input type="hidden" value="{$sVideoHashCode}" id="video_hash_code">
@@ -184,8 +135,6 @@ defined('PHPFOX') or exit('NO DICE!');
                 </tr>
             </table>
         </section>
-        {/if}
-        {/if}
         
     </article>
     <div class="clear"></div>

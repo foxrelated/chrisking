@@ -1,4 +1,3 @@
-
 <style type="text/css">
 #player {l}
 padding:3px 10px 5px 12px !important;
@@ -210,12 +209,7 @@ color:#fff;
 </style>
 <![endif]-->
 <article>
-<p class="model_description player_instructions" style="margin-top:0;margin-bottom:5px;">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
-    <!--<section id="video_information">
-        <h3 id="video_name">
-            {$aDvs.phrase_overrides.override_video_name_display}
-        </h3>
-    </section>-->
+<p class="model_description player_instructions" style="margin-top:0;margin-bottom:5px;color:#{$aPlayer.player_text};">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
     <section id="player">
         {if !empty($sJavascript)}{$sJavascript}{/if}
         <script type="text/javascript">
@@ -413,6 +407,46 @@ color:#fff;
         {/if}
         <p id="video_warning_text" style="padding-top:10px;color:#{$aPlayer.player_text};font-size:{$iWarningTextFontSize}px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
     </section>
+    <section id="share_links" style="margin-left:10px;margin-top:10px;">
+            <input type="hidden" value="{$sNewParentUrl}" id="parent_url">
+            <input type="hidden" value="{$sVideoUrl}" id="video_url">
+            <input type="hidden" value="{$sVideoHashCode}" id="video_hash_code">
+            <input type="hidden" value="{phrase var='dvs.twitter_default_share_text' video_year=$aDvs.featured_year video_make=$aDvs.featured_make video_model=$aDvs.featured_model dvs_dealer_name=$aDvs.dealer_name}" id="share_title">
+            <input type="hidden" value="{$sVideoThumb}" id="video_thumbnail">
+            <table cellpadding="4" cellspacing="4" border="0">
+                <tr>
+                    <td style="vertical-align:middle;">
+                    <p style="font-size:14px;color:#{$aPlayer.player_text};"><b>Share This:</b>&nbsp;</p>
+                    </td>
+                    <td style="vertical-align:middle;">
+                        <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailFormIframe', 'height=400&amp;width=360&amp;sParentUrl=' + encodeURIComponent($('#parent_url').val().replace('WTVDVS_VIDEO_TEMP', $('#video_url').val())) + '&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));  showEmailShare(); return false;">
+                            <img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
+                        </a>
+                    </td>
+                   {*
+                    {if Phpfox::isModule('redirect')}
+                   <td style="vertical-align:middle;">
+                        <a href="#" onclick="window.open('https://www.facebook.com/share.php?u=' + encodeURI('{url link='share'}' + $('#video_hash_code').val() + '{$sDvsHashCode}0'), 'Facebook Share', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
+                            <img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
+                        </a>
+                    </td>
+                    {/if}
+                    <td style="vertical-align:middle;padding-left:2px;padding-right:2px;">
+                        <span id="twitter_button_wrapper">
+                        <a href="https://twitter.com/intent/tweet?text={phrase var='dvs.twitter_default_share_text' video_year=$aFirstVideo.year video_make=$aFirstVideo.make video_model=$aFirstVideo.model dvs_dealer_name=$aDvs.dealer_name}&url={$sShareCode}1" id="twitter_share" target="_blank"><img src="{$sImagePath}twitter-button.png" alt="Tweet" /></a>
+                        </span>
+                    </td>
+                    {if Phpfox::isModule('redirect')}
+                    <td style="vertical-align:middle;">
+                        <a href="#" onclick="window.open('https://plus.google.com/share?url=' + encodeURI('{url link='share'}' + $('#video_hash_code').val() + '{$sDvsHashCode}2')); googleShareClick('Share Links'); return false;">
+                            <img src="{$sImagePath}google-share.png" alt="Google+" title="Google+"/>
+                        </a>
+                    </td>
+                    {/if}
+                    *}
+                </tr>
+            </table>
+        </section>
 </article>
 <script src="//players.brightcove.net/607012070001/default_default/index.min.js"></script> 
 <script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.min.js"></script>
