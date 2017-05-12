@@ -980,11 +980,11 @@ class Phpfox_Template
 	 * @return object Returns self.
 	 */
 	public function setMeta($mMeta, $sValue = null)
-	{
+	{             
 		if (!is_array($mMeta))
-		{
-			$mMeta = array($mMeta => $sValue);
-		}
+		{      
+			$mMeta = array($mMeta => $sValue);   
+		}        
 
 		// http://www.phpfox.com/tracker/view/14577/
 		if(isset($mMeta['keywords']))

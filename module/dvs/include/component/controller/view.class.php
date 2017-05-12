@@ -345,6 +345,23 @@ class Dvs_Component_Controller_View extends Phpfox_Component
             $jsFile = 'playerhtml5.js';
 //            $jsFile = 'test.js';
         }
+                        if (($aDvs['seo_index'] == 0 )&&($aDvs['seo_follow'] == 0 ) )
+                        {
+                            $this->template()->setMeta('robots', 'noindex,nofollow'); 
+                        }
+                        elseif (($aDvs['seo_index'] == 0 )&&($aDvs['seo_follow'] == 1 ) )
+                        {
+                              $this->template()->setMeta('robots', 'noindex,follow'); 
+                        }
+                         elseif (($aDvs['seo_index'] == 1 )&&($aDvs['seo_follow'] == 0 ) )
+                        {
+                              $this->template()->setMeta('robots', 'index,nofollow'); 
+                        }
+                         elseif (($aDvs['seo_index'] == 1 )&&($aDvs['seo_follow'] == 1 ) )
+                        {
+                              $this->template()->setMeta('robots', 'index,follow'); 
+                        }
+    
         $aVideo['image_path'] = str_replace('%s','',$aVideo['image_path']);
         $this->template()
             ->setTemplate('dvs-view')

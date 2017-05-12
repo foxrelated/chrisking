@@ -97,6 +97,8 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['modal_player'] = $this->preParse()->clean($aDvs['modal_player'], 1);
             $aSql['new_car_videos'] = $this->preParse()->clean($aDvs['new_car_videos'], 1);
             $aSql['used_car_videos'] = $this->preParse()->clean($aDvs['used_car_videos'], 1);
+             $aSql['seo_index'] = $this->preParse()->clean($aDvs['seo_index'], 1);
+            $aSql['seo_follow'] = $this->preParse()->clean($aDvs['seo_follow'], 1);
             $aSql['iframe_contact_form'] = $this->preParse()->clean($aDvs['iframe_contact_form'], 1);
             $aSql['vpd_popup'] = $this->preParse()->clean($aDvs['vpd_popup'], 1);
             $aSql['player_type'] = $this->preParse()->clean($aDvs['player_type'], 1);
@@ -189,6 +191,8 @@ class Dvs_Service_Process extends Phpfox_Service {
             $aSql['modal_player'] = $this->preParse()->clean($aDvs['modal_player'], 1);
             $aSql['new_car_videos'] = $this->preParse()->clean($aDvs['new_car_videos'], 1);
             $aSql['used_car_videos'] = $this->preParse()->clean($aDvs['used_car_videos'], 1);
+             $aSql['seo_index'] = $this->preParse()->clean($aDvs['seo_index'], 1);
+            $aSql['seo_follow'] = $this->preParse()->clean($aDvs['seo_follow'], 1);
             $aSql['iframe_contact_form'] = $this->preParse()->clean($aDvs['iframe_contact_form'], 1);
             $aSql['vpd_popup'] = $this->preParse()->clean($aDvs['vpd_popup'], 1);
            // $aSql['player_type'] = $this->preParse()->clean($aDvs['player_type'], 1);

@@ -1141,7 +1141,7 @@ class Phpfox
 						'calendar' => 'jquery/calendar.gif'
 					)
 				);			
-				
+                                
 				$oTpl->setHeader(array(
 							'<meta http-equiv="Content-Type" content="text/html; charset=' . $aLocale['charset'] . '" />',
 							'<meta http-equiv="cache-control" content="no-cache" />',
@@ -1150,9 +1150,13 @@ class Phpfox
 							'<link rel="shortcut icon" type="image/x-icon" href="' . Phpfox::getParam('core.path') . 'favicon.ico?v=' . $oTpl->getStaticVersion() . '" />'						
 						)
 					)
-					->setMeta('keywords', Phpfox::getLib('locale')->convert(Phpfox::getParam('core.keywords')))
+					->setMeta('keywords', Phpfox::getLib('locale')->convert(Phpfox::getParam('core.keywords')));
 					// ->setMeta('description',  Phpfox::getLib('locale')->convert(Phpfox::getParam('core.description')))
-					->setMeta('robots', 'index,follow');
+                    if ( Phpfox::getLib('module')->getFullControllerName() != 'dvs.index'  || Phpfox::getLib('request')->get('req1') == "dvs" )
+                    {
+					$oTpl->setMeta('robots', 'index,follow');
+                    }
+                   
 				if (Phpfox::getParam('core.include_master_files') && Phpfox::isAdminPanel() != true)
 				{
 					$oTpl->setHeader('master', Phpfox::getMasterFiles());				

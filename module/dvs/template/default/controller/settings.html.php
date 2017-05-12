@@ -391,6 +391,23 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 <input type="radio" name="val[used_car_videos]" value="0" {if $bIsEdit && $aForms.used_car_videos == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
             </li>
         </ol>
+    </fieldset> 
+    
+    <h1>SEO Settings</h1>
+       <fieldset>                        
+        <ol>
+            <li>
+                <label for="new_car_videos">Index:</label>
+                <input type="radio" name="val[seo_index]" value="1" {if $bIsEdit && $aForms.seo_index == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />Index
+                <input type="radio" name="val[seo_index]" value="0" {if $bIsEdit && $aForms.seo_index == 0}checked="checked"{/if} />No Index
+            </li>
+
+            <li>
+                <label for="used_car_videos">Follow:</label>
+                <input type="radio" name="val[seo_follow]" value="1" {if $bIsEdit && $aForms.seo_follow == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />Follow
+                <input type="radio" name="val[seo_follow]" value="0" {if $bIsEdit && $aForms.seo_follow == 0}checked="checked"{/if} />No Follow
+            </li>
+        </ol>
     </fieldset>
     <h1>Email Lead Format</h1>
     <fieldset>
