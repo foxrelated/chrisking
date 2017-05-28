@@ -380,7 +380,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 			<li>
 				<label for="parent_video_url">VTD Page Video URL:</label>
-				<input type="text" maxlength="255" size="60" style="width:600px;" id="parent_video_url" name="val[parent_video_url]" value="{value type='input' id='parent_video_url'}"> <p><strong>Note: Make sure the VTD Page Video URL ends with <span style="color: #ff0000;">?video=WTVDVS_VIDEO_TEMP</span> (for CDK Next Gen: ?wtvVideo=WTVDVS_VIDEO_TEMP)</strong></p>
+				<input type="text" maxlength="255" size="60" style="width:600px;" id="parent_video_url" name="val[parent_video_url]" value="{value type='input' id='parent_video_url'}">
+				<p><strong>Note: VTD Page Video URL must end with:</strong><br/>
+				For All Websites: <span style="color: #ff0000;font-weight:bold;">?video=WTVDVS_VIDEO_TEMP</span><br/>
+				For CDK NextGen Websites: <span style="color: #ff0000;font-weight:bold;">?wtvVideo=WTVDVS_VIDEO_TEMP</span></p>
 			</li>
 			{*
 			{else}
