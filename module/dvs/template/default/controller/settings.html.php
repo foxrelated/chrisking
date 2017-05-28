@@ -326,7 +326,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			<li>
 				<label for="contactform_toggle">iFrame Contact Form:</label>
                 <input type="radio" name="val[iframe_contact_form]" value="1" {if $bIsEdit && $aForms.iframe_contact_form == 1}checked="checked"{/if} {if !$bIsEdit}checked="checked" {/if} />{phrase var='dvs.dvs_inventory_status_on'}
-                <input type="radio" name="val[iframe_contact_form]" value="0" {if $bIsEdit && $aForms.iframe_contact_form == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'} <p><strong>Note: The iFrame Contact Form must be set to <span style="color: #ff0000;">OFF</span> for all GM dealers (Buick, GMC, Cadillac Chevrolet).</strong></p>
+                <input type="radio" name="val[iframe_contact_form]" value="0" {if $bIsEdit && $aForms.iframe_contact_form == 0}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'} <p><strong>Note: The iFrame Contact Form must be set to <span style="color: #ff0000;">OFF</span> for all GM dealers (Buick, GMC, Cadillac, Chevrolet).</strong></p>
             </li>
             </ol>
 		</fieldset>
@@ -337,16 +337,42 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             <li>
                 
 				<label for="parenturl_toggle">Dealer's VTD Page: </label>
+                
+                {*
                 <input {if !isset($aForms.parent_url)}disabled="disabled"{/if} type="radio" name="val[sitemap_parent_url]" value="1" {if $bIsEdit && $aForms.sitemap_parent_url == 1 && isset($aForms.parent_url)}checked="checked"{/if}/>{phrase var='dvs.dvs_inventory_status_on'}
                 <input type="radio" name="val[sitemap_parent_url]" value="0" {if !$bIsEdit || !isset($aForms.parent_url) || ($bIsEdit && $aForms.sitemap_parent_url == 0)}checked="checked"{/if} />{phrase var='dvs.dvs_inventory_status_off'}
+                
                 {if !isset($aForms.parent_url)}
+                
                 <span style="background: #FF0000; color: #FFFFFF; padding:10px; font-size: 14px;">Alert! The DVS Embed code was not detected on the dealer's website.</span>
+                
                 {else}
+                
                 <span style="margin-left:20px;background: #00FF00; color: #000000; padding:5px; font-size: 14px;">Success! VTD page found at <a href="{$aForms.parent_url}"><b>{$aForms.parent_url}</b></a></span>
+                
                 {/if}
+                *}
+                
+            	<input type="radio" name="val[sitemap_parent_url]" value="1" {if $bIsEdit && $aForms.sitemap_parent_url == 1 && isset($aForms.parent_url)}checked="checked"{/if}/>
+            	{phrase var='dvs.dvs_inventory_status_on'}
+                <input type="radio" name="val[sitemap_parent_url]" value="0" {if !$bIsEdit || !isset($aForms.parent_url) || ($bIsEdit && $aForms.sitemap_parent_url == 0)}checked="checked"{/if}/>
+                {phrase var='dvs.dvs_inventory_status_off'}
+                
+                {if !isset($aForms.parent_url)}
+                
+                <span style="background: #FF0000; color: #FFFFFF; padding:10px; font-size: 14px;">Alert! The DVS Embed code was not detected on the dealer's website.</span>
+                
+                {else}
+                
+                <span style="margin-left:20px;background: #00FF00; color: #000000; padding:5px; font-size: 14px;">Success! VTD page found at <a href="{$aForms.parent_url}"><b>{$aForms.parent_url}</b></a></span>
+                
+                {/if}
+            
+            
             </li>
-
+			{*
 			{if isset($aForms.parent_url)}
+			*}
 			<li>
 				<label for="parent_url">VTD Page URL:</label>
 				<input type="text" maxlength="255" size="60" style="width:600px;" id="parent_url" name="val[parent_url]" value="{value type='input' id='parent_url'}">
@@ -354,10 +380,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 			<li>
 				<label for="parent_video_url">VTD Page Video URL:</label>
-				<input type="text" maxlength="255" size="60" style="width:600px;" id="parent_video_url" name="val[parent_video_url]" value="{value type='input' id='parent_video_url'}"> <p><strong>Note: Make sure the VTD Page Video URL ends with <span style="color: #ff0000;">?video=WTVDVS_VIDEO_TEMP</span></strong></p>
+				<input type="text" maxlength="255" size="60" style="width:600px;" id="parent_video_url" name="val[parent_video_url]" value="{value type='input' id='parent_video_url'}"> <p><strong>Note: Make sure the VTD Page Video URL ends with <span style="color: #ff0000;">?video=WTVDVS_VIDEO_TEMP</span> (for CDK Next Gen: ?wtvVideo=WTVDVS_VIDEO_TEMP)</strong></p>
 			</li>
+			{*
 			{else}
 			{/if}
+            *}
             <li>
                 <label for="modal_player">Enable modal player window: </label>
                 <input type="radio" name="val[modal_player]" value="1" {if $bIsEdit && isset($aForms.modal_player) && $aForms.modal_player == 1}checked="checked"{/if}/>{phrase var='dvs.dvs_inventory_status_on'}
