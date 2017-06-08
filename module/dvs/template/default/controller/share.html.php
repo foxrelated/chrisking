@@ -65,7 +65,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 		{assign var='baseUrl' value=''}
         {if $baseUrl = Phpfox::getParam('core.path')}{/if}
-		<script type="text/javascript" src="{$baseUrl}module/dvs/static/jscript/clipboard/ZeroClipboard.js"></script>
+        <script type="text/javascript" src="{$baseUrl}module/dvs/static/jscript/clipboard/ZeroClipboard.js"></script>
+<!--        <script type="text/javascript" src="{$baseUrl}module/dvs/static/jscript/clipboard.min.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.10/clipboard.min.js"></script>
+<!--		<script type="text/javascript" src="{$baseUrl}module/dvs/static/jscript/clipboard-action.js"></script>-->
 
         <div id="video_items">
             {module name='dvs.share-video' aShareVideos=$aDvsVideos aDvs=$aDvs}
