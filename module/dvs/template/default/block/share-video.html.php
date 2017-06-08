@@ -25,21 +25,21 @@
                 </td>
             </tr>
             </table>
-            <table>
+            <table style="width:100%;">
             <tr>
-                <td>
+                <td style="text-align:center;">
                     <div class="dvs_share_buttons_holder">
                         <!-- text button -->
                         <span>
                         <a href="#" onclick="tb_show('Text to a Friend', $.ajaxBox('dvs.textForm', 'height=400&amp;width=360&amp;iDvsId={$aDvs.dvs_id}&amp;&dvs_title={$aDvs.title_url}&amp;sRefId={$aVideo.referenceId}&amp;bSaveGa=2')); return false;">
-                            <img src="{$baseUrl}module/dvs/static/image/text-medium.png" height="40px" alt="Share via Text"/>
+                            <img src="{$baseUrl}module/dvs/static/image/text-medium.png" height="40px" alt="Share via Text" border="0"/>
                         </a>
                         </span>
                         
                         <!-- email button -->
                         <span>
                         <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;iDvsId={$aDvs.dvs_id}&amp;&dvs_title={$aDvs.title_url}&amp;sRefId={$aVideo.referenceId}&amp;bSaveGa=2')); return false;">
-                            <img src="{$baseUrl}module/dvs/static/image/email-medium.png" height="40px" alt="Share Via Email"/>
+                            <img src="{$baseUrl}module/dvs/static/image/email-medium.png" height="40px" alt="Share Via Email" border="0"/>
                         </a>
                         </span>
                         
@@ -53,7 +53,7 @@
                         {/if}
 
                         return false;">
-                            <img src="{$baseUrl}module/dvs/static/image/facebook-medium.png" height="40px" alt="Share to Facebook"/>
+                            <img src="{$baseUrl}module/dvs/static/image/facebook-medium.png" height="40px" alt="Share to Facebook" border="0"/>
                         </a>
                         </span>
                         
@@ -67,7 +67,7 @@
                                 window.open( 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent('{url link='share.'$aVideo.share_hash_code'1'}'), '', 'width=600,height=400' );
                             {/if}
                             return false;">
-                                <img src="{$baseUrl}module/dvs/static/image/twitter-medium.png" height="40px" alt="Tweet" />
+                                <img src="{$baseUrl}module/dvs/static/image/twitter-medium.png" height="40px" alt="Tweet" border="0"/>
                             </a>
                         </span>
                         
@@ -80,15 +80,17 @@
                             window.open( 'https://plus.google.com/share?url=' + encodeURIComponent('{url link='share.'$aVideo.share_hash_code'2'}'), '', 'width=600,height=400' );
                         {/if}
                         return false;">
-                            <img src="{$baseUrl}module/dvs/static/image/google-medium.png" height="40px" alt="Google+" title="Google+" />
+                            <img src="{$baseUrl}module/dvs/static/image/google-medium.png" height="40px" alt="Google+" title="Google+" border="0"/>
                         </a>
                         </span>
                     </div>
                 </td>
             </tr>
+            </table>
+            <table>
             <!-- CRM code -->
             <tr><td>
-                    <span style="font-size:10px;">CRM Video Email Template Code</a>
+                    CRM Email Code
                     <input class="dvs_share_text_box" type="text" id="link_code4_{$iKey}" value='<div style="text-align: center;"><a href="{url link='share.'$aVideo.share_hash_code'8'}"> {if $aDvs.branding_file_name}{img title=$aDvs.dvs_name path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name suffix=_600}{else}<h1>{$aDvs.dealer_name}</h1>{/if}</a></div><img src="http://www.google-analytics.com/collect?v=1&tid={$globalDvsId}&cid={$aDvs.dvs_id}&cn=DVS Share Links&cs={$aDvs.dealer_name} DVS&cm=CRM Video Email Open&cc={$aVideo.name}&t=event&ec={'{'}{$aDvs.title_url\}}: CRM Video Email&ea=Share Links&el=CRM Video Email Open"><div align="center"><div style="position:relative;width:500px;overflow:hidden;text-align:center;"><h2 style="text-align:center;"><a href="{url link='share.'$aVideo.share_hash_code'8'}">{$aVideo.name}</a></h2><div style="height:281px;left:0;top:0;width:500px;"><a href="{url link='share.'$aVideo.share_hash_code'8'}">{img server_id=$aVideo.image_server_id path='brightcove.url_image' file=$aVideo.image_path suffix='_email_500' title=$aVideo.name height="281" width="500"}</a></div></div></div><p align="center"><span style="font-family: Arial;">Hi ~First Name~,</span><br style="font-family: Arial;" /><br style="font-family: Arial;" /><span style="font-family: Arial;">Thanks for your interest in the {$aVideo.year} {$aVideo.make} {$aVideo.model}! Please take this interactive Virtual Test Drive and then let us know when you would like to stop by the dealership for an in-person test drive.</span><br style="font-family: Arial;" /><br style="font-family: Arial;" /><span style="font-family: Arial;">Talk soon!</span><br style="font-family: Arial;" /><span style="font-family: Arial;">~Sales Person~</span><br style="font-family: Arial;" /><span style="font-family: Arial;">~Dealer Phone~</span><br /></p>' />
                 </td>
                 <td>     
@@ -112,7 +114,7 @@
             <!-- thumbnail code -->
             <tr>
                 <td>
-                        Thumbnail HTML Embed Code
+                        Thumbnail Code
                         <input class="dvs_share_text_box" type="text" id="embed_code_{$iKey}" value='<div align="center"><div style="position:relative;width:500px;overflow:hidden;text-align:center;"><h2 style="text-align:center;"><a href="{url link='share.'$aVideo.share_hash_code'3'}">{$aVideo.name}</a></h2><div style="height:281px;left:0;top:0;width:500px;"><a href="{url link='share.'$aVideo.share_hash_code'3'}">{img server_id=$aVideo.image_server_id path="brightcove.url_image" file=$aVideo.image_path suffix="_email_500" max_width=500 max_height=281 title=$aVideo.name}</a></div></div></div>' />
                 </td>
                 <td>
@@ -130,7 +132,6 @@
                                   setTooltip('#copy_button1_{$iKey}','Failed!');
                                   hideTooltip('#copy_button1_{$iKey}');
                                 {r});
-                               console.log('Code copied.');  
                         </script>
                 </td></tr>
             <!-- direct link -->
@@ -158,7 +159,7 @@
                 </td>
                 </tr>
             <!-- QR code link -->    
-            <tr>
+            <!--<tr>
                 <td>
                 	QR Code Link
                 	<input class="dvs_share_text_box" type="text" id="link_code3_{$iKey}" value='{url link='share.'$aVideo.share_hash_code'5'}' />
@@ -181,7 +182,7 @@
 
                         </script>
                 </td>
-                </tr>                    
+                </tr>-->                  
         	
             </table>
             </td>
