@@ -172,6 +172,10 @@ class Dvs_Component_Controller_Share extends Phpfox_Component {
 				'share.css' => 'module_dvs',
                 'dropdown.js' => 'module_dvs',
                 'placeholders.jquery.min.js' => 'module_dvs',
+//                'clipboard.min.js' => 'module_dvs',
+                'clipboard-action.js' => 'module_dvs',
+                'tooltip.js' => 'module_dvs',
+                'tooltip.css' => 'module_dvs',
 			))
 			->assign(array(
 				'aDvs' => $aDvs,

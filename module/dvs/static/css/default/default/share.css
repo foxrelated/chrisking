@@ -101,6 +101,7 @@
 	text-transform: uppercase;
 	font-weight: bold;
 	border-radius: 4px;
+	cursor:pointer;
 }
 .dvs_share_image_holder {
 	position: relative;
