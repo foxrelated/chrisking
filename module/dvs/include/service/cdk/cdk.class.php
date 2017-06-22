@@ -47,7 +47,7 @@ class Dvs_Service_Cdk_Cdk extends Phpfox_Service {
 
         // Chapter Clicks
         $oChapterClickedRequest = $oGAService->makeRequest('ga:sessions', array(
-            'filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'};ga:eventLabel=~Chapter Clicked'
+            'filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'};ga:eventLabel=~^Chapter Clicked'
         ), $sDateFrom);
         $aChapterClickedData = (array)($oChapterClickedRequest->rows);
         $iChapterClicked = 0;
@@ -57,7 +57,7 @@ class Dvs_Service_Cdk_Cdk extends Phpfox_Service {
 
         // Chapter Watched
         $oChapterWatchedRequest = $oGAService->makeRequest('ga:sessions', array(
-            'filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'};ga:eventLabel=~Chapter Watched'
+            'filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'};ga:eventLabel=~^Chapter Watched'
         ), $sDateFrom);
         $aChapterWatchedData = (array)($oChapterWatchedRequest->rows);
         $iChapterWatched = 0;
