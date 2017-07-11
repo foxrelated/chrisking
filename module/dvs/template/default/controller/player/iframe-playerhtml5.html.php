@@ -113,17 +113,9 @@ color:#666 !important;
  font-size:17px;
  margin-top:5px;
 {r}    
-    
-     
 #overview_playlist {l}
 height: 110px !important;
-{*width: 800px !important;*}
-{r} 
-
-{* #overview_playlist ul {l}
-width: 800px !important;
-{r} *}
-          
+{r}        
 #overview_playlist ul li img {l}
 width: 149px !important;
 {r}    
