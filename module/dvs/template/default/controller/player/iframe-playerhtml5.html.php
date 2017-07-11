@@ -117,12 +117,12 @@ color:#666 !important;
      
 #overview_playlist {l}
 height: 110px !important;
-width: 800px !important;
+{*width: 800px !important;*}
 {r} 
 
-#overview_playlist ul {l}
+{* #overview_playlist ul {l}
 width: 800px !important;
-{r} 
+{r} *}
           
 #overview_playlist ul li img {l}
 width: 149px !important;
