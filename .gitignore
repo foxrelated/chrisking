@@ -3,6 +3,7 @@
 /.htaccess
 /include/setting/dev.sett.php
 /include/setting/server.sett.php
+/include/setting/common.sett.php
 .project
 include/setting/1dev.sett.php
 module/dvs/static/jscript/vin2-bak.js
