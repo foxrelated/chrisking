@@ -209,6 +209,7 @@ a:hover
 #chapter_buttons 
 {
 	display:inline-block;
+	min-width:140px;
 }
 
 /*** flit77 changes PhpFoxer 25.04.2014 ****************************/
