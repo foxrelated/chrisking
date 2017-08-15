@@ -63,6 +63,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             $('#color_picker_vin_top_gradient').ColorPickerSetColor('#{$aForms.vin_top_gradient}');
             $('#color_picker_vin_bottom_gradient').ColorPickerSetColor('#{$aForms.vin_bottom_gradient}');
             $('#color_picker_vin_text_color').ColorPickerSetColor('#{$aForms.vin_text_color}');
+            $('#color_picker_vin_text_color').ColorPickerSetColor('#{$aForms.vin_text_color}');
+            
+            $('#color_picker_player_background').ColorPickerSetColor('#{$aFormss.player_background}');
+            $('#color_picker_player_text').ColorPickerSetColor('#{$aFormss.player_text}');
+            $('#color_picker_player_buttons').ColorPickerSetColor('#{$aFormss.player_buttons}');
+            $('#color_picker_player_progress_bar').ColorPickerSetColor('#{$aFormss.player_progress_bar}');
+            $('#color_picker_player_button_icons').ColorPickerSetColor('#{$aFormss.player_button_icons}');
+            $('#color_picker_playlist_arrows').ColorPickerSetColor('#{$aFormss.playlist_arrows}');
+            $('#color_picker_playlist_border').ColorPickerSetColor('#{$aFormss.playlist_border}');
 			{r}
 	{else}
 		$Behavior.colorPicker = function() {l}
@@ -84,6 +93,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             $('#color_picker_vin_top_gradient').ColorPickerSetColor('#A764C5');
             $('#color_picker_vin_bottom_gradient').ColorPickerSetColor('#451656');
             $('#color_picker_vin_text_color').ColorPickerSetColor('#451656');
+            $('#color_picker_player_background').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_player_text').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_player_buttons').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_player_progress_bar').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_player_button_icons').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_playlist_arrows').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_playlist_border').ColorPickerSetColor('#{$sDefaultColor}');
 		{r}
 	{/if}
 </script>
@@ -281,6 +297,34 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		margin-right:10px;
 	{r}
 
+    /*Custom Css*/
+    #add_dvs_customize legend{l}
+        color: #333;
+    font-size: 14px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    {r}
+    #add_dvs_customize ol li{l}
+/*            background: #999999;*/
+    background: rgba(194,194,194,.1);
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+    line-height: 30px;
+    list-style: none;
+    padding: 5px 10px;
+    margin-bottom: 2px;
+    {r}
+    #add_dvs_customize fieldset{l}
+    border:none;
+    margin-bottom:10px;
+    {r}
+    #add_dvs_customize label {l}
+    float: left;
+    font-size: 13px;
+    width: 150px;
+    {r}
 </style>
 <form method="post" action="{url link='dvs.index'}" id="add_dvs_customize" name="add_dvs_customize">
 	<h3>Branding</h3>
@@ -633,6 +677,83 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     </table>
 
     <br>
+    <div {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
+    <h3>{phrase var='dvs.player_colors'}</h3>
+
+    <fieldset class="color_selectors">
+        <legend>{phrase var='dvs.player'}</legend>
+        <ol>
+            <li>
+                <label>{phrase var='dvs.background'}:</label>
+                <div id="color_picker_player_background" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aFormss.player_background}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <span>&nbsp;&nbsp;Set this to the dealership's primary color</span>
+                <input type="hidden" id="color_picker_player_background_input" name="val[player_background]" {if $bIsEdit}value="{$aFormss.player_background}"{else}value="{$sDefaultColor}"{/if}/>
+            </li>
+            <li>
+                <label>{phrase var='dvs.text'}:</label>
+                <div id="color_picker_player_text" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aFormss.player_text}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <span>&nbsp;&nbsp;Set this to white for dark primary colors, or set this to black for light primary colors.</span>
+                <input type="hidden" id="color_picker_player_text_input" name="val[player_text]"  {if $bIsEdit}value="{$aFormss.player_text}"{else}value="{$sDefaultColor}"{/if}/>
+            </li>
+        </ol>
+    </fieldset>
+
+    <fieldset>
+        <legend>{phrase var='dvs.player_controls'}</legend>
+        <ol>
+            <li>
+                <label>{phrase var='dvs.buttons'}:</label>
+                <div id="color_picker_player_buttons" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aFormss.player_buttons}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <span>&nbsp;&nbsp;Set this to black.</span>
+                <input type="hidden" id="color_picker_player_buttons_input" name="val[player_buttons]" {if $bIsEdit}value="{$aFormss.player_buttons}"{else}value="{$sDefaultColor}"{/if}/>
+            </li>
+            <li>
+                <label>{phrase var='dvs.button_icons'}:</label>
+                <div id="color_picker_player_button_icons" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aFormss.player_button_icons}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <span>&nbsp;&nbsp;Set this to white.</span>
+                <input type="hidden" id="color_picker_player_button_icons_input" name="val[player_button_icons]" {if $bIsEdit}value="{$aFormss.player_button_icons}"{else}value="{$sDefaultColor}"{/if}/>
+            </li>
+            <li>
+                <label>{phrase var='dvs.progress_bar'}:</label>
+                <div id="color_picker_player_progress_bar" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aFormss.player_progress_bar}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <span>&nbsp;&nbsp;Set this to same color as background.</span>
+                <input type="hidden" id="color_picker_player_progress_bar_input" name="val[player_progress_bar]" {if $bIsEdit}value="{$aFormss.player_progress_bar}"{else}value="{$sDefaultColor}"{/if}/>
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>{phrase var='dvs.thumbnail_playlist'}</legend>
+        <ol>
+            <li>
+                <label>{phrase var='dvs.prev_next_arrows'}:</label>
+                <div id="color_picker_playlist_arrows" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aFormss.playlist_arrows}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <span>&nbsp;&nbsp;Set this to white.</span>
+                <input type="hidden" id="color_picker_playlist_arrows_input" name="val[playlist_arrows]" {if $bIsEdit}value="{$aFormss.playlist_arrows}"{else}value="{$sDefaultColor}"{/if}/>
+            </li>
+            <li>
+                <label>{phrase var='dvs.thumbnail_border'}:</label>
+                <div id="color_picker_playlist_border" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aFormss.playlist_border}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <span>&nbsp;&nbsp;Set this to black.</span>
+                <input type="hidden" id="color_picker_playlist_border_input" name="val[playlist_border]" {if $bIsEdit}value="{$aFormss.playlist_border}"{else}value="{$sDefaultColor}"{/if}/>
+            </li>
+        </ol>
+    </fieldset>
+    </div>
+    <br>
     <h3>Virtual Test Drive Button</h3>
     <table>
         <tr class="tr_interactive">
@@ -736,7 +857,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     <br>
 	<input type="hidden" name="val[step]" value="customize" />
 	<input type="hidden" name="val[is_edit]" value="{if $bIsEdit && isset($aForms.dvs_id)}1{else}0{/if}" />
-	<input type="hidden" name="val[dvs_id]" value="{$iDvsId}" />
+    <input type="hidden" name="val[dvs_id]" value="{$iDvsId}" />
+    <input type="hidden" name="val[player_id]" value="{$iPlayerId}" />
 	<input type="button" value="{if $bIsEdit && isset($aForms.dvs_id)}{phrase var='dvs.save_changes'}{else}{phrase var='dvs.save_and_continue'}{/if}" class="button" onclick="$('#add_dvs_customize').submit();" />
 </form>
 

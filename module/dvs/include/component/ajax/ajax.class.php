@@ -1959,6 +1959,29 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 			$this->call("$('.dvs_c2a_button:hover').css('background', '-moz-linear-gradient( center top, #" . $aTheme['theme_button_top_gradient'] . " 5%, #" . $aTheme['theme_button_bottom_gradient'] . " 100% )');");
 			$this->call("$('.dvs_c2a_button:hover').css('filter', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=\"#" . $aTheme['theme_button_top_gradient'] . "\", endColorstr=\"#" . $aTheme['theme_button_bottom_gradient'] . "\")');");
 			$this->call("$('.dvs_c2a_button:hover').css('backgroundColor', '#" . $aTheme['theme_button_bottom_gradient'] . "');");
+            
+            // Change Player buttons
+            
+            $this->call("$('#color_picker_player_background div').css('background', '#" . $aTheme['player_background'] . "');");
+            $this->call("$('#color_picker_player_background_input').val('" . $aTheme['player_background'] . "');");
+            
+            $this->call("$('#color_picker_player_text div').css('background', '#" . $aTheme['player_text'] . "');");
+            $this->call("$('#color_picker_player_text_input').val('" . $aTheme['player_text'] . "');");
+            
+            $this->call("$('#color_picker_player_buttons div').css('background', '#" . $aTheme['player_buttons'] . "');");
+            $this->call("$('#color_picker_player_buttons_input').val('" . $aTheme['player_buttons'] . "');");
+            
+            $this->call("$('#color_picker_player_button_icons div').css('background', '#" . $aTheme['player_icons'] . "');");
+            $this->call("$('#color_picker_player_button_icons_input').val('" . $aTheme['player_icons'] . "');");
+            
+            $this->call("$('#color_picker_player_progress_bar div').css('background', '#" . $aTheme['player_progress_bar'] . "');");
+            $this->call("$('#color_picker_player_progress_bar_input').val('" . $aTheme['player_progress_bar'] . "');");
+            
+            $this->call("$('#color_picker_playlist_arrows div').css('background', '#" . $aTheme['player_arrows'] . "');");
+            $this->call("$('#color_picker_playlist_arrows_input').val('" . $aTheme['player_arrows'] . "');");
+            
+            $this->call("$('#color_picker_playlist_border div').css('background', '#" . $aTheme['player_thumbnail_border'] . "');");
+            $this->call("$('#color_picker_playlist_border_input').val('" . $aTheme['player_thumbnail_border'] . "');");
 		}
 	}
 

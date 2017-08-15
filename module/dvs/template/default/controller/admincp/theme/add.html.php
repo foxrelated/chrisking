@@ -27,6 +27,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			$('#color_picker_button_border').ColorPickerSetColor('#{$aForms.theme_button_border}');
 			$('#color_picker_text_link').ColorPickerSetColor('#{$aForms.theme_text_link}');
 			$('#color_picker_footer_link').ColorPickerSetColor('#{$aForms.theme_footer_link}');
+            $('#color_picker_player_background').ColorPickerSetColor('#{$aForms.player_background}');
+            //$('#color_picker_player_text').ColorPickerSetColor('#{$aForms.player_text}');
+//            $('#color_picker_player_buttons').ColorPickerSetColor('#{$aForms.player_buttons}');
+//            $('#color_picker_player_icons').ColorPickerSetColor('#{$aForms.player_icons}');
+//            $('#color_picker_player_progress_bar').ColorPickerSetColor('#{$aForms.player_progress_bar}');
+//            $('#color_picker_player_arrows').ColorPickerSetColor('#{$aForms.player_arrows}');
+//            $('#color_picker_player_thumbnail_border').ColorPickerSetColor('#{$aForms.player_thumbnail_border}');
 		{right_curly});
 	{else}
 		$(document).ready(function() {left_curly}
@@ -41,6 +48,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			$('#color_picker_button_border').ColorPickerSetColor('#{$sDefaultColor}');
 			$('#color_picker_text_link').ColorPickerSetColor('#{$sDefaultColor}');
 			$('#color_picker_footer_link').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_player_background').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_player_text').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_player_buttons').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_player_icons').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_player_progress_bar').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_player_arrows').ColorPickerSetColor('#{$sDefaultColor}');
+            $('#color_picker_player_thumbnail_border').ColorPickerSetColor('#{$sDefaultColor}');
+            
 		{right_curly});	
 	{/if}
 </script>
@@ -435,6 +450,97 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			
 		</tr>
 	</table>
+    
+<!--    <h3>{phrase var='dvs.button_styling'}</h3>-->
+   <h3>{phrase var='dvs.player_colors'}</h3>
+    <table>
+        <tr class="tr_interactive">
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.background'}:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_player_background" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aForms.player_background}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_player_background_input" name="val[player_background]" {if $bIsEdit}value="{$aForms.player_background}"{else}value="{$sDefaultColor}"{/if}/>
+            </td>
+
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.text'}:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_player_text" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aForms.player_text}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_player_text_input" name="val[player_text]" {if $bIsEdit}value="{$aForms.player_text}"{else}value="{$sDefaultColor}"{/if}/>
+            </td>
+        </tr> 
+     </table>
+     
+     <h3>{phrase var='dvs.player_controls'}</h3>
+     <table>
+         <tr class="tr_interactive"> 
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.buttons'}:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_player_buttons" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aForms.player_buttons}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_player_buttons_input" name="val[player_buttons]" {if $bIsEdit}value="{$aForms.player_buttons}"{else}value="{$sDefaultColor}"{/if}/>
+            </td>
+            
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.button_icons'}:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_player_button_icons" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aForms.player_icons}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_player_button_icons_input" name="val[player_button_icons]" 
+                {if $bIsEdit}value="{$aForms.player_icons}"{else}value="{$sDefaultColor}"{/if}/>
+            </td>
+            
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.progress_bar'}:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_player_progress_bar" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aForms.player_progress_bar}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_player_progress_bar_input" name="val[player_progress_bar]" {if $bIsEdit}value="{$aForms.player_progress_bar}"{else}value="{$sDefaultColor}"{/if}/>
+            </td>
+            
+            
+        </tr>
+      </table>
+      
+      <h3>{phrase var='dvs.thumbnail_playlist'}</h3>
+      <table>  
+        <tr class="tr_interactive">
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.prev_next_arrows'}:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_playlist_arrows" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aForms.player_arrows}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_playlist_arrows_input" name="val[player_thumbnail_arrows]" 
+                {if $bIsEdit}value="{$aForms.player_arrows}"{else}value="{$sDefaultColor}"{/if}/>
+            </td>
+            
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.thumbnail_border'}:
+            </td>
+            <td class="dvs_add_td">
+                <div id="color_picker_playlist_border" class="colorSelector">    
+                    <div style="background-color: #{if $bIsEdit}{$aForms.player_thumbnail_border}{else}{$sDefaultColor}{/if}"></div>
+                </div>
+                <input type="hidden" id="color_picker_playlist_border_input" name="val[player_thumbnail_border]" 
+                {if $bIsEdit}value="{$aForms.player_thumbnail_border}"{else}value="{$sDefaultColor}"{/if}/>
+            </td>
+        </tr>
+    </table>
 
 	<input type="hidden" name="val[theme_is_edit]" value="{if $bIsEdit && isset($aForms.theme_dvs_id)}1{else}0{/if}" />
 	<input type="hidden" name="val[theme_id]" value="{if $bIsEdit && isset($aForms.theme_id)}{$aForms.theme_id}{else}0{/if}" />
