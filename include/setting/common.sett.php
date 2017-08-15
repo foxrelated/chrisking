@@ -10,8 +10,8 @@
 
 defined('PHPFOX') or exit('NO DICE!');
 
-$_CONF['core.http'] = 'https://';
-$_CONF['core.https'] = 'http://';
+$_CONF['core.http'] = 'http://';
+$_CONF['core.https'] = 'https://';
 
 $_CONF['core.path'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 'https' : 'http') . '://' . $_CONF['core.host'] . $_CONF['core.folder'];
 
