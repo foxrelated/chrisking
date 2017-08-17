@@ -56,6 +56,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
       	{if $aDvs.branding_file_name}
 			<a href="{$aDvs.url}" target="_parent">
 			  {img path='core.url_file'
+                   server_id=$aDvs.branding_file_server_id
 				   file='dvs/branding/'.$aDvs.branding_file_name
 				   style="vertical-align:middle; max-width: 100% !important; height: auto !important;"
 				   max_width=1117}

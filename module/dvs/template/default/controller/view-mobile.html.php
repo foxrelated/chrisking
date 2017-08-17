@@ -16,7 +16,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <meta name="viewport" content="width=600, initial-scale=0.5, maximum-scale=1.0, user-scalable=0">
 <header>
 	{if $aDvs.branding_file_name}
-	<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}">{img path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle"}</a>
+	<a href="{if $bSubdomainMode}{url link=$aDvs.title_url}{else}{url link='dvs.'$aDvs.title_url}{/if}">{img server_id=$aDvs.branding_file_server_id path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle"}</a>
 	{else}
 	<h1>{$aDvs.dealer_name}</h1>
 	{/if}
