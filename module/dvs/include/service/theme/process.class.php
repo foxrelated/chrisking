@@ -41,7 +41,14 @@ class Dvs_Service_Theme_Process extends Phpfox_Service {
             'player_icons' => $this->preParse()->clean($aTheme['player_button_icons']),
             'player_progress_bar' => $this->preParse()->clean($aTheme['player_progress_bar']),
             'player_arrows' => $this->preParse()->clean($aTheme['player_thumbnail_arrows']),
-            'player_thumbnail_border' => $this->preParse()->clean($aTheme['player_thumbnail_border'])
+            'player_thumbnail_border' => $this->preParse()->clean($aTheme['player_thumbnail_border']),
+            'iframe_background' => $this->preParse()->clean($aTheme['iframe_background']),
+            'iframe_text' => $this->preParse()->clean($aTheme['iframe_text']),
+            'iframe_contact_background' => $this->preParse()->clean($aTheme['iframe_contact_background']),
+            'iframe_contact_text' => $this->preParse()->clean($aTheme['iframe_contact_text']),
+            'vin_top_gradient' => $this->preParse()->clean($aTheme['vin_top_gradient']),
+            'vin_bottom_gradient' => $this->preParse()->clean($aTheme['vin_bottom_gradient']),
+            'vin_text_color' => $this->preParse()->clean($aTheme['vin_text_color'])
 		));
 	}
 
@@ -67,7 +74,14 @@ class Dvs_Service_Theme_Process extends Phpfox_Service {
             'player_icons' => $this->preParse()->clean($aTheme['player_button_icons']),
             'player_progress_bar' => $this->preParse()->clean($aTheme['player_progress_bar']),
             'player_arrows' => $this->preParse()->clean($aTheme['player_thumbnail_arrows']),
-            'player_thumbnail_border' => $this->preParse()->clean($aTheme['player_thumbnail_border'])
+            'player_thumbnail_border' => $this->preParse()->clean($aTheme['player_thumbnail_border']),
+            'iframe_background' => $this->preParse()->clean($aTheme['iframe_background']),
+            'iframe_text' => $this->preParse()->clean($aTheme['iframe_text']),
+            'iframe_contact_background' => $this->preParse()->clean($aTheme['iframe_contact_background']),
+            'iframe_contact_text' => $this->preParse()->clean($aTheme['iframe_contact_text']),
+            'vin_top_gradient' => $this->preParse()->clean($aTheme['vin_top_gradient']),
+            'vin_bottom_gradient' => $this->preParse()->clean($aTheme['vin_bottom_gradient']),
+            'vin_text_color' => $this->preParse()->clean($aTheme['vin_text_color'])
 				), 'theme_id = ' . (int) $aTheme['theme_id']);
 	}
 

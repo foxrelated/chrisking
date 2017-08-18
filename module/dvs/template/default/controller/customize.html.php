@@ -463,7 +463,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </tr>
     </table>
 
-	<table>
+	<table style="margin-top:30px">
 		<tr>
 			<td class="dvs_add_td_label">
 				{phrase var='dvs.menu_background'}:
@@ -474,7 +474,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</div>
 				<input type="hidden" id="color_picker_menu_background_input" name="val[menu_background]" {if $bIsEdit}value="{$aForms.menu_background}"{else}value="{$sDefaultColor}"{/if}/>
 			</td>
-			<td rowspan="6" style="vertical-align:middle;">
+			<!--<td rowspan="6" style="vertical-align:middle;">
 				<div id="preview_wrapper">
 				<h1 align="center">Live Preview</h1>
 					<div id="preview_container">
@@ -511,10 +511,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 						</div>
 					</div>
 				</div>	
-			</td>
-		</tr>
+			</td>-->
+		<!--</tr>
 		
-		<tr>
+		<tr>-->
 			<td class="dvs_add_td_label">
 				{phrase var='dvs.top_menu_link'}:
 			</td>
@@ -524,9 +524,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</div>
 				<input type="hidden" id="color_picker_menu_link_input" name="val[menu_link]" {if $bIsEdit}value="{$aForms.menu_link}"{else}value="{$sDefaultColor}"{/if}/>
 			</td>
-		</tr>
+		<!--</tr>
 
-		<tr class="tr_interactive">
+		<tr class="tr_interactive">-->
 			<td class="dvs_add_td_label">
 				{phrase var='dvs.page_background'}:
 			</td>
@@ -536,9 +536,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</div>
 				<input type="hidden" id="color_picker_page_background_input" name="val[page_background]" {if $bIsEdit}value="{$aForms.page_background}"{else}value="{$sDefaultColor}"{/if}/>
 			</td>
-		</tr>
+		<!--</tr>
 		
-		<tr>
+		<tr>-->
 			<td class="dvs_add_td_label">
 				{phrase var='dvs.page_text'}:
 			</td>
@@ -548,9 +548,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</div>
 				<input type="hidden" id="color_picker_page_text_input" name="val[page_text]" {if $bIsEdit}value="{$aForms.page_text}"{else}value="{$sDefaultColor}"{/if}/>
 			</td>
-		</tr>
+		<!--</tr>
 		
-		<tr>
+		<tr>-->
 			<td class="dvs_add_td_label">
 				{phrase var='dvs.text_link'}:
 			</td>
@@ -560,9 +560,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				</div>
 				<input type="hidden" id="color_picker_text_link_input" name="val[text_link]" {if $bIsEdit}value="{$aForms.text_link}"{else}value="{$sDefaultColor}"{/if}/>
 			</td>
-		</tr>
+		<!--</tr>
 		
-		<tr>
+		<tr>-->
 			<td class="dvs_add_td_label">
 				{phrase var='dvs.footer_link'}:
 			</td>

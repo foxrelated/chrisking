@@ -1982,6 +1982,29 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
             
             $this->call("$('#color_picker_playlist_border div').css('background', '#" . $aTheme['player_thumbnail_border'] . "');");
             $this->call("$('#color_picker_playlist_border_input').val('" . $aTheme['player_thumbnail_border'] . "');");
+            
+            // Change VTD and iframe
+            
+             $this->call("$('#color_picker_iframe_background div').css('background', '#" . $aTheme['iframe_background'] . "');");
+            $this->call("$('#color_picker_iframe_background_input').val('" . $aTheme['iframe_background'] . "');");
+            
+            $this->call("$('#color_picker_iframe_text div').css('background', '#" . $aTheme['iframe_text'] . "');");
+            $this->call("$('#color_picker_iframe_text_input').val('" . $aTheme['iframe_text'] . "');");
+            
+            $this->call("$('#color_picker_iframe_contact_background div').css('background', '#" . $aTheme['iframe_contact_background'] . "');");
+            $this->call("$('#color_picker_iframe_contact_background_input').val('" . $aTheme['iframe_contact_background'] . "');");
+            
+            $this->call("$('#color_picker_iframe_contact_text div').css('background', '#" . $aTheme['iframe_contact_text'] . "');");
+            $this->call("$('#color_picker_iframe_contact_text_input').val('" . $aTheme['iframe_contact_text'] . "');");
+            
+            $this->call("$('#color_picker_vin_top_gradient div').css('background', '#" . $aTheme['vin_top_gradient'] . "');");
+            $this->call("$('#color_picker_vin_top_gradient_input').val('" . $aTheme['vin_top_gradient'] . "');");
+            
+            $this->call("$('#color_picker_vin_bottom_gradient div').css('background', '#" . $aTheme['vin_bottom_gradient'] . "');");
+            $this->call("$('#color_picker_vin_bottom_gradient_input').val('" . $aTheme['vin_bottom_gradient'] . "');");
+            
+            $this->call("$('#color_picker_vin_text_color div').css('background', '#" . $aTheme['vin_text_color'] . "');");
+            $this->call("$('#color_picker_vin_text_color_input').val('" . $aTheme['vin_text_color'] . "');");
 		}
 	}
 
