@@ -157,3 +157,10 @@ ALTER TABLE `phpfox_ko_dvs_background_files` ADD `background_file_server_id` TIN
 ALTER TABLE `phpfox_ko_dvs_branding_files` ADD `branding_file_server_id` TINYINT(3) UNSIGNED NOT NULL AFTER `branding_file_name`;
 ALTER TABLE `phpfox_ko_dvs_preroll_files` ADD `preroll_file_server_id` TINYINT(3) UNSIGNED NOT NULL AFTER `preroll_file_name`;
 ALTER TABLE `phpfox_ko_dvs_logo_files` ADD `logo_file_server_id` TINYINT(3) UNSIGNED NOT NULL AFTER `logo_file_name`;
+
+UPDATE `phpfox_ko_brightcove` SET `server_id`=1,`image_server_id`=1 WHERE 1;
+UPDATE `phpfox_tbd_dvs_vdp_files` SET `vdp_file_server_id`=1 WHERE 1;
+UPDATE `phpfox_ko_dvs_background_files` SET `background_file_server_id`=1 WHERE 1;
+UPDATE `phpfox_ko_dvs_branding_files` SET `branding_file_server_id`=1 WHERE 1;
+UPDATE `phpfox_ko_dvs_preroll_files` SET `preroll_file_server_id`=1 WHERE 1;
+UPDATE `phpfox_ko_dvs_logo_files` SET `logo_file_server_id`=1 WHERE 1;
