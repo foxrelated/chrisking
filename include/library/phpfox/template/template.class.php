@@ -1089,7 +1089,7 @@ class Phpfox_Template
 	public function getHeader($bReturnArray = false)
 	{
         if (Phpfox::getParam('core.amazon_bucket')) {
-            $sS3Url = 'http://s3.amazonaws.com/' . Phpfox::getParam('core.amazon_bucket') . '/';
+            $sS3Url = '//s3.amazonaws.com/' . Phpfox::getParam('core.amazon_bucket') . '/';
         } else {
             $sS3Url = Phpfox::getParam('core.path');
         }
