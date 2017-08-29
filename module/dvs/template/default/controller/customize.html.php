@@ -675,84 +675,84 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             </td>
         </tr>
     </table>
-
-    <br>
-    <div {if Phpfox::isAdmin()}{else}style="display:none;"{/if}>
-    <h3>{phrase var='dvs.player_colors'}</h3>
-
-    <fieldset class="color_selectors">
-        <legend>{phrase var='dvs.player'}</legend>
-        <ol>
-            <li>
-                <label>{phrase var='dvs.background'}:</label>
+	<br>
+	<h3>Player Styling</h3>
+    <table>
+        <tr class="tr_interactive">
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.background'}:
+            </td>
+            <td class="dvs_add_td">
                 <div id="color_picker_player_background" class="colorSelector">    
                     <div style="background-color: #{if $bIsEdit}{$aFormss.player_background}{else}{$sDefaultColor}{/if}"></div>
                 </div>
-                <span>&nbsp;&nbsp;Set this to the dealership's primary color</span>
                 <input type="hidden" id="color_picker_player_background_input" name="val[player_background]" {if $bIsEdit}value="{$aFormss.player_background}"{else}value="{$sDefaultColor}"{/if}/>
-            </li>
-            <li>
-                <label>{phrase var='dvs.text'}:</label>
+            </td>
+
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.text'}:
+            </td>
+            <td class="dvs_add_td">
                 <div id="color_picker_player_text" class="colorSelector">    
                     <div style="background-color: #{if $bIsEdit}{$aFormss.player_text}{else}{$sDefaultColor}{/if}"></div>
                 </div>
-                <span>&nbsp;&nbsp;Set this to white for dark primary colors, or set this to black for light primary colors.</span>
                 <input type="hidden" id="color_picker_player_text_input" name="val[player_text]"  {if $bIsEdit}value="{$aFormss.player_text}"{else}value="{$sDefaultColor}"{/if}/>
-            </li>
-        </ol>
-    </fieldset>
+            </td>
 
-    <fieldset>
-        <legend>{phrase var='dvs.player_controls'}</legend>
-        <ol>
-            <li>
-                <label>{phrase var='dvs.buttons'}:</label>
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.buttons'}:
+            </td>
+            <td class="dvs_add_td">
                 <div id="color_picker_player_buttons" class="colorSelector">    
                     <div style="background-color: #{if $bIsEdit}{$aFormss.player_buttons}{else}{$sDefaultColor}{/if}"></div>
                 </div>
-                <span>&nbsp;&nbsp;Set this to black.</span>
                 <input type="hidden" id="color_picker_player_buttons_input" name="val[player_buttons]" {if $bIsEdit}value="{$aFormss.player_buttons}"{else}value="{$sDefaultColor}"{/if}/>
-            </li>
-            <li>
-                <label>{phrase var='dvs.button_icons'}:</label>
+            </td>
+
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.button_icons'}:
+            </td>
+            <td class="dvs_add_td">
                 <div id="color_picker_player_button_icons" class="colorSelector">    
                     <div style="background-color: #{if $bIsEdit}{$aFormss.player_button_icons}{else}{$sDefaultColor}{/if}"></div>
                 </div>
-                <span>&nbsp;&nbsp;Set this to white.</span>
                 <input type="hidden" id="color_picker_player_button_icons_input" name="val[player_button_icons]" {if $bIsEdit}value="{$aFormss.player_button_icons}"{else}value="{$sDefaultColor}"{/if}/>
-            </li>
-            <li>
-                <label>{phrase var='dvs.progress_bar'}:</label>
+            </td>
+            </tr>
+            </table>
+            <table>
+            <tr class="tr_interactive">
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.progress_bar'}:
+            </td>
+            <td class="dvs_add_td">
                 <div id="color_picker_player_progress_bar" class="colorSelector">    
                     <div style="background-color: #{if $bIsEdit}{$aFormss.player_progress_bar}{else}{$sDefaultColor}{/if}"></div>
                 </div>
-                <span>&nbsp;&nbsp;Set this to same color as background.</span>
                 <input type="hidden" id="color_picker_player_progress_bar_input" name="val[player_progress_bar]" {if $bIsEdit}value="{$aFormss.player_progress_bar}"{else}value="{$sDefaultColor}"{/if}/>
-            </li>
-        </ol>
-    </fieldset>
-    <fieldset>
-        <legend>{phrase var='dvs.thumbnail_playlist'}</legend>
-        <ol>
-            <li>
-                <label>{phrase var='dvs.prev_next_arrows'}:</label>
+            </td>
+            
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.prev_next_arrows'}:
+            </td>
+            <td class="dvs_add_td">
                 <div id="color_picker_playlist_arrows" class="colorSelector">    
                     <div style="background-color: #{if $bIsEdit}{$aFormss.playlist_arrows}{else}{$sDefaultColor}{/if}"></div>
                 </div>
-                <span>&nbsp;&nbsp;Set this to white.</span>
                 <input type="hidden" id="color_picker_playlist_arrows_input" name="val[playlist_arrows]" {if $bIsEdit}value="{$aFormss.playlist_arrows}"{else}value="{$sDefaultColor}"{/if}/>
-            </li>
-            <li>
-                <label>{phrase var='dvs.thumbnail_border'}:</label>
+            </td>
+            
+            <td class="dvs_add_td_label">
+                {phrase var='dvs.thumbnail_border'}:
+            </td>
+            <td class="dvs_add_td">
                 <div id="color_picker_playlist_border" class="colorSelector">    
                     <div style="background-color: #{if $bIsEdit}{$aFormss.playlist_border}{else}{$sDefaultColor}{/if}"></div>
                 </div>
-                <span>&nbsp;&nbsp;Set this to black.</span>
                 <input type="hidden" id="color_picker_playlist_border_input" name="val[playlist_border]" {if $bIsEdit}value="{$aFormss.playlist_border}"{else}value="{$sDefaultColor}"{/if}/>
-            </li>
-        </ol>
-    </fieldset>
-    </div>
+            </td>            
+        </tr>
+    </table>
     <br>
     <h3>Virtual Test Drive Button</h3>
     <table>
@@ -852,7 +852,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 </td>
             </tr>
         </table>
-    </table>
+    </table>   
     </div>
     <br>
 	<input type="hidden" name="val[step]" value="customize" />
