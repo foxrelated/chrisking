@@ -12,4 +12,5 @@ README.md
 robots.txt
 .gitignore
 info.php
-.DS_Store
+*.DS_Store
+module/dvs/include/service/cdk/id_rsa
