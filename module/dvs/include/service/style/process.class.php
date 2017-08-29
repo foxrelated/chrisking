@@ -17,6 +17,7 @@ class Dvs_Service_Style_Process extends Phpfox_Service {
 	public function __construct()
 	{
 		$this->_sTable = Phpfox::getT('ko_dvs_style');
+        $this->_playerTable = Phpfox::getT('ko_dvs_players');
 	}
 
 
@@ -56,6 +57,21 @@ class Dvs_Service_Style_Process extends Phpfox_Service {
             $aSql['vin_button_label'] = $this->preParse()->clean($aDvs['vin_button_label'], 255);
 
         }
+        $oParseInput = Phpfox::getLib('parse.input');
+        
+        
+        $iPlayerId = $this->database()
+                ->insert($this->_playerTable, array(
+            'dvs_id' => (int) $aDvs['dvs_id'],
+            'player_background' => $oParseInput->clean($aDvs['player_background'], 6),
+            'player_text' => $oParseInput->clean($aDvs['player_text'], 6),
+            'player_buttons' => $oParseInput->clean($aDvs['player_buttons'], 6),
+            'player_progress_bar' => $oParseInput->clean($aDvs['player_progress_bar'], 6),
+            'player_button_icons' => $oParseInput->clean($aDvs['player_button_icons'], 6),
+            'playlist_arrows' => $oParseInput->clean($aDvs['playlist_arrows'], 6),
+            'playlist_border' => $oParseInput->clean($aDvs['playlist_border'], 6),
+            'timestamp' => PHPFOX_TIME
+        ));
 
 		$this->database()->insert($this->_sTable, $aSql);
 	}
@@ -63,6 +79,7 @@ class Dvs_Service_Style_Process extends Phpfox_Service {
 
 	public function update($aDvs)
 	{
+        
         $aSql = array(
             'branding_file_id' => (int) $aDvs['branding_file_id'],
             'background_file_id' => (int) $aDvs['background_file_id'],
@@ -95,8 +112,22 @@ class Dvs_Service_Style_Process extends Phpfox_Service {
             $aSql['vin_font_size'] = $this->preParse()->clean($aDvs['vin_font_size'], 15);
             $aSql['vin_button_label'] = $this->preParse()->clean($aDvs['vin_button_label'], 255);
         }
-
+        $oParseInput = Phpfox::getLib('parse.input');
+        $this->database()
+                ->update($this->_playerTable, array(
+                    'player_background' => $oParseInput->clean($aDvs['player_background'], 6),
+                    'player_text' => $oParseInput->clean($aDvs['player_text'], 6),
+                    'player_buttons' => $oParseInput->clean($aDvs['player_buttons'], 6),
+                    'player_progress_bar' => $oParseInput->clean($aDvs['player_progress_bar'], 6),
+                    'player_button_icons' => $oParseInput->clean($aDvs['player_button_icons'], 6),
+                    'playlist_arrows' => $oParseInput->clean($aDvs['playlist_arrows'], 6),
+                    'playlist_border' => $oParseInput->clean($aDvs['playlist_border'], 6),
+                    'timestamp' => PHPFOX_TIME
+                        ), 'player_id =' . (int) $aDvs['player_id']);
+                        
 		$this->database()->update($this->_sTable, $aSql, 'dvs_id = ' . (int) $aDvs['dvs_id']);
+        
+//        die();
 	}
 
 

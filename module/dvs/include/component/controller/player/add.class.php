@@ -15,6 +15,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 {
 	public function process()
 	{
+       
 		Phpfox::isUser(true);
         
 		if (Phpfox::getParam('dvs.enable_subdomain_mode'))
@@ -225,7 +226,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 		} 
         else { //add & edit feature models
 			$iDvsId = $this->request()->getInt('id');
-
+            
 			if (Phpfox::getService('dvs')->hasAccess($iDvsId, Phpfox::getUserId()))
 			{
 				$bCanAddPlayers = true;
@@ -248,6 +249,7 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 			//If there is a player, we're editing
 			if (($aPlayer = Phpfox::getService('dvs.player')->get($iDvsId)))
 			{
+                 
                 $aDvs = Phpfox::getService('dvs')->get($iDvsId);
                 $aPlayer['player_st_type'] = $aDvs['player_type'];
 				$aPlayerModels = array();
@@ -301,7 +303,10 @@ class Dvs_Component_Controller_Player_Add extends Phpfox_Component
 //				{
 //					$bCanAddPlayers = false;
 //				}
-
+//
+//                 $aPlayer = Phpfox::getService('dvs.player')->getPlayerAdd($iDvsId);
+//                 var_dump($aPlayer);
+//                 die();
 				$this->template()
 					->assign(array(
 						'bIsEdit' => false,

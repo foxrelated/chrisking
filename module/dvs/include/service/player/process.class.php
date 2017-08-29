@@ -23,6 +23,7 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 
 	public function add($aVals)
 	{
+        die('dead');
 		$oParseInput = Phpfox::getLib('parse.input');
         
         $aValst['player_type'] = $aVals['player_st_type'];
@@ -48,13 +49,13 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 			'preroll_file_id' => (int) $aVals['preroll_file_id'],
 //			'logo_branding_url' => $oParseInput->clean($aVals['logo_branding_url'], 255),
 			'preroll_url' => $oParseInput->clean($aVals['preroll_url'], 255),
-			'player_background' => $oParseInput->clean($aVals['player_background'], 6),
-			'player_text' => $oParseInput->clean($aVals['player_text'], 6),
-			'player_buttons' => $oParseInput->clean($aVals['player_buttons'], 6),
-			'player_progress_bar' => $oParseInput->clean($aVals['player_progress_bar'], 6),
-			'player_button_icons' => $oParseInput->clean($aVals['player_button_icons'], 6),
-			'playlist_arrows' => $oParseInput->clean($aVals['playlist_arrows'], 6),
-			'playlist_border' => $oParseInput->clean($aVals['playlist_border'], 6),
+			//'player_background' => $oParseInput->clean($aVals['player_background'], 6),
+//			'player_text' => $oParseInput->clean($aVals['player_text'], 6),
+//			'player_buttons' => $oParseInput->clean($aVals['player_buttons'], 6),
+//			'player_progress_bar' => $oParseInput->clean($aVals['player_progress_bar'], 6),
+//			'player_button_icons' => $oParseInput->clean($aVals['player_button_icons'], 6),
+//			'playlist_arrows' => $oParseInput->clean($aVals['playlist_arrows'], 6),
+//			'playlist_border' => $oParseInput->clean($aVals['playlist_border'], 6),
 			'featured_make' => $oParseInput->clean($aVals['featured_make'], 64),
 			'featured_year' => $oParseInput->clean($aVals['featured_year'], 4),
 			'featured_model' => $oParseInput->clean($aVals['featured_model'], 64),
@@ -116,6 +117,27 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 
 		return $iPlayerId;
 	}
+    
+    public function addCustomizedPlayer($aVals)
+    {
+        $oParseInput = Phpfox::getLib('parse.input');
+        
+        
+        $iPlayerId = $this->database()
+                ->insert($this->_sTable, array(
+            'dvs_id' => (int) $aVals['dvs_id'],
+            'preroll_url' => $oParseInput->clean($aVals['preroll_url'], 255),
+            'player_background' => $oParseInput->clean($aVals['player_background'], 6),
+            'player_text' => $oParseInput->clean($aVals['player_text'], 6),
+            'player_buttons' => $oParseInput->clean($aVals['player_buttons'], 6),
+            'player_progress_bar' => $oParseInput->clean($aVals['player_progress_bar'], 6),
+            'player_button_icons' => $oParseInput->clean($aVals['player_button_icons'], 6),
+            'playlist_arrows' => $oParseInput->clean($aVals['playlist_arrows'], 6),
+            'playlist_border' => $oParseInput->clean($aVals['playlist_border'], 6),
+            'timestamp' => PHPFOX_TIME
+        ));
+        return $iPlayerId;
+    }
 
 	public function update($aVals)
 	{
@@ -156,13 +178,13 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 					'preroll_file_id' => (int) $aVals['preroll_file_id'],
 //				'logo_branding_url' => $oParseInput->clean($aVals['logo_branding_url'], 255),
 					'preroll_url' => $oParseInput->clean($aVals['preroll_url'], 255),
-					'player_background' => $oParseInput->clean($aVals['player_background'], 6),
-					'player_text' => $oParseInput->clean($aVals['player_text'], 6),
-					'player_buttons' => $oParseInput->clean($aVals['player_buttons'], 6),
-					'player_progress_bar' => $oParseInput->clean($aVals['player_progress_bar'], 6),
-					'player_button_icons' => $oParseInput->clean($aVals['player_button_icons'], 6),
-					'playlist_arrows' => $oParseInput->clean($aVals['playlist_arrows'], 6),
-					'playlist_border' => $oParseInput->clean($aVals['playlist_border'], 6),
+					//'player_background' => $oParseInput->clean($aVals['player_background'], 6),
+//					'player_text' => $oParseInput->clean($aVals['player_text'], 6),
+//					'player_buttons' => $oParseInput->clean($aVals['player_buttons'], 6),
+//					'player_progress_bar' => $oParseInput->clean($aVals['player_progress_bar'], 6),
+//					'player_button_icons' => $oParseInput->clean($aVals['player_button_icons'], 6),
+//					'playlist_arrows' => $oParseInput->clean($aVals['playlist_arrows'], 6),
+//					'playlist_border' => $oParseInput->clean($aVals['playlist_border'], 6),
 					'featured_make' => $oParseInput->clean($aVals['featured_make'], 64),
 					'featured_year' => $oParseInput->clean($aVals['featured_year'], 4),
 					'featured_model' => $oParseInput->clean($aVals['featured_model'], 64),
@@ -239,6 +261,28 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 
 		return true;
 	}
+    
+    public function customizePlayerColor($aVals)
+    {
+        
+        $aPlayer = Phpfox::getService('dvs.player')->get((int) $aVals['player_id']);
+        //echo 'dd';
+        //die();
+        $oParseInput = Phpfox::getLib('parse.input');
+        $this->database()
+                ->update($this->_sTable, array(
+                    'player_background' => $oParseInput->clean($aVals['player_background'], 6),
+                    'player_text' => $oParseInput->clean($aVals['player_text'], 6),
+                    'player_buttons' => $oParseInput->clean($aVals['player_buttons'], 6),
+                    'player_progress_bar' => $oParseInput->clean($aVals['player_progress_bar'], 6),
+                    'player_button_icons' => $oParseInput->clean($aVals['player_button_icons'], 6),
+                    'playlist_arrows' => $oParseInput->clean($aVals['playlist_arrows'], 6),
+                    'playlist_border' => $oParseInput->clean($aVals['playlist_border'], 6),
+                    'timestamp' => PHPFOX_TIME
+                        ), 'player_id =' . (int) $aVals['player_id']);
+
+        return true;
+    }
 
 	public function remove($iDvsId)
 	{

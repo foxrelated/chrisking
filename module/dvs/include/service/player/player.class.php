@@ -107,6 +107,18 @@ class Dvs_Service_Player_Player extends Phpfox_Service {
 		
 		return $aPlayer;
 	}
+    
+    public function getPlayerAdd($iDvsId){
+        $iDvsId = (int) $iDvsId;
+        
+        $aPlayer = $this->database()
+                  ->select('*')
+            ->from($this->_sTable, 'p')
+            ->leftjoin(Phpfox::getT('ko_dvs'), 'd', 'd.dvs_id = p.dvs_id')
+            ->where('p.dvs_id =' . (int) $iDvsId)
+            ->execute('getRow');        
+        return $aPlayer;
+    }
 
 
 	function hex2rgb($sHex)
