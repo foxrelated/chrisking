@@ -460,7 +460,7 @@ function enableVideoSelectCarousel(){l}
             {foreach from=$aOverviewVideos key=iKey item=aVideo}
             <li>
                 <a class="playlist_carousel_image_link" id="thumbnail_link_{$iKey}" {if $aDvs.gallery_target_setting==1}target="_blank" {/if}>
-                {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
+                {img server_id=$aVideo.server_id path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
                 <p>{$aVideo.year} {$aVideo.model}</p>
                 </a>
 
@@ -471,7 +471,7 @@ function enableVideoSelectCarousel(){l}
             {foreach from=$aVideos key=iKey item=aVideo}
             <li>
                 <a class="playlist_carousel_image_link" id="thumbnail_link_{$iKey}">
-                    {img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
+                    {img server_id=$aVideo.server_id path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
                 <p>{$aVideo.year} {$aVideo.model}</p>
                 </a>
 
