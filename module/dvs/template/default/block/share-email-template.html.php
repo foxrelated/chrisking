@@ -784,7 +784,7 @@
                       <td class="wrapper last" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px 20px 0px 0px;vertical-align: top;text-align: left;color: #{$sTextColor};font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;position: relative;padding-right: 0px;border-collapse: collapse !important;">
 						{if $aDvs.branding_file_name}
                 		<a href="{$sVideoLink}" style="color: #{$sLinkColor};text-decoration: none;">
-                		{img path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle" max_width=600 max_height=300 suffix='_600'}</a>
+                		{img server_id=$aDvs.branding_file_server_id path='core.url_file' file='dvs/branding/'.$aDvs.branding_file_name style="vertical-align:middle" max_width=600 max_height=300 suffix='_600'}</a>
                 		{else}
                 		<h2 style="color: #{$sTextColor};font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-break: normal;font-size: 36px;">{$aDvs.dealer_name} Virtual Test Drive for {$sShareName}</h2>
                 		{/if}

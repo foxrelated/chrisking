@@ -150,3 +150,17 @@ ALTER TABLE `phpfox_ko_dvs` ADD `cdk_export_time` INT(11) UNSIGNED NOT NULL AFTE
 
 *******************************************   EXPORTING  12/18/2016  *****************************************************
 ALTER TABLE `phpfox_ko_dvs` ADD `reporting` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `modal_player`, ADD `reporting_email` VARCHAR(75) NOT NULL AFTER `reporting`, ADD `reporting_time` VARCHAR(15) NOT NULL AFTER `reporting_email`, ADD `last_reporting` INT(11) UNSIGNED NOT NULL AFTER `reporting_time`;
+
+***** AMAZON S3 SUPPORT *****
+ALTER TABLE `phpfox_tbd_dvs_vdp_files` ADD `vdp_file_server_id` TINYINT(3) UNSIGNED NOT NULL AFTER `vdp_file_name`;
+ALTER TABLE `phpfox_ko_dvs_background_files` ADD `background_file_server_id` TINYINT(3) UNSIGNED NOT NULL AFTER `background_file_name`;
+ALTER TABLE `phpfox_ko_dvs_branding_files` ADD `branding_file_server_id` TINYINT(3) UNSIGNED NOT NULL AFTER `branding_file_name`;
+ALTER TABLE `phpfox_ko_dvs_preroll_files` ADD `preroll_file_server_id` TINYINT(3) UNSIGNED NOT NULL AFTER `preroll_file_name`;
+ALTER TABLE `phpfox_ko_dvs_logo_files` ADD `logo_file_server_id` TINYINT(3) UNSIGNED NOT NULL AFTER `logo_file_name`;
+
+UPDATE `phpfox_ko_brightcove` SET `server_id`=1,`image_server_id`=1 WHERE 1;
+UPDATE `phpfox_tbd_dvs_vdp_files` SET `vdp_file_server_id`=1 WHERE 1;
+UPDATE `phpfox_ko_dvs_background_files` SET `background_file_server_id`=1 WHERE 1;
+UPDATE `phpfox_ko_dvs_branding_files` SET `branding_file_server_id`=1 WHERE 1;
+UPDATE `phpfox_ko_dvs_preroll_files` SET `preroll_file_server_id`=1 WHERE 1;
+UPDATE `phpfox_ko_dvs_logo_files` SET `logo_file_server_id`=1 WHERE 1;

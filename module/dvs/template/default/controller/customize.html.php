@@ -346,7 +346,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<div id="branding_file_preview" {if !$bIsEdit}style="display: none"{/if}>
 					 {if $bIsEdit}
 						{if $aForms.branding_file_name}
-							{img path='core.url_file' file='dvs/branding/'.$aForms.branding_file_name max_width=180 max_height=180}
+							{img server_id=$aForms.branding_file_server_id path='core.url_file' file='dvs/branding/'.$aForms.branding_file_name max_width=180 max_height=180}
 						{else}
 							{phrase var='dvs.no_branding_file'}
 						{/if}
@@ -376,7 +376,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<div id="background_file_preview" {if !$bIsEdit}style="display: none"{/if}>
 					 {if $bIsEdit}
 						{if $aForms.background_file_name}
-							{img path='core.url_file' file='dvs/background/'.$aForms.background_file_name max_width=180 max_height=180}
+							{img server_id=$aForms.background_file_server_id path='core.url_file' file='dvs/background/'.$aForms.background_file_name max_width=180 max_height=180}
 						{else}
 							{phrase var='dvs.no_background_file'}
 						{/if}
@@ -824,7 +824,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                     <div id="vdp_file_preview" {if !$bIsEdit}style="display: none"{/if}>
                     {if $bIsEdit}
                     {if $aForms.vdp_file_name}
-                    {img path='core.url_file' file='dvs/vdp/'.$aForms.vdp_file_name max_width=180 max_height=180}
+                    {img server_id=$aForms.vdp_file_server_id path='core.url_file' file='dvs/vdp/'.$aForms.vdp_file_name max_width=180 max_height=180}
                     {else}
                     No VDP Image
                     {/if}

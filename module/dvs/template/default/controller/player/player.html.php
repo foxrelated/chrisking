@@ -353,7 +353,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{foreach from=$aOverviewVideos key=iKey item=aVideo}
 				<li>
 					<a class="playlist_carousel_image_link" {if $aDvs.gallery_target_setting==1}target="_blank" {/if} onclick="thumbnailClick({$iKey});thumbnailClickDvs();">
-						{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
+						{img server_id=$aVideo.server_id path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
 					<p>{$aVideo.year} {$aVideo.model}</p>
 					</a>
 				</li>
@@ -363,7 +363,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				{foreach from=$aVideos key=iKey item=aVideo}
 				<li>
 					<a class="playlist_carousel_image_link" onclick="thumbnailClick({$iKey});thumbnailClickIDrive();">
-						{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
+						{img server_id=$aVideo.server_id path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image max_width=145 max_height=82}
 					<p>{$aVideo.year} {$aVideo.model}</p>
 					</a>
 					

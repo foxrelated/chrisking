@@ -58,7 +58,12 @@ class Dvs_Component_Controller_VIN_Script extends Phpfox_Component {
 
         if($aDvs['vdp_file_name']) {
             $this->template()->assign(array(
-                'vdp_background' => Phpfox::getParam('core.url_file') . 'dvs/vdp/' . $aDvs['vdp_file_name']
+                'vdp_background' => Phpfox::getLib('image.helper')->display(array(
+                    'server_id' => $aDvs['vdp_file_server_id'],
+                    'path' => 'core.url_file',
+                    'file' => 'dvs/vdp/' . $aDvs['vdp_file_name'],
+                    'return_url' => 'true'
+                ))
             ));
         }
 

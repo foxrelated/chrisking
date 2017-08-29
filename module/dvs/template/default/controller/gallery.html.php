@@ -20,7 +20,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<div class="dvs_gallery_thumbnail_image_container_inner">
 					<a href="{if $bSubdomainMode}{url link=$aDvs.title_url.'.'.$aVideo.video_title_url}{else}{url link='dvs.'$aDvs.title_url.'.'.$aVideo.video_title_url}{/if}" class="dvs_footer_link" {if $aVideo.targer_href == 1}target="_blank"{else}target="_parent"{/if} > <!--phpmasterminds edited this code for parent (self) or blank -->
 						<div class="dvs_gallery_image">
-							{img path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image}
+							{img server_id=$aVideo.server_id path='core.url_file' file='brightcove/'.$aVideo.thumbnail_image}
 						</div>
 						<div class="dvs_footer_link" style="text-align:center;font-weight:bold;">
 							{$aVideo.year} {$aVideo.make} {$aVideo.model}

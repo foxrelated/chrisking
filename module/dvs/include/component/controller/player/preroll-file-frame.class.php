@@ -36,6 +36,12 @@ class Dvs_Component_Controller_Player_Preroll_File_Frame extends Phpfox_Componen
 		{
 
 			$sPrerollFilePath = Phpfox::getService('dvs.file')->getPrerollFile($iPrerollFileId);
+            $sImageUrl = Phpfox::getLib('image.helper')->display(array(
+                'server_id' => Phpfox::getLib('request')->getServer('PHPFOX_SERVER_ID'),
+                'path' => 'core.url_file',
+                'file' => 'dvs/preroll/' . $sPrerollFilePath,
+                'return_url' => 'true'
+            ));
 
 			echo '<script type="text/javascript">';
 			echo 'window.parent.document.getElementById(\'js_preroll_upload_frame\').style.display = \'none\';';
@@ -47,7 +53,7 @@ class Dvs_Component_Controller_Player_Preroll_File_Frame extends Phpfox_Componen
 			'<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0">' .
 			'<param name="allowfullscreen" value="true" />' .
 			(Phpfox::getParam('dvs.enable_subdomain_mode') ? '<param name="movie" value="' . Phpfox::getLib('url')->makeUrl('www.module.dvs.static.swf') . 'player.swf" />' : '<param name="movie" value="../../../module/dvs/static/swf/player.swf" />') .
-			'<param name="flashvars" value="' . Phpfox::getParam('core.url_file') . 'dvs/preroll/' . $sPrerollFilePath . '" />' .
+			'<param name="flashvars" value="' . $sImageUrl . '" />' .
 			'<param name="wmode" value="opaque" />' .
 			(Phpfox::getParam('dvs.enable_subdomain_mode') ? '<embed wmode="opaque" allowfullscreen="true" type="application/x-shockwave-flash" src="' . Phpfox::getLib('url')->makeUrl('www.module.dvs.static.swf') . 'player.swf" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="file=' . Phpfox::getParam('core.url_file') . 'dvs/preroll/' . $sPrerollFilePath . '" />' : '<embed wmode="opaque" allowfullscreen="true" type="application/x-shockwave-flash" src="../../../../module/dvs/static/swf/player.swf" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="file=' . Phpfox::getParam('core.url_file') . 'dvs/preroll/' . $sPrerollFilePath . '" />' ) .
 			'</object>' .

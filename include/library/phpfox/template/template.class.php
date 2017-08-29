@@ -1087,8 +1087,13 @@ class Phpfox_Template
 	 * @return string $sData Returns the HTML data to be placed within <head></head>
 	 */
 	public function getHeader($bReturnArray = false)
-	{		
-		if (Phpfox::isMobile())
+	{
+        if (Phpfox::getParam('core.amazon_bucket')) {
+            $sS3Url = '//s3.amazonaws.com/' . Phpfox::getParam('core.amazon_bucket') . '/';
+        } else {
+            $sS3Url = Phpfox::getParam('core.path');
+        }
+        if (Phpfox::isMobile())
 		{				
 			$this->setHeader(array(
 					'mobile.css' => 'style_css'
@@ -1207,7 +1212,7 @@ class Phpfox_Template
 // You are filtering out the controllers which should not load 'content' ajaxly, finding a way for pages.view/1/info and like that
 			$sProgressCssFile = $this->getStyle('css', 'progress.css');
 			$sStylePath = str_replace(Phpfox::getParam('core.path'), '', str_replace('progress.css', '', $sProgressCssFile));
-			
+
 			$aJsVars = array(
 				'sJsHome' => Phpfox::getParam('core.path'),
 				'sJsHostname' => $_SERVER['HTTP_HOST'],
@@ -1488,10 +1493,10 @@ class Phpfox_Template
 				if (!is_array($aHeaders))
 				{
 					$aHeaders = array($aHeaders);
-				}			
-				
+				}
+
 				foreach ($aHeaders as $mKey => $mValue)
-				{															
+				{
 					$sQmark = (strpos($mKey, '?') ? '&amp;' : '?');
 
 					if (is_numeric($mKey))
@@ -1531,7 +1536,7 @@ class Phpfox_Template
                         
 					}
 					else if ($mKey == 'master')
-					{						
+					{
 						$aMaster = array('css' => array(), 'jscript' => array());
 						foreach ($mValue as $sValKey => $sValVal)
 						{
@@ -2017,7 +2022,7 @@ class Phpfox_Template
 						continue;
 					}
 					$aSubCacheCheck[$sFile] = true;
-                	$sData .= "\t\t" . '<link rel="stylesheet" type="text/css" href="' . Phpfox::getParam('core.path') . $sFile . $sQmark .'v=' . $iVersion . '" />' . "\n";
+                	$sData .= "\t\t" . '<link rel="stylesheet" type="text/css" href="' . $sS3Url . $sFile . $sQmark .'v=' . $iVersion . '" />' . "\n";
             	}
             }
 			
@@ -2045,7 +2050,7 @@ class Phpfox_Template
 					}
 					else
 					{
-						$this->_sFooter .= "\t\t" . '<script type="text/javascript" src="' . Phpfox::getParam('core.path') . $sFile . $sQmark .'v=' . $iVersion . '"></script>' . "\n";
+						$this->_sFooter .= "\t\t" . '<script type="text/javascript" src="' . $sS3Url . $sFile . $sQmark .'v=' . $iVersion . '"></script>' . "\n";
 					}
 				}
 			}
@@ -2245,7 +2250,7 @@ class Phpfox_Template
 		{
 			$sData .= "\t\t" . '<link rel="stylesheet" type="text/css" href="' . Phpfox::getParam('core.rackspace_url') . 'file/static/' . $aCss['css_data_original'] . '" />' . "\n";
 		}
-		
+
 		return $sData;
 	}
 
