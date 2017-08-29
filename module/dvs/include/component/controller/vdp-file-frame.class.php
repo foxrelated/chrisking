@@ -32,10 +32,15 @@ class Dvs_Component_Controller_Vdp_File_Frame extends Phpfox_Component {
 
         if ($iVdpFileId = Phpfox::getService('dvs.file')->addVdpFile($this->request()->get('vdp_file_id'))) {
             $sVdpFilePath = Phpfox::getService('dvs.file')->getVdpFile($iVdpFileId);
-
+            $sImageUrl = Phpfox::getLib('image.helper')->display(array(
+                'server_id' => Phpfox::getLib('request')->getServer('PHPFOX_SERVER_ID'),
+                'path' => 'core.url_file',
+                'file' => 'dvs/vdp/' . $sVdpFilePath,
+                'return_url' => 'true'
+            ));
             echo '<script type="text/javascript">';
             echo 'window.parent.document.getElementById(\'js_vdp_upload_frame\').style.display = \'none\';';
-            echo 'window.parent.document.getElementById(\'vdp_file_preview\').innerHTML = \'<input type="hidden" name="vdp_file_id" value="' . $iVdpFileId . '" /><img src="' . Phpfox::getParam('core.url_file') . 'dvs/vdp/', $sVdpFilePath . '" width="180" /><br /><a href="#" onclick="window.parent.document.getElementById(\\\'vdp_file_label\\\').innerHTML = \\\'' . Phpfox::getPhrase('dvs.select_file') . '\\\';window.parent.document.getElementById(\\\'js_vdp_upload_frame\\\').style.display = \\\'block\\\';window.parent.document.getElementById(\\\'vdp_file_preview\\\').style.display = \\\'none\\\';">Change Vdp Image</a> - <a href="#" onclick="if (confirm(\\\'Are you sure?\\\')){window.parent.document.getElementById(\\\'vdp_file_label\\\').innerHTML = \\\'' . Phpfox::getPhrase('dvs.select_file') . '\\\';window.parent.document.getElementById(\\\'js_vdp_upload_frame\\\').style.display = \\\'block\\\';window.parent.document.getElementById(\\\'vdp_file_preview\\\').style.display = \\\'none\\\';window.parent.document.getElementById(\\\'vdp_file_id\\\').value = 0;$.ajaxCall(\\\'dvs.removeVdpFile\\\',\\\'iVdpFileId=' . $iVdpFileId . '\\\')}">Remove VDP Image</a>\';';
+            echo 'window.parent.document.getElementById(\'vdp_file_preview\').innerHTML = \'<input type="hidden" name="vdp_file_id" value="' . $iVdpFileId . '" /><img src="' . $sImageUrl . '" width="180" /><br /><a href="#" onclick="window.parent.document.getElementById(\\\'vdp_file_label\\\').innerHTML = \\\'' . Phpfox::getPhrase('dvs.select_file') . '\\\';window.parent.document.getElementById(\\\'js_vdp_upload_frame\\\').style.display = \\\'block\\\';window.parent.document.getElementById(\\\'vdp_file_preview\\\').style.display = \\\'none\\\';">Change Vdp Image</a> - <a href="#" onclick="if (confirm(\\\'Are you sure?\\\')){window.parent.document.getElementById(\\\'vdp_file_label\\\').innerHTML = \\\'' . Phpfox::getPhrase('dvs.select_file') . '\\\';window.parent.document.getElementById(\\\'js_vdp_upload_frame\\\').style.display = \\\'block\\\';window.parent.document.getElementById(\\\'vdp_file_preview\\\').style.display = \\\'none\\\';window.parent.document.getElementById(\\\'vdp_file_id\\\').value = 0;$.ajaxCall(\\\'dvs.removeVdpFile\\\',\\\'iVdpFileId=' . $iVdpFileId . '\\\')}">Remove VDP Image</a>\';';
             echo 'window.parent.document.getElementById(\'vdp_file_label\').innerHTML = \'' . Phpfox::getPhrase('dvs.current_image') . ':\';';
             echo 'window.parent.document.getElementById(\'vdp_file_id\').value = \'' . $iVdpFileId . '\';';
             echo 'window.parent.document.getElementById(\'vdp_file_preview\').style.display = \'block\';';

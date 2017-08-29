@@ -494,7 +494,7 @@ class Phpfox_Image_Helper
 				else 
 				{
 					preg_match('/(.*)\/(.*)-(.*)-(.*)_(.*?)/i', $aParams['file'], $aLbMatches);
-					if (isset($aLbMatches[2]) && isset($aLbMatches[3]))
+					if (isset($aLbMatches[2]) && isset($aLbMatches[3]) && is_numeric($aLbMatches[2]) && is_numeric($aLbMatches[3]))
 					{
 						list($iHeight, $iWidth) = $this->getNewSize(null, $aParams['max_height'], $aParams['max_width'], $aLbMatches[2], $aLbMatches[3]);
 					}	
