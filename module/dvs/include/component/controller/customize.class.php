@@ -50,7 +50,28 @@ class Dvs_Component_Controller_Customize extends Phpfox_Component {
 
 		$sBrowser = Phpfox::getService('dvs')->getBrowser();
 
-		
+	    $iPlayerId = Phpfox::getService('dvs.player')->get($iDvsId);
+        
+        if (($aPlayer = Phpfox::getService('dvs.player')->get($iDvsId)))
+            {
+                $aDvs = Phpfox::getService('dvs')->get($iDvsId);
+                
+                $this->template()
+                    ->assign(array(
+                        'aFormss' => $aPlayer,
+                        'bIsEdit' => true
+                    ));
+            }
+            else
+            //New player being created
+            {
+                $this->template()
+                    ->assign(array(
+                        'bIsEdit' => false,
+                        'bCanAddPlayers' => true
+                    ));
+                 
+            }
 		
 		$this->template()
 			->setHeader(array(
@@ -67,9 +88,11 @@ class Dvs_Component_Controller_Customize extends Phpfox_Component {
 				'jcarousellite.js' => 'module_dvs',
 				//'add.css' => 'module_dvs',
 				'settings.css' => 'module_dvs',
+                'add_player.css' => 'module_dvs'
 			))
 			->assign(array(
-				'iDvsId' => $iDvsId,
+                'iDvsId' => $iDvsId,
+				'iPlayerId' => $iPlayerId['player_id'],
 				'aDvs' => Phpfox::getService('dvs')->get($iDvsId),
 				'aMakes' => Phpfox::getService('dvs.video')->getMakes(),
 				'iUserId' => Phpfox::getUserId(),
