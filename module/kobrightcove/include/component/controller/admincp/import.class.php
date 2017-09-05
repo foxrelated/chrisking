@@ -13,25 +13,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @package 		KOBrightcove
  */
 class Kobrightcove_Component_Controller_Admincp_Import extends Phpfox_Component {
+	public function process() {
 
-	public function process()
-	{
-
-		if ($this->request()->get('req4') == 'update')
-		{
+		if ($this->request()->get('req4') == 'update') {
 			$sJob = 'update';
 			$sBreadcrumb = 'Update Database';
-		}
-		else
-		{
+		} else {
 			$sJob = 'import';
 			$sBreadcrumb = 'Import Videos';
 		}
 
-		if ($aVals = $this->request()->getArray('val'))
-		{
-			if ($aVals['total'] > 0)
-			{
+		if ($aVals = $this->request()->getArray('val')) {
+			if ($aVals['total'] > 0) {
 				$this->template()
 					->setBreadcrumb($sBreadcrumb)
 					->assign(array(
@@ -41,20 +34,15 @@ class Kobrightcove_Component_Controller_Admincp_Import extends Phpfox_Component 
 						'iTotalVideos' => $aVals['totalvideos'],
 						'iBatch' => 1
 				));
-			}
-			else
-			{
+			} else {
 				Phpfox_Error::set('Total Not Set.');
 				$this->template()->assign(array(
 					'sJob' => $sJob,
 					'bImport' => false
 				));
 			}
-		}
-		else
-		{
+		} else {
 			$iTotalVideos = Phpfox::getService('kobrightcove.koechove')->getTotal();
-
 			$this->template()
 				->setBreadcrumb($sBreadcrumb)
 				->assign(array(
@@ -65,8 +53,6 @@ class Kobrightcove_Component_Controller_Admincp_Import extends Phpfox_Component 
 			));
 		}
 	}
-
-
 }
 
 ?>

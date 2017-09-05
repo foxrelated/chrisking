@@ -13,9 +13,7 @@ defined('PHPFOX') or exit('GO MICE!');
  * @package 		KOBrightcove
  */
 class Kobrightcove_Component_Controller_Admincp_Browse extends Phpfox_Component {
-
-	public function process()
-	{
+	public function process() {
 		$iPage = $this->request()->getInt('page');
 
 		$iPageBc = $iPage;
@@ -28,8 +26,7 @@ class Kobrightcove_Component_Controller_Admincp_Browse extends Phpfox_Component 
 
 		list($aVideosRaw, $iCnt) = Phpfox::getService('kobrightcove')->browse($iPage, $iPageSize);
 
-		foreach ($aVideosRaw as $key => $aValue)
-		{
+		foreach ($aVideosRaw as $key => $aValue) {
 			$aTemp = $aValue;
 			$aTemp['creationDate'] = date('m/d/Y H:i:s', substr($aTemp['creationDate'], 0, -3));
 			$aTemp['tags'] = str_replace(',', '<br /><br />', $aTemp['tags']);
@@ -37,19 +34,15 @@ class Kobrightcove_Component_Controller_Admincp_Browse extends Phpfox_Component 
 		}
 
 		$this->template()
-				->setBreadcrumb('Browse Videos')
-				->assign(array(
-					'aVideos' => $aVideos))
-				->setHeader(
-						'cache', array(
-					'pager.css' => 'style_css'
-						)
-		);
+            ->setBreadcrumb('Browse Videos')
+            ->assign(array(
+                'aVideos' => $aVideos))
+            ->setHeader('cache', array(
+                'pager.css' => 'style_css'
+            ));
 
 		Phpfox::getLib('pager')->set(array('page' => $iPage, 'size' => $iPageSize, 'count' => $iCnt));
-
 	}
-
 }
 
 ?>
