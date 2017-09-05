@@ -127,7 +127,7 @@ class Kobrightcove_Service_Kobrightcove extends Phpfox_Service {
 
         $aVideos = Phpfox::getService('kobrightcove')->changeBcObjectKey($oVideos);
 
-		$aVideos = Phpfox::getService('kobrightcove')->flattenBcObjectCustomFields($oVideos);
+		$aVideos = Phpfox::getService('kobrightcove')->flattenBcObjectCustomFields($aVideos);
 
 		$aVideos = Phpfox::getService('kobrightcove')->keepAllowedVideos($aVideos);
 
@@ -170,6 +170,10 @@ class Kobrightcove_Service_Kobrightcove extends Phpfox_Service {
                     $aVideos[$iKey][$sConvertValue] = '';
                 }
             }
+
+            $aVideos[$iKey]['creationDate'] = strtotime($aVideos[$iKey]['creationDate']) * 1000;
+            $aVideos[$iKey]['publishedDate'] = strtotime($aVideos[$iKey]['publishedDate']) * 1000;
+            $aVideos[$iKey]['lastModifiedDate'] = strtotime($aVideos[$iKey]['lastModifiedDate']) * 1000;
         }
 
         return $aVideos;
@@ -234,7 +238,7 @@ class Kobrightcove_Service_Kobrightcove extends Phpfox_Service {
 	{
 		foreach ($aVideosTemp as $key => $aValue)
 		{
-			$aValue['creationDate'] = date('m/d/Y H:i:s', substr($aValue['creationDate'], 0, -3));
+			$aValue['creationDate'] = date('Y-m-d H:i:s', substr($aValue['creationDate'], 0, -3));
 			$aValue['publishedDate'] = date('m/d/Y H:i:s', substr($aValue['publishedDate'], 0, -3));
 			$aValue['lastModifiedDate'] = date('m/d/Y H:i:s', substr($aValue['lastModifiedDate'], 0, -3));
 			$aVideos[$key] = $aValue;
