@@ -308,7 +308,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
     }
 
     public function getYearFromVin($sVin) {
-        $sYearChar = substr($sVin,6,1);
+        $sYearChar = substr($sVin, 8, 1);
 
         if (is_numeric($sYearChar)) {
             $sType = 'num';
