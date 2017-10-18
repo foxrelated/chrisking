@@ -100,6 +100,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         $aCompletedRows = array();
         foreach($aVins as $sVin) {
             if($sQuishVin = $this->getQuishVin($sVin)) {
+                $sVin = strtoupper($sVin);
                 $aFullRows[$sQuishVin]['ed_style_id'] = '';
                 if(!isset($aFullRows[$sQuishVin])) {
                     $aFullRows[$sQuishVin]['vin'] = array();
