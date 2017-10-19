@@ -11,9 +11,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @package 		MetaRadio
  */
 class Kobrightcove_Component_Block_Progress_Update extends Phpfox_Component {
-
-	public function process()
-	{
+	public function process() {
 		$oBrightcove = Phpfox::getService('kobrightcove');
 		$iStartTime = $oBrightcove->startScriptTimer();
 		$aVals = Phpfox::getLib('phpfox.request')->getArray('val');
@@ -28,14 +26,10 @@ class Kobrightcove_Component_Block_Progress_Update extends Phpfox_Component {
 
 		$iLimit = $iOffset + $iBatch;
 
-		while ($iOffset < $iLimit)
-		{
-			if ($sJob == 'import')
-			{
+		while ($iOffset < $iLimit) {
+			if ($sJob == 'import') {
 				$sResult = $oBrightcove->import($iOffset, $iBatch);
-			}
-			else if ($sJob == 'update')
-			{
+			} else if ($sJob == 'update') {
 				$sResult = $oBrightcove->update($iOffset, $iBatch);
 			}
 			//echo '<script>console.log("Page: ' . $iOffset . ': ' . $sResult . '.")</script>';
@@ -49,10 +43,9 @@ class Kobrightcove_Component_Block_Progress_Update extends Phpfox_Component {
 			'iTime' => $oBrightcove->endScriptTimer($iStartTime),
 			'iPercentage' => round(($iOffset / $iTotal) * 100, 2)
 		));
+
 		return 'block';
-
 	}
-
 }
 
 ?>

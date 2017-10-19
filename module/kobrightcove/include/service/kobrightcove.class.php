@@ -71,7 +71,9 @@ class Kobrightcove_Service_Kobrightcove extends Phpfox_Service {
 
 		$oVideos = Phpfox::getService('kobrightcove.koechove')->findUpdate($iOffset, 'year,make,model,bodystyle', 10);
 
-		$aVideos = Phpfox::getService('kobrightcove')->flattenBcObjectCustomFields($oVideos);
+        $aVideos = Phpfox::getService('kobrightcove')->changeBcObjectKey($oVideos);
+
+		$aVideos = Phpfox::getService('kobrightcove')->flattenBcObjectCustomFields($aVideos);
 
 		$aVideos = Phpfox::getService('kobrightcove')->keepAllowedVideos($aVideos);
 
@@ -123,7 +125,9 @@ class Kobrightcove_Service_Kobrightcove extends Phpfox_Service {
 
 		$oVideos = Phpfox::getService('kobrightcove.koechove')->findUpdate($iOffset, 'year,make,model,bodystyle', 10);
 
-		$aVideos = Phpfox::getService('kobrightcove')->flattenBcObjectCustomFields($oVideos);
+        $aVideos = Phpfox::getService('kobrightcove')->changeBcObjectKey($oVideos);
+
+		$aVideos = Phpfox::getService('kobrightcove')->flattenBcObjectCustomFields($aVideos);
 
 		$aVideos = Phpfox::getService('kobrightcove')->keepAllowedVideos($aVideos);
 
@@ -136,6 +140,44 @@ class Kobrightcove_Service_Kobrightcove extends Phpfox_Service {
 		}
 		return $iVideos;
 	}
+
+    public function changeBcObjectKey($aVideos) {
+        $aConvertKeys = array(
+            'ad_keys' => 'adKeys',
+            'description' => 'shortDescription',
+            'long_description' => 'longDescription',
+            'created_at' => 'creationDate',
+            'published_at' => 'publishedDate',
+            'updated_at' => 'lastModifiedDate',
+            'reference_id' => 'referenceId',
+            'duration' => 'length',
+            'economics' => 'economics',
+            'custom_fields' => 'customFields'
+        );
+
+        foreach ($aVideos as $iKey => $aVideo) {
+            $aVideos[$iKey]['videoStillURL'] = $aVideo['images']['poster']['src'] ? $aVideo['images']['poster']['src'] : '';
+            $aVideos[$iKey]['thumbnailURL'] = $aVideo['images']['thumbnail']['src'] ? $aVideo['images']['thumbnail']['src'] : '';
+            $aVideos[$iKey]['linkURL'] = $aVideo['link']['url'] ? $aVideo['link']['url'] : '';
+            $aVideos[$iKey]['linkText'] = $aVideo['link']['text'] ? $aVideo['link']['text'] : '';
+            $aVideos[$iKey]['playsTotal'] = 0;
+            $aVideos[$iKey]['playsTrailingWeek'] = 0;
+
+            foreach($aConvertKeys as $sConvertKey => $sConvertValue) {
+                if (isset($aVideo[$sConvertKey])) {
+                    $aVideos[$iKey][$sConvertValue] = $aVideo[$sConvertKey];
+                } else {
+                    $aVideos[$iKey][$sConvertValue] = '';
+                }
+            }
+
+            $aVideos[$iKey]['creationDate'] = strtotime($aVideos[$iKey]['creationDate']) * 1000;
+            $aVideos[$iKey]['publishedDate'] = strtotime($aVideos[$iKey]['publishedDate']) * 1000;
+            $aVideos[$iKey]['lastModifiedDate'] = strtotime($aVideos[$iKey]['lastModifiedDate']) * 1000;
+        }
+
+        return $aVideos;
+    }
 
 
 	public function keepAllowedVideos($aVideos)
@@ -196,7 +238,7 @@ class Kobrightcove_Service_Kobrightcove extends Phpfox_Service {
 	{
 		foreach ($aVideosTemp as $key => $aValue)
 		{
-			$aValue['creationDate'] = date('m/d/Y H:i:s', substr($aValue['creationDate'], 0, -3));
+			$aValue['creationDate'] = date('Y-m-d H:i:s', substr($aValue['creationDate'], 0, -3));
 			$aValue['publishedDate'] = date('m/d/Y H:i:s', substr($aValue['publishedDate'], 0, -3));
 			$aValue['lastModifiedDate'] = date('m/d/Y H:i:s', substr($aValue['lastModifiedDate'], 0, -3));
 			$aVideos[$key] = $aValue;

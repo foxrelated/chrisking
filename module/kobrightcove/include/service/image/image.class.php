@@ -40,13 +40,17 @@ class Kobrightcove_Service_Image_Image extends Phpfox_Service {
 		$sFullPath = Phpfox::getParam('core.dir_file') . 'brightcove/' . $sDestinationFileName;
 		$sFileData = Phpfox::getLib('phpfox.request')->send($sUrl, array(), 'GET');
 
-		if (Phpfox::getLib('file')->write($sFullPath, $sFileData))
-		{
+		if (Phpfox::getLib('file')->write($sFullPath, $sFileData)) {
 			chmod($sFullPath, 0644);
+            if (Phpfox::getParam('core.allow_cdn')) {
+                $bReturn = Phpfox::getLib('cdn')->put($sFullPath);
+
+                if ($bReturn === false) {
+                    return false;
+                }
+            }
 			return $sDestinationFileName;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
