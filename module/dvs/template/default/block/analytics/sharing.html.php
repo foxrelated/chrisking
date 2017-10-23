@@ -1,4 +1,4 @@
-<h3>CRM Video Email Template Performance (<a href="mailto:support@dealervideoshowroom.com">need help?</a>)</h3>
+<h3>CRM Email Code Performance (<a href="mailto:support@dealervideoshowroom.com">need help?</a>)</h3>
 <canvas id="circle-stats-canvas" width="980" height="200"></canvas>
 
 <div id="share-chart-wrapper">
