@@ -288,7 +288,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
 
     public function getAllVideoIdByEdStyles($aEdStyleIds) {
         $sEdStyleIds = implode('/', $aEdStyleIds) . '/';
-        $sTargetUrl = 'http://api.wheelstv.co/v1/EdstyleId/' . $sEdStyleIds;
+        $sTargetUrl = 'http://api.wheelstv.co/v1/edstyleid/' . $sEdStyleIds;
         $ch = curl_init($sTargetUrl);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
