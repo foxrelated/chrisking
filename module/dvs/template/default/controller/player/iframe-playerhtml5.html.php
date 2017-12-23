@@ -21,11 +21,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         width: {$iPlayerWidth}px;
         height: {$iPlayerHeight}px;
         {/if}
-    {r} 
+    {r}
 
 
 .vjs-ended .vjs-custom-overlay{l}
-    background-color:transparent;  
+    background-color:transparent;
     padding:0;
 {r}
 .vjs-ended video{l}
@@ -33,7 +33,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {r}
 .endscr_title,.endscr_bottom_nvideo{l}
 color:#fff !important;
-font-size:20px;    
+font-size:20px;
 margin-bottom:10px;
 {r}
 .vjs-custom-overlay{l}
@@ -64,9 +64,9 @@ background-image: -moz-linear-gradient(center top, #{$aDvs.button_bottom_gradien
 background-image: -ms-linear-gradient(bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
 background-image: linear-gradient(to bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
 background-image: -o-linear-gradient(bottom, #{$aDvs.button_bottom_gradient} 0%, #{$aDvs.button_top_gradient} 100%);
-{r}                          
+{r}
 .vjs-custom-overlay .js_box{l}
-    
+
     float: left !important;
     width: 100% !important;
     position: static !important;
@@ -97,14 +97,14 @@ text-align:left;
 .cdfields input, #contact_dealer .cdfields textarea{l}
      width:100%;
      color:#333;
-{r}     
+{r}
 .uleft.cdtxt p,.vjs-custom-overlay #dvs_contact_success{l}
 color:#000;
-{r}     
+{r}
 /*input:-ms-input-placeholder, textarea:-ms-input-placeholder{l}*/
 :-ms-input-placeholder{l}
 color:#666 !important;
-{r}  
+{r}
  input[type="submit"]{l}
      float:right;
      font-size:18px;
@@ -112,28 +112,28 @@ color:#666 !important;
 .endscr_bottom_nvideo #nvideo_title{l}
  font-size:17px;
  margin-top:5px;
-{r}    
+{r}
 #overview_playlist {l}
 height: 110px !important;
-{r}        
+{r}
 #overview_playlist ul li img {l}
 width: 149px !important;
-{r}    
+{r}
 #overview_playlist ul li {l}
 width: 149px !important;
 height: 106px !important;
-{r}     
+{r}
 .vjs-overlay {l}
 background:none !important;
 width:100% !important;
 padding-top:0 !important;
 top:0 !important;
-{r}     
+{r}
 .vjs-overlay-buttons {l}
     display:none !important;
-{r}          
+{r}
 
-{if !$bIsExternal}    
+{if !$bIsExternal}
 .vjs-time-control {l}
 color:#{$aPlayer.player_text}
 {r}
@@ -142,7 +142,7 @@ background:#{$aPlayer.player_buttons} !important;
 {r}
 .vjs-play-control, .vjs-volume-menu-button, .vjs-fullscreen-control, .vjs-big-play-button:before {l}
 color:#{$aPlayer.player_button_icons} !important;
-{r} 
+{r}
 
 .vjs-play-progress, .vjs-volume-level {l}
 background: #{$aPlayer.player_progress_bar} !important;
@@ -215,14 +215,14 @@ color:#fff;
     {foreach from = $aOverviewVideos key = iKey item = aVideo}
         {if $iKey == 0}
             aPoster = '{$poster_img}';
-            
+
         {/if}
         aOverviewMediaIds[{$iKey}] = {$aVideo.id};
     {/foreach}
 
     aMediaIds = aOverviewMediaIds;
-    
-    
+
+
     {if isset($aOverrideVideo.id)}
         if (bDebug) console.log('Media: Override is set. aMediaIds:');
         aMediaIds[0] = {$aOverrideVideo.id};
@@ -235,13 +235,13 @@ color:#fff;
             aMediaIds = aOverviewMediaIds;
         {/if}
     {/if}
-    
-    
+
+
     if (bDebug) {l}
     console.log(aMediaIds);
     {r}
 
- 
+
     {if $aPlayer.custom_overlay_1_type}
         if (bDebug) console.log('Overlay: Overlay 1 is active. Type: {$aPlayer.custom_overlay_1_type}. Start: {$aPlayer.custom_overlay_1_start}. Duration: {$aPlayer.custom_overlay_1_duration}.');
         var bCustomOverlay1 = true;
@@ -258,7 +258,7 @@ color:#fff;
         {else}
         var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_1_text}</a>';
         {/if}
-        
+
         var iCustomOverlay1Start = {$aPlayer.custom_overlay_1_start};
         var iCustomOverlay1Duration = {$aPlayer.custom_overlay_1_duration};
     {else}
@@ -299,9 +299,9 @@ color:#fff;
          {if $aPlayer.custom_overlay_3_text != ''}
          var bCustomOverlay3Content = '<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_3_text}"></a>';
         {else}
-        var bCustomOverlay3Content = ''; 
+        var bCustomOverlay3Content = '';
         bCustomOverlay3 = false;
-        {/if} 
+        {/if}
         {else}
         var bCustomOverlay3Content = '<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_3_text}</a>';
         {/if}
@@ -320,8 +320,8 @@ color:#fff;
             aMediaIds[0] = {$aFeaturedVideo.id};
         {/if}
     {/if}
-    
-    
+
+
 {if !$bIsExternal}
         var bPreRoll = {if $aPlayer.preroll_file_id}true{else}false{/if};
         var bPreRollUrl = {if $aPlayer.preroll_file_id}"{$prerollUrl}" {else}""{/if};
@@ -402,7 +402,7 @@ function enableVideoSelectCarousel(){l}
             {r});
         {/if}
     {/if}
-    {r}   
+    {r}
 
 </script>
 
@@ -423,7 +423,7 @@ function enableVideoSelectCarousel(){l}
 <input type="hidden" id="bc_ref" value="{*aCurrentVideoMetaData.referenceId*}">
 <input type="hidden" id="bc_oimgpath" value="{$sImagePath}">
 <input type="hidden" id="bc_dvs" value="{$iDvsId}">
-<video id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls preload playsinline ></video>
+<video id="bcv2" data-account="607012070001" data-player="HyXJfBozM" data-embed="default" class="video-js" controls preload playsinline ></video>
 </section>
 {else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}<section id="chapter_buttons">
     <button type="button" id="chapter_container_Intro" class="disabled display"></button>
@@ -452,7 +452,7 @@ function enableVideoSelectCarousel(){l}
     {/if}
 </section>
 {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
-<section id="playlist_wrapper{if $inventoryList} inventory_wrapper{/if}">    
+<section id="playlist_wrapper{if $inventoryList} inventory_wrapper{/if}">
     <button class="prev playlist-button">&lt;</button>
     <div class="playlist_carousel" id="overview_playlist">
         <ul>
@@ -484,6 +484,6 @@ function enableVideoSelectCarousel(){l}
     <button class="next playlist-button">&gt;</button>
 </section>
 {/if}
-<script src="//players.brightcove.net/607012070001/default_default/index.min.js"></script> 
+<script src="//players.brightcove.net/607012070001/HyXJfBozM_default/index.min.js"></script> 
 <script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.min.js"></script>
 <script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"></script>
