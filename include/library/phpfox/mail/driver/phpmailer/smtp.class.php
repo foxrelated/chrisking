@@ -35,6 +35,7 @@ class Phpfox_Mail_Driver_Phpmailer_Smtp implements Phpfox_Mail_Interface
 	    }
     	
 	   	require_once(PHPFOX_DIR_LIB . 'phpmailer' . PHPFOX_DS . 'class.phpmailer.php');
+        require_once(PHPFOX_DIR_LIB . 'phpmailer' . PHPFOX_DS . 'class.smtp.php');
     	
 	    $this->_oMail = new PHPMailer;
 	    $this->_oMail->From = (Phpfox::getParam('core.email_from_email') ? Phpfox::getParam('core.email_from_email') : 'server@localhost');
@@ -43,9 +44,9 @@ class Phpfox_Mail_Driver_Phpmailer_Smtp implements Phpfox_Mail_Interface
 	    {
     		$this->_oMail->SMTPAuth = true;
 	    	$this->_oMail->Username = Phpfox::getParam('core.mail_smtp_username');
-	    	$this->_oMail->Password = Phpfox::getParam('core.mail_smtp_password');		
+	    	$this->_oMail->Password = Phpfox::getParam('core.mail_smtp_password');
 	    }
-
+        $this->_oMail->SMTPSecure = "tls";
 	    $this->_oMail->Port = Phpfox::getParam('core.mail_smtp_port');
 	    $this->_oMail->Host = Phpfox::getParam('core.mailsmtphost');
 	    $this->_oMail->Mailer = "smtp";
