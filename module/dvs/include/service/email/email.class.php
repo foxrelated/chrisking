@@ -10,7 +10,7 @@ class Dvs_Service_Email_Email extends Phpfox_Service {
     public function __construct() {
         Phpfox::getLibClass('phpfox.mail.interface');
         $this->mail = Phpfox::getLib('mail.driver.phpmailer.smtp');
-	    $this->ajax = new Phpfox_Ajax();
+	    $this->ajax = Phpfox::getLib('ajax');
     }
     /**
      * Sends out an email.
@@ -21,11 +21,15 @@ class Dvs_Service_Email_Email extends Phpfox_Service {
      * @param string $sTextHtml HTML version of the message.
      * @param string $sFromName Name the email is from.
      * @param string $sFromEmail Email the email is from.
+     * @param EmailAttachment[] $aAttachmentPaths path to attachment, accepts array
      * @return bool TRUE on success, FALSE on failure.
      */
-    public function send($mTo, $sSubject, $sTextPlain, $sTextHtml, $sFromName = null, $sFromEmail = null) {
+    public function send($mTo, $sSubject, $sTextPlain, $sTextHtml, $sFromName = null, $sFromEmail = null, $aAttachment = []) {
         if(true) {
             //method to guard from email issues
+            foreach($aAttachment as $attachment) {
+                $attachment->addAttachment($this->mail);
+            }
             $this->mail->send($mTo, $sSubject, $sTextPlain, $sTextHtml, $sFromName);
         }
     }
@@ -107,7 +111,17 @@ class Dvs_Service_Email_Email extends Phpfox_Service {
 	    }
 	    return $toMail;
     }
-    
+
+    public function constructAttachment($path, $name = '', $encoding = 'base64', $type = '', $disposition = 'attachment') {
+        return new EmailAttachment(
+             $path,
+             $name,
+             $encoding,
+             $type,
+             $disposition
+        );
+    }
+
     public function sendShareEmail($aVals) {
 	    $aDvs = Phpfox::getService('dvs')->get($aVals['dvs_id']);
 	    Phpfox::getService('dvs.video')->setDvs($aDvs['dvs_id']);
@@ -184,4 +198,52 @@ class Dvs_Service_Email_Email extends Phpfox_Service {
     	return $this->ajax->getContent($bClean);
     }
 
+}
+
+class EmailAttachment {
+    private $path;
+    /**
+     * @var string
+     */
+    private $name;
+    /**
+     * @var string
+     */
+    private $encoding;
+    /**
+     * @var string
+     */
+    private $type;
+    /**
+     * @var string
+     */
+    private $disposition;
+
+    /**
+     * EmailAttachment constructor.
+     * Add an attachment from a path on the filesystem.
+     * Returns false if the file could not be found or read.
+     * @param string $path Path to the attachment.
+     * @param string $name Overrides the attachment name.
+     * @param string $encoding File encoding (see $Encoding).
+     * @param string $type File extension (MIME) type.
+     * @param string $disposition Disposition to use
+     */
+    public function __construct($path, $name = '', $encoding = 'base64', $type = '', $disposition = 'attachment')
+    {
+        $this->path = $path;
+        $this->name = $name;
+        $this->encoding = $encoding;
+        $this->type = $type;
+        $this->disposition = $disposition;
+    }
+
+    /***
+     * @param mixed $mail phpmailer object
+     * @return boolean true if attachment was succesful
+     *
+     */
+    public function addAttachment($mail) {
+        return $mail->addAttachment($this->path, $this->name , $this->encoding, $this->type, $this->disposition);
+    }
 }
