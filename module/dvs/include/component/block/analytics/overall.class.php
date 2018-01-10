@@ -50,7 +50,7 @@ class Dvs_Component_Block_Analytics_Overall extends Phpfox_Component {
         list($sBounceRateLineData, $iBounceRateTotal, $iBounceRateMaxValue) = $oGAService->getChartData($oBounceRateLineRequest->rows, 'number', 'avg');
 
         // New User Percent
-        $oNewVisitorPieRequest = $oGAService->makeRequest('ga:percentNewSessions', array('filters'=>'ga:source=~^'.$aDvs['dealer_name']), $sDateFrom);
+        $oNewVisitorPieRequest = $oGAService->makeRequest('ga:percentNewSessions', array('filters'=>'ga:source=~^'.$this->prepareName($aDvs['dealer_name'])), $sDateFrom);
         $iNewSession = (float)$oNewVisitorPieRequest->totalsForAllResults['ga:percentNewSessions'];
         $iOldSession = 100 - $iNewSession;
         $iNewSession = number_format($iNewSession, 2);
@@ -99,6 +99,14 @@ class Dvs_Component_Block_Analytics_Overall extends Phpfox_Component {
                     'var sessionCityDataRaw = ' . $sSessionCityTableData . ';' .
                     '</script>'
             ));
+    }
+    function prepareName($dealerName) {
+        $dealerName = str_replace("&#039;","'", $dealerName);
+        $dealerName = str_replace("&amp;", "%26",$dealerName);
+        $dealerName = str_replace(";", "\;",$dealerName);
+        $dealerName = str_replace(",", "\,",$dealerName);
+
+        return $dealerName;
     }
 }
 ?>
