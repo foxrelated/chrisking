@@ -73,14 +73,15 @@ class Dvs_Service_Analytics_Analytics extends Phpfox_Service {
     }
 
     function getTableData($aDataRows) {
-        $sRawData = [];
-
+        $sRawData = "[";
         if (is_array($aDataRows)) {
             foreach($aDataRows as $aRow) {
-                $sRawData[] = array($aRow[0],floatval($aRow[1]));
+                $sRawData .= "['" . str_replace("'","\'",$aRow[0]) . "', ".$aRow[1]."],";
             }
+            $sRawData = substr($sRawData, 0, -1);
         }
-        return json_encode($sRawData);
+        $sRawData .= "]";
+        return $sRawData;
     }
 }
 ?>
