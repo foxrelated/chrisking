@@ -76,7 +76,7 @@ class Dvs_Service_Analytics_Analytics extends Phpfox_Service {
         $sRawData = "[";
         if (is_array($aDataRows)) {
             foreach($aDataRows as $aRow) {
-                $sRawData .= "['" . $aRow[0] . "', ".$aRow[1]."],";
+                $sRawData .= "['" . str_replace("'","\'",$aRow[0]) . "', ".$aRow[1]."],";
             }
             $sRawData = substr($sRawData, 0, -1);
         }
