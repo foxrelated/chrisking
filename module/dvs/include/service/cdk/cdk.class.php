@@ -12,112 +12,127 @@ class Dvs_Service_Cdk_Cdk extends Phpfox_Service {
     }
 
     public function export($aDvs) {
-        $sTodayTime = strtotime('00:00:00');
-        $sYear = date('Y', $sTodayTime);
-        $sMonth = date('m', $sTodayTime);
+        try {
+            $sTodayTime = strtotime('00:00:00');
+            $sYear = date('Y', $sTodayTime);
+            $sMonth = date('m', $sTodayTime);
 
-        $oGAService = Phpfox::getService('dvs.analytics');
-        $sDateFrom = $sYear . '-' . $sMonth . '-01';
+            $oGAService = Phpfox::getService('dvs.analytics');
+            $sDateFrom = $sYear . '-' . $sMonth . '-01';
 
-        // Player Loaded
-        $oPlayerLoadedRequest = $oGAService->makeRequest('ga:sessions', array(
-            'filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'};ga:eventLabel==Player Loaded'
-        ), $sDateFrom);
-        $aPlayerLoadedData = (array)($oPlayerLoadedRequest->rows);
-        $iPlayerLoaded = 0;
-        if (count($aPlayerLoadedData)) {
-            $iPlayerLoaded = $aPlayerLoadedData[0][0];
-        }
+            // Player Loaded
+            $oPlayerLoadedRequest = $oGAService->makeRequest('ga:sessions', array(
+                'filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'};ga:eventLabel==Player Loaded'
+            ), $sDateFrom);
+            $aPlayerLoadedData = (array)($oPlayerLoadedRequest->rows);
+            $iPlayerLoaded = 0;
+            if (count($aPlayerLoadedData)) {
+                $iPlayerLoaded = $aPlayerLoadedData[0][0];
+            }
 
-        // Video Views
-        $oVideoViewRequest = $oGAService->makeRequest('ga:sessions', array(
-            'filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'};ga:eventLabel==Media Begin'
-        ), $sDateFrom);
-        $aVideoViewData = (array)($oVideoViewRequest->rows);
-        $iVideoView = 0;
-        if (count($aVideoViewData)) {
-            $iVideoView = $aVideoViewData[0][0];
-        }
+            // Video Views
+            $oVideoViewRequest = $oGAService->makeRequest('ga:sessions', array(
+                'filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'};ga:eventLabel==Media Begin'
+            ), $sDateFrom);
+            $aVideoViewData = (array)($oVideoViewRequest->rows);
+            $iVideoView = 0;
+            if (count($aVideoViewData)) {
+                $iVideoView = $aVideoViewData[0][0];
+            }
 
-        // Play Rate
-        $iPlayRate = 0;
-        if ($iPlayerLoaded > 0) {
-            $iPlayRate = (int)((float)$iVideoView * 100 / (float)$iPlayerLoaded);
-        }
+            // Play Rate
+            $iPlayRate = 0;
+            if ($iPlayerLoaded > 0) {
+                $iPlayRate = (int)((float)$iVideoView * 100 / (float)$iPlayerLoaded);
+            }
 
-        // Chapter Clicks
-        $oChapterClickedRequest = $oGAService->makeRequest('ga:sessions', array(
-            'filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'};ga:eventLabel=~^Chapter Clicked'
-        ), $sDateFrom);
-        $aChapterClickedData = (array)($oChapterClickedRequest->rows);
-        $iChapterClicked = 0;
-        if (count($aChapterClickedData)) {
-            $iChapterClicked = $aChapterClickedData[0][0];
-        }
+            // Chapter Clicks
+            $oChapterClickedRequest = $oGAService->makeRequest('ga:sessions', array(
+                'filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'};ga:eventLabel=~^Chapter Clicked'
+            ), $sDateFrom);
+            $aChapterClickedData = (array)($oChapterClickedRequest->rows);
+            $iChapterClicked = 0;
+            if (count($aChapterClickedData)) {
+                $iChapterClicked = $aChapterClickedData[0][0];
+            }
 
-        // Chapter Watched
-        $oChapterWatchedRequest = $oGAService->makeRequest('ga:sessions', array(
-            'filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'};ga:eventLabel=~^Chapter Watched'
-        ), $sDateFrom);
-        $aChapterWatchedData = (array)($oChapterWatchedRequest->rows);
-        $iChapterWatched = 0;
-        if (count($aChapterWatchedData)) {
-            $iChapterWatched = $aChapterWatchedData[0][0];
-        }
+            // Chapter Watched
+            $oChapterWatchedRequest = $oGAService->makeRequest('ga:sessions', array(
+                'filters'=>'ga:eventCategory=~^{'.$aDvs['title_url'].'};ga:eventLabel=~^Chapter Watched'
+            ), $sDateFrom);
+            $aChapterWatchedData = (array)($oChapterWatchedRequest->rows);
+            $iChapterWatched = 0;
+            if (count($aChapterWatchedData)) {
+                $iChapterWatched = $aChapterWatchedData[0][0];
+            }
 
-        // Share
-        $aDefaultValue = array(
-            'Direct Link' => 0,
-            'Text Message' => 0,
-            'Facebook' => 0,
-            'Twitter' => 0,
-            'Google' => 0,
-            'Email' => 0,
-            'CRM Video Email Open' => 0,
-            'CRM Video Email Click' => 0,
-            'CRM Email CTR' => 0
-        );
-        $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array(
-            'dimensions'=>'ga:medium',
-            'filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$aDvs['dealer_name'],'sort'=>'-ga:sessions'
-        ), $sDateFrom);
-        if ($oShareViewRequest->rows) {
-            foreach($oShareViewRequest->rows as $aDataRow) {
-                if (isset($aDefaultValue[$aDataRow[0]])) {
-                    $aDefaultValue[$aDataRow[0]] = $aDataRow[1];
+            // Share
+            $aDefaultValue = array(
+                'Direct Link' => 0,
+                'Text Message' => 0,
+                'Facebook' => 0,
+                'Twitter' => 0,
+                'Google' => 0,
+                'Email' => 0,
+                'CRM Video Email Open' => 0,
+                'CRM Video Email Click' => 0,
+                'CRM Email CTR' => 0
+            );
+            $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array(
+                'dimensions'=>'ga:medium',
+                'filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$this->prepareName(['dealer_name']),'sort'=>'-ga:sessions'
+            ), $sDateFrom);
+            if ($oShareViewRequest->rows) {
+                foreach($oShareViewRequest->rows as $aDataRow) {
+                    if (isset($aDefaultValue[$aDataRow[0]])) {
+                        $aDefaultValue[$aDataRow[0]] = $aDataRow[1];
+                    }
                 }
             }
-        }
-        if ($aDefaultValue['CRM Video Email Open'] > 0) {
-            $aDefaultValue['CRM Email CTR'] = (int)((float)$aDefaultValue['CRM Video Email Click'] * 100 / (float)$aDefaultValue['CRM Video Email Open']);
+            if ($aDefaultValue['CRM Video Email Open'] > 0) {
+                $aDefaultValue['CRM Email CTR'] = (int)((float)$aDefaultValue['CRM Video Email Click'] * 100 / (float)$aDefaultValue['CRM Video Email Open']);
+            }
+
+            $sFileName = 'wheelstv_dvs_' . $aDvs['cdk_id'] .'_' . date('Ymd', time()) . '.csv';
+            $sNewFile = Phpfox::getParam('core.dir_cache') . $sFileName;
+            $oFileHandler = fopen($sNewFile, 'w+');
+            fputcsv($oFileHandler, array(
+                'wheelstv',
+                'dvs',
+                $aDvs['cdk_id'],
+                $sMonth . '-01-' . $sYear,
+                $iPlayerLoaded,
+                $iVideoView,
+                $iPlayRate,
+                $iChapterClicked,
+                $iChapterWatched,
+                $aDefaultValue['Direct Link'],
+                $aDefaultValue['Text Message'],
+                $aDefaultValue['Facebook'],
+                $aDefaultValue['Twitter'],
+                $aDefaultValue['Google'],
+                $aDefaultValue['Email'],
+                $aDefaultValue['CRM Video Email Open'],
+                $aDefaultValue['CRM Video Email Click'],
+                $aDefaultValue['CRM Email CTR']
+            ));
+            fclose($oFileHandler);
+
+            return $sFileName;
+        } catch (\Exception $e) {
+            Phpfox::getLib('file')->write(PHPFOX_DIR_FILE . 'log' . PHPFOX_DS . 'analytics_error_cdk'  . PHPFOX_TIME . uniqid() . '.log', $e->getMessage() . "\n" . $e->getTraceAsString());
+
         }
 
-        $sFileName = 'wheelstv_dvs_' . $aDvs['cdk_id'] .'_' . date('Ymd', time()) . '.csv';
-        $sNewFile = Phpfox::getParam('core.dir_cache') . $sFileName;
-        $oFileHandler = fopen($sNewFile, 'w+');
-        fputcsv($oFileHandler, array(
-            'wheelstv',
-            'dvs',
-            $aDvs['cdk_id'],
-            $sMonth . '-01-' . $sYear,
-            $iPlayerLoaded,
-            $iVideoView,
-            $iPlayRate,
-            $iChapterClicked,
-            $iChapterWatched,
-            $aDefaultValue['Direct Link'],
-            $aDefaultValue['Text Message'],
-            $aDefaultValue['Facebook'],
-            $aDefaultValue['Twitter'],
-            $aDefaultValue['Google'],
-            $aDefaultValue['Email'],
-            $aDefaultValue['CRM Video Email Open'],
-            $aDefaultValue['CRM Video Email Click'],
-            $aDefaultValue['CRM Email CTR']
-        ));
-        fclose($oFileHandler);
+    }
 
-        return $sFileName;
+    function prepareName($dealerName) {
+        $dealerName = str_replace("&#039;","'", $dealerName);
+        $dealerName = str_replace("&amp;", "%26",$dealerName);
+        $dealerName = str_replace(";", "\;",$dealerName);
+        $dealerName = str_replace(",", "\,",$dealerName);
+
+        return $dealerName;
     }
 
     public function uploadToClient($sFileName) {
