@@ -40,7 +40,7 @@ class Dvs_Component_Block_Analytics_Video extends Phpfox_Component {
                         '</script>'
                 ));
         } catch (\Exception $e) {
-            Phpfox::getLib('file')->write(PHPFOX_DIR_FILE . 'log' . PHPFOX_DS . 'analytics_error_overall'  . PHPFOX_TIME . uniqid() . '.log', $e->getMessage() . "\n" . $e->getTraceAsString());
+            Phpfox::getLib('file')->write(PHPFOX_DIR_FILE . 'log' . PHPFOX_DS . 'analytics_error_video'  . PHPFOX_TIME . uniqid() . '.log', $e->getMessage() . "\n" . $e->getTraceAsString());
 
         }
 
