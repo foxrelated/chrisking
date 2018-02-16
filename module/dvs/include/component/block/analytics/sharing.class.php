@@ -17,12 +17,12 @@ class Dvs_Component_Block_Analytics_Sharing extends Phpfox_Component {
             //$iEmailClickedEvent = (int)$oEmailClickedRequest->totalsForAllResults['ga:sessions'];
 
             //CRM Video Email Open
-            $oEmailOpenRequest = $oGAService->makeRequest('ga:sessions', array('filters'=>'ga:campaign==DVS Share Links;ga:medium==CRM Video Email Open;ga:source=~^'.$this->prepareName(['dealer_name'])), $sDateFrom);
+            $oEmailOpenRequest = $oGAService->makeRequest('ga:sessions', array('filters'=>'ga:campaign==DVS Share Links;ga:medium==CRM Video Email Open;ga:source=~^'.$this->prepareName($aDvs['dealer_name'])), $sDateFrom);
             $iEmailOpenEvent = (int)$oEmailOpenRequest->totalsForAllResults['ga:sessions'];
 
 
             //CRM Video Email Click
-            $oEmailClickRequest = $oGAService->makeRequest('ga:sessions', array('filters'=>'ga:campaign==DVS Share Links;ga:medium==CRM Video Email Click;ga:source=~^'.$this->prepareName(['dealer_name'])), $sDateFrom);
+            $oEmailClickRequest = $oGAService->makeRequest('ga:sessions', array('filters'=>'ga:campaign==DVS Share Links;ga:medium==CRM Video Email Click;ga:source=~^'.$this->prepareName($aDvs['dealer_name'])), $sDateFrom);
             $iEmailClickEvent = (int)$oEmailClickRequest->totalsForAllResults['ga:sessions'];
 
             // Click-Through Rate
@@ -46,7 +46,7 @@ class Dvs_Component_Block_Analytics_Sharing extends Phpfox_Component {
                 'CRM Video Email Open' => 0,
                 'CRM Video Email Click' => 0
             );
-            $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:medium','filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$this->prepareName(['dealer_name']),'sort'=>'-ga:sessions'), $sDateFrom);
+            $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:medium','filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$this->prepareName($aDvs['dealer_name']),'sort'=>'-ga:sessions'), $sDateFrom);
             if ($oShareViewRequest->rows) {
                 $sShareViewData = "[";
                 foreach($oShareViewRequest->rows as $aDataRow) {
