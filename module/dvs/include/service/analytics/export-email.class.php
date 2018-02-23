@@ -364,7 +364,7 @@ class Dvs_Service_Analytics_Export_Email extends Phpfox_Service {
             $pdf->Image($sImagePrefix.'8.png', 105, 135, 45, 22);
 
             // New User Percent - Pie Chart
-            $oNewVisitorPieRequest = $oGAService->makeRequest('ga:percentNewSessions', array('filters'=>'ga:source=~^'.$this->prepareName($aDvs['dealer_name'])), $sDateFrom);
+            $oNewVisitorPieRequest = $oGAService->makeRequest('ga:percentNewSessions', array('filters'=>'ga:source=~^'.$this->prepareName(['dealer_name'])), $sDateFrom);
             $iNewSession = (float)$oNewVisitorPieRequest->totalsForAllResults['ga:percentNewSessions'];
             $iOldSession = 100 - $iNewSession;
             $iNewSession = number_format($iNewSession, 2);
@@ -552,7 +552,7 @@ class Dvs_Service_Analytics_Export_Email extends Phpfox_Service {
                 'QR Code' => 0,
                 'CRM Video Email' => 0,
             );
-            $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:medium','filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$this->prepareName($aDvs['dealer_name']),'sort'=>'-ga:sessions'), $sDateFrom);
+            $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array('dimensions'=>'ga:medium','filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$this->prepareName(['dealer_name']),'sort'=>'-ga:sessions'), $sDateFrom);
             if ($oShareViewRequest->rows) {
                 // Draw Most Watched Videos Table
                 $pdf->SetXY(5, 25);
