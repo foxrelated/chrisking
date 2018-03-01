@@ -268,6 +268,7 @@ color:#fff;
                 var bOverlay1Type = '{$aPlayer.custom_overlay_1_type}';
                 {if $aPlayer.custom_overlay_1_type == 1}
                  var bCustomOverlay1Content = '<a href="#" class="gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
+               
                 {elseif $aPlayer.custom_overlay_1_type == 3}
                  {if $aPlayer.custom_overlay_1_text != ''}
                      var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_1_text}"></a>';

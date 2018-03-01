@@ -55,6 +55,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </style>
 {/if}
 
+
 <form id="contact_dealer" name="contact_dealer" action="javascript:void(0);">
 	<fieldset>
 		{if $sBrowser == 'mobile'}

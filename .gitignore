@@ -1,15 +1,24 @@
+# Local only directories
 /file/
 /.idea/
-/.htaccess
+/install/
+/nbproject/
+/vendor/
+.project
+
+# Local only files
 /include/setting/dev.sett.php
 /include/setting/server.sett.php
 /include/setting/common.sett.php
-.project
-include/setting/1dev.sett.php
-module/dvs/static/jscript/vin2-bak.js
-module/dvs/template/default/controller/vin/script.html-bak.php
+/include/setting/1dev.sett.php
+/module/dvs/static/jscript/vin2-bak.js
+/module/dvs/template/default/controller/vin/script.html-bak.php
+.htaccess
+.gitignore
+.DS_Store
+composer.*
+info.php
+LICENSE.md
 README.md
 robots.txt
-.gitignore
-info.php
-.DS_Store
+wtvdvs_dev*

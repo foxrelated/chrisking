@@ -162,6 +162,13 @@ color:#{$aPlayer.player_button_icons} !important;
 background: #{$aPlayer.player_progress_bar} !important;
 {r}
 {/if}
+
+    .js_box {l}
+       border-radius: 0;
+       -webkit-border-radius: 0;
+       width: 300px !important;
+    {r}
+    
 </style>
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">
 <link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'>
@@ -209,6 +216,7 @@ color:#fff;
     
     //console.log('helo');
     
+
     {if $bIsDvs}
     
     {foreach from = $aOverviewVideos key = iKey item = aVideo}
@@ -240,22 +248,48 @@ color:#fff;
     console.log(aMediaIds);
     {r}
 
+
     
     {if $aPlayer.custom_overlay_1_type}
-        if (bDebug) console.log('Overlay: Overlay 1 is active. Type: {$aPlayer.custom_overlay_1_type}. Start: {$aPlayer.custom_overlay_1_start}. Duration: {$aPlayer.custom_overlay_1_duration}.');
+        if (bDebug) 
+            console.log('Overlay: Overlay 1 is active. Type: {$aPlayer.custom_overlay_1_type}. Start: {$aPlayer.custom_overlay_1_start}. Duration: {$aPlayer.custom_overlay_1_duration}.');
+        
         var bCustomOverlay1 = true;
         var bOverlay1Type = '{$aPlayer.custom_overlay_1_type}';
-        {if $aPlayer.custom_overlay_1_type == 1}
-         var bCustomOverlay1Content = '<a href="#" class="gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
+        
+        {if $aPlayer.custom_overlay_1_type == 1 }
+            var bCustomOverlay1Content = '<a href="#" class="gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
+ 
+        
+        //=== Custom Adding Type 4 By Won 03-01-2018 0538PM
+        {elseif $aPlayer.custom_overlay_1_type == 4 }
+            console.log("Test Overlay!");
+
+            var bCustomOverlay1Content = 
+                    '<div class="modal modal01" id="modal" style="width:38%; height:35%; margin:10px; margin-right: 6px; float:right; background-color:rgba(0,0,0,0.65); min-height:66px;">\n\
+                        <button type="button" class="close" aria-label="Close" onclick="overlayClose();" style="float:right;"><span aria-hidden="true">&times;</span></button>\n\
+                        <div style="width:21.33333333%; float:left;">\n\
+                            <div style="display:flex; justify-content:center; align-items:center; min-height: 75px;">\n\
+                                <img style="margin-left: 15px; margin-top: 15px; margin-bottom: 15px;" src="{$sImagePath}icon-steeringwheel-button.png"/>\n\
+                            </div>\n\
+                        </div>\n\
+                        <div style="width:78.66666667%; float:right;">\n\
+                            <div style="font-family:Verdana, Geneva, sans-serif; text-align: left; margin-left: 15px; margin-top: 3px; margin-bottom: 10px; font-size:12px;">Book an Actual Test Drive</div>\n\
+                            <div><a style="float: left; margin-left: 15px; margin-bottom: 10px;" href="#" class="gbp_ov" onclick="tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetPriceForm2\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img class="gbp_ov_img" src="{$sImagePath}book-right-here.png" alt="Contact Dealer" /></a></div>\n\
+                        </div>\n\
+                    </div>';
+        //=== end of codes by Won
+        
+        
         {elseif $aPlayer.custom_overlay_1_type == 3}
-        {if $aPlayer.custom_overlay_1_text != ''}
-         var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_1_text}"></a>';
-         {else}
-         var bCustomOverlay1Content = '';
-         bCustomOverlay1 = false;
-         {/if}
+            {if $aPlayer.custom_overlay_1_text != ''}
+                var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_1_text}"></a>';
+            {else}
+                var bCustomOverlay1Content = '';
+                bCustomOverlay1 = false;
+            {/if}
         {else}
-        var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_1_text}</a>';
+            var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_1_text}</a>';
         {/if}
         
         var iCustomOverlay1Start = {$aPlayer.custom_overlay_1_start};
@@ -264,6 +298,7 @@ color:#fff;
         var bCustomOverlay1 = false;
         if (bDebug) console.log('Overlay: Overlay 1 is inactive.');
     {/if}
+
 
     {if $aPlayer.custom_overlay_2_type}
         if (bDebug) console.log('Overlay: Overlay 2 is active. Type: {$aPlayer.custom_overlay_2_type}. Start: {$aPlayer.custom_overlay_2_start}. Duration: {$aPlayer.custom_overlay_2_duration}.');
@@ -347,45 +382,21 @@ color:#fff;
         var bAutoAdvance = true;
     {/if}
     
+    function overlayClose(){l}
+        var m = document.getElementById('modal');
+        m.style.display='none';
+        m.parentNode.removeChild(m);
+        {r}
+        
+    function contactFormClose(){l}
+        var m = document.getElementByClass('js_box');
+        m.style.display='none';
+        m.parentNode.removeChild(m);
+        {r}
     
-function enableVideoSelectCarousel(){l}
-    if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
-        $('#overview_playlist').show();
-        $("#overview_playlist").jCarouselLite({l}
-        btnNext: ".next",
-        btnPrev: ".prev",
-        circular: false,
-        visible: 4,
-        scroll: 3,
-        speed: 900
-    {r});
-    {r}
-
-    function enableInventoryCarousel(){l}
-    if (bDebug) console.log("Player: enableInventoryCarousel called.");
-        $('#overview_inventory').show();
-        $("#overview_inventory").jCarouselLite({l}
-        btnNext: ".next",
-        btnPrev: ".prev",
-        circular: false,
-        visible: 2,
-        scroll: 1,
-        speed: 900
-    {r});
-    {r}
-
-    $Behavior.jCarousel = function() {l}
-    {if $aDvs.inv_display_status}
-        $("#overview_inventory").jCarouselLite({l}
-            btnNext: ".next",
-            btnPrev: ".prev",
-            circular: false,
-            visible: 2,
-            scroll: 2,
-            speed: 900
-        {r});
-        {else}
-        {if $bIsDvs}
+    function enableVideoSelectCarousel(){l}
+        if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
+            $('#overview_playlist').show();
             $("#overview_playlist").jCarouselLite({l}
             btnNext: ".next",
             btnPrev: ".prev",
@@ -393,22 +404,55 @@ function enableVideoSelectCarousel(){l}
             visible: 4,
             scroll: 3,
             speed: 900
-            {r});
-            {else}
-            $("#overview_playlist").jCarouselLite({l}
+        {r});
+        {r}
+
+    function enableInventoryCarousel(){l}
+        if (bDebug) console.log("Player: enableInventoryCarousel called.");
+            $('#overview_inventory').show();
+            $("#overview_inventory").jCarouselLite({l}
             btnNext: ".next",
             btnPrev: ".prev",
             circular: false,
-            visible: {if ($bIsExternal || (!$bIsDvs && isset($iPlaylistThumbnails)))}{$iPlaylistThumbnails}{ else}4{/if},
-            scroll: {if ($bIsExternal || (!$bIsDvs && isset($iScrollAmt)))}{$iScrollAmt}{ else}3{/if},
+            visible: 2,
+            scroll: 1,
             speed: 900
+        {r});
+        {r}
+
+    $Behavior.jCarousel = function() {l}
+        {if $aDvs.inv_display_status}
+            $("#overview_inventory").jCarouselLite({l}
+                btnNext: ".next",
+                btnPrev: ".prev",
+                circular: false,
+                visible: 2,
+                scroll: 2,
+                speed: 900
             {r});
+            {else}
+            {if $bIsDvs}
+                $("#overview_playlist").jCarouselLite({l}
+                btnNext: ".next",
+                btnPrev: ".prev",
+                circular: false,
+                visible: 4,
+                scroll: 3,
+                speed: 900
+                {r});
+                {else}
+                $("#overview_playlist").jCarouselLite({l}
+                btnNext: ".next",
+                btnPrev: ".prev",
+                circular: false,
+                visible: {if ($bIsExternal || (!$bIsDvs && isset($iPlaylistThumbnails)))}{$iPlaylistThumbnails}{ else}4{/if},
+                scroll: {if ($bIsExternal || (!$bIsDvs && isset($iScrollAmt)))}{$iScrollAmt}{ else}3{/if},
+                speed: 900
+                {r});
+            {/if}
         {/if}
-    {/if}
     {r}    
   
-    
-   
 </script>
 
 <section id="dvs_bc_player"{if $bIsDvs} itemprop="video" itemscope itemtype="http://schema.org/VideoObject"{/if}>

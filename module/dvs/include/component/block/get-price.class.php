@@ -14,6 +14,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  */
 class Dvs_Component_Block_Get_Price extends Phpfox_Component {
 
+    
 	public function process()
 	{
 		

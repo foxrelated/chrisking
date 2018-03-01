@@ -357,7 +357,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         $oResponse = curl_exec($ch);
 
         $oOutput= @json_decode($oResponse);
-
+        
         if ($oOutput === null || !isset($oOutput->make)) {
             // Track error VIN
             $this->database()->insert(Phpfox::getT('ko_dvs_vin_parsed_notfound'), array(

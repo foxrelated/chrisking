@@ -131,6 +131,7 @@ function changeCuePoint(sCuePoint) {
 	}
 }
 
+
 function getPrice(iDvsId) {
 	if (aCurrentVideoMetaData) {
 		$('#dvs_get_price_container').show('fast');
@@ -146,6 +147,7 @@ function getPrice(iDvsId) {
 		}
 	}
 }
+
 
 function getPriceIDrive(iIDriveId) {
 	if (aCurrentVideoMetaData) {

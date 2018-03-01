@@ -41,7 +41,7 @@ $(document).ready(function () {
         $(".vjs-endscreen-overlay-content .js_box").show();
         waitForElementToDisplay(".js_box #contact_dealer", 10);
     });
-
+    
     videojs("bcv2").ready(function () {
         $(document).on('submit', '#contact_dealer', function () {
             var element = $(".vjs-endscreen-overlay-content .js_box");
@@ -116,6 +116,11 @@ $(document).ready(function () {
         var cuePointArr = [];
         var allCuePointData,
             currentCuePoint;
+            
+        $(document).on('click', ".gbp_ov_img", function () {
+            myPlayer.pause();
+            overlayClose();
+        });
 
         oChapterDivs['Intro'] = $('#chapter_container_Intro').html();
         oChapterDivs['WhatsNew'] = $('#chapter_container_WhatsNew').html();
@@ -775,14 +780,18 @@ $(document).ready(function () {
                 "Action": "Overlay Banner"
             });
         }
-
+        
     });
     $(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
         jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#dvs_inventory_link").attr('href', inventory_new);
     });
     $(document).on('DOMNodeInserted', '.vjs-custom-overlay, .vjs-overlay', function () {
         $(".gp_ov").attr("onclick", 'tb_show(\'' + contact_dealer + '\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
-    })
+    });
+    
+
+    
+    
 });
 
 function showspinner() {

@@ -53,7 +53,7 @@ $(document).on('click',".vjs-endscreen-overlay-content #dvs_inventory_link",func
 videojs("bcv2").ready(function(){
     
     
-    $(document).on( 'submit','#contact_dealer',function() {
+$(document).on( 'submit','#contact_dealer',function() {
         
        var element = $(".vjs-endscreen-overlay-content .js_box");
        if(endscreen_player == 1){
@@ -137,7 +137,7 @@ $(document).on('click','.js_box .js_box_close a',function() {
                 }
                 }
 }); 
-    
+
     
       myPlayer = this;
       var cuePointArr=[],
@@ -957,7 +957,8 @@ $(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
 });
 $(document).on('DOMNodeInserted','.vjs-custom-overlay, .vjs-overlay',function(){
     $(".gp_ov").attr("onclick",'tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId='+jQuery("#bc_dvs").val()+'&sRefId= '+aCurrentVideoMetaData.referenceId+'\'));endscreenContact(\'Video End Screen\');');
-})
+});
+
 });
 function showspinner(){
       $(".vjs-loading-spinner").show();

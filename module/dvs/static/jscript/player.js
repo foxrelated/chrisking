@@ -177,6 +177,7 @@ function getPrice(iDvsId) {
 	}
 }
 
+/*
 // function getPriceIDrive(iIDriveId) {
 // 	if (aCurrentVideoMetaData) {
 // 
@@ -219,7 +220,7 @@ function getPrice(iDvsId) {
 // 	if (aCurrentVideoMetaData) {
 // 
 // 	}
-// }
+// }*/
 
 //Called when clicking a chapter or when the video rolls past a chapter, sets lights.
 function cueChange(sCuePoint) {
@@ -837,7 +838,7 @@ function cuePointsHandler(cuepoints) {
 
 }
 
-// function exteralthumbnailClick(iKey) {
+/*// function exteralthumbnailClick(iKey) {
 // 	if (bDebug) {
 // 		console.log('Player: Playlist Thumbnail Click: #' + iKey);
 // 	}
@@ -862,7 +863,7 @@ function cuePointsHandler(cuepoints) {
 // 		modCon.getMediaAsynch(aMediaIds[iKey]);
 // 	}
 // 	return false;
-// }
+// }*/
 
 
 function thumbnailClick(iKey) {
@@ -925,10 +926,10 @@ function thumbnailClickDvs(iDvsId) {
 	});
 }
 
-// function thumbnailClickIDrive(iIDriveId) {
+/*// function thumbnailClickIDrive(iIDriveId) {
 // 	sendToGoogle(sPlayerName, 'iDrive Player', 'Playlist', 'Thumbnail Clicked');
 // }
 // 
 // function inventoryClickDvs(iDvsId) {
 // 	sendToGoogle('DVS Site', 'Inventory', 'Inventory Clicked');
-// }
+// }*/
