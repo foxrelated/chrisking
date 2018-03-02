@@ -14,20 +14,37 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 ?>
 <script xmlns="http://www.w3.org/1999/html">
     {literal}
+   
     $('#contact_dealer').submit(function (event) {
-
         // cancels the form submission
         event.preventDefault();
+        
+        var cname = $('input#name').val();
+        var email = $('input#email').val();
+        var phone = $('input#phone').val();
+        var zip = $('input#zip').val();
+
+        var fieldName = /^[a-zA-Z]+$/i;
+        var fieldNum = /^[0-9]+$/g;
+        var fieldEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        var isValidEmail = fieldEmail.test(email);
+        var hasLetterForPhone = !!(/[a-zA-Z]+/g).exec(phone);  
 
         // do whatever you want here
-        $.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
-
+        if ((!!cname  && !!cname.match(fieldName)) || (!!email && !!isValidEmail) || (!!phone && !hasLetterForPhone) || (!!zip && !!zip.match(fieldNum))) {
+            $.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
+        }
+        
     });
-    $('input, textarea').placeholder();
     
-    $(document).ready(function(){
-        $(".js_box").find(".js_box_title").css("display", "none");    
+    $('#dvs_contact_success').submit(function (event) {
+        event.preventDefault();
+        tb_remove();
+        return js_box_remove(this);
     });
+    
+    $('input, textarea').placeholder();
     
     {/literal}
     
@@ -90,7 +107,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     
     /*-- Placeholder --*/
     ::-webkit-input-placeholder {l} /* Chrome/Opera/Safari */
-        font-size:12px;
+        font-size:10px;
         padding-top: 3px;
     {r}
     
@@ -108,6 +125,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         font-size:12px;
         padding-top: 3px;
     {r}
+    /*-- End of Placeholder --*/
  
     /*-- Grid Style --*/ 
     .grid-container{l}
@@ -232,7 +250,18 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         border-radius: .25rem;
         transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     {r}
+    /*-- end of form styles --*/
     
+    /*-- Success modal --*/
+    .dvsContactSuccessText {l}  
+        min-height: 52px;
+        color: #DAD5D5;
+        text-align: center;
+        font-size: 13px;
+        margin: 10px;
+        margin-bottom: 35px;
+        font-family: Verdana, Geneva, sans-serif;
+    {r}
     
 </style>
 {/if}
@@ -247,13 +276,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
     <div class="form-group">
         <label for="email">E-mail</label>
-        <input type="email" name="val[contact_email]" id="email" placeholder="mymail@" {if Phpfox::getParam('dvs.get_price_validate_email')} required {/if} class="form-control" />
+        <input type="email" name="val[contact_email]" id="email" placeholder="mymail@" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" {if Phpfox::getParam('dvs.get_price_validate_email')} required {/if} class="form-control" />
     </div>
 
     <div class="form-group grid-container no-margin">
         <div class="form-group col-2a no-padding" >
             <label for="phone">Phone number</label>
-            <input type="text" name="val[contact_phone]" id="phone" placeholder="Enter your phone" {if Phpfox::getParam('dvs.get_price_validate_phone')} required {/if} class="form-control" />
+            <input type="text" name="val[contact_phone]" id="phone" placeholder="Your phone number" maxlength="12" {if Phpfox::getParam('dvs.get_price_validate_phone')} required {/if} class="form-control" />
         </div>
 
         <div class="form-group col-2a no-padding" >
@@ -279,6 +308,15 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 </form>
 
-<div id="dvs_contact_success" style="display:none;">
-    {phrase var='dvs.contact_request_sent_thank_you'}
-</div>
+<form id="dvs_contact_success" style="display:none;">
+    <div class="js_box_close closeContainer" aria-label="Close" style="float:right; color:rgb(255,255,255); font-size: 20px; top:4px;"><a class="close" onclick="return js_box_remove(this);" aria-hidden="true">&times;</a></div>
+    <div style="display:flex; justify-content:center; align-items:center; min-height: 75px; text-align: center;">
+        <img style="margin-left: 15px; margin-top: 50px; margin-bottom: 20px;" src="/module/dvs/static/image/icon-complete-checkbox.png"/>
+    </div>
+    <div class="dvsContactSuccessText">
+        <p>Got it, a friendly member of the dealership will get in touch shortly to confirm your test drive.</p>
+    </div>
+    <div class="form-group">
+        <input class="btn btn-primary submitButton" id="dvsContactSuccessBtn" type="submit" value="Back to Virtual Test Drive"/>
+    </div>    
+</form>

@@ -1443,79 +1443,38 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 	public function contactDealer()
 	{
-		$aVals = Phpfox::getLib('request')->getArray('val');
-		$bIsError = false;
+            $aVals = Phpfox::getLib('request')->getArray('val');
+            $bIsError = false;
 
-		if (!$aVals['contact_name'] && Phpfox::getParam('dvs.get_price_validate_name'))
-		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'). ' ');
-			$bIsError = true;
-		}
-		if (!$aVals['contact_email'] && Phpfox::getParam('dvs.get_price_validate_email'))
-		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'). ' ');
-			$bIsError = true;
-		}
-		if (!$aVals['contact_phone'] && Phpfox::getParam('dvs.get_price_validate_phone'))
-		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_phone_number'). ' ');
-			$bIsError = true;
-		}
-		if (!$aVals['contact_zip'] && Phpfox::getParam('dvs.get_price_validate_zip_code'))
-		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_zip_code'). ' ');
-			$bIsError = true;
-		}
-		if (!$aVals['contact_comments'] && Phpfox::getParam('dvs.get_price_validate_comments'))
-		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_comments'). ' ');
-			$bIsError = true;
-		}
-        
-		if (!$bIsError)
-		{
-            
-			$this->call("$('#contact_dealer').hide();");
-			$this->call("$('#dvs_contact_success').show();");
-			$this->call("setTimeout(function() { tb_remove(); }, 3000);");
+            if (!$aVals['contact_name'] && Phpfox::getParam('dvs.get_price_validate_name')) {
+                /*Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'). ' ');*/
+                $bIsError = true;
+            }
+            if (!$aVals['contact_email'] && Phpfox::getParam('dvs.get_price_validate_email')) {
+                /*Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'). ' ');*/
+                $bIsError = true;
+            }
+            if (!$aVals['contact_phone'] && Phpfox::getParam('dvs.get_price_validate_phone')) {
+                /*Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_phone_number'). ' ');*/
+                $bIsError = true;
+            }
+            if (!$aVals['contact_zip'] && Phpfox::getParam('dvs.get_price_validate_zip_code')) {
+                /*Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_zip_code'). ' ');*/
+                $bIsError = true;
+            }
 
-			$aVideo = Phpfox::getService('dvs.video')->get($aVals['contact_video_ref_id']);
-			$aDvs = Phpfox::getService('dvs')->get($aVals['contact_dvs_id']);
 
-			$sSubject = Phpfox::getPhrase('dvs.dealer_email_subject', array(
-					'contact_name' => $aVals['contact_name'],
-					'contact_email' => $aVals['contact_email'],
-					'contact_phone' => $aVals['contact_phone'],
-					'contact_zip' => $aVals['contact_zip'],
-					'contact_comments' => $aVals['contact_comments'],
-					'year' => $aVideo['year'],
-					'make' => $aVideo['make'],
-					'model' => $aVideo['model'],
-					'bodyStyle' => $aVideo['bodyStyle'],
-					'dvs_name' => $aDvs['dvs_name'],
-					'dealer_name' => $aDvs['dealer_name'],
-					'title_url' => $aDvs['title_url'],
-					'address' => $aDvs['address'],
-					'city' => $aDvs['city'],
-					'state_string' => $aDvs['state_string'],
-					'phone' => $aDvs['phone']
-			));
-            
+            if (!$bIsError) {
+                $this->call("$('#contact_dealer').hide();");               
+                $this->call("$('#dvs_contact_success').show();");
+                $this->call("$('.js_box_title').hide();");
+                $this->call("$('.js_box_content').css('min-height', '280px');");
+		/*$this->call("setTimeout(function() { tb_remove(); }, 3000);");*/
 
-            if($aDvs['email_format']){
-                $sBody = Phpfox::getPhrase('dvs.dealer_email_xml_body', array(
-                    'time' => date('Y-m-dTH:i:s', PHPFOX_TIME),
-                    'dvs_name' => $aDvs['dvs_name'],
-                    'year' => $aVideo['year'],
-                    'make' => $aVideo['make'],
-                    'model' => $aVideo['model'],
-                    'contact_name' => $aVals['contact_name'],
-                    'contact_email' => $aVals['contact_email'],
-                    'contact_phone' => $aVals['contact_phone'],
-                    'contact_comments' => $aVals['contact_comments']
-                ));
-            }else{
-                $sBody = Phpfox::getPhrase('dvs.dealer_email_body', array(
+                $aVideo = Phpfox::getService('dvs.video')->get($aVals['contact_video_ref_id']);
+                $aDvs = Phpfox::getService('dvs')->get($aVals['contact_dvs_id']);
+
+                $sSubject = Phpfox::getPhrase('dvs.dealer_email_subject', array(
                     'contact_name' => $aVals['contact_name'],
                     'contact_email' => $aVals['contact_email'],
                     'contact_phone' => $aVals['contact_phone'],
@@ -1533,41 +1492,75 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
                     'state_string' => $aDvs['state_string'],
                     'phone' => $aDvs['phone']
                 ));
-            }
-            $sEmailSig = preg_replace('/\{phrase var=\'(.*)\'\}/ise', "'' . Phpfox::getPhrase('\\1', {$this->_sArray}, false, null, '". Phpfox::getParam('core.default_lang_id')."') . ''", Phpfox::getParam('core.mail_signature'));
-            
-			//Phpfox::getLib('mail')
-//				->to($aDvs['email'])
-//				->subject($sSubject)
-//				->message($sBody)
-//				->send();
-             $sTextHtml = Phpfox::getLib('template')->assign(array(
+
+
+                if($aDvs['email_format']) {
+                    $sBody = Phpfox::getPhrase('dvs.dealer_email_xml_body', array(
+                        'time' => date('Y-m-dTH:i:s', PHPFOX_TIME),
+                        'dvs_name' => $aDvs['dvs_name'],
+                        'year' => $aVideo['year'],
+                        'make' => $aVideo['make'],
+                        'model' => $aVideo['model'],
+                        'contact_name' => $aVals['contact_name'],
+                        'contact_email' => $aVals['contact_email'],
+                        'contact_phone' => $aVals['contact_phone'],
+                        'contact_comments' => $aVals['contact_comments']
+                    ));
+                } else {
+                    $sBody = Phpfox::getPhrase('dvs.dealer_email_body', array(
+                        'contact_name' => $aVals['contact_name'],
+                        'contact_email' => $aVals['contact_email'],
+                        'contact_phone' => $aVals['contact_phone'],
+                        'contact_zip' => $aVals['contact_zip'],
+                        'contact_comments' => $aVals['contact_comments'],
+                        'year' => $aVideo['year'],
+                        'make' => $aVideo['make'],
+                        'model' => $aVideo['model'],
+                        'bodyStyle' => $aVideo['bodyStyle'],
+                        'dvs_name' => $aDvs['dvs_name'],
+                        'dealer_name' => $aDvs['dealer_name'],
+                        'title_url' => $aDvs['title_url'],
+                        'address' => $aDvs['address'],
+                        'city' => $aDvs['city'],
+                        'state_string' => $aDvs['state_string'],
+                        'phone' => $aDvs['phone']
+                    ));
+                }
+                $sEmailSig = preg_replace('/\{phrase var=\'(.*)\'\}/ise', "'' . Phpfox::getPhrase('\\1', {$this->_sArray}, false, null, '". Phpfox::getParam('core.default_lang_id')."') . ''", Phpfox::getParam('core.mail_signature'));
+
+                /*
+                Phpfox::getLib('mail')
+				->to($aDvs['email'])
+				->subject($sSubject)
+				->message($sBody)
+				->send();
+                */
+                $sTextHtml = Phpfox::getLib('template')->assign(array(
                         'bHtml' => true,
                         'sMessage' => str_replace("\n", "<br />", $sBody),
                         'sEmailSig' => str_replace("\n", "<br />", $sEmailSig),
                         'bMessageHeader' => $this->_bMessageHeader
                     )
-                    )->getLayout('email', true);
-             Phpfox::getLibClass('phpfox.mail.interface');
-             
-            $toMail = explode(',',$aDvs['email']);
-                    
-            $oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
-            
-            foreach($toMail as $receipent){
-            $receipent = trim($receipent);    
-            $oMail->send($receipent, $sSubject, $sBody, $sTextHtml);
+                )->getLayout('email', true);
+                
+                Phpfox::getLibClass('phpfox.mail.interface');
 
-            Phpfox::getService('dvs.process')->updateContactCount($aDvs['dvs_id']);
+                $toMail = explode(',',$aDvs['email']);
 
-            $this->call('getPriceEmailSent();');    
+                $oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
+
+                foreach($toMail as $receipent) {
+                    $receipent = trim($receipent);    
+                    $oMail->send($receipent, $sSubject, $sBody, $sTextHtml);
+
+                    Phpfox::getService('dvs.process')->updateContactCount($aDvs['dvs_id']);
+
+                    $this->call('getPriceEmailSent();');    
+                }            
             }
-            
-		}
-		else
-		{
-			return false;
-		}
+            else {
+                return false;
+            }
 	}
 
 	public function sendShareText()

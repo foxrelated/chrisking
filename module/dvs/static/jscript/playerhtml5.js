@@ -121,7 +121,11 @@ $(document).ready(function () {
             myPlayer.pause();
             overlayClose();
         });
-
+        
+        $(document).on('click', "#dvsContactSuccessBtn", function () {
+            myPlayer.play();
+        });
+        
         oChapterDivs['Intro'] = $('#chapter_container_Intro').html();
         oChapterDivs['WhatsNew'] = $('#chapter_container_WhatsNew').html();
         oChapterDivs['Power'] = $('#chapter_container_Power').html();
