@@ -171,6 +171,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         border-radius: 0.1rem !important;
     {r}
     
+    .submitButton:hover {l}
+        background-color: #308c4a !important;
+    {r}
+    
     /*-- form styles --*/
     input.dvs_form_button {l}
         background-color: #{$aDvs.button_background};

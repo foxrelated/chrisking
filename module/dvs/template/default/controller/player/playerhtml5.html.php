@@ -170,7 +170,7 @@ background: #{$aPlayer.player_progress_bar} !important;
     {r}
     
     .bookTestDriveButton:hover {l} 
-        background-color: #3eb25e !important;
+        background-color: #308c4a !important;
     {r}
     
     .bookTestDriveButton {l}
