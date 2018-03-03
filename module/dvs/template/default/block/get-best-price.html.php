@@ -161,7 +161,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
     .no-margin{l} margin: 0 !important;{r}
     
-    .commentsTextField {l} width: 97% !important; font-size: 12px; {r}
+    .commentsTextField {l} width: 97% !important; font-size: 12px !important; {r}
     
     .submitButton {l} 
         background: none;
@@ -262,7 +262,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         min-height: 52px;
         color: #DAD5D5;
         text-align: center;
-        font-size: 13px;
+        font-size: 14px;
         margin: 10px;
         margin-bottom: 35px;
         font-family: Verdana, Geneva, sans-serif;
@@ -316,7 +316,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <form id="dvs_contact_success" style="display:none;">
     <div class="js_box_close closeContainer" aria-label="Close" style="float:right; color:rgb(255,255,255); font-size: 20px; top:4px;"><a class="close" onclick="return js_box_remove(this);" aria-hidden="true">&times;</a></div>
     <div style="display:flex; justify-content:center; align-items:center; min-height: 75px; text-align: center;">
-        <img style="margin-left: 15px; margin-top: 50px; margin-bottom: 20px;" src="/module/dvs/static/image/icon-complete-checkbox.png"/>
+        <img style="margin-left: 15px; margin-top: 50px; margin-bottom: 20px; height: 55px;" src="/module/dvs/static/image/icon-complete-checkbox.png"/>
     </div>
     <div class="dvsContactSuccessText">
         <p>Got it, a friendly member of the dealership will get in touch shortly to confirm your test drive.</p>
