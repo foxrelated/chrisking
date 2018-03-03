@@ -53,6 +53,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 </script>
 {if !empty($aDvs)}
 <style>
+    /*-- Thickbox.js (Overwriting) --*/
     .js_box {l}
        border-radius: 0;
        -webkit-border-radius: 0;
@@ -66,16 +67,17 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         font-family: Verdana, Geneva, sans-serif;
         font-size: 14px;
         background: none;
-        background-color: rgba(25,25,25,0.88);
+        background-color: rgba(25,25,25,0.88) !important;
         padding-top: 17px;
     {r}
     
     .js_box_content {l}
         background: none;
-        background-color: rgba(25,25,25,0.88);
+        background-color: rgba(25,25,25,0.88) !important;
         padding: 0px 15px;
         min-height:375px;
     {r}
+    /*-- End of Thickbox.js --*/
     
     .closeContainer {l}
         display: block;
@@ -103,6 +105,24 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         font-family: Verdana, Geneva, sans-serif;
         color: white;
         font-size: 10px !important;
+    {r}    
+        
+    .no-padding{l} padding: 0 !important;{r}
+
+    .no-margin{l} margin: 0 !important;{r}
+    
+    .commentsTextField {l} width: 97% !important; font-size: 12px !important; {r}
+    
+    .submitButton {l} 
+        background: none;
+        background-color: #4FC26F !important;
+        width: 100%;
+        font-size: 13px !important;
+        border-radius: 0.1rem !important;
+    {r}
+    
+    .submitButton:hover {l}
+        background-color: #308c4a !important;
     {r}
     
     /*-- Placeholder --*/
@@ -156,24 +176,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     .col-5{l} width: 83.33%; {r}
     .col-6{l} width: 100%;   {r}
     /*-- End of Grid Style --*/ 
-    
-    .no-padding{l} padding: 0 !important;{r}
-
-    .no-margin{l} margin: 0 !important;{r}
-    
-    .commentsTextField {l} width: 97% !important; font-size: 12px !important; {r}
-    
-    .submitButton {l} 
-        background: none;
-        background-color: #4FC26F !important;
-        width: 100%;
-        font-size: 13px !important;
-        border-radius: 0.1rem !important;
-    {r}
-    
-    .submitButton:hover {l}
-        background-color: #308c4a !important;
-    {r}
     
     /*-- form styles --*/
     input.dvs_form_button {l}
@@ -255,7 +257,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         border-radius: .25rem;
         transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     {r}
-    /*-- end of form styles --*/
+    /*-- End of form styles --*/
     
     /*-- Success modal --*/
     .dvsContactSuccessText {l}  
