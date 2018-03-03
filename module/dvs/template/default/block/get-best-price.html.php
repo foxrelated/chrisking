@@ -155,12 +155,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     .col-4{l} width: 66.66%; {r}
     .col-5{l} width: 83.33%; {r}
     .col-6{l} width: 100%;   {r}
-
+    /*-- End of Grid Style --*/ 
+    
     .no-padding{l} padding: 0 !important;{r}
 
     .no-margin{l} margin: 0 !important;{r}
     
-    #comments {l} width: 97% !important; font-size: 12px; {r}
+    .commentsTextField {l} width: 97% !important; font-size: 12px; {r}
     
     .submitButton {l} 
         background: none;
@@ -293,7 +294,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
     <div class="form-group">
         <label for="comments">Comment</label>
-        <textarea id="comments" name="val[contact_comments]" cols="16" rows="3" placeholder="{phrase var='dvs.get_price_placeholder_comments'}" {if Phpfox::getParam('dvs.get_price_validate_comments')} required {/if} class="form-control"></textarea>
+        <textarea id="comments" class="commentsTextField" name="val[contact_comments]" cols="16" rows="3" placeholder="{phrase var='dvs.get_price_placeholder_comments'}" {if Phpfox::getParam('dvs.get_price_validate_comments')} required {/if} class="form-control"></textarea>
     </div>
 
     <input type="hidden" name="val[contact_video_ref_id]" id="video_ref_id" value="{$aVideo.referenceId}"/>
