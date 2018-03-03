@@ -117,7 +117,7 @@ $(document).ready(function () {
         var allCuePointData,
             currentCuePoint;
             
-        $(document).on('click', ".gbp_ov_img", function () {
+        $(document).on('click', ".bookTestDriveButton", function () {
             myPlayer.pause();
             overlayClose();
         });

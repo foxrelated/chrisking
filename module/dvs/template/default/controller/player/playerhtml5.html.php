@@ -169,9 +169,27 @@ background: #{$aPlayer.player_progress_bar} !important;
        width: 300px !important;
     {r}
     
+    .bookTestDriveButton:hover {l} 
+        background-color: #3eb25e !important;
+    {r}
+    
+    .bookTestDriveButton {l}
+        font-family: Verdana, Geneva, sans-serif;
+        background: none;
+        background-color: #4FC26F !important;
+        width: 100%;
+        font-size: 11px !important;
+        border-radius: 0.1rem !important;
+        height: 24px;
+        padding: 3px 6px;
+        margin-bottom: 6px;
+    {r}
+
+    
 </style>
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">
 <link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <!--[if lte IE 9]>
 <style type="text/css">
 .vjs-custom-overlay{l}
@@ -270,12 +288,16 @@ color:#fff;
                         <button type="button" class="close" aria-label="Close" onclick="overlayClose();" style="float:right;"><span aria-hidden="true">&times;</span></button>\n\
                         <div style="width:21.33333333%; float:left;">\n\
                             <div style="display:flex; justify-content:center; align-items:center; min-height: 75px;">\n\
-                                <img style="margin-left: 15px; margin-top: 15px; margin-bottom: 15px;" src="{$sImagePath}icon-steeringwheel-button.png"/>\n\
+                                <img id="steeringwheelImg" style="margin-left: 15px; margin-top: 15px; margin-bottom: 15px;" src="{$sImagePath}icon-steeringwheel-button.png"/>\n\
                             </div>\n\
                         </div>\n\
                         <div style="width:78.66666667%; float:right;">\n\
                             <div style="font-family:Verdana, Geneva, sans-serif; text-align: left; margin-left: 15px; margin-top: 3px; margin-bottom: 10px; font-size:12px;">Book an Actual Test Drive</div>\n\
-                            <div><a style="float: left; margin-left: 15px; margin-bottom: 10px;" href="#" class="gbp_ov" onclick="tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetPriceForm2\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img class="gbp_ov_img" src="{$sImagePath}book-right-here.png" alt="Contact Dealer" /></a></div>\n\
+                            <div>\n\
+                                <div style="float: left; margin-left: 15px; margin-bottom: 10px;" href="#" class="gbp_ov bookTDbtnConatiner" onclick="tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetPriceForm2\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
+                                    <button class="gbp_ov_img bookTestDriveButton">Schedule your test drive &nbsp;<i class="fa fa-angle-down"></i></button>\n\
+                                </div>\n\
+                            </div>\n\
                         </div>\n\
                     </div>';
         //=== end of codes by Won
