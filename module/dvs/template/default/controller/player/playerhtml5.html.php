@@ -294,8 +294,8 @@ color:#fff;
                         <div style="width:78.66666667%; float:right;">\n\
                             <div style="font-family:Verdana, Geneva, sans-serif; text-align: left; margin-left: 15px; margin-top: 3px; margin-bottom: 10px; font-size:12px;">Book an Actual Test Drive</div>\n\
                             <div>\n\
-                                <div style="float: left; margin-left: 15px; margin-bottom: 10px;" href="#" class="gbp_ov bookTDbtnConatiner" onclick="tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
-                                    <button class="gbp_ov_img bookTestDriveButton">Schedule your test drive &nbsp;<i class="fa fa-angle-down"></i></button>\n\
+                                <div style="float: left; margin-left: 15px; margin-bottom: 10px;" href="#" class="bookTDbtnConatiner" onclick="tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
+                                    <button class="bookTestDriveButton">Schedule your test drive &nbsp;<i class="fa fa-angle-down"></i></button>\n\
                                 </div>\n\
                             </div>\n\
                         </div>\n\
