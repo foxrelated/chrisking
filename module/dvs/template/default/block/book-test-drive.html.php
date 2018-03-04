@@ -83,6 +83,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         display: block;
         top: -40px;
         right: -8px;
+        float:right; 
+        color:rgb(255,255,255); 
+        font-size: 20px;   
     {r}
     
     .closeContainer .close, .closeContainer .close:hover {l}
@@ -97,9 +100,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         font-weight: normal;
     {r}
     
-    .closeContainer .close:hover {l}
-        
-    {r}
+    .closeContainer .close:hover {l} {r}
     
     .overlaySubTitle {l}
         font-family: Verdana, Geneva, sans-serif;
@@ -270,12 +271,32 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         font-family: Verdana, Geneva, sans-serif;
     {r}
     
+    .cotactSuccessImgContainer {l}
+        display:flex; 
+        justify-content:center; 
+        align-items:center; 
+        min-height: 75px; 
+        text-align: center; 
+    {r}
+    
+    .cotactSuccessImgContent {l} 
+        margin-left: 15px; 
+        margin-top: 50px; 
+        margin-bottom: 20px; 
+        height: 55px;
+    {r}
+    /*-- End of Success modal --*/
 </style>
 {/if}
-
+<!--Contact Form-->
 <form id="contact_dealer" name="contact_dealer" action="javascript:void(0);">
-    <div class="js_box_close closeContainer" aria-label="Close" style="float:right; color:rgb(255,255,255); font-size: 20px;"><a class="close" onclick="return js_box_remove(this);" aria-hidden="true">&times;</a><span class="js_box_history">dvs.showGetContactFormForTestDrive</span></div>
+    <div class="js_box_close closeContainer" aria-label="Close">
+        <a class="close" onclick="return js_box_remove(this);" aria-hidden="true">&times;</a>
+        <span class="js_box_history">dvs.showGetContactFormForTestDrive</span>
+    </div>
+    
     <p class="overlaySubTitle"><strong>{$aVideo.year} {$aVideo.make} {$aVideo.model}</strong></p>
+    
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" name="val[contact_name]" id="name" placeholder="Enter your name" {if Phpfox::getParam('dvs.get_price_validate_name')} required {/if} class="form-control"></input>
@@ -283,7 +304,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
     <div class="form-group">
         <label for="email">E-mail</label>
-        <input type="email" name="val[contact_email]" id="email" placeholder="mymail@" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" {if Phpfox::getParam('dvs.get_price_validate_email')} required {/if} class="form-control" />
+        <input type="email" name="val[contact_email]" id="email" placeholder="mymail@" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$" {if Phpfox::getParam('dvs.get_price_validate_email')} required {/if} class="form-control" />
     </div>
 
     <div class="form-group grid-container no-margin">
@@ -315,15 +336,21 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 </form>
 
+<!--Success Modal-->
 <form id="dvs_contact_success" style="display:none;">
-    <div class="js_box_close closeContainer" aria-label="Close" style="float:right; color:rgb(255,255,255); font-size: 20px; top:4px;"><a class="close" onclick="return js_box_remove(this);" aria-hidden="true">&times;</a></div>
-    <div style="display:flex; justify-content:center; align-items:center; min-height: 75px; text-align: center;">
-        <img style="margin-left: 15px; margin-top: 50px; margin-bottom: 20px; height: 55px;" src="/module/dvs/static/image/icon-complete-checkbox.png"/>
+    <div class="js_box_close closeContainer" aria-label="Close" style="top:4px;">
+        <a class="close" onclick="return js_box_remove(this);" aria-hidden="true">&times;</a>
     </div>
+    
+    <div class="cotactSuccessImgContainer">
+        <img class="cotactSuccessImgContent" src="/module/dvs/static/image/icon-complete-checkbox.png"/>
+    </div>
+    
     <div class="dvsContactSuccessText">
         <p>Got it, a friendly member of the dealership will get in touch shortly to confirm your test drive.</p>
     </div>
+    
     <div class="form-group">
         <input class="btn btn-primary submitButton" id="dvsContactSuccessBtn" type="submit" value="Back to Virtual Test Drive"/>
-    </div>    
+    </div>      
 </form>
