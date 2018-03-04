@@ -208,7 +208,7 @@ background: #{$aPlayer.player_progress_bar} !important;
         min-height: 75px;
     {r}
     
-    .steeringwheelImg {l}
+    #steeringwheelImg {l}
         margin-left: 15px; 
         margin-top: 22px; 
         margin-bottom: 15px;
@@ -324,7 +324,7 @@ color:#fff;
             var bCustomOverlay1Content = '<a href="#" class="gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
  
         
-        //=== Custom Adding Type 4 By Won 03-01-2018 0538PM
+        //=== Custom Adding Type 4 By Won 03-03-2018 0801PM
         {elseif $aPlayer.custom_overlay_1_type == 4 }
             console.log("Book an actual test drive!");
 
