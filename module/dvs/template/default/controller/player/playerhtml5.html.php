@@ -185,11 +185,56 @@ background: #{$aPlayer.player_progress_bar} !important;
         margin-bottom: 6px;
     {r}
 
+    .modal {l}
+        width:38%; 
+        height:35%; 
+        margin:10px; 
+        margin-right: 6px; 
+        float:right; 
+        background-color:rgba(0,0,0,0.65); 
+        min-height:66px;
+    {r}
+    
+    .closeButton {l} float:right; {r}
+    
+    .leftColModalForImgContainer {l} width:21.33333333%; float:left; {r}
+    
+    .rightColModalContainer {l} width:78.66666667%; float:right; {r}
+    
+    .leftColModalForImgContent {l} 
+        display:flex; 
+        justify-content:center; 
+        align-items:center; 
+        min-height: 75px;
+    {r}
+    
+    .steeringwheelImg {l}
+        margin-left: 15px; 
+        margin-top: 22px; 
+        margin-bottom: 15px;
+    {r}
+    
+    .rightColModalForTxtContainer {l}
+        font-family:Verdana, Geneva, sans-serif; 
+        text-align: left; 
+        margin-left: 15px; 
+        margin-top: 3px; 
+        margin-bottom: 10px; 
+        font-size:12px;
+    {r}
+    
+    .bookTDbtnConatiner {l}
+        float: left; 
+        margin-left: 15px; 
+        margin-bottom: 10px;
+    {r}
     
 </style>
+
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">
 <link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <!--[if lte IE 9]>
 <style type="text/css">
 .vjs-custom-overlay{l}
@@ -281,20 +326,20 @@ color:#fff;
         
         //=== Custom Adding Type 4 By Won 03-01-2018 0538PM
         {elseif $aPlayer.custom_overlay_1_type == 4 }
-            console.log("Test Overlay!");
+            console.log("Book an actual test drive!");
 
             var bCustomOverlay1Content = 
-                    '<div class="modal modal01" id="modal" style="width:38%; height:35%; margin:10px; margin-right: 6px; float:right; background-color:rgba(0,0,0,0.65); min-height:66px;">\n\
-                        <button type="button" class="close" aria-label="Close" onclick="overlayClose();" style="float:right;"><span aria-hidden="true">&times;</span></button>\n\
-                        <div style="width:21.33333333%; float:left;">\n\
-                            <div style="display:flex; justify-content:center; align-items:center; min-height: 75px;">\n\
-                                <img id="steeringwheelImg" style="margin-left: 15px; margin-top: 15px; margin-bottom: 15px;" src="{$sImagePath}icon-steeringwheel-button.png"/>\n\
+                    '<div class="modal modal01" id="modal">\n\
+                        <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true">&times;</span></button>\n\
+                        <div class="leftColModalForImgContainer">\n\
+                            <div class="leftColModalForImgContent">\n\
+                                <img id="steeringwheelImg" src="{$sImagePath}icon-steeringwheel-button.png"/>\n\
                             </div>\n\
                         </div>\n\
-                        <div style="width:78.66666667%; float:right;">\n\
-                            <div style="font-family:Verdana, Geneva, sans-serif; text-align: left; margin-left: 15px; margin-top: 3px; margin-bottom: 10px; font-size:12px;">Book an Actual Test Drive</div>\n\
+                        <div class="rightColModalContainer">\n\
+                            <div class="rightColModalForTxtContainer">Book an Actual Test Drive</div>\n\
                             <div>\n\
-                                <div style="float: left; margin-left: 15px; margin-bottom: 10px;" href="#" class="bookTDbtnConatiner" onclick="tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
+                                <div href="#" class="bookTDbtnConatiner" onclick="tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
                                     <button class="bookTestDriveButton">Schedule your test drive &nbsp;<i class="fa fa-angle-down"></i></button>\n\
                                 </div>\n\
                             </div>\n\
