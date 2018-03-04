@@ -2180,9 +2180,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		Phpfox::getBlock('dvs.get-price', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
 	}
         
-        public function showGetPriceForm2()
+        public function showGetContactFormForTestDrive()
 	{
-		Phpfox::getBlock('dvs.get-best-price', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
+            Phpfox::getBlock('dvs.get-best-price', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
 	}
 
 

@@ -274,7 +274,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 {/if}
 
 <form id="contact_dealer" name="contact_dealer" action="javascript:void(0);">
-    <div class="js_box_close closeContainer" aria-label="Close" style="float:right; color:rgb(255,255,255); font-size: 20px;"><a class="close" onclick="return js_box_remove(this);" aria-hidden="true">&times;</a><span class="js_box_history">dvs.showGetPriceForm2</span></div>
+    <div class="js_box_close closeContainer" aria-label="Close" style="float:right; color:rgb(255,255,255); font-size: 20px;"><a class="close" onclick="return js_box_remove(this);" aria-hidden="true">&times;</a><span class="js_box_history">dvs.showGetContactFormForTestDrive</span></div>
     <p class="overlaySubTitle"><strong>{$aVideo.year} {$aVideo.make} {$aVideo.model}</strong></p>
     <div class="form-group">
         <label for="name">Name</label>
