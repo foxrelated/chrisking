@@ -169,11 +169,11 @@ background: #{$aPlayer.player_progress_bar} !important;
        width: 300px !important;
     {r}
     
-    .bookTestDriveButton:hover {l} 
+    .bookTestDriveButton:hover, .getBestDealButton:hover {l} 
         background-color: #308c4a !important;
     {r}
     
-    .bookTestDriveButton {l}
+    .bookTestDriveButton, .getBestDealButton {l}
         font-family: Verdana, Geneva, sans-serif;
         background: none;
         background-color: #4FC26F !important;
@@ -183,6 +183,11 @@ background: #{$aPlayer.player_progress_bar} !important;
         height: 24px;
         padding: 3px 6px;
         margin-bottom: 6px;
+    {r}
+    
+    .getBestDealButton {l}
+        text-align: left;
+        padding-left: 10px;
     {r}
 
     .modal {l}
@@ -195,7 +200,12 @@ background: #{$aPlayer.player_progress_bar} !important;
         min-height:66px;
     {r}
     
-    .closeButton {l} float:right; {r}
+    .closeButton {l} 
+        float:right; 
+        position: relative;
+        top: 3px;
+        right: 2px;        
+    {r}
     
     span#closeIcon {l} color: gray !important; {r}
     
@@ -212,11 +222,13 @@ background: #{$aPlayer.player_progress_bar} !important;
         min-height: 75px;
     {r}
     
-    #steeringwheelImg {l}
+    #steeringwheelImg, #iconPurchaseImg {l}
         margin-left: 15px; 
         margin-top: 22px; 
         margin-bottom: 15px;
     {r}
+    
+    #iconPurchaseImg {l} width: 80%; {r}
     
     .rightColModalForTxtContainer {l}
         font-family:Verdana, Geneva, sans-serif; 
@@ -227,12 +239,15 @@ background: #{$aPlayer.player_progress_bar} !important;
         font-size:12px;
     {r}
     
-    .bookTDbtnConatiner {l}
+    .bookTDbtnConatiner, .getBestDealNowBtnConatiner {l}
         float: left; 
         margin-left: 15px; 
         margin-bottom: 10px;
     {r}
     
+    .getBestDealNowBtnConatiner {l} 
+        width: 100px;
+    {r}
 </style>
 
 <link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.css">
@@ -350,7 +365,32 @@ color:#fff;
                     </div>';
         //=== End of codes by W
         
+        //=== Custom Adding Type 5 By W 03-09-2018 0408PM
+        {elseif $aPlayer.custom_overlay_1_type == 5 }
+            console.log("Receive Today's Best Deal!");
+            $textForBestDeal = "Receive Today's Best Deal";
+            
+            var bCustomOverlay1Content = 
+                    '<div class="modal modal01" id="modal">\n\
+                        <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
+                        <div class="leftColModalForImgContainer">\n\
+                            <div class="leftColModalForImgContent">\n\
+                                <img id="iconPurchaseImg" src="{$sImagePath}icon-purchase.png"/>\n\
+                            </div>\n\
+                        </div>\n\
+                        <div class="rightColModalContainer">\n\
+                            <div class="rightColModalForTxtContainer">Receive Today\'s Best Deal</div>\n\
+                            <div>\n\
+                                <div href="#" class="getBestDealNowBtnConatiner" onclick="tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
+                                    <button class="getBestDealButton">Get it now &nbsp;<i class="fa fa-angle-down"></i></button>\n\
+                                </div>\n\
+                            </div>\n\
+                        </div>\n\
+                    </div>';
+        //=== End of codes by W        
         
+        
+        // Image Overlay
         {elseif $aPlayer.custom_overlay_1_type == 3}
             {if $aPlayer.custom_overlay_1_text != ''}
                 var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_1_text}"></a>';
@@ -358,6 +398,8 @@ color:#fff;
                 var bCustomOverlay1Content = '';
                 bCustomOverlay1 = false;
             {/if}
+                
+        // Link Overlay 
         {else}
             var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_1_text}</a>';
         {/if}
