@@ -16,9 +16,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     {literal}
    
     $('#contact_dealer').submit(function (event) {
-        // cancels the form submission
+        // Cancels the form submission
         event.preventDefault();
-        
+
+        // Validation for Input Fields of Contact Form
         var cname = $('input#name').val();
         var email = $('input#email').val();
         var phone = $('input#phone').val();
@@ -30,9 +31,34 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
         var isValidEmail = fieldEmail.test(email);
         var hasLetterForPhone = !!(/[a-zA-Z]+/g).exec(phone);  
-
-        // do whatever you want here
-        if ((!!cname  && !!cname.match(fieldName)) || (!!email && !!isValidEmail) || (!!phone && !hasLetterForPhone) || (!!zip && !!zip.match(fieldNum))) {
+        
+        // Reset the fields by removing error indicators when the submit button is clicked.
+        $('#nameLabel').removeClass('hasError');
+        $('#emailLabel').removeClass('hasError');
+        $('#phoneLabel').removeClass('hasError');
+        $('#zipLabel').removeClass('hasError');        
+        $('.hasErrorIcon').remove();
+        
+             
+        if ( (!!cname && !cname.match(fieldName)) || (!!email && !isValidEmail) || (!!phone && !!hasLetterForPhone) || (!!phone && phone.length < 10) || (!!zip && !zip.match(fieldNum)) || (!!zip && zip.length < 5) ) {
+            if (!cname.match(fieldName)) {
+                $('#nameLabel').addClass('hasError');
+                $('input#name').parent().append('<i class="fa fa-exclamation-circle hasErrorIcon"></i>');
+            }             
+            if (!isValidEmail) {
+                $('#emailLabel').addClass('hasError');
+                $('input#email').parent().append('<i class="fa fa-exclamation-circle hasErrorIcon"></i>');
+            } 
+            if (!!hasLetterForPhone || phone.length < 10) {
+                $('#phoneLabel').addClass('hasError');
+                $('input#phone').parent().append('<i class="fa fa-exclamation-circle hasErrorIcon twoColErrorIconPosition"></i>');
+            } 
+            
+            if (!zip.match(fieldNum) || zip.length < 5) {
+                $('#zipLabel').addClass('hasError');
+                $('input#zip').parent().append('<i class="fa fa-exclamation-circle hasErrorIcon twoColErrorIconPosition"></i>');
+            } 
+        } else if ( (!!cname  && !!cname.match(fieldName)) && (!!email && !!isValidEmail) && (!!phone && !hasLetterForPhone) && (!!phone && phone.length >= 10) && (!!zip && !!zip.match(fieldNum)) && (!!zip && zip.length == 5) ) {
             $.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
         }
         
@@ -91,7 +117,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     .closeContainer .close, .closeContainer .close:hover {l}
         background: none;
         border-radius: 0;
-        color: white;
+        color: gray;
         border: 0 none;
         padding-right: 0;
         padding-top: 0;
@@ -100,7 +126,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         font-weight: normal;
     {r}
     
-    .closeContainer .close:hover {l} {r}
+    .closeContainer .close:hover {l} color: white; {r}
     
     .overlaySubTitle {l}
         font-family: Verdana, Geneva, sans-serif;
@@ -108,11 +134,31 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         font-size: 10px !important;
     {r}    
         
+    .hasError {l} color: red; {r}
+    
+    .hasErrorIcon {l} 
+        position: relative;
+        z-index: 1;
+        left: 100px;
+        top: -23px;
+        color: red;
+        width: 0;
+        font-size: 16px !important;
+    {r}
+    
+    .twoColErrorIconPosition {l} 
+        left: 45px !important;
+    {r}
+    
     .no-padding{l} padding: 0 !important;{r}
 
     .no-margin{l} margin: 0 !important;{r}
     
     .commentsTextField {l} width: 97% !important; font-size: 12px !important; {r}
+    
+    .inputMaxHeight {l} 
+        max-height: 65px;
+    {r}
     
     .submitButton {l} 
         background: none;
@@ -297,31 +343,31 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     
     <p class="overlaySubTitle"><strong>{$aVideo.year} {$aVideo.make} {$aVideo.model}</strong></p>
     
-    <div class="form-group">
-        <label for="name">Name</label>
+    <div class="form-group inputMaxHeight">
+        <label for="name"  id="nameLabel">Name</label>
         <input type="text" name="val[contact_name]" id="name" placeholder="Enter your name" {if Phpfox::getParam('dvs.get_price_validate_name')} required {/if} class="form-control"></input>
     </div>
 
-    <div class="form-group">
-        <label for="email">E-mail</label>
+    <div class="form-group inputMaxHeight">
+        <label for="email" id="emailLabel">E-mail</label>
         <input type="email" name="val[contact_email]" id="email" placeholder="mymail@" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$" {if Phpfox::getParam('dvs.get_price_validate_email')} required {/if} class="form-control" />
     </div>
 
     <div class="form-group grid-container no-margin">
-        <div class="form-group col-2a no-padding" >
-            <label for="phone">Phone number</label>
-            <input type="text" name="val[contact_phone]" id="phone" placeholder="Your phone number" maxlength="12" {if Phpfox::getParam('dvs.get_price_validate_phone')} required {/if} class="form-control" />
+        <div class="form-group col-2a no-padding inputMaxHeight" >
+            <label for="phone" id="phoneLabel">Phone number</label>
+            <input type="text" name="val[contact_phone]" id="phone" placeholder="Phone number" maxlength="12" {if Phpfox::getParam('dvs.get_price_validate_phone')} required {/if} class="form-control" />
         </div>
 
-        <div class="form-group col-2a no-padding" >
-            <label for="zip">Zip code</label>
-            <input type="text" name="val[contact_zip]" id="zip" placeholder="{phrase var='dvs.get_price_placeholder_zip'}" {if Phpfox::getParam('dvs.get_price_validate_zip_code')} required {/if} class="form-control" />
+        <div class="form-group col-2a no-padding inputMaxHeight" >
+            <label for="zip" id="zipLabel">Zip code</label>
+            <input type="text" name="val[contact_zip]" id="zip" placeholder="{phrase var='dvs.get_price_placeholder_zip'}" maxlength="5" {if Phpfox::getParam('dvs.get_price_validate_zip_code')} required {/if} class="form-control" />
         </div>
     </div>
 
     <div class="form-group">
         <label for="comments">Comment</label>
-        <textarea id="comments" class="commentsTextField" name="val[contact_comments]" cols="16" rows="3" placeholder="{phrase var='dvs.get_price_placeholder_comments'}" {if Phpfox::getParam('dvs.get_price_validate_comments')} required {/if} class="form-control"></textarea>
+        <textarea id="comments" class="commentsTextField" name="val[contact_comments]" cols="16" rows="3" placeholder="   {phrase var='dvs.get_price_placeholder_comments'}" {if Phpfox::getParam('dvs.get_price_validate_comments')} required {/if} class="form-control"></textarea>
     </div>
 
     <input type="hidden" name="val[contact_video_ref_id]" id="video_ref_id" value="{$aVideo.referenceId}"/>

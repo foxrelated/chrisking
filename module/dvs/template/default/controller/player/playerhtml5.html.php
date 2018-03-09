@@ -197,6 +197,10 @@ background: #{$aPlayer.player_progress_bar} !important;
     
     .closeButton {l} float:right; {r}
     
+    span#closeIcon {l} color: gray !important; {r}
+    
+    span#closeIcon:hover {l} color: white !important; {r}
+    
     .leftColModalForImgContainer {l} width:21.33333333%; float:left; {r}
     
     .rightColModalContainer {l} width:78.66666667%; float:right; {r}
@@ -276,8 +280,7 @@ color:#fff;
 //    $("head").append('<script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></scr'+'ipt>');
     
     //aPoster = {$aOverviewVideos[0].videoStillURL};
-    
-    //console.log('helo');
+
     
 
     {if $bIsDvs}
@@ -324,13 +327,13 @@ color:#fff;
             var bCustomOverlay1Content = '<a href="#" class="gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
  
         
-        //=== Custom Adding Type 4 By Won 03-03-2018 0801PM
+        //=== Custom Adding Type 4 By W 03-09-2018 0324PM
         {elseif $aPlayer.custom_overlay_1_type == 4 }
             console.log("Book an actual test drive!");
 
             var bCustomOverlay1Content = 
                     '<div class="modal modal01" id="modal">\n\
-                        <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true">&times;</span></button>\n\
+                        <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
                         <div class="leftColModalForImgContainer">\n\
                             <div class="leftColModalForImgContent">\n\
                                 <img id="steeringwheelImg" src="{$sImagePath}icon-steeringwheel-button.png"/>\n\
@@ -345,7 +348,7 @@ color:#fff;
                             </div>\n\
                         </div>\n\
                     </div>';
-        //=== end of codes by Won
+        //=== End of codes by W
         
         
         {elseif $aPlayer.custom_overlay_1_type == 3}
