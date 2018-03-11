@@ -46,20 +46,20 @@ class Dvs_Service_Analytics_Analytics extends Phpfox_Service {
 
     function getChartData($aDataRows, $sType = 'number', $sResultType = 'total') {
         $sLineData = "[";
-        $iTotal = 0;
-        $iMaxValue = 0;
+        $iTotal = 0.0;
+        $iMaxValue = 0.0;
 
         foreach($aDataRows as $aRow) {
             $sLineData .= "[new Date(".substr($aRow[0], 0, 4).",".substr($aRow[0], 4, 2)."-1,".substr($aRow[0], 6, 2)."),".$aRow[1]."],";
-            $iTotal += (int)$aRow[1];
-            if ($iMaxValue < (int)$aRow[1]) {
-                $iMaxValue = (int)$aRow[1];
+            $iTotal += (float)$aRow[1];
+            if ($iMaxValue < (float)$aRow[1]) {
+                $iMaxValue = (float)$aRow[1];
             }
         }
         $sLineData = substr($sLineData, 0, -1);
         $sLineData .= "]";
         if ($sResultType == 'avg') {
-            $iTotal /= count($aDataRows);
+            $iTotal /= (float)count($aDataRows);
             $iTotal = number_format($iTotal, 2);
         }
 
@@ -67,7 +67,7 @@ class Dvs_Service_Analytics_Analytics extends Phpfox_Service {
             $iTotal = gmdate("H:i:s", (int)$iTotal);
         }
 
-        $iMaxValue = (int)(2 * $iMaxValue);
+        $iMaxValue = (float)(2 * $iMaxValue);
 
         return array($sLineData, $iTotal, $iMaxValue);
     }

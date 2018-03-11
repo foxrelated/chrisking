@@ -2,42 +2,48 @@
 
 class Dvs_Component_Block_Analytics_Video extends Phpfox_Component {
     public function process() {
-        $aDvs = $this->getParam('aDvs');
-        $sDateFrom = $this->getParam('sDateFrom');
+        try {
+            $aDvs = $this->getParam('aDvs');
+            $sDateFrom = $this->getParam('sDateFrom');
 
-        $oGAService = Phpfox::getService('dvs.analytics');
+            $oGAService = Phpfox::getService('dvs.analytics');
 
-        // Video Views
-        $oVideoViewRequest = $oGAService->makeRequest('ga:totalEvents', array('filters'=>'ga:eventLabel==Media Begin;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
-        $iVideoViewEvent = (int)$oVideoViewRequest->totalsForAllResults['ga:totalEvents'];
+            // Video Views
+            $oVideoViewRequest = $oGAService->makeRequest('ga:totalEvents', array('filters'=>'ga:eventLabel==Media Begin;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
+            $iVideoViewEvent = (int)$oVideoViewRequest->totalsForAllResults['ga:totalEvents'];
 
-        // Player Loads
-        $oPlayerLoadRequest = $oGAService->makeRequest('ga:totalEvents', array('filters'=>'ga:eventLabel=~Player Loaded;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
-        $iPlayerLoadEvent = (int)$oPlayerLoadRequest->totalsForAllResults['ga:totalEvents'];
+            // Player Loads
+            $oPlayerLoadRequest = $oGAService->makeRequest('ga:totalEvents', array('filters'=>'ga:eventLabel=~Player Loaded;ga:eventCategory=~^{'.$aDvs['title_url'].'}'), $sDateFrom);
+            $iPlayerLoadEvent = (int)$oPlayerLoadRequest->totalsForAllResults['ga:totalEvents'];
 
-        // Play Rate
-        $iPlayRate = (int)$iVideoViewEvent * 100 / (int)$iPlayerLoadEvent;
-        $iPlayRate = number_format($iPlayRate, 0);
+            // Play Rate
+            $iPlayRate = (int)$iVideoViewEvent * 100 / (int)$iPlayerLoadEvent;
+            $iPlayRate = number_format($iPlayRate, 0);
 
-        // Top Video
-        $oTopVideoRequest = $oGAService->makeRequest('ga:totalEvents', array('dimensions'=>'ga:customVarValue1','filters'=>'ga:eventLabel==Media Begin;ga:eventCategory=~^{'.$aDvs['title_url'].'}','sort'=>'-ga:totalEvents','max-results'=>10), $sDateFrom);
-        $sTopVideoTableData = $oGAService->getTableData($oTopVideoRequest->rows);
+            // Top Video
+            $oTopVideoRequest = $oGAService->makeRequest('ga:totalEvents', array('dimensions'=>'ga:customVarValue1','filters'=>'ga:eventLabel==Media Begin;ga:eventCategory=~^{'.$aDvs['title_url'].'}','sort'=>'-ga:totalEvents','max-results'=>10), $sDateFrom);
+            $sTopVideoTableData = $oGAService->getTableData($oTopVideoRequest->rows);
 
-        // Top Chapter
-        $oTopChapterRequest = $oGAService->makeRequest('ga:totalEvents', array('dimensions'=>'ga:eventLabel','filters'=>'ga:eventLabel=~^Chapter Clicked:;ga:eventCategory=~^{'.$aDvs['title_url'].'}','sort'=>'-ga:totalEvents','max-results'=>10), $sDateFrom);
-        $sTopChapterTableData = $oGAService->getTableData($oTopChapterRequest->rows);
+            // Top Chapter
+            $oTopChapterRequest = $oGAService->makeRequest('ga:totalEvents', array('dimensions'=>'ga:eventLabel','filters'=>'ga:eventLabel=~^Chapter Clicked:;ga:eventCategory=~^{'.$aDvs['title_url'].'}','sort'=>'-ga:totalEvents','max-results'=>10), $sDateFrom);
+            $sTopChapterTableData = $oGAService->getTableData($oTopChapterRequest->rows);
 
-        $this->template()
-            ->assign(array(
-                'sJavascript' =>
-                    '<script type="text/javascript">' .
-                    'var iVideoViewEvent = "' .  $iVideoViewEvent . '";' .
-                    'var iPlayerLoadEvent = "' . $iPlayerLoadEvent . '"; ' .
-                    'var iPlayRate = "' . $iPlayRate . '%"; ' .
-                    'var topVideoDataRaw = ' . $sTopVideoTableData . ';' .
-                    'var topChapterDataRaw = ' . $sTopChapterTableData . ';' .
-                    '</script>'
-            ));
+            $this->template()
+                ->assign(array(
+                    'sJavascript' =>
+                        '<script type="text/javascript">' .
+                        'var iVideoViewEvent = "' .  $iVideoViewEvent . '";' .
+                        'var iPlayerLoadEvent = "' . $iPlayerLoadEvent . '"; ' .
+                        'var iPlayRate = "' . $iPlayRate . '%"; ' .
+                        'var topVideoDataRaw = ' . $sTopVideoTableData . ';' .
+                        'var topChapterDataRaw = ' . $sTopChapterTableData . ';' .
+                        '</script>'
+                ));
+        } catch (\Exception $e) {
+            Phpfox::getLib('file')->write(PHPFOX_DIR_FILE . 'log' . PHPFOX_DS . 'analytics_error_video'  . PHPFOX_TIME . uniqid() . '.log', $e->getMessage() . "\n" . $e->getTraceAsString());
+
+        }
+
     }
 }
 ?>
