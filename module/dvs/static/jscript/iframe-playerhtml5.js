@@ -957,6 +957,8 @@ getPriceOverlayClick = function() {
     });
 }    
 
+});
+
 $(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
     jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#dvs_inventory_link").attr('href',inventory_new);
 });
