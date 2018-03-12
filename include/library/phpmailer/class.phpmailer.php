@@ -16,7 +16,7 @@
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.
  */
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."class.phpmailer.php");
+require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."class.smtp.php");
 /**
  * PHPMailer - PHP email creation and transport class.
  * @package PHPMailer
