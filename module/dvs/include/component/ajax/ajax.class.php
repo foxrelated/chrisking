@@ -2184,7 +2184,11 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 	{
             Phpfox::getBlock('dvs.book-test-drive', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
 	}
-
+        
+        public function showGetContactFormForBestDeal()
+	{
+            Phpfox::getBlock('dvs.get-best-deal', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
+	}
 
 	public function emailForm()
 	{

@@ -166,7 +166,7 @@ background: #{$aPlayer.player_progress_bar} !important;
     .js_box {l}
        border-radius: 0;
        -webkit-border-radius: 0;
-       width: 300px !important;
+       width: 300px;
     {r}
     
     .bookTestDriveButton:hover, .getBestDealButton:hover {l} 
@@ -381,7 +381,7 @@ color:#fff;
                         <div class="rightColModalContainer">\n\
                             <div class="rightColModalForTxtContainer">Receive Today\'s Best Deal</div>\n\
                             <div>\n\
-                                <div href="#" class="getBestDealNowBtnConatiner" onclick="tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
+                                <div href="#" class="getBestDealNowBtnConatiner" onclick="tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForBestDeal\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
                                     <button class="getBestDealButton">Get it now &nbsp;<i class="fa fa-angle-down"></i></button>\n\
                                 </div>\n\
                             </div>\n\
