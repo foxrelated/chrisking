@@ -38,7 +38,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         $('#phoneLabel').removeClass('hasError');
         $('#zipLabel').removeClass('hasError');        
         $('.hasErrorIcon').remove();
-        
              
         if ( (!!cname && !cname.match(fieldName)) || (!!email && !isValidEmail) || (!!phone && !!hasLetterForPhone) || (!!phone && phone.length < 10) || (!!zip && !zip.match(fieldNum)) || (!!zip && zip.length < 5) ) {
             if (!cname.match(fieldName)) {
@@ -51,12 +50,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             } 
             if (!!hasLetterForPhone || phone.length < 10) {
                 $('#phoneLabel').addClass('hasError');
-                $('input#phone').parent().append('<i class="fa fa-exclamation-circle hasErrorIcon twoColErrorIconPosition"></i>');
+                $('input#phone').parent().append('<i class="fa fa-exclamation-circle hasErrorIcon twoColErrorIconPosition" id="phoneInputError"></i>');
+                $('input#zip').parent().append('<i class="fa fa-exclamation-circle hasErrorIcon twoColErrorIconPosition emptyZipError" style="visibility:hidden;"></i>');
             } 
             
             if (!zip.match(fieldNum) || zip.length < 5) {
+                $('.emptyZipError').length > 0 ? $('.emptyZipError').remove() : ''; 
                 $('#zipLabel').addClass('hasError');
-                $('input#zip').parent().append('<i class="fa fa-exclamation-circle hasErrorIcon twoColErrorIconPosition"></i>');
+                $('input#zip').parent().append('<i class="fa fa-exclamation-circle hasErrorIcon twoColErrorIconPosition" id="zipInputError"></i>');
             } 
         } else if ( (!!cname  && !!cname.match(fieldName)) && (!!email && !!isValidEmail) && (!!phone && !hasLetterForPhone) && (!!phone && phone.length >= 10) && (!!zip && !!zip.match(fieldNum)) && (!!zip && zip.length == 5) ) {
             $.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());

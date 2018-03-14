@@ -792,8 +792,8 @@ $(document).ready(function () {
     $(document).on('DOMNodeInserted', '.vjs-custom-overlay, .vjs-overlay', function () {
         $textForBestDeal = "Receive Today's Best Deal";
         $(".gp_ov").attr("onclick", 'tb_show(\'' + contact_dealer + '\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
-        $(".bookTDbtnConatiner").attr("onclick", 'tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
-        $(".getBestDealNowBtnConatiner").attr("onclick", 'tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
+        $(".bookTDbtnConatiner").attr("onclick", 'tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
+        $(".getBestDealNowBtnConatiner").attr("onclick", 'tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForBestDeal\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
 
         
   

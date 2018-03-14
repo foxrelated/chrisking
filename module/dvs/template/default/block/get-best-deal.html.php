@@ -54,10 +54,10 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
         } else if ( (!!cname  && !!cname.match(fieldName)) && (!!email && !!isValidEmail) && (!!phone && !hasLetterForPhone) && (!!phone && phone.length >= 10) ) {
             $.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
-            $("#contact_dealer").hide("fast");
-            $(".js_box_title").hide("fast");
+            $("#contact_dealer").hide();
+            $(".js_box_title").hide();
             $(".js_box_content").attr('style', 'width: 300px !important; min-height: 300px !important;');
-            $("#dvs_contact_success").show("fast");
+            $("#dvs_contact_success").show();
         } 
         
 
