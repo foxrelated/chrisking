@@ -351,7 +351,7 @@ class Dvs_Service_Analytics_Export_Email extends Phpfox_Service {
             $pdf->Image($sImagePrefix.'7.png', 55, 135, 45, 22);
 
             // Bounce Rate
-            $oBounceRateLineRequest = $oGAService->makeRequest('ga:bounceRate', array('dimensions'=>'ga:date','filters'=>'ga:source=~^'.$this->prepareName(['dealer_name'])), $sDateFrom);
+            $oBounceRateLineRequest = $oGAService->makeRequest('ga:bounceRate', array('dimensions'=>'ga:date','filters'=>'ga:source=~^'.$this->prepareName($aDvs['dealer_name'])), $sDateFrom);
             $this->drawGraph($sImagePrefix.'8.png', $oBounceRateLineRequest->rows, 'Bounce Rate', array(
                 'width' => 221,
                 'height' => 105,
@@ -645,12 +645,19 @@ class Dvs_Service_Analytics_Export_Email extends Phpfox_Service {
             $sVideoFile = $this->exportVideo($aDvs, $sFromDate, $sToDate);
             $sSharingFile = $this->exportSharing($aDvs, $sFromDate, $sToDate);
 
-            Phpfox::getLibClass('phpfox.mail.interface');
-            $oMail = Phpfox::getLib('mail.driver.phpmailer.' . Phpfox::getParam('core.method'));
-            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sOverallFile, $sOverallFile);
-            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sVideoFile, $sVideoFile);
-            $oMail->addAttachment(Phpfox::getParam('core.dir_cache') . $sSharingFile, $sSharingFile);
-            $oMail->send($aDvs['reporting_email'], 'Your Weekly DVS Report', 'Hello, please find your latest DVS Report attached for the past 7 days. If you have any questions about this report, please reply to this email. Thanks! - DVS Team', 'Hello, please find your latest DVS Report attached for the past 7 days. If you have any questions about this report, please reply to this email. Thanks! - DVS Team');
+            $emailService = Phpfox::getService('dvs.email');
+            $aAttachments = [
+                $emailService->constructAttachment(Phpfox::getParam('core.dir_cache') . $sOverallFile, $sOverallFile),
+                $emailService->constructAttachment(Phpfox::getParam('core.dir_cache') . $sVideoFile, $sVideoFile),
+                $emailService->constructAttachment(Phpfox::getParam('core.dir_cache') . $sSharingFile, $sSharingFile)
+            ];
+            $emailService->send($aDvs['reporting_email'],
+                'Your Weekly DVS Report',
+                'Hello, please find your latest DVS Report attached for the past 7 days. If you have any questions about this report, please reply to this email. Thanks! - DVS Team',
+                'Hello, please find your latest DVS Report attached for the past 7 days. If you have any questions about this report, please reply to this email. Thanks! - DVS Team',
+                'Dealer Video Showroom Analytics Team',
+                null,
+                $aAttachments);
 
             $this->database()
                 ->update($this->_sTable, array('last_reporting' => PHPFOX_TIME), 'dvs_id = ' . $aDvs['dvs_id']);

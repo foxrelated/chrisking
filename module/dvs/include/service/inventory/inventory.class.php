@@ -224,7 +224,9 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
     public function getStyleByVin($sVin,$cstvin = '') {
         $aParams = array();
         $aStyles = array();
-        $sApiKey = 'wztmmwrvnegb6b547asz8u2a';
+        return array($aStyles, $aParams);
+        /** Obsolete with Edmunds decommissioning
+        //$sApiKey = 'wztmmwrvnegb6b547asz8u2a';
 
         $sTargetUrl = "https://api.edmunds.com/api/vehicle/v2/squishvins/" . trim($sVin) . "/?fmt=json&api_key=" . $sApiKey;
         $ch = curl_init($sTargetUrl);
@@ -286,6 +288,7 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
         }
 
         return array($aStyles, $aParams);
+         */
     }
 
     function objectToArray( $object ) {

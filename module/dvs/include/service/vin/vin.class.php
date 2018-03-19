@@ -333,7 +333,9 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         $aParams = array();
         $aStyles = array();
 
+        return array($aStyles, $aParams);
         // Exit if VIN year < 2008
+        /** Obsolete with Edmunds decommissioning
         if ($this->getYearFromVin($sVin) < 2008) {
             return array($aStyles, $aParams);
         }
@@ -396,6 +398,7 @@ class Dvs_Service_Vin_Vin extends Phpfox_Service {
         }
 
         return array($aStyles, $aParams);
+         */
     }
 
     function objectToArray( $object ) {
