@@ -146,7 +146,16 @@ $(document).on('click','.js_box .js_box_close a',function() {
       
       currentCuePoint;
       
-      oChapterDivs['Intro'] = $('#chapter_container_Intro').html();
+    $(document).on('click', ".bookTestDriveButton, .getBestDealButton", function () {
+        myPlayer.pause();
+        overlayClose();
+    });
+
+    $(document).on('click', "#dvsContactSuccessBtn", function () {
+        myPlayer.play();
+    });
+    
+    oChapterDivs['Intro'] = $('#chapter_container_Intro').html();
     oChapterDivs['WhatsNew'] = $('#chapter_container_WhatsNew').html();
     oChapterDivs['Power'] = $('#chapter_container_Power').html();
     oChapterDivs['Fuel'] = $('#chapter_container_Fuel').html();
@@ -963,8 +972,18 @@ $(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
     jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#dvs_inventory_link").attr('href',inventory_new);
 });
 $(document).on('DOMNodeInserted','.vjs-custom-overlay, .vjs-overlay',function(){
+    $textForBestDeal = "Receive Today's Best Deal";
     $(".gp_ov").attr("onclick",'tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId='+jQuery("#bc_dvs").val()+'&sRefId= '+aCurrentVideoMetaData.referenceId+'\'));endscreenContact(\'Video End Screen\');');
-})
+    $(".bookTDbtnConatiner").attr("onclick", 'tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
+    $(".getBestDealNowBtnConatiner").attr("onclick", 'tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForBestDeal\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
+
+        
+  
+    });
+    
+
+    
+    
 });
 function showspinner(){
       $(".vjs-loading-spinner").show();

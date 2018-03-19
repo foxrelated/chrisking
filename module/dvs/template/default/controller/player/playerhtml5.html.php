@@ -489,7 +489,7 @@ color:#fff;
         var bOverlay3Type = '{$aPlayer.custom_overlay_3_type}';
         {if $aPlayer.custom_overlay_3_type == 1}
            var bCustomOverlay3Content = '<a href="#" class="gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>'
-                //=== Schedule Test Drive Overlay
+        //=== Schedule Test Drive Overlay
         {elseif $aPlayer.custom_overlay_3_type == 4 }
             console.log("Book an actual test drive!");
 

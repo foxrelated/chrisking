@@ -6,10 +6,10 @@ class Dvs_Service_Inventory_Inventory extends Phpfox_Service {
     //private $_sUsername = 'WTVMain';
     //private $_sPassword = '$new123';
 
-	private $_sHost = 'dealervideoshowroom.com';
+    private $_sHost = 'dealervideoshowroom.com';
     private $_sPort = '22';
     private $_sUsername = 'dvs';
-    private $_sPassword = 'wh33l5tvh0trod';
+    private $_sPassword = 'wH%~h$f6?1T5';
 	
     function __construct() {
         $this->_sTable = Phpfox::getT('tbd_dvs_inventory');
