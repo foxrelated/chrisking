@@ -24,7 +24,7 @@ class Dvs_Service_Email_Email extends Phpfox_Service {
      * @param EmailAttachment[] $aAttachmentPaths path to attachment, accepts array
      * @return bool TRUE on success, FALSE on failure.
      */
-    public function send($mTo, $sSubject, $sTextPlain, $sTextHtml, $sFromName = null, $sFromEmail = null, $aAttachment = []) {
+    public function send($mTo, $sSubject, $sTextPlain, $sTextHtml, $sFromName = null, $sFromEmail = null, $aAttachment = array()) {
         if(true) {
             //method to guard from email issues
             foreach($aAttachment as $attachment) {
