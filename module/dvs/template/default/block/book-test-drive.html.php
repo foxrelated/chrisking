@@ -25,7 +25,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         var phone = $('input#phone').val();
         var zip = $('input#zip').val();
 
-        var fieldName = /^[a-zA-Z]+$/i;
+        var fieldName = /^[a-zA-Z ]+$/i;
         var fieldNum = /^[0-9]+$/g;
         var fieldEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
