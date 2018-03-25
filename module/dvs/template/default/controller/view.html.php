@@ -185,9 +185,11 @@ defined('PHPFOX') or exit('No direct script access allowed.');
           <input type="hidden" value="{$sVideoHashCode}" id="video_hash_code" />
 			 {if !Phpfox::isUser()}
 			  <p>Click to Share:</p>
+              <!--
 			  <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailForm', 'height=400&amp;width=360&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId)); showEmailShare(); return false;">
 				<img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
 			  </a>
+			  -->
 			  <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURI('{url link='share'}' + $('#video_hash_code').val() + '{$sDvsHashCode}0'), '', 'width=626,height=436'); facebookShareClick('Share Links'); return false;">
 				<img src="{$sImagePath}facebook-share.png" alt="Share to Facebook"/>
 			  </a>

@@ -154,13 +154,13 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		$this->show('#dvs_get_price_container', 'fast');
 	}
 
-	public function showShareEmail()
+	/*public function showShareEmail()
 	{
 		Phpfox::getBlock('dvs.share-email');
 		$this->html('#dvs_share_email_wrapper', $this->getContent(false));
 		$this->call('checkModernizr();');
 		$this->show('#dvs_share_email_wrapper', 'fast');
-	}
+	}*/
 
 	public function deletePlayer()
 	{
@@ -1557,7 +1557,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 		}
 	}
 
-	public function sendShareEmail()
+	/*public function sendShareEmail()
 	{
 		Phpfox::getLib('setting')->setParam('brightcove.dir_image', PHPFOX_DIR_FILE . 'pic' . PHPFOX_DS . 'brightcove' . PHPFOX_DS);
 		Phpfox::getLib('setting')->setParam('brightcove.url_image', Phpfox::getParam('core.url_pic') . 'brightcove/');
@@ -1598,9 +1598,9 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 				->show('.share_email_field');
 			return false;
 		}
-	}
+	}*/
 
-    public function sendShareEmailIframe()
+    /*public function sendShareEmailIframe()
     {
         Phpfox::getLib('setting')->setParam('brightcove.dir_image', PHPFOX_DIR_FILE . 'pic' . PHPFOX_DS . 'brightcove' . PHPFOX_DS);
         Phpfox::getLib('setting')->setParam('brightcove.url_image', Phpfox::getParam('core.url_pic') . 'brightcove/');
@@ -1662,7 +1662,7 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
                 ->show('#share_email_error');
             return false;
         }
-    }
+    }*/
 
 	public function chooseTheme()
 	{

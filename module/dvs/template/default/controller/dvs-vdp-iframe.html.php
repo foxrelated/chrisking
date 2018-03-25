@@ -418,11 +418,13 @@ color:#fff;
                     <td style="vertical-align:middle;">
                     <p style="font-size:14px;color:#{$aPlayer.player_text};"><b>Share This:</b>&nbsp;</p>
                     </td>
+                    <!--
                     <td style="vertical-align:middle;">
                         <a href="#" onclick="tb_show('{phrase var='dvs.share_via_email'}', $.ajaxBox('dvs.emailFormIframe', 'height=400&amp;width=360&amp;sParentUrl=' + encodeURIComponent($('#parent_url').val().replace('WTVDVS_VIDEO_TEMP', $('#video_url').val())) + '&amp;longurl=1&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));  showEmailShare(); return false;">
                             <img src="{$sImagePath}email-share.png" alt="Share Via Email"/>
                         </a>
                     </td>
+                    -->
                    {*
                     {if Phpfox::isModule('redirect')}
                    <td style="vertical-align:middle;">
