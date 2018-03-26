@@ -51,6 +51,7 @@
 //kick off the session - should probably use php.ini setting.... but this ensures we have it going
 session_start();
 
+
 /* HTML settings and such */
 	include 'html_functions.php';
 	$GLOBALS['css']["bootstrap"] = array(

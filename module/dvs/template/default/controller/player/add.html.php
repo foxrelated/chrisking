@@ -145,6 +145,7 @@ font-weight:bold;
                 <input type="radio" name="val[player_st_type]" value="0" {if $aForms.player_st_type != 1 && $aForms.player_st_type != 2}checked="checked"{/if} />Flash
                 <input type="radio" name="val[player_st_type]" value="1" {if $bIsEdit && $aForms.player_st_type == 1}checked="checked"{/if} />HTML5
                 <input type="radio" name="val[player_st_type]" value="2" {if $bIsEdit && $aForms.player_st_type == 2}checked="checked"{/if} />HTML5 V2
+
             </li>
         
 			<input type="hidden" name="val[player_type]" value="0" />
@@ -279,18 +280,89 @@ font-weight:bold;
 			<ol>
 				<li>
 					<label for="custom_overlay_1_disabled" class="inline_radio">Disabled:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').hide('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 0 || !isset($aForms.custom_overlay_1_type)}checked="checked"{/if} value="0" name="val[custom_overlay_1_type]" id="custom_overlay_1_disabled" />
+					<input type="radio" class="inline_radio" 
+                                               onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').hide('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').hide('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').hide('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" 
+                                                         {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 0 || !isset($aForms.custom_overlay_1_type)}
+                                                             checked="checked"
+                                                         {/if} 
+                                                         value="0"
+                                                         name="val[custom_overlay_1_type]" 
+                                                         id="custom_overlay_1_disabled" />
 
-						   <label for="custom_overlay_1_price_overlay" class="inline_radio">Get Price Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_1_type]" id="custom_overlay_1_price_overlay" />
+                                        <label for="custom_overlay_1_price_overlay" class="inline_radio">Get Price Overlay:</label> 
+					<input type="radio" class="inline_radio" 
+                                               onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').hide('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').hide('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').show('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" 
+                                                         {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 1}
+                                                            checked="checked"
+                                                         {/if} 
+                                                         value="1" 
+                                                         name="val[custom_overlay_1_type]" 
+                                                         id="custom_overlay_1_price_overlay" />
 
-						   <label for="custom_overlay_1_link_overlay" class="inline_radio">Link Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 2 }checked="checked"{/if} value="2" name="val[custom_overlay_1_type]" id="custom_overlay_1_link_overlay" />
+                                        <label for="custom_overlay_1_link_overlay" class="inline_radio">Link Overlay:</label> 
+					<input type="radio" class="inline_radio" 
+                                               onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').show('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').hide('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').show('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" 
+                                                        {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 2 }
+                                                            checked="checked"
+                                                        {/if} 
+                                                        value="2" 
+                                                        name="val[custom_overlay_1_type]" 
+                                                        id="custom_overlay_1_link_overlay" />
                     
-                    <!-- Custom Image Overlay -->
-                    <label for="custom_overlay_1_img_overlay" class="inline_radio">Custom Image Overlay:</label> 
-                    <input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1_text').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1_link').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 3 }checked="checked"{/if} value="3" name="val[custom_overlay_1_type]" id="custom_overlay_1_img_overlay" />
-				</li>
+                                        <!-- Custom Image Overlay -->
+                                        <label for="custom_overlay_1_img_overlay" class="inline_radio">Custom Image Overlay:</label> 
+                                        <input type="radio" class="inline_radio" 
+                                               onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1_text').hide('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1_link').show('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').show('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').show('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" 
+                                                        {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 3 }
+                                                         checked="checked"
+                                                        {/if} 
+                                                        value="3" 
+                                                        name="val[custom_overlay_1_type]" 
+                                                        id="custom_overlay_1_img_overlay" />
+
+                                        <!-- 'SCHEDULE TEST DRIVE' OVERLAY -->
+                                        <label for="custom_overlay_1_scehdule_overlay" class="inline_radio">Schedule Test Drive Overlay:</label>
+                                        <input type="radio" class="inline_radio" 
+                                               onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').hide('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').hide('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').show('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" 
+                                                        {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 4}
+                                                            checked="checked"
+                                                        {/if} 
+                                                        value="4" 
+                                                        name="val[custom_overlay_1_type]" 
+                                                        id="custom_overlay_1_scehdule_overlay" />
+                                        <!-- END OF 'SCHEDULE TEST DRIVE' OVERLAY -->	
+                                        
+                                        <!-- 'GET BEST DEAL' OVERLAY -->
+                                        <label for="custom_overlay_1_deal_overlay" class="inline_radio">Get Best Deal Overlay:</label>
+                                        <input type="radio" class="inline_radio" 
+                                               onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras1').hide('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras3').hide('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('.custom_overlay_1_extras2').show('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('#custom_overlay_1_text').val('');" 
+                                                        {if $bIsEdit && isset($aForms.custom_overlay_1_type) && $aForms.custom_overlay_1_type == 5}
+                                                            checked="checked"
+                                                        {/if} 
+                                                        value="5" 
+                                                        name="val[custom_overlay_1_type]" 
+                                                        id="custom_overlay_1_deal_overlay" />
+                                        <!-- END OF 'GET BEST DEAL' OVERLAY -->	
+                                </li>
                  <div id="js_image_overlay1_file_upload_error" style="display:none;">
                     <div class="error_message" id="js_image_overlay1_file_upload_message"></div>     
                     
@@ -344,15 +416,75 @@ font-weight:bold;
 					<label for="custom_overlay_2_disabled" class="inline_radio">Disabled:</label> 
 					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').hide('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_2_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 0 || !isset($aForms.custom_overlay_2_type)}checked="checked"{/if} value="0" name="val[custom_overlay_2_type]" id="custom_overlay_2_disabled" />
 
-						   <label for="custom_overlay_2_price_overlay" class="inline_radio">Get Price Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_2_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_2_type]" id="custom_overlay_2_price_overlay" />
+                                        <label for="custom_overlay_2_price_overlay" class="inline_radio">Get Price Overlay:</label> 
+					<input type="radio" class="inline_radio" 
+                                              onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1').hide('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras3').hide('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').show('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('#custom_overlay_2_text').val('');" 
+                                                        {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 1}
+                                                         checked="checked"
+                                                        {/if} 
+                                                        value="1" 
+                                                        name="val[custom_overlay_2_type]" 
+                                                        id="custom_overlay_2_price_overlay" />
 
-						   <label for="custom_overlay_2_link_overlay" class="inline_radio">Link Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_2_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 2 }checked="checked"{/if} value="2" name="val[custom_overlay_2_type]" id="custom_overlay_2_link_overlay" />
+                                        <label for="custom_overlay_2_link_overlay" class="inline_radio">Link Overlay:</label> 
+					<input type="radio" class="inline_radio" 
+                                              onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1').show('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras3').hide('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').show('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('#custom_overlay_2_text').val('');" 
+                                                        {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 2 }
+                                                         checked="checked"
+                                                        {/if} 
+                                                        value="2" 
+                                                        name="val[custom_overlay_2_type]" 
+                                                        id="custom_overlay_2_link_overlay" />
                     
-                    <label for="custom_overlay_2_img_overlay" class="inline_radio">Custom Image Overlay:</label> 
-                    <input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1_text').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1_link').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras3').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_2_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 3 }checked="checked"{/if} value="3" name="val[custom_overlay_2_type]" id="custom_overlay_2_link_overlay" />
-                    
+                                        <label for="custom_overlay_2_img_overlay" class="inline_radio">Custom Image Overlay:</label> 
+                                        <input type="radio" class="inline_radio" 
+                                              onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1_text').hide('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1_link').show('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').show('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras3').show('fast');
+                                                        if ($(this).attr('checked') == 'checked')$('#custom_overlay_2_text').val('');" 
+                                                        {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 3 }
+                                                            checked="checked"
+                                                        {/if} 
+                                                        value="3" 
+                                                        name="val[custom_overlay_2_type]" 
+                                                        id="custom_overlay_2_link_overlay" />
+
+                                        <!-- 'SCHEDULE TEST DRIVE' OVERLAY -->
+                                        <label for="custom_overlay_2_schedule_overlay" class="inline_radio">Schedule Test Drive Overlay:</label>
+                                        <input type="radio" class="inline_radio" 
+                                               onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1').hide('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras3').hide('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').show('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('#custom_overlay_2_text').val('');" 
+                                                        {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 4}
+                                                            checked="checked"
+                                                        {/if} 
+                                                        value="4" 
+                                                        name="val[custom_overlay_2_type]" 
+                                                        id="custom_overlay_2_schedule_overlay" />
+                                        <!-- END OF 'SCHEDULE TEST DRIVE' OVERLAY -->	
+                                        
+                                        <!-- 'GET BEST DEAL' OVERLAY -->
+                                        <label for="custom_overlay_2_deal_overlay" class="inline_radio">Get Best Deal Overlay:</label>
+                                        <input type="radio" class="inline_radio" 
+                                               onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras1').hide('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras3').hide('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('.custom_overlay_2_extras2').show('fast');
+                                                         if ($(this).attr('checked') == 'checked')$('#custom_overlay_2_text').val('');" 
+                                                        {if $bIsEdit && isset($aForms.custom_overlay_2_type) && $aForms.custom_overlay_2_type == 5}
+                                                            checked="checked"
+                                                        {/if} 
+                                                        value="5" 
+                                                        name="val[custom_overlay_2_type]" 
+                                                        id="custom_overlay_2_deal_overlay" />
+                                        <!-- END OF 'GET BEST DEAL' OVERLAY -->	
                     
 				</li>
                  <div id="js_image_overlay2_file_upload_error" style="display:none;">
@@ -407,18 +539,47 @@ font-weight:bold;
 			<ol>
 				<li>
 
-					<label for="custom_overlay_3_disabled" class="inline_radio">Disabled:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').hide('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 0 || !isset($aForms.custom_overlay_3_type)}checked="checked"{/if} value="0" name="val[custom_overlay_3_type]" id="custom_overlay_3_disabled" />
+                                    <label for="custom_overlay_3_disabled" class="inline_radio">Disabled:</label> 
+                                    <input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').hide('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 0 || !isset($aForms.custom_overlay_3_type)}checked="checked"{/if} value="0" name="val[custom_overlay_3_type]" id="custom_overlay_3_disabled" />
 
-						   <label for="custom_overlay_3_price_overlay" class="inline_radio">Get Price Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_3_type]" id="custom_overlay_3_price_overlay" />
+                                    <label for="custom_overlay_3_price_overlay" class="inline_radio">Get Price Overlay:</label> 
+                                    <input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 1}checked="checked"{/if} value="1" name="val[custom_overlay_3_type]" id="custom_overlay_3_price_overlay" />
 
-						   <label for="custom_overlay_3_link_overlay" class="inline_radio">Link Overlay:</label> 
-					<input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 2 }checked="checked"{/if} value="2" name="val[custom_overlay_3_type]" id="custom_overlay_3_link_overlay" />
-                    
-                    <label for="custom_overlay_3_img_overlay" class="inline_radio">Custom Image Overlay:</label> 
-                    <input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1_link').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1_text').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 3 }checked="checked"{/if} value="3" name="val[custom_overlay_3_type]" id="custom_overlay_3_link_overlay" />
-                    
+                                    <label for="custom_overlay_3_link_overlay" class="inline_radio">Link Overlay:</label> 
+                                    <input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').hide('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 2 }checked="checked"{/if} value="2" name="val[custom_overlay_3_type]" id="custom_overlay_3_link_overlay" />
+
+                                    <label for="custom_overlay_3_img_overlay" class="inline_radio">Custom Image Overlay:</label> 
+                                    <input type="radio" class="inline_radio" onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1_link').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1_text').hide('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').show('fast');if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').show('fast');if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 3 }checked="checked"{/if} value="3" name="val[custom_overlay_3_type]" id="custom_overlay_3_link_overlay" />
+                
+                                    <!-- 'SCHEDULE TEST DRIVE' OVERLAY -->
+                                    <label for="custom_overlay_3_schedule_overlay" class="inline_radio">Schedule Test Drive Overlay:</label>
+                                    <input type="radio" class="inline_radio" 
+                                           onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').hide('fast');
+                                                     if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').hide('fast');
+                                                     if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').show('fast');
+                                                     if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" 
+                                                    {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 4}
+                                                        checked="checked"
+                                                    {/if} 
+                                                    value="4" 
+                                                    name="val[custom_overlay_3_type]" 
+                                                    id="custom_overlay_3_schedule_overlay" />
+                                    <!-- END OF 'SCHEDULE TEST DRIVE' OVERLAY -->	
+
+                                    <!-- 'GET BEST DEAL' OVERLAY -->
+                                    <label for="custom_overlay_3_deal_overlay" class="inline_radio">Get Best Deal Overlay:</label>
+                                    <input type="radio" class="inline_radio" 
+                                           onchange="if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras1').hide('fast');
+                                                     if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras3').hide('fast');
+                                                     if ($(this).attr('checked') == 'checked')$('.custom_overlay_3_extras2').show('fast');
+                                                     if ($(this).attr('checked') == 'checked')$('#custom_overlay_3_text').val('');" 
+                                                    {if $bIsEdit && isset($aForms.custom_overlay_3_type) && $aForms.custom_overlay_3_type == 5}
+                                                        checked="checked"
+                                                    {/if} 
+                                                    value="5" 
+                                                    name="val[custom_overlay_3_type]" 
+                                                    id="custom_overlay_3_deal_overlay" />
+                                    <!-- END OF 'GET BEST DEAL' OVERLAY -->	    
                     
 				</li>
                  <div id="js_image_overlay3_file_upload_error" style="display:none;">

@@ -25,7 +25,7 @@ if (bDebug) {
 	console.log('Page: ' + (bIsDvs ? 'DVS Overlay Player' : 'iDrive') + ' Browser Detected: ' + sBrowser);
 }
 
-//Watch overviews.  Resets MediaID array and plays video 0.
+/*//Watch overviews.  Resets MediaID array and plays video 0.
 // function watchOverviews() {
 // 	aMediaIds = aOverviewMediaIds;
 // 	playVideo(1);
@@ -69,7 +69,7 @@ if (bDebug) {
 // 	if (bIsDvs) {
 // 		resetOverlays();
 // 	}
-// }
+// }*/
 
 //Seek to new cue point if it's different than the one we're in, call cueChange
 function changeCuePoint(sCuePoint) {
@@ -177,7 +177,7 @@ function getPrice(iDvsId) {
 	}
 }
 
-// function getPriceIDrive(iIDriveId) {
+/*// function getPriceIDrive(iIDriveId) {
 // 	if (aCurrentVideoMetaData) {
 // 
 // 		var oCustomVars = {
@@ -223,7 +223,7 @@ function getPrice(iDvsId) {
 // 			alert('Please wait for a video to load.');
 // 		}
 // 	}
-// }
+// }*/
 
 function getPriceExternal(sEmail) {
 	if (aCurrentVideoMetaData) {
@@ -907,7 +907,7 @@ function getPriceOverlayClick(iDvsId) {
 	});
 }
 
-// function thumbnailClickDvs(iDvsId) {
+/*// function thumbnailClickDvs(iDvsId) {
 // 	sendToGoogle('DVS Overlay Player', 'Playlist', 'Thumbnail Clicked');
 // 	mixpanel.track("Thumbnail Clicked", {
 // 		"Category" : "DVS Overlay Player",
@@ -921,4 +921,4 @@ function getPriceOverlayClick(iDvsId) {
 // 
 // function inventoryClickDvs(iDvsId) {
 // 	sendToGoogle('DVS Overlay Player', 'Playlist', 'Inventory Clicked');
-// }
+// }*/

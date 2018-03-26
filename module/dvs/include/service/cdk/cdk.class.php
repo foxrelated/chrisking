@@ -80,7 +80,7 @@ class Dvs_Service_Cdk_Cdk extends Phpfox_Service {
             );
             $oShareViewRequest = $oGAService->makeRequest('ga:sessions', array(
                 'dimensions'=>'ga:medium',
-                'filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$this->prepareName(['dealer_name']),'sort'=>'-ga:sessions'
+                'filters'=>'ga:campaign==DVS Share Links;ga:source=~^'.$this->prepareName($aDvs['dealer_name']),'sort'=>'-ga:sessions'
             ), $sDateFrom);
             if ($oShareViewRequest->rows) {
                 foreach($oShareViewRequest->rows as $aDataRow) {

@@ -41,7 +41,7 @@ $(document).ready(function () {
         $(".vjs-endscreen-overlay-content .js_box").show();
         waitForElementToDisplay(".js_box #contact_dealer", 10);
     });
-
+    
     videojs("bcv2").ready(function () {
         $(document).on('submit', '#contact_dealer', function () {
             var element = $(".vjs-endscreen-overlay-content .js_box");
@@ -116,7 +116,16 @@ $(document).ready(function () {
         var cuePointArr = [];
         var allCuePointData,
             currentCuePoint;
-
+            
+        $(document).on('click', ".bookTestDriveButton, .getBestDealButton", function () {
+            myPlayer.pause();
+            overlayClose();
+        });
+        
+        $(document).on('click', "#dvsContactSuccessBtn", function () {
+            myPlayer.play();
+        });
+        
         oChapterDivs['Intro'] = $('#chapter_container_Intro').html();
         oChapterDivs['WhatsNew'] = $('#chapter_container_WhatsNew').html();
         oChapterDivs['Power'] = $('#chapter_container_Power').html();
@@ -775,14 +784,24 @@ $(document).ready(function () {
                 "Action": "Overlay Banner"
             });
         }
-
+        
     });
     $(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
         jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#dvs_inventory_link").attr('href', inventory_new);
     });
     $(document).on('DOMNodeInserted', '.vjs-custom-overlay, .vjs-overlay', function () {
+        $textForBestDeal = "Receive Today's Best Deal";
         $(".gp_ov").attr("onclick", 'tb_show(\'' + contact_dealer + '\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
-    })
+        $(".bookTDbtnConatiner").attr("onclick", 'tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
+        $(".getBestDealNowBtnConatiner").attr("onclick", 'tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForBestDeal\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
+
+        
+  
+    });
+    
+
+    
+    
 });
 
 function showspinner() {

@@ -1443,41 +1443,35 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
 
 	public function contactDealer()
 	{
-		$aVals = Phpfox::getLib('request')->getArray('val');
-		$bIsError = false;
+            $aVals = Phpfox::getLib('request')->getArray('val');
+            $bIsError = false;
+
 
 		if (!$aVals['contact_name'] && Phpfox::getParam('dvs.get_price_validate_name'))
 		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'). ' ');
+//			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_name'). ' ');
 			$bIsError = true;
 		}
 		if (!$aVals['contact_email'] && Phpfox::getParam('dvs.get_price_validate_email'))
 		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'). ' ');
+//			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_email_address'). ' ');
 			$bIsError = true;
 		}
 		if (!$aVals['contact_phone'] && Phpfox::getParam('dvs.get_price_validate_phone'))
 		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_phone_number'). ' ');
+//			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_phone_number'). ' ');
 			$bIsError = true;
 		}
-		if (!$aVals['contact_zip'] && Phpfox::getParam('dvs.get_price_validate_zip_code'))
-		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_your_zip_code'). ' ');
-			$bIsError = true;
-		}
-		if (!$aVals['contact_comments'] && Phpfox::getParam('dvs.get_price_validate_comments'))
-		{
-			Phpfox_Error::set(Phpfox::getPhrase('dvs.please_enter_comments'). ' ');
-			$bIsError = true;
-		}
+
+
 
 		if (!$bIsError)
 		{
-
 			$this->call("$('#contact_dealer').hide();");
 			$this->call("$('#dvs_contact_success').show();");
-			$this->call("setTimeout(function() { tb_remove(); }, 3000);");
+                        $this->call("$('.js_box_title').hide();");
+                        $this->call("$('.js_box_content').css('min-height', '280px');");
+			/*$this->call("setTimeout(function() { tb_remove(); }, 3000);");*/
 
 			$recipients = Phpfox::getService('dvs.email')->sendDealerContactEmail($aVals);
 
@@ -1953,10 +1947,20 @@ class Dvs_Component_Ajax_Ajax extends Phpfox_Ajax
         $this->hide('#managers_team_member_' . $iManagerTeamId);
         $this->alert('User removed');
     }
-
+    
 	public function showGetPriceForm()
 	{
 		Phpfox::getBlock('dvs.get-price', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
+	}
+        
+        public function showGetContactFormForTestDrive()
+	{
+            Phpfox::getBlock('dvs.book-test-drive', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
+	}
+        
+        public function showGetContactFormForBestDeal()
+	{
+            Phpfox::getBlock('dvs.get-best-deal', array('iDvsId' => $this->get('iDvsId'), 'sRefId' => $this->get('sRefId')));
 	}
 
 	public function emailForm()

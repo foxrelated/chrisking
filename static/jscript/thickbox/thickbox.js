@@ -433,7 +433,9 @@ function tb_show(caption, url, thisObject, sForceMessage, bForceNoCilck, sType)
 			{
 				sHtml += '<div class="js_box_title">' + caption + '</div>';
 			}
-			sHtml += '<div class="js_box_content"><span class="js_box_loader">' + oTranslations['core.loading'] + '...</span></div>';
+                        
+//			sHtml += '<div class="js_box_content"><span class="js_box_loader">' + oTranslations['core.loading'] + '...</span></div>'; // This is the original version of codes for loading. Replaced by a code below to show a spinner which requires a font-awesome library. 
+                        sHtml += '<div class="js_box_content" style="text-align:center;"><span class="js_box_loader"><i class="fa fa-cog fa-spin" style="font-size:25px; color:#4FC26F; margin:10px 0px; margin-bottom:35px;"></i></span></div>';
 			// if (!bIsPhotoImage)
 			{
 				sHtml += '<div class="js_box_close"><a href="#" onclick="return js_box_remove(this);">' + oTranslations['core.close'] + '</a><span class="js_box_history">' + params[getParam('sGlobalTokenName') + '[call]'] + '</span></div>';

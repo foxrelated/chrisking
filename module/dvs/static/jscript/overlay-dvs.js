@@ -31,7 +31,7 @@ function endscreenContact(sSource){
 //    });  
 }
 
-// function menuEmail(sSource) {
+/*// function menuEmail(sSource) {
 // 	sendToGoogle('DVS iFrame', sSource, 'Email Menu Link');
 // 		mixpanel.track("Email Menu Clicked");
 // 
@@ -212,7 +212,7 @@ function endscreenContact(sSource){
 // 			}
 // 		);
 // 	}
-// }
+// }*/
 
 function getPriceEmailSent() {
 	if (aCurrentVideoMetaData) {
@@ -251,7 +251,7 @@ function getPriceEmailSent() {
 	}
 }
 
-// $Behavior.dvs = function() {
+/*// $Behavior.dvs = function() {
 // 
 // 	// Make sure old browsers are using the new html5 placeholder functionality
 // 	if (!Modernizr.input.placeholder) {
@@ -424,7 +424,7 @@ function getPriceEmailSent() {
 // 		twttr.events.bind('follow', followIntentToAnalytics);
 // 
 // 	});
-// }
+// }*/
 
 function resetGetPriceForm() {
 	$('#dvs_contact_success').hide();
