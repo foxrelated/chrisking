@@ -122,7 +122,7 @@ if (!window.WTVVIN) {
 
         show_popup: function(oLink) {
             var sLink = oLink.getAttribute('href');
-            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" height="600" width="930" frameborder="0" scrolling="no"></iframe>';
+            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="' + sLink + '" height="600" width="930" frameborder="0" scrolling="no"></iframe>';
             this.fadeIn('dvs_vin_popup_wrapper');
 
             return false;

@@ -132,7 +132,7 @@ if (!window.WTVVIN) {
         },
 
         open_iframe: function() {
-            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" height="100%" width="100%" style="height:100%;" frameborder="0" scrolling="no"></iframe>';
+            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="' + sLink + '" height="100%" width="100%" style="height:100%;" frameborder="0" scrolling="no"></iframe>';
             WTVVIN.fadeIn('dvs_vin_layout_wrapper', 9);
             WTVVIN.fadeIn('dvs_vin_popup_wrapper', 10);
             return false;
@@ -168,7 +168,7 @@ if (!window.WTVVIN) {
         },
 
         show_popup: function(sLink) {
-            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" height="100%" width="100%" style="height:100%;" frameborder="0" scrolling="no"></iframe>';
+            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="' + sLink + '" height="100%" width="100%" style="height:100%;" frameborder="0" scrolling="no"></iframe>';
             WTVVIN.fadeIn('dvs_vin_layout_wrapper', 9);
             WTVVIN.fadeIn('dvs_vin_popup_wrapper', 10);
             return false;

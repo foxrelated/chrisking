@@ -62,7 +62,6 @@ defined('PHPFOX') or exit('NO DICE!');
                 </table>
             {/if}
         </section>*}
-        <p class="model_description player_instructions" style="margin:0;padding:2px;">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
     </header>
     <article>
     

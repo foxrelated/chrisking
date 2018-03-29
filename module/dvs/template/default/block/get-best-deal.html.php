@@ -107,6 +107,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         max-width: 1200px;  
     {r}
     /*-- End of Thickbox.js --*/
+
+    
     #contact_dealer p {l} font-size: 16px; {r}
     .closeContainer {l}
         display: block;
@@ -145,6 +147,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         padding-top: 30px;
         font-size: 16px;
         text-align: left;
+        line-height: 20px;
     {r}
     
     .closeContainer .close:hover {l} color: white; {r}
@@ -155,7 +158,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         font-size: 10px !important;
     {r}    
         
-    .hasError {l} color: red; {r}
+    .hasError {l} color: red !important; {r}
     
     .hasErrorIcon {l} 
         position: relative;
@@ -284,12 +287,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         margin-top: 15px;
         margin-bottom: .2rem;
         font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-        font-size: 12px;
+        font-size: 12px !important;
         font-weight: 400;
         line-height: 1.5;
         text-align: left;
         float: left;
-        color: white;
+        color: white !important;
     {r}
     
     .form-control {l}

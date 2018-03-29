@@ -407,6 +407,7 @@ display:none !important;
 .vjs-ended .vjs-custom-overlay{l}
     background-color:transparent;  
     padding:0;
+    max-height: 68%;
 {r}
 .endscr_title,.endscr_bottom_nvideo{l}
 color:#fff !important;
@@ -540,6 +541,8 @@ color:#666 !important;
         float:right; 
         background-color:rgba(0,0,0,0.65); 
         min-height:66px;
+        max-width: 270px;
+        min-width: 250px; 
     {r}
     
     .closeButton {l} 
@@ -632,7 +635,7 @@ color:#fff;
         <div class="player_error">{phrase var='dvs.no_videos_error'}</div>
     {/if}
 </div>
-<script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js"></script>
-<!--<script src="//players.brightcove.net/607012070001/default_default/index.min.js"></script> --> 
+<script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js" allowfullscreen webkitallowfullscreen mozallowfullscreen></script>
+<!--<script src="//players.brightcove.net/607012070001/BkZuQtXDz_default/index.min.js"></script> --> 
 <script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.min.js"></script>
 <script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"></script>
