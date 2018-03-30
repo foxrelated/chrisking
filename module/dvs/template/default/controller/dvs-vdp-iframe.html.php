@@ -298,7 +298,6 @@ color:#fff;
 </style>
 <![endif]-->
 <article>
-<p class="model_description player_instructions" style="margin-top:0;margin-bottom:5px;color:#{$aPlayer.player_text};">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
     <section id="player">
         {if !empty($sJavascript)}{$sJavascript}{/if}
         <script type="text/javascript">

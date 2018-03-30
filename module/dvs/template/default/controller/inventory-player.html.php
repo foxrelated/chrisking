@@ -309,7 +309,6 @@ color:#fff;
         {/if}
             {r}
 </script>
-<p class="model_description player_instructions">Click the chapter buttons to instantly view vehicle features of greatest interest to you.</p>
 <article>
     <section id="video_information">
         <h3 id="video_name">
