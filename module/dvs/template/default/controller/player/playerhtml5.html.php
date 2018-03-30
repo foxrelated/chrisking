@@ -681,10 +681,7 @@ color:#fff;
 <input type="hidden" id="bc_dvs" value="{$iDvsId}">
 <!-- <video id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls preload playsinline width="100%" height="100%" ></video> -->
 
-<video id="bcv2" data-account="607012070001" data-player="BkZuQtXDz" data-embed="default" class="video-js" controls="true" crossorigin="anonymous">
-    <track src="https://iivkurr4tj.execute-api.us-west-2.amazonaws.com/latest/videos/5177772207001/webvtt" kind="chapters" label="Chapters" srclang="en">
-    test03300231
-</video>
+<video id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls="true"></video>
  
 <section id="playlist_wrapper">
         <button class="prev playlist-button">&lt;</button>
@@ -717,7 +714,6 @@ color:#fff;
 </section>
 </section>
 
-{if $sBrowser != 'desktop'}
 <section id="chapter_buttons">
     <button type="button" id="chapter_container_Intro" class="disabled display"></button>
     <button type="button" id="chapter_container_Overview" class="disabled no_display"></button>
@@ -744,7 +740,6 @@ color:#fff;
         {/if}
     {/if}
 </section>
-{/if}
 
 <script src="//players.brightcove.net/607012070001/default_default/index.min.js"></script>
 <script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.min.js"></script>
