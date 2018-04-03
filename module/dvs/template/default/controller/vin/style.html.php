@@ -64,11 +64,11 @@
 #dvs_vin_popup {l}
     display: block;
     width: 90%;
-    max-width:895px;
+    max-width:{if $sBrowser != 'mobile'}880px{elseif $sBrowser == 'ipad'}860px{else}815px{/if};
     position: relative;
     margin: 0 auto;
     height: 100%;
-    max-height:{if $sBrowser == 'mobile'}{$iPopupHeight}px{else}550px{/if};
+    max-height:{if $sBrowser == 'mobile'}{$iPopupHeight}px{else}435px{/if};
     box-shadow: 0 0 10px #222222;
     border-radius: 5px;
     z-index:10002;
@@ -78,9 +78,9 @@
 #dvs_vin_popup_content {l}
     display: block;
     width: 100%;
-    max-width:900px;
+    max-width:{if $sBrowser != 'mobile'}895px{elseif $sBrowser == 'ipad'}860px{else}815px{/if};
     height: 100%;
-    max-height:{if $sBrowser == 'mobile'}{$iPopupHeight}px{else}465px{/if};
+    max-height:{if $sBrowser == 'mobile'}{$iPopupHeight}px{else}432px{/if};
     border-radius: 5px;
     overflow: hidden;
     position: relative;

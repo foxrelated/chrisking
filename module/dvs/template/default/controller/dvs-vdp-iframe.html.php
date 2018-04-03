@@ -1,7 +1,7 @@
 <style type="text/css">
-#player {l}
-padding:3px 10px 5px 12px !important;
-{r}
+    #player {l}
+        padding:{if $sBrowser == 'ipad'} 6px 0px !important{else}3px 10px 5px 10px !important{/if};
+    {r}
     #dvs_bc_player {l}
         width: {if $sBrowser == 'mobile'}{$iPlayerWidth}px{else}720px{/if};
         height: {if $sBrowser == 'mobile'}{$iPlayerHeight}px{else}405px{/if};
@@ -9,7 +9,11 @@ padding:3px 10px 5px 12px !important;
 
     body {l}
         background-color: #{$aDvs.player_background};
-        padding-top: 15px;
+        padding-top: {if $sBrowser == 'mobile'}0px{else}5px{/if};
+    {r}
+    
+    #site_content {l} 
+        margin: {if $sBrowser == 'mobile'}0px !important{/if};
     {r}
 
     #video_information {l}
@@ -29,6 +33,8 @@ padding:3px 10px 5px 12px !important;
     #video_information a {l}
         font-size:inherit;
     {r}
+    
+    
 </style>
 {if $player_type == 2}
 <style type="text/css">
@@ -659,7 +665,7 @@ color:#fff;
                 <button type="button" id="chapter_container_Summary" class="disabled display"></button>
             </section>
         {/if}
-        <p id="video_warning_text" style="padding-top:10px;color:#{$aPlayer.player_text};font-size:{$iWarningTextFontSize}px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
+        <p id="video_warning_text" style="padding-top:1px;color:#{$aPlayer.player_text};font-size:{$iWarningTextFontSize}px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
     </section>
     <section id="share_links" style="margin-left:10px;margin-top:10px;">
             <input type="hidden" value="{$sNewParentUrl}" id="parent_url">
@@ -947,7 +953,7 @@ color:#fff;
             <button type="button" id="chapter_container_Summary" class="disabled display" onclick="changeCuePoint('Summary');"></button>
         </section>
         {/if}
-        <p id="video_warning_text" style="padding-top:10px;color:#{$aPlayer.player_text};font-size:{$iWarningTextFontSize}px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
+        <p id="video_warning_text" style="padding-top:1px;color:#{$aPlayer.player_text};font-size:{$iWarningTextFontSize}px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
     </section>
 </article>
 {/if}

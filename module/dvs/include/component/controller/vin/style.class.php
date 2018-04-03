@@ -45,20 +45,20 @@ class Dvs_Component_Controller_Vin_Style extends Phpfox_Component {
             }
             $iPlayerWidth = (int)($iPopupWidth * 0.9);
             $iPlayerHeight = (int)($iPlayerWidth * 405 / 720);
-            $iPopupHeight = $iPlayerHeight + 65;
+            $iPopupHeight = $iPlayerHeight + 30; //65  *Note: the following values are replaced by 0 as "Share" feature is disabled for now (04-03-2018 0245PM)
 
             if ($iPlayerWidth > 520) {
-                $iPopupHeight = $iPopupHeight + 50;
+                $iPopupHeight = $iPopupHeight + 0; //50
             } elseif ($iPlayerWidth > 450) {
-                $iPopupHeight = $iPopupHeight + 48;
+                $iPopupHeight = $iPopupHeight + 0; //48 
             } elseif ($iPlayerWidth > 380) {
-                $iPopupHeight = $iPopupHeight + 45;
+                $iPopupHeight = $iPopupHeight + 0; //45 
             } elseif ($iPlayerWidth > 350) {
-                $iPopupHeight = $iPopupHeight + 43;
+                $iPopupHeight = $iPopupHeight + 0; //43 
             } elseif ($iPlayerWidth > 310) {
-                $iPopupHeight = $iPopupHeight + 40;
+                $iPopupHeight = $iPopupHeight + 0; //40 
             } else {
-                $iPopupHeight = $iPopupHeight + 38;
+                $iPopupHeight = $iPopupHeight + 0; //38 
             }
 
             $this->template()->assign(array(
