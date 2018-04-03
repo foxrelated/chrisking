@@ -148,6 +148,9 @@ $(document).on('click','.js_box .js_box_close a',function() {
         $(document).on('click', ".bookTestDriveButton, .getBestDealButton", function () {
             myPlayer.pause();
             overlayClose();
+            if ($(".vjs-fullscreen").length > 0) {
+                $(".js_box").appendTo(".vjs-fullscreen");
+            }
         });
         
         $(document).on('click', "#dvsContactSuccessBtn", function () {

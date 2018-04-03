@@ -80,7 +80,7 @@
     width: 100%;
     max-width:900px;
     height: 100%;
-    max-height:{if $sBrowser == 'mobile'}{$iPopupHeight}px{else}550px{/if};
+    max-height:{if $sBrowser == 'mobile'}{$iPopupHeight}px{else}465px{/if};
     border-radius: 5px;
     overflow: hidden;
     position: relative;

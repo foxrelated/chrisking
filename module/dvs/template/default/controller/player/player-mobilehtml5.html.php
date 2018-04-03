@@ -37,245 +37,243 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     {/if}
     {if $bIsDvs}
 
-    {foreach from = $aOverviewVideos key = iKey item = aVideo}
-        {if $iKey == 0}
-            aPoster = '{$poster_img}';
-            console.log('Poster Image Set');
-            console.log(aPoster);
-        {/if}
-        aOverviewMediaIds[{$iKey}] = {$aVideo.id};
-    {/foreach}
+        {foreach from = $aOverviewVideos key = iKey item = aVideo}
+            {if $iKey == 0}
+                aPoster = '{$poster_img}';
+                console.log('Poster Image Set');
+                console.log(aPoster);
+            {/if}
+            aOverviewMediaIds[{$iKey}] = {$aVideo.id};
+        {/foreach}
 
-    aMediaIds = aOverviewMediaIds;
+        aMediaIds = aOverviewMediaIds;
 
-    {if isset($aOverrideVideo.id)}
-        if (bDebug) console.log('Media: Override is set. aMediaIds:');
-        aMediaIds[0] = {$aOverrideVideo.id};
-    {else}
-        {if isset($aFeaturedVideo.id)}
-            if (bDebug) console.log('Media: Featured Video is set. aMediaIds:');
+        {if isset($aOverrideVideo.id)}
+            if (bDebug) console.log('Media: Override is set. aMediaIds:');
+            aMediaIds[0] = {$aOverrideVideo.id};
+        {else}
+            {if isset($aFeaturedVideo.id)}
+                if (bDebug) console.log('Media: Featured Video is set. aMediaIds:');
                 aMediaIds[0] = {$aFeaturedVideo.id};
             {else}
-            if (bDebug) console.log('Media: No override or featuerd. aMediaIds:');
-            aMediaIds = aOverviewMediaIds;
+                if (bDebug) console.log('Media: No override or featuerd. aMediaIds:');
+                aMediaIds = aOverviewMediaIds;
             {/if}
         {/if}
-    if (bDebug) {l}
-        console.log(aMediaIds);
-    {r}
+        if (bDebug) {l} console.log(aMediaIds); {r}
 
-//  var contact_dealer = "{phrase var='dvs.contact_dealer'}";
-    {if $aPlayer.custom_overlay_1_type}
-        if (bDebug) console.log('Overlay: Overlay 1 is active. Type: {$aPlayer.custom_overlay_1_type}. Start: {$aPlayer.custom_overlay_1_start}. Duration: {$aPlayer.custom_overlay_1_duration}.');
-        var bCustomOverlay1 = true;
-        var bOverlay1Type = '{$aPlayer.custom_overlay_1_type}';
-        {if $aPlayer.custom_overlay_1_type == 1}
-         var bCustomOverlay1Content = '<a href="#" class="gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
-        //=== Schedule Test Drive Overlay
-        {elseif $aPlayer.custom_overlay_1_type == 4 }
-            console.log("Book an actual test drive!");
-            var bCustomOverlay1Content = 
-                    '<div class="modal modal01" id="modal">\n\
-                        <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
-                        <div class="leftColModalForImgContainer">\n\
-                            <div class="leftColModalForImgContent">\n\
-                                <img id="steeringwheelImg" src="{$sImagePath}icon-steeringwheel-button.png"/>\n\
-                            </div>\n\
-                        </div>\n\
-                        <div class="rightColModalContainer">\n\
-                            <div class="rightColModalForTxtContainer">Book an Actual Test Drive</div>\n\
-                            <div>\n\
-                                <div href="#" class="bookTDbtnConatiner" onclick="tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
-                                    <button class="bookTestDriveButton">Schedule your test drive &nbsp;<i class="fa fa-angle-down"></i></button>\n\
+        {if $sBrowser == 'desktop'}
+            {if $aPlayer.custom_overlay_1_type}
+                if (bDebug) console.log('Overlay: Overlay 1 is active. Type: {$aPlayer.custom_overlay_1_type}. Start: {$aPlayer.custom_overlay_1_start}. Duration: {$aPlayer.custom_overlay_1_duration}.');
+                var bCustomOverlay1 = true;
+                var bOverlay1Type = '{$aPlayer.custom_overlay_1_type}';
+                {if $aPlayer.custom_overlay_1_type == 1}
+                 var bCustomOverlay1Content = '<a href="#" class="gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
+                //=== Schedule Test Drive Overlay
+                {elseif $aPlayer.custom_overlay_1_type == 4 }
+                    console.log("Book an actual test drive!");
+                    var bCustomOverlay1Content = 
+                            '<div class="modal modal01" id="modal">\n\
+                                <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
+                                <div class="leftColModalForImgContainer">\n\
+                                    <div class="leftColModalForImgContent">\n\
+                                        <img id="steeringwheelImg" src="{$sImagePath}icon-steeringwheel-button.png"/>\n\
+                                    </div>\n\
                                 </div>\n\
-                            </div>\n\
-                        </div>\n\
-                    </div>';
-        //=== End of Schedule Test Drive Overlay
-        
-        //=== Get Best Deal Overlay
-        {elseif $aPlayer.custom_overlay_1_type == 5 }
-            console.log("Receive Today's Best Deal!");
-            $textForBestDeal = "Receive Today's Best Deal";
-            
-            var bCustomOverlay1Content = 
-                    '<div class="modal modal01" id="modal">\n\
-                        <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
-                        <div class="leftColModalForImgContainer">\n\
-                            <div class="leftColModalForImgContent">\n\
-                                <img id="iconPurchaseImg" src="{$sImagePath}icon-purchase.png"/>\n\
-                            </div>\n\
-                        </div>\n\
-                        <div class="rightColModalContainer">\n\
-                            <div class="rightColModalForTxtContainer">Receive Today\'s Best Deal</div>\n\
-                            <div>\n\
-                                <div href="#" class="getBestDealNowBtnConatiner" onclick="tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForBestDeal\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
-                                    <button class="getBestDealButton">Get it now &nbsp;<i class="fa fa-angle-down"></i></button>\n\
+                                <div class="rightColModalContainer">\n\
+                                    <div class="rightColModalForTxtContainer">Book an Actual Test Drive</div>\n\
+                                    <div>\n\
+                                        <div href="#" class="bookTDbtnConatiner" onclick="tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
+                                            <button class="bookTestDriveButton">Schedule your test drive &nbsp;<i class="fa fa-angle-down"></i></button>\n\
+                                        </div>\n\
+                                    </div>\n\
                                 </div>\n\
-                            </div>\n\
-                        </div>\n\
-                    </div>';
-        //=== End of Get Best Deal Overlay    
-        
-        
-        // Image Overlay
-        {elseif $aPlayer.custom_overlay_1_type == 3}
-            {if $aPlayer.custom_overlay_1_text != ''}
-             var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_1_text}"></a>';
-             {else}
-             var bCustomOverlay1Content = '';
-             bCustomOverlay1 = false;
-             {/if}
-        {else}
-        var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_1_text}</a>';
-        {/if}
-        
-        var iCustomOverlay1Start = {$aPlayer.custom_overlay_1_start};
-        var iCustomOverlay1Duration = {$aPlayer.custom_overlay_1_duration};
-    {else}
-        var bCustomOverlay1 = false;
-        if (bDebug) console.log('Overlay: Overlay 1 is inactive.');
-    {/if}
+                            </div>';
+                //=== End of Schedule Test Drive Overlay
 
-    {if $aPlayer.custom_overlay_2_type}
-        if (bDebug) console.log('Overlay: Overlay 2 is active. Type: {$aPlayer.custom_overlay_2_type}. Start: {$aPlayer.custom_overlay_2_start}. Duration: {$aPlayer.custom_overlay_2_duration}.');
-        var bCustomOverlay2 = true;
-        var bOverlay2Type = '{$aPlayer.custom_overlay_2_type}';
-        {if $aPlayer.custom_overlay_2_type == 1}
-         var bCustomOverlay2Content =  '<a href="#" class="gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
-        //=== Schedule Test Drive Overlay
-        {elseif $aPlayer.custom_overlay_2_type == 4 }
-            console.log("Book an actual test drive!");
+                //=== Get Best Deal Overlay
+                {elseif $aPlayer.custom_overlay_1_type == 5 }
+                    console.log("Receive Today's Best Deal!");
+                    $textForBestDeal = "Receive Today's Best Deal";
 
-            var bCustomOverlay2Content = 
-                    '<div class="modal modal01" id="modal">\n\
-                        <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
-                        <div class="leftColModalForImgContainer">\n\
-                            <div class="leftColModalForImgContent">\n\
-                                <img id="steeringwheelImg" src="{$sImagePath}icon-steeringwheel-button.png"/>\n\
-                            </div>\n\
-                        </div>\n\
-                        <div class="rightColModalContainer">\n\
-                            <div class="rightColModalForTxtContainer">Book an Actual Test Drive</div>\n\
-                            <div>\n\
-                                <div href="#" class="bookTDbtnConatiner" onclick="tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
-                                    <button class="bookTestDriveButton">Schedule your test drive &nbsp;<i class="fa fa-angle-down"></i></button>\n\
+                    var bCustomOverlay1Content = 
+                            '<div class="modal modal01" id="modal">\n\
+                                <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
+                                <div class="leftColModalForImgContainer">\n\
+                                    <div class="leftColModalForImgContent">\n\
+                                        <img id="iconPurchaseImg" src="{$sImagePath}icon-purchase.png"/>\n\
+                                    </div>\n\
                                 </div>\n\
-                            </div>\n\
-                        </div>\n\
-                    </div>';
-        //=== End of Schedule Test Drive Overlay
-        
-        //=== Get Best Deal Overlay
-        {elseif $aPlayer.custom_overlay_2_type == 5 }
-            console.log("Receive Today's Best Deal!");
-            $textForBestDeal = "Receive Today's Best Deal";
-            
-            var bCustomOverlay2Content = 
-                    '<div class="modal modal01" id="modal">\n\
-                        <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
-                        <div class="leftColModalForImgContainer">\n\
-                            <div class="leftColModalForImgContent">\n\
-                                <img id="iconPurchaseImg" src="{$sImagePath}icon-purchase.png"/>\n\
-                            </div>\n\
-                        </div>\n\
-                        <div class="rightColModalContainer">\n\
-                            <div class="rightColModalForTxtContainer">Receive Today\'s Best Deal</div>\n\
-                            <div>\n\
-                                <div href="#" class="getBestDealNowBtnConatiner" onclick="tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForBestDeal\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
-                                    <button class="getBestDealButton">Get it now &nbsp;<i class="fa fa-angle-down"></i></button>\n\
+                                <div class="rightColModalContainer">\n\
+                                    <div class="rightColModalForTxtContainer">Receive Today\'s Best Deal</div>\n\
+                                    <div>\n\
+                                        <div href="#" class="getBestDealNowBtnConatiner" onclick="tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForBestDeal\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
+                                            <button class="getBestDealButton">Get it now &nbsp;<i class="fa fa-angle-down"></i></button>\n\
+                                        </div>\n\
+                                    </div>\n\
                                 </div>\n\
-                            </div>\n\
-                        </div>\n\
-                    </div>';
-        //=== End of Get Best Deal Overlay        
+                            </div>';
+                //=== End of Get Best Deal Overlay    
 
-          {elseif $aPlayer.custom_overlay_2_type == 3}
-              {if $aPlayer.custom_overlay_2_text != ''}
-                     var bCustomOverlay2Content = '<a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_2_text}"></a>';
+
+                // Image Overlay
+                {elseif $aPlayer.custom_overlay_1_type == 3}
+                    {if $aPlayer.custom_overlay_1_text != ''}
+                     var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_1_text}"></a>';
                      {else}
-                     var bCustomOverlay2Content = '';
-                 bCustomOverlay2 = false;
+                     var bCustomOverlay1Content = '';
+                     bCustomOverlay1 = false;
                      {/if}
-        {else}
-        var bCustomOverlay2Content = '<a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_2_text}</a>';
-        {/if}
-        var iCustomOverlay2Start = {$aPlayer.custom_overlay_2_start};
-        var iCustomOverlay2Duration = {$aPlayer.custom_overlay_2_duration};
-    {else}
-        var bCustomOverlay2 = false;
-        if (bDebug) console.log('Overlay: Overlay 2 is inactive.');
-    {/if}
+                {else}
+                var bCustomOverlay1Content = '<a href="{$aPlayer.custom_overlay_1_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_1_text}</a>';
+                {/if}
 
-    {if $aPlayer.custom_overlay_3_type}
-        if (bDebug) console.log('Overlay: Overlay 3 is active. Type: {$aPlayer.custom_overlay_3_type}. Start: {$aPlayer.custom_overlay_3_start}. Duration: {$aPlayer.custom_overlay_3_duration}.');
-        var bCustomOverlay3 = true;
-        var bOverlay3Type = '{$aPlayer.custom_overlay_3_type}';
-        {if $aPlayer.custom_overlay_3_type == 1}
-           var bCustomOverlay3Content = '<a href="#" class="gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>'
-        //=== Schedule Test Drive Overlay
-        {elseif $aPlayer.custom_overlay_3_type == 4 }
-            console.log("Book an actual test drive!");
-            var bCustomOverlay3Content = 
-                    '<div class="modal modal01" id="modal">\n\
-                        <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
-                        <div class="leftColModalForImgContainer">\n\
-                            <div class="leftColModalForImgContent">\n\
-                                <img id="steeringwheelImg" src="{$sImagePath}icon-steeringwheel-button.png"/>\n\
-                            </div>\n\
-                        </div>\n\
-                        <div class="rightColModalContainer">\n\
-                            <div class="rightColModalForTxtContainer">Book an Actual Test Drive</div>\n\
-                            <div>\n\
-                                <div href="#" class="bookTDbtnConatiner" onclick="tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
-                                    <button class="bookTestDriveButton">Schedule your test drive &nbsp;<i class="fa fa-angle-down"></i></button>\n\
-                                </div>\n\
-                            </div>\n\
-                        </div>\n\
-                    </div>';
-        //=== End of Schedule Test Drive Overlay
-        
-        //=== Get Best Deal Overlay
-        {elseif $aPlayer.custom_overlay_3_type == 5 }
-            console.log("Receive Today's Best Deal!");
-            $textForBestDeal = "Receive Today's Best Deal";
-            
-            var bCustomOverlay3Content = 
-                    '<div class="modal modal01" id="modal">\n\
-                        <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
-                        <div class="leftColModalForImgContainer">\n\
-                            <div class="leftColModalForImgContent">\n\
-                                <img id="iconPurchaseImg" src="{$sImagePath}icon-purchase.png"/>\n\
-                            </div>\n\
-                        </div>\n\
-                        <div class="rightColModalContainer">\n\
-                            <div class="rightColModalForTxtContainer">Receive Today\'s Best Deal</div>\n\
-                            <div>\n\
-                                <div href="#" class="getBestDealNowBtnConatiner" onclick="tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForBestDeal\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
-                                    <button class="getBestDealButton">Get it now &nbsp;<i class="fa fa-angle-down"></i></button>\n\
-                                </div>\n\
-                            </div>\n\
-                        </div>\n\
-                    </div>';
-        //=== End of Get Best Deal Overlay
-    
-        {elseif $aPlayer.custom_overlay_3_type == 3}
-         {if $aPlayer.custom_overlay_3_text != ''}
-         var bCustomOverlay3Content = '<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_3_text}"></a>';
-        {else}
-        var bCustomOverlay3Content = ''; 
-        bCustomOverlay3 = false;
-        {/if}   
-        {else}
-        var bCustomOverlay3Content = '<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_3_text}</a>';
-        {/if}
-        var iCustomOverlay3Start = {$aPlayer.custom_overlay_3_start};
-        var iCustomOverlay3Duration = {$aPlayer.custom_overlay_3_duration};
-    {else}
-        var bCustomOverlay3 = false;
-        if (bDebug) console.log('Overlay: Overlay 3 is inactive.');
-    {/if}
+                var iCustomOverlay1Start = {$aPlayer.custom_overlay_1_start};
+                var iCustomOverlay1Duration = {$aPlayer.custom_overlay_1_duration};
+            {else}
+                var bCustomOverlay1 = false;
+                if (bDebug) console.log('Overlay: Overlay 1 is inactive.');
+            {/if}
 
+            {if $aPlayer.custom_overlay_2_type}
+                if (bDebug) console.log('Overlay: Overlay 2 is active. Type: {$aPlayer.custom_overlay_2_type}. Start: {$aPlayer.custom_overlay_2_start}. Duration: {$aPlayer.custom_overlay_2_duration}.');
+                var bCustomOverlay2 = true;
+                var bOverlay2Type = '{$aPlayer.custom_overlay_2_type}';
+                {if $aPlayer.custom_overlay_2_type == 1}
+                 var bCustomOverlay2Content =  '<a href="#" class="gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>';
+                //=== Schedule Test Drive Overlay
+                {elseif $aPlayer.custom_overlay_2_type == 4 }
+                    console.log("Book an actual test drive!");
+
+                    var bCustomOverlay2Content = 
+                            '<div class="modal modal01" id="modal">\n\
+                                <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
+                                <div class="leftColModalForImgContainer">\n\
+                                    <div class="leftColModalForImgContent">\n\
+                                        <img id="steeringwheelImg" src="{$sImagePath}icon-steeringwheel-button.png"/>\n\
+                                    </div>\n\
+                                </div>\n\
+                                <div class="rightColModalContainer">\n\
+                                    <div class="rightColModalForTxtContainer">Book an Actual Test Drive</div>\n\
+                                    <div>\n\
+                                        <div href="#" class="bookTDbtnConatiner" onclick="tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
+                                            <button class="bookTestDriveButton">Schedule your test drive &nbsp;<i class="fa fa-angle-down"></i></button>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>';
+                //=== End of Schedule Test Drive Overlay
+
+                //=== Get Best Deal Overlay
+                {elseif $aPlayer.custom_overlay_2_type == 5 }
+                    console.log("Receive Today's Best Deal!");
+                    $textForBestDeal = "Receive Today's Best Deal";
+
+                    var bCustomOverlay2Content = 
+                            '<div class="modal modal01" id="modal">\n\
+                                <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
+                                <div class="leftColModalForImgContainer">\n\
+                                    <div class="leftColModalForImgContent">\n\
+                                        <img id="iconPurchaseImg" src="{$sImagePath}icon-purchase.png"/>\n\
+                                    </div>\n\
+                                </div>\n\
+                                <div class="rightColModalContainer">\n\
+                                    <div class="rightColModalForTxtContainer">Receive Today\'s Best Deal</div>\n\
+                                    <div>\n\
+                                        <div href="#" class="getBestDealNowBtnConatiner" onclick="tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForBestDeal\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
+                                            <button class="getBestDealButton">Get it now &nbsp;<i class="fa fa-angle-down"></i></button>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>';
+                //=== End of Get Best Deal Overlay        
+
+                  {elseif $aPlayer.custom_overlay_2_type == 3}
+                      {if $aPlayer.custom_overlay_2_text != ''}
+                             var bCustomOverlay2Content = '<a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_2_text}"></a>';
+                             {else}
+                             var bCustomOverlay2Content = '';
+                         bCustomOverlay2 = false;
+                             {/if}
+                {else}
+                var bCustomOverlay2Content = '<a href="{$aPlayer.custom_overlay_2_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_2_text}</a>';
+                {/if}
+                var iCustomOverlay2Start = {$aPlayer.custom_overlay_2_start};
+                var iCustomOverlay2Duration = {$aPlayer.custom_overlay_2_duration};
+            {else}
+                var bCustomOverlay2 = false;
+                if (bDebug) console.log('Overlay: Overlay 2 is inactive.');
+            {/if}
+
+            {if $aPlayer.custom_overlay_3_type}
+                if (bDebug) console.log('Overlay: Overlay 3 is active. Type: {$aPlayer.custom_overlay_3_type}. Start: {$aPlayer.custom_overlay_3_start}. Duration: {$aPlayer.custom_overlay_3_duration}.');
+                var bCustomOverlay3 = true;
+                var bOverlay3Type = '{$aPlayer.custom_overlay_3_type}';
+                {if $aPlayer.custom_overlay_3_type == 1}
+                   var bCustomOverlay3Content = '<a href="#" class="gp_ov" onclick="tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();"><img src="{$sImagePath}overlay.png" alt="Contact Dealer" /></a>'
+                //=== Schedule Test Drive Overlay
+                {elseif $aPlayer.custom_overlay_3_type == 4 }
+                    console.log("Book an actual test drive!");
+                    var bCustomOverlay3Content = 
+                            '<div class="modal modal01" id="modal">\n\
+                                <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
+                                <div class="leftColModalForImgContainer">\n\
+                                    <div class="leftColModalForImgContent">\n\
+                                        <img id="steeringwheelImg" src="{$sImagePath}icon-steeringwheel-button.png"/>\n\
+                                    </div>\n\
+                                </div>\n\
+                                <div class="rightColModalContainer">\n\
+                                    <div class="rightColModalForTxtContainer">Book an Actual Test Drive</div>\n\
+                                    <div>\n\
+                                        <div href="#" class="bookTDbtnConatiner" onclick="tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
+                                            <button class="bookTestDriveButton">Schedule your test drive &nbsp;<i class="fa fa-angle-down"></i></button>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>';
+                //=== End of Schedule Test Drive Overlay
+
+                //=== Get Best Deal Overlay
+                {elseif $aPlayer.custom_overlay_3_type == 5 }
+                    console.log("Receive Today's Best Deal!");
+                    $textForBestDeal = "Receive Today's Best Deal";
+
+                    var bCustomOverlay3Content = 
+                            '<div class="modal modal01" id="modal">\n\
+                                <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
+                                <div class="leftColModalForImgContainer">\n\
+                                    <div class="leftColModalForImgContent">\n\
+                                        <img id="iconPurchaseImg" src="{$sImagePath}icon-purchase.png"/>\n\
+                                    </div>\n\
+                                </div>\n\
+                                <div class="rightColModalContainer">\n\
+                                    <div class="rightColModalForTxtContainer">Receive Today\'s Best Deal</div>\n\
+                                    <div>\n\
+                                        <div href="#" class="getBestDealNowBtnConatiner" onclick="tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForBestDeal\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
+                                            <button class="getBestDealButton">Get it now &nbsp;<i class="fa fa-angle-down"></i></button>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>';
+                //=== End of Get Best Deal Overlay
+
+                {elseif $aPlayer.custom_overlay_3_type == 3}
+                 {if $aPlayer.custom_overlay_3_text != ''}
+                 var bCustomOverlay3Content = '<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="customImageOverlayClick();"><img src="{$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_3_text}"></a>';
+                {else}
+                var bCustomOverlay3Content = ''; 
+                bCustomOverlay3 = false;
+                {/if}   
+                {else}
+                var bCustomOverlay3Content = '<a href="{$aPlayer.custom_overlay_3_url}" target="_blank" onclick="textOverlayClick();">{$aPlayer.custom_overlay_3_text}</a>';
+                {/if}
+                var iCustomOverlay3Start = {$aPlayer.custom_overlay_3_start};
+                var iCustomOverlay3Duration = {$aPlayer.custom_overlay_3_duration};
+            {else}
+                var bCustomOverlay3 = false;
+                if (bDebug) console.log('Overlay: Overlay 3 is inactive.');
+            {/if}
+        {/if}
     {else}
         {foreach from = $aVideos key = iKey item = aVideo}
             aMediaIds[{$iKey}] = {$aVideo.id};
@@ -407,6 +405,7 @@ display:none !important;
 .vjs-ended .vjs-custom-overlay{l}
     background-color:transparent;  
     padding:0;
+    max-height: 68%;
 {r}
 .endscr_title,.endscr_bottom_nvideo{l}
 color:#fff !important;
@@ -540,6 +539,8 @@ color:#666 !important;
         float:right; 
         background-color:rgba(0,0,0,0.65); 
         min-height:66px;
+        max-width: 270px;
+        min-width: 250px; 
     {r}
     
     .closeButton {l} 
@@ -632,7 +633,7 @@ color:#fff;
         <div class="player_error">{phrase var='dvs.no_videos_error'}</div>
     {/if}
 </div>
-<script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js"></script>
-<!--<script src="//players.brightcove.net/607012070001/default_default/index.min.js"></script> --> 
+<script src="//players.brightcove.net/607012070001/0d15f8a3-b382-44ca-a53b-51870dd2ad3f_default/index.min.js" allowfullscreen webkitallowfullscreen mozallowfullscreen></script>
+<!--<script src="//players.brightcove.net/607012070001/BkZuQtXDz_default/index.min.js"></script> --> 
 <script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.min.js"></script>
 <script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"></script>

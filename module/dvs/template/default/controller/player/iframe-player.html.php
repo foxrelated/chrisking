@@ -24,65 +24,68 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     var aOverviewMediaIds = [];
     var aTestDriveMediaIds = [];
     var bIsHtml5 = false;
+    
     {if $aDvs.player_type}
         if (bIsSupportVideo) {l}
         var bIsHtml5 = true;
         {r}
     {/if}
+        
     {if $bIsDvs}
 
-    {foreach from = $aOverviewVideos key = iKey item = aVideo}
-        aOverviewMediaIds[{$iKey}] = {$aVideo.id};
-    {/foreach}
+        {foreach from = $aOverviewVideos key = iKey item = aVideo}
+            aOverviewMediaIds[{$iKey}] = {$aVideo.id};
+        {/foreach}
 
-    aMediaIds = aOverviewMediaIds;
+        aMediaIds = aOverviewMediaIds;
 
-    {if isset($aOverrideVideo.id)}
-        if (bDebug) console.log('Media: Override is set. aMediaIds:');
-        aMediaIds[0] = {$aOverrideVideo.id};
-    {else}
-    	{if isset($aFeaturedVideo.id)}
-        	if (bDebug) console.log('Media: Featured Video is set. aMediaIds:');
-        	aMediaIds[0] = {$aFeaturedVideo.id};
-    	{else}
-    		if (bDebug) console.log('Media: No override or featuerd. aMediaIds:');
-    		aMediaIds = aOverviewMediaIds;
-    	{/if}
-    {/if}
-	if (bDebug) {l}
+        {if isset($aOverrideVideo.id)}
+            if (bDebug) console.log('Media: Override is set. aMediaIds:');
+            aMediaIds[0] = {$aOverrideVideo.id};
+        {else}        
+            {if isset($aFeaturedVideo.id)}
+                if (bDebug) console.log('Media: Featured Video is set. aMediaIds:');
+                aMediaIds[0] = {$aFeaturedVideo.id};
+            {else}
+                if (bDebug) console.log('Media: No override or featuerd. aMediaIds:');
+                aMediaIds = aOverviewMediaIds;
+            {/if}
+        {/if}
+	
+        if (bDebug) {l}
 	console.log(aMediaIds);
 	{r}
+        {if $sBrowser == 'desktop'}
+            {if $aPlayer.custom_overlay_1_type}
+                if (bDebug) console.log('Overlay: Overlay 1 is active. Type: {$aPlayer.custom_overlay_1_type}. Start: {$aPlayer.custom_overlay_1_start}. Duration: {$aPlayer.custom_overlay_1_duration}.');
+                var bCustomOverlay1 = true;
+                var iCustomOverlay1Start = {$aPlayer.custom_overlay_1_start};
+                var iCustomOverlay1Duration = {$aPlayer.custom_overlay_1_duration};
+            {else}
+                var bCustomOverlay1 = false;
+                if (bDebug) console.log('Overlay: Overlay 1 is inactive.');
+            {/if}
 
-	{if $aPlayer.custom_overlay_1_type}
-		if (bDebug) console.log('Overlay: Overlay 1 is active. Type: {$aPlayer.custom_overlay_1_type}. Start: {$aPlayer.custom_overlay_1_start}. Duration: {$aPlayer.custom_overlay_1_duration}.');
-		var bCustomOverlay1 = true;
-		var iCustomOverlay1Start = {$aPlayer.custom_overlay_1_start};
-		var iCustomOverlay1Duration = {$aPlayer.custom_overlay_1_duration};
-	{else}
-		var bCustomOverlay1 = false;
-		if (bDebug) console.log('Overlay: Overlay 1 is inactive.');
-	{/if}
+            {if $aPlayer.custom_overlay_2_type}
+                if (bDebug) console.log('Overlay: Overlay 2 is active. Type: {$aPlayer.custom_overlay_2_type}. Start: {$aPlayer.custom_overlay_2_start}. Duration: {$aPlayer.custom_overlay_2_duration}.');
+                var bCustomOverlay2 = true;
+                var iCustomOverlay2Start = {$aPlayer.custom_overlay_2_start};
+                var iCustomOverlay2Duration = {$aPlayer.custom_overlay_2_duration};
+            {else}
+                var bCustomOverlay2 = false;
+                if (bDebug) console.log('Overlay: Overlay 2 is inactive.');
+            {/if}
 
-	{if $aPlayer.custom_overlay_2_type}
-		if (bDebug) console.log('Overlay: Overlay 2 is active. Type: {$aPlayer.custom_overlay_2_type}. Start: {$aPlayer.custom_overlay_2_start}. Duration: {$aPlayer.custom_overlay_2_duration}.');
-		var bCustomOverlay2 = true;
-		var iCustomOverlay2Start = {$aPlayer.custom_overlay_2_start};
-		var iCustomOverlay2Duration = {$aPlayer.custom_overlay_2_duration};
-	{else}
-		var bCustomOverlay2 = false;
-		if (bDebug) console.log('Overlay: Overlay 2 is inactive.');
-	{/if}
-
-	{if $aPlayer.custom_overlay_3_type}
-		if (bDebug) console.log('Overlay: Overlay 3 is active. Type: {$aPlayer.custom_overlay_3_type}. Start: {$aPlayer.custom_overlay_3_start}. Duration: {$aPlayer.custom_overlay_3_duration}.');
-		var bCustomOverlay3 = true;
-		var iCustomOverlay3Start = {$aPlayer.custom_overlay_3_start};
-		var iCustomOverlay3Duration = {$aPlayer.custom_overlay_3_duration};
-    {else}
-        var bCustomOverlay3 = false;
-        if (bDebug) console.log('Overlay: Overlay 3 is inactive.');
-    {/if}
-
+            {if $aPlayer.custom_overlay_3_type}
+                if (bDebug) console.log('Overlay: Overlay 3 is active. Type: {$aPlayer.custom_overlay_3_type}. Start: {$aPlayer.custom_overlay_3_start}. Duration: {$aPlayer.custom_overlay_3_duration}.');
+                var bCustomOverlay3 = true;
+                var iCustomOverlay3Start = {$aPlayer.custom_overlay_3_start};
+                var iCustomOverlay3Duration = {$aPlayer.custom_overlay_3_duration};
+            {else}
+                var bCustomOverlay3 = false;
+                if (bDebug) console.log('Overlay: Overlay 3 is inactive.');
+            {/if}
+        {/if}
     {else}
         {foreach from = $aVideos key = iKey item = aVideo}
             aMediaIds[{$iKey}] = {$aVideo.id};
@@ -287,33 +290,35 @@ defined('PHPFOX') or exit('No direct script access allowed.');
     }
 </script>
 {/literal}
-</section>{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}<section id="chapter_buttons">
-    <button type="button" id="chapter_container_Intro" class="disabled display" onclick="changeCuePoint('Intro');"></button>
-    <button type="button" id="chapter_container_Overview" class="disabled no_display" onclick="changeCuePoint('Overview');"></button>
-    <button type="button" id="chapter_container_WhatsNew" class="disabled display" onclick="changeCuePoint('WhatsNew');"></button>
-    <button type="button" id="chapter_container_Exterior" class="disabled display" onclick="changeCuePoint('Exterior');"></button>
-    <button type="button" id="chapter_container_Interior" class="disabled display" onclick="changeCuePoint('Interior');"></button>
-    <button type="button" id="chapter_container_Features" class="disabled no_display" onclick="changeCuePoint('Features');"></button>
-    <button type="button" id="chapter_container_Power" class="disabled display" onclick="changeCuePoint('Power');"></button>
-    <button type="button" id="chapter_container_Fuel" class="disabled display" onclick="changeCuePoint('Fuel');"></button>
-    <button type="button" id="chapter_container_Safety" class="disabled display" onclick="changeCuePoint('Safety');"></button>
-    <button type="button" id="chapter_container_Warranty" class="disabled display" onclick="changeCuePoint('Warranty');"></button>
-    <button type="button" id="chapter_container_Performance" class="disabled no_display" onclick="changeCuePoint('Performance');"></button>
-    <button type="button" id="chapter_container_MPG" class="disabled no_display" onclick="changeCuePoint('MPG');"></button>
-    <button type="button" id="chapter_container_Honors" class="disabled no_display" onclick="changeCuePoint('Honors');"></button>
-    <button type="button" id="chapter_container_Summary" class="disabled display" onclick="changeCuePoint('Summary');"></button>
-    {if (Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req2') == 'iframe') || (!Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req3') == 'iframe')}
-    {else}
-    {if $bIsDvs && !$bPreview}
-    <button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPrice(); return false;"></button>
-    {elseif !$bIsExternal && !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}
-    <button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceIDrive(); return false;"></button>
-    {elseif $bIsExternal && $bShowGetPrice}
-    <button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="getPriceExternal('{$sEmail}');"></button>
-    {/if}
-    {/if}
-</section>
-
+</section>{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}
+{if $sBrowser != 'mobile'}
+    <section id="chapter_buttons">
+        <button type="button" id="chapter_container_Intro" class="disabled display" onclick="changeCuePoint('Intro');"></button>
+        <button type="button" id="chapter_container_Overview" class="disabled no_display" onclick="changeCuePoint('Overview');"></button>
+        <button type="button" id="chapter_container_WhatsNew" class="disabled display" onclick="changeCuePoint('WhatsNew');"></button>
+        <button type="button" id="chapter_container_Exterior" class="disabled display" onclick="changeCuePoint('Exterior');"></button>
+        <button type="button" id="chapter_container_Interior" class="disabled display" onclick="changeCuePoint('Interior');"></button>
+        <button type="button" id="chapter_container_Features" class="disabled no_display" onclick="changeCuePoint('Features');"></button>
+        <button type="button" id="chapter_container_Power" class="disabled display" onclick="changeCuePoint('Power');"></button>
+        <button type="button" id="chapter_container_Fuel" class="disabled display" onclick="changeCuePoint('Fuel');"></button>
+        <button type="button" id="chapter_container_Safety" class="disabled display" onclick="changeCuePoint('Safety');"></button>
+        <button type="button" id="chapter_container_Warranty" class="disabled display" onclick="changeCuePoint('Warranty');"></button>
+        <button type="button" id="chapter_container_Performance" class="disabled no_display" onclick="changeCuePoint('Performance');"></button>
+        <button type="button" id="chapter_container_MPG" class="disabled no_display" onclick="changeCuePoint('MPG');"></button>
+        <button type="button" id="chapter_container_Honors" class="disabled no_display" onclick="changeCuePoint('Honors');"></button>
+        <button type="button" id="chapter_container_Summary" class="disabled display" onclick="changeCuePoint('Summary');"></button>
+        {if (Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req2') == 'iframe') || (!Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req3') == 'iframe')}
+        {else}
+        {if $bIsDvs && !$bPreview}
+        <button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPrice(); return false;"></button>
+        {elseif !$bIsExternal && !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}
+        <button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceIDrive(); return false;"></button>
+        {elseif $bIsExternal && $bShowGetPrice}
+        <button type="button" id="chapter_container_Get_Price" class="disabled display" onclick="getPriceExternal('{$sEmail}');"></button>
+        {/if}
+        {/if}
+    </section>
+{/if}
 {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
 <section id="playlist_wrapper{if $inventoryList} inventory_wrapper{/if}">    
     <button class="prev playlist-button">&lt;</button>

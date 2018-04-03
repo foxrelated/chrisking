@@ -105,7 +105,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         min-height:375px;
     {r}
     /*-- End of Thickbox.js --*/
-    
+
     .closeContainer {l}
         display: block;
         top: -40px;
@@ -135,7 +135,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         font-size: 10px !important;
     {r}    
         
-    .hasError {l} color: red; {r}
+    .hasError {l} color: red !important; {r}
     
     .hasErrorIcon {l} 
         position: relative;
@@ -260,12 +260,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         margin-top: 15px;
         margin-bottom: .2rem;
         font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-        font-size: 12px;
+        font-size: 12px !important;
         font-weight: 400;
         line-height: 1.5;
         text-align: left;
         float: left;
-        color: white;
+        color: white !important;
     {r}
     
     .form-control {l}
