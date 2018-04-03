@@ -70,6 +70,7 @@ top:0 !important;
 .vjs-ended .vjs-custom-overlay{l}
     background-color:transparent;  
     padding:0;
+    max-height: 68%;
 {r}
 .vjs-ended video{l}
  visibility:hidden;
@@ -231,6 +232,8 @@ color:#666 !important;
         float:right; 
         background-color:rgba(0,0,0,0.65); 
         min-height:66px;
+        max-width: 270px;
+        min-width: 250px; 
     {r}
     
     .closeButton {l} 
@@ -640,21 +643,21 @@ color:#fff;
        
         </section>{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}
         {if $sBrowser != 'mobile'}<section id="chapter_buttons">
-            <button type="button" id="chapter_container_Intro" class="disabled display"></button>
-            <button type="button" id="chapter_container_Overview" class="disabled no_display"></button>
-            <button type="button" id="chapter_container_WhatsNew" class="disabled display"></button>
-            <button type="button" id="chapter_container_Exterior" class="disabled display"></button>
-            <button type="button" id="chapter_container_Interior" class="disabled display"></button>
-            <button type="button" id="chapter_container_Features" class="disabled no_display"></button>
-            <button type="button" id="chapter_container_Power" class="disabled display"></button>
-            <button type="button" id="chapter_container_Fuel" class="disabled display"></button>
-            <button type="button" id="chapter_container_Safety" class="disabled display"></button>
-            <button type="button" id="chapter_container_Warranty" class="disabled display"></button>
-            <button type="button" id="chapter_container_Performance" class="disabled no_display"></button>
-            <button type="button" id="chapter_container_MPG" class="disabled no_display"></button>
-            <button type="button" id="chapter_container_Honors" class="disabled no_display"></button>
-            <button type="button" id="chapter_container_Summary" class="disabled display"></button>
-        </section>
+                <button type="button" id="chapter_container_Intro" class="disabled display"></button>
+                <button type="button" id="chapter_container_Overview" class="disabled no_display"></button>
+                <button type="button" id="chapter_container_WhatsNew" class="disabled display"></button>
+                <button type="button" id="chapter_container_Exterior" class="disabled display"></button>
+                <button type="button" id="chapter_container_Interior" class="disabled display"></button>
+                <button type="button" id="chapter_container_Features" class="disabled no_display"></button>
+                <button type="button" id="chapter_container_Power" class="disabled display"></button>
+                <button type="button" id="chapter_container_Fuel" class="disabled display"></button>
+                <button type="button" id="chapter_container_Safety" class="disabled display"></button>
+                <button type="button" id="chapter_container_Warranty" class="disabled display"></button>
+                <button type="button" id="chapter_container_Performance" class="disabled no_display"></button>
+                <button type="button" id="chapter_container_MPG" class="disabled no_display"></button>
+                <button type="button" id="chapter_container_Honors" class="disabled no_display"></button>
+                <button type="button" id="chapter_container_Summary" class="disabled display"></button>
+            </section>
         {/if}
         <p id="video_warning_text" style="padding-top:10px;color:#{$aPlayer.player_text};font-size:{$iWarningTextFontSize}px;">Video may reflect features, options or conditions that are different from the vehicle for sale and does not depict actual vehicle for sale.</p>
     </section>
@@ -667,7 +670,8 @@ color:#fff;
             <table cellpadding="4" cellspacing="4" border="0">
                 <tr>
                     <td style="vertical-align:middle;">
-                    <p style="font-size:14px;color:#{$aPlayer.player_text};"><b>Share This:</b>&nbsp;</p>
+                        <!--Share This:-->
+                        <p style="font-size:14px;color:#{$aPlayer.player_text};"><b></b>&nbsp;</p>
                     </td>
                     <!--
                     <td style="vertical-align:middle;">

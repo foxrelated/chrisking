@@ -707,6 +707,7 @@ color:#fff;
 </section>
 </section>
 
+{if $sBrowser == 'desktop'}
 <section id="chapter_buttons">
     <button type="button" id="chapter_container_Intro" class="disabled display"></button>
     <button type="button" id="chapter_container_Overview" class="disabled no_display"></button>
@@ -733,6 +734,7 @@ color:#fff;
         {/if}
     {/if}
 </section>
+{/if}
 
 <script src="//players.brightcove.net/607012070001/BkZuQtXDz_default/index.min.js" allowfullscreen webkitallowfullscreen mozallowfullscreen style="position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; width: 100%; height: 100%;"></script>
 <script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/dist/videojs-custom-endscreen.min.js"></script>

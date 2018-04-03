@@ -674,32 +674,35 @@ color:#fff;
 <input type="hidden" id="bc_dvs" value="{$iDvsId}">
 <video id="bcv2" data-account="607012070001" data-player="BkZuQtXDz" data-embed="default" class="video-js"  controls="true" ></video>
 </section>
-{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}<section id="chapter_buttons">
-    <button type="button" id="chapter_container_Intro" class="disabled display"></button>
-    <button type="button" id="chapter_container_Overview" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_WhatsNew" class="disabled display"></button>
-    <button type="button" id="chapter_container_Exterior" class="disabled display"></button>
-    <button type="button" id="chapter_container_Interior" class="disabled display"></button>
-    <button type="button" id="chapter_container_Features" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_Power" class="disabled display"></button>
-    <button type="button" id="chapter_container_Fuel" class="disabled display"></button>
-    <button type="button" id="chapter_container_Safety" class="disabled display"></button>
-    <button type="button" id="chapter_container_Warranty" class="disabled display"></button>
-    <button type="button" id="chapter_container_Performance" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_MPG" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_Honors" class="disabled no_display"></button>
-    <button type="button" id="chapter_container_Summary" class="disabled display"></button>
-    {if (Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req2') == 'iframe') || (!Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req3') == 'iframe')}
-    {else}
-    {if $bIsDvs && !$bPreview}
-    <button type="button" id="chapter_container_Get_Price" class="disabled no_display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPrice(); return false;"></button>
-    {elseif !$bIsExternal && !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}
-    <button type="button" id="chapter_container_Get_Price" class="disabled no_display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceIDrive(); return false;"></button>
-    {elseif $bIsExternal && $bShowGetPrice}
-    <button type="button" id="chapter_container_Get_Price" class="disabled no_display" onclick="getPriceExternal('{$sEmail}');"></button>
-    {/if}
-    {/if}
-</section>
+{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}
+{if $sBrowser != 'mobile'}
+    <section id="chapter_buttons">
+        <button type="button" id="chapter_container_Intro" class="disabled display"></button>
+        <button type="button" id="chapter_container_Overview" class="disabled no_display"></button>
+        <button type="button" id="chapter_container_WhatsNew" class="disabled display"></button>
+        <button type="button" id="chapter_container_Exterior" class="disabled display"></button>
+        <button type="button" id="chapter_container_Interior" class="disabled display"></button>
+        <button type="button" id="chapter_container_Features" class="disabled no_display"></button>
+        <button type="button" id="chapter_container_Power" class="disabled display"></button>
+        <button type="button" id="chapter_container_Fuel" class="disabled display"></button>
+        <button type="button" id="chapter_container_Safety" class="disabled display"></button>
+        <button type="button" id="chapter_container_Warranty" class="disabled display"></button>
+        <button type="button" id="chapter_container_Performance" class="disabled no_display"></button>
+        <button type="button" id="chapter_container_MPG" class="disabled no_display"></button>
+        <button type="button" id="chapter_container_Honors" class="disabled no_display"></button>
+        <button type="button" id="chapter_container_Summary" class="disabled display"></button>
+        {if (Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req2') == 'iframe') || (!Phpfox::getParam('dvs.enable_subdomain_mode') && Phpfox::getLib('request')->get('req3') == 'iframe')}
+        {else}
+        {if $bIsDvs && !$bPreview}
+        <button type="button" id="chapter_container_Get_Price" class="disabled no_display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPrice(); return false;"></button>
+        {elseif !$bIsExternal && !$bIsDvs && isset($aPlayer.email) && $aPlayer.email}
+        <button type="button" id="chapter_container_Get_Price" class="disabled no_display" onclick="tb_show('{phrase var='dvs.contact_dealer'}', $.ajaxBox('dvs.showGetPriceForm', 'height=400&amp;width=360&amp;sRefId=' + aCurrentVideoMetaData.referenceId));getPriceIDrive(); return false;"></button>
+        {elseif $bIsExternal && $bShowGetPrice}
+        <button type="button" id="chapter_container_Get_Price" class="disabled no_display" onclick="getPriceExternal('{$sEmail}');"></button>
+        {/if}
+        {/if}
+    </section>
+{/if}
 {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
 <section id="playlist_wrapper{if $inventoryList} inventory_wrapper{/if}">    
     <button class="prev playlist-button">&lt;</button>
