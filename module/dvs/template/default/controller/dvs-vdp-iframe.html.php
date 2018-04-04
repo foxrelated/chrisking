@@ -645,8 +645,11 @@ color:#fff;
 	<input type="hidden" id="bc_ref" value="{*aCurrentVideoMetaData.referenceId*}">
         <input type="hidden" id="bc_oimgpath" value="{$sImagePath}">
         <input type="hidden" id="bc_dvs" value="{$iDvsId}">
-       	<video id="bcv2" data-account="607012070001" data-player="BkZuQtXDz" data-embed="default" data-application-id class="video-js"   controls ></video>
-       
+        <video id="bcv2" data-account="607012070001" data-player="BkZuQtXDz" data-embed="default" class="video-js" crossorigin="anonymous" controls>
+            <track src="https://iivkurr4tj.execute-api.us-west-2.amazonaws.com/latest/videos/5171220240001/track.vtt" kind="chapters" label="Chapters" srclang="en">(04-04-2018-0456pm This text is added inside the 'track' tag!)</track>
+        </video>
+        <script src="//players.brightcove.net/607012070001/BkZuQtXDz_default/index.min.js" allowfullscreen webkitallowfullscreen mozallowfullscreen style="position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; width: 100%; height: 100%;"></script> 
+
         </section>{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}
         {if $sBrowser != 'mobile'}<section id="chapter_buttons">
                 <button type="button" id="chapter_container_Intro" class="disabled display"></button>

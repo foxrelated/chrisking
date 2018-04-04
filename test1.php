@@ -2,20 +2,7 @@
 
 <html>
     <body>
-        <div class="dvs_vin_btn" vin="JF1ZNAA18H8711003">JF1ZNAA1H8</div>
-        <div id="dvs_wrapper"></div>
-        <script type="text/javascript" src="//www.wtvdvs-dev.com/module/dvs/static/jscript/embed.js"></script>
-        <script type="text/javascript">
-            WTVDVS.render_iframe({
-                "id" : "dvs_wrapper",
-                "width" : 952,
-                "height" : 1000,
-                "iframeUrl" : "//showroomtest.wtvdvs-dev.com//iframe/"
-            });
-        </script>
-        
-        
-
+        <div class="dvs_vin_btn" vin="JF1ZNAA18H8711003">VIN: JF1ZNAA1H8</div>
 
         <script type="text/javascript" src="//www.wtvdvs-dev.com/module/dvs/static/jscript/vin.js"></script>
         <script type="text/javascript">
