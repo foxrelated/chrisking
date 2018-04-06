@@ -38,7 +38,7 @@ if (!window.CDKDVS) {
                             sWrapperWidth = '980px';
                         }
                     }
-                    var sIframe = '<iframe frameborder="0" width="100%" height="1000px" style="width:100%;height:1000px;" src="' + this.iframeUrl + '/maxwidth_' + iMaxWidth + '/"></iframe>';
+                    var sIframe = '<iframe allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" frameborder="0" width="100%" height="1000px" style="width:100%;height:1000px;" src="' + this.iframeUrl + '/maxwidth_' + iMaxWidth + '/"></iframe>';
 
                     wrapper.innerHTML = sIframe;
                     wrapper.style.width = sWrapperWidth;
@@ -51,7 +51,7 @@ if (!window.CDKDVS) {
         },
 
         open_iframe: function() {
-            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + this.iframeUrl + '" height="100%" width="100%" style="height:100%;" frameborder="0"></iframe>';
+            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + this.iframeUrl + '" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" height="100%" width="100%" style="height:100%;" frameborder="0"></iframe>';
             CDKDVS.fadeIn('dvs_vin_layout_wrapper', 9);
             CDKDVS.fadeIn('dvs_vin_popup_wrapper', 10);
             return false;
@@ -243,7 +243,7 @@ if (!window.CDKDVS) {
 
         show_popup: function(sLink) {
             //var sLink = oLink.getAttribute('href');
-            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" height="100%" width="100%" style="height:100%;" frameborder="0" scrolling="no"></iframe>';
+            document.getElementById('dvs_vin_popup_content').innerHTML = '<iframe src="' + sLink + '" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" height="100%" width="100%" style="height:100%;" frameborder="0" scrolling="no"></iframe>';
             CDKDVS.fadeIn('dvs_vin_layout_wrapper', 9);
             CDKDVS.fadeIn('dvs_vin_popup_wrapper', 10);
             return false;

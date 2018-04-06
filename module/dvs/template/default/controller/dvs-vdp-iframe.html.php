@@ -958,7 +958,7 @@ color:#fff;
 </article>
 {/if}
 
-<iframe src="{$sVdpIframeUrl}" height="1" width="1"></iframe>
+<iframe src="{$sVdpIframeUrl}" id="vdpiframe1" height="1" width="1" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
 
 {if !$aDvs.is_active}
 {template file='dvs.block.deactive'}
