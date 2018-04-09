@@ -673,7 +673,6 @@ color:#fff;
 <input type="hidden" id="bc_oimgpath" value="{$sImagePath}">
 <input type="hidden" id="bc_dvs" value="{$iDvsId}">
 <video id="bcv2" data-account="607012070001" data-player="BkZuQtXDz" data-embed="default" class="video-js" crossorigin="anonymous" controls>
-    <track src="https://iivkurr4tj.execute-api.us-west-2.amazonaws.com/latest/videos/5171220240001/track.vtt" kind="chapters" label="Chapters" srclang="en">(04-04-2018-0456pm This text is added inside the 'track' tag!)</track>
 </video>
 
 </section>
