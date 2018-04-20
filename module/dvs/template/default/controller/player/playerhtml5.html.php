@@ -225,13 +225,13 @@ background: #{$aPlayer.player_progress_bar} !important;
         min-height: 75px;
     {r}
     
-    #steeringwheelImg, #iconPurchaseImg {l}
+    #steeringwheelImg, #iconPurchaseImg, .avatar {l}
         margin-left: 15px; 
         margin-top: 22px; 
         margin-bottom: 15px;
     {r}
     
-    #iconPurchaseImg {l} width: 80%; {r}
+    #iconPurchaseImg, .avatar {l} width: 80%; {r}
     
     .rightColModalForTxtContainer {l}
         font-family:Verdana, Geneva, sans-serif; 
@@ -250,6 +250,30 @@ background: #{$aPlayer.player_progress_bar} !important;
     
     .getBestDealNowBtnConatiner {l} 
         width: 100px;
+    {r}
+    
+    .meetSalesText {l} 
+        line-height: 15px;
+    {r}
+    
+    .subModal {l} 
+        min-height: 66px;
+    {r}
+    
+    .avatar {l} 
+        min-width: 44px;
+        max-width: 44px;
+        width: 44px;
+        min-height: 44px;
+        max-height: 44px;
+        height: 44px;
+        position: relative;
+        -webkit-background-size: cover !important;
+        -moz-background-size: cover !important;
+        -o-background-size: cover !important;
+        background-size: cover !important;
+        border-radius: 50%;
+        overflow: hidden;
     {r}
 </style>
 
@@ -382,7 +406,45 @@ color:#fff;
                             </div>';
                 //=== End of Get Best Deal Overlay    
 
-
+                //=== Get Meet Sales Advisor
+                {elseif $aPlayer.custom_overlay_1_type == 6 }
+                    console.log("Meet our top sales advisor!");
+                    $textForMeetSales = "Meet our top sales advisor";
+                    
+                    {if $aPlayer.custom_overlay_1_text != ''}
+                        var bCustomOverlay1Content = 
+                            '<div class="modal modal01" id="modal">\n\
+                                <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
+                                <div class="subModal meetSalesAdvisorModal" onclick="tb_show($textForMeetSales, $.ajaxBox(\'dvs.showGetContactFormForMeetSalesAdvisor\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
+                                    <div class="leftColModalForImgContainer">\n\
+                                        <div class="leftColModalForImgContent">\n\
+                                            <label class="avatar" style="background:url({$ref}{$core_url}/file/dvs/'+ovdr+'/{$aPlayer.custom_overlay_1_text}) no-repeat center center">\n\
+                                        </div>\n\
+                                    </div>\n\
+                                    <div class="rightColModalContainer">\n\
+                                        <div class="rightColModalForTxtContainer meetSalesText">Meet our top sales advisor <br/>who will help you find the<br/>right car for you!</div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>';
+                    {else}
+                        console.log("No image is loaded for the profile picture.");
+                        var bCustomOverlay1Content = 
+                            '<div class="modal modal01" id="modal">\n\
+                                <button type="button" class="close closeButton" aria-label="Close" onclick="overlayClose();"><span aria-hidden="true" id="closeIcon">&times;</span></button>\n\
+                                <div class="subModal meetSalesAdvisorModal" onclick="tb_show($textForMeetSales, $.ajaxBox(\'dvs.showGetContactFormForMeetSalesAdvisor\', \'height=400&amp;width=360&amp;iDvsId={$iDvsId}&amp;sRefId= '+aCurrentVideoMetaData.referenceId+'\'));getPriceOverlayClick();">\n\
+                                    <div class="leftColModalForImgContainer">\n\
+                                        <div class="leftColModalForImgContent">\n\
+                                            <img id="iconPurchaseImg" src="{$sImagePath}salesperson.png"/>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                    <div class="rightColModalContainer">\n\
+                                        <div class="rightColModalForTxtContainer meetSalesText">Meet our top sales advisor <br/>who will help you find the<br/>right car for you!</div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>';
+                    {/if}
+                //=== End of Get Meet Sales Advisor  
+                
                 // Image Overlay
                 {elseif $aPlayer.custom_overlay_1_type == 3}
                     {if $aPlayer.custom_overlay_1_text != ''}

@@ -53,10 +53,10 @@ class Dvs_Component_Controller_Player_Image_Overlay_Frame extends Phpfox_Compone
                 $width = $image_size[0];
                 $height = $image_size[1];
                 
-                if(($width < 100 || $width > 600) || ($height < 50 || $height > 75)){
-                     echo '<script type="text/javascript">';
+                if(($width < 100 || $width > 600) || ($height < 50 || $height > 210)){
+                    echo '<script type="text/javascript">';
                     echo 'window.parent.document.getElementById(\'js_image_overlay'.$overlay_id.'_file_upload_error\').style.display = \'block\';';
-                    echo 'window.parent.document.getElementById(\'js_image_overlay'.$overlay_id.'_file_upload_message\').innerHTML = \'Image dimensions should be minimum of 100*50 and maximum of 600*75\';';
+                    echo 'window.parent.document.getElementById(\'js_image_overlay'.$overlay_id.'_file_upload_message\').innerHTML = \'*Image dimensions should be minimum of 100*50 and maximum of 600*75 for Custom Image Overlay. <br/>*A profile image size should be 150*200 for Meet Sales Advisor Overlay.\';';
                     echo '</script>';
                     echo '<script type="text/javascript">window.parent.document.getElementById(\'js_image_overlay'.$overlay_id.'_upload_frame\').src=window.parent.document.getElementById(\'overlay'.$overlay_id.'_target\').value;</script>';
                     

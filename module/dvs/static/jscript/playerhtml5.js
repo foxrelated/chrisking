@@ -117,7 +117,7 @@ $(document).ready(function () {
         var allCuePointData,
             currentCuePoint;
             
-        $(document).on('click', ".bookTestDriveButton, .getBestDealButton", function () {
+        $(document).on('click', ".bookTestDriveButton, .getBestDealButton, .meetSalesAdvisorModal", function () {
             myPlayer.pause();
             overlayClose();
             if ($(".vjs-fullscreen").length > 0) {

@@ -29,13 +29,13 @@ class Dvs_Service_Player_Process extends Phpfox_Service
         $aValst['player_type'] = $aVals['player_st_type'];
         $this->database()->update($this->_stTable, $aValst, 'dvs_id = ' . (int) $aVals['dvs_id']);
         
-        if($aVals['custom_overlay_1_type'] == 3){
+        if($aVals['custom_overlay_1_type'] == 3 || $aVals['custom_overlay_1_type'] == 6){
             $aVals['custom_overlay_1_text'] = $aVals['image_overlay1_file_path'];
         }
-        if($aVals['custom_overlay_2_type'] == 3){
+        if($aVals['custom_overlay_2_type'] == 3 || $aVals['custom_overlay_1_type'] == 6){
             $aVals['custom_overlay_2_text'] = $aVals['image_overlay2_file_path'];
         }
-        if($aVals['custom_overlay_3_type'] == 3){
+        if($aVals['custom_overlay_3_type'] == 3 || $aVals['custom_overlay_1_type'] == 6){
             $aVals['custom_overlay_3_text'] = $aVals['image_overlay3_file_path'];
         }
         
@@ -158,13 +158,13 @@ class Dvs_Service_Player_Process extends Phpfox_Service
 			Phpfox::getService('dvs.file.process')->removePreroll($aPlayer['preroll_file_id']);
 		}
         
-        if($aVals['custom_overlay_1_type'] == 3){
+        if($aVals['custom_overlay_1_type'] == 3 || $aVals['custom_overlay_1_type'] == 6){
             $aVals['custom_overlay_1_text'] = $aVals['image_overlay1_file_path'];
         }
-        if($aVals['custom_overlay_2_type'] == 3){
+        if($aVals['custom_overlay_2_type'] == 3 || $aVals['custom_overlay_1_type'] == 6){
             $aVals['custom_overlay_2_text'] = $aVals['image_overlay2_file_path'];
         }
-        if($aVals['custom_overlay_3_type'] == 3){
+        if($aVals['custom_overlay_3_type'] == 3 || $aVals['custom_overlay_1_type'] == 6){
             $aVals['custom_overlay_3_text'] = $aVals['image_overlay3_file_path'];
         }
 		$oParseInput = Phpfox::getLib('parse.input');
