@@ -746,7 +746,7 @@ function tb_position($oObj, bFull)
     });        
     
     if (bFull === true)
-    {
+    { 
     	$($oObj).css(
 	    {
 	        top: getPageScroll()[1],

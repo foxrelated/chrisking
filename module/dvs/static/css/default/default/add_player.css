@@ -99,6 +99,7 @@ form#add_player label.inline_radio {
 	float: none;
 	display: inline-block;
 	width: inherit;
+        font-size: 11px;
 }
 
 form#add_player fieldset fieldset label {
