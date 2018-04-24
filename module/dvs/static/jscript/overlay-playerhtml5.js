@@ -145,7 +145,7 @@ $(document).on('click','.js_box .js_box_close a',function() {
       
       currentCuePoint;
       
-        $(document).on('click', ".bookTestDriveButton, .getBestDealButton", function () {
+        $(document).on('click', ".gp_ov, .imageOverlay, .linkOverlay, .bookTestDriveButton, .getBestDealButton, .meetSalesAdvisorButton", function () {
             myPlayer.pause();
             overlayClose();
             if ($(".vjs-fullscreen").length > 0) {
@@ -968,10 +968,10 @@ $(document).on('DOMNodeInserted', '.vjs-custom-overlay', function () {
     jQuery(".vjs-custom-overlay .vjs-endscreen-overlay-content a#dvs_inventory_link").attr('href',inventory_new);
 });
 $(document).on('DOMNodeInserted','.vjs-custom-overlay, .vjs-overlay',function(){
-    $textForBestDeal = "Receive Today's Best Deal";
+    $textForBestDeal = "Get Pre-Approved";
     $(".gp_ov").attr("onclick",'tb_show(\''+contact_dealer+'\', $.ajaxBox(\'dvs.showGetPriceForm\', \'height=400&width=360&iDvsId='+jQuery("#bc_dvs").val()+'&sRefId= '+aCurrentVideoMetaData.referenceId+'\'));endscreenContact(\'Video End Screen\');');
     $(".bookTDbtnConatiner").attr("onclick", 'tb_show(\'Book an actual test drive\', $.ajaxBox(\'dvs.showGetContactFormForTestDrive\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
-    $(".getBestDealNowBtnConatiner").attr("onclick", 'tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForBestDeal\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
+    $(".getBestDealNowBtnConatiner").attr("onclick", 'tb_show($textForBestDeal, $.ajaxBox(\'dvs.showGetContactFormForGetPreApproved\', \'height=400&width=360&iDvsId=' + jQuery("#bc_dvs").val() + '&sRefId= ' + aCurrentVideoMetaData.referenceId + '\'));endscreenContact(\'Video End Screen\');');
 });
 
 });

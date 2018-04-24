@@ -53,6 +53,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             } 
 
         } else if ( (!!cname  && !!cname.match(fieldName)) && (!!email && !!isValidEmail) && (!!phone && !hasLetterForPhone) && (!!phone && phone.length >= 10) ) {
+            $('#comments').val($('#comments').val() + '<br/>*This is via "Get Pre-Approved Overlay."');
             $.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
             $("#contact_dealer").hide();
             $(".js_box_title").hide();
@@ -102,7 +103,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         background: none;
         background-color: rgba(25,25,25,0.88) !important;
         padding: 0px;
-        min-height:325px;
+        min-height:305px;
         width: 100%; 
         max-width: 1200px;  
     {r}
@@ -376,14 +377,13 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 <form id="contact_dealer" name="contact_dealer" action="javascript:void(0);">
     <div class="js_box_close closeContainer" aria-label="Close">
         <a class="close" onclick="return js_box_remove(this);" aria-hidden="true">&times;</a>
-        <span class="js_box_history">dvs.showGetContactFormForBestDeal</span>
+        <span class="js_box_history">dvs.showGetContactFormForGetPreApproved</span>
     </div>
     
     <div class="form-group col-2b no-padding getBestDealcol1">
         <div class="getBestDealDescription">
             <p>Thank you for your interest<br/>in the <strong>{$aVideo.year} {$aVideo.make} {$aVideo.model}.</strong></p>
             <br/>
-            <p>We are happy to help you,<br/> offer you our lowest price<br/>and provide our most<br/>generous trade-in<br/>allowance.</p>
             <br/>
             <p>Please let us know how to<br/>reach you and we'll get<br/>right back to you.</p>
         </div>
@@ -406,13 +406,14 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </div>
 
         <input type="hidden" name="val[contact_video_ref_id]" id="video_ref_id" value="{$aVideo.referenceId}"/>
+        <textarea id="comments" name="val[contact_comments]" style="display: none;"></textarea>
 
         {if !empty($aDvs)}
             <input type="hidden" name="val[contact_dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>
         {/if}
 
         <div class="form-group">
-            <input class="btn btn-primary submitButton" type="submit" value="Get my best price"/>
+            <input class="btn btn-primary submitButton" type="submit" value="Get Pre-Approved"/>
         </div>
 
         

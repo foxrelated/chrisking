@@ -20,7 +20,9 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		// cancels the form submission
 		event.preventDefault();
 
-		// do whatever you want here
+                // do whatever you want here
+                $('#comments').val($('#comments').val() + '<br/>*This is via "Get Pre-Approved Banner Overlay."');
+
 		$.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
 
 	});
@@ -77,11 +79,12 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 				<input type="text" name="val[contact_zip]" id="zip" placeholder="{phrase var='dvs.get_price_placeholder_zip'}" {if Phpfox::getParam('dvs.get_price_validate_zip_code')} required {/if} class="inputContact" />
 			</li>
 			<li>
-				<textarea id="comments" name="val[contact_comments]" cols="16" rows="3" placeholder="{phrase var='dvs.get_price_placeholder_comments'}" {if Phpfox::getParam('dvs.get_price_validate_comments')} required {/if} class="inputContact"></textarea>
+                                <textarea id="comments" name="val[contact_comments]" cols="16" rows="3" placeholder="{phrase var='dvs.get_price_placeholder_comments'}" {if Phpfox::getParam('dvs.get_price_validate_comments')} required {/if} class="inputContact"></textarea>
 			</li>
 		</ul>
 
 		<input type="hidden" name="val[contact_video_ref_id]" id="video_ref_id" value="{$aVideo.referenceId}"/>
+                <input type="hidden" name="val[overlay_info]" id="overlay_info" value="Get Pre-Approved Banner Overlay"/>                
 		{if !empty($aDvs)}<input type="hidden" name="val[contact_dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>{/if}
 	</fieldset>
 	<fieldset>

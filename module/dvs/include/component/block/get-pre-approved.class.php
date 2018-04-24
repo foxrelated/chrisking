@@ -12,7 +12,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
  * @author  		Konsort.org
  * @package 		DVS
  */
-class Dvs_Component_Block_Get_Best_Deal extends Phpfox_Component {
+class Dvs_Component_Block_Get_Pre_Approved extends Phpfox_Component {
 
     
 	public function process()

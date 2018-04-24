@@ -53,6 +53,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             } 
 
         } else if ( (!!cname  && !!cname.match(fieldName)) && (!!email && !!isValidEmail) && (!!phone && !hasLetterForPhone) && (!!phone && phone.length >= 10) ) {
+            $('#comments').val($('#comments').val() + '<br/>*This is via "Meet Sales Advisor Overlay."');
             $.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
             $("#contact_dealer").hide();
             $(".js_box_title").hide();
@@ -402,7 +403,8 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         </div>
 
         <input type="hidden" name="val[contact_video_ref_id]" id="video_ref_id" value="{$aVideo.referenceId}"/>
-
+        <textarea id="comments" name="val[contact_comments]" style="display: none;"></textarea>
+        
         {if !empty($aDvs)}
             <input type="hidden" name="val[contact_dvs_id]" id="dvs_id" value="{$aDvs.dvs_id}"/>
         {/if}
