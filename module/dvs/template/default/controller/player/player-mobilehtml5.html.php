@@ -748,11 +748,11 @@ color:#666 !important;
     
     .rightColGetPreApproved {l} 
         font-size:14px;
-        font-weight: bold;
+        font-weight: normal;
     {r}
     
     .rightColBookTestDrive {l} 
-        font-weight: bold;
+        font-weight: normal;
     {r}
     
     
@@ -774,7 +774,7 @@ color:#666 !important;
     
     .meetSalesText {l} 
         line-height: 20px;
-        font-weight: bold;
+        font-weight: normal;
         font-size: 15px;
         margin-left: 12px;
         font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;

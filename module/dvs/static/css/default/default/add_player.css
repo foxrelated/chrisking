@@ -91,7 +91,7 @@ form#add_player ol ol li {
 
 form#add_player label {
 	float: left;
-	font-size: 11px;
+	font-size: 12px;
 	width: 150px;
 }
 
@@ -99,7 +99,7 @@ form#add_player label.inline_radio {
 	float: none;
 	display: inline-block;
 	width: inherit;
-        font-size: 11px;
+        font-size: 11px !important;
 }
 
 form#add_player fieldset fieldset label {

@@ -270,11 +270,11 @@ background: #{$aPlayer.player_progress_bar} !important;
     
     .rightColGetPreApproved {l} 
         font-size:14px;
-        font-weight: bold;
+        font-weight: normal;
     {r}
     
     .rightColBookTestDrive {l} 
-        font-weight: bold;
+        font-weight: normal;
     {r}
     
     .bookTDbtnConatiner, .getBestDealNowBtnConatiner, .meetSalesBtnConatiner {l}
@@ -295,7 +295,7 @@ background: #{$aPlayer.player_progress_bar} !important;
     
     .meetSalesText {l} 
         line-height: 20px;
-        font-weight: bold;
+        font-weight: normal;
         font-size: 15px;
         margin-left: 12px;
         font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
