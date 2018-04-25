@@ -847,7 +847,7 @@ color:#fff;
 	<input type="hidden" id="bc_ref" value="{*aCurrentVideoMetaData.referenceId*}">
         <input type="hidden" id="bc_oimgpath" value="{$sImagePath}">
         <input type="hidden" id="bc_dvs" value="{$iDvsId}">
-       	<video id="bcv2" data-account="607012070001" data-player="BkZuQtXDz" data-embed="default" data-application-id class="video-js"   controls ></video>
+       	<video id="bcv2" data-account="607012070001" data-player="BkZuQtXDz" data-embed="default" data-application-id class="video-js" crossorigin="anonymous" controls ></video>
        
         </section>{else}<div class="player_error">{phrase var='dvs.no_videos_error'}</div>{/if}
         {if $sBrowser != 'mobile'}<section id="chapter_buttons">

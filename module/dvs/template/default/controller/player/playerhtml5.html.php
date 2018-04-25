@@ -877,7 +877,7 @@ color:#fff;
 <input type="hidden" id="bc_dvs" value="{$iDvsId}">
 <!-- <video id="bcv2" data-account="607012070001" data-player="default" data-embed="default" class="video-js" controls preload playsinline width="100%" height="100%" ></video> -->
 
-<video id="bcv2" data-account="607012070001" data-player="BkZuQtXDz" data-embed="default" class="video-js" controls="true"></video>
+<video id="bcv2" data-account="607012070001" data-player="BkZuQtXDz" data-embed="default" class="video-js" crossorigin="anonymous" controls="true"></video>
  
 <section id="playlist_wrapper">
         <button class="prev playlist-button">&lt;</button>

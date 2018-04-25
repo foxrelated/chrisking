@@ -220,6 +220,23 @@ $(document).on('click','.js_box .js_box_close a',function() {
             }
             $("#chapter_container_Get_Price").removeClass('no_display').addClass('display');
             
+            // If the device is not desktop, add the inline chapters using WebVtt. 
+            if (sBrowser != 'desktop') {
+                var remoteTxtTrackSrc = 'https://iivkurr4tj.execute-api.us-west-2.amazonaws.com/latest/videos/' + myPlayer.mediainfo.id + '/track.vtt';
+
+                if (bDebug) {
+                    console.log("*Video ID: ", myPlayer.mediainfo.id);
+                    console.log("*Video Chapter WebVtt Link: ", remoteTxtTrackSrc);
+                }
+
+                var chEnTrack = myPlayer.addRemoteTextTrack({
+                    kind: 'chapters',
+                    language: 'en',
+                    label: 'Chapters',
+                    src: remoteTxtTrackSrc
+                });
+            }
+
           }else{
               //preRollPlayed = true;
           }    
