@@ -32,10 +32,10 @@ class Dvs_Service_Player_Process extends Phpfox_Service
         if($aVals['custom_overlay_1_type'] == 3 || $aVals['custom_overlay_1_type'] == 6){
             $aVals['custom_overlay_1_text'] = $aVals['image_overlay1_file_path'];
         }
-        if($aVals['custom_overlay_2_type'] == 3 || $aVals['custom_overlay_1_type'] == 6){
+        if($aVals['custom_overlay_2_type'] == 3 || $aVals['custom_overlay_2_type'] == 6){
             $aVals['custom_overlay_2_text'] = $aVals['image_overlay2_file_path'];
         }
-        if($aVals['custom_overlay_3_type'] == 3 || $aVals['custom_overlay_1_type'] == 6){
+        if($aVals['custom_overlay_3_type'] == 3 || $aVals['custom_overlay_3_type'] == 6){
             $aVals['custom_overlay_3_text'] = $aVals['image_overlay3_file_path'];
         }
         
@@ -167,10 +167,10 @@ class Dvs_Service_Player_Process extends Phpfox_Service
         if($aVals['custom_overlay_1_type'] == 3 || $aVals['custom_overlay_1_type'] == 6){
             $aVals['custom_overlay_1_text'] = $aVals['image_overlay1_file_path'];
         }
-        if($aVals['custom_overlay_2_type'] == 3 || $aVals['custom_overlay_1_type'] == 6){
+        if($aVals['custom_overlay_2_type'] == 3 || $aVals['custom_overlay_2_type'] == 6){
             $aVals['custom_overlay_2_text'] = $aVals['image_overlay2_file_path'];
         }
-        if($aVals['custom_overlay_3_type'] == 3 || $aVals['custom_overlay_1_type'] == 6){
+        if($aVals['custom_overlay_3_type'] == 3 || $aVals['custom_overlay_3_type'] == 6){
             $aVals['custom_overlay_3_text'] = $aVals['image_overlay3_file_path'];
         }
 		$oParseInput = Phpfox::getLib('parse.input');
