@@ -11,6 +11,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         position: absolute;
         bottom: 12px;
         right:14px;
+        min-width: 97%;
     {r}
  #bcv2 {l}
         display: block;
@@ -116,6 +117,7 @@ color:#666 !important;
 {r}    
 #overview_playlist {l}
 height: 110px !important;
+min-width: 93% !important;
 {r}        
 #overview_playlist ul li img {l}
 width: 149px !important;
