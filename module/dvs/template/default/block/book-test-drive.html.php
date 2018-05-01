@@ -60,7 +60,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
                 $('input#zip').parent().append('<i class="fa fa-exclamation-circle hasErrorIcon twoColErrorIconPosition" id="zipInputError"></i>');
             } 
         } else if ( (!!cname  && !!cname.match(fieldName)) && (!!email && !!isValidEmail) && (!!phone && !hasLetterForPhone) && (!!phone && phone.length >= 10) && (!!zip && !!zip.match(fieldNum)) && (!!zip && zip.length == 5) ) {
-            $('#comments').val($('#comments').val() + '<br/>*This is via "Schedule Test Drive Overlay."');
+            $('#comments').val($('#comments').val() + '<br/>*This is via "Schedule Test Drive Overlay".' + '<br/>*DVS ID: ' + $('#dvs_id').val());
             $.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
         }
         

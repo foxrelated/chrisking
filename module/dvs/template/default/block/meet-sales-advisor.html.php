@@ -53,7 +53,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             } 
 
         } else if ( (!!cname  && !!cname.match(fieldName)) && (!!email && !!isValidEmail) && (!!phone && !hasLetterForPhone) && (!!phone && phone.length >= 10) ) {
-            $('#comments').val($('#comments').val() + '<br/>*This is via "Meet Sales Advisor Overlay."');
+            $('#comments').val($('#comments').val() + '<br/>*This is via "Meet Sales Advisor Overlay".' + '<br/>*DVS ID: ' + $('#dvs_id').val());
             $.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
             $("#contact_dealer").hide();
             $(".js_box_title").hide();

@@ -26,6 +26,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
             $('#loading_email_img').show();
             $('#contact_dealer_error').hide();
             $('#contact_dealer input, #contact_dealer textarea').removeClass('required');
+            $('#comments').val($('#comments').val() + '<br/>*This is via "iframe contact form".' + '<br/>*DVS ID: ' + $('#dvs_id').val());
             $.ajaxCall('dvs.contactDealerIframe', $('#contact_dealer').serialize());
 
         });

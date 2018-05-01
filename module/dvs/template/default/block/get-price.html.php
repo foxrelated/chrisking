@@ -21,7 +21,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		event.preventDefault();
 
                 // do whatever you want here
-                $('#comments').val($('#comments').val() + '<br/>*This is via "Get Pre-Approved Banner Overlay."');
+                $('#comments').val($('#comments').val() + '<br/>*This is via "Get Pre-Approved Banner Overlay".' + '<br/>*DVS ID: ' + $('#dvs_id').val());
 
 		$.ajaxCall('dvs.contactDealer', $('#contact_dealer').serialize());
 
