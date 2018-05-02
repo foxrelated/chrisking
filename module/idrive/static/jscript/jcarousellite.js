@@ -235,7 +235,7 @@
 			}
                         
                          
-			var li = $("li", ul), itemLength = (li.size() > 10 ? li.size : 10), curr = o.start;
+			var li = $("li", ul), itemLength = (li.size() > 10 ? li.size() : 10), curr = o.start;
 			div.css("visibility", "visible");
 
 			li.css({
