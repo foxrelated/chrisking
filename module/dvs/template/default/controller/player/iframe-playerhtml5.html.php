@@ -11,6 +11,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         position: absolute;
         bottom: 12px;
         right:14px;
+        min-width: 97%;
     {r}
  #bcv2 {l}
         display: block;
@@ -116,6 +117,7 @@ color:#666 !important;
 {r}    
 #overview_playlist {l}
 height: 110px !important;
+min-width: 93% !important;
 {r}        
 #overview_playlist ul li img {l}
 width: 149px !important;
@@ -917,8 +919,8 @@ color:#fff;
 {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
 <section id="playlist_wrapper{if $inventoryList} inventory_wrapper{/if}">    
     <button class="prev playlist-button">&lt;</button>
-    <div class="playlist_carousel" id="overview_playlist" style="width: 800px !important;">
-        <ul style="width: 800px !important;">
+    <div class="playlist_carousel" id="overview_playlist">
+        <ul>
             {if $bIsDvs}
             {foreach from=$aOverviewVideos key=iKey item=aVideo}
             <li>

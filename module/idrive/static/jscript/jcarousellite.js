@@ -233,8 +233,9 @@
 				.append(tLi.slice(0,v).clone());
 				o.start += v;
 			}
-
-			var li = $("li", ul), itemLength = li.size(), curr = o.start;
+                        
+                         
+			var li = $("li", ul), itemLength = (li.size() > 10 ? li.size : 10), curr = o.start;
 			div.css("visibility", "visible");
 
 			li.css({
@@ -354,7 +355,9 @@
 		return parseInt($.css(el[0], prop)) || 0;
 	};
 	function width(el) {
-		return  el[0].offsetWidth + css(el, 'marginLeft') + css(el, 'marginRight');
+                var tempWidth = el[0].offsetWidth + css(el, 'marginLeft') + css(el, 'marginRight');
+                
+		return  tempWidth > 148 ? tempWidth : 158;
 	};
 	function height(el) {
 		return el[0].offsetHeight + css(el, 'marginTop') + css(el, 'marginBottom');
