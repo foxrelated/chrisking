@@ -11,7 +11,6 @@ defined('PHPFOX') or exit('No direct script access allowed.');
         position: absolute;
         bottom: 12px;
         right:14px;
-        min-width: 97%;
     {r}
  #bcv2 {l}
         display: block;
@@ -117,7 +116,6 @@ color:#666 !important;
 {r}    
 #overview_playlist {l}
 height: 110px !important;
-min-width: 93% !important;
 {r}        
 #overview_playlist ul li img {l}
 width: 149px !important;
@@ -802,7 +800,7 @@ color:#fff;
     
     function enableVideoSelectCarousel(){l}
         if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
-        console.log("1.iframe-playerhtml5");
+        if (bDebug) console.log("1.iframe-playerhtml5");
             $('#overview_playlist').show();
             $("#overview_playlist").jCarouselLite({l}
             btnNext: ".next",
@@ -816,7 +814,7 @@ color:#fff;
 
     function enableInventoryCarousel(){l}
     if (bDebug) console.log("Player: enableInventoryCarousel called.");
-    console.log("2.iframe-playerhtml5");
+    if (bDebug) console.log("2.iframe-playerhtml5");
         $('#overview_inventory').show();
         $("#overview_inventory").jCarouselLite({l}
         btnNext: ".next",
@@ -830,7 +828,7 @@ color:#fff;
 
     $Behavior.jCarousel = function() {l}
     {if $aDvs.inv_display_status}
-    console.log("3.iframe-playerhtml5");
+    if (bDebug) console.log("3.iframe-playerhtml5");
         $("#overview_inventory").jCarouselLite({l}
             btnNext: ".next",
             btnPrev: ".prev",
@@ -841,7 +839,7 @@ color:#fff;
         {r});
         {else}
         {if $bIsDvs}
-        console.log("4.iframe-playerhtml5");
+        if (bDebug) console.log("4.iframe-playerhtml5");
             $("#overview_playlist").jCarouselLite({l}
             btnNext: ".next",
             btnPrev: ".prev",
@@ -851,7 +849,7 @@ color:#fff;
             speed: 900
             {r});
         {else}
-        console.log("5.iframe-playerhtml5");
+        if (bDebug) console.log("5.iframe-playerhtml5");
             $("#overview_playlist").jCarouselLite({l}
             btnNext: ".next",
             btnPrev: ".prev",
@@ -919,8 +917,8 @@ color:#fff;
 {if $bIsDvs || (!$bIsExternal && !$aPlayer.player_type) || ($bIsExternal && $bShowPlaylist)}
 <section id="playlist_wrapper{if $inventoryList} inventory_wrapper{/if}">    
     <button class="prev playlist-button">&lt;</button>
-    <div class="playlist_carousel" id="overview_playlist">
-        <ul>
+    <div class="playlist_carousel" id="overview_playlist" style="width: 800px !important;">
+        <ul style="width: 800px !important;">
             {if $bIsDvs}
             {foreach from=$aOverviewVideos key=iKey item=aVideo}
             <li>

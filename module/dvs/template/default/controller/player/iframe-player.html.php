@@ -118,7 +118,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 	function enableVideoSelectCarousel(){l}
 	if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
-        console.log("1.iframe-player");
+        if (bDebug) console.log("1.iframe-player");
 		$('#overview_playlist').show();
 		$("#overview_playlist").jCarouselLite({l}
 		btnNext: ".next",
@@ -132,7 +132,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 	function enableInventoryCarousel(){l}
 	if (bDebug) console.log("Player: enableInventoryCarousel called.");
-	console.log("2.iframe-player");
+	if (bDebug) console.log("2.iframe-player");
 		$('#overview_inventory').show();
 		$("#overview_inventory").jCarouselLite({l}
 		btnNext: ".next",
@@ -146,7 +146,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 
 	$Behavior.jCarousel = function() {l}
 	{if $aDvs.inv_display_status}
-		console.log("3.iframe-player");
+		if (bDebug) console.log("3.iframe-player");
 		$("#overview_inventory").jCarouselLite({l}
 			btnNext: ".next",
 			btnPrev: ".prev",
@@ -157,7 +157,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 		{r});
 		{else}
 		{if $bIsDvs}
-		console.log("4.iframe-player");
+		if (bDebug) console.log("4.iframe-player");
 			$("#overview_playlist").jCarouselLite({l}
 			btnNext: ".next",
 			btnPrev: ".prev",
@@ -167,7 +167,7 @@ defined('PHPFOX') or exit('No direct script access allowed.');
 			speed: 900
 			{r});
 		{else}
-		console.log("5.iframe-player");
+		if (bDebug) console.log("5.iframe-player");
 			$("#overview_playlist").jCarouselLite({l}
 			btnNext: ".next",
 			btnPrev: ".prev",
