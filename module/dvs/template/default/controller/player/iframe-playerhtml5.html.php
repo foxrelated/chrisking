@@ -802,6 +802,7 @@ color:#fff;
     
     function enableVideoSelectCarousel(){l}
         if (bDebug) console.log("Player: enableVideoSelectCarousel called.");
+        console.log("1.iframe-playerhtml5");
             $('#overview_playlist').show();
             $("#overview_playlist").jCarouselLite({l}
             btnNext: ".next",
@@ -815,6 +816,7 @@ color:#fff;
 
     function enableInventoryCarousel(){l}
     if (bDebug) console.log("Player: enableInventoryCarousel called.");
+    console.log("2.iframe-playerhtml5");
         $('#overview_inventory').show();
         $("#overview_inventory").jCarouselLite({l}
         btnNext: ".next",
@@ -828,6 +830,7 @@ color:#fff;
 
     $Behavior.jCarousel = function() {l}
     {if $aDvs.inv_display_status}
+    console.log("3.iframe-playerhtml5");
         $("#overview_inventory").jCarouselLite({l}
             btnNext: ".next",
             btnPrev: ".prev",
@@ -838,6 +841,7 @@ color:#fff;
         {r});
         {else}
         {if $bIsDvs}
+        console.log("4.iframe-playerhtml5");
             $("#overview_playlist").jCarouselLite({l}
             btnNext: ".next",
             btnPrev: ".prev",
@@ -846,7 +850,8 @@ color:#fff;
             scroll: 3,
             speed: 900
             {r});
-            {else}
+        {else}
+        console.log("5.iframe-playerhtml5");
             $("#overview_playlist").jCarouselLite({l}
             btnNext: ".next",
             btnPrev: ".prev",
@@ -858,6 +863,8 @@ color:#fff;
         {/if}
     {/if}
     {r}   
+
+    window.onload = $Behavior.jCarousel;
 
 </script>
 
